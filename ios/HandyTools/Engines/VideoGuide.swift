@@ -13,11 +13,11 @@ extension Guide {
         case "stunning": return Goal(id: id, title: "Make it stunning", line: "Effects, filters, light and festive magic", icon: "wand.and.stars")
         case "post":     return Goal(id: id, title: "Post it", line: "TikTok, Reels, Shorts and more", icon: "play.square.stack.fill")
         case "cut":      return Goal(id: id, title: "Cut it shorter", line: "Keep just the best part", icon: "scissors")
-        case "send":     return Goal(id: id, title: "Send it", line: "Small enough for WhatsApp or email", icon: "paperplane.fill")
+        case "send":     return Goal(id: id, title: "Send it", line: "Small enough for any chat or email", icon: "paperplane.fill")
         case "fun":      return Goal(id: id, title: "Make it funny", line: "Boomerang, GIF, silly voices", icon: "face.smiling.inverse")
         case "speed":    return Goal(id: id, title: "Slow-mo or fast", line: "Voices stay natural", icon: "gauge.with.dots.needle.67percent")
         case "sound":    return Goal(id: id, title: "Sound only, or none", line: "MP3, ringtone, or mute it", icon: "waveform")
-        case "words":    return Goal(id: id, title: "Get the words", line: "Captions, transcript, notes", icon: "captions.bubble.fill")
+        case "words":    return Goal(id: id, title: "Get the words", line: "Captions and notes", icon: "captions.bubble.fill")
         case "photo":    return Goal(id: id, title: "Grab a photo", line: "Any moment as a picture", icon: "camera.viewfinder")
         default:         return Goal(id: "more", title: "Something else", line: "Every other way to use it", icon: "ellipsis.circle.fill")
         }

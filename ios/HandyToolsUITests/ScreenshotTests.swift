@@ -30,7 +30,7 @@ final class ScreenshotTests: XCTestCase {
                 let keep = app.descendants(matching: .any)["keep-save"]
                 for _ in 0..<6 where !(keep.exists && keep.isHittable) { app.swipeUp(); usleep(400_000) }
                 save(r + "-c-end")
-            } else if let ready = ["guidevideo": "video-header", "celebrate": "fx-vibe-cinematic"][r] {
+            } else if let ready = ["guidevideo": "video-header", "celebrate": "fx-vibe-cinematic", "post": "post-plan", "contacts": "contacts-finder"][r] {
                 // Pages that first make a sample video: wait for it, then let the pictures fill in.
                 _ = app.descendants(matching: .any)[ready].waitForExistence(timeout: 60)
                 sleep(4); allow(); save(r)

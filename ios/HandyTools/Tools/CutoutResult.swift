@@ -69,12 +69,10 @@ struct CutoutResult: View {
     private var subjectPicker: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(L("Keep")).font(HandyFont.bodyStrong)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+            HandyFlow(spacing: 8) {
                     thumb(firstCut, L("Everything"), on: pick == -1) { pick = -1 }
                     ForEach(subjects.indices, id: \.self) { i in thumb(subjects[i], "\(L("Only")) \(i + 1)", on: pick == i) { pick = i } }
                 }
-            }
         }
     }
 
@@ -92,8 +90,7 @@ struct CutoutResult: View {
     private func chips<T: Hashable & Identifiable>(_ title: String, _ all: [T], selected: T, label: @escaping (T) -> String, _ set: @escaping (T) -> Void) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title).font(HandyFont.bodyStrong)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+            HandyFlow(spacing: 8) {
                     ForEach(all) { v in
                         Button { set(v) } label: {
                             Text(label(v)).font(HandyFont.caption).padding(.horizontal, 12).padding(.vertical, 8)
@@ -102,7 +99,6 @@ struct CutoutResult: View {
                         }.buttonStyle(.plain)
                     }
                 }
-            }
         }
     }
 

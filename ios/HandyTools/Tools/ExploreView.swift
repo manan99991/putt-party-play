@@ -44,8 +44,7 @@ struct ExploreView: View {
                     VStack(alignment: .leading, spacing: HandySpacing.s12) {
                         Text(L("NEW & NOTABLE")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                             .padding(.horizontal, HandySpacing.gutter)
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: HandySpacing.s12) {
+                        HandyFlow(spacing: HandySpacing.s12) {
                                 ForEach(featured) { t in
                                     NavigationLink(value: t.id) { ToolCard(tool: t, height: 128) }
                                         .buttonStyle(ToolCardPress())
@@ -53,7 +52,6 @@ struct ExploreView: View {
                                 }
                             }
                             .padding(.horizontal, HandySpacing.gutter)
-                        }
                     }
                 }
 

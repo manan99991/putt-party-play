@@ -94,8 +94,7 @@ struct StickerMakerView: View {
             .frame(maxWidth: .infinity).frame(height: 320)
 
             if subjects.count > 1 {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: HandySpacing.s8) {
+                HandyFlow(spacing: HandySpacing.s8) {
                         ForEach(subjects.indices, id: \.self) { i in
                             Button { current = i } label: {
                                 Image(uiImage: subjects[i]).resizable().scaledToFit().frame(width: 52, height: 52)
@@ -105,13 +104,11 @@ struct StickerMakerView: View {
                             }.buttonStyle(.plain).accessibilityLabel("\(L("Sticker")) \(i + 1)")
                         }
                     }
-                }
                 Text(L("Your style applies to the whole pack.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
 
             Text(L("Style")).font(HandyFont.bodyStrong)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                     ForEach(StickerStudio.presets) { p in
                         Button { style = keepCaption(p.style) } label: {
                             VStack(spacing: 4) {
@@ -127,7 +124,6 @@ struct StickerMakerView: View {
                         }.buttonStyle(.plain)
                     }
                 }
-            }
 
             TextField(L("Add words (optional) — e.g. LOL, Yay, Miss you"), text: Binding(get: { style.caption }, set: { style.caption = String($0.prefix(24)) }))
                 .textFieldStyle(.handy)

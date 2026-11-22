@@ -75,8 +75,7 @@ struct AnimateView: View {
     private var editor: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s16) {
             previewBox
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                     ForEach(photos.indices, id: \.self) { i in
                         Image(uiImage: photos[i]).resizable().scaledToFill()
                             .frame(width: 52, height: 52)
@@ -87,7 +86,6 @@ struct AnimateView: View {
                             .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                     }.accessibilityLabel(L("Change photos"))
                 }
-            }
 
             section("Style")
             ForEach(Animate.Style.Group.allCases) { g in
@@ -98,8 +96,7 @@ struct AnimateView: View {
             }
 
             section("Where will you post it?")
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                     ForEach(VideoFormat.presets) { f in
                         Button { settings.format = f } label: {
                             VStack(spacing: 2) {
@@ -114,7 +111,6 @@ struct AnimateView: View {
                         }.buttonStyle(.plain)
                     }
                 }
-            }
             section("Look")
             Picker("", selection: $look) {
                 ForEach(Animate.Look.allCases) { Text(L($0.title)).tag($0) }

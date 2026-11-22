@@ -20,8 +20,7 @@ struct WatermarkWordsCard: View {
             TextField(L("e.g. For Chase account opening only"), text: $words)
                 .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12))
                 .accessibilityIdentifier("run-watermark-words")
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+            HandyFlow(spacing: 8) {
                     ForEach(Self.choices, id: \.self) { w in
                         Button { words = L(w) } label: {
                             Text(L(w)).font(HandyFont.caption).padding(.horizontal, 10).padding(.vertical, 7)
@@ -30,7 +29,6 @@ struct WatermarkWordsCard: View {
                         }.buttonStyle(.plain)
                     }
                 }
-            }
             Text("\(L("Written across it:")) “\(IDCopyCheck.line(words))”")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             Text(L("Name who it's for, so the copy can't be reused anywhere else. Today's date is added.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)

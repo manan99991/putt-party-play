@@ -78,8 +78,7 @@ struct ThinkBoxView: View {
                     }
                 }
                 .accessibilityIdentifier("think-input")
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                     Button { speech.running ? speech.stop() : speech.start() } label: {
                         Label(speech.running ? L("Stop") : L("Talk"), systemImage: speech.running ? "stop.circle.fill" : "mic.fill")
                     }.compactButton()
@@ -87,7 +86,6 @@ struct ThinkBoxView: View {
                     PasteTextButton { s in input = input.isEmpty ? s : input + "\n" + s }
                     if !input.isEmpty { Button(L("Clear")) { input = "" }.textButton() }
                 }
-            }
             if speech.running { Text(L("Listening… say it the way you'd tell a friend.")).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
             if reading { ToolProgressBar(label: "Reading your screenshot…", showsTime: false) }
             if let e = errorText ?? speech.errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
@@ -171,11 +169,9 @@ struct ThinkBoxView: View {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     Text(L(a.kind == .judge ? "If you want to reply" : "Ready to send")).font(HandyFont.bodyStrong)
                     if versions.count > 1 {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: HandySpacing.s8) {
+                        HandyFlow(spacing: HandySpacing.s8) {
                                 ForEach(versions) { v in HChip(text: L(v.label), selected: v.label == shown.label) { tone = v.label } }
                             }
-                        }
                     }
                     Text(shown.text).font(HandyFont.body).textSelection(.enabled).fixedSize(horizontal: false, vertical: true)
                         .accessibilityIdentifier("think-message")
@@ -253,11 +249,9 @@ struct ThinkBoxView: View {
             if !Self.bottomLineFirst(a.kind) { recommendationCard(a) }
 
             if latest, a.engine != .builtIn, a.support == nil {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: HandySpacing.s8) {
+                HandyFlow(spacing: HandySpacing.s8) {
                         ForEach(Self.refinements, id: \.label) { r in HChip(text: L(r.label), selected: false) { ask(r.prompt) } }
                     }
-                }
             }
 
             if latest, !a.followUps.isEmpty {

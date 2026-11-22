@@ -223,8 +223,7 @@ struct BoomerangFinishCard: View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             GIFFinishCard(data: data, shareURL: nil, tool: tool, record: false).id(data.hashValue)
             Text(L("Try another style")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+            HandyFlow(spacing: 8) {
                     ForEach(Boomerang.styles) { st in
                         Button { change(st.id) } label: {
                             HStack(spacing: 4) {
@@ -239,7 +238,6 @@ struct BoomerangFinishCard: View {
                         .accessibilityIdentifier("boomerang-\(st.id)")
                     }
                 }
-            }
             .accessibilityIdentifier("boomerang-styles")
             Text(L(Boomerang.style(style).line)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             if let problem { Text(L(problem)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
@@ -321,8 +319,7 @@ struct SpeedFinishCard: View {
             VideoFinishCard(url: url, source: source, promise: { var p = VideoPromise(); p.speed = rate > 1 ? "fast" : "slow"; return p }()).id(url)
             if source != nil {
                 Text(L("Try another speed — sound stays natural")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
+                HandyFlow(spacing: 8) {
                         ForEach(Self.rates, id: \.self) { r in
                             Button { change(r) } label: {
                                 HStack(spacing: 4) {
@@ -335,7 +332,6 @@ struct SpeedFinishCard: View {
                             }.buttonStyle(.plain).disabled(busy != nil)
                         }
                     }
-                }
                 .accessibilityIdentifier("speed-choices")
                 if rate < 1 {
                     // The slow-mo ramp phones do: normal, then the busiest moment slowed right down, then normal.

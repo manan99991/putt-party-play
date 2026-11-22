@@ -103,13 +103,11 @@ struct FormatFixView: View {
 
             if !outputs.isEmpty {
                 Text(L("Converted")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: HandySpacing.s8) {
+                HandyFlow(spacing: HandySpacing.s8) {
                         ForEach(outputs, id: \.self) { url in
                             ResultTile(url: url) { v in playing = PlayerItem(url: v) }
                         }
                     }
-                }
                 KeepShare(outputs.map(KeepItem.file), tool: "Format Fixer")
             }
         }

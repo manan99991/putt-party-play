@@ -113,8 +113,7 @@ struct FaceEmojiView: View {
                     : "\(covers.count - shown) \(L("covered")) · \(shown) \(L("showing")) — \(L("tap a face to change it"))"))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
+            HandyFlow(spacing: 6) {
                     ForEach(FaceEmoji.palette, id: \.self) { e in
                         Button { current = e } label: {
                             Text(e).font(.system(size: 28)).frame(width: 44, height: 44)
@@ -123,7 +122,6 @@ struct FaceEmojiView: View {
                         }.buttonStyle(.plain)
                     }
                 }
-            }
             HStack {
                 Text(L("Size")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(width: 44, alignment: .leading)
                 Slider(value: $scale, in: 0.9...1.9).tint(HandyColor.accent)

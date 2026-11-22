@@ -90,7 +90,7 @@ struct PostItView: View {
     private func platformGrid(pickFirst: Bool) -> some View {
         LazyVGrid(columns: cols, spacing: 8) {
             ForEach(SocialPost.platforms) { p in
-                let on = p.id == platformID && !pickFirst
+                let on = p.id == platformID
                 Button { platformID = p.id; problem = nil } label: {
                     VStack(spacing: 5) {
                         Image(systemName: p.icon).font(.system(size: 18, weight: .bold)).foregroundStyle(.white)
@@ -103,7 +103,7 @@ struct PostItView: View {
                     .background(on ? HandyColor.accentSoft : HandyColor.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(on ? HandyColor.accent : HandyColor.border, lineWidth: on ? 2 : 1))
                 }
-                .buttonStyle(.plain).disabled(pickFirst)
+                .buttonStyle(.plain)
                 .accessibilityAddTraits(on ? [.isButton, .isSelected] : .isButton)
                 .accessibilityIdentifier("post-\(p.id)")
             }

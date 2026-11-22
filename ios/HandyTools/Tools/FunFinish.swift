@@ -55,8 +55,7 @@ struct FunFinishCard: View {
             let options = Self.looks(block)
             if !options.isEmpty, original != nil {
                 Text(L(block == .emojiFaces ? "Try another emoji" : "Try another look")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
+                HandyFlow(spacing: 8) {
                         ForEach(options, id: \.id) { o in
                             Button { restyle(o.id) } label: {
                                 HStack(spacing: 4) {
@@ -69,7 +68,6 @@ struct FunFinishCard: View {
                             }.buttonStyle(.plain).disabled(busy != nil)
                         }
                     }
-                }
                 .accessibilityIdentifier("fun-looks")
             }
 

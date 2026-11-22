@@ -45,8 +45,7 @@ struct VoiceFinishCard: View {
                     Label(playingOriginal ? L("Stop") : L("Play my original"), systemImage: playingOriginal ? "stop.fill" : "waveform").frame(maxWidth: .infinity)
                 }.secondaryButton().accessibilityIdentifier("voice-finish-original")
                 Text(L("Try another voice on the same recording")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
+                HandyFlow(spacing: 8) {
                         ForEach(ChainText.voices, id: \.id) { v in
                             Button { switchTo(v.id) } label: {
                                 HStack(spacing: 4) {
@@ -59,7 +58,6 @@ struct VoiceFinishCard: View {
                             }.buttonStyle(.plain).disabled(busy != nil)
                         }
                     }
-                }
             }
             if let problem { Text(L(problem)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let u = resultURL {

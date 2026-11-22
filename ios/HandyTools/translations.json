@@ -40508,5 +40508,25 @@
   "ja": "オン — 毎週日曜18時。",
   "pt": "Ligado — todo domingo às 18h.",
   "zh": "已开启——每周日下午 6 点。"
+ },
+ "Small enough for any chat or email": {
+  "de": "Klein genug für jeden Chat und jede E-Mail",
+  "es": "Lo bastante pequeño para cualquier chat o correo",
+  "fr": "Assez petite pour n'importe quel chat ou e-mail",
+  "hi": "किसी भी चैट या ईमेल के लिए काफ़ी छोटा",
+  "it": "Abbastanza piccolo per qualsiasi chat o e-mail",
+  "ja": "どのチャットやメールでも送れるサイズに",
+  "pt": "Pequeno o bastante para qualquer chat ou e-mail",
+  "zh": "小到能发任何聊天或邮件"
+ },
+ "Captions and notes": {
+  "de": "Untertitel und Notizen",
+  "es": "Subtítulos y notas",
+  "fr": "Sous-titres et notes",
+  "hi": "कैप्शन और नोट्स",
+  "it": "Sottotitoli e note",
+  "ja": "字幕とメモ",
+  "pt": "Legendas e notas",
+  "zh": "字幕和笔记"
  }
 }

@@ -1745,13 +1745,11 @@ private struct ChainEditor: View {
             Text(L("For dragging the words, more fonts and any typed celebration, open the Celebrate tool.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .videoLoop:
             let current = Boomerang.style(chain.steps[i].settings["style"]).id
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
+            HandyFlow(spacing: 6) {
                     ForEach(Boomerang.styles) { st in
                         HChip(text: "\(st.emoji) \(L(st.name))", selected: current == st.id) { chain.steps[i].settings["style"] = st.id }
                     }
                 }
-            }
             Text(L(Boomerang.style(current).line)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .convertImage:
             Picker(L("Format"), selection: Binding(get: { chain.steps[i].settings["format"] ?? "JPG" }, set: { chain.steps[i].settings["format"] = $0 })) {

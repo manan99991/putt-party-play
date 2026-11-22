@@ -89,8 +89,7 @@ struct UntangleView: View {
                             .foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false)
                     }
                 }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                     Button { speech.running ? speech.stop() : speech.start() } label: {
                         Label(speech.running ? L("Stop") : L("Talk"), systemImage: speech.running ? "stop.circle.fill" : "mic.fill")
                     }.compactButton()
@@ -98,7 +97,6 @@ struct UntangleView: View {
                     PasteTextButton { input = $0 }
                     if !input.isEmpty { Button(L("Clear")) { input = ""; plan = nil; UntangleCheckIns.cancelAll() }.textButton() }
                 }
-            }
             if speech.running { Text(L("Listening… say everything you need to do, and how you feel.")).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
             if reading { ToolProgressBar(label: "Reading your screenshot…", showsTime: false) }
             if let e = errorText ?? speech.errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }

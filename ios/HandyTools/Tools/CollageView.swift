@@ -63,8 +63,7 @@ struct CollageView: View {
             .aspectRatio(format.size.width / format.size.height, contentMode: .fit)
             .frame(maxWidth: .infinity, maxHeight: 380)
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                     ForEach(CollageLayout.allCases) { l in
                         Button { layout = l } label: {
                             VStack(spacing: 4) {
@@ -78,7 +77,6 @@ struct CollageView: View {
                         }.buttonStyle(.plain)
                     }
                 }
-            }
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(formats) { f in HChip(text: "\(f.name) · \(f.ratio)", selected: format == f) { format = f } }
             }

@@ -46,8 +46,7 @@ struct StitchView: View {
             }
 
             if !shots.isEmpty && result == nil {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: HandySpacing.s8) {
+                HandyFlow(spacing: HandySpacing.s8) {
                         ForEach(Array(shots.enumerated()), id: \.offset) { i, img in
                             VStack(spacing: 4) {
                                 Image(uiImage: img).resizable().scaledToFit().frame(height: 120)
@@ -61,7 +60,6 @@ struct StitchView: View {
                             }
                         }
                     }
-                }
                 HStack {
                     Text("\(shots.count) screenshot\(shots.count == 1 ? "" : "s"), in this order").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     Spacer()

@@ -123,8 +123,7 @@ struct ScanView: View {
     // MARK: strip + preview
 
     private var pageStrip: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: HandySpacing.s8) {
+        HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(Array(pages.enumerated()), id: \.element.id) { i, p in
                     Button { selected = i } label: {
                         ZStack(alignment: .bottomTrailing) {
@@ -143,7 +142,6 @@ struct ScanView: View {
                 }
                 addMenu
             }.padding(.vertical, 2)
-        }
     }
 
     private var preview: some View {
@@ -757,8 +755,7 @@ struct SignaturePadSheet: View {
                 .textInputAutocapitalization(.words).autocorrectionDisabled()
                 .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 10))
                 .accessibilityIdentifier("signature-typed")
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+            HandyFlow(spacing: 8) {
                     ForEach(SignatureInk.hands.indices, id: \.self) { i in
                         Button { hand = i } label: {
                             Text(typed.isEmpty ? L("Signature") : typed).font(Font(SignatureInk.handFont(i, size: 20) as CTFont))
@@ -768,7 +765,6 @@ struct SignaturePadSheet: View {
                         }.buttonStyle(.plain)
                     }
                 }
-            }
         }
     }
 

@@ -176,8 +176,7 @@ struct CelebrateView: View {
     }
 
     private var tabs: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 6) {
+        HandyFlow(spacing: 6) {
                 ForEach(Tab.allCases) { t in
                     Button { withAnimation(.easeOut(duration: 0.18)) { tab = t } } label: {
                         Label(L(t.title), systemImage: t.icon).font(HandyFont.caption.weight(.semibold))
@@ -189,14 +188,12 @@ struct CelebrateView: View {
                     .accessibilityAddTraits(tab == t ? .isSelected : [])
                 }
             }
-        }
     }
 
     /// Whole looks in one tap, each shown on the person's own video. The next festival is one of them.
     private var vibesRow: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
+            HandyFlow(spacing: 10) {
                     ForEach(VideoFX.vibes) { v in
                         let on = VideoFX.vibe(of: recipe)?.id == v.id
                         Button { apply(v.recipe) } label: { card(key: "vibes-\(v.id)", emoji: v.emoji, name: v.name, on: on) }
@@ -207,21 +204,18 @@ struct CelebrateView: View {
                             .buttonStyle(.plain).accessibilityIdentifier("fx-vibe-festival")
                     }
                 }
-            }
             Text(L(VideoFX.vibe(of: recipe).map { _ in "Tap a vibe, then make it yours in the other tabs." } ?? "Your own mix — tap a vibe to start again."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
     private func pictures(_ list: [VideoFX.Choice], current: String, set: @escaping (String) -> Void) -> some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
+        HandyFlow(spacing: 10) {
                 ForEach(list) { c in
                     Button { set(c.id) } label: { card(key: "\(tab.rawValue)-\(c.id)", emoji: c.emoji, name: c.name, on: current == c.id) }
                         .buttonStyle(.plain).accessibilityIdentifier("fx-\(tab.rawValue)-\(c.id)")
                 }
             }
-        }
     }
 
     private func chips(_ list: [VideoFX.Choice], current: String, set: @escaping (String) -> Void) -> some View {
@@ -285,8 +279,7 @@ struct CelebrateView: View {
                         }.buttonStyle(.plain).accessibilityIdentifier("fx-words-\(w.id)")
                     }
                 }
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
+                HandyFlow(spacing: 8) {
                         ForEach(Celebrate.Font.allCases) { f in
                             Button { caption.font = f } label: {
                                 Text(L(f.title)).font(Font(f.ui(15) as CTFont))
@@ -296,7 +289,6 @@ struct CelebrateView: View {
                             }.buttonStyle(.plain)
                         }
                     }
-                }
                 HStack(spacing: 10) {
                     ForEach(Celebrate.captionColors, id: \.self) { c in
                         Button { caption.color = c } label: {
@@ -338,9 +330,7 @@ struct CelebrateView: View {
             let soon = Celebrate.comingUp()
             if !soon.isEmpty {
                 Text(L("Coming up")).font(HandyFont.bodyStrong)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) { ForEach(soon) { festival($0, big: true) } }
-                }
+                HandyFlow(spacing: 8) { ForEach(soon) { festival($0, big: true) } }
             }
             Text(L("Every celebration")).font(HandyFont.bodyStrong)
             LazyVGrid(columns: cols, spacing: 8) {

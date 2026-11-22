@@ -551,8 +551,7 @@ private struct ShotReview: View {
             Image(uiImage: shown ?? shot.image).resizable().scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 .frame(maxHeight: 440)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                     ForEach(scene.looks, id: \.self) { l in
                         Button { look = l; render() } label: {
                             VStack(spacing: 4) {
@@ -566,7 +565,6 @@ private struct ShotReview: View {
                         }.buttonStyle(.plain)
                     }
                 }
-            }
             Button { save() } label: {
                 Label(saving ? L("Saving…") : L("Love it — save"), systemImage: "heart.fill").frame(maxWidth: .infinity)
             }.primaryButton().disabled(saving)

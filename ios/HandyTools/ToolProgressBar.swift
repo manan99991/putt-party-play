@@ -225,11 +225,9 @@ struct OutputPreviewStrip: View {
     let urls: [URL]
     var body: some View {
         if !urls.isEmpty {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                     ForEach(urls, id: \.self) { OutputThumb(url: $0) }
                 }
-            }
         }
     }
 }

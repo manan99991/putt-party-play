@@ -128,9 +128,7 @@ struct QRWifiView: View {
             }
             if !batchImages.isEmpty {
                 Text("\(batchImages.count) codes made").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: HandySpacing.s8) { ForEach(Array(batchImages.enumerated()), id: \.offset) { _, im in Image(uiImage: im).interpolation(.none).resizable().frame(width: 96, height: 96).background(.white) } }
-                }
+                HandyFlow(spacing: HandySpacing.s8) { ForEach(Array(batchImages.enumerated()), id: \.offset) { _, im in Image(uiImage: im).interpolation(.none).resizable().frame(width: 96, height: 96).background(.white) } }
                 ShareLink(items: batchImages.compactMap { $0.pngData() }.map { PNGFile(data: $0) }, preview: { _ in SharePreview("QR code") }) { Label(L("Share all"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             }
         }

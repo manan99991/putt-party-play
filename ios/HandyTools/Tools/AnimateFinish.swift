@@ -37,9 +37,7 @@ struct AnimateFinishCard: View {
                 let styles = Animate.Style.inGroup(g).filter { photos.count >= $0.minPhotos }
                 if !styles.isEmpty {
                     Text(L(g.rawValue)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 8) { ForEach(styles) { chip($0) } }
-                    }
+                    HandyFlow(spacing: 8) { ForEach(styles) { chip($0) } }
                 }
             }
             if busy != nil { ToolProgressBar(value: prog.fraction ?? 0, label: "Making the \(L(busy?.title ?? "")) video…") }
