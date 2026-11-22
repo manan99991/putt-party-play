@@ -1793,3 +1793,34 @@ final class PhotoFinderScoreTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen("STARTERS\nSoup 6.50\nSalad 8.00\nMAINS\nChicken pasta 16.00\nBurger 14.50\nDESSERT"), for: .menu), PhotoFinder.threshold)
     }
 }
+
+/// Manan's Micro Center PC (22 Nov): Price Watch said "Found 169.99" — the first amount on the page (an add-on) —
+/// for a PC that costs thousands. The shop's declared price comes first now, and an amount wildly off the person's
+/// own target loses to the one that fits.
+final class PriceWatchPickTests: XCTestCase {
+    let page = """
+    <html><head><meta property="product:price:amount" content="3499.99"></head><body>
+    <div class="banner">Protection plan $169.99</div><div>Add a mouse $29.99</div>
+    <h1>PowerSpec G915 Gaming PC</h1><span class="price">$3,499.99</span></body></html>
+    """
+
+    func testTheShopsDeclaredPriceIsWatched() {
+        let text = PageWatcher.visibleText(page)
+        let w = NumberWatch(condition: .below, value: 3500, near: "")
+        XCTAssertEqual(PageWatcher.bestValue(in: text, for: w), 3499.99)
+    }
+
+    func testWithoutDeclaredPriceTheAmountNearTheTargetWins() {
+        let bare = page.replacingOccurrences(of: #"<meta property="product:price:amount" content="3499.99">"#, with: "")
+        let text = PageWatcher.visibleText(bare)
+        XCTAssertEqual(PageWatcher.bestValue(in: text, for: NumberWatch(condition: .below, value: 3500, near: "")), 3499.99)
+        XCTAssertEqual(PageWatcher.bestValue(in: text, for: NumberWatch(condition: .below, value: 150, near: "")), 169.99)
+    }
+
+    func testEveryAmountIsOfferedWithTheWordsBeforeIt() {
+        let bare = page.replacingOccurrences(of: #"<meta property="product:price:amount" content="3499.99">"#, with: "")
+        let c = PageWatcher.candidates(in: PageWatcher.visibleText(bare))
+        XCTAssertEqual(c.map(\.value), [169.99, 29.99, 3499.99])
+        XCTAssertTrue(c[0].words.lowercased().contains("plan"), c[0].words)
+    }
+}

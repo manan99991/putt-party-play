@@ -64,14 +64,34 @@ enum PageWatcher {
     static var any: Bool { !load().isEmpty }
 
     /// Page HTML → the words a person sees (scripts, styles and tags removed, entities decoded).
-    static func visibleText(_ html: String) -> String {
-        // Prices in structured data ("price": "49.99") are often the most reliable — keep them readable
-        // before the scripts that hold them are dropped.
-        var structured: [String] = []
-        if let re = try? NSRegularExpression(pattern: #"(?i)"price"\s*:\s*"?([0-9][0-9.,]*)"?"#) {
-            let ns = html as NSString
-            structured = re.matches(in: html, range: NSRange(location: 0, length: ns.length)).prefix(3).map { ns.substring(with: $0.range(at: 1)) }
+    /// The product's own price as the shop declares it for Google and apps — JSON-LD offers, itemprop="price",
+    /// product:price:amount / og:price:amount meta tags. Far more reliable than the first "$" on the page, which on
+    /// most shops is a banner, a protection plan or an accessory (Manan's Micro Center PC, 22 Nov: the page's first
+    /// amount was $169.99; the PC costs thousands).
+    static func structuredPrices(_ html: String) -> [String] {
+        let patterns = [
+            #"(?i)itemprop\s*=\s*["']price["'][^>]*?content\s*=\s*["']\$?([0-9][0-9.,]*)"#,
+            #"(?i)content\s*=\s*["']\$?([0-9][0-9.,]*)["'][^>]*?itemprop\s*=\s*["']price["']"#,
+            #"(?i)(?:product|og):price:amount["'][^>]*?content\s*=\s*["']([0-9][0-9.,]*)"#,
+            #"(?i)"(?:price|lowPrice)"\s*:\s*"?([0-9][0-9.,]*)"?"#,
+            #"(?i)data-price\s*=\s*["']\$?([0-9][0-9.,]*)"#,
+        ]
+        let ns = html as NSString
+        var out: [String] = []
+        for p in patterns {
+            guard let re = try? NSRegularExpression(pattern: p) else { continue }
+            for m in re.matches(in: html, range: NSRange(location: 0, length: ns.length)).prefix(3) {
+                let v = ns.substring(with: m.range(at: 1))
+                if let d = NumberReader.number(v), d > 0, !out.contains(v) { out.append(v) }
+            }
+            if !out.isEmpty { break }   // the first kind found is the shop's own declaration; don't mix kinds
         }
+        return out
+    }
+
+    static func visibleText(_ html: String) -> String {
+        // The shop's declared product price leads the text, so with no words given it's the amount that's watched.
+        let structured = structuredPrices(html)
         var s = html
         for p in [#"(?is)<script\b.*?</script>"#, #"(?is)<style\b.*?</style>"#, #"(?is)<noscript\b.*?</noscript>"#, #"(?s)<!--.*?-->"#] {
             s = s.replacingOccurrences(of: p, with: " ", options: .regularExpression)
@@ -80,7 +100,7 @@ enum PageWatcher {
         for (e, r) in [("&nbsp;", " "), ("&amp;", "&"), ("&pound;", "£"), ("&euro;", "€"), ("&#36;", "$"), ("&quot;", "\""), ("&#39;", "'"), ("&lt;", "<"), ("&gt;", ">")] {
             s = s.replacingOccurrences(of: e, with: r)
         }
-        if !structured.isEmpty { s += " " + structured.map { "Price \($0)" }.joined(separator: " ") }
+        if let first = structured.first { s = "Product price $\(first) · " + s }
         return s.replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression).trimmingCharacters(in: .whitespaces)
     }
 
@@ -120,7 +140,7 @@ enum PageWatcher {
             return (p, nil)
         case .text(let text, let etag):
             p.etag = etag
-            guard let v = NumberReader.pick(in: text, near: p.watch.near) else {
+            guard let v = bestValue(in: text, for: p.watch) else {
                 p.problem = "No number found on the page. Some shops only show prices after the page runs scripts — try the product's mobile page, or add the words next to the price."
                 return (p, nil)
             }
@@ -130,6 +150,36 @@ enum PageWatcher {
             let fire = NumberReader.evaluate(p.watch, value: v, memory: &p.memory, now: now)
             return (p, fire ? NumberReader.message(p.watch, value: v, previous: before, what: p.name) : nil)
         }
+    }
+
+    /// The amount to watch. With words given, the number next to them. Otherwise the shop's declared price; and when
+    /// that's missing and the first amount is wildly off the person's own target (a $169 add-on when they're
+    /// waiting for a $3,500 PC to drop), the amount on the page closest to what they're watching for.
+    static func bestValue(in text: String, for w: NumberWatch) -> Double? {
+        guard let first = NumberReader.pick(in: text, near: w.near) else { return nil }
+        guard w.near.trimmingCharacters(in: .whitespaces).isEmpty, !text.hasPrefix("Product price"),
+              w.condition != .changes, w.value > 0 else { return first }
+        let ratio = { (v: Double) in abs(log(max(v, 0.01) / w.value)) }
+        guard ratio(first) > log(4) else { return first }
+        let money = NumberReader.all(in: text).filter(\.money).map(\.value)
+        return money.min { ratio($0) < ratio($1) }.flatMap { ratio($0) < ratio(first) ? $0 : nil } ?? first
+    }
+
+    /// The amounts of money on the page, each with the words just before it — so "not that one" can be fixed with a
+    /// tap: choosing one sets those words as what to read next to.
+    static func candidates(in text: String, limit: Int = 6) -> [(value: Double, words: String)] {
+        let ns = text as NSString
+        var out: [(value: Double, words: String)] = []
+        for f in NumberReader.all(in: text) where f.money {
+            if out.contains(where: { abs($0.value - f.value) < 0.005 }) { continue }
+            let start = max(0, f.offset - 40)
+            let before = ns.substring(with: NSRange(location: start, length: f.offset - start))
+            let words = before.split(separator: " ").suffix(3).joined(separator: " ")
+                .trimmingCharacters(in: CharacterSet.alphanumerics.inverted.union(.whitespaces))
+            out.append((value: f.value, words: words))
+            if out.count == limit { break }
+        }
+        return out
     }
 
     /// Check every page that's due, post what crossed, save. Called by the background refresh and when Tenzy opens.

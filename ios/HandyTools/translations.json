@@ -41788,5 +41788,25 @@
   "ja": "あなたの写真",
   "pt": "As tuas fotos",
   "zh": "你的照片"
+ },
+ "Not the right price? Tap the one to watch:": {
+  "de": "Nicht der richtige Preis? Tippe den an, der beobachtet werden soll:",
+  "es": "¿No es el precio correcto? Toca el que quieres vigilar:",
+  "fr": "Pas le bon prix ? Touchez celui à surveiller :",
+  "hi": "सही दाम नहीं? जिस पर नज़र रखनी है उस पर टैप करें:",
+  "it": "Non è il prezzo giusto? Tocca quello da tenere d'occhio:",
+  "ja": "違う価格？見張りたい価格をタップ：",
+  "pt": "Não é o preço certo? Toca no que queres vigiar:",
+  "zh": "不是这个价格？点选要关注的价格："
+ },
+ "next to": {
+  "de": "neben",
+  "es": "junto a",
+  "fr": "à côté de",
+  "hi": "के पास",
+  "it": "accanto a",
+  "ja": "の横",
+  "pt": "junto a",
+  "zh": "旁边"
  }
 }

@@ -72,6 +72,8 @@ struct PriceWatchView: View {
     @State private var valueText = ""
     @State private var testing = false
     @State private var found: String?
+    /// Every amount on the page, so the right one is a tap away when the first guess isn't it.
+    @State private var choices: [(value: Double, words: String)] = []
     @State private var notifyOff = false
     @State private var checking = false
     @Environment(\.openURL) private var openURL
@@ -155,6 +157,27 @@ struct PriceWatchView: View {
                 Label(testing ? L("Checking…") : L("Check now"), systemImage: "magnifyingglass").frame(maxWidth: .infinity)
             }.secondaryButton().disabled(testing || pageURL == nil).accessibilityIdentifier("pricewatch-test")
             if let found { Text(found).font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary).fixedSize(horizontal: false, vertical: true) }
+            if choices.count > 1 {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(L("Not the right price? Tap the one to watch:")).font(HandyFont.caption.weight(.semibold))
+                    HandyFlow(spacing: 6) {
+                        ForEach(Array(choices.enumerated()), id: \.offset) { _, c in
+                            Button {
+                                watch.near = c.words
+                                Task { await testNow() }
+                            } label: {
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text("$" + NumberReader.plain(c.value)).font(HandyFont.bodyStrong.monospacedDigit())
+                                    if !c.words.isEmpty { Text(c.words).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1) }
+                                }
+                                .padding(.horizontal, 10).padding(.vertical, 6)
+                                .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                            }.buttonStyle(.plain).accessibilityIdentifier("pricewatch-choice")
+                        }
+                    }
+                }
+            }
             HStack {
                 Button(L("Cancel")) { adding = false }.textButton()
                 Spacer()
@@ -185,11 +208,13 @@ struct PriceWatchView: View {
         testing = true; found = nil
         let probe = PageWatch(name: name.isEmpty ? (u.host ?? "Page") : name, url: u, watch: watch)
         let (r, _) = await PageWatcher.check(probe)
+        if case .text(let t, _) = await PageWatcher.fetch(u, etag: nil) { choices = PageWatcher.candidates(in: t) } else { choices = [] }
         testing = false
         if let v = r.lastValue {
             var m = WatchMemory()
             let past = watch.condition != .changes && NumberReader.evaluate(watch, value: v, memory: &m)
-            found = "\(L("Found")) \(NumberReader.plain(v)). " + (watch.condition == .changes ? L("You'll hear when it changes.")
+            let near = watch.near.trimmingCharacters(in: .whitespaces)
+            found = "\(L("Found")) $\(NumberReader.plain(v))\(near.isEmpty ? "" : " " + L("next to") + " “\(near)”"). " + (watch.condition == .changes ? L("You'll hear when it changes.")
                     : (past ? L("It's already past your number — you'd get an alert on the first check.") : L("Not past your number yet — you'll get one alert when it is.")))
             if valueText.isEmpty, watch.condition == .below { valueText = NumberReader.plain((v * 0.9).rounded()) }
         } else {
