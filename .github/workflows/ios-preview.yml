@@ -4,6 +4,8 @@ name: iOS App Store video
 # PreviewTourTests walks the tour, then trims and sizes it to Apple's preview spec (886x1920, 30 fps, H.264,
 # AAC stereo, 15-30 s). Run by hand; it never deploys anything.
 on:
+  push:
+    paths: ["ios/.preview"]   # touch this file to film a new one
   workflow_dispatch:
 
 permissions:
