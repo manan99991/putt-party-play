@@ -31,17 +31,17 @@ struct OnboardingView: View {
                     // Choose the language before reading anything: the welcome redraws in it at once.
                     LanguageMenu {
                         Label(Localizer.chosenName, systemImage: "globe").font(HandyFont.caption.weight(.semibold))
-                            .foregroundStyle(onBlue ? .white : HandyColor.accent)
+                            .foregroundStyle(onBlue ? HandyColor.onAccent : HandyColor.accent)
                             .padding(.horizontal, 12).padding(.vertical, 8)
-                            .background((onBlue ? Color.white.opacity(0.18) : HandyColor.accentSoft), in: Capsule())
+                            .background((onBlue ? HandyColor.onAccent.opacity(0.18) : HandyColor.accentSoft), in: Capsule())
                     }
                     .padding(.leading, HandySpacing.s16)
                     .accessibilityIdentifier("welcome-language")
-                    Spacer(); Button(L("Skip")) { onDone() }.font(HandyFont.bodyStrong).foregroundStyle(onBlue ? .white : HandyColor.accent).padding(HandySpacing.s16) }
+                    Spacer(); Button(L("Skip")) { onDone() }.font(HandyFont.bodyStrong).foregroundStyle(onBlue ? HandyColor.onAccent : HandyColor.accent).padding(HandySpacing.s16) }
                 Spacer()
                 HStack(spacing: 8) {
                     ForEach(0..<3, id: \.self) { i in
-                        Circle().fill(onBlue ? Color.white.opacity(i == page ? 1 : 0.4) : (i == page ? HandyColor.accent : HandyColor.border))
+                        Circle().fill(onBlue ? HandyColor.onAccent.opacity(i == page ? 1 : 0.4) : (i == page ? HandyColor.accent : HandyColor.border))
                             .frame(width: i == page ? 10 : 8, height: i == page ? 10 : 8)
                     }
                 }
@@ -62,9 +62,9 @@ private struct OnboardingButtonStyle: ButtonStyle {
     let onBlue: Bool
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(HandyFont.bodyStrong)
-            .foregroundStyle(onBlue ? HandyColor.accent : .white)
+            .foregroundStyle(onBlue ? HandyColor.accent : HandyColor.onAccent)
             .frame(maxWidth: .infinity, minHeight: HandySpacing.primaryButtonHeight)
-            .background(onBlue ? Color.white : HandyColor.accent, in: Capsule())
+            .background(onBlue ? HandyColor.onAccent : HandyColor.accent, in: Capsule())
             .scaleEffect(configuration.isPressed ? HandyMotion.pressScale : 1)
     }
 }
@@ -76,11 +76,11 @@ private struct HeroPage: View {
     var body: some View {
         VStack(spacing: HandySpacing.s12) {
             Spacer()
-            Image(ILLOS[idx]).resizable().renderingMode(.template).foregroundStyle(.white).scaledToFit().frame(width: 240, height: 240)
+            Image(ILLOS[idx]).resizable().renderingMode(.template).foregroundStyle(HandyColor.onAccent).scaledToFit().frame(width: 240, height: 240)
                 .id(idx).transition(.opacity)
             Spacer()
-            Text(L("Set it once. It's handled.")).font(HandyFont.display).foregroundStyle(.white).multilineTextAlignment(.center)
-            Text(L("Your personal assistant for the things that matter — on your phone, never uploaded.")).font(HandyFont.body).foregroundStyle(.white.opacity(0.85)).multilineTextAlignment(.center)
+            Text(L("Set it once. It's handled.")).font(HandyFont.display).foregroundStyle(HandyColor.onAccent).multilineTextAlignment(.center)
+            Text(L("Your personal assistant for the things that matter — on your phone, never uploaded.")).font(HandyFont.body).foregroundStyle(HandyColor.onAccent.opacity(0.85)).multilineTextAlignment(.center)
             Spacer().frame(height: 140)
         }
         .padding(.horizontal, HandySpacing.s24)
