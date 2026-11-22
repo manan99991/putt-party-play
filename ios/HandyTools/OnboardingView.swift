@@ -22,8 +22,9 @@ struct OnboardingView: View {
                 .animation(.easeOut(duration: HandyMotion.slow), value: onBlue)
             TabView(selection: $page) {
                 HeroPage().tag(0)
-                GridPage().tag(1)
-                ProPage(onSeePro: onSeePro).tag(2)
+                GuidePage().tag(1)
+                GridPage().tag(2)
+                ProPage(onSeePro: onSeePro).tag(3)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             VStack {
@@ -40,14 +41,14 @@ struct OnboardingView: View {
                     Spacer(); Button(L("Skip")) { onDone() }.font(HandyFont.bodyStrong).foregroundStyle(onBlue ? HandyColor.onAccent : HandyColor.accent).padding(HandySpacing.s16) }
                 Spacer()
                 HStack(spacing: 8) {
-                    ForEach(0..<3, id: \.self) { i in
+                    ForEach(0..<4, id: \.self) { i in
                         Circle().fill(onBlue ? HandyColor.onAccent.opacity(i == page ? 1 : 0.4) : (i == page ? HandyColor.accent : HandyColor.border))
                             .frame(width: i == page ? 10 : 8, height: i == page ? 10 : 8)
                     }
                 }
                 .padding(.bottom, HandySpacing.s16)
-                Button(L(page == 0 ? "Show me" : page == 1 ? "Next" : "Start using Tenzy")) {
-                    if page < 2 { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.24)) { page += 1 } } else { onDone() }
+                Button(L(page == 0 ? "Show me" : page < 3 ? "Next" : "Start using Tenzy")) {
+                    if page < 3 { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.24)) { page += 1 } } else { onDone() }
                 }
                 .buttonStyle(OnboardingButtonStyle(onBlue: onBlue))
                 .padding(.horizontal, HandySpacing.s24)
@@ -85,6 +86,30 @@ private struct HeroPage: View {
         }
         .padding(.horizontal, HandySpacing.s24)
         .task { while !Task.isCancelled { try? await Task.sleep(for: .seconds(2.2)); withAnimation(.easeInOut(duration: 0.4)) { idx = (idx + 1) % ILLOS.count } } }
+    }
+}
+
+/// How Tenzy works, once, at the start: say it or start with what you have, then stack steps and choose the
+/// ending (BuilderIntro, the same three ideas Settings › How Tenzy works shows again later).
+private struct GuidePage: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s16) {
+            Spacer()
+            Text(L("Make a tool that does the whole job")).font(HandyFont.display).fixedSize(horizontal: false, vertical: true)
+            ForEach(BuilderIntro.pages, id: \.title) { p in
+                HStack(alignment: .top, spacing: HandySpacing.s12) {
+                    Image(systemName: p.icon).font(.system(size: 17, weight: .semibold)).foregroundStyle(HandyColor.accent)
+                        .frame(width: 38, height: 38).background(HandyColor.accentSoft, in: Circle()).accessibilityHidden(true)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(L(p.title)).font(HandyFont.bodyStrong)
+                        Text(L(p.body)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            }
+            Text(L("Or just tell Tenzy what you need, in your own words.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+            Spacer().frame(height: 140)
+        }
+        .padding(.horizontal, HandySpacing.s24)
     }
 }
 

@@ -40758,5 +40758,215 @@
   "ja": "次に：動画が用意された状態でアプリが開きます — キャプションを添えて投稿をタップ。",
   "pt": "Depois: o app abre com o vídeo pronto — você adiciona uma legenda e toca em Publicar.",
   "zh": "然后：应用打开，视频已就绪——加上文案点发布即可。"
+ },
+ "Build it for me": {
+  "de": "Für mich bauen",
+  "es": "Créalo por mí",
+  "fr": "Construis-le pour moi",
+  "hi": "मेरे लिए बनाओ",
+  "it": "Crealo per me",
+  "ja": "作ってもらう",
+  "pt": "Cria isto por mim",
+  "zh": "帮我做出来"
+ },
+ "How Tenzy works": {
+  "de": "So funktioniert Tenzy",
+  "es": "Cómo funciona Tenzy",
+  "fr": "Comment fonctionne Tenzy",
+  "hi": "Tenzy कैसे काम करता है",
+  "it": "Come funziona Tenzy",
+  "ja": "Tenzy の使い方",
+  "pt": "Como funciona o Tenzy",
+  "zh": "Tenzy 如何使用"
+ },
+ "Or just tell Tenzy what you need, in your own words.": {
+  "de": "Oder sag Tenzy einfach in deinen eigenen Worten, was du brauchst.",
+  "es": "O simplemente dile a Tenzy lo que necesitas, con tus palabras.",
+  "fr": "Ou dites simplement à Tenzy ce dont vous avez besoin, avec vos mots.",
+  "hi": "या बस Tenzy को अपने शब्दों में बताओ कि तुम्हें क्या चाहिए।",
+  "it": "Oppure di' a Tenzy cosa ti serve, con parole tue.",
+  "ja": "または、やりたいことを自分の言葉で Tenzy に伝えるだけ。",
+  "pt": "Ou diga ao Tenzy o que precisa, com as suas palavras.",
+  "zh": "或者直接用你自己的话告诉 Tenzy 你需要什么。"
+ },
+ "Say it — e.g. shrink a photo under 1 MB": {
+  "de": "Sag es – z. B. ein Foto unter 1 MB verkleinern",
+  "es": "Dilo: p. ej., reduce una foto a menos de 1 MB",
+  "fr": "Dites-le — ex. réduire une photo sous 1 Mo",
+  "hi": "बोलो — जैसे, फ़ोटो को 1 MB से छोटा करो",
+  "it": "Dillo: es. riduci una foto sotto 1 MB",
+  "ja": "話しかけて — 例: 写真を1MB未満に縮小",
+  "pt": "Diga — ex.: reduzir uma foto para menos de 1 MB",
+  "zh": "说出来 — 例如:把照片压到 1 MB 以下"
+ },
+ "…or open a tool": {
+  "de": "… oder ein Werkzeug öffnen",
+  "es": "…o abre una herramienta",
+  "fr": "…ou ouvrez un outil",
+  "hi": "…या कोई टूल खोलो",
+  "it": "…oppure apri uno strumento",
+  "ja": "…またはツールを開く",
+  "pt": "…ou abra uma ferramenta",
+  "zh": "…或打开一个工具"
+ },
+ "Build a tool that does the whole job, in three steps": {
+  "de": "Baue in drei Schritten ein Werkzeug, das alles erledigt",
+  "es": "Crea en tres pasos una herramienta que haga todo el trabajo",
+  "fr": "Créez en trois étapes un outil qui fait tout le travail",
+  "hi": "तीन कदमों में ऐसा टूल बनाओ जो पूरा काम करे",
+  "it": "Crea in tre passi uno strumento che fa tutto il lavoro",
+  "ja": "3ステップで、仕事を丸ごとこなすツールを作る",
+  "pt": "Crie em três passos uma ferramenta que faz o trabalho todo",
+  "zh": "三步做出一个能完成整件事的工具"
+ },
+ "Point your camera: scan, identify, measure, read": {
+  "de": "Kamera draufhalten: scannen, erkennen, messen, lesen",
+  "es": "Apunta la cámara: escanea, identifica, mide, lee",
+  "fr": "Pointez l'appareil : scanner, identifier, mesurer, lire",
+  "hi": "कैमरा दिखाओ: स्कैन करो, पहचानो, नापो, पढ़ो",
+  "it": "Inquadra: scansiona, identifica, misura, leggi",
+  "ja": "カメラを向けて:スキャン、識別、計測、読み取り",
+  "pt": "Aponte a câmara: digitalizar, identificar, medir, ler",
+  "zh": "对准相机:扫描、识别、测量、阅读"
+ },
+ "Flashlight & phone": {
+  "de": "Taschenlampe & Handy",
+  "es": "Linterna y teléfono",
+  "fr": "Lampe & téléphone",
+  "hi": "टॉर्च और फ़ोन",
+  "it": "Torcia e telefono",
+  "ja": "ライトとスマホ",
+  "pt": "Lanterna e telemóvel",
+  "zh": "手电筒与手机"
+ },
+ "Light, speed, sound checks, space and privacy": {
+  "de": "Licht, Tempo, Tontests, Speicher und Privatsphäre",
+  "es": "Luz, velocidad, pruebas de sonido, espacio y privacidad",
+  "fr": "Lumière, vitesse, tests son, espace et confidentialité",
+  "hi": "रोशनी, रफ़्तार, आवाज़ जाँच, जगह और निजता",
+  "it": "Luce, velocità, prove audio, spazio e privacy",
+  "ja": "ライト、速度、音チェック、空き容量、プライバシー",
+  "pt": "Luz, velocidade, testes de som, espaço e privacidade",
+  "zh": "照明、速度、声音检测、空间和隐私"
+ },
+ "Create": {
+  "de": "Gestalten",
+  "es": "Crear",
+  "fr": "Créer",
+  "hi": "बनाओ",
+  "it": "Crea",
+  "ja": "作る",
+  "pt": "Criar",
+  "zh": "创作"
+ },
+ "Make something: stickers, collages, effects, posts": {
+  "de": "Etwas machen: Sticker, Collagen, Effekte, Posts",
+  "es": "Crea algo: stickers, collages, efectos, publicaciones",
+  "fr": "Créez : stickers, collages, effets, publications",
+  "hi": "कुछ बनाओ: स्टिकर, कोलाज, इफ़ेक्ट, पोस्ट",
+  "it": "Crea qualcosa: sticker, collage, effetti, post",
+  "ja": "作ってみよう:ステッカー、コラージュ、エフェクト、投稿",
+  "pt": "Crie algo: autocolantes, colagens, efeitos, publicações",
+  "zh": "做点东西:贴纸、拼图、特效、发帖"
+ },
+ "Words & voice": {
+  "de": "Text & Stimme",
+  "es": "Texto y voz",
+  "fr": "Texte & voix",
+  "hi": "शब्द और आवाज़",
+  "it": "Testo e voce",
+  "ja": "文字と声",
+  "pt": "Texto e voz",
+  "zh": "文字与语音"
+ },
+ "Write, translate, take notes, spot scams": {
+  "de": "Schreiben, übersetzen, Notizen, Betrug erkennen",
+  "es": "Escribe, traduce, toma notas, detecta estafas",
+  "fr": "Écrire, traduire, prendre des notes, repérer les arnaques",
+  "hi": "लिखो, अनुवाद करो, नोट्स लो, धोखा पकड़ो",
+  "it": "Scrivi, traduci, prendi appunti, scova le truffe",
+  "ja": "書く、翻訳、メモ、詐欺チェック",
+  "pt": "Escrever, traduzir, tomar notas, detetar burlas",
+  "zh": "写作、翻译、记笔记、识别诈骗"
+ },
+ "My day": {
+  "de": "Mein Tag",
+  "es": "Mi día",
+  "fr": "Ma journée",
+  "hi": "मेरा दिन",
+  "it": "La mia giornata",
+  "ja": "私の一日",
+  "pt": "O meu dia",
+  "zh": "我的一天"
+ },
+ "Medicine, plans, bills, prices and receipts": {
+  "de": "Medikamente, Pläne, Rechnungen, Preise und Belege",
+  "es": "Medicinas, planes, facturas, precios y recibos",
+  "fr": "Médicaments, plans, factures, prix et reçus",
+  "hi": "दवा, योजनाएँ, बिल, दाम और रसीदें",
+  "it": "Medicine, piani, bollette, prezzi e scontrini",
+  "ja": "薬、予定、請求書、価格、レシート",
+  "pt": "Medicamentos, planos, contas, preços e recibos",
+  "zh": "用药、计划、账单、价格和收据"
+ },
+ "1. Start with what you have": {
+  "de": "1. Fang mit dem an, was du hast",
+  "es": "1. Empieza con lo que tienes",
+  "fr": "1. Partez de ce que vous avez",
+  "hi": "1. जो है, उसी से शुरू करो",
+  "it": "1. Parti da ciò che hai",
+  "ja": "1. 手元にあるものから始める",
+  "pt": "1. Comece com o que tem",
+  "zh": "1. 从你手上的东西开始"
+ },
+ "2. Stack small steps": {
+  "de": "2. Kleine Schritte stapeln",
+  "es": "2. Suma pasos pequeños",
+  "fr": "2. Enchaînez de petites étapes",
+  "hi": "2. छोटे-छोटे कदम जोड़ो",
+  "it": "2. Metti in fila piccoli passi",
+  "ja": "2. 小さなステップを重ねる",
+  "pt": "2. Junte pequenos passos",
+  "zh": "2. 叠加小步骤"
+ },
+ "3. Choose how it ends": {
+  "de": "3. Wähle, wie es endet",
+  "es": "3. Elige cómo termina",
+  "fr": "3. Choisissez la fin",
+  "hi": "3. चुनो कि अंत कैसे हो",
+  "it": "3. Scegli come finisce",
+  "ja": "3. 終わり方を選ぶ",
+  "pt": "3. Escolha como termina",
+  "zh": "3. 选择结束方式"
+ },
+ "A photo, a scan, a PDF, a video, a recording, a link, some text, something you say, or a contact.": {
+  "de": "Ein Foto, ein Scan, ein PDF, ein Video, eine Aufnahme, ein Link, etwas Text, etwas Gesagtes oder ein Kontakt.",
+  "es": "Una foto, un escaneo, un PDF, un vídeo, una grabación, un enlace, un texto, algo que digas o un contacto.",
+  "fr": "Une photo, un scan, un PDF, une vidéo, un enregistrement, un lien, du texte, ce que vous dites ou un contact.",
+  "hi": "एक फ़ोटो, स्कैन, PDF, वीडियो, रिकॉर्डिंग, लिंक, कुछ टेक्स्ट, कुछ बोला हुआ, या एक संपर्क।",
+  "it": "Una foto, una scansione, un PDF, un video, una registrazione, un link, del testo, qualcosa che dici o un contatto.",
+  "ja": "写真、スキャン、PDF、動画、録音、リンク、テキスト、話した言葉、連絡先。",
+  "pt": "Uma foto, uma digitalização, um PDF, um vídeo, uma gravação, uma ligação, texto, algo que diga ou um contacto.",
+  "zh": "一张照片、扫描件、PDF、视频、录音、链接、一段文字、你说的话或一个联系人。"
+ },
+ "Hide private details, shrink it, read it, translate it, sign it. The basic steps are free; the rest unlock with Tenzy Pro. You only see steps that fit, and that your phone can run.": {
+  "de": "Private Details verbergen, verkleinern, lesen, übersetzen, unterschreiben. Die Grundschritte sind kostenlos, der Rest kommt mit Tenzy Pro. Du siehst nur Schritte, die passen und die dein Handy kann.",
+  "es": "Oculta datos privados, redúcelo, léelo, tradúcelo, fírmalo. Los pasos básicos son gratis; el resto se desbloquea con Tenzy Pro. Solo ves los pasos que encajan y que tu teléfono puede hacer.",
+  "fr": "Masquez les infos privées, réduisez, lisez, traduisez, signez. Les étapes de base sont gratuites ; le reste se débloque avec Tenzy Pro. Vous ne voyez que les étapes adaptées, que votre téléphone sait faire.",
+  "hi": "निजी जानकारी छिपाओ, छोटा करो, पढ़ो, अनुवाद करो, साइन करो। बुनियादी कदम मुफ़्त हैं; बाकी Tenzy Pro से खुलते हैं। तुम्हें सिर्फ़ वही कदम दिखते हैं जो फ़िट हों और तुम्हारा फ़ोन चला सके।",
+  "it": "Nascondi i dati privati, riducilo, leggilo, traducilo, firmalo. I passi di base sono gratis; il resto si sblocca con Tenzy Pro. Vedi solo i passi adatti, che il tuo telefono sa fare.",
+  "ja": "個人情報を隠す、縮小、読み取り、翻訳、署名。基本ステップは無料、その他は Tenzy Pro で使えます。合うステップと、お使いのスマホで動くものだけが表示されます。",
+  "pt": "Ocultar dados privados, reduzir, ler, traduzir, assinar. Os passos básicos são gratuitos; o resto desbloqueia com o Tenzy Pro. Só vê os passos que encaixam e que o telemóvel consegue fazer.",
+  "zh": "隐藏隐私信息、压缩、识读、翻译、签名。基础步骤免费,其余用 Tenzy Pro 解锁。你只会看到合适且手机能运行的步骤。"
+ },
+ "Share it, open an email ready to send, add a row to a sheet. Add a reminder and it comes back on schedule.": {
+  "de": "Teilen, eine fertige E-Mail öffnen, eine Zeile in eine Tabelle schreiben. Mit Erinnerung kommt es pünktlich wieder.",
+  "es": "Compártelo, abre un correo listo para enviar, añade una fila a una hoja. Añade un recordatorio y vuelve a su hora.",
+  "fr": "Partagez, ouvrez un e-mail prêt à envoyer, ajoutez une ligne à un tableau. Ajoutez un rappel et il revient à l'heure.",
+  "hi": "शेयर करो, भेजने को तैयार ईमेल खोलो, शीट में पंक्ति जोड़ो। रिमाइंडर लगाओ और यह समय पर वापस आएगा।",
+  "it": "Condividilo, apri un'email pronta da inviare, aggiungi una riga a un foglio. Aggiungi un promemoria e torna puntuale.",
+  "ja": "共有、送信できるメールを開く、表に行を追加。リマインダーを付ければ予定どおりに戻ってきます。",
+  "pt": "Partilhe, abra um e-mail pronto a enviar, adicione uma linha a uma folha. Adicione um lembrete e volta a horas.",
+  "zh": "分享、打开可直接发送的邮件、在表格里加一行。加个提醒,它会按时回来。"
  }
 }

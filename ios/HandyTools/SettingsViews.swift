@@ -138,6 +138,7 @@ struct SettingsView: View {
     @State private var showPrivacy = false
     @State private var showAbout = false
     @State private var showDiagnostics = false
+    @State private var showGuide = false
     @State private var devTaps = 0
     @AppStorage("tenzy.devUnlocked") private var devUnlocked = false
     private var version: String { Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0" }
@@ -262,6 +263,7 @@ struct SettingsView: View {
                         SettingsRow(icon: "lock", title: "Privacy", sub: "What stays on your phone (everything)") { showPrivacy = true }
                     }
                     Section(L("Help")) {
+                        SettingsRow(icon: "book", title: "How Tenzy works", sub: "Build a tool that does the whole job, in three steps") { showGuide = true }
                         SettingsRow(icon: "envelope", title: "Send feedback", sub: SUPPORT_EMAIL) {
                             UIApplication.shared.open(URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20iOS%20\(version)")!)
                         }
@@ -296,6 +298,20 @@ struct SettingsView: View {
         .sheet(isPresented: $showSetup) { SetupView(onDone: { showSetup = false }).sheetCloseButton { showSetup = false } }
         .sheet(isPresented: $showPrivacy) { PrivacyView().sheetCloseButton { showPrivacy = false } }
         .sheet(isPresented: $showAbout) { AboutView().sheetCloseButton { showAbout = false } }
+        .sheet(isPresented: $showGuide) {
+            NavigationStack {
+                ScrollView {
+                    BuilderIntroCard(onShow: {
+                        showGuide = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { NotificationCenter.default.post(name: .openTool, object: "builderdemo") }
+                    }, onDone: { showGuide = false })
+                    .padding(HandySpacing.gutter)
+                }
+                .background(HandyColor.bg)
+                .navigationTitle(L("How Tenzy works")).navigationBarTitleDisplayMode(.inline)
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { showGuide = false } } }
+            }
+        }
         .sheet(isPresented: $showDiagnostics) { DiagnosticsView().sheetCloseButton { showDiagnostics = false } }
     }
 

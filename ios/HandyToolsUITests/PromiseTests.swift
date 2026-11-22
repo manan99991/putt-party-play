@@ -12,12 +12,36 @@ final class PromiseTests: XCTestCase {
         return app
     }
 
+    /// "The home page fits with no scrolling, and every tool — the flashlight too — is there" (user, Nov 22).
+    func testHomeFitsOneScreenAndShelvesOpenTools() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "home", "-uitest"]
+        app.launch()
+        let mine = app.buttons["home-mytools"]
+        XCTAssertTrue(mine.waitForExistence(timeout: 20), "no My tools on Home")
+        XCTAssertTrue(mine.isHittable, "Home doesn't fit: My tools is below the fold")
+        for id in ["have-photo", "have-paste", "shelf-camera", "shelf-phone", "have-reminders"] {
+            XCTAssertTrue(app.descendants(matching: .any)[id].firstMatch.isHittable, "\(id) isn't on screen without scrolling")
+        }
+        XCTAssertFalse(app.buttons["Guide"].exists, "Guide is still on Home (it lives in Settings now)")
+        app.buttons["shelf-phone"].tap()
+        let light = app.buttons["shelf-tool-light"]
+        XCTAssertTrue(light.waitForExistence(timeout: 5), "Flashlight & phone shelf has no Flashlight")
+        light.tap()
+        sleep(2)
+        XCTAssertFalse(light.exists, "tapping Flashlight didn't open it")
+        XCTAssertEqual(app.state, .runningForeground)
+    }
+
     /// "Every built tool closes instead of running" (user, Nov 22): My stuff › My tools › Run must stay on the run
     /// screen, and Done must land back on My tools — not close everything.
     func testRunFromMyToolsStaysOpenAndComesBack() {
         let app = XCUIApplication()
-        app.launchArguments = ["-route", "mytools", "-uitest", "-seedtool"]
+        app.launchArguments = ["-route", "mystuff", "-uitest", "-seedtool"]
         app.launch()
+        let entry = app.descendants(matching: .any)["mine-mytools"].firstMatch
+        XCTAssertTrue(entry.waitForExistence(timeout: 20), "My stuff has no My tools")
+        entry.tap()
         let name = "Shrink a photo to under 2 MB"
         let run = app.buttons["Run \(name)"]
         XCTAssertTrue(run.waitForExistence(timeout: 20), "My tools didn't list the saved tool")

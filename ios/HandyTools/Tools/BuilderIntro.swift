@@ -77,8 +77,8 @@ struct BuilderIntroCard: View {
                     Image(systemName: p.icon).font(.system(size: 16, weight: .semibold)).foregroundStyle(HandyColor.accent)
                         .frame(width: 34, height: 34).background(HandyColor.accentSoft, in: Circle()).accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(p.title).font(HandyFont.bodyStrong)
-                        Text(p.body).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                        Text(L(p.title)).font(HandyFont.bodyStrong)
+                        Text(L(p.body)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
                     }
                 }
             }

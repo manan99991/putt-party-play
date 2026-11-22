@@ -53,6 +53,7 @@ struct PDFConvertView: View {
         }
         .onChange(of: mode) { _, _ in clearResults() }
         .onAppear { if Launch.sample, pages.isEmpty { loadSample() } }
+        .handoff("pdfconvert") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 
     // MARK: - Pick

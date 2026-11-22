@@ -52,6 +52,7 @@ struct PDFAnnotateView: View {
             if case .success(let url) = res { load(url) }
         }
         .onAppear { if Launch.sample, pages.isEmpty { loadSample() } }
+        .handoff("pdfannotate") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 
     // MARK: - Pick

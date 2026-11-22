@@ -67,6 +67,7 @@ struct FileViewerView: View {
         }
         .sheet(isPresented: $showPicker) { DocumentPicker { url in handlePicked(url) } }
         .onAppear { if let u = FileOpenInbox.shared.take() { handlePicked(u) } }
+        .handoff("fileviewer") { p in if let u = ToolHandoff.fileURL(p) { handlePicked(u) } }
         .onReceive(NotificationCenter.default.publisher(for: .openTool)) { n in
             if (n.object as? String) == "fileviewer", let u = FileOpenInbox.shared.take() { handlePicked(u) }
         }

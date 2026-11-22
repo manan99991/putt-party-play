@@ -440,6 +440,8 @@ fileprivate func loadWithinTimeout<T: Sendable>(_ seconds: Double, _ work: @esca
 struct BuilderView: View {
     /// Opened from My stuff › My tools: show the saved tools straight away, and go back when they're closed.
     var openMine = false
+    /// Opened from Settings › How Tenzy works › Show me one: a ready-made tool in the editor, steps working on a sample.
+    var showDemo = false
     @Environment(\.dismiss) private var dismissPage
     @State private var mine: [Chain] = ChainStore.load()
     @State private var editing: Chain?
@@ -494,28 +496,27 @@ struct BuilderView: View {
     /// "close this page" and comes back once that thing is done.
     @State private var backToMine = false
     @State private var showTemplates = false
-    @State private var showGuide = false
+    @State private var shelf: HomeShelves.Shelf?
 
     var body: some View {
         // Scrolls when the page is taller than the phone (small phones, big text), so nothing ever sits under the
         // clock or behind another button.
         ScrollView {
         VStack(alignment: .leading, spacing: HandySpacing.s16) {
-            // Problem first: the person says what they need; Tenzy finds the tool, or builds one.
-            Text(L("What do you need?")).font(HandyFont.display).frame(maxWidth: .infinity, alignment: .leading)
+            // Problem first: the person says what they need; Tenzy finds the tool, or builds one. Kept short so
+            // the whole front door — say it, start with what you have, or open any tool — fits one screen.
+            Text(L("What do you need?")).font(.system(size: 28, weight: .bold)).frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityAddTraits(.isHeader)
-            Text(L("Say it in your own words, or start with what you have. Tenzy finds the way — or builds it."))
-                .font(.system(size: 14)).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
             hero
             if let b = builtIn { builtInCard(b) }
-            anythingTiles
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-            if ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, builtIn == nil { quickStarts }
+            anythingTiles
+            shelfTiles
             HStack(spacing: HandySpacing.s8) {
-                // Your saved tools and reminders live in My stuff; from here, every tool and the ready-made ones.
+                // Every tool in one list, the ready-made ones, and the ones you built.
                 footBtn("All tools") { NotificationCenter.default.post(name: .openTool, object: "explore", userInfo: ["from": "builder"]) }
                 footBtn("Templates") { showTemplates = true }
-                footBtn("Guide") { showGuide = true }
+                footBtn("My tools") { showMine = true }.accessibilityIdentifier("home-mytools")
             }
         }
         .frame(maxWidth: .infinity, alignment: .top)
@@ -533,6 +534,14 @@ struct BuilderView: View {
             }
         }
         .sheet(item: $running, onDismiss: returnToMine) { c in NavigationStack { ChainRunView(chain: c) } }
+        .sheet(item: $shelf) { sh in
+            ShelfSheet(shelf: sh) { id in
+                shelf = nil
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    NotificationCenter.default.post(name: .openTool, object: id, userInfo: ["from": "builder"])
+                }
+            }
+        }
         .sheet(item: $given) { g in
             if GuideView.skip.contains("all") { Text(verbatim: "What do you want to do?") }   // UI tests only: is it the guide or the sheet?
             else { GuideView(given: g, mine: mine) }
@@ -750,20 +759,6 @@ struct BuilderView: View {
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { showTemplates = false } } }
             }
         }
-        .sheet(isPresented: $showGuide) {
-            NavigationStack {
-                ScrollView {
-                    BuilderIntroCard(onShow: {
-                        if var demo = ChainTemplates.all.first(where: { $0.id == BuilderIntro.demoID }) {
-                            demo.id = UUID().uuidString; demo.name += " (mine)"; editing = demo; showGuide = false
-                        }
-                    }, onDone: { showGuide = false })
-                    .padding(HandySpacing.gutter)
-                }
-                .navigationTitle(L("How building works")).navigationBarTitleDisplayMode(.inline)
-                .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { showGuide = false } } }
-            }
-        }
         .onChange(of: renaming?.id) { _, now in if now == nil { returnToMine() } }   // Rename from My tools → back to the list
         .onChange(of: running?.id) { _, now in if now == nil { sheets = RunningList.all(); history = RunHistory.all() } }   // a run may have added to a sheet, and to the recent results
         .onChange(of: given?.id) { _, now in if now == nil { history = RunHistory.all() } }
@@ -776,6 +771,9 @@ struct BuilderView: View {
             if Launch.uitest, Launch.args.contains("-seedtool"), mine.isEmpty,
                let t = ChainTemplates.all.first(where: { $0.id == "photo-under-2mb" }) { mine = [t]; persist() }
             if openMine { showMine = true }
+            if showDemo, var demo = ChainTemplates.all.first(where: { $0.id == BuilderIntro.demoID }) {
+                demo.id = UUID().uuidString; demo.name += " (mine)"; editing = demo
+            }
             // Store screenshots: a video handed over, so "What to do with it" shows the video page.
             if Launch.screenshots, Launch.route == "guidevideo" {
                 Task { if let u = await SampleAssets.movie() { given = Given(payload: .video(u), label: "A video") } }
@@ -892,23 +890,18 @@ struct BuilderView: View {
                 Button { pickTypes = [.item]; pickingAny = true } label: { objTile("File") }.accessibilityIdentifier("have-file")
                 // The system paste control reads the clipboard with no "Allow Paste?" prompt and can never be
                 // refused — a custom button reading UIPasteboard asked every time, and dead-ended on "Don't Allow".
-                VStack(spacing: 6) {
+                // Laid out like its neighbours: the paste mark where their icon is, then the word, then what's copied.
+                VStack(spacing: 4) {
                     PasteButton(supportedContentTypes: [.image, .url, .plainText]) { providers in pasteHome(providers) }
-                        .labelStyle(.titleAndIcon)
+                        .labelStyle(.iconOnly)
                         .buttonBorderShape(.roundedRectangle(radius: 10))
                         .tint(Color(hex: 0x14B8A6))
                         .accessibilityIdentifier("have-paste")
+                    Text(L("Paste")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                     Text(L(clipKind.map { "\($0) copied" } ?? "Nothing copied")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
                 }
-                .frame(maxWidth: .infinity, minHeight: 76)
+                .frame(maxWidth: .infinity, minHeight: 68)
                 .cardStyle(padding: HandySpacing.s8)
-            }
-            // Things that don't start from a file: your contacts, a worry or decision to think through, and the
-            // reminders Tenzy can handle for you (they live in My stuff).
-            HStack(spacing: HandySpacing.s8) {
-                Button { NotificationCenter.default.post(name: .openTool, object: "contacts", userInfo: ["from": "builder"]) } label: { objTile("Contacts") }.accessibilityIdentifier("have-contacts")
-                Button { NotificationCenter.default.post(name: .openTool, object: "thinking", userInfo: ["from": "builder"]) } label: { objTile("Think") }.accessibilityIdentifier("have-think")
-                Button { NotificationCenter.default.post(name: .showMyStuff, object: nil) } label: { objTile("Reminders") }.accessibilityIdentifier("have-reminders")
             }
             if gettingReady {
                 HStack(spacing: HandySpacing.s8) {
@@ -963,8 +956,51 @@ struct BuilderView: View {
             Text(L(title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
             if let sub { Text(L(sub)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1) }
         }
-        .frame(maxWidth: .infinity, minHeight: 76)
+        .frame(maxWidth: .infinity, minHeight: 68)
         .cardStyle(padding: HandySpacing.s8)
+    }
+
+    /// "…or open a tool": everything that doesn't start from a file — the flashlight, the camera helpers, your day,
+    /// your contacts — four across, two rows, so every tool Tenzy has is one or two taps from Home (HomeShelves).
+    private var shelfTiles: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text(L("…or open a tool")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            let cols = Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 4)
+            LazyVGrid(columns: cols, spacing: HandySpacing.s8) {
+                ForEach(HomeShelves.all) { sh in
+                    Button { shelf = sh } label: { smallTile(sh.title, icon: sh.icon, hex: sh.hex) }
+                        .buttonStyle(.plain).accessibilityIdentifier("shelf-\(sh.id)")
+                }
+                Button { NotificationCenter.default.post(name: .openTool, object: "contacts", userInfo: ["from": "builder"]) } label: {
+                    smallTile("Contacts", icon: "person.2.fill", hex: 0x0EA5E9)
+                }.buttonStyle(.plain).accessibilityIdentifier("have-contacts")
+                Button { NotificationCenter.default.post(name: .openTool, object: "thinking", userInfo: ["from": "builder"]) } label: {
+                    smallTile("Think", icon: "lightbulb.max.fill", hex: 0x22C55E)
+                }.buttonStyle(.plain).accessibilityIdentifier("have-think")
+                Button { NotificationCenter.default.post(name: .showMyStuff, object: nil) } label: {
+                    smallTile("Reminders", icon: "bell.badge.fill", hex: 0xF97316)
+                }.buttonStyle(.plain).accessibilityIdentifier("have-reminders")
+            }
+        }
+    }
+
+    private func smallTile(_ title: String, icon: String, hex: UInt32) -> some View {
+        let tint = Color(hex: hex)
+        return VStack(spacing: 5) {
+            Image(systemName: icon).font(.system(size: 16, weight: .semibold)).foregroundStyle(.white)
+                .frame(width: 32, height: 32)
+                .background(LinearGradient(colors: [tint, tint.opacity(0.75)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                            in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                .accessibilityHidden(true)
+            Text(L(title)).font(.system(size: 12, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
+                .multilineTextAlignment(.center).lineLimit(2).minimumScaleFactor(0.85)
+        }
+        .frame(maxWidth: .infinity, minHeight: 74)
+        .padding(.horizontal, 4).padding(.vertical, 6)
+        .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+        .contentShape(Rectangle())
     }
 
     /// While the person types: the tools and ready-made tools that already do it, one tap away — before anything is built.
@@ -1005,33 +1041,6 @@ struct BuilderView: View {
         .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
-    }
-
-    /// The jobs people come for most, one tap each — so an empty page still shows where to start.
-    @ViewBuilder private var quickStarts: some View {
-        let picks: [(String, String)] = [("fitit", "Shrink to send"), ("scan", "Scan to PDF"), ("pdfsign", "Sign a PDF"),
-                                         ("identify", "What is this?"), ("menu", "Read a menu")]
-        let shown = picks.compactMap { p in TOOLS.first { $0.id == p.0 }.map { ($0, p.1) } }
-        if !shown.isEmpty {
-            VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                SectionLabel(text: "Quick starts", icon: "sparkles")
-                HandyFlow(spacing: 8, lineSpacing: 8) {
-                    ForEach(shown, id: \.0.id) { pick in
-                        let t = pick.0, label = pick.1
-                        Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
-                            HStack(spacing: 6) {
-                                ToolIconBadge(id: t.id, symbol: t.icon, size: 22)
-                                Text(L(label)).font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary)
-                            }
-                            .padding(.leading, 5).padding(.trailing, 12).padding(.vertical, 5)
-                            .background(HandyColor.surface, in: Capsule())
-                            .overlay(Capsule().stroke(HandyColor.border, lineWidth: 1))
-                        }
-                        .buttonStyle(.plain).accessibilityIdentifier("quick-\(t.id)")
-                    }
-                }
-            }
-        }
     }
 
     /// Ready-made and saved tools whose name or description matches what was typed (synonyms count).
@@ -1087,15 +1096,35 @@ struct BuilderView: View {
         }
     }
 
+    /// One line to say it in, with the build button beside it — the same power in a third of the height.
     private var hero: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Label(L("Tell Tenzy"), systemImage: "sparkles").font(HandyFont.cardTitle)
-            TextField(L("e.g. shrink a photo under 1 MB and hide where it was taken"), text: $ask, axis: .vertical)
-                .lineLimit(2...6).textFieldStyle(.handy).accessibilityIdentifier("describe-field")
+        let empty = ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack(alignment: .bottom, spacing: HandySpacing.s8) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Image(systemName: "sparkles").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.accent).accessibilityHidden(true)
+                    TextField(L("Say it — e.g. shrink a photo under 1 MB"), text: $ask, axis: .vertical)
+                        .lineLimit(1...5).font(HandyFont.body).accessibilityIdentifier("describe-field")
+                }
+                .padding(.horizontal, 14).padding(.vertical, 13)
+                .frame(minHeight: 50)
+                .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(empty ? HandyColor.border : HandyColor.accent, lineWidth: 1))
+                Button { buildFromAsk() } label: {
+                    Group {
+                        if planning { ProgressView().tint(HandyColor.onAccent) }
+                        else { Image(systemName: "wand.and.stars").font(.system(size: 19, weight: .semibold)) }
+                    }
+                    .foregroundStyle(HandyColor.onAccent)
+                    .frame(width: 50, height: 50)
+                    .background(HandyColor.accent.opacity(empty ? 0.45 : 1), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                }
+                .buttonStyle(.plain)
+                .disabled(planning || empty)
+                .accessibilityLabel(L("Build it for me")).accessibilityIdentifier("describe-build")
+            }
             readyNow
-            Button { buildFromAsk() } label: { Label(planning ? "Working…" : "Build it for me", systemImage: "wand.and.stars").frame(maxWidth: .infinity) }
-                .primaryButton().disabled(planning || ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-        }.cardStyle()
+        }
     }
 
     /// Open the editor on a planned tool, with an honest note of what it covers and what it can't do.

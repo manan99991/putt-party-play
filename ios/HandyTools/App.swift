@@ -549,6 +549,7 @@ struct HomeView: View {
                 case "setup": SetupView(onDone: { path.removeLast() }).toolbarRole(.editor)
                 case "privacy": PrivacyView().toolbarRole(.editor)
                 case "builder": BuilderView().toolbarRole(.editor)
+                case "builderdemo": BuilderView(showDemo: true).toolbarRole(.editor)   // Settings › How Tenzy works › Show me one
                 case "mytools": BuilderView(openMine: true).toolbarRole(.editor)   // My stuff › My tools
                 case "explore": ExploreView().toolbarRole(.editor)                 // Home › All tools
                 case "automations": AutomationsView().toolbarRole(.editor)   // the personal-assistant hub
