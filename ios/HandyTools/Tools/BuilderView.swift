@@ -505,7 +505,7 @@ struct BuilderView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s16) {
             // Problem first: the person says what they need; Tenzy finds the tool, or builds one. Kept short so
             // the whole front door — say it, start with what you have, or open any tool — fits one screen.
-            Text(L("What do you need?")).font(.system(size: 28, weight: .bold)).frame(maxWidth: .infinity, alignment: .leading)
+            Text(L("Let's make today easier")).font(.system(size: 28, weight: .bold)).lineLimit(1).minimumScaleFactor(0.8).frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityAddTraits(.isHeader)
             hero
             if let b = builtIn { builtInCard(b) }
