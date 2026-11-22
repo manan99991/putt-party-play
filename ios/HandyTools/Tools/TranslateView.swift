@@ -9,6 +9,9 @@ import AVFoundation
 struct TranslateView: View {
     @EnvironmentObject var store: StoreManager
     private enum Mode: Int, CaseIterable { case text, talk, photo, travel; var title: String { ["Text", "Talk", "Photo", "Travel"][rawValue] } }
+    /// Shown full screen in big type for the other person, the right way up for them.
+    @State private var big: BigText?
+    struct BigText: Identifiable { let id = UUID(); let text: String }
     @State private var mode: Mode = .text
     @AppStorage("translate.from") private var fromCode = "en"
     @AppStorage("translate.to") private var toCode = "es"
@@ -67,6 +70,7 @@ struct TranslateView: View {
             }
         }
         .onChange(of: speech.running) { was, now in if was, !now, let side = talkingSide { heard(side) } }
+        .fullScreenCover(item: $big) { b in BigTextView(text: b.text) }
         .onChange(of: photoItem) { _, item in
             guard let item else { return }
             busy = true
@@ -115,6 +119,8 @@ struct TranslateView: View {
             HStack(spacing: HandySpacing.s8) {
                 Button { Copier.copy(s); ClipStore.add(s) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
                 Button { say(s, lang: toCode) } label: { Label(L("Speak"), systemImage: "speaker.wave.2") }.compactButton()
+                Button { big = BigText(text: s) } label: { Label(L("Show"), systemImage: "arrow.up.left.and.arrow.down.right") }.compactButton()
+                    .accessibilityHint(L("Shows it big for the other person to read"))
                 ShareLink(item: s) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
                 Spacer()
             }
@@ -132,6 +138,7 @@ struct TranslateView: View {
                         VStack(alignment: e.side == 0 ? .leading : .trailing, spacing: 2) {
                             Text(e.heard).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                             Text(e.said).font(.system(size: 20, weight: .medium))
+                            Button { big = BigText(text: e.said) } label: { Label(L("Show"), systemImage: "arrow.up.left.and.arrow.down.right").font(HandyFont.micro) }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
                         }
                         .padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: e.side == 0 ? .leading : .trailing)
                         .background(e.side == 0 ? HandyColor.surface : HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -274,5 +281,35 @@ private struct LangList: View {
             .navigationTitle(L("Language")).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } } }
         }
+    }
+}
+
+
+/// A translation shown full screen in big type, for the person across the table; one tap turns it upside down so it
+/// faces them without passing the phone over.
+struct BigTextView: View {
+    let text: String
+    @State private var flipped = true
+    @Environment(\.dismiss) private var dismiss
+    var body: some View {
+        ZStack {
+            Color.white.ignoresSafeArea()
+            Text(text)
+                .font(.system(size: 64, weight: .bold)).minimumScaleFactor(0.2).foregroundStyle(.black)
+                .multilineTextAlignment(.center).padding(24)
+                .rotationEffect(.degrees(flipped ? 180 : 0))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .accessibilityIdentifier("translate-big")
+            VStack {
+                Spacer()
+                HStack(spacing: 12) {
+                    Button { withAnimation { flipped.toggle() } } label: { Label(L(flipped ? "Face me" : "Face them"), systemImage: "arrow.triangle.2.circlepath") }
+                        .buttonStyle(.borderedProminent).tint(.black)
+                    Button(L("Done")) { dismiss() }.buttonStyle(.bordered).tint(.black)
+                }.padding(.bottom, 24)
+            }
+        }
+        .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
+        .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
     }
 }

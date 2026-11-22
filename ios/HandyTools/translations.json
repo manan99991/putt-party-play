@@ -38338,5 +38338,145 @@
   "ja": "小さいコピーは写真に入っています。ここからは元ファイルに届かないので、写真アプリで削除してください。新しいものの直前にあります。",
   "pt": "A cópia pequena está nas Fotografias. O Tenzy não consegue chegar ao original daqui — apague-o nas Fotografias; está mesmo antes da nova.",
   "zh": "小副本已在“照片”中。Tenzy 无法从这里访问原件——请在“照片”中删除它，它就在新副本之前。"
+ },
+ "Everything you need at the border or the check-in desk, here even with no signal.": {
+  "de": "Alles, was du an der Grenze oder am Check-in brauchst – auch ohne Empfang.",
+  "es": "Todo lo que necesitas en la frontera o en el mostrador de facturación, incluso sin cobertura.",
+  "fr": "Tout ce qu'il faut à la frontière ou à l'enregistrement, même sans réseau.",
+  "hi": "बॉर्डर या चेक-इन डेस्क पर जो कुछ चाहिए, बिना सिग्नल के भी यहीं।",
+  "it": "Tutto ciò che serve alla frontiera o al check-in, anche senza segnale.",
+  "ja": "国境やチェックインで必要なものがすべて、電波がなくてもここに。",
+  "pt": "Tudo o que precisa na fronteira ou no check-in, mesmo sem rede.",
+  "zh": "过境或值机时需要的一切，没有信号也能在这里查看。"
+ },
+ "Shows it big for the other person to read": {
+  "de": "Zeigt es groß, damit die andere Person es lesen kann",
+  "es": "Lo muestra en grande para que la otra persona lo lea",
+  "fr": "L'affiche en grand pour que l'autre personne le lise",
+  "hi": "दूसरे व्यक्ति के पढ़ने के लिए इसे बड़ा दिखाता है",
+  "it": "Lo mostra in grande perché l'altra persona lo legga",
+  "ja": "相手が読めるよう大きく表示します",
+  "pt": "Mostra em grande para a outra pessoa ler",
+  "zh": "放大显示，方便对方阅读"
+ },
+ "Travel pack": {
+  "de": "Reisemappe",
+  "es": "Kit de viaje",
+  "fr": "Kit de voyage",
+  "hi": "यात्रा पैक",
+  "it": "Kit di viaggio",
+  "ja": "トラベルパック",
+  "pt": "Kit de viagem",
+  "zh": "旅行资料包"
+ },
+ "Valid until": {
+  "de": "Gültig bis",
+  "es": "Válido hasta",
+  "fr": "Valable jusqu'au",
+  "hi": "तक मान्य",
+  "it": "Valido fino al",
+  "ja": "有効期限",
+  "pt": "Válido até",
+  "zh": "有效期至"
+ },
+ "Face me": {
+  "de": "Zu mir drehen",
+  "es": "Hacia mí",
+  "fr": "Vers moi",
+  "hi": "मेरी ओर",
+  "it": "Verso di me",
+  "ja": "自分向き",
+  "pt": "Virado para mim",
+  "zh": "朝向我"
+ },
+ "Face them": {
+  "de": "Zu ihnen drehen",
+  "es": "Hacia ellos",
+  "fr": "Vers eux",
+  "hi": "उनकी ओर",
+  "it": "Verso di loro",
+  "ja": "相手向き",
+  "pt": "Virado para eles",
+  "zh": "朝向对方"
+ },
+ "Show": {
+  "de": "Zeigen",
+  "es": "Mostrar",
+  "fr": "Afficher",
+  "hi": "दिखाएँ",
+  "it": "Mostra",
+  "ja": "表示",
+  "pt": "Mostrar",
+  "zh": "显示"
+ },
+ "Add to the travel pack": {
+  "de": "Zur Reisemappe hinzufügen",
+  "es": "Añadir al kit de viaje",
+  "fr": "Ajouter au kit de voyage",
+  "hi": "यात्रा पैक में जोड़ें",
+  "it": "Aggiungi al kit di viaggio",
+  "ja": "トラベルパックに追加",
+  "pt": "Adicionar ao kit de viagem",
+  "zh": "加入旅行资料包"
+ },
+ "Take out of the travel pack": {
+  "de": "Aus der Reisemappe nehmen",
+  "es": "Quitar del kit de viaje",
+  "fr": "Retirer du kit de voyage",
+  "hi": "यात्रा पैक से हटाएँ",
+  "it": "Togli dal kit di viaggio",
+  "ja": "トラベルパックから外す",
+  "pt": "Retirar do kit de viagem",
+  "zh": "从旅行资料包移除"
+ },
+ "Expired — renew it before you travel.": {
+  "de": "Abgelaufen – vor der Reise erneuern.",
+  "es": "Caducado: renuévalo antes de viajar.",
+  "fr": "Expiré — renouvelez-le avant de partir.",
+  "hi": "समाप्त हो गया — यात्रा से पहले नवीनीकरण करें।",
+  "it": "Scaduto: rinnovalo prima di partire.",
+  "ja": "期限切れです。出発前に更新してください。",
+  "pt": "Expirado — renove antes de viajar.",
+  "zh": "已过期——出行前请更新。"
+ },
+ "Under 6 months left — many countries won't let you in. Renew it first.": {
+  "de": "Weniger als 6 Monate gültig – viele Länder lassen dich so nicht einreisen. Erst erneuern.",
+  "es": "Le quedan menos de 6 meses: muchos países no te dejarán entrar. Renuévalo antes.",
+  "fr": "Moins de 6 mois de validité — beaucoup de pays refusent l'entrée. Renouvelez-le d'abord.",
+  "hi": "6 महीने से कम बचे हैं — कई देश प्रवेश नहीं देते। पहले नवीनीकरण करें।",
+  "it": "Meno di 6 mesi di validità: molti paesi non ti fanno entrare. Rinnovalo prima.",
+  "ja": "残り6か月未満です。多くの国で入国できません。先に更新してください。",
+  "pt": "Menos de 6 meses de validade — muitos países não deixam entrar. Renove primeiro.",
+  "zh": "剩余有效期不足 6 个月——许多国家会拒绝入境。请先更新。"
+ },
+ "Runs out within a month.": {
+  "de": "Läuft innerhalb eines Monats ab.",
+  "es": "Caduca en menos de un mes.",
+  "fr": "Expire dans moins d'un mois.",
+  "hi": "एक महीने के भीतर समाप्त हो रहा है।",
+  "it": "Scade entro un mese.",
+  "ja": "1か月以内に期限が切れます。",
+  "pt": "Expira dentro de um mês.",
+  "zh": "一个月内到期。"
+ },
+ "Recipe": {
+  "de": "Rezept",
+  "es": "Receta",
+  "fr": "Recette",
+  "hi": "रेसिपी",
+  "it": "Ricetta",
+  "ja": "レシピ",
+  "pt": "Receita",
+  "zh": "食谱"
+ },
+ "Ticket": {
+  "de": "Ticket",
+  "es": "Entrada",
+  "fr": "Billet",
+  "hi": "टिकट",
+  "it": "Biglietto",
+  "ja": "チケット",
+  "pt": "Bilhete",
+  "zh": "票"
  }
 }

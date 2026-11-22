@@ -5,6 +5,8 @@ import Photos
 /// have them — Wi-Fi passwords, codes, confirmations, the parking spot — and then can't find. This
 /// reads them once, on device, and lets you just ask. Private, offline, free.
 struct MemoryView: View {
+    static let collections = ["Wi-Fi password", "Confirmation number", "Where I parked", "Flight", "Tracking number", "Receipt", "Address", "Gift card code", "Recipe", "Ticket"]
+    @State private var counts: [String: Int] = [:]
     @EnvironmentObject var store: StoreManager
     @StateObject private var index = MemoryIndex()
     @State private var query = ""
@@ -30,12 +32,20 @@ struct MemoryView: View {
                 searchBar
                 if query.isEmpty, !index.entries.isEmpty {
                     // The things people actually screenshot and then can't find — one tap to ask.
+                    // Collections that fill themselves: each one shows how many of your pictures it holds.
                     HandyFlow(spacing: HandySpacing.s8) {
-                        ForEach(["Wi-Fi password", "Confirmation number", "Where I parked", "Flight", "Tracking number", "Receipt", "Address", "Gift card code"], id: \.self) { q in
-                            HChip(text: L(q), selected: false) { query = L(q); runSearch() }
+                        ForEach(Self.collections, id: \.self) { q in
+                            HChip(text: counts[q].map { $0 > 0 ? "\(L(q)) · \($0 >= 99 ? "99+" : String($0))" : L(q) } ?? L(q), selected: false) { query = L(q); runSearch() }
                         }
                     }
                     .accessibilityIdentifier("memory-suggestions")
+                    .task(id: index.entries.count) {
+                        let entries = index.entries
+                        let asks = Self.collections.map { ($0, L($0)) }
+                        counts = await Task.detached(priority: .utility) {
+                            Dictionary(uniqueKeysWithValues: asks.map { ($0.0, MemoryEngine.search($0.1, in: entries, top: 99).count) })
+                        }.value
+                    }
                 }
                 if index.indexing { indexingCard }
                 else if index.entries.isEmpty { emptyIndexCard }

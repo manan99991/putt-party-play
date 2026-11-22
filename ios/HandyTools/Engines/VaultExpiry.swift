@@ -65,3 +65,28 @@ enum VaultExpiry {
         }
     }
 }
+
+
+/// The travel pack: the papers you need at a border or a check-in desk, together and offline, with what to fix
+/// before you go. Passports, visas, permits, travel insurance, licences, tickets and bookings are in it by what they
+/// are; anything else can be added, and anything taken out.
+enum TravelPack {
+    static let words = ["passport", "visa", "permit", "insurance", "licence", "license", "boarding", "ticket", "booking",
+                        "itinerary", "reservation", "vaccin", "yellow fever", "id card", "identity"]
+
+    static func belongs(title: String, expires: Date?, chosen: Bool?) -> Bool {
+        if let chosen { return chosen }
+        let t = title.lowercased()
+        return words.contains { t.contains($0) }
+    }
+
+    /// What needs doing before a trip, plain: a passport under 6 months, anything already expired or running out soon.
+    static func warning(title: String, expires: Date?, now: Date = Date()) -> String? {
+        guard let exp = expires else { return nil }
+        if exp < now { return "Expired — renew it before you travel." }
+        let months = Calendar.current.dateComponents([.month], from: now, to: exp).month ?? 0
+        if title.lowercased().contains("passport"), months < 6 { return "Under 6 months left — many countries won't let you in. Renew it first." }
+        if months < 1 { return "Runs out within a month." }
+        return nil
+    }
+}

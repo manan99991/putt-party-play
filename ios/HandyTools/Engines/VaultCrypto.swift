@@ -110,6 +110,7 @@ enum VaultCrypto {
         var date = Date()
         var bytes: Int = 0
         var expires: Date? = nil       // for a passport, licence, visa, card — read from its photo
+        var travel: Bool? = nil        // in the travel pack: true = added, false = taken out, nil = decided by what it is
     }
 
     @Published private(set) var items: [Item] = []
@@ -162,6 +163,12 @@ enum VaultCrypto {
         if let name, ["Photo", "Camera photo"].contains(items[i].title) || items[i].title.hasPrefix("IMG_") { items[i].title = name }
         persist()
         VaultExpiry.schedule(id: id, expires: expires)
+    }
+
+    func setTravel(_ id: UUID, _ on: Bool) {
+        guard let i = items.firstIndex(where: { $0.id == id }) else { return }
+        items[i].travel = on
+        persist()
     }
 
     func data(for item: Item) -> Data? {

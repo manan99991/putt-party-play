@@ -90,6 +90,7 @@ struct VaultView: View {
             Toggle(isOn: $moveOriginal) { Text(L("When adding from Photos, delete the original")).font(HandyFont.caption) }.tint(HandyColor.accent)
 
             if let kind = adding { composer(kind) }
+            travelPack
 
             if vault.items.isEmpty { EmptyState(icon: "lock.open.fill", line: "Nothing here yet", sub: "Add a note, a secret, a photo straight from the camera, or a document.") }
             ForEach(vault.items) { item in row(item) }
@@ -101,6 +102,36 @@ struct VaultView: View {
             }
             Text(L("Camera photos never touch the camera roll or iCloud. Copied secrets leave the clipboard after 30 s. Deleting shreds the file. Lost passcode = lost vault — there is no recovery, by design."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        }
+    }
+
+    /// Passport, visa, insurance, tickets and bookings together at the top — offline, with what to fix before you go.
+    @ViewBuilder private var travelPack: some View {
+        let pack = vault.items.filter { TravelPack.belongs(title: $0.title, expires: $0.expires, chosen: $0.travel) }
+        if !pack.isEmpty {
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                Label(L("Travel pack"), systemImage: "airplane.departure").font(HandyFont.bodyStrong)
+                Text(L("Everything you need at the border or the check-in desk, here even with no signal.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                ForEach(pack) { item in
+                    Button { open(item) } label: {
+                        HStack(spacing: HandySpacing.s8) {
+                            Image(systemName: item.kind == .photo ? "person.text.rectangle" : "doc.text").foregroundStyle(HandyColor.accent).frame(width: 22)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(item.title).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary).lineLimit(1)
+                                if let w = TravelPack.warning(title: item.title, expires: item.expires) {
+                                    Text(L(w)).font(HandyFont.micro).foregroundStyle(HandyColor.danger).fixedSize(horizontal: false, vertical: true)
+                                } else if let exp = item.expires {
+                                    Text("\(L("Valid until")) \(exp.formatted(date: .abbreviated, time: .omitted))").font(HandyFont.micro).foregroundStyle(HandyColor.success)
+                                }
+                            }
+                            Spacer(minLength: 0)
+                            Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        }.contentShape(Rectangle())
+                    }.buttonStyle(.plain)
+                }
+            }
+            .cardStyle(padding: HandySpacing.s12)
+            .accessibilityIdentifier("vault-travel")
         }
     }
 
@@ -164,6 +195,10 @@ struct VaultView: View {
                 if item.kind == .photo || item.kind == .document {
                     if item.expires != nil { Button { vault.setExpiry(item.id, expires: nil) } label: { Label(L("No expiry reminders"), systemImage: "bell.slash") } }
                     else if item.kind == .photo, let d = vault.data(for: item) { Button { readExpiry(item.id, d) } label: { Label(L("Read the expiry date"), systemImage: "calendar.badge.clock") } }
+                }
+                if item.kind == .photo || item.kind == .document {
+                    let inPack = TravelPack.belongs(title: item.title, expires: item.expires, chosen: item.travel)
+                    Button { vault.setTravel(item.id, !inPack) } label: { Label(L(inPack ? "Take out of the travel pack" : "Add to the travel pack"), systemImage: "airplane") }
                 }
                 Button(role: .destructive) { vault.delete(item); thumbs[item.id] = nil; HandyHaptics.light() } label: { Label(L("Delete (shred)"), systemImage: "trash") }
             } label: { Image(systemName: "ellipsis.circle").accessibilityLabel(L("More")).font(.system(size: 20)).foregroundStyle(HandyColor.textSecondary) }
