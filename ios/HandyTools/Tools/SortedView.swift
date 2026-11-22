@@ -70,6 +70,11 @@ struct SortedView: View {
         }
     }
 
+    private func readPhoto(_ img: UIImage) {
+        busy = true; parsed = nil
+        Task { let t = await AIEngine.recognizeText(img); await MainActor.run { busy = false; text = t } }
+    }
+
     private var inputCard: some View {
         VStack(spacing: HandySpacing.s8) {
             TextEditor(text: $text).frame(minHeight: 110).padding(HandySpacing.s8).scrollContentBackground(.hidden)
@@ -78,7 +83,7 @@ struct SortedView: View {
                 .overlay(alignment: .topLeading) { if text.isEmpty { Text(L("Snap or paste the document…")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
             HandyFlow(spacing: HandySpacing.s8) {
                 Button { showScanner = true } label: { Label(L("Scan pages"), systemImage: "doc.viewfinder") }.compactButton()
-                PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Photo"), systemImage: "photo") }.compactButton()
+                SmartPhotoButton(kind: .document, picked: { if let i = $0.first { readPhoto(i) } }) { Label(L("Photo"), systemImage: "photo") }.compactButton()
                 PasteTextButton { text = $0; parsed = nil }
                 if hasText { Button(L("Clear")) { text = ""; parsed = nil; draft = nil; errorText = nil } .textButton() }
             }

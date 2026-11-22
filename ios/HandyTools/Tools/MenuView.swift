@@ -83,7 +83,7 @@ struct MenuView: View {
             Image(systemName: "menucard").font(.system(size: 44)).foregroundStyle(HandyColor.accent)
             Text(L("Take or choose a photo of the menu. Hold it flat and fill the frame."))
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-            PhotosPicker(selection: $pick, matching: .images) {
+            SmartPhotoButton(kind: .menu, picked: { if let i = $0.first { read(i) } }) {
                 Label(L("Choose menu photo"), systemImage: "photo").frame(maxWidth: .infinity)
             }.primaryButton()
             if reading { ToolProgressBar(label: "Reading the menu…", showsTime: false) }
@@ -143,7 +143,7 @@ struct MenuView: View {
             }
             Text(L("Read from the menu's own words — dishes can hide ingredients. With an allergy, always ask the staff."))
                 .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
-            PhotosPicker(selection: $pick, matching: .images) { Label(L("Another menu"), systemImage: "photo") }
+            SmartPhotoButton(kind: .menu, picked: { if let i = $0.first { read(i) } }) { Label(L("Another menu"), systemImage: "photo") }
                 .textButton().font(HandyFont.caption).frame(maxWidth: .infinity)
         }
         .onChange(of: rateText) { _, v in

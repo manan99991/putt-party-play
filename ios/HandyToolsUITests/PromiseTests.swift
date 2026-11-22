@@ -323,4 +323,19 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS[c] 'a hard day'")).firstMatch.waitForExistence(timeout: 15),
                       "the day wasn't kept after finishing without a message")
     }
+
+    /// "Click on photos… show only the photos related to warranty and receipts… they can still access all the photos"
+    /// (Manan, 22 Nov): Warranty's From Photos opens the smart picker on receipts, with All photos always there.
+    func testWarrantyPhotosOpenOnReceiptsWithAllPhotosAtHand() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "warranty", "-uitest"]
+        app.launch()
+        let from = app.buttons["warranty-from-photos"]
+        XCTAssertTrue(from.waitForExistence(timeout: 15), "Warranty has no From Photos")
+        from.tap()
+        XCTAssertTrue(app.staticTexts["Receipts and warranty cards"].waitForExistence(timeout: 10), "the picker didn't open on receipts")
+        XCTAssertTrue(app.buttons["finder-all"].exists, "no way to reach all photos")
+        app.buttons["Cancel"].firstMatch.tap()
+        XCTAssertTrue(from.waitForExistence(timeout: 10), "Cancel didn't close the picker")
+    }
 }

@@ -67,7 +67,7 @@ struct QRWifiView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Button { showScanner = true } label: { Label(L("Open scanner"), systemImage: "qrcode.viewfinder").frame(maxWidth: .infinity) }
                 .primaryButton().disabled(!DataScannerViewController.isSupported)
-            PhotosPicker(selection: $photoItem, matching: .images) {
+            SmartPhotoButton(kind: .code, picked: { if let i = $0.first { scanImage(i) } }) {
                 Label(L("Scan a code in a photo or screenshot"), systemImage: "photo").frame(maxWidth: .infinity)
             }.secondaryButton()
             if let scanError { Text(scanError).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
@@ -76,6 +76,12 @@ struct QRWifiView: View {
     }
 
     private func resultCard(for s: String) -> some View { QRResultCard(raw: s) }
+
+    private func scanImage(_ img: UIImage) {
+        scanError = nil
+        if let found = CaptureView.barcode(in: img) { scanned = found; HandyHaptics.success() }
+        else { scanError = "No QR or barcode found in that image." }
+    }
 
     private func scanPhoto(_ item: PhotosPickerItem?) {
         guard let item else { return }

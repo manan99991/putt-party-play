@@ -163,3 +163,17 @@ private struct AssetThumb: View {
             .task(id: asset.localIdentifier) { img = await PhotoFinder.image(asset, side: 300) }
     }
 }
+
+/// A tool's "choose a photo" button that opens the smart picker for what the tool needs — receipts for Warranty,
+/// cards for Business Cards, menus for Menu… — with All photos a tap away.
+struct SmartPhotoButton<Content: View>: View {
+    let kind: PhotoFinder.Kind
+    var max = 1
+    let picked: ([UIImage]) -> Void
+    @ViewBuilder let label: () -> Content
+    @State private var open = false
+    var body: some View {
+        Button { open = true } label: { label() }
+            .sheet(isPresented: $open) { SmartPhotoPicker(kind: kind, maxCount: max, done: picked) }
+    }
+}

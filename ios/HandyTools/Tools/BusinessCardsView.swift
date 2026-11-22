@@ -54,7 +54,7 @@ struct BusinessCardsView: View {
         VStack(spacing: HandySpacing.s8) {
             Button { scanning = true } label: { Label(L("Scan cards with the camera"), systemImage: "camera.viewfinder").frame(maxWidth: .infinity) }
                 .primaryButton().disabled(!VNDocumentCameraViewController.isSupported)
-            PhotosPicker(selection: $picks, maxSelectionCount: 30, matching: .images) {
+            SmartPhotoButton(kind: .card, max: 30, picked: { read($0) }) {
                 Label(L("Choose card photos"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
             }.secondaryButton()
             Toggle(L("My cards have a back side — pair them front, back"), isOn: $twoSided).font(HandyFont.caption).tint(HandyColor.accent)

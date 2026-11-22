@@ -27,7 +27,7 @@ struct DataGrabView: View {
                 "Fix the type if it guessed wrong, then copy or export as CSV.",
             ])
             if text.isEmpty {
-                PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Choose a photo or screenshot"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity) }.secondaryButton()
+                SmartPhotoButton(kind: findKind, picked: { if let i = $0.first { usePhoto(i) } }) { Label(L("Choose a photo or screenshot"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity) }.secondaryButton()
                 PasteTextButton(wide: true) { text = $0; run() }
                 if busy { ToolProgressBar(label: "Reading…") }
             } else {
@@ -50,16 +50,25 @@ struct DataGrabView: View {
                     }
                 }
                 DisclosureGroup("Text that was read") { Text(text).font(HandyFont.caption).textSelection(.enabled).foregroundStyle(HandyColor.textSecondary) }.font(HandyFont.caption)
-                HStack { PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Different photo"), systemImage: "photo") }.textButton(); Button { text = ""; aiText = "" } label: { Label(L("Start over"), systemImage: "arrow.counterclockwise") }.textButton(); Spacer() }
+                HStack { SmartPhotoButton(kind: findKind, picked: { if let i = $0.first { usePhoto(i) } }) { Label(L("Different photo"), systemImage: "photo") }.textButton(); Button { text = ""; aiText = "" } label: { Label(L("Start over"), systemImage: "arrow.counterclockwise") }.textButton(); Spacer() }
             }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         }
         .onAppear { if Launch.sample, text.isEmpty { Task { let s = await AIEngine.recognizeText(SampleAssets.receipt()); await MainActor.run { if !s.isEmpty { text = s; run() } } } } }
         .onChange(of: photoItem) { _, item in
             guard let item else { return }
+            Task { if let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) { await MainActor.run { usePhoto(img) } } }
+        }
+    }
+
+    /// What the smart picker should show first for the kind being grabbed.
+    private var findKind: PhotoFinder.Kind {
+        switch kind { case .receipt: return .receipt; case .card: return .card; default: return .document }
+    }
+
+    private func usePhoto(_ img: UIImage) {
             busy = true; errorText = nil
             Task {
-                guard let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) else { await MainActor.run { busy = false }; return }
                 await MainActor.run { photo = img }
                 // Row by row, so prices stay with their items and a card's two columns stay apart.
                 let box = UncheckedImage(img)
@@ -71,7 +80,6 @@ struct DataGrabView: View {
                 }.value
                 await MainActor.run { busy = false; if s.isEmpty { errorText = "No text found in that image." } else { text = s; run() } }
             }
-        }
     }
 
     private func run(detect: Bool = true) {
