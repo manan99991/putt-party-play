@@ -1,8 +1,4 @@
 == ipad (results)
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1214.761 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (19.055 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (25.988 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1259.804 (1259.833) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1259.804 (1259.839) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1259.804 (1259.851) seconds
-** TEST SUCCEEDED **
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/ResultViewer.swift:129:16: error: invalid redeclaration of 'ZoomableImage'
+    |                `- error: invalid redeclaration of 'ZoomableImage'
+** TEST FAILED **
