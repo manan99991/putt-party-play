@@ -2,13 +2,17 @@ import SwiftUI
 import LocalAuthentication
 import UserNotifications
 
-/// My Day — one round button. Top half red (bad day), bottom half green (good day): one tap and done.
-/// The little microphone in the middle is split the same way — tap its red or green half to say why.
+/// My Day — one round button. Top half red (bad day), bottom half green (good day). One tap saves the day, then a
+/// short follow-up asks if you'd like to say why in a few words — record a short message, or "That's all" and done
+/// (Manan, 22 Nov: "accept good or bad and then remind them if they want to record a short message… optional, or
+/// else we save the information for the day and be done with it"). The day is saved on the first tap either way.
 /// Review opens a colour calendar of every day you've logged, behind your diary PIN (or Face ID).
 struct DayDiaryView: View {
     @StateObject private var rec = QuickRecorder()
     @State private var today: DayDiary.Day?
     @State private var recordingMood: DayDiary.Mood?
+    /// Just saved: the optional "want to say why?" step is showing.
+    @State private var askWhy: DayDiary.Mood?
     @State private var started: Date?
     @State private var saving = false
     @State private var thanks: String?
@@ -25,10 +29,10 @@ struct DayDiaryView: View {
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
-        ToolPage(title: "My Day", subtitle: "How did today go? One tap — or tell it why. Private, locked, only on your phone.", working: saving) {
+        ToolPage(title: "My Day", subtitle: "How did today go? One tap saves it — then say why if you like. Private, locked, only on your phone.", working: saving) {
             VStack(spacing: HandySpacing.s16) {
                 Text(Date().formatted(date: .complete, time: .omitted)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                if let r = recordingMood { recordingCard(r) } else { moodButton }
+                if let r = recordingMood { recordingCard(r) } else if let m = askWhy { followUp(m) } else { moodButton }
                 if let t = thanks {
                     Label { Text(L(t)).font(HandyFont.body) } icon: { Image(systemName: "checkmark.circle.fill").foregroundStyle(Color.green) }
                         .cardStyle(padding: HandySpacing.s12).transition(.opacity)
@@ -83,23 +87,33 @@ struct DayDiaryView: View {
             .overlay(Circle().stroke(.white.opacity(0.9), lineWidth: 4))
             .shadow(color: .black.opacity(0.25), radius: 14, y: 6)
 
-            // The microphone, split the same way.
-            VStack(spacing: 0) {
-                Button { startRecording(.bad) } label: {
-                    Color(hex: 0xB82E33).overlay(Image(systemName: "mic.fill").font(.system(size: 17, weight: .bold)).foregroundStyle(.white).offset(y: 9))
-                }.buttonStyle(.plain).accessibilityLabel(L("Bad day — record why"))
-                Button { startRecording(.good) } label: {
-                    Color(hex: 0x17824A).overlay(Image(systemName: "waveform").font(.system(size: 15, weight: .bold)).foregroundStyle(.white).offset(y: -9))
-                }.buttonStyle(.plain).accessibilityLabel(L("Good day — record why"))
-            }
-            .frame(width: 76, height: 76).clipShape(Circle())
-            .overlay(Circle().stroke(.white, lineWidth: 3))
         }
         .padding(.vertical, HandySpacing.s8)
-        .overlay(alignment: .bottom) {
-            Text(L("Tap the middle to say why")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).offset(y: 18)
+    }
+
+    /// Step two, optional: the day is already saved — say why in a few words, or finish here.
+    private func followUp(_ mood: DayDiary.Mood) -> some View {
+        let good = mood == .good
+        return VStack(spacing: HandySpacing.s12) {
+            Circle().fill(good ? Color(hex: 0x2FBF71) : Color(hex: 0xFF5A5F)).frame(width: 84, height: 84)
+                .overlay(Image(systemName: "checkmark").font(.system(size: 34, weight: .bold)).foregroundStyle(.white))
+            Text(good ? L("Saved — a good day") : L("Saved — a hard day")).font(HandyFont.title)
+            Text(good ? L("Want to say what made it good? A few words is plenty — it's optional.")
+                      : L("Want to say what made it hard? Getting it out can help — it's optional."))
+                .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+            Button { askWhy = nil; startRecording(mood) } label: {
+                Label(L("Record a short message"), systemImage: "mic.fill").frame(maxWidth: .infinity)
+            }.primaryButton().accessibilityIdentifier("day-record-why")
+            Button { withAnimation { askWhy = nil }; done(mood) } label: {
+                Text(L("That's all — I'm done")).frame(maxWidth: .infinity)
+            }.secondaryButton().accessibilityIdentifier("day-done")
+            Button(good ? L("Oops — it was a hard day") : L("Oops — it was a good day")) { quick(good ? .bad : .good) }
+                .textButton().font(HandyFont.caption).accessibilityIdentifier("day-flip")
         }
-        .padding(.bottom, 18)
+        .frame(maxWidth: .infinity)
+        .cardStyle(padding: HandySpacing.s16)
+        .transition(.opacity.combined(with: .scale(scale: 0.96)))
     }
 
     private func recordingCard(_ mood: DayDiary.Mood) -> some View {
@@ -111,7 +125,8 @@ struct DayDiaryView: View {
             Text(mood == .good ? L("Recording — what made it good?") : L("Recording — what made it hard?")).font(HandyFont.bodyStrong)
             Text(String(format: "%d:%02d", secs / 60, secs % 60)).font(.system(size: 28, weight: .semibold, design: .rounded)).monospacedDigit()
             Button { stopAndSave(mood) } label: { Label(L("Stop and save"), systemImage: "stop.circle.fill").frame(maxWidth: .infinity) }.primaryButton()
-            Button(L("Cancel")) { _ = rec.stop(); recordingMood = nil }.textButton()
+            // The day is already saved; cancelling just drops the recording.
+            Button(L("Cancel")) { _ = rec.stop(); recordingMood = nil; done(mood) }.textButton()
         }
         .cardStyle(padding: HandySpacing.s16)
     }
@@ -151,9 +166,12 @@ struct DayDiaryView: View {
 
     // MARK: - Saving
 
+    /// Saves the day straight away (so leaving now loses nothing), then offers the optional "say why".
     private func quick(_ mood: DayDiary.Mood) {
         guard let d = DiaryStore.shared.log(mood) else { errorText = "Couldn't save — try again."; return }
-        today = d; done(mood)
+        today = d; errorText = nil; thanks = nil
+        HandyHaptics.success()
+        withAnimation { askWhy = mood }
     }
 
     private func startRecording(_ mood: DayDiary.Mood) {
@@ -166,7 +184,7 @@ struct DayDiaryView: View {
     }
 
     private func stopAndSave(_ mood: DayDiary.Mood) {
-        guard let file = rec.stop() else { recordingMood = nil; quick(mood); return }
+        guard let file = rec.stop() else { recordingMood = nil; done(mood); return }
         let secs = Date().timeIntervalSince(started ?? Date())
         recordingMood = nil; saving = true
         Task {

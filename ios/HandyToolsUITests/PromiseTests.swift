@@ -302,4 +302,25 @@ final class PromiseTests: XCTestCase {
         done.tap()
         XCTAssertTrue(done.waitForNonExistence(timeout: 10), "Done didn't close the full-size view")
     }
+
+    /// My Day as a flow (Manan, 22 Nov): tap Good → the day is saved → "Record a short message" or "That's all".
+    /// Finishing without a message still keeps the day; "Oops" flips it.
+    func testMyDaySavesFirstThenOffersAShortMessage() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "daydiary", "-uitest"]
+        app.launch()
+        let good = app.buttons["Good day"]
+        XCTAssertTrue(good.waitForExistence(timeout: 15), "My Day has no Good day button")
+        good.tap()
+        XCTAssertTrue(app.buttons["day-record-why"].waitForExistence(timeout: 5), "after Good day there's no offer to record why")
+        XCTAssertTrue(app.buttons["day-done"].exists, "no way to finish without recording")
+        XCTAssertTrue(app.staticTexts["Saved — a good day"].exists, "it doesn't say the day was saved")
+        app.buttons["day-flip"].tap()
+        XCTAssertTrue(app.staticTexts["Saved — a hard day"].waitForExistence(timeout: 5), "Oops didn't switch it to a hard day")
+        app.buttons["day-done"].tap()
+        XCTAssertTrue(app.buttons["Good day"].waitForExistence(timeout: 5), "That's all didn't finish the flow")
+        app.terminate(); app.launch()   // come back later: the day is still there
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS[c] 'a hard day'")).firstMatch.waitForExistence(timeout: 15),
+                      "the day wasn't kept after finishing without a message")
+    }
 }

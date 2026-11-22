@@ -41118,5 +41118,95 @@
   "ja": "フルサイズで見る",
   "pt": "Ver em tamanho real",
   "zh": "查看原尺寸"
+ },
+ "Saved — a good day": {
+  "de": "Gespeichert – ein guter Tag",
+  "es": "Guardado: un buen día",
+  "fr": "Enregistré : une bonne journée",
+  "hi": "सेव हो गया — अच्छा दिन",
+  "it": "Salvato: una bella giornata",
+  "ja": "保存しました — いい日",
+  "pt": "Guardado — um bom dia",
+  "zh": "已保存——美好的一天"
+ },
+ "Saved — a hard day": {
+  "de": "Gespeichert – ein schwerer Tag",
+  "es": "Guardado: un día difícil",
+  "fr": "Enregistré : une journée difficile",
+  "hi": "सेव हो गया — मुश्किल दिन",
+  "it": "Salvato: una giornata difficile",
+  "ja": "保存しました — つらい日",
+  "pt": "Guardado — um dia difícil",
+  "zh": "已保存——艰难的一天"
+ },
+ "Want to say what made it good? A few words is plenty — it's optional.": {
+  "de": "Magst du sagen, was ihn gut gemacht hat? Ein paar Worte reichen – ganz freiwillig.",
+  "es": "¿Quieres contar qué lo hizo bueno? Unas palabras bastan; es opcional.",
+  "fr": "Envie de dire ce qui l'a rendue bonne ? Quelques mots suffisent — c'est facultatif.",
+  "hi": "बताना चाहेंगे कि दिन अच्छा क्यों रहा? कुछ शब्द काफ़ी हैं — यह ज़रूरी नहीं।",
+  "it": "Vuoi dire cosa l'ha resa bella? Bastano poche parole: è facoltativo.",
+  "ja": "何が良かったか話してみますか？ひとことで十分です（任意）。",
+  "pt": "Queres dizer o que o tornou bom? Umas palavras chegam — é opcional.",
+  "zh": "想说说今天为什么不错吗？几句话就够了——可选。"
+ },
+ "Want to say what made it hard? Getting it out can help — it's optional.": {
+  "de": "Magst du sagen, was ihn schwer gemacht hat? Es auszusprechen kann helfen – ganz freiwillig.",
+  "es": "¿Quieres contar qué lo hizo difícil? Sacarlo puede ayudar; es opcional.",
+  "fr": "Envie de dire ce qui l'a rendue difficile ? En parler peut aider — c'est facultatif.",
+  "hi": "बताना चाहेंगे कि दिन मुश्किल क्यों रहा? कह देने से मदद मिल सकती है — यह ज़रूरी नहीं।",
+  "it": "Vuoi dire cosa l'ha resa difficile? Tirarlo fuori può aiutare: è facoltativo.",
+  "ja": "何がつらかったか話してみますか？口に出すと楽になることも（任意）。",
+  "pt": "Queres dizer o que o tornou difícil? Desabafar pode ajudar — é opcional.",
+  "zh": "想说说今天为什么难熬吗？说出来可能会好受些——可选。"
+ },
+ "Record a short message": {
+  "de": "Kurze Nachricht aufnehmen",
+  "es": "Grabar un mensaje corto",
+  "fr": "Enregistrer un court message",
+  "hi": "छोटा संदेश रिकॉर्ड करें",
+  "it": "Registra un breve messaggio",
+  "ja": "短いメッセージを録音",
+  "pt": "Gravar uma mensagem curta",
+  "zh": "录一段简短的话"
+ },
+ "That's all — I'm done": {
+  "de": "Das war's – fertig",
+  "es": "Eso es todo, ya está",
+  "fr": "C'est tout — terminé",
+  "hi": "बस इतना — हो गया",
+  "it": "È tutto, ho finito",
+  "ja": "これで終わり",
+  "pt": "É tudo — terminei",
+  "zh": "就这样，完成"
+ },
+ "Oops — it was a hard day": {
+  "de": "Hoppla – es war ein schwerer Tag",
+  "es": "Uy, fue un día difícil",
+  "fr": "Oups — c'était une journée difficile",
+  "hi": "अरे — दिन मुश्किल था",
+  "it": "Ops, è stata una giornata difficile",
+  "ja": "間違えた — つらい日だった",
+  "pt": "Ups — foi um dia difícil",
+  "zh": "哎呀——其实是艰难的一天"
+ },
+ "Oops — it was a good day": {
+  "de": "Hoppla – es war ein guter Tag",
+  "es": "Uy, fue un buen día",
+  "fr": "Oups — c'était une bonne journée",
+  "hi": "अरे — दिन अच्छा था",
+  "it": "Ops, è stata una bella giornata",
+  "ja": "間違えた — いい日だった",
+  "pt": "Ups — foi um bom dia",
+  "zh": "哎呀——其实是美好的一天"
+ },
+ "How did today go? One tap saves it — then say why if you like. Private, locked, only on your phone.": {
+  "de": "Wie war dein Tag? Ein Tipp speichert ihn – dann sag gern, warum. Privat, gesperrt, nur auf deinem Handy.",
+  "es": "¿Qué tal hoy? Un toque lo guarda; luego cuenta por qué si quieres. Privado, bloqueado, solo en tu teléfono.",
+  "fr": "Comment s'est passée la journée ? Un toucher l'enregistre — puis dites pourquoi si vous voulez. Privé, verrouillé, sur votre téléphone uniquement.",
+  "hi": "आज का दिन कैसा रहा? एक टैप में सेव — फिर चाहें तो वजह बताएँ। निजी, लॉक, सिर्फ़ आपके फ़ोन पर।",
+  "it": "Com'è andata oggi? Un tocco la salva, poi racconta il perché se vuoi. Privato, bloccato, solo sul telefono.",
+  "ja": "今日はどうでしたか？タップで保存、理由はお好みで。非公開・ロック付き・この端末だけ。",
+  "pt": "Como correu hoje? Um toque guarda — depois diz porquê, se quiseres. Privado, bloqueado, só no teu telemóvel.",
+  "zh": "今天过得怎么样？轻点一下即可保存——想说原因再说。私密、加锁，只存在你的手机上。"
  }
 }
