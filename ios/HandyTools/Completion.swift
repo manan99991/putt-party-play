@@ -12,12 +12,16 @@ import UserNotifications
 /// foreground service for true background completion.
 enum Completion {
     private static let primed = Primed()
-    final class Primed: @unchecked Sendable { var done = false; let lock = NSLock() }
+    final class Primed: @unchecked Sendable { var done = false; var hold = false; let lock = NSLock() }
+
+    /// While true (Home's 10-second demo on a sample), a job never asks for notifications: a first-time viewer
+    /// should see the result, not a permission prompt. The ask comes with their first real job instead.
+    static func holdPrompt(_ on: Bool) { primed.lock.lock(); primed.hold = on; primed.lock.unlock() }
 
     /// Ask for notification permission once, lazily, so a backgrounded result can reach the user.
     static func prime() {
-        primed.lock.lock(); let already = primed.done; primed.done = true; primed.lock.unlock()
-        if already { return }
+        primed.lock.lock(); let skip = primed.done || primed.hold; if !primed.hold { primed.done = true }; primed.lock.unlock()
+        if skip { return }
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
     }
 

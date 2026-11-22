@@ -538,7 +538,10 @@ struct BuilderView: View {
             }
         }
         .sheet(item: $running, onDismiss: returnToMine) { c in NavigationStack { ChainRunView(chain: c) } }
-        .sheet(item: $demoRun) { c in NavigationStack { ChainRunView(chain: c, initial: .image(SampleAssets.photo()), demo: true) } }
+        .sheet(item: $demoRun, onDismiss: { Completion.holdPrompt(false) }) { c in
+            NavigationStack { ChainRunView(chain: c, initial: .image(SampleAssets.photo()), demo: true) }
+                .onAppear { Completion.holdPrompt(true) }
+        }
         .sheet(item: $shelf) { sh in
             ShelfSheet(shelf: sh) { id in
                 shelf = nil
@@ -1004,7 +1007,7 @@ struct BuilderView: View {
             Spacer(minLength: 0)
             Button(L("Try it")) {
                 triedFirst = true
-                if let c = ChainTemplates.all.first(where: { $0.id == BuilderIntro.demoID }) { demoRun = c }
+                if let c = ChainTemplates.all.first(where: { $0.id == BuilderIntro.demoID }) { Completion.holdPrompt(true); demoRun = c }
             }
             .font(HandyFont.bodyStrong).foregroundStyle(HandyColor.onAccent)
             .padding(.horizontal, 14).frame(minHeight: 40)

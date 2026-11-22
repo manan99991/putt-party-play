@@ -11,27 +11,26 @@ final class PreviewTourTests: XCTestCase {
         app.launch()
         let any = app.descendants(matching: .any)
         XCTAssertTrue(any["first-try"].waitForExistence(timeout: 30))
-        mark("TOUR-START")                         // the workflow cuts the video from here
-        sleep(3)                                   // the headline and Home, still
+        mark("TOUR-START")                         // the workflow cuts the video from here (30 s in all)
+        sleep(2)                                   // the headline and Home, still
 
         any["first-try"].tap()                     // a real job on a sample: hidden, stripped, shrunk
-        sleep(7)
+        sleep(5)
         if app.buttons["Done"].firstMatch.exists { app.buttons["Done"].firstMatch.tap() }
-        sleep(1)
 
         let field = app.textFields["describe-field"].exists ? app.textFields["describe-field"] : app.textViews["describe-field"]
         field.tap()
-        field.typeText("Shrink a photo under 1 MB, remove the location and email it")
+        field.typeText("Shrink a photo, remove location, email it")
         sleep(1)
         any["describe-build"].tap()                // Tenzy builds it, step by step
-        sleep(6)
+        sleep(4)
         backHome(app)
 
         let shelf = any["shelf-phone"]
         if shelf.waitForExistence(timeout: 5) { shelf.tap() }   // every tool, one tap away
-        sleep(3)
+        sleep(2)
         if any["shelf-tool-light"].exists { any["shelf-tool-light"].tap() }
-        sleep(3)
+        sleep(2)
         mark("TOUR-END")
     }
 
