@@ -148,9 +148,6 @@ enum PageFlatten {
         return ok ? buf : nil
     }
 
-    /// The light document panel in a dark-framed screenshot, in pixels: the tallest band of mostly-light rows,
-    /// with dark rows just above and below it, covering 25–90 % of the picture. Nil for ordinary photos, light-mode
-    /// screenshots (light all the way down) and pages that already fill the frame.
     /// The picture is already just the page (a scan, a screenshot of a document, a flat image): every edge is one
     /// light paper colour, so there is no outline to find — and hunting for one can only cut words off.
     static func edgesAreBlankPaper(_ cg: CGImage) -> Bool {
@@ -167,6 +164,9 @@ enum PageFlatten {
         return mean > 0.75 && (lum.map { abs($0 - mean) }.max() ?? 1) < 0.08
     }
 
+    /// The light document panel in a dark-framed screenshot, in pixels: the tallest band of mostly-light rows,
+    /// with dark rows just above and below it, covering 25–90 % of the picture. Nil for ordinary photos, light-mode
+    /// screenshots (light all the way down) and pages that already fill the frame.
     static func lightPanel(_ cg: CGImage) -> CGRect? {
         let W = cg.width, H = cg.height
         guard W > 50, H > 50 else { return nil }
@@ -224,12 +224,34 @@ enum PageFlatten {
     static func corners(_ cg: CGImage) -> Quad? {
         let req = VNDetectDocumentSegmentationRequest()
         try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
-        if let d = req.results?.first, d.confidence > 0.6, let q = accept(d.topLeft, d.topRight, d.bottomLeft, d.bottomRight) { return q }
+        if let d = req.results?.first, d.confidence > 0.6, let q = accept(d.topLeft, d.topRight, d.bottomLeft, d.bottomRight), onThePage(q, cg) { return q }
         let rect = VNDetectRectanglesRequest()
         rect.minimumAspectRatio = 0.3; rect.maximumAspectRatio = 1; rect.minimumSize = 0.4; rect.quadratureTolerance = 25; rect.maximumObservations = 1
         try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([rect])
-        if let r = rect.results?.first, r.confidence > 0.7 { return accept(r.topLeft, r.topRight, r.bottomLeft, r.bottomRight) }
+        if let r = rect.results?.first, r.confidence > 0.7, let q = accept(r.topLeft, r.topRight, r.bottomLeft, r.bottomRight), onThePage(q, cg) { return q }
         return nil
+    }
+
+    /// The outline really hugs the page: just inside its corners it is about as light as the middle of the page. A loose
+    /// outline that takes in the desk around the page would keep the desk in the result, so it's refused.
+    static func onThePage(_ q: Quad, _ cg: CGImage) -> Bool {
+        let w = 200, h = max(8, Int(200 * CGFloat(cg.height) / CGFloat(max(1, cg.width))))
+        guard let px = rgba(cg, w, h) else { return true }
+        func lum(_ p: CGPoint) -> Double {   // Vision points: 0…1, origin at the bottom left
+            let x = min(w - 1, max(0, Int(p.x * CGFloat(w)))), y = min(h - 1, max(0, Int((1 - p.y) * CGFloat(h))))
+            let i = (y * w + x) * 4
+            return (0.299 * Double(px[i]) + 0.587 * Double(px[i + 1]) + 0.114 * Double(px[i + 2])) / 255
+        }
+        let corners = [q.topLeft, q.topRight, q.bottomLeft, q.bottomRight]
+        let c = CGPoint(x: corners.map(\.x).reduce(0, +) / 4, y: corners.map(\.y).reduce(0, +) / 4)
+        func toward(_ a: CGPoint, _ t: CGFloat) -> CGPoint { CGPoint(x: a.x + (c.x - a.x) * t, y: a.y + (c.y - a.y) * t) }
+        // The page's own brightness: the lightest third of a grid across its middle (text lines are darker).
+        var middle: [Double] = []
+        for a in corners { for t in stride(from: 0.3, through: 0.8, by: 0.1) { middle.append(lum(toward(a, CGFloat(t)))) } }
+        middle.sort(by: >)
+        let paper = middle.prefix(max(1, middle.count / 3)).reduce(0, +) / Double(max(1, middle.count / 3))
+        let insideCorners = corners.map { lum(toward($0, 0.06)) }
+        return insideCorners.filter { $0 >= paper * 0.6 }.count >= 3   // a thumb over one corner is fine
     }
 
     /// A real page: covers 25–97 % of the photo (all of it means it's already a clean page or a full-frame scan).
