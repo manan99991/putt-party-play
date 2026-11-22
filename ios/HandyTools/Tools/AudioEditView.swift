@@ -27,7 +27,7 @@ struct AudioEditView: View {
     private let outputFormats: [AudioConvert.Format] = [.m4a, .wav]
 
     var body: some View {
-        ToolPage(title: "Audio Editor",
+        ToolPage(title: "Trim & Fade",
                  subtitle: "Trim, fade, and cut dead air from a clip — on your phone.",
                  working: working) {
             VStack(spacing: HandySpacing.s16) {
@@ -44,7 +44,7 @@ struct AudioEditView: View {
             if case .success(let url) = res { load(url) }
         }
         .handoff("audioedit") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
-        .finishes(working, tool: "Audio Editor")
+        .finishes(working, tool: "Trim & Fade")
     }
 
     // MARK: - Pick

@@ -106,7 +106,7 @@ enum PDFSecure {
         enum Style: String, CaseIterable, Identifiable {
             case diagonal, tiled, footer
             var id: String { rawValue }
-            var title: String { self == .diagonal ? "Across the page" : (self == .tiled ? "Repeated" : "Along the bottom") }
+            var title: String { self == .diagonal ? "Diagonal" : (self == .tiled ? "Repeated" : "Bottom edge") }  // short: three fit a phone-width segmented control
         }
         var watermark = ""
         var style: Style = .diagonal

@@ -50,6 +50,8 @@ struct CelebrateView: View {
     @State private var typed = ""
     @State private var player = AVPlayer()
     @State private var poster: CGImage?
+    /// False until the preview's first frame is on screen — till then the still frame shows, never a black box.
+    @State private var rolling = false
     @State private var duration: Double = 4
     @State private var beats: [Double] = []
     @State private var thumbs: [String: UIImage] = [:]
@@ -83,6 +85,7 @@ struct CelebrateView: View {
         .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { n in
             if (n.object as? AVPlayerItem) == player.currentItem { player.seek(to: .zero); player.play() }
         }
+        .onReceive(player.publisher(for: \.timeControlStatus)) { if $0 == .playing { rolling = true } }
         .onDisappear { player.pause(); previewTask?.cancel(); thumbTask?.cancel() }
         .handoff("celebrate") { p in adopt(p) }
         .onAppear { if Launch.sample, source == nil { sample() } }
@@ -363,6 +366,9 @@ struct CelebrateView: View {
             ZStack {
                 Color.black
                 VideoPlayer(player: player).disabled(true)
+                if !rolling, let p = poster {
+                    Image(decorative: p, scale: 1).resizable().scaledToFit().allowsHitTesting(false)
+                }
                 if showWords, let img = Celebrate.captionImage(caption, frame: g.size) {
                     Image(uiImage: img)
                         .position(x: caption.center.x * g.size.width, y: caption.center.y * g.size.height)
@@ -486,7 +492,7 @@ struct CelebrateView: View {
         let frame = try? await gen.image(at: CMTime(seconds: min(1, secs / 3), preferredTimescale: 600)).image
         let spot = Celebrate.clearSpot(in: frame)
         await MainActor.run {
-            source = url; aspect = shape; resultURL = nil; poster = frame; duration = max(1, secs); thumbs = [:]; beats = []
+            source = url; aspect = shape; resultURL = nil; poster = frame; rolling = false; duration = max(1, secs); thumbs = [:]; beats = []
             caption.center = spot
             schedulePreview(); scheduleThumbs()
             if recipe.motion == "pulse" { loadBeats() }

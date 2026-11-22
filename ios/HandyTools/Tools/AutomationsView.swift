@@ -12,7 +12,7 @@ enum AutomationGroups {
     static func group(id: String, open: String? = nil) -> Group {
         let table: [(prefixes: [String], g: Group)] = [
             (["med-", "medfu-", "medrefill-"], Group(key: "med", title: "Medicines", icon: "pills.fill", tool: "medreminder")),
-            (["daily-brief"], Group(key: "brief", title: "Daily brief", icon: "sun.max.fill", tool: "brief")),
+            (["daily-brief"], Group(key: "brief", title: "Daily Brief", icon: "sun.max.fill", tool: "brief")),
             (["bday-"], Group(key: "bday", title: "Birthdays", icon: "gift.fill", tool: "contacts")),
             (["contacts-backup"], Group(key: "backup", title: "Contacts backup", icon: "person.crop.circle.badge.checkmark", tool: "contacts")),
             (["plan-", "arrive-", "untangle-"], Group(key: "plans", title: "Plans and arrivals", icon: "mappin.and.ellipse", tool: "untangle")),

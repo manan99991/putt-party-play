@@ -41028,5 +41028,35 @@
   "ja": "スマホを二人の間に平らに置きます。それぞれ自分側の半分を大きな文字で読み、自分のマイクをタップ。",
   "pt": "Deixe o celular deitado entre vocês: cada um lê sua metade, em letra grande, e toca no próprio microfone.",
   "zh": "把手机平放在你们中间：每人看自己那一半的大字，并点自己的麦克风。"
+ },
+ "Ask your photos anything": {
+  "de": "Frag deine Fotos etwas",
+  "es": "Pregunta a tus fotos",
+  "fr": "Demandez à vos photos",
+  "hi": "अपनी फ़ोटो से कुछ भी पूछें",
+  "it": "Chiedi alle tue foto",
+  "ja": "写真に何でも質問",
+  "pt": "Pergunta às tuas fotos",
+  "zh": "向照片随便提问"
+ },
+ "Diagonal": {
+  "de": "Diagonal",
+  "es": "Diagonal",
+  "fr": "En diagonale",
+  "hi": "तिरछा",
+  "it": "In diagonale",
+  "ja": "斜め",
+  "pt": "Diagonal",
+  "zh": "斜向"
+ },
+ "Bottom edge": {
+  "de": "Unten",
+  "es": "Abajo",
+  "fr": "En bas",
+  "hi": "नीचे",
+  "it": "In basso",
+  "ja": "下部",
+  "pt": "Em baixo",
+  "zh": "底部"
  }
 }

@@ -20,7 +20,7 @@ struct DailyBriefView: View {
     }
 
     var body: some View {
-        ToolPage(title: "Daily brief", subtitle: "One short note each morning with what matters today — set it once and it just comes.", working: false) {
+        ToolPage(title: "Daily Brief", subtitle: "One short note each morning with what matters today — set it once and it just comes.", working: false) {
             HowTo("brief", [
                 "Turn it on and pick a time — 7 AM is a good start.",
                 "Each morning you get one notification: medicines, bills and letters due, birthdays, a tidy-up nudge.",

@@ -91,7 +91,7 @@ struct MemoryView: View {
     private var searchBar: some View {
         HStack(spacing: HandySpacing.s8) {
             Image(systemName: "magnifyingglass").foregroundStyle(HandyColor.textSecondary)
-            TextField(L("Ask your photos… (text or what they show)"), text: $query).submitLabel(.search).onSubmit { runSearch() }
+            TextField(L("Ask your photos anything"), text: $query).submitLabel(.search).onSubmit { runSearch() }
             if !query.isEmpty { Button { query = ""; results = []; aiAnswer = nil; searched = false } label: { Image(systemName: "xmark.circle.fill").accessibilityLabel(L("Clear")).foregroundStyle(HandyColor.textSecondary) }.buttonStyle(.plain) }
             Button { runSearch() } label: { Text(L("Ask")).font(HandyFont.bodyStrong) }.disabled(query.trimmingCharacters(in: .whitespaces).isEmpty || index.entries.isEmpty)
         }
