@@ -1,301 +1,301 @@
 == unit (results)
-2026-11-22 09:52:14.863155+0000 HandyTools[77772:193161] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-22 09:52:16.811850+0000 HandyTools[77772:193155] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-22 09:52:16.819939+0000 HandyTools[77772:193155] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-22 09:52:16.820719+0000 HandyTools[77772:193155] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-22 09:52:16.842860+0000 HandyTools[77772:193155] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-22 09:52:16.843055+0000 HandyTools[77772:193155] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-22 09:52:16.843408+0000 HandyTools[77772:193155] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-Test Case '-[HandyToolsTests.AudioIntakeTests testAFailedDownloadSavedAsMp3IsCalledWhatItIs]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.AudioIntakeTests testAVoiceNoteIsSpottedByItsBytesNotItsName]' passed (0.003 seconds).
+2026-11-22 10:34:37.772794+0000 HandyTools[19458:59628] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-22 10:34:39.329691+0000 HandyTools[19458:59628] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-22 10:34:39.336422+0000 HandyTools[19458:59628] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-22 10:34:39.337680+0000 HandyTools[19458:59628] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-22 10:34:39.339044+0000 HandyTools[19458:59628] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-22 10:34:39.367709+0000 HandyTools[19458:59628] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-22 10:34:39.367887+0000 HandyTools[19458:59628] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+Test Case '-[HandyToolsTests.AudioIntakeTests testAFailedDownloadSavedAsMp3IsCalledWhatItIs]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.AudioIntakeTests testAVoiceNoteIsSpottedByItsBytesNotItsName]' passed (0.006 seconds).
 Test Case '-[HandyToolsTests.AudioIntakeTests testDoubleEncodedNamesAreMadeReadable]' passed (0.001 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.008 (0.014) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.011 (0.016) seconds
 Test Case '-[HandyToolsTests.AutomationGroupsTests testAnUnknownReminderFallsBackToItsOpenHint]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.AutomationGroupsTests testEachToolsRemindersLandInItsGroup]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.AutomationGroupsTests testEveryIdeaOpensARealTool]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.AutomationGroupsTests testTestRunsAndSnoozesAreNotShownAsAutomations]' passed (0.240 seconds).
-	 Executed 4 tests, with 0 failures (0 unexpected) in 0.245 (0.248) seconds
+Test Case '-[HandyToolsTests.AutomationGroupsTests testEveryIdeaOpensARealTool]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.AutomationGroupsTests testTestRunsAndSnoozesAreNotShownAsAutomations]' passed (0.001 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.006 (0.185) seconds
 Test Case '-[HandyToolsTests.BirthdayWishTests testWishUsesTheirNameAndTheMilestone]' passed (0.002 seconds).
 	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.003) seconds
-Test Case '-[HandyToolsTests.BlockGoalTests testEveryBlockHasAKnownGoal]' passed (2.418 seconds).
-Test Case '-[HandyToolsTests.BlockGoalTests testPhotoStartOffersOnlyPhotoStepsGrouped]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.BlockGoalTests testEveryBlockHasAKnownGoal]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.BlockGoalTests testPhotoStartOffersOnlyPhotoStepsGrouped]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.BlockGoalTests testTextStartOffersOnlyTextSteps]' passed (0.001 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 2.422 (2.424) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.005 (0.006) seconds
 Test Case '-[HandyToolsTests.BoomerangTests testEveryStyleIsAValidLoop]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.BoomerangTests testEveryStyleMakesAGIF]' passed (0.550 seconds).
-Test Case '-[HandyToolsTests.BoomerangTests testMotionCenterFindsTheMovement]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.BoomerangTests testEveryStyleMakesAGIF]' passed (0.361 seconds).
+Test Case '-[HandyToolsTests.BoomerangTests testMotionCenterFindsTheMovement]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.BoomerangTests testStylesReallyDiffer]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.BoomerangTests testZoomNeverShowsAnEdge]' passed (0.002 seconds).
-	 Executed 5 tests, with 0 failures (0 unexpected) in 0.557 (1.057) seconds
-Test Case '-[HandyToolsTests.CHMTests testAlignedAndStoredBlocks]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.BoomerangTests testZoomNeverShowsAnEdge]' passed (0.001 seconds).
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.367 (0.369) seconds
+Test Case '-[HandyToolsTests.CHMTests testAlignedAndStoredBlocks]' passed (0.005 seconds).
 Test Case '-[HandyToolsTests.CHMTests testDamagedFileIsRefused]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.CHMTests testOpensAsBookInContentsOrder]' passed (0.108 seconds).
-Test Case '-[HandyToolsTests.CHMTests testUnpacksLikeTheReference]' passed (0.037 seconds).
-	 Executed 4 tests, with 0 failures (0 unexpected) in 0.153 (0.155) seconds
-Test Case '-[HandyToolsTests.ChainFinishTests testFinishRoundTripsAndSplitsRecipients]' passed (0.008 seconds).
+Test Case '-[HandyToolsTests.CHMTests testOpensAsBookInContentsOrder]' passed (0.072 seconds).
+Test Case '-[HandyToolsTests.CHMTests testUnpacksLikeTheReference]' passed (0.031 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.110 (0.111) seconds
+Test Case '-[HandyToolsTests.ChainFinishTests testFinishRoundTripsAndSplitsRecipients]' passed (0.007 seconds).
 Test Case '-[HandyToolsTests.ChainFinishTests testLabels]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ChainFinishTests testOutboxFromTextAndFile]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.ChainFinishTests testSharedToolNeverCarriesRecipients]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.ChainFinishTests testOutboxFromTextAndFile]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.ChainFinishTests testSharedToolNeverCarriesRecipients]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.ChainFinishTests testToolsSavedBeforeFinishExistedStillLoad]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ChainFinishTests testUnknownFinishKindFromAnotherPhoneFallsBackToShare]' passed (0.002 seconds).
-	 Executed 6 tests, with 0 failures (0 unexpected) in 0.022 (0.025) seconds
-Test Case '-[HandyToolsTests.ChainPlannerTests testHideThenShrinkRuns]' passed (0.104 seconds).
-Test Case '-[HandyToolsTests.ChainPlannerTests testNonsenseGivesNothing]' passed (0.013 seconds).
+Test Case '-[HandyToolsTests.ChainFinishTests testUnknownFinishKindFromAnotherPhoneFallsBackToShare]' passed (0.001 seconds).
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.015 (0.017) seconds
+Test Case '-[HandyToolsTests.ChainPlannerTests testHideThenShrinkRuns]' passed (0.050 seconds).
+Test Case '-[HandyToolsTests.ChainPlannerTests testNonsenseGivesNothing]' passed (0.007 seconds).
 Test Case '-[HandyToolsTests.ChainPlannerTests testPhotoFileFeedsImageBlocks]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ChainPlannerTests testReceiptReadsThenPulls]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.ChainPlannerTests testShrinkAndStrip]' passed (0.010 seconds).
+Test Case '-[HandyToolsTests.ChainPlannerTests testReceiptReadsThenPulls]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.ChainPlannerTests testShrinkAndStrip]' passed (0.013 seconds).
 Test Case '-[HandyToolsTests.ChainPlannerTests testSummarizeText]' passed (0.001 seconds).
-	 Executed 6 tests, with 0 failures (0 unexpected) in 0.131 (0.211) seconds
-Test Case '-[HandyToolsTests.ChainRowTests testSplitPiecesOnOneRowAreRejoined]' passed (0.143 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.143 (0.144) seconds
-Test Case '-[HandyToolsTests.ChainRunnerTests testEmptyTextStopsWithNamedBlock]' passed (0.007 seconds).
-2026-11-22 09:52:32.292491+0000 HandyTools[77772:194656] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105347700> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105347700> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-Test Case '-[HandyToolsTests.ChainRunnerTests testFullReceiptChainOnSampleImage]' passed (4.088 seconds).
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.076 (0.079) seconds
+Test Case '-[HandyToolsTests.ChainRowTests testSplitPiecesOnOneRowAreRejoined]' passed (0.087 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.087 (0.087) seconds
+Test Case '-[HandyToolsTests.ChainRunnerTests testEmptyTextStopsWithNamedBlock]' passed (0.008 seconds).
+2026-11-22 10:34:45.188721+0000 HandyTools[19458:60100] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x101d43c00> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x101d43c00> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+Test Case '-[HandyToolsTests.ChainRunnerTests testFullReceiptChainOnSampleImage]' passed (2.550 seconds).
 Test Case '-[HandyToolsTests.ChainRunnerTests testMismatchedStepsAreRejectedInPlainWords]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testReceiptBlockProducesCSV]' passed (0.032 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testRunnerRefusesInvalidChainWithoutRunning]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testShrinkAndStripGiveJPEGFiles]' passed (0.020 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testSummarizeBlockRuns]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testTemplatesAreValidAndCodable]' passed (0.013 seconds).
-	 Executed 8 tests, with 0 failures (0 unexpected) in 4.170 (4.174) seconds
-Test Case '-[HandyToolsTests.ChainTemplateTests testCardAndTaskBlocks]' passed (0.042 seconds).
-Test Case '-[HandyToolsTests.ChainTemplateTests testShareRoundTripAndRejectsJunk]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.ChainTemplateTests testTwentyEightTemplatesAllValidAndUnique]' passed (0.002 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.048 (0.050) seconds
-Test Case '-[HandyToolsTests.ClaimPackTests testClaimPackHasTheDetailsTheReceiptAndTheProblem]' passed (0.143 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.143 (0.219) seconds
+Test Case '-[HandyToolsTests.ChainRunnerTests testReceiptBlockProducesCSV]' passed (0.014 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testRunnerRefusesInvalidChainWithoutRunning]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testShrinkAndStripGiveJPEGFiles]' passed (0.015 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testSummarizeBlockRuns]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testTemplatesAreValidAndCodable]' passed (0.003 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 2.600 (2.604) seconds
+Test Case '-[HandyToolsTests.ChainTemplateTests testCardAndTaskBlocks]' passed (0.015 seconds).
+Test Case '-[HandyToolsTests.ChainTemplateTests testShareRoundTripAndRejectsJunk]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.ChainTemplateTests testTwentyEightTemplatesAllValidAndUnique]' passed (0.001 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.017 (0.018) seconds
+Test Case '-[HandyToolsTests.ClaimPackTests testClaimPackHasTheDetailsTheReceiptAndTheProblem]' passed (0.075 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.075 (0.075) seconds
 Test Case '-[HandyToolsTests.CleanerPlanTests testBurstKeepsYourPickThenFavouriteThenIPhonesPickThenCover]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.CleanerPlanTests testPlanDropsEmptyRowsAndPutsTheBiggestFirst]' passed (0.006 seconds).
 	 Executed 2 tests, with 0 failures (0 unexpected) in 0.007 (0.008) seconds
 Test Case '-[HandyToolsTests.CombineTests testCombineFlagSurvivesSavingAndOldToolsLoadWithoutIt]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.CombineTests testPicturesBecomeOnePdfWithAPageEach]' passed (0.034 seconds).
+Test Case '-[HandyToolsTests.CombineTests testPicturesBecomeOnePdfWithAPageEach]' passed (0.021 seconds).
 Test Case '-[HandyToolsTests.CombineTests testSavedPhotosCombineToo]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.CombineTests testSeparatePdfsAreJoinedInOrder]' passed (4.129 seconds).
+Test Case '-[HandyToolsTests.CombineTests testSeparatePdfsAreJoinedInOrder]' passed (2.926 seconds).
 Test Case '-[HandyToolsTests.CombineTests testTextOrMixedResultsAreLeftSeparate]' passed (0.001 seconds).
-	 Executed 5 tests, with 0 failures (0 unexpected) in 4.170 (4.173) seconds
-Test Case '-[HandyToolsTests.ContactFinderTests testEveryPairSplitsEveryone]' passed (0.011 seconds).
-Test Case '-[HandyToolsTests.ContactFinderTests testWhatEachFinds]' passed (0.002 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.013 (0.019) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 2.954 (2.956) seconds
+Test Case '-[HandyToolsTests.ContactFinderTests testEveryPairSplitsEveryone]' passed (0.009 seconds).
+Test Case '-[HandyToolsTests.ContactFinderTests testWhatEachFinds]' passed (0.003 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.012 (0.013) seconds
 Test Case '-[HandyToolsTests.ContactsTransferTests testPlanSkipsPeopleAlreadyThereAndDuplicatesInsideTheBatch]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.ContactsTransferTests testSamePersonAcrossAccountsIsRecognised]' passed (0.004 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.006 (0.007) seconds
-Test Case '-[HandyToolsTests.CutoutStudioTests testRunsOffTheEdgeIsSaidOnlyWhenItDoes]' passed (0.142 seconds).
-Test Case '-[HandyToolsTests.CutoutStudioTests testShapesComeOutTheRightProportions]' passed (0.263 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.405 (0.406) seconds
-Test Case '-[HandyToolsTests.EmptyCutoutTests testAnEmptyCutoutCountsAsNothing]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.ContactsTransferTests testSamePersonAcrossAccountsIsRecognised]' passed (0.001 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+Test Case '-[HandyToolsTests.CutoutStudioTests testRunsOffTheEdgeIsSaidOnlyWhenItDoes]' passed (0.095 seconds).
+Test Case '-[HandyToolsTests.CutoutStudioTests testShapesComeOutTheRightProportions]' passed (0.189 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.284 (0.284) seconds
+Test Case '-[HandyToolsTests.EmptyCutoutTests testAnEmptyCutoutCountsAsNothing]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.EmptyCutoutTests testASubjectCountsAsThere]' passed (0.001 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.004 (0.005) seconds
-Test Case '-[HandyToolsTests.EngineTests testAnimateLooksAndPrintableFlipbook]' passed (9.896 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAnimateRendersEveryStyleAtTheRealFormat]' passed (10.272 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAnnotateBakesMarksKeepsPagesAndText]' passed (3.237 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAnnotateHandlesEmptyMarksAndBadInput]' passed (6.104 seconds).
-Test Case '-[HandyToolsTests.EngineTests testArrivalAlertShowsMyListAtTheStore]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanFileProducesPlayableResult]' passed (1.683 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanGateAttenuatesQuietKeepsLoud]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanHighPassKeepsHighTone]' passed (0.003 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.003) seconds
+Test Case '-[HandyToolsTests.EngineTests testAnimateLooksAndPrintableFlipbook]' passed (6.109 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAnimateRendersEveryStyleAtTheRealFormat]' passed (7.738 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAnnotateBakesMarksKeepsPagesAndText]' passed (2.167 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAnnotateHandlesEmptyMarksAndBadInput]' passed (4.331 seconds).
+Test Case '-[HandyToolsTests.EngineTests testArrivalAlertShowsMyListAtTheStore]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioCleanFileProducesPlayableResult]' passed (1.063 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioCleanGateAttenuatesQuietKeepsLoud]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioCleanHighPassKeepsHighTone]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.EngineTests testAudioCleanHighPassRemovesDC]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanNoiseFloorTracksTheQuietParts]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioCleanNoiseFloorTracksTheQuietParts]' passed (0.000 seconds).
 Test Case '-[HandyToolsTests.EngineTests testAudioCleanNormalizeLeavesSilenceAlone]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanNormalizeRaisesPeakAndKeepsBalance]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanProcessPreservesShape]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanRejectsNonAudioGracefully]' passed (0.027 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCompressShrinksAndStaysPlayable]' passed (0.368 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioConvertPicksFormatByPurpose]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioConvertProducesPlayableFilesEveryFormat]' passed (0.335 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioConvertRejectsNonAudioGracefully]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioCleanNormalizeRaisesPeakAndKeepsBalance]' passed (0.000 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioCleanProcessPreservesShape]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioCleanRejectsNonAudioGracefully]' passed (0.012 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioCompressShrinksAndStaysPlayable]' passed (0.607 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioConvertPicksFormatByPurpose]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioConvertProducesPlayableFilesEveryFormat]' passed (0.206 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioConvertRejectsNonAudioGracefully]' passed (0.004 seconds).
 Test Case '-[HandyToolsTests.EngineTests testAudioEditFadesRampTheEdgesToSilence]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioEditFileTrimProducesPlayableShorterClip]' passed (0.159 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioEditFindsDeadAirAndKeepsTheRest]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioEditProcessTrimsAndRemovesSilence]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioEditRejectsNonAudioGracefully]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioJoinAndSpeedKeepRealLengths]' passed (0.302 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioTagsWriteMP3AndM4AWithoutTouchingAudio]' passed (0.196 seconds).
-Test Case '-[HandyToolsTests.EngineTests testBusinessCardsReadMergeAndNeverMistakeAChat]' passed (0.343 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCameraReadsTheSceneAndCoaches]' passed (0.031 seconds).
-2026-11-22 09:53:11.129927+0000 HandyTools[77772:194232] [Context] [PREFLIGHTING] context 0x135d00d20: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
-Test Case '-[HandyToolsTests.EngineTests testCaptureFindsCodesInPhotosAndActionsInText]' passed (0.960 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCaregiverFollowUpsSummaryAndSharing]' passed (0.020 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' passed (0.045 seconds).
-2026-11-22 09:53:11.661352+0000 HandyTools[77772:194253] [Context] [PREFLIGHTING] context 0x135d00d20: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-Test Case '-[HandyToolsTests.EngineTests testCelebrateFindsAnyCelebrationAndDecoratesEveryFrame]' passed (17.486 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioEditFileTrimProducesPlayableShorterClip]' passed (0.088 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioEditFindsDeadAirAndKeepsTheRest]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioEditProcessTrimsAndRemovesSilence]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioEditRejectsNonAudioGracefully]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioJoinAndSpeedKeepRealLengths]' passed (0.144 seconds).
+Test Case '-[HandyToolsTests.EngineTests testAudioTagsWriteMP3AndM4AWithoutTouchingAudio]' passed (0.124 seconds).
+Test Case '-[HandyToolsTests.EngineTests testBusinessCardsReadMergeAndNeverMistakeAChat]' passed (0.242 seconds).
+Test Case '-[HandyToolsTests.EngineTests testCameraReadsTheSceneAndCoaches]' passed (0.024 seconds).
+2026-11-22 10:35:12.081989+0000 HandyTools[19458:59626] [Context] [PREFLIGHTING] context 0x12d4e21c0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
+Test Case '-[HandyToolsTests.EngineTests testCaptureFindsCodesInPhotosAndActionsInText]' passed (0.689 seconds).
+Test Case '-[HandyToolsTests.EngineTests testCaregiverFollowUpsSummaryAndSharing]' passed (0.023 seconds).
+Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' passed (0.023 seconds).
+2026-11-22 10:35:13.152104+0000 HandyTools[19458:60194] [Context] [PREFLIGHTING] context 0x12d4e21c0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+Test Case '-[HandyToolsTests.EngineTests testCelebrateFindsAnyCelebrationAndDecoratesEveryFrame]' passed (9.408 seconds).
 Test Case '-[HandyToolsTests.EngineTests testCollageLayoutsTileTheCanvasExactly]' passed (0.011 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorTypeCheckPairsFoolOnlyTheirOwnEye]' passed (0.033 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionHighlightCubeKeepsTargetGreysRest]' passed (0.020 seconds).
+Test Case '-[HandyToolsTests.EngineTests testColorTypeCheckPairsFoolOnlyTheirOwnEye]' passed (0.010 seconds).
+Test Case '-[HandyToolsTests.EngineTests testColorVisionHighlightCubeKeepsTargetGreysRest]' passed (0.014 seconds).
 Test Case '-[HandyToolsTests.EngineTests testColorVisionMatricesBehave]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionNamesAndAverage]' passed (0.071 seconds).
-Test Case '-[HandyToolsTests.EngineTests testComicStripInksPanelsAndLaysThemOut]' passed (1.133 seconds).
+Test Case '-[HandyToolsTests.EngineTests testColorVisionNamesAndAverage]' passed (0.034 seconds).
+Test Case '-[HandyToolsTests.EngineTests testComicStripInksPanelsAndLaysThemOut]' passed (1.076 seconds).
 Test Case '-[HandyToolsTests.EngineTests testContactsBackupDueLogic]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testContactsCategorize]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testContactsCategorize]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.EngineTests testContactsCountryCodeAndBackupReminder]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testContactsProSearchesFiltersExportsAndPlans]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCutoutEdgesArePulledInAndFeathered]' passed (0.106 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDailyBriefSaysWhatMattersToday]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDataGrabReceiptCardEventTable]' passed (0.065 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDescribeItBuildsWhatWasAskedOrSaysWhatsMissing]' passed (0.083 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDuplicateHashSeparatesDifferentDocuments]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testEnhanceProducesAValidImageBothModes]' passed (0.534 seconds).
-Test Case '-[HandyToolsTests.EngineTests testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook]' passed (1.481 seconds).
-Test Case '-[HandyToolsTests.EngineTests testEveryPenColourSavesAVisibleSignature]' passed (0.135 seconds).
-Test Case '-[HandyToolsTests.EngineTests testEveryVoiceSoundsDifferentAndPreviewsAreShort]' passed (0.895 seconds).
-Test Case '-[HandyToolsTests.EngineTests testExcelWorkbookKeepsNumbersAsNumbers]' passed (0.013 seconds).
-Test Case '-[HandyToolsTests.EngineTests testFaceEmojiCoversOnlyChosenFacesAndMergesDetections]' passed (0.935 seconds).
-Test Case '-[HandyToolsTests.EngineTests testFileKindClassifier]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testFillFormWritesRealFields]' passed (0.231 seconds).
+Test Case '-[HandyToolsTests.EngineTests testContactsProSearchesFiltersExportsAndPlans]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.EngineTests testCutoutEdgesArePulledInAndFeathered]' passed (0.093 seconds).
+Test Case '-[HandyToolsTests.EngineTests testDailyBriefSaysWhatMattersToday]' passed (0.007 seconds).
+Test Case '-[HandyToolsTests.EngineTests testDataGrabReceiptCardEventTable]' passed (0.046 seconds).
+Test Case '-[HandyToolsTests.EngineTests testDescribeItBuildsWhatWasAskedOrSaysWhatsMissing]' passed (0.070 seconds).
+Test Case '-[HandyToolsTests.EngineTests testDuplicateHashSeparatesDifferentDocuments]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testEnhanceProducesAValidImageBothModes]' passed (0.517 seconds).
+Test Case '-[HandyToolsTests.EngineTests testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook]' passed (1.184 seconds).
+Test Case '-[HandyToolsTests.EngineTests testEveryPenColourSavesAVisibleSignature]' passed (0.119 seconds).
+Test Case '-[HandyToolsTests.EngineTests testEveryVoiceSoundsDifferentAndPreviewsAreShort]' passed (0.734 seconds).
+Test Case '-[HandyToolsTests.EngineTests testExcelWorkbookKeepsNumbersAsNumbers]' passed (0.008 seconds).
+Test Case '-[HandyToolsTests.EngineTests testFaceEmojiCoversOnlyChosenFacesAndMergesDetections]' passed (0.715 seconds).
+Test Case '-[HandyToolsTests.EngineTests testFileKindClassifier]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testFillFormWritesRealFields]' passed (0.145 seconds).
 Test Case '-[HandyToolsTests.EngineTests testFitItKnowsWhereThingsAreGoing]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testFlashlightMorseSirenAndShortcut]' passed (0.030 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGeoFormatting]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGifFromPhotosHasEveryFrame]' passed (0.022 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGlossaryFindsTermsAndRedFlags]' passed (0.027 seconds).
-Test Case '-[HandyToolsTests.EngineTests testIdentifierCleansLabels]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testFlashlightMorseSirenAndShortcut]' passed (0.037 seconds).
+Test Case '-[HandyToolsTests.EngineTests testGeoFormatting]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testGifFromPhotosHasEveryFrame]' passed (0.007 seconds).
+Test Case '-[HandyToolsTests.EngineTests testGlossaryFindsTermsAndRedFlags]' passed (0.020 seconds).
+Test Case '-[HandyToolsTests.EngineTests testIdentifierCleansLabels]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.EngineTests testKeepOnlyMyNewestScreenshots]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testLabelDecodeFlagsAndServingMath]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testLightPanelFindsTheReceiptInADarkScreenshot]' passed (0.130 seconds).
-Test Case '-[HandyToolsTests.EngineTests testLinkCleanerStripsTrackingAndUnwrapsRedirects]' passed (0.012 seconds).
+Test Case '-[HandyToolsTests.EngineTests testLabelDecodeFlagsAndServingMath]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testLightPanelFindsTheReceiptInADarkScreenshot]' passed (0.118 seconds).
+Test Case '-[HandyToolsTests.EngineTests testLinkCleanerStripsTrackingAndUnwrapsRedirects]' passed (0.011 seconds).
 Test Case '-[HandyToolsTests.EngineTests testLongScreenshotFindsTheLatestScrollAndCutsPages]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMagnifierPipelineKeepsExtentAndAppliesLooks]' passed (0.135 seconds).
-2026-11-22 09:53:48.526782+0000 HandyTools[77772:196870] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1055754a0> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1055754a0> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-Test Case '-[HandyToolsTests.EngineTests testMakeSearchableAddsRealTextLayer]' passed (15.519 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeasureMathLengthsAreasAndFormatting]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMedicinePillCountWarnsOnceAtTheRefillPoint]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMedicineScheduleRules]' passed (0.008 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeetingEmailAddressesNamedPeopleWithTodos]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeetingEmailGreetsAllWhenNoNames]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeetingPeopleIsCleanAndSafe]' passed (0.105 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeetingTurnsEmptyIsEmpty]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMagnifierPipelineKeepsExtentAndAppliesLooks]' passed (0.092 seconds).
+2026-11-22 10:35:35.990193+0000 HandyTools[19458:60196] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10541e120> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10541e120> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+Test Case '-[HandyToolsTests.EngineTests testMakeSearchableAddsRealTextLayer]' passed (10.571 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMeasureMathLengthsAreasAndFormatting]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMedicinePillCountWarnsOnceAtTheRefillPoint]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMedicineScheduleRules]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMeetingEmailAddressesNamedPeopleWithTodos]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMeetingEmailGreetsAllWhenNoNames]' passed (0.000 seconds).
+2026-11-22 10:35:37.513532+0000 HandyTools[19458:64954] [UAFAssetProvider] Sandbox extension requesTest Case '-[HandyToolsTests.EngineTests testMeetingPeopleIsCleanAndSafe]' passed (0.042 seconds).
+t for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10541dfe0> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10541dfe0> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+Test Case '-[HandyToolsTests.EngineTests testMeetingTurnsEmptyIsEmpty]' passed (0.005 seconds).
 Test Case '-[HandyToolsTests.EngineTests testMeetingTurnsSingleWhenNoBigGap]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.EngineTests testMeetingTurnsSplitAtPauses]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMemorySynonymAndColorSearch]' passed (0.005 seconds).
-2026-11-22 09:53:50.807161+0000 HandyTools[77772:196003] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1056583c0> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1056583c0> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-22 09:53:50.834067+0000 HandyTools[77772:193142] [UAFAssetManager] Failed to grant sandbox extension: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1056583c0> connection from pid 77772 on mach service named com.appTest Case '-[HandyToolsTests.EngineTests testMenuReaderFindsDishesPricesAndWhatsInThem]' passed (0.052 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMemorySynonymAndColorSearch]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMenuReaderFindsDishesPricesAndWhatsInThem]' passed (0.012 seconds).
 Test Case '-[HandyToolsTests.EngineTests testMorseEncoding]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMyDayDiaryLogsLocksAndRemembers]' passed (0.161 seconds).
-Test Case '-[HandyToolsTests.EngineTests testNoiseSynthEveryKindRendersFiniteAudio]' passed (0.023 seconds).
-Test Case '-[HandyToolsTests.EngineTests testNoiseSynthProducesBoundedColouredNoise]' passed (0.235 seconds).
-Test Case '-[HandyToolsTests.EngineTests testOCRReadsCleanRenderedText]' passed (1.218 seconds).
-Test Case '-[HandyToolsTests.EngineTests testOrganizePagesMergeSplitAndBlankPages]' passed (0.331 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPaperworkPackForTheYear]' passed (0.016 seconds).
-Test Case '-[HandyToolsTests.EngineTests testParkingMeterAndSpeedWarning]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPassportCheckGradesPhotos]' passed (0.218 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPDFConvertPagesAndSizes]' passed (0.386 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPDFPagesKeepsTextWhenRedrawn]' passed (11.465 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPDFPagesReorderRotateRemove]' passed (0.056 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPDFProtectLockUnlockWatermark]' passed (0.058 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPdfTextExtractsEmbeddedLayer]' passed (0.014 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPdfToImagesRendersEveryPage]' passed (0.110 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPitchDetectionAndNoteMath]' passed (0.009 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMyDayDiaryLogsLocksAndRemembers]' passed (0.135 seconds).
+Test Case '-[HandyToolsTests.EngineTests testNoiseSynthEveryKindRendersFiniteAudio]' passed (0.015 seconds).
+Test Case '-[HandyToolsTests.EngineTests testNoiseSynthProducesBoundedColouredNoise]' passed (0.208 seconds).
+Test Case '-[HandyToolsTests.EngineTests testOCRReadsCleanRenderedText]' passed (0.629 seconds).
+Test Case '-[HandyToolsTests.EngineTests testOrganizePagesMergeSplitAndBlankPages]' passed (0.172 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPaperworkPackForTheYear]' passed (0.007 seconds).
+Test Case '-[HandyToolsTests.EngineTests testParkingMeterAndSpeedWarning]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPassportCheckGradesPhotos]' passed (0.103 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPDFConvertPagesAndSizes]' passed (0.257 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPDFPagesKeepsTextWhenRedrawn]' passed (7.042 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPDFPagesReorderRotateRemove]' passed (0.043 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPDFProtectLockUnlockWatermark]' passed (0.042 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPdfTextExtractsEmbeddedLayer]' passed (0.010 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPdfToImagesRendersEveryPage]' passed (0.094 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPitchDetectionAndNoteMath]' passed (0.008 seconds).
 Test Case '-[HandyToolsTests.EngineTests testPriceExtractionFromListingText]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram]' passed (0.385 seconds).
-Test Case '-[HandyToolsTests.EngineTests testProtectPDFWatermarksLocksAndBlocksInOnePass]' passed (0.091 seconds).
-Test Case '-[HandyToolsTests.EngineTests testQRLinkVerdictNamesTheRealOwner]' passed (0.017 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReadAloudPicksOneStableLanguageForMixedPages]' passed (0.205 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReadSourceExtractsArticleTextAndReaderSplits]' passed (0.121 seconds).
+Test Case '-[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram]' passed (0.435 seconds).
+Test Case '-[HandyToolsTests.EngineTests testProtectPDFWatermarksLocksAndBlocksInOnePass]' passed (0.069 seconds).
+Test Case '-[HandyToolsTests.EngineTests testQRLinkVerdictNamesTheRealOwner]' passed (0.011 seconds).
+Test Case '-[HandyToolsTests.EngineTests testReadAloudPicksOneStableLanguageForMixedPages]' passed (0.165 seconds).
+Test Case '-[HandyToolsTests.EngineTests testReadSourceExtractsArticleTextAndReaderSplits]' passed (0.102 seconds).
 Test Case '-[HandyToolsTests.EngineTests testReceiptFuzzySearchFindsTypoAndVagueWords]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.EngineTests testReceiptSimilarityIsBoundedAndSane]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRedactionTrulyRemovesHiddenText]' passed (0.050 seconds).
-Test Case '-[HandyToolsTests.EngineTests testResizeCapsLongestSideAndNeverUpscales]' passed (0.011 seconds).
+Test Case '-[HandyToolsTests.EngineTests testRedactionTrulyRemovesHiddenText]' passed (0.044 seconds).
+Test Case '-[HandyToolsTests.EngineTests testResizeCapsLongestSideAndNeverUpscales]' passed (0.008 seconds).
 Test Case '-[HandyToolsTests.EngineTests testRestNightSummaryByHour]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReturnWindowIsReadOffTheReceipt]' passed (0.024 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRingtoneClampsToThirtySecondsAndCutsFromStart]' passed (0.526 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRingtoneStartsOnTheBestPartAndReadsTheSong]' passed (0.062 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRoomMathWhatToBuyAndSavedMeasurements]' passed (0.013 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRoutePlanLinksPlacesAndOrders]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testReturnWindowIsReadOffTheReceipt]' passed (0.015 seconds).
+Test Case '-[HandyToolsTests.EngineTests testRingtoneClampsToThirtySecondsAndCutsFromStart]' passed (0.452 seconds).
+Test Case '-[HandyToolsTests.EngineTests testRingtoneStartsOnTheBestPartAndReadsTheSong]' passed (0.080 seconds).
+Test Case '-[HandyToolsTests.EngineTests testRoomMathWhatToBuyAndSavedMeasurements]' passed (0.022 seconds).
+Test Case '-[HandyToolsTests.EngineTests testRoutePlanLinksPlacesAndOrders]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.EngineTests testRoutePlanNeverGuessesANameAndStaysGraceful]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.EngineTests testRoutePlanRoutesEmailAndCallTasksToTheRightApp]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.EngineTests testSalePriceAndSplitTheBill]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSavedSignatureRoundTrips]' passed (0.566 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScamAnalyzerCatchesClassicsAndClearsNormalText]' passed (0.029 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanCleanupProducesDocumentLooks]' passed (0.217 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanNonSearchablePDFHasNoText]' passed (0.088 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanPDFIsSearchableAndKeepsPageCount]' passed (4.798 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanPDFUnderLimitKeepsTextLayer]' passed (10.714 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanRotationKeepsStampsAndInkInPlace]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanSplitRangesAndEveryPage]' passed (0.043 seconds).
-2026-11-22 09:54:24.369680+0000 HandyTools[77772:196413] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105753de0> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105753de0> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-Test Case '-[HandyToolsTests.EngineTests testSceneComposerSpeaksConcretely]' passed (1.339 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScrubberBlocksPixelsAndDropsMetadata]' passed (0.087 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSavedSignatureRoundTrips]' passed (0.500 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScamAnalyzerCatchesClassicsAndClearsNormalText]' passed (0.025 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanCleanupProducesDocumentLooks]' passed (0.190 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanNonSearchablePDFHasNoText]' passed (0.119 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanPDFIsSearchableAndKeepsPageCount]' passed (3.511 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanPDFUnderLimitKeepsTextLayer]' passed (8.749 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanRotationKeepsStampsAndInkInPlace]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanSplitRangesAndEveryPage]' passed (0.027 seconds).
+2026-11-22 10:36:01.866668+0000 HandyTools[19458:69241] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10541d2c0> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10541d2c0> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+Test Case '-[HandyToolsTests.EngineTests testSceneComposerSpeaksConcretely]' passed (1.076 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScrubberBlocksPixelsAndDropsMetadata]' passed (0.079 seconds).
 Test Case '-[HandyToolsTests.EngineTests testScrubberClassifiesPersonalTextForAutoHiding]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSearchRanksTheObviousToolFirst]' passed (0.256 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSensorMathConversions]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSearchRanksTheObviousToolFirst]' passed (0.203 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSensorMathConversions]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.EngineTests testShutterLabelNeverTrapsOnInvalidExposure]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSignPDFStampsAndKeepsOriginalText]' passed (0.025 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeParserHandlesMultipacksAndJunk]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageIsFastAndOffMainForBigPhoto]' passed (13.092 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageLandsUnderLimit]' passed (4.432 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetPDFLandsUnderLimit]' passed (5.572 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetVideoLandsUnderLimit]' passed (8.496 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSmartAlertsFireOnlyWhenTrueAndOnceADay]' passed (0.015 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSortedFindsWaysToActAndRemindsBeforeTheDate]' passed (0.069 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSoundboardEveryVoiceProducesPlayableWAV]' passed (0.435 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSoundboardRejectsNonAudioGracefully]' passed (0.014 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSoundEventDetectorArmsHoldsAndStops]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSpellFixFollowsLanguage]' passed (0.097 seconds).
-2026-11-22 09:54:57.314680+0000 HandyTools[77772:196413] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10514d4a0> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10514d4a0> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-Test Case '-[HandyToolsTests.EngineTests testStickerStudioEveryPresetIsATrimmedSeeThroughSticker]' passed (1.968 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStitcherOrdersShuffledScreenshots]' passed (0.675 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStitcherRemovesOverlapAndKeepsChromeOnce]' passed (0.651 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStudioEncodesEveryFormat]' passed (0.106 seconds).
-2026-11-22 09:55:00.554079+0000 HandyTools[77772:205743] [Context] [PREFLIGHTING] context 0x135d00d20: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-22 09:55:00.733788+0000 HandyTools[77772:196413] [Context] [PREFLIGHTING] context 0x135d00d20: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-22 09:55:00.933486+0000 HandyTools[77772:205758] [Context] [PREFLIGHTING] context 0x135d00d20: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-22 09:55:01.151308+0000 HandyTools[77772:205758] [Context] [PREFLIGHTING] context 0x135d00d20: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-22 09:55:01.361904+0000 HandyTools[77772:194253] [Context] [PREFLIGHTING] context 0x135d00d20: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-22 09:55:01.570261+0000 HandyTools[77772:205758] [Context] [PREFLIGHTING] context 0x135d00d20: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-Test Case '-[HandyToolsTests.EngineTests testStyledQRCodesStillScan]' passed (1.293 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTextToolsFixSummarizeActionsStats]' passed (1.287 seconds).
-2026-11-22 09:55:03.094137+0000 HandyTools[77772:194253] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105344820> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105344820> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-22 09:55:03.095132+0000 HandyTools[77772:209724] [UAFAssetManager] Failed to grant sandbox extension: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105344820> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSTest Case '-[HandyToolsTests.EngineTests testThinkBoxDecidesJudgesAndRemembers]' passed (0.047 seconds).
-2026-11-22 09:55:03.154547+0000 HandyTools[77772:205758] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105345720> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105345720> connection from pid 77772 on mach Test Case '-[HandyToolsTests.EngineTests testThinkBoxReadsWorriesAsWorriesNotTasks]' passed (0.023 seconds).
-Test Case '-[HandyToolsTests.EngineTests testThinkStepsAreRealActions]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTranscriptionCoversTheWholeRecording]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTranscriptionProgressIsHonest]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTranscriptionStitchKeepsEveryWindow]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTranscriptTidyRemovesFillersAndBuildsParagraphs]' passed (0.012 seconds).
-Test Case '-[HandyToolsTests.EngineTests2026-11-22 09:55:03.359178+0000 HandyTools[77772:194253] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105344640> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105344640> connection from pid 77772 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-Test Case '-[HandyToolsTests.EngineTests testTripTrackerAccumulatesAndFiltersNoise]' passed (0.194 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTroyOunceForPreciousMetals]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSignPDFStampsAndKeepsOriginalText]' passed (0.020 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeParserHandlesMultipacksAndJunk]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageIsFastAndOffMainForBigPhoto]' passed (11.634 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageLandsUnderLimit]' passed (3.700 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetPDFLandsUnderLimit]' passed (5.591 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetVideoLandsUnderLimit]' passed (19.438 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSmartAlertsFireOnlyWhenTrueAndOnceADay]' passed (0.009 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSortedFindsWaysToActAndRemindsBeforeTheDate]' passed (0.039 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSoundboardEveryVoiceProducesPlayableWAV]' passed (0.496 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSoundboardRejectsNonAudioGracefully]' passed (0.010 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSoundEventDetectorArmsHoldsAndStops]' passed (0.039 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSpellFixFollowsLanguage]' passed (0.105 seconds).
+2026-11-22 10:36:44.315020+0000 HandyTools[19458:71942] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10541ce60> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10541ce60> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+Test Case '-[HandyToolsTests.EngineTests testStickerStudioEveryPresetIsATrimmedSeeThroughSticker]' passed (1.985 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStitcherOrdersShuffledScreenshots]' passed (0.584 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStitcherRemovesOverlapAndKeepsChromeOnce]' passed (0.587 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStudioEncodesEveryFormat]' passed (0.075 seconds).
+2026-11-22 10:36:46.665701+0000 HandyTools[19458:60197] [Context] [PREFLIGHTING] context 0x12d4e21c0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-22 10:36:46.901098+0000 HandyTools[19458:59626] [Context] [PREFLIGHTING] context 0x12d4e21c0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-22 10:36:47.074300+0000 HandyTools[19458:69431] [Context] [PREFLIGHTING] context 0x12d4e21c0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-22 10:36:47.222396+0000 HandyTools[19458:59626] [Context] [PREFLIGHTING] context 0x12d4e21c0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-22 10:36:47.429649+0000 HandyTools[19458:73573] [Context] [PREFLIGHTING] context 0x12d4e21c0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-22 10:36:47.573213+0000 HandyTools[19458:59626] [Context] [PREFLIGHTING] context 0x12d4e21c0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+Test Case '-[HandyToolsTests.EngineTests testStyledQRCodesStillScan]' passed (1.101 seconds).
+2026-11-22 10:36:48.481073+0000 HandyTools[19458:69431] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10560b980> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10560b980> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+Test Case '-[HandyToolsTests.EngineTests testTextToolsFixSummarizeActionsStats]' passed (0.765 seconds).
+Test Case '-[HandyToolsTests.EngineTests testThinkBoxDecidesJudgesAndRemembers]' passed (0.034 seconds).
+2026-11-22 10:36:48.515673+0000 HandyTools[19458:69431] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1050f77a0> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1050f77a0> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+Test Case '-[HandyToolsTests.EngineTests testThinkBoxReadsWorriesAsWorriesNotTasks]' passed (0.015 seconds).
+2026-11-22 10:36:48.582278+0000 HandyTools[19458:69431] [UAFAssetManager] Failed to grant sandbox extension: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1050f77a0> connection from pid 19458 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1050f77a0Test Case '-[HandyToolsTests.EngineTests testThinkStepsAreRealActions]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTranscriptionCoversTheWholeRecording]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTranscriptionProgressIsHonest]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTranscriptionStitchKeepsEveryWindow]' passed (0.000 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTranscriptTidyRemovesFillersAndBuildsParagraphs]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTripTrackerAccumulatesAndFiltersNoise]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTroyOunceForPreciousMetals]' passed (0.005 seconds).
 Test Case '-[HandyToolsTests.EngineTests testUnitPriceComparesAcrossDifferentUnits]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testUntanglePlanBecomesAPictureToShare]' passed (0.099 seconds).
-Test Case '-[HandyToolsTests.EngineTests testUntanglePlansAroundHowYouFeel]' passed (0.043 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVaultCryptoRoundTripsAndRejectsTampering]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoEngineTrimsConvertsMutesAndMakesGIF]' passed (1.252 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoFormatFillAndFit]' passed (0.012 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoRecorderMakesARealMovieWithSound]' passed (6.695 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoReframeMakesExactPlatformSizes]' passed (4.515 seconds).
+2026-11-22 10:36:48.648715+0000 HandyTools[19458:59626] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-22 10:36:48.654215+0000 HandyTools[19458:69431] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-22 10:36:48.658896+0000 HandyTools[19458:69431] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAsIOSurfaceClientSetSurfaceNotify failed e00002c7
+Test Case '-[HandyToolsTests.EngineTests testUntanglePlanBecomesAPictureToShare]' passed (0.063 seconds).
+Test Case '-[HandyToolsTests.EngineTests testUntanglePlansAroundHowYouFeel]' passed (0.051 seconds).
+Test Case '-[HandyToolsTests.EngineTests testVaultCryptoRoundTripsAndRejectsTampering]' passed (0.011 seconds).
+Test Case '-[HandyToolsTests.EngineTests testVideoEngineTrimsConvertsMutesAndMakesGIF]' passed (1.471 seconds).
+Test Case '-[HandyToolsTests.EngineTests testVideoFormatFillAndFit]' passed (0.011 seconds).
+Test Case '-[HandyToolsTests.EngineTests testVideoRecorderMakesARealMovieWithSound]' passed (6.923 seconds).
+Test Case '-[HandyToolsTests.EngineTests testVideoReframeMakesExactPlatformSizes]' passed (5.492 seconds).
 Test Case '-[HandyToolsTests.EngineTests testVideoScenesAndFilmingCoach]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testWarrantyCountdown]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testWarrantyNudgeComesWhenYouChose]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testWeatherWearSaysWhatToWear]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testWarrantyCountdown]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testWarrantyNudgeComesWhenYouChose]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testWeatherWearSaysWhatToWear]' passed (0.005 seconds).
 Test Case '-[HandyToolsTests.EngineTests testWifiPayloadRoundTripsThroughParser]' passed (0.018 seconds).
-Test Case '-[HandyToolsTests.EngineTests testZipMakerBuildsArchiveTheUnzipReaderOpens]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testZipPhotosGetSmallerAndLoseTheirLocation]' passed (0.120 seconds).
-	 Executed 169 tests, with 0 failures (0 unexpected) in 158.614 (159.042) seconds
-Test Case '-[HandyToolsTests.EventAlarmsTests testAlarmsLandOnTheEvent]' passed (0.134 seconds).
+Test Case '-[HandyToolsTests.EngineTests testZipMakerBuildsArchiveTheUnzipReaderOpens]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testZipPhotosGetSmallerAndLoseTheirLocation]' passed (0.157 seconds).
+	 Executed 169 tests, with 0 failures (0 unexpected) in 133.906 (134.205) seconds
+Test Case '-[HandyToolsTests.EventAlarmsTests testAlarmsLandOnTheEvent]' passed (0.102 seconds).
 Test Case '-[HandyToolsTests.EventAlarmsTests testAnEventIsNudgedAnHourBefore]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.EventAlarmsTests testReturnDeadlineIsNudgedThreeDaysAheadAndOnTheDay]' passed (0.001 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.135 (0.137) seconds
-Test Case '-[HandyToolsTests.FileReadersTests testAComicPagesInOrder]' passed (0.006 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.104 (0.109) seconds
+Test Case '-[HandyToolsTests.FileReadersTests testAComicPagesInOrder]' passed (0.008 seconds).
 Test Case '-[HandyToolsTests.FileReadersTests testADatabaseShowsItsTables]' passed (0.011 seconds).
-Test Case '-[HandyToolsTests.FileReadersTests testAMobipocketBookIsDecompressedAndAKindleLockedOneSaysSo]' passed (0.013 seconds).
-Test Case '-[HandyToolsTests.FileReadersTests testAnEmailWithAnAttachment]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.FileReadersTests testAMobipocketBookIsDecompressedAndAKindleLockedOneSaysSo]' passed (0.007 seconds).
+Test Case '-[HandyToolsTests.FileReadersTests testAnEmailWithAnAttachment]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.FileReadersTests testAnEPUBBookReadsByChapter]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.FileReadersTests testATarGzListsAndOpensWhatsInside]' passed (0.014 seconds).
-Test Case '-[HandyToolsTests.FileReadersTests testOddPicturesCodeJSONAndOfficeVariants]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.FileReadersTests testATarGzListsAndOpensWhatsInside]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.FileReadersTests testOddPicturesCodeJSONAndOfficeVariants]' passed (0.006 seconds).
 Test Case '-[HandyToolsTests.FileReadersTests testTablesInEverySeparator]' passed (0.004 seconds).
-	 Executed 8 tests, with 0 failures (0 unexpected) in 0.060 (0.063) seconds
-Test Case '-[HandyToolsTests.FinishFactsTests testAutoTranscriptionTriesEachOfThePersonsLanguages]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.FinishFactsTests testBusiestMomentIsWhereTheFramesChangeMost]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.FinishFactsTests testEachFinishedScreenIsWhereItsJobLands]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.FinishFactsTests testFinishedJobNotificationSaysWhatCameOut]' passed (0.006 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.047 (0.051) seconds
+Test Case '-[HandyToolsTests.FinishFactsTests testAutoTranscriptionTriesEachOfThePersonsLanguages]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testBusiestMomentIsWhereTheFramesChangeMost]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testEachFinishedScreenIsWhereItsJobLands]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testFinishedJobNotificationSaysWhatCameOut]' passed (0.010 seconds).
 Test Case '-[HandyToolsTests.FinishFactsTests testGIFFactsReadFramesAndLoop]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.FinishFactsTests testIDCopyFactsSeeNoLocationInARedrawnPhotoAndCheckTheLimit]' passed (0.019 seconds).
-Test Case '-[HandyToolsTests.FinishFactsTests testMutingAVideoIsQuickAndKeepsThePicture]' passed (6.222 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testIDCopyFactsSeeNoLocationInARedrawnPhotoAndCheckTheLimit]' passed (0.021 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testMutingAVideoIsQuickAndKeepsThePicture]' passed (4.551 seconds).
 Test Case '-[HandyToolsTests.FinishFactsTests testPDFFactsCountPagesAndSearchableWords]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.FinishFactsTests testSampleToneIsAPlayableWav]' passed (0.017 seconds).
-Test Case '-[HandyToolsTests.FinishFactsTests testSpeedingUpKeepsTheVideoAndHalvesTheLength]' passed (1.775 seconds).
-Test Case '-[HandyToolsTests.FinishFactsTests testVideoJoinTurnsClipsUprightAndKeepsThemVideos]' passed (4.500 seconds).
-Test Case '-[HandyToolsTests.FinishFactsTests testVideoListIsEveryVideoJobNamedAsOne]' passed (0.010 seconds).
-Test Case '-[HandyToolsTests.FinishFactsTests testVideoPromiseReadsWhatEachToolPromised]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.FinishFactsTests testVideoShrinkReportsProgressThatOnlyMovesForward]' passed (2.576 seconds).
-	 Executed 14 tests, with 0 failures (0 unexpected) in 15.138 (15.146) seconds
-Test Case '-[HandyToolsTests.FormatCoverageTests testEveryFormatOnTheListIsReadOrHonestlyListedAsNotYet]' passed (0.164 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.164 (0.165) seconds
+Test Case '-[HandyToolsTests.FinishFactsTests testSampleToneIsAPlayableWav]' passed (0.016 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testSpeedingUpKeepsTheVideoAndHalvesTheLength]' passed (1.871 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoJoinTurnsClipsUprightAndKeepsThemVideos]' passed (4.782 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoListIsEveryVideoJobNamedAsOne]' passed (0.009 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoPromiseReadsWhatEachToolPromised]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoShrinkReportsProgressThatOnlyMovesForward]' passed (1.686 seconds).
