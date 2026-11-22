@@ -28,7 +28,9 @@ final class PreviewTourTests: XCTestCase {
         sleep(2)                                   // the headline and Home, still
 
         any["first-try"].tap()                     // a real job on a sample: hidden, stripped, shrunk
-        _ = app.staticTexts["Your result"].waitForExistence(timeout: 15)
+        mark("DEMO-TAP")
+        _ = app.staticTexts["Your result"].waitForExistence(timeout: 90)   // slow on the simulator; the wait is cut
+        mark("DEMO-RESULT")
         sleep(2)                                   // the result, on screen
         if app.buttons["Done"].firstMatch.exists { app.buttons["Done"].firstMatch.tap() }
         sleep(1)

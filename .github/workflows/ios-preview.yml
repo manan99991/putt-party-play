@@ -50,40 +50,50 @@ jobs:
             -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO >/dev/null 2>&1 || true
           xcrun simctl io "$UDID" recordVideo --codec h264 --force preview/raw.mov &
           REC=$!
-          T0=$(python3 -c 'import time;print(time.time())')
-          # Stream the test log and note, on this clock, when the tour starts and ends (XCTContext marks).
-          TEST_RUNNER_PREVIEW_TOUR=1 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
-            -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO 2>&1 \
+          # Stream the test log through a pseudo-terminal (`script`), so lines arrive as they happen — through a plain
+          # pipe xcodebuild buffers them, and the marks were timed late. Each XCTContext mark is noted on this clock.
+          script -q /dev/null env TEST_RUNNER_PREVIEW_TOUR=1 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools \
+            -destination "id=$UDID" -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO 2>&1 \
             | while IFS= read -r line; do
-                case "$line" in
-                  *TOUR-START*) python3 -c 'import time;print(time.time())' > preview/start.t ;;
-                  *TOUR-END*) python3 -c 'import time;print(time.time())' > preview/end.t ;;
-                esac
+                for m in TOUR-START DEMO-TAP DEMO-RESULT TOUR-END; do
+                  case "$line" in *"$m"*) [ -f "preview/$m.t" ] || python3 -c 'import time;print(time.time())' > "preview/$m.t" ;; esac
+                done
                 case "$line" in *error:*|*"Test Case"*|*TEST\ *) echo "$line";; esac
               done
           sleep 1
           T1=$(python3 -c 'import time;print(time.time())')
           kill -INT $REC; wait $REC || true
           D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 preview/raw.mov)
-          # Count back from the END of the recording: the recorder can skip the idle start (cold app launch),
-          # so its clock is only reliable relative to when it stopped.
+          # Times on the video, counted back from the END of the recording (the recorder can skip an idle start).
+          # The demo's wait on this slow simulator is cut down to a beat; everything else is shown as it happened.
           python3 - <<PY
           import os
-          t0=$T0; t1=$T1; d=float("$D" or 0)
-          s=float(open("preview/start.t").read()) if os.path.exists("preview/start.t") else t1-35
-          e=float(open("preview/end.t").read()) if os.path.exists("preview/end.t") else s+30
-          a=max(0, d-(t1-s)-0.3); l=min(30, max(15, e-s+0.5))
-          open("preview/cut.txt","w").write(f"{a:.2f} {l:.2f}\n")
-          print("recording", d, "s; wall", t1-t0, "s; cut", a, l)
+          t1=$T1; d=float("$D" or 0)
+          def at(m, default):
+              p=f"preview/{m}.t"
+              return d-(t1-float(open(p).read())) if os.path.exists(p) else default
+          s=at("TOUR-START", d-35); e=at("TOUR-END", d-1)
+          tap=at("DEMO-TAP", None); res=at("DEMO-RESULT", None)
+          segs=[[s, tap+1.5], [res-0.4, e]] if tap is not None and res is not None and res-tap > 3 else [[s, e]]
+          total=sum(b-a for a,b in segs)
+          if total > 30: segs[-1][1] -= total-30
+          segs=[[max(0,a),b] for a,b in segs]
+          open("preview/cut.txt","w").write(" ".join(f"{a:.2f} {b:.2f}" for a,b in segs)+"\n")
+          print("recording", d, "s; segments", segs, "length", sum(b-a for a,b in segs))
           PY
           ls -la preview
       - name: Make it App Store size
         run: |
           cd preview
-          read START LEN < cut.txt || true   # (no trailing newline must not stop the step)
-          echo "cut from $START for $LEN s"
-          ffmpeg -y -ss $START -i raw.mov -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 \
-            -vf "scale=886:1920:force_original_aspect_ratio=decrease,pad=886:1920:(ow-iw)/2:(oh-ih)/2,fps=30" \
+          read -a C < cut.txt || true
+          echo "segments: ${C[*]}"
+          F=""; L=""; n=0; LEN=0
+          for ((k=0; k<${#C[@]}; k+=2)); do
+            F="$F[0:v]trim=start=${C[k]}:end=${C[k+1]},setpts=PTS-STARTPTS[s$n];"; L="$L[s$n]"; n=$((n+1))
+            LEN=$(python3 -c "print($LEN + ${C[k+1]} - ${C[k]})")
+          done
+          F="$F${L}concat=n=$n:v=1:a=0,scale=886:1920:force_original_aspect_ratio=decrease,pad=886:1920:(ow-iw)/2:(oh-ih)/2,fps=30[v]"
+          ffmpeg -y -i raw.mov -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -filter_complex "$F" -map "[v]" -map 1:a \
             -c:v libx264 -profile:v high -pix_fmt yuv420p -b:v 10M -c:a aac -b:a 256k -t $LEN -movflags +faststart \
             tenzy-preview-6.9.mp4
           for t in 1 4 8 12 16 20 24 28; do ffmpeg -y -ss $t -i tenzy-preview-6.9.mp4 -frames:v 1 -vf scale=443:-1 frame-$t.png >/dev/null 2>&1 || true; done
