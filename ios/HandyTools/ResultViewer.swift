@@ -102,7 +102,7 @@ private struct ViewerPage: View {
             } else if item.isPDF {
                 PDFPreview(data: pdfData)
             } else if let image {
-                ZoomableImage(image: image)
+                ViewerZoomImage(image: image)
             } else {
                 ProgressView().tint(.white)
             }
@@ -126,7 +126,7 @@ private struct ViewerPage: View {
 }
 
 /// A photo you can pinch, double-tap and pan — the way Photos does it.
-private struct ZoomableImage: UIViewRepresentable {
+private struct ViewerZoomImage: UIViewRepresentable {
     let image: UIImage
     func makeCoordinator() -> Coordinator { Coordinator() }
     func makeUIView(context: Context) -> UIScrollView {
