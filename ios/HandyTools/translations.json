@@ -39468,5 +39468,65 @@
   "ja": "オリジナルミックス — 雰囲気をタップでやり直し。",
   "pt": "Sua própria mistura — toque numa vibe para recomeçar.",
   "zh": "你的专属搭配——点一个氛围重新开始。"
+ },
+ "Clean up its sound": {
+  "de": "Den Ton aufräumen",
+  "es": "Limpia su sonido",
+  "fr": "Nettoie son son",
+  "hi": "इसकी आवाज़ साफ़ करें",
+  "it": "Pulisci l'audio",
+  "ja": "音をきれいにする",
+  "pt": "Limpe o som",
+  "zh": "清理声音"
+ },
+ "Less background noise and hum, an even volume — as a sound file": {
+  "de": "Weniger Hintergrundrauschen und Brummen, gleichmäßige Lautstärke – als Audiodatei",
+  "es": "Menos ruido de fondo y zumbido, volumen uniforme, como archivo de sonido",
+  "fr": "Moins de bruit de fond et de bourdonnement, un volume régulier — en fichier audio",
+  "hi": "कम पृष्ठभूमि शोर और भनभनाहट, एक-सी आवाज़ — ऑडियो फ़ाइल के रूप में",
+  "it": "Meno rumore di fondo e ronzio, volume uniforme — come file audio",
+  "ja": "背景ノイズやハムを減らし音量をそろえて — 音声ファイルで",
+  "pt": "Menos ruído de fundo e zumbido, volume uniforme — como arquivo de som",
+  "zh": "减少背景噪音和嗡嗡声，音量更均匀——存成音频文件"
+ },
+ "Trim its sound, cut the silences": {
+  "de": "Ton kürzen, Stille herausschneiden",
+  "es": "Recorta su sonido, quita los silencios",
+  "fr": "Coupe son son, enlève les silences",
+  "hi": "इसकी आवाज़ काटें, खामोशियाँ हटाएँ",
+  "it": "Taglia l'audio, togli i silenzi",
+  "ja": "音をトリミング、無音をカット",
+  "pt": "Corte o som, tire os silêncios",
+  "zh": "剪辑声音，去掉静音"
+ },
+ "Just the audio, trimmed and faded the way you like": {
+  "de": "Nur der Ton, gekürzt und ausgeblendet, wie du willst",
+  "es": "Solo el audio, recortado y con fundidos a tu gusto",
+  "fr": "Juste le son, coupé et en fondu comme tu veux",
+  "hi": "सिर्फ़ ऑडियो, आपकी पसंद से कटा और फ़ेड किया",
+  "it": "Solo l'audio, tagliato e sfumato come vuoi",
+  "ja": "音声だけを、好きなようにトリミング＆フェード",
+  "pt": "Só o áudio, cortado e com fade do seu jeito",
+  "zh": "只要音频，按你的想法剪辑并淡入淡出"
+ },
+ "Shrink its sound to email it": {
+  "de": "Ton verkleinern, um ihn zu mailen",
+  "es": "Reduce su sonido para enviarlo por correo",
+  "fr": "Réduis son son pour l'envoyer par e-mail",
+  "hi": "ईमेल के लिए इसकी आवाज़ छोटी करें",
+  "it": "Riduci l'audio per inviarlo via e-mail",
+  "ja": "メールで送れるよう音を小さく",
+  "pt": "Reduza o som para enviar por e-mail",
+  "zh": "压缩声音以便邮件发送"
+ },
+ "Just the audio, small enough for any email": {
+  "de": "Nur der Ton, klein genug für jede E-Mail",
+  "es": "Solo el audio, lo bastante pequeño para cualquier correo",
+  "fr": "Juste le son, assez léger pour n'importe quel e-mail",
+  "hi": "सिर्फ़ ऑडियो, किसी भी ईमेल के लिए काफ़ी छोटा",
+  "it": "Solo l'audio, abbastanza piccolo per qualsiasi e-mail",
+  "ja": "音声だけを、どんなメールでも送れるサイズに",
+  "pt": "Só o áudio, pequeno o bastante para qualquer e-mail",
+  "zh": "只要音频，小到能发任何邮件"
  }
 }

@@ -42,6 +42,7 @@ struct AudioCleanView: View {
         .fileImporter(isPresented: $showFiles, allowedContentTypes: [.audio, .movie, .mpeg4Movie]) { res in
             if case .success(let url) = res { load(url) }
         }
+        .handoff("audioclean") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
         .finishes(working, tool: "Audio Cleanup")
     }
 

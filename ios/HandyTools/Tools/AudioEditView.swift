@@ -43,6 +43,7 @@ struct AudioEditView: View {
         .fileImporter(isPresented: $showFiles, allowedContentTypes: [.audio, .movie, .mpeg4Movie]) { res in
             if case .success(let url) = res { load(url) }
         }
+        .handoff("audioedit") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
         .finishes(working, tool: "Audio Editor")
     }
 

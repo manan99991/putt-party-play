@@ -163,6 +163,35 @@ for k, v in tr.items():
     gaps = [l for l in LANGS if not str(v.get(l, "")).strip()]
     if gaps: bad.append(f"translations.json: \"{k[:60]}\" has no {', '.join(gaps)} text")
 
+# 5. No hidden tools: every tool that can be handed something must be offered for it in "What to do with it"
+# (ToolHandoff.tools), and a tool whose picker takes videos must be on the video list — a tool nobody can reach
+# from what they're holding is a wasted tool.
+th = open(os.path.join(ios, "HandyTools", "Engines", "ToolHandoff.swift")).read()
+lists = {}
+for m in re.finditer(r'case ((?:\.\w+(?:, )?)+): return \[([^\]]*)\]', th):
+    ids = re.findall(r'"(\w+)"', m.group(2))
+    for k in re.findall(r'\.(\w+)', m.group(1)): lists[k] = ids
+offered = {i for v in lists.values() for i in v}
+for f, s in code.items():
+    if "/HandyTools/Tools/" not in f: continue
+    for m in re.finditer(r'\.handoff\("(\w+)"\)', s):
+        tid = m.group(1)
+        if tid not in offered:
+            bad.append(f"{os.path.basename(f)}: the {tid} tool takes a hand-off but ToolHandoff.tools never offers it")
+# A tool whose own picker opens videos must take a video handed over, and be offered for videos.
+app = open(os.path.join(ios, "HandyTools", "App.swift")).read()
+view_id = {v: k for k, v in re.findall(r'case "(\w+)": (\w+)\(', app)}
+for f, s in code.items():
+    if "/HandyTools/Tools/" not in f or not re.search(r'allowedContentTypes: \[[^\]]*\.(movie|mpeg4Movie)\b', s): continue
+    for v in re.findall(r'^struct (\w+View)\b', s, re.M):
+        tid = view_id.get(v)
+        # Soundboard on a video: "Give a video a funny voice" does it with every voice and puts the voice back on the video.
+        if not tid or tid == "soundboard": continue
+        if f'.handoff("{tid}")' not in s:
+            bad.append(f"{os.path.basename(f)}: {tid} opens videos from its own picker but can't take the video someone is already holding (.handoff)")
+        elif tid not in lists.get("video", []):
+            bad.append(f"{os.path.basename(f)}: the {tid} tool opens videos but isn't on the video list in ToolHandoff.tools")
+
 for b in bad: print("✗", b)
 if miss: print(f"! {len(miss)} strings without translations (run the translation pass):", "; ".join(sorted(miss)[:15]), "…" if len(miss) > 15 else "")
 print("precheck:", "FAILED" if bad else "ok", f"({len(files)} files)")

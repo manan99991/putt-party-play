@@ -158,7 +158,7 @@ enum Guide {
             switch id {
             case "video", "audiomix", "celebrate": return "clip"
             case "fitit": return "share"
-            case "audioconvert", "ringtone": return "sound"
+            case "audioconvert", "ringtone", "audioclean", "audioedit", "audiocompress": return "sound"
             case "meetingnotes": return "words"
             default: break
             }
@@ -180,6 +180,8 @@ enum Guide {
         case "video": return "edit"
         case "audiomix": return "edit"
         case "audiotags": return kind == .audio ? "edit" : "more"
+        case "audioclean", "audioedit": return "edit"
+        case "studio": return "share"
         case "zipmaker": return kind == .file ? "more" : "share"
         default: return "more"
         }
@@ -281,6 +283,9 @@ enum Guide {
     static let videoNames: [String: (name: String, gets: String)] = [
         "audioconvert": ("Save the sound as MP3 or M4A", "Just the audio from your video, in the format you pick"),
         "ringtone": ("Ringtone from this video", "Up to 30 seconds of its sound, with the steps to set it"),
+        "audioclean": ("Clean up its sound", "Less background noise and hum, an even volume — as a sound file"),
+        "audioedit": ("Trim its sound, cut the silences", "Just the audio, trimmed and faded the way you like"),
+        "audiocompress": ("Shrink its sound to email it", "Just the audio, small enough for any email"),
         "meetingnotes": ("Notes from a video call or talk", "Who said what, a summary and the to-dos"),
         "audiomix": ("Join videos or change their speed", "One video, or faster / slower with natural voices"),
         "celebrate": ("Make it stunning", "A whole vibe in one tap, or looks, light, motion, sparkle, words and any festival — as subtle or as wild as you like"),

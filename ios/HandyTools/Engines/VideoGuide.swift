@@ -33,7 +33,7 @@ extension Guide {
             case "fitit": return "send"
             case "celebrate", "videofx": return "stunning"
             case "audiomix": return "speed"
-            case "audioconvert", "ringtone": return "sound"
+            case "audioconvert", "ringtone", "audioclean", "audioedit", "audiocompress": return "sound"
             case "meetingnotes": return "words"
             default: return "more"
             }
@@ -54,7 +54,7 @@ extension Guide {
     }
 
     /// Ways listed first in their job: the one most people mean.
-    private static let videoFirst = ["tool-videofx", "chain-reel-captions", "tool-video", "chain-video-chat", "chain-video-boomerang", "chain-video-slowmo", "tool-audioconvert", "chain-video-words", "chain-video-still"]
+    private static let videoFirst = ["tool-videofx", "chain-reel-captions", "tool-video", "chain-video-chat", "chain-video-boomerang", "chain-video-slowmo", "tool-audioconvert", "chain-video-quiet", "tool-audioclean", "chain-video-words", "chain-video-still"]
 
     /// Every way to work on this video, sorted into the jobs (in `videoGoalIDs` order, empty jobs left out).
     /// Anything that fits no job goes in "Something else" at the end, so nothing is ever lost.
