@@ -1,10 +1,11 @@
 == smoke (results)
-Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (1242.072 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 1242.072 (1242.124) seconds
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1177.930 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (28.232 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (31.334 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1237.496 (1237.500) seconds
-	 Executed 4 tests, with 0 failures (0 unexpected) in 2479.568 (2479.638) seconds
-	 Executed 4 tests, with 0 failures (0 unexpected) in 2479.568 (2479.641) seconds
-** TEST SUCCEEDED **
+Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (792.947 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 792.947 (793.002) seconds
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (818.945 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolSmokeTests.swift:52: error: -[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender] : Failed to synthesize event: Neither element nor any descendant has keyboard focus. Event dispatch snapshot: TextField, {{48.0, 7.7}, {286.0, 42.3}}, identifier: 'describe-field', placeholderValue: 'e.g. shrink a photo under 1 MB and hide where it was taken', value: e.g. shrink a phot...
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' failed (15.854 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (21.062 seconds).
+	 Executed 3 tests, with 1 failure (0 unexpected) in 855.860 (855.863) seconds
+	 Executed 4 tests, with 1 failure (0 unexpected) in 1648.807 (1648.872) seconds
+	 Executed 4 tests, with 1 failure (0 unexpected) in 1648.807 (1648.874) seconds
+** TEST FAILED **
