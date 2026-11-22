@@ -50,23 +50,37 @@ jobs:
             -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO >/dev/null 2>&1 || true
           xcrun simctl io "$UDID" recordVideo --codec h264 --force preview/raw.mov &
           REC=$!
-          sleep 2
+          T0=$(python3 -c 'import time;print(time.time())')
+          # Stream the test log and note, on this clock, when the tour starts and ends (XCTContext marks).
           TEST_RUNNER_PREVIEW_TOUR=1 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
-            -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO \
-            2>&1 | grep -E "error:|Test Case|TEST (EXECUTE )?(SUCCEEDED|FAILED)" || true
+            -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO 2>&1 \
+            | while IFS= read -r line; do
+                case "$line" in
+                  *TOUR-START*) python3 -c 'import time;print(time.time())' > preview/start.t ;;
+                  *TOUR-END*) python3 -c 'import time;print(time.time())' > preview/end.t ;;
+                esac
+                case "$line" in *error:*|*"Test Case"*|*TEST\ *) echo "$line";; esac
+              done
+          sleep 1
           kill -INT $REC; wait $REC || true
+          python3 - <<PY
+          t0=$T0
+          s=float(open("preview/start.t").read()) if __import__("os").path.exists("preview/start.t") else t0+30
+          e=float(open("preview/end.t").read()) if __import__("os").path.exists("preview/end.t") else s+30
+          a=max(0,s-t0-0.3); l=min(30,max(15,e-s+0.5))
+          open("preview/cut.txt","w").write(f"{a:.2f} {l:.2f}")
+          print("cut", a, l)
+          PY
           ls -la preview
       - name: Make it App Store size
         run: |
           cd preview
-          D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 raw.mov | cut -d. -f1)
-          # Skip the app launch (first ~6 s), keep at most 30 s.
-          START=6; LEN=$(( D - START )); [ $LEN -gt 30 ] && LEN=30
-          ffmpeg -y -ss $START -t $LEN -i raw.mov -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 \
+          read START LEN < cut.txt
+          ffmpeg -y -ss $START -i raw.mov -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 \
             -vf "scale=886:1920:force_original_aspect_ratio=decrease,pad=886:1920:(ow-iw)/2:(oh-ih)/2,fps=30" \
-            -c:v libx264 -profile:v high -pix_fmt yuv420p -b:v 10M -c:a aac -b:a 256k -shortest -movflags +faststart \
+            -c:v libx264 -profile:v high -pix_fmt yuv420p -b:v 10M -c:a aac -b:a 256k -t $LEN -movflags +faststart \
             tenzy-preview-6.9.mp4
-          for t in 1 6 12 18 24; do ffmpeg -y -ss $t -i tenzy-preview-6.9.mp4 -frames:v 1 -vf scale=443:-1 frame-$t.png >/dev/null 2>&1 || true; done
+          for t in 1 4 8 12 16 20 24 28; do ffmpeg -y -ss $t -i tenzy-preview-6.9.mp4 -frames:v 1 -vf scale=443:-1 frame-$t.png >/dev/null 2>&1 || true; done
           ffprobe -v error -show_entries format=duration:stream=width,height,codec_name -of compact tenzy-preview-6.9.mp4
           rm -f raw.mov
       - name: Publish

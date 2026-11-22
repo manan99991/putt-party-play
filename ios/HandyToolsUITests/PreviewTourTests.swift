@@ -11,6 +11,7 @@ final class PreviewTourTests: XCTestCase {
         app.launch()
         let any = app.descendants(matching: .any)
         XCTAssertTrue(any["first-try"].waitForExistence(timeout: 30))
+        mark("TOUR-START")                         // the workflow cuts the video from here
         sleep(3)                                   // the headline and Home, still
 
         any["first-try"].tap()                     // a real job on a sample: hidden, stripped, shrunk
@@ -20,16 +21,28 @@ final class PreviewTourTests: XCTestCase {
 
         let field = app.textFields["describe-field"].exists ? app.textFields["describe-field"] : app.textViews["describe-field"]
         field.tap()
-        field.typeText("Shrink a photo under 1 MB and hide where it was taken")
+        field.typeText("Shrink a photo under 1 MB, remove the location and email it")
         sleep(1)
-        any["describe-build"].tap()                // Tenzy builds it
+        any["describe-build"].tap()                // Tenzy builds it, step by step
         sleep(6)
-        if app.buttons["Cancel"].firstMatch.exists { app.buttons["Cancel"].firstMatch.tap() } else { app.swipeDown(velocity: .fast) }
-        sleep(1)
+        backHome(app)
 
-        any["shelf-phone"].tap()                   // every tool, one tap away
+        let shelf = any["shelf-phone"]
+        if shelf.waitForExistence(timeout: 5) { shelf.tap() }   // every tool, one tap away
         sleep(3)
         if any["shelf-tool-light"].exists { any["shelf-tool-light"].tap() }
-        sleep(4)
+        sleep(3)
+        mark("TOUR-END")
     }
+
+    /// Close whatever the build opened (the editor, a confirmation, the keyboard) and land on Home again.
+    private func backHome(_ app: XCUIApplication) {
+        for label in ["Cancel", "Discard", "Discard Changes", "Done"] where app.buttons[label].firstMatch.exists {
+            app.buttons[label].firstMatch.tap(); sleep(1)
+        }
+        if !app.descendants(matching: .any)["shelf-phone"].isHittable { app.swipeDown(velocity: .fast); sleep(1) }
+    }
+
+    /// A line in the test log the workflow times, so the video starts and stops exactly on the tour.
+    private func mark(_ name: String) { XCTContext.runActivity(named: name) { _ in } }
 }
