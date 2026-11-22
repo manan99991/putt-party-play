@@ -12,6 +12,18 @@ final class PromiseTests: XCTestCase {
         return app
     }
 
+    /// "See it work in 10 seconds" (the first-minute demo) must finish on its result, never close the app.
+    func testFirstMinuteDemoFinishesWithAResult() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "home", "-uitest", "-resetfirsttry"]
+        app.launch()
+        let start = app.descendants(matching: .any)["first-try"]
+        XCTAssertTrue(start.waitForExistence(timeout: 30), "no first-minute card on Home")
+        start.tap()
+        XCTAssertTrue(app.staticTexts["Your result"].waitForExistence(timeout: 90), "the demo never showed its result")
+        XCTAssertEqual(app.state, .runningForeground, "the demo closed the app")
+    }
+
     /// "The home page fits with no scrolling, and every tool — the flashlight too — is there" (user, Nov 22).
     func testHomeFitsOneScreenAndShelvesOpenTools() {
         let app = XCUIApplication()

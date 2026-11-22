@@ -1,4 +1,2 @@
-# One -only-testing target per line; lines starting with # are ignored.
-# Second proving run: every ready-made tool on a real file (memo hang fixed) + every tool opened with its sample.
-HandyToolsUITests/RealInputTests
-HandyToolsUITests/ToolRealInputTests
+# The first-minute demo closed the app in the store-video take (Nov 22).
+HandyToolsUITests/PromiseTests/testFirstMinuteDemoFinishesWithAResult
