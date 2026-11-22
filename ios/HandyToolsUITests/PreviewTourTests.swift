@@ -25,7 +25,7 @@ final class PreviewTourTests: XCTestCase {
         }
 
         mark("TOUR-START")                         // the workflow cuts the video from here (30 s in all)
-        sleep(2)                                   // the headline and Home, still
+        sleep(1)                                   // the headline and Home, still
 
         any["first-try"].tap()                     // a real job on a sample: hidden, stripped, shrunk
         mark("DEMO-TAP")
@@ -33,18 +33,16 @@ final class PreviewTourTests: XCTestCase {
         mark("DEMO-RESULT")
         sleep(2)                                   // the result, on screen
         if app.buttons["Done"].firstMatch.exists { app.buttons["Done"].firstMatch.tap() }
-        sleep(1)
 
         let shelf = any["shelf-phone"]             // every tool, one tap away
         if shelf.waitForExistence(timeout: 5) { shelf.tap() }
-        sleep(3)
+        sleep(2)
         if app.buttons["Done"].firstMatch.exists { app.buttons["Done"].firstMatch.tap() }
-        sleep(1)
 
         field.tap()
-        field.typeText("Shrink a photo, remove location, email it")
+        field.typeText("Shrink a photo and email it")
         any["describe-build"].tap()                // Tenzy builds it, step by step
-        sleep(5)
+        sleep(4)
         mark("TOUR-END")
     }
 
