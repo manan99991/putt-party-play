@@ -24,6 +24,7 @@ jobs:
         run: |
           set -o pipefail
           brew install xcodegen ffmpeg && xcodegen generate
+          python3 -m pip install --break-system-packages pillow >/dev/null 2>&1 || python3 -m pip install pillow >/dev/null 2>&1 || true
           xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
           UDID=$(xcrun simctl list devices available -j | python3 -c '
           import json,sys
@@ -48,39 +49,46 @@ jobs:
           # Install + warm up once, so the recording starts on a launched app, not a cold boot.
           TEST_RUNNER_PREVIEW_TOUR=warm xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO >/dev/null 2>&1 || true
-          # The recorder starts when the tour says TOUR-START (the test then holds on Home for 6 s while it spins up)
-          # and stops at TOUR-END, so the film holds the tour and nothing else. Marks arrive live through a pty.
+          # Film the whole test. The tour's marks (live through a pty) give the gaps between moments; where they sit
+          # on the film is found from the film itself: the last frame that is still the app (before the test closes it
+          # and the iPhone home screen shows) is TOUR-END.
+          xcrun simctl io "$UDID" recordVideo --codec h264 --force preview/raw.mov &
+          REC=$!
           script -q /dev/null env TEST_RUNNER_PREVIEW_TOUR=1 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools \
             -destination "id=$UDID" -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO 2>&1 \
             | while IFS= read -r line; do
-                for m in TOUR-START PLAY DEMO-TAP DEMO-RESULT TOUR-END; do
+                for m in PLAY DEMO-TAP DEMO-RESULT TOUR-END; do
                   case "$line" in *"$m"*) [ -f "preview/$m.t" ] || python3 -c 'import time;print(time.time())' > "preview/$m.t" ;; esac
                 done
-                case "$line" in
-                  *TOUR-START*) [ -f preview/rec.pid ] || { xcrun simctl io "$UDID" recordVideo --codec h264 --force preview/raw.mov & echo $! > preview/rec.pid; } ;;
-                  *TOUR-END*) sleep 1; [ -f preview/rec.pid ] && kill -INT "$(cat preview/rec.pid)" ;;
-                esac
                 case "$line" in *error:*|*"Test Case"*|*TEST\ *) echo "$line";; esac
               done
           sleep 3
-          D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 preview/raw.mov)
-          # Video times counted back from its end (= TOUR-END + 1 s). Show 1 s of Home before PLAY; the demo's wait
-          # on this slow simulator, if long, is cut to a beat.
-          python3 - <<PY
-          import os
-          d=float("$D" or 0)
+          kill -INT $REC; wait $REC || true
+          mkdir -p preview/scan
+          ffmpeg -v error -i preview/raw.mov -vf "fps=4,scale=24:52" preview/scan/%05d.png
+          python3 - <<'PY'
+          import os, glob
+          from PIL import Image
+          files=sorted(glob.glob("preview/scan/*.png"))
+          def app_like(f):
+              im=Image.open(f).convert("RGB"); px=list(im.getdata()); n=len(px)
+              r=sum(p[0] for p in px)/n; g=sum(p[1] for p in px)/n; b=sum(p[2] for p in px)/n
+              return b < 55 and (r+g+b)/3 > 3      # Tenzy's dark screens; not the purple home screen, not black
+          last=max((i for i,f in enumerate(files) if app_like(f)), default=len(files)-1)
+          e=(last+1)/4.0
           def t(m): p=f"preview/{m}.t"; return float(open(p).read()) if os.path.exists(p) else None
-          end=t("TOUR-END") or 0
+          end=t("TOUR-END")
           def at(m):
-              x=t(m); return None if x is None else d-(end+1-x)
-          play=at("PLAY") or max(0,d-30); tap=at("DEMO-TAP"); res=at("DEMO-RESULT")
-          s=max(0, play-1.0); e=d
+              x=t(m); return None if x is None or end is None else e-(end-x)
+          play=at("PLAY"); tap=at("DEMO-TAP"); res=at("DEMO-RESULT")
+          s=max(0,(play if play is not None else e-30)-1.0)
           segs=[[s, tap+1.5], [res-0.4, e]] if tap is not None and res is not None and res-tap > 4 else [[s, e]]
           total=sum(b-a for a,b in segs)
           if total > 30: segs[-1][1] -= total-30
           open("preview/cut.txt","w").write(" ".join(f"{a:.2f} {b:.2f}" for a,b in segs)+"\n")
-          print("recording", d, "s; segments", segs, "length", sum(b-a for a,b in segs))
+          print("frames", len(files), "last app frame at", e, "s; segments", segs, "length", sum(b-a for a,b in segs))
           PY
+          rm -rf preview/scan
           ls -la preview
       - name: Make it App Store size
         run: |

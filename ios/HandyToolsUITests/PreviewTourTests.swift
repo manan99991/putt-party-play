@@ -24,8 +24,7 @@ final class PreviewTourTests: XCTestCase {
             return
         }
 
-        mark("TOUR-START")                         // the workflow starts recording now…
-        sleep(6)                                   // …and the recorder takes a few seconds to spin up
+        sleep(2)
         mark("PLAY")                               // the film shows 1 s of Home before this, then the tour
         sleep(1)
 
