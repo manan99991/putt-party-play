@@ -38928,5 +38928,545 @@
   "ja": "おすすめ",
   "pt": "Sugerido",
   "zh": "推荐"
+ },
+ "A whole vibe in one tap, or looks, light, motion, sparkle, words and any festival — as subtle or as wild as you like": {
+  "de": "Eine ganze Stimmung mit einem Tipp – oder Looks, Licht, Bewegung, Funkeln, Worte und jedes Fest, so dezent oder wild du willst",
+  "es": "Todo un ambiente de un toque, o looks, luz, movimiento, brillos, palabras y cualquier fiesta, tan sutil o loco como quieras",
+  "fr": "Toute une ambiance en un geste, ou looks, lumière, mouvement, paillettes, mots et n'importe quelle fête — aussi subtil ou fou que tu veux",
+  "hi": "एक टैप में पूरा माहौल, या लुक, रोशनी, मूवमेंट, चमक, शब्द और कोई भी त्योहार — जितना हल्का या ज़बरदस्त चाहें",
+  "it": "Un'intera atmosfera con un tocco, o look, luce, movimento, scintille, parole e qualsiasi festa — delicato o pazzesco come vuoi",
+  "ja": "ワンタップで雰囲気ごと。ルック、光、動き、キラキラ、文字、どんなお祝いも — 控えめにも派手にも",
+  "pt": "Toda uma vibe num toque, ou looks, luz, movimento, brilho, palavras e qualquer festa — tão sutil ou ousado quanto quiser",
+  "zh": "一键换整套氛围，或自己选色调、光效、动感、闪光、文字和任何节日——想低调或狂野都行"
+ },
+ "Barely there": {
+  "de": "Kaum sichtbar",
+  "es": "Apenas",
+  "fr": "À peine",
+  "hi": "बस ज़रा सा",
+  "it": "Appena",
+  "ja": "ほんのり",
+  "pt": "Quase nada",
+  "zh": "若有若无"
+ },
+ "Beat punch": {
+  "de": "Beat-Stoß",
+  "es": "Golpe al ritmo",
+  "fr": "Coup sur le beat",
+  "hi": "बीट पर झटका",
+  "it": "Colpo a ritmo",
+  "ja": "ビートでズン",
+  "pt": "Batida",
+  "zh": "踩点冲击"
+ },
+ "Best day ever": {
+  "de": "Bester Tag überhaupt",
+  "es": "El mejor día",
+  "fr": "Le plus beau jour",
+  "hi": "अब तक का सबसे अच्छा दिन",
+  "it": "Il giorno più bello",
+  "ja": "最高の一日",
+  "pt": "O melhor dia",
+  "zh": "最棒的一天"
+ },
+ "Bounce": {
+  "de": "Hüpfen",
+  "es": "Rebote",
+  "fr": "Rebond",
+  "hi": "उछाल",
+  "it": "Rimbalzo",
+  "ja": "バウンド",
+  "pt": "Quicar",
+  "zh": "弹跳"
+ },
+ "Bubbles": {
+  "de": "Blasen",
+  "es": "Burbujas",
+  "fr": "Bulles",
+  "hi": "बुलबुले",
+  "it": "Bolle",
+  "ja": "シャボン玉",
+  "pt": "Bolhas",
+  "zh": "泡泡"
+ },
+ "Cinema bars": {
+  "de": "Kinobalken",
+  "es": "Barras de cine",
+  "fr": "Bandes cinéma",
+  "hi": "सिनेमा पट्टियाँ",
+  "it": "Bande cinema",
+  "ja": "シネマバー",
+  "pt": "Barras de cinema",
+  "zh": "电影黑边"
+ },
+ "Confetti": {
+  "de": "Konfetti",
+  "es": "Confeti",
+  "fr": "Confettis",
+  "hi": "कॉन्फ़ेटी",
+  "it": "Coriandoli",
+  "ja": "紙吹雪",
+  "pt": "Confete",
+  "zh": "彩纸"
+ },
+ "Dreamy": {
+  "de": "Verträumt",
+  "es": "Soñador",
+  "fr": "Rêveur",
+  "hi": "सपनीला",
+  "it": "Sognante",
+  "ja": "ドリーミー",
+  "pt": "Sonhador",
+  "zh": "梦幻"
+ },
+ "Drift": {
+  "de": "Gleiten",
+  "es": "Deriva",
+  "fr": "Dérive",
+  "hi": "धीमा खिसकना",
+  "it": "Deriva",
+  "ja": "ドリフト",
+  "pt": "Deriva",
+  "zh": "缓移"
+ },
+ "Epic": {
+  "de": "Episch",
+  "es": "Épico",
+  "fr": "Épique",
+  "hi": "एपिक",
+  "it": "Epico",
+  "ja": "エピック",
+  "pt": "Épico",
+  "zh": "史诗"
+ },
+ "Fade": {
+  "de": "Einblenden",
+  "es": "Fundido",
+  "fr": "Fondu",
+  "hi": "धीरे उभरना",
+  "it": "Dissolvenza",
+  "ja": "フェード",
+  "pt": "Esmaecer",
+  "zh": "淡入"
+ },
+ "Film grain": {
+  "de": "Filmkorn",
+  "es": "Grano de película",
+  "fr": "Grain de film",
+  "hi": "फ़िल्म ग्रेन",
+  "it": "Grana pellicola",
+  "ja": "フィルム粒子",
+  "pt": "Granulado",
+  "zh": "胶片颗粒"
+ },
+ "Fireworks": {
+  "de": "Feuerwerk",
+  "es": "Fuegos artificiales",
+  "fr": "Feux d'artifice",
+  "hi": "आतिशबाज़ी",
+  "it": "Fuochi d'artificio",
+  "ja": "花火",
+  "pt": "Fogos de artifício",
+  "zh": "烟花"
+ },
+ "Flare sweep": {
+  "de": "Lichtstreif",
+  "es": "Destello",
+  "fr": "Balayage lumineux",
+  "hi": "चमक की लकीर",
+  "it": "Bagliore",
+  "ja": "フレアスイープ",
+  "pt": "Clarão",
+  "zh": "光晕扫过"
+ },
+ "Glow": {
+  "de": "Leuchten",
+  "es": "Resplandor",
+  "fr": "Halo",
+  "hi": "चमक",
+  "it": "Bagliore soft",
+  "ja": "グロー",
+  "pt": "Brilho",
+  "zh": "柔光"
+ },
+ "Golden hour": {
+  "de": "Goldene Stunde",
+  "es": "Hora dorada",
+  "fr": "Heure dorée",
+  "hi": "गोल्डन आवर",
+  "it": "Ora d'oro",
+  "ja": "ゴールデンアワー",
+  "pt": "Hora dourada",
+  "zh": "黄金时刻"
+ },
+ "Golden sun": {
+  "de": "Goldene Sonne",
+  "es": "Sol dorado",
+  "fr": "Soleil doré",
+  "hi": "सुनहरा सूरज",
+  "it": "Sole dorato",
+  "ja": "黄金の太陽",
+  "pt": "Sol dourado",
+  "zh": "金色阳光"
+ },
+ "Handheld": {
+  "de": "Handkamera",
+  "es": "Cámara en mano",
+  "fr": "Caméra à l'épaule",
+  "hi": "हाथ में कैमरा",
+  "it": "Camera a mano",
+  "ja": "手持ち",
+  "pt": "Câmera na mão",
+  "zh": "手持晃动"
+ },
+ "Hearts": {
+  "de": "Herzen",
+  "es": "Corazones",
+  "fr": "Cœurs",
+  "hi": "दिल",
+  "it": "Cuori",
+  "ja": "ハート",
+  "pt": "Corações",
+  "zh": "爱心"
+ },
+ "How they arrive": {
+  "de": "Wie sie erscheinen",
+  "es": "Cómo aparecen",
+  "fr": "Leur apparition",
+  "hi": "वे कैसे आते हैं",
+  "it": "Come appaiono",
+  "ja": "登場のしかた",
+  "pt": "Como aparecem",
+  "zh": "出现方式"
+ },
+ "Light leaks": {
+  "de": "Lichtlecks",
+  "es": "Fugas de luz",
+  "fr": "Fuites de lumière",
+  "hi": "लाइट लीक",
+  "it": "Infiltrazioni di luce",
+  "ja": "光漏れ",
+  "pt": "Vazamentos de luz",
+  "zh": "漏光"
+ },
+ "Love": {
+  "de": "Liebe",
+  "es": "Amor",
+  "fr": "Amour",
+  "hi": "प्यार",
+  "it": "Amore",
+  "ja": "ラブ",
+  "pt": "Amor",
+  "zh": "爱"
+ },
+ "Make any video stunning": {
+  "de": "Mach jedes Video atemberaubend",
+  "es": "Haz espectacular cualquier vídeo",
+  "fr": "Rends n'importe quelle vidéo spectaculaire",
+  "hi": "किसी भी वीडियो को शानदार बनाएँ",
+  "it": "Rendi spettacolare qualsiasi video",
+  "ja": "どんな動画も見違えるほどに",
+  "pt": "Deixe qualquer vídeo deslumbrante",
+  "zh": "让任何视频都惊艳"
+ },
+ "Make it stunning — looks, light, motion, sparkle and words, as subtle or as wild as you like.": {
+  "de": "Mach es atemberaubend – Looks, Licht, Bewegung, Funkeln und Worte, so dezent oder wild du willst.",
+  "es": "Hazlo espectacular: looks, luz, movimiento, brillos y palabras, tan sutil o loco como quieras.",
+  "fr": "Rends-la spectaculaire — looks, lumière, mouvement, paillettes et mots, aussi subtil ou fou que tu veux.",
+  "hi": "इसे शानदार बनाएँ — लुक, रोशनी, मूवमेंट, चमक और शब्द, जितना हल्का या ज़बरदस्त चाहें।",
+  "it": "Rendilo spettacolare: look, luce, movimento, scintille e parole, delicato o pazzesco come vuoi.",
+  "ja": "見違えるほどに — ルック、光、動き、キラキラ、文字を、控えめにも派手にも。",
+  "pt": "Deixe-o deslumbrante — looks, luz, movimento, brilho e palavras, tão sutil ou ousado quanto quiser.",
+  "zh": "让它惊艳——色调、光效、动感、闪光和文字，想低调或狂野都行。"
+ },
+ "Make my video": {
+  "de": "Mein Video erstellen",
+  "es": "Crear mi vídeo",
+  "fr": "Créer ma vidéo",
+  "hi": "मेरा वीडियो बनाएँ",
+  "it": "Crea il mio video",
+  "ja": "動画を作る",
+  "pt": "Criar meu vídeo",
+  "zh": "生成我的视频"
+ },
+ "Moonlight": {
+  "de": "Mondlicht",
+  "es": "Luz de luna",
+  "fr": "Clair de lune",
+  "hi": "चाँदनी",
+  "it": "Chiaro di luna",
+  "ja": "月明かり",
+  "pt": "Luar",
+  "zh": "月光"
+ },
+ "Motion": {
+  "de": "Bewegung",
+  "es": "Movimiento",
+  "fr": "Mouvement",
+  "hi": "मूवमेंट",
+  "it": "Movimento",
+  "ja": "動き",
+  "pt": "Movimento",
+  "zh": "动感"
+ },
+ "Neon edges": {
+  "de": "Neonkanten",
+  "es": "Bordes neón",
+  "fr": "Contours néon",
+  "hi": "नियॉन किनारे",
+  "it": "Bordi neon",
+  "ja": "ネオンの輪郭",
+  "pt": "Bordas neon",
+  "zh": "霓虹轮廓"
+ },
+ "Night sky": {
+  "de": "Nachthimmel",
+  "es": "Cielo nocturno",
+  "fr": "Ciel de nuit",
+  "hi": "रात का आसमान",
+  "it": "Cielo notturno",
+  "ja": "夜空",
+  "pt": "Céu noturno",
+  "zh": "夜空"
+ },
+ "Party": {
+  "de": "Party",
+  "es": "Fiesta",
+  "fr": "Fête",
+  "hi": "पार्टी",
+  "it": "Festa",
+  "ja": "パーティー",
+  "pt": "Festa",
+  "zh": "派对"
+ },
+ "Petals": {
+  "de": "Blütenblätter",
+  "es": "Pétalos",
+  "fr": "Pétales",
+  "hi": "पंखुड़ियाँ",
+  "it": "Petali",
+  "ja": "花びら",
+  "pt": "Pétalas",
+  "zh": "花瓣"
+ },
+ "Pick a video or a photo. Give it a whole vibe in one tap — Cinematic, Golden hour, Party, Retro VHS — or build your own with looks, light, motion, sparkle and words. Any festival too.": {
+  "de": "Wähle ein Video oder Foto. Gib ihm mit einem Tipp eine ganze Stimmung – Kino, Goldene Stunde, Party, Retro-VHS – oder bau deine eigene aus Looks, Licht, Bewegung, Funkeln und Worten. Jedes Fest auch.",
+  "es": "Elige un vídeo o una foto. Dale todo un ambiente de un toque —Cinematográfico, Hora dorada, Fiesta, Retro VHS— o crea el tuyo con looks, luz, movimiento, brillos y palabras. Cualquier fiesta también.",
+  "fr": "Choisis une vidéo ou une photo. Donne-lui toute une ambiance en un geste — Cinéma, Heure dorée, Fête, Rétro VHS — ou crée la tienne avec looks, lumière, mouvement, paillettes et mots. N'importe quelle fête aussi.",
+  "hi": "कोई वीडियो या फ़ोटो चुनें। एक टैप में पूरा माहौल दें — सिनेमैटिक, गोल्डन आवर, पार्टी, रेट्रो VHS — या लुक, रोशनी, मूवमेंट, चमक और शब्दों से अपना बनाएँ। कोई भी त्योहार भी।",
+  "it": "Scegli un video o una foto. Dagli un'intera atmosfera con un tocco — Cinematografico, Ora d'oro, Festa, Retro VHS — o crea la tua con look, luce, movimento, scintille e parole. Anche qualsiasi festa.",
+  "ja": "動画か写真を選んで。ワンタップで雰囲気ごと — シネマ、ゴールデンアワー、パーティー、レトロVHS — またはルック、光、動き、キラキラ、文字で自分だけに。どんなお祝いにも。",
+  "pt": "Escolha um vídeo ou foto. Dê toda uma vibe num toque — Cinematográfico, Hora dourada, Festa, Retro VHS — ou crie a sua com looks, luz, movimento, brilho e palavras. Qualquer festa também.",
+  "zh": "选一段视频或一张照片。一键换整套氛围——电影感、黄金时刻、派对、复古 VHS——或用色调、光效、动感、闪光和文字自己搭配。任何节日也行。"
+ },
+ "Putting the effects on every frame…": {
+  "de": "Effekte auf jedes Bild…",
+  "es": "Aplicando los efectos a cada fotograma…",
+  "fr": "Effets appliqués image par image…",
+  "hi": "हर फ़्रेम पर इफ़ेक्ट लगा रहे हैं…",
+  "it": "Applico gli effetti a ogni fotogramma…",
+  "ja": "すべてのコマにエフェクトをかけています…",
+  "pt": "Aplicando os efeitos em cada quadro…",
+  "zh": "正在给每一帧加特效…"
+ },
+ "Retro VHS": {
+  "de": "Retro-VHS",
+  "es": "Retro VHS",
+  "fr": "Rétro VHS",
+  "hi": "रेट्रो VHS",
+  "it": "Retro VHS",
+  "ja": "レトロVHS",
+  "pt": "Retro VHS",
+  "zh": "复古 VHS"
+ },
+ "Retro film": {
+  "de": "Retro-Film",
+  "es": "Película retro",
+  "fr": "Film rétro",
+  "hi": "रेट्रो फ़िल्म",
+  "it": "Pellicola retro",
+  "ja": "レトロフィルム",
+  "pt": "Filme retrô",
+  "zh": "复古胶片"
+ },
+ "Slide up": {
+  "de": "Hochgleiten",
+  "es": "Deslizar arriba",
+  "fr": "Glisser vers le haut",
+  "hi": "ऊपर सरकना",
+  "it": "Scorri su",
+  "ja": "スライドアップ",
+  "pt": "Deslizar para cima",
+  "zh": "上滑"
+ },
+ "Slow zoom": {
+  "de": "Langsamer Zoom",
+  "es": "Zoom lento",
+  "fr": "Zoom lent",
+  "hi": "धीमा ज़ूम",
+  "it": "Zoom lento",
+  "ja": "スローズーム",
+  "pt": "Zoom lento",
+  "zh": "慢推"
+ },
+ "Snow": {
+  "de": "Schnee",
+  "es": "Nieve",
+  "fr": "Neige",
+  "hi": "बर्फ़",
+  "it": "Neve",
+  "ja": "雪",
+  "pt": "Neve",
+  "zh": "雪花"
+ },
+ "Sparkle": {
+  "de": "Funkeln",
+  "es": "Brillos",
+  "fr": "Paillettes",
+  "hi": "चमक",
+  "it": "Scintille",
+  "ja": "キラキラ",
+  "pt": "Brilho",
+  "zh": "闪光"
+ },
+ "Starry": {
+  "de": "Sternenhimmel",
+  "es": "Estrellado",
+  "fr": "Étoilé",
+  "hi": "तारों भरा",
+  "it": "Stellato",
+  "ja": "星空",
+  "pt": "Estrelado",
+  "zh": "星光"
+ },
+ "Still": {
+  "de": "Ruhig",
+  "es": "Quieto",
+  "fr": "Fixe",
+  "hi": "स्थिर",
+  "it": "Fermo",
+  "ja": "固定",
+  "pt": "Parado",
+  "zh": "静止"
+ },
+ "Subtle": {
+  "de": "Dezent",
+  "es": "Sutil",
+  "fr": "Subtil",
+  "hi": "हल्का",
+  "it": "Delicato",
+  "ja": "控えめ",
+  "pt": "Sutil",
+  "zh": "低调"
+ },
+ "Tap a vibe, then make it yours in the other tabs.": {
+  "de": "Tippe auf eine Stimmung und passe sie in den anderen Tabs an.",
+  "es": "Toca un ambiente y hazlo tuyo en las otras pestañas.",
+  "fr": "Touche une ambiance, puis personnalise-la dans les autres onglets.",
+  "hi": "कोई माहौल चुनें, फिर बाकी टैब में उसे अपना बनाएँ।",
+  "it": "Tocca un'atmosfera, poi rendila tua nelle altre schede.",
+  "ja": "雰囲気を選んで、ほかのタブで自分好みに。",
+  "pt": "Toque numa vibe e deixe-a do seu jeito nas outras abas.",
+  "zh": "选一个氛围，再到其他标签里调成你的风格。"
+ },
+ "Texture": {
+  "de": "Textur",
+  "es": "Textura",
+  "fr": "Texture",
+  "hi": "टेक्सचर",
+  "it": "Texture",
+  "ja": "質感",
+  "pt": "Textura",
+  "zh": "质感"
+ },
+ "VHS": {
+  "de": "VHS",
+  "es": "VHS",
+  "fr": "VHS",
+  "hi": "VHS",
+  "it": "VHS",
+  "ja": "VHS",
+  "pt": "VHS",
+  "zh": "VHS"
+ },
+ "Vibes": {
+  "de": "Stimmungen",
+  "es": "Ambientes",
+  "fr": "Ambiances",
+  "hi": "माहौल",
+  "it": "Atmosfere",
+  "ja": "雰囲気",
+  "pt": "Vibes",
+  "zh": "氛围"
+ },
+ "Video effects": {
+  "de": "Videoeffekte",
+  "es": "Efectos de vídeo",
+  "fr": "Effets vidéo",
+  "hi": "वीडियो इफ़ेक्ट",
+  "it": "Effetti video",
+  "ja": "動画エフェクト",
+  "pt": "Efeitos de vídeo",
+  "zh": "视频特效"
+ },
+ "Vignette": {
+  "de": "Vignette",
+  "es": "Viñeta",
+  "fr": "Vignettage",
+  "hi": "विनेट",
+  "it": "Vignettatura",
+  "ja": "ビネット",
+  "pt": "Vinheta",
+  "zh": "暗角"
+ },
+ "Vintage": {
+  "de": "Vintage",
+  "es": "Vintage",
+  "fr": "Vintage",
+  "hi": "विंटेज",
+  "it": "Vintage",
+  "ja": "ヴィンテージ",
+  "pt": "Vintage",
+  "zh": "怀旧"
+ },
+ "Wild": {
+  "de": "Wild",
+  "es": "Loco",
+  "fr": "Fou",
+  "hi": "ज़बरदस्त",
+  "it": "Pazzesco",
+  "ja": "派手",
+  "pt": "Ousado",
+  "zh": "狂野"
+ },
+ "Words": {
+  "de": "Worte",
+  "es": "Palabras",
+  "fr": "Mots",
+  "hi": "शब्द",
+  "it": "Parole",
+  "ja": "文字",
+  "pt": "Palavras",
+  "zh": "文字"
+ },
+ "Your own mix": {
+  "de": "Deine eigene Mischung",
+  "es": "Tu propia mezcla",
+  "fr": "Ton propre mélange",
+  "hi": "आपका अपना मिश्रण",
+  "it": "Il tuo mix",
+  "ja": "オリジナルミックス",
+  "pt": "Sua própria mistura",
+  "zh": "你的专属搭配"
+ },
+ "Your own mix — tap a vibe to start again.": {
+  "de": "Deine eigene Mischung – tippe auf eine Stimmung, um neu zu beginnen.",
+  "es": "Tu propia mezcla: toca un ambiente para empezar de nuevo.",
+  "fr": "Ton propre mélange — touche une ambiance pour recommencer.",
+  "hi": "आपका अपना मिश्रण — दोबारा शुरू करने के लिए कोई माहौल चुनें।",
+  "it": "Il tuo mix — tocca un'atmosfera per ricominciare.",
+  "ja": "オリジナルミックス — 雰囲気をタップでやり直し。",
+  "pt": "Sua própria mistura — toque numa vibe para recomeçar.",
+  "zh": "你的专属搭配——点一个氛围重新开始。"
  }
 }

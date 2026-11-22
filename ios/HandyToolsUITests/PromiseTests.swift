@@ -186,10 +186,15 @@ final class PromiseTests: XCTestCase {
         app.launch()
         let preview = app.descendants(matching: .any).matching(identifier: "celebrate-preview").firstMatch
         XCTAssertTrue(preview.waitForExistence(timeout: 90), "the sample never became a decorated preview")
-        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "celebrate-caption").firstMatch.exists, "no words on the video")
+        // Video effects opens on Vibes; the festivals are their own tab, and picking one puts its greeting on.
+        XCTAssertTrue(app.buttons["fx-vibe-cinematic"].waitForExistence(timeout: 10), "no vibes")
+        XCTAssertTrue(app.sliders["fx-amount"].exists, "no How much")
+        app.buttons["fx-tab-celebrate"].tap()
         let typed = app.textFields["celebrate-type"]
         XCTAssertTrue(typed.waitForExistence(timeout: 5))
         typed.tap(); typed.typeText("Feliz Navidad\n")
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "celebrate-caption").firstMatch.waitForExistence(timeout: 5), "no words on the video")
+        app.buttons["fx-tab-words"].tap()
         let words = app.descendants(matching: .any).matching(identifier: "celebrate-words").firstMatch
         XCTAssertTrue(words.waitForExistence(timeout: 5))
         XCTAssertEqual(words.value as? String, "Merry Christmas", "typing Feliz Navidad should pick Christmas and its greeting")

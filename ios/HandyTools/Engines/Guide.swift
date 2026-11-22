@@ -283,7 +283,7 @@ enum Guide {
         "ringtone": ("Ringtone from this video", "Up to 30 seconds of its sound, with the steps to set it"),
         "meetingnotes": ("Notes from a video call or talk", "Who said what, a summary and the to-dos"),
         "audiomix": ("Join videos or change their speed", "One video, or faster / slower with natural voices"),
-        "celebrate": ("Decorate it for a celebration", "Snow, fireworks, diyas, lanterns — any festival — with your words on it"),
+        "celebrate": ("Make it stunning", "A whole vibe in one tap, or looks, light, motion, sparkle, words and any festival — as subtle or as wild as you like"),
     ]
 
     @MainActor static func title(_ o: Option, count: Int, kind: ChainKind? = nil) -> String {
