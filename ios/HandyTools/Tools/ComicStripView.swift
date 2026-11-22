@@ -63,7 +63,7 @@ struct ComicStripView: View {
             }
             if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let url = resultURL {
-                ShareLink(item: url) { Label(L("Save or share comic"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                KeepShare(url, tool: "Comic strip")
             } else {
                 Button { make() } label: { Label(L("Make comic"), systemImage: "checkmark").frame(maxWidth: .infinity) }
                     .primaryButton().disabled(working)

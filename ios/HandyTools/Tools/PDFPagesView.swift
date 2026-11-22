@@ -92,7 +92,7 @@ struct PDFPagesView: View {
                 Button { split() } label: { Label(L("Split into one PDF per page"), systemImage: "square.split.2x1").frame(maxWidth: .infinity) }
                     .secondaryButton().disabled(items.count < 2 || working).accessibilityIdentifier("pages-split")
             } else {
-                ShareLink(items: splitURLs) { Label("\(L("Save or share")) \(splitURLs.count) PDFs", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                KeepShare(splitURLs.map(KeepItem.file), tool: "Organize PDF pages")
             }
             Button(L("Choose a different PDF")) { reset() }.textButton().font(HandyFont.caption)
         }
@@ -216,9 +216,7 @@ struct PDFPagesView: View {
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .accessibilityLabel(L("Preview of the first page"))
             }
-            ShareLink(item: url) {
-                Label(L("Save or share PDF"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, tool: "Organize PDF pages")
             Button(L("Keep editing")) { resultURL = nil; resultPreview = nil }.textButton().font(HandyFont.caption)
         }
     }

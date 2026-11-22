@@ -159,9 +159,7 @@ struct PDFRedactView: View {
             } else {
                 HStack(spacing: 6) { BusySpinner(); Text(L("Checking the hidden words are really gone…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             }
-            ShareLink(item: PDFFile(data: out), preview: SharePreview(L("Redacted PDF"))) {
-                Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare([.data(out, name: L("Redacted PDF"), ext: "pdf")], lead: .share, tool: "Redact a PDF")
             Button(L("Edit the redactions")) { result = nil }.textButton()
         }
     }

@@ -155,7 +155,7 @@ struct IDCopyResult: View {
     @ViewBuilder private func actions(_ d: Data, _ ext: String) -> some View {
         let isPDF = ext.lowercased() == "pdf"
         if let u = write(d, ext) {
-            ShareLink(item: u) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            KeepShare(u, lead: .share, tool: "ID copy")
         }
         if !isPDF {
             HStack(spacing: HandySpacing.s8) {

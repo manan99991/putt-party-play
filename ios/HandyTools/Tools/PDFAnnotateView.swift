@@ -205,9 +205,7 @@ struct PDFAnnotateView: View {
             .frame(height: 380)
             .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-            ShareLink(item: PDFFile(data: out), preview: SharePreview(L("Annotated PDF"))) {
-                Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare([.data(out, name: L("Annotated PDF"), ext: "pdf")], tool: "Annotate a PDF")
             if !highlights.isEmpty {
                 let summary = highlights.map { "p.\($0.page) — \($0.text)" }.joined(separator: "\n")
                 VStack(alignment: .leading, spacing: 6) {

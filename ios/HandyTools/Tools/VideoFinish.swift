@@ -60,6 +60,13 @@ struct VideoFinishCard: View {
     var source: URL?
     var promise = VideoPromise()
     var note: String?
+    /// How it ends (see KeepShare): which button leads, the tool's name for History, and — for a shrink — the Photos
+    /// item it can replace.
+    var lead: KeepShare.Lead = .save
+    var tool = "Video"
+    var record = true
+    var original: String? = nil
+    var originalBytes = 0
 
     @State private var facts: VideoFacts?
     @State private var before: VideoFacts?
@@ -79,11 +86,7 @@ struct VideoFinishCard: View {
                 BusySpinner().frame(maxWidth: .infinity)
             }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true) }
-            ShareLink(item: url) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
-            Button {
-                Task { let ok = await VideoSaver.save(url); saved = L(ok ? "Saved to Photos." : "Couldn't save — allow Tenzy to add photos in Settings.") }
-            } label: { Label(L("Save to Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton()
-            if let saved { Text(saved).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            KeepShare(url, lead: lead, tool: tool, original: original, originalBytes: originalBytes, record: record)
         }
         .cardStyle(padding: HandySpacing.s12)
         .accessibilityElement(children: .contain)
@@ -163,6 +166,8 @@ struct GIFFacts: Equatable {
 struct GIFFinishCard: View {
     let data: Data
     let shareURL: URL?
+    var tool = "GIF"
+    var record = true
     @State private var saved: String?
 
     var body: some View {
@@ -174,11 +179,8 @@ struct GIFFinishCard: View {
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     .accessibilityIdentifier("gif-facts")
             }
-            if let shareURL { ShareLink(item: shareURL) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton() }
-            Button {
-                Task { let ok = await PhotoSaver.save(data); saved = L(ok ? "Saved to Photos — it plays in the Animated album." : "Couldn't save — allow Tenzy to add photos in Settings.") }
-            } label: { Label(L("Save to Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton()
-            if let saved { Text(saved).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            // Saved as a GIF file, so Photos keeps it animated (it plays in the Animated album).
+            KeepShare(shareURL.map { [KeepItem.file($0)] } ?? [KeepItem.data(data, name: "Tenzy GIF", ext: "gif")], lead: .share, tool: tool, record: record)
             Text(L("In Messages and WhatsApp, share it from here so it stays animated.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
         }
         .cardStyle(padding: HandySpacing.s12)

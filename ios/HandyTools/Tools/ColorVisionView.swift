@@ -105,7 +105,7 @@ struct ColorVisionView: View {
             }
 
             if let snapshot {
-                ShareLink(item: JPEGFile(data: snapshot), preview: SharePreview("Color Vision")) { Label(L("Save or share this frame"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                KeepShare([.data(snapshot, name: "Color Vision", ext: "jpg")], tool: "Color Vision")
             }
 
             Text(mode == .simulate ? "Show this to family, designers, or a teacher: it's how \(deficiency.short.lowercased()) eyes see the scene."

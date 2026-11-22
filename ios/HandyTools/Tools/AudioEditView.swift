@@ -208,9 +208,7 @@ struct AudioEditView: View {
                 .font(HandyFont.caption).foregroundStyle(HandyColor.success)
                 .frame(maxWidth: .infinity, alignment: .leading)
             AudioPlayBar(url: url)
-            ShareLink(item: url) {
-                Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, tool: "Edit audio")
             Button(L("Edit again")) { clearResult() }.textButton().font(HandyFont.caption)
         }
         .cardStyle(padding: HandySpacing.s12)

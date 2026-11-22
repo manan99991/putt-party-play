@@ -216,7 +216,7 @@ struct QRWifiView: View {
             if let cardImage, let png = cardImage.pngData() {
                 Image(uiImage: cardImage).resizable().scaledToFit().clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-                ShareLink(item: PNGFile(data: png), preview: SharePreview("Wi‑Fi card")) { Label(L("Save, share or print"), systemImage: "printer").frame(maxWidth: .infinity) }.secondaryButton()
+                KeepShare([.data(png, name: "Wi-Fi card", ext: "png")], tool: "Wi-Fi card")
             }
         }
     }

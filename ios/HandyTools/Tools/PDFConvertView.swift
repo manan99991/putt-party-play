@@ -156,19 +156,7 @@ struct PDFConvertView: View {
                   systemImage: "checkmark.circle.fill")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.success)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Button {
-                let urls = imageURLs
-                Task {
-                    let ok = await StickerMaker.saveToPhotos(urls.compactMap { try? Data(contentsOf: $0) })
-                    savedNote = ok ? L("Saved to Photos.") : L("Photos access is off — allow it in Settings to save.")
-                    if ok { HandyHaptics.success() }
-                }
-            } label: { Label(L("Save to Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }
-                .primaryButton().accessibilityIdentifier("convert-save-photos")
-            if let savedNote { Text(savedNote).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-            ShareLink(items: imageURLs) {
-                Label(imageURLs.count == 1 ? L("Share image") : L("Share all"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.secondaryButton()
+            KeepShare(imageURLs.map(KeepItem.file), tool: "Convert a PDF")
             Button(L("Convert again")) { imageURLs = [] }.textButton().font(HandyFont.caption)
         }
         .cardStyle(padding: HandySpacing.s12)
@@ -190,9 +178,7 @@ struct PDFConvertView: View {
             Button { Copier.copy(extractedText, note: "Text copied") } label: { Label(L("Copy all the text"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }
                 .secondaryButton()
             if let url = textURL {
-                ShareLink(item: url) {
-                    Label(L("Save or share .txt"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-                }.primaryButton()
+                KeepShare(url, tool: "Convert a PDF")
             }
             Button {
                 let imgs = pages, picked = DocEngine.pageIndexes(all: allPages, current: page, from: fromPage, to: toPage, count: pages.count)

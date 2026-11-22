@@ -20,6 +20,8 @@ struct VideoView: View {
     @State private var gifPhotoItems: [PhotosPickerItem] = []
     @State private var source: URL?
     @State private var sourceBytes = 0
+    /// The Photos item the video came from, so a shrunk copy can replace it ("Save and delete the big original").
+    @State private var originalID: String?
     @State private var duration: Double = 0
     @State private var thumb: UIImage?
     @State private var mode: Mode = .shrink
@@ -72,7 +74,7 @@ struct VideoView: View {
                 "Export, then save or share.",
             ])
             if source == nil {
-                PhotosPicker(selection: $pickedItem, matching: .videos) {
+                PhotosPicker(selection: $pickedItem, matching: .videos, photoLibrary: .shared()) {
                     Label(L("Choose a video"), systemImage: "film").frame(maxWidth: .infinity)
                 }.secondaryButton()
                 Text(L("Or make a GIF from photos:")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -108,7 +110,7 @@ struct VideoView: View {
                 }
 
                 // While a job runs, a new pick waits — the result shown is always for the video on screen.
-                PhotosPicker(selection: $pickedItem, matching: .videos) { Label(L(working ? "Working — pick another when it's done" : "Choose a different video"), systemImage: "film") }.textButton().disabled(working)
+                PhotosPicker(selection: $pickedItem, matching: .videos, photoLibrary: .shared()) { Label(L(working ? "Working — pick another when it's done" : "Choose a different video"), systemImage: "film") }.textButton().disabled(working)
             }
 
             if let loadNote { ToolProgressBar(label: loadNote, showsTime: false) }
@@ -330,7 +332,9 @@ struct VideoView: View {
     @ViewBuilder private func resultCard(_ r: Output) -> some View {
         if r.kind == .video {
             // The same finish as every ready-made video tool: what changed, each promise checked on the file.
-            VideoFinishCard(url: r.url, source: source, promise: toolPromise, note: resultNote)
+            VideoFinishCard(url: r.url, source: source, promise: toolPromise, note: resultNote,
+                            lead: mode == .shrink || mode == .social ? .share : .save,
+                            original: mode == .shrink ? originalID : nil, originalBytes: sourceBytes)
             Button { adopt(r) } label: { Label(L("Use this as the source (e.g. trim, then shrink)"), systemImage: "arrow.uturn.down").frame(maxWidth: .infinity) }.secondaryButton()
         } else if r.kind == .gif, let d = try? Data(contentsOf: r.url) {
             GIFFinishCard(data: d, shareURL: r.url)
@@ -357,7 +361,7 @@ struct VideoView: View {
             } else if r.kind == .gif, let img = UIImage(contentsOfFile: r.url.path) {
                 Image(uiImage: img).resizable().scaledToFit().frame(maxHeight: 200).frame(maxWidth: .infinity)
             }
-            ShareLink(item: r.url) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            KeepShare(r.url, tool: "Video")
             if r.kind == .video {
                 Button { adopt(r) } label: { Label(L("Use this as the source (e.g. trim, then shrink)"), systemImage: "arrow.uturn.down").frame(maxWidth: .infinity) }.secondaryButton()
             }
@@ -377,6 +381,7 @@ struct VideoView: View {
 
     private func loadVideo(_ item: PhotosPickerItem?) {
         guard let item else { return }
+        originalID = item.itemIdentifier
         bus.clear(jobKey); result = nil; errorText = nil; resultNote = nil; player?.pause(); player = nil
         Task {
             guard let movie = await MovieImport.load(item, progress: { f in loadNote = "Getting the video ready — \(Int(f * 100))%" }) else {
@@ -401,7 +406,7 @@ struct VideoView: View {
             let d = await VideoEngine.duration(url)
             let t = await VideoEngine.thumbnail(url, at: min(0.5, d / 2))
             await MainActor.run {
-                source = url; sourceBytes = SizeTarget.fileSize(url) ?? 0; duration = d; thumb = t
+                originalID = nil; source = url; sourceBytes = SizeTarget.fileSize(url) ?? 0; duration = d; thumb = t
                 trimStart = 0; trimEnd = d; gifFrom = 0; gifLength = min(3, max(0.5, d))
                 if targetBytes >= sourceBytes { targetBytes = videoPresets.first(where: { $0.bytes < sourceBytes })?.bytes ?? max(1_000_000, sourceBytes / 2) }
                 refreshTrimThumbs(); refreshStrip(); keptPreview?.pause(); keptPreview = nil
@@ -416,7 +421,7 @@ struct VideoView: View {
             let d = await VideoEngine.duration(r.url)
             let t = await VideoEngine.thumbnail(r.url, at: min(0.5, d / 2))
             await MainActor.run {
-                source = r.url; sourceBytes = r.bytes; duration = d; thumb = t
+                originalID = nil; source = r.url; sourceBytes = r.bytes; duration = d; thumb = t
                 trimStart = 0; trimEnd = d; gifFrom = 0; gifLength = min(3, max(0.5, d))
                 if targetBytes >= sourceBytes { targetBytes = max(1_000_000, sourceBytes / 2) }
                 refreshTrimThumbs(); refreshStrip(); keptPreview?.pause(); keptPreview = nil; HandyHaptics.light()

@@ -131,9 +131,7 @@ struct SoundboardView: View {
                 .font(HandyFont.caption).foregroundStyle(HandyColor.success)
                 .frame(maxWidth: .infinity, alignment: .leading)
             AudioPlayBar(url: url)
-            ShareLink(item: url) {
-                Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, lead: .share, tool: "Soundboard")
             Text(L("Tap another voice above to try a different one."))
                 .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)

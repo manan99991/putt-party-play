@@ -94,8 +94,7 @@ struct ShotGuideView: View {
         }
         if let pdf {
             PDFPreview(data: pdf).frame(height: 360).clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-            ShareLink(item: PDFFile(data: pdf), preview: SharePreview("\(job.title).pdf")) { Label(L("Send or save the PDF"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
-                .primaryButton()
+            KeepShare([.data(pdf, name: job.title, ext: "pdf")], lead: .share, tool: "Photo guide")
             Button {
                 Task {
                     var n = 0

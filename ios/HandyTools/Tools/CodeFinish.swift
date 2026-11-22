@@ -36,10 +36,7 @@ struct CodeFinishCard: View {
                 }
             }
             if let png = image.pngData() {
-                ShareLink(item: PNGFile(data: png), preview: SharePreview("QR code")) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
-                Button {
-                    Task { let ok = await PhotoSaver.save(png); saved = L(ok ? "Saved to Photos." : "Couldn't save — allow Tenzy to add photos in Settings.") }
-                } label: { Label(L("Save to Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton()
+                KeepShare([.data(png, name: "QR code", ext: "png")], lead: .share, tool: "QR code", record: false)
             }
             if let w = wifi, let card = QRGen.wifiCard(ssid: w.ssid, password: w.pass, security: w.sec == "Open" ? "nopass" : w.sec), let cpng = card.pngData() {
                 ShareLink(item: PNGFile(data: cpng), preview: SharePreview("Wi‑Fi card")) {

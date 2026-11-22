@@ -151,7 +151,7 @@ struct AudioConvertView: View {
                 Label("\(batchDone.count) \(L("converted"))" + (batchFailed > 0 ? " · \(batchFailed) \(L("couldn't be read"))" : ""), systemImage: "checkmark.circle.fill")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.success)
                 AudioPlayBar(url: batchDone[0])
-                ShareLink(items: batchDone) { Label(L("Save or share all"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                KeepShare(batchDone.map(KeepItem.file), tool: "Convert audio")
             } else {
                 Button { runBatch() } label: { Label("\(L("Convert all to")) \(format.ext.uppercased())", systemImage: "arrow.right.circle").frame(maxWidth: .infinity) }
                     .primaryButton().disabled(working).accessibilityIdentifier("audio-convert-all")
@@ -232,9 +232,7 @@ struct AudioConvertView: View {
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
             }
             AudioPlayBar(url: url)
-            ShareLink(item: url) {
-                Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, tool: "Convert audio")
             Button(L("Convert again")) { clearResult() }.textButton().font(HandyFont.caption)
         }
         .cardStyle(padding: HandySpacing.s12)

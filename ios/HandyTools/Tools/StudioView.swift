@@ -201,20 +201,7 @@ struct StudioView: View {
     @ViewBuilder private func landing(_ out: Output) -> some View {
         Text("\(SizeTarget.format(out.data.count)) · \(out.kind)\(originalBytes > 0 ? " · \(L("was")) \(SizeTarget.format(originalBytes))" : "")")
             .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-        Button {
-            Task { let ok = await PhotoSaver.save(out.data); saved = ok; if ok { HandyHaptics.success() } }
-        } label: { Label(L(saved == true ? "Saved to Photos" : "Save to Photos"), systemImage: saved == true ? "checkmark.circle.fill" : "photo.on.rectangle").frame(maxWidth: .infinity) }
-            .primaryButton().disabled(saved == true).accessibilityIdentifier("studio-save")
-        if saved == false {
-            Button(L("Allow Tenzy to add photos — open Settings")) { Permission.openSettings() }.textButton()
-        }
-        Group {
-            switch out {
-            case .png(let d): ShareLink(item: PNGFile(data: d), preview: SharePreview("Studio")) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
-            case .jpg(let d): ShareLink(item: JPEGFile(data: d), preview: SharePreview("Studio")) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
-            case .heic(let d): ShareLink(item: HEICFile(data: d), preview: SharePreview("Studio")) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
-            }
-        }.secondaryButton()
+        KeepShare([.data(out.data, name: "Studio", ext: out.kind.lowercased())], tool: "Studio")
     }
 
     // MARK: run

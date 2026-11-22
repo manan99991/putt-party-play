@@ -16,6 +16,8 @@ struct FitItView: View {
     @State private var source: Source?
     @State private var sourceName = ""
     @State private var sourceBytes = 0
+    /// The Photos item the source came from, so the small copy can replace it ("Save and delete the big original").
+    @State private var originalID: String?
     @State private var targetBytes = 2_000_000
     @State private var customValue = ""
     @State private var customUnitMB = true
@@ -44,7 +46,7 @@ struct FitItView: View {
                 "Fit It shrinks it just under the limit and keeps it sharp — then share.",
             ])
             if source == nil {
-                PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
+                PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos]), photoLibrary: .shared()) {
                     Label(L("Choose a photo or video"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
                 }.secondaryButton()
                 Button { showFiles = true } label: { Label(L("Choose a PDF"), systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
@@ -63,7 +65,7 @@ struct FitItView: View {
                 if working { ToolProgressBar(value: progressValue > 0 ? progressValue : nil, label: "Working…") }
 
                 HStack {
-                    PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) { Label(L("Different photo/video"), systemImage: "photo") }.textButton()
+                    PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos]), photoLibrary: .shared()) { Label(L("Different photo/video"), systemImage: "photo") }.textButton()
                     Button { showFiles = true } label: { Label(L("Different PDF"), systemImage: "doc") }.textButton()
                     Spacer()
                 }
@@ -76,7 +78,7 @@ struct FitItView: View {
         }
         .onChange(of: pickedItem) { _, item in loadPhotoItem(item) }
         .handoff("fitit") { p in
-            reset()
+            reset(); originalID = nil
             if case .file(let d, let e) = p, ChainPayload.isPhoto(e), let img = UIImage(data: d) { source = .image(img); sourceName = "Photo"; sourceBytes = d.count }
             else if case .file(let d, let e) = p, e.lowercased() == "pdf" { source = .pdf(d); sourceName = "PDF"; sourceBytes = d.count }
             else if case .video(let u) = p { source = .video(u); sourceName = "Video"; sourceBytes = SizeTarget.fileSize(u) ?? 0 }
@@ -184,14 +186,15 @@ struct FitItView: View {
         return "\(max(0, pct))% smaller"
     }
 
+    /// Fit It is for sending, so Share leads; Save sits beside it, and a photo or video from Photos can replace its big original.
     @ViewBuilder private var shareButton: some View {
         switch output {
         case .data(let d, let ext) where ext == "pdf":
-            ShareLink(item: PDFFile(data: d), preview: SharePreview("Fitted PDF")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            KeepShare([.data(d, name: "Fitted PDF", ext: "pdf")], lead: .share, tool: "Fit It")
         case .data(let d, _):
-            ShareLink(item: JPEGFile(data: d), preview: SharePreview("Fitted photo")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            KeepShare([.data(d, name: "Fitted photo", ext: "jpg")], lead: .share, tool: "Fit It", original: originalID, originalBytes: sourceBytes)
         case .file(let url):
-            ShareLink(item: url) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            KeepShare(url, lead: .share, tool: "Fit It", original: originalID, originalBytes: sourceBytes)
         case .none:
             EmptyView()
         }
@@ -204,6 +207,7 @@ struct FitItView: View {
     private func loadPhotoItem(_ item: PhotosPickerItem?) {
         guard let item else { return }
         reset()
+        originalID = item.itemIdentifier
         Task {
             if item.supportedContentTypes.contains(where: { $0.conforms(to: .movie) }) {
                 if let movie = try? await item.loadTransferable(type: MovieImport.self) {
@@ -219,7 +223,7 @@ struct FitItView: View {
     }
 
     private func loadPDF(_ url: URL) {
-        reset()
+        reset(); originalID = nil
         let ok = url.startAccessingSecurityScopedResource()
         defer { if ok { url.stopAccessingSecurityScopedResource() } }
         guard let d = try? Data(contentsOf: url) else { errorText = "Couldn't read that PDF."; return }

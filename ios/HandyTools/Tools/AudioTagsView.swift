@@ -129,9 +129,7 @@ struct AudioTagsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             nowPlaying(resultTags)
             AudioPlayBar(url: url)
-            ShareLink(item: url) {
-                Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, tool: "Audio tags")
             Button(L("Keep editing")) { resultURL = nil }.textButton().font(HandyFont.caption)
         }
     }

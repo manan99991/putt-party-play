@@ -77,19 +77,9 @@ struct FunFinishCard: View {
                 UIPasteboard.general.image = result
                 CopyToast.shared.flash(L("Copied — paste it into any chat"))
             } label: { Label(L("Copy — paste into any chat"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
-            HStack(spacing: HandySpacing.s8) {
-                Button {
-                    Task {
-                        let d = (isSticker ? result.pngData() : result.jpegData(compressionQuality: 0.92)) ?? Data()
-                        let ok = await PhotoSaver.save(d)
-                        note = L(ok ? (isSticker ? "Saved to Photos as a see-through sticker." : "Saved to Photos.") : "Couldn't save — allow Tenzy to add photos in Settings.")
-                    }
-                } label: { Label(L("Save to Photos"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity) }.secondaryButton()
-                if let d = result.pngData() {
-                    ShareLink(item: PNGFile(data: d), preview: SharePreview(L("Picture"), image: Image(uiImage: result))) {
-                        Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-                    }.secondaryButton()
-                }
+            // A sticker stays a see-through PNG so Photos can lift it; other pictures save as JPEG.
+            if let d = isSticker ? result.pngData() : result.jpegData(compressionQuality: 0.92) {
+                KeepShare([.data(d, name: isSticker ? "Sticker" : "Picture", ext: isSticker ? "png" : "jpg")], tool: "Picture", record: false)
             }
             if isSticker {
                 VStack(alignment: .leading, spacing: 4) {
@@ -137,9 +127,7 @@ struct PhotoLandingRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: HandySpacing.s8) {
-                Button {
-                    Task { let ok = await PhotoSaver.save(data); note = L(ok ? "Saved to Photos." : "Couldn't save — allow Tenzy to add photos in Settings.") }
-                } label: { Label(L("Save to Photos"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity) }.secondaryButton()
+                // Save and Share sit in the bar above; this row adds Copy, for pasting straight into a chat.
                 Button {
                     UIPasteboard.general.image = image
                     CopyToast.shared.flash(L("Copied — paste it into any chat"))

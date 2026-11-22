@@ -112,20 +112,13 @@ struct CutoutResult: View {
 
     @ViewBuilder private var landings: some View {
         VStack(spacing: HandySpacing.s8) {
+            // A see-through PNG, so the cut-out keeps no background in Photos too.
+            if let d = png { KeepShare([.data(d, name: "Cut-out", ext: "png")], tool: "Cut out") }
             Button {
                 guard let d = png else { return }
-                Task { let ok = await PhotoSaver.save(d); saved = L(ok ? (backdrop == .clear ? "Saved to Photos — see-through PNG." : "Saved to Photos.") : "Couldn't save — allow Tenzy to add photos in Settings.") }
-            } label: { Label(L("Save to Photos"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity) }.primaryButton()
-            HStack(spacing: HandySpacing.s8) {
-                Button {
-                    guard let d = png else { return }
-                    UIPasteboard.general.setData(d, forPasteboardType: UTType.png.identifier)
-                    saved = L("Copied — paste it into Messages, WhatsApp or a document.")
-                } label: { Label(L("Copy"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.secondaryButton()
-                if let shown, let u = tempPNG(shown) {
-                    ShareLink(item: u) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
-                }
-            }
+                UIPasteboard.general.setData(d, forPasteboardType: UTType.png.identifier)
+                saved = L("Copied — paste it into Messages, WhatsApp or a document.")
+            } label: { Label(L("Copy"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.secondaryButton()
             if let original {
                 HStack(spacing: HandySpacing.s8) {
                     Button { open("sticker", original) } label: { Label(L("Make a sticker"), systemImage: "face.smiling").frame(maxWidth: .infinity) }.secondaryButton()

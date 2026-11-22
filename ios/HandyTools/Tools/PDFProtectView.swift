@@ -283,9 +283,7 @@ struct PDFProtectView: View {
                     .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
             }
-            ShareLink(item: url) {
-                Label(L("Save or share PDF"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, lead: .share, tool: "Protect a PDF")
             if let pw = lockedWith {
                 ShareLink(item: "\(L("Password for")) \(fileName).pdf: \(pw)") {
                     Label(L("Send the password separately"), systemImage: "key.horizontal").frame(maxWidth: .infinity)

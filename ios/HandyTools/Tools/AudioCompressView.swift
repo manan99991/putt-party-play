@@ -140,9 +140,7 @@ struct AudioCompressView: View {
                 .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             AudioPlayBar(url: url)
-            ShareLink(item: url) {
-                Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, lead: .share, tool: "Shrink audio")
             Button(L("Try another size")) { resultURL = nil; errorText = nil; progress = 0 }.textButton().font(HandyFont.caption)
         }
         .cardStyle(padding: HandySpacing.s12)

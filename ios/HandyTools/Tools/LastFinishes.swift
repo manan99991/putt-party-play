@@ -112,9 +112,7 @@ struct StillFinishCard: View {
                     .tint(HandyColor.accent).accessibilityIdentifier("still-moment")
             }
             if let d = image.jpegData(compressionQuality: 0.95) {
-                ShareLink(item: PNGFile(data: image.pngData() ?? d), preview: SharePreview(L("Picture"), image: Image(uiImage: image))) {
-                    Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-                }.primaryButton()
+                KeepShare([.data(d, name: "Still", ext: "jpg")], tool: "Still", record: false)
                 PhotoLandingRow(data: d, image: image)
             }
             Text("\(Int(image.size.width * image.scale))×\(Int(image.size.height * image.scale))").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)

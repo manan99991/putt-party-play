@@ -204,9 +204,7 @@ struct SignPDFView: View {
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .accessibilityLabel(L("Preview of the signed page"))
             }
-            ShareLink(item: url) {
-                Label(L("Save or share signed PDF"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, lead: .share, tool: "Sign a PDF")
             Button(L("Keep editing")) { resultURL = nil; resultPreview = nil }.textButton().font(HandyFont.caption)
         }
     }

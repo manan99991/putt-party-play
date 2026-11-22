@@ -38238,5 +38238,105 @@
   "ja": "通知とバックアップ",
   "pt": "Alertas e cópia de segurança",
   "zh": "提醒与备份"
+ },
+ "It's in Recently Deleted for 30 days if you change your mind.": {
+  "de": "Er liegt 30 Tage unter „Zuletzt gelöscht“, falls du es dir anders überlegst.",
+  "es": "Estará en Eliminado recientemente durante 30 días por si cambias de opinión.",
+  "fr": "Il reste 30 jours dans Supprimés récemment si vous changez d'avis.",
+  "hi": "अगर आप मन बदलें तो यह 30 दिन तक हाल ही में हटाए गए में रहेगा।",
+  "it": "Resta in Eliminati di recente per 30 giorni, se cambi idea.",
+  "ja": "気が変わったときのために、「最近削除した項目」に30日間残ります。",
+  "pt": "Fica em Apagados recentemente durante 30 dias, se mudar de ideias.",
+  "zh": "如果改变主意，它会在“最近删除”中保留 30 天。"
+ },
+ "Photos couldn't take this file, so it's offered as a file instead.": {
+  "de": "Fotos konnte diese Datei nicht übernehmen, deshalb wird sie als Datei angeboten.",
+  "es": "Fotos no pudo guardar este archivo, así que se ofrece como archivo.",
+  "fr": "Photos n'a pas pu prendre ce fichier, il est donc proposé comme fichier.",
+  "hi": "Photos यह फ़ाइल नहीं ले सका, इसलिए इसे फ़ाइल के रूप में दिया जा रहा है।",
+  "it": "Foto non ha potuto accettare questo file, quindi viene offerto come file.",
+  "ja": "写真アプリがこのファイルを受け付けなかったため、ファイルとして保存できるようにしました。",
+  "pt": "As Fotografias não aceitaram este ficheiro, por isso é oferecido como ficheiro.",
+  "zh": "“照片”无法接收这个文件，所以改为以文件形式提供。"
+ },
+ "Save all to Files": {
+  "de": "Alle in Dateien sichern",
+  "es": "Guardar todo en Archivos",
+  "fr": "Tout enregistrer dans Fichiers",
+  "hi": "सभी को Files में सहेजें",
+  "it": "Salva tutto in File",
+  "ja": "すべてを“ファイル”に保存",
+  "pt": "Guardar tudo em Ficheiros",
+  "zh": "全部存储到“文件”"
+ },
+ "Save and delete the big original": {
+  "de": "Sichern und das große Original löschen",
+  "es": "Guardar y borrar el original grande",
+  "fr": "Enregistrer et supprimer le gros original",
+  "hi": "सहेजें और बड़ा मूल हटाएँ",
+  "it": "Salva ed elimina l'originale grande",
+  "ja": "保存して大きな元ファイルを削除",
+  "pt": "Guardar e apagar o original grande",
+  "zh": "存储并删除较大的原件"
+ },
+ "Save to Files": {
+  "de": "In Dateien sichern",
+  "es": "Guardar en Archivos",
+  "fr": "Enregistrer dans Fichiers",
+  "hi": "Files में सहेजें",
+  "it": "Salva in File",
+  "ja": "“ファイル”に保存",
+  "pt": "Guardar em Ficheiros",
+  "zh": "存储到“文件”"
+ },
+ "Saved to Files": {
+  "de": "In Dateien gesichert",
+  "es": "Guardado en Archivos",
+  "fr": "Enregistré dans Fichiers",
+  "hi": "Files में सहेजा गया",
+  "it": "Salvato in File",
+  "ja": "“ファイル”に保存しました",
+  "pt": "Guardado em Ficheiros",
+  "zh": "已存储到“文件”"
+ },
+ "Saved to Photos — the big original was deleted": {
+  "de": "In Fotos gesichert – das große Original wurde gelöscht",
+  "es": "Guardado en Fotos: se borró el original grande",
+  "fr": "Enregistré dans Photos — le gros original a été supprimé",
+  "hi": "Photos में सहेजा गया — बड़ा मूल हटा दिया गया",
+  "it": "Salvato in Foto: l'originale grande è stato eliminato",
+  "ja": "写真に保存しました。大きな元ファイルは削除されました",
+  "pt": "Guardado nas Fotografias — o original grande foi apagado",
+  "zh": "已存储到“照片”——较大的原件已删除"
+ },
+ "Tenzy isn't allowed to add to Photos. Turn it on in Settings › Apps › Tenzy › Photos — or save to Files instead.": {
+  "de": "Tenzy darf nichts zu Fotos hinzufügen. Schalte es unter Einstellungen › Apps › Tenzy › Fotos ein – oder sichere stattdessen in Dateien.",
+  "es": "Tenzy no tiene permiso para añadir a Fotos. Actívalo en Ajustes › Apps › Tenzy › Fotos, o guárdalo en Archivos.",
+  "fr": "Tenzy n'a pas le droit d'ajouter à Photos. Activez-le dans Réglages › Apps › Tenzy › Photos — ou enregistrez plutôt dans Fichiers.",
+  "hi": "Tenzy को Photos में जोड़ने की अनुमति नहीं है। Settings › Apps › Tenzy › Photos में इसे चालू करें — या इसके बजाय Files में सहेजें।",
+  "it": "Tenzy non può aggiungere a Foto. Attivalo in Impostazioni › App › Tenzy › Foto, oppure salva in File.",
+  "ja": "Tenzy には写真への追加が許可されていません。設定 › アプリ › Tenzy › 写真 でオンにするか、代わりに“ファイル”に保存してください。",
+  "pt": "O Tenzy não tem permissão para adicionar às Fotografias. Ative em Definições › Apps › Tenzy › Fotografias — ou guarde em Ficheiros.",
+  "zh": "Tenzy 无权添加到“照片”。请在“设置 › App › Tenzy › 照片”中开启，或改为存储到“文件”。"
+ },
+ "The original was kept.": {
+  "de": "Das Original wurde behalten.",
+  "es": "Se conservó el original.",
+  "fr": "L'original a été conservé.",
+  "hi": "मूल रखा गया।",
+  "it": "L'originale è stato mantenuto.",
+  "ja": "元ファイルは残しました。",
+  "pt": "O original foi mantido.",
+  "zh": "已保留原件。"
+ },
+ "The small copy is in Photos. Tenzy can't reach the original from here — delete it in Photos; it's just before the new one.": {
+  "de": "Die kleine Kopie ist in Fotos. Tenzy kommt von hier nicht an das Original – lösche es in Fotos; es liegt direkt vor der neuen.",
+  "es": "La copia pequeña está en Fotos. Tenzy no puede acceder al original desde aquí: bórralo en Fotos; está justo antes de la nueva.",
+  "fr": "La petite copie est dans Photos. Tenzy ne peut pas atteindre l'original d'ici — supprimez-le dans Photos ; il est juste avant la nouvelle.",
+  "hi": "छोटी कॉपी Photos में है। Tenzy यहाँ से मूल तक नहीं पहुँच सकता — इसे Photos में हटाएँ; यह नई वाली के ठीक पहले है।",
+  "it": "La copia piccola è in Foto. Tenzy non può raggiungere l'originale da qui: eliminalo in Foto, è subito prima della nuova.",
+  "ja": "小さいコピーは写真に入っています。ここからは元ファイルに届かないので、写真アプリで削除してください。新しいものの直前にあります。",
+  "pt": "A cópia pequena está nas Fotografias. O Tenzy não consegue chegar ao original daqui — apague-o nas Fotografias; está mesmo antes da nova.",
+  "zh": "小副本已在“照片”中。Tenzy 无法从这里访问原件——请在“照片”中删除它，它就在新副本之前。"
  }
 }

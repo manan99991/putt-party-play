@@ -67,9 +67,7 @@ struct ScrubView: View {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     Label(L("Clean copy ready — no location, no metadata, redactions permanent."), systemImage: "checkmark.shield.fill")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.success)
-                    ShareLink(item: JPEGFile(data: result), preview: SharePreview("Clean copy")) {
-                        Label(L("Save or share the clean copy"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-                    }.primaryButton()
+                    KeepShare([.data(result, name: "Clean copy", ext: "jpg")], lead: .share, tool: "Privacy Scrubber")
                 }
             }
             if original == nil && videoInURL == nil { AlsoInThisTool(hub: "scrub") }
@@ -193,7 +191,7 @@ struct ScrubView: View {
             if let out = videoOutURL {
                 Label(L("Clean video ready — faces & personal text hidden, metadata stripped."), systemImage: "checkmark.shield.fill")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.success)
-                ShareLink(item: out) { Label(L("Save or share the clean video"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                KeepShare(out, lead: .share, tool: "Privacy Scrubber")
             } else {
                 Button { scrubVideo(url) } label: {
                     HStack {

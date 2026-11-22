@@ -122,18 +122,11 @@ struct StitchView: View {
                         .font(HandyFont.caption).foregroundStyle(hiddenCount == 0 ? HandyColor.textSecondary : HandyColor.success).fixedSize(horizontal: false, vertical: true)
                 }
                 if let png = resultPNG {
-                    Button {
-                        Task { let ok = await StickerMaker.saveToPhotos([png]); savedNote = ok ? "Saved to Photos." : "Couldn't save — allow Tenzy to add photos in Settings." }
-                    } label: { Label(L("Save to Photos"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity) }.primaryButton()
-                    HStack(spacing: HandySpacing.s8) {
-                        ShareLink(item: PNGFile(data: png), preview: SharePreview("Long screenshot")) {
-                            Label(L("Share image"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                    KeepShare([.data(png, name: "Long screenshot", ext: "png")], tool: "Long screenshot")
+                    if let pdf = resultPDF {
+                        ShareLink(item: PDFFile(data: pdf), preview: SharePreview("Long screenshot.pdf")) {
+                            Label(L("As a PDF"), systemImage: "doc.richtext").frame(maxWidth: .infinity)
                         }.secondaryButton()
-                        if let pdf = resultPDF {
-                            ShareLink(item: PDFFile(data: pdf), preview: SharePreview("Long screenshot.pdf")) {
-                                Label(L("As a PDF"), systemImage: "doc.richtext").frame(maxWidth: .infinity)
-                            }.secondaryButton()
-                        }
                     }
                     if let pdf = resultPDF { Text("\(L("The PDF has")) \(StitchExtras.pageSlices(height: result.size.height * result.scale, pageHeight: (result.size.width * result.scale * 1.414).rounded()).count) \(L("pages, sized like A4 — easy to print or email.")) (\(ByteCountFormatter.string(fromByteCount: Int64(pdf.count), countStyle: .file)))").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
                     if let savedNote { Text(L(savedNote)).font(HandyFont.caption).foregroundStyle(HandyColor.success) }

@@ -206,9 +206,7 @@ struct RingtoneView: View {
                 .font(HandyFont.caption).foregroundStyle(HandyColor.success)
                 .frame(maxWidth: .infinity, alignment: .leading)
             AudioPlayBar(url: url)
-            ShareLink(item: url) {
-                Label(L("Save or share .m4r"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, tool: "Ringtone")
             VStack(alignment: .leading, spacing: 4) {
                 Text(L("To use it as your ringtone")).font(HandyFont.caption.weight(.semibold))
                 ForEach(Array(installSteps.enumerated()), id: \.offset) { i, t in

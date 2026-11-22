@@ -327,9 +327,7 @@ private struct ReceiptDetail: View {
                 .accessibilityIdentifier("warranty-claimpack")
             if let pack {
                 PDFPreview(data: pack).frame(height: 320).clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-                ShareLink(item: PDFFile(data: pack), preview: SharePreview("\(receipt.store) claim.pdf")) {
-                    Label(L("Email or share the claim pack"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-                }.primaryButton()
+                KeepShare([.data(pack, name: "\(receipt.store) claim", ext: "pdf")], lead: .share, tool: "Warranty claim")
             }
         }
         .cardStyle(padding: HandySpacing.s12)

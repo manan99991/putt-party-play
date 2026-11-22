@@ -93,9 +93,7 @@ struct PDFSearchableView: View {
             .padding(HandySpacing.s12)
             .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-            ShareLink(item: url) {
-                Label(L("Save or share PDF"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, tool: "Searchable PDF")
             Button(L("Do another")) { reset() }.textButton().font(HandyFont.caption)
         }
     }

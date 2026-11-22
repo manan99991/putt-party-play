@@ -90,7 +90,7 @@ struct MagnifierView: View {
             }
 
             if let snapshot {
-                ShareLink(item: JPEGFile(data: snapshot), preview: SharePreview("Magnifier")) { Label(L("Save or share this frame"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                KeepShare([.data(snapshot, name: "Magnifier", ext: "jpg")], tool: "Magnifier")
             }
             Text(L("Tip: freeze first, then zoom — no shaky hands. Yellow-on-black and inverted are the looks low-vision readers find easiest."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)

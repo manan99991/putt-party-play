@@ -126,9 +126,7 @@ struct ZipMakerView: View {
                 Label(L("Small enough to email."), systemImage: "envelope").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
-            ShareLink(item: url) {
-                Label(L("Save or share zip"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, lead: .share, tool: "Zip files")
             Button(L("Back to the files")) { resultURL = nil; progress = 0 }.textButton().font(HandyFont.caption)
         }
         .cardStyle(padding: HandySpacing.s12)

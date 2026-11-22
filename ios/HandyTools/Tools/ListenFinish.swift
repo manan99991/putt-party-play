@@ -22,7 +22,7 @@ struct ListenFinishCard: View {
                 }
                 .accessibilityIdentifier("listen-words")
             }
-            ShareLink(item: url) { Label(L("Share or save to Files"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            KeepShare(url, tool: "Listen", record: false)
         }
         .cardStyle(padding: HandySpacing.s12)
         .accessibilityElement(children: .contain)

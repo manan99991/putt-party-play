@@ -66,7 +66,7 @@ struct VoiceFinishCard: View {
                 if video != nil {
                     ShareLink(item: u) { Label(L("Just the sound (WAV)"), systemImage: "waveform").frame(maxWidth: .infinity) }.textButton()
                 } else {
-                    ShareLink(item: u) { Label(L("Share or save to Files"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                    KeepShare(u, lead: .share, tool: "Voice", record: false)
                 }
             }
             Text("\(SizeTarget.format(result.count)) · WAV").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)

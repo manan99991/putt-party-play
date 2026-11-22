@@ -172,9 +172,7 @@ struct PDFFormView: View {
             Text(L("It's still a working form — you or anyone can change the answers later."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            ShareLink(item: url) {
-                Label(L("Save or share PDF"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, tool: "Fill a form")
             Button(L("Keep editing")) { resultURL = nil; resultPreview = nil }.textButton().font(HandyFont.caption)
         }
     }

@@ -110,7 +110,7 @@ struct FormatFixView: View {
                         }
                     }
                 }
-                ShareLink(items: outputs) { Label("Save or share (\(outputs.count))", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                KeepShare(outputs.map(KeepItem.file), tool: "Format Fixer")
             }
         }
         .sheet(item: $playing) { item in

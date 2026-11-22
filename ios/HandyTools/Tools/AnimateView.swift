@@ -195,9 +195,7 @@ struct AnimateView: View {
                 .aspectRatio(settings.format.size.width / settings.format.size.height, contentMode: .fit)
                 .frame(maxWidth: .infinity, maxHeight: 460)
                 .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-            ShareLink(item: url) {
-                Label(L("Save or share video"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+            KeepShare(url, tool: "Animate")
             if let g = gifURL {
                 ShareLink(item: g) {
                     Label(L("Save or share GIF"), systemImage: "photo.stack").frame(maxWidth: .infinity)

@@ -2702,10 +2702,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
         }
         if merging, let m = mergedPDF {
-            ShareLink(item: m) { Label(L("Save or share the PDF"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
-                .accessibilityIdentifier("batch-share-merged")
+            KeepShare(m, lead: chain.keepLead, tool: chain.name, record: false).accessibilityIdentifier("batch-share-merged")
         } else if !urls.isEmpty {
-            ShareLink(items: urls) { Label("Save or share all (\(urls.count))", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            KeepShare(urls.map(KeepItem.file), lead: chain.keepLead, tool: chain.name, record: false)
         }
         if !texts.isEmpty {
             CopyButton(text: texts.joined(separator: "\n\n"), title: "Copy all text")
@@ -2776,7 +2775,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 Text(L("Press and hold the code to see what's inside it, without opening it."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
-            ShareLink(item: Image(uiImage: i), preview: SharePreview("Result")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            if let d = i.jpegData(compressionQuality: 0.92) { KeepShare([.data(d, name: chain.name, ext: "jpg")], lead: chain.keepLead, tool: chain.name, record: false) }
         case .file(let d, let ext):
             let lext = ext.lowercased()
             if lext == "csv", let f = sheetFile {
@@ -2784,7 +2783,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             } else if lext == "csv", chain.steps.last?.block == .makeTable {
                 TableFinishCard(csv: d, name: chain.fileName ?? "Table")
             } else if lext == "gif" {
-                GIFFinishCard(data: d, shareURL: tempURL(d, ext))
+                GIFFinishCard(data: d, shareURL: tempURL(d, ext), tool: chain.name, record: false)
             } else if chain.steps.last?.block == .sticker, let img = UIImage(data: d) {
                 FunFinishCard(block: .sticker, original: inputPhoto, result: img, look: "")
             } else if chain.steps.last?.block == .readAloud, ChainPayload.isAudio(ext), let u = tempURL(d, ext) {
@@ -2837,7 +2836,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
             if let u = tempURL(d, ext) {
                 Text("\(SizeTarget.format(d.count)) · \(ext.uppercased())").font(HandyFont.caption)
-                ShareLink(item: u) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                KeepShare(u, lead: chain.keepLead, tool: chain.name, record: false)
                 if ChainPayload.isPhoto(ext), let img = UIImage(data: d) { PhotoLandingRow(data: d, image: img) }
             }
             }
@@ -2849,7 +2848,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 // Speed: sound kept at natural pitch, and every other speed one tap away on the same clip.
                 SpeedFinishCard(source: inputVideo, url: u, rate: ChainText.speedRate(chain.steps.last?.settings["speed"])).id(u)
             } else {
-                VideoFinishCard(url: u, source: inputVideo, promise: VideoPromise(chain)).id(u)   // a new result never shows the old player
+                VideoFinishCard(url: u, source: inputVideo, promise: VideoPromise(chain), lead: chain.keepLead, tool: chain.name, record: false).id(u)   // a new result never shows the old player
             }
         }
     }

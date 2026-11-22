@@ -48,7 +48,7 @@ struct UnzipView: View {
                         Text(s.url.lastPathComponent).font(HandyFont.bodyStrong).lineLimit(2).multilineTextAlignment(.center)
                         Text(L("Tenzy has no tool for this kind of file yet — save or share it.")).font(HandyFont.caption)
                             .foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-                        ShareLink(item: s.url) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                        KeepShare(s.url, tool: "Unzip")
                         Spacer()
                     }
                     .padding(HandySpacing.gutter)

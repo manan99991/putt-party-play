@@ -104,9 +104,7 @@ struct CollageView: View {
             }
             if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let url = resultURL {
-                ShareLink(item: url) {
-                    Label(L("Save or share collage"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-                }.primaryButton()
+                KeepShare(url, tool: "Collage")
             } else {
                 Button { make() } label: {
                     Label(L("Make collage"), systemImage: "checkmark").frame(maxWidth: .infinity)

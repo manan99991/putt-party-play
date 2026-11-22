@@ -56,15 +56,15 @@ final class ToolFlowTests: XCTestCase {
         let go = button(starting: "Fit under")
         expect(go, "Fit button", timeout: 20); go.tap()
         expect(text(containing: "Fits —"), "fitted result")
-        expect(button(containing: "Save or share"), "share button")
+        expect(button(containing: "Share"), "share button")
         alive("fitit")
     }
 
     func testStudioCutsOutResizesAndConverts() {
         launch("studio")
         let cut = button(containing: "Cut out subject"); expect(cut, "cut out button", timeout: 20); cut.tap()
-        expect(button(containing: "Save or share"), "cut-out result", timeout: 90)
-        tapChip("Resize"); button(containing: "Resize photo").tap(); expect(button(containing: "Save or share"), "resize result")
+        expect(button(containing: "Share"), "cut-out result", timeout: 90)
+        tapChip("Resize"); button(containing: "Resize photo").tap(); expect(button(containing: "Share"), "resize result")
         tapChip("Convert"); tapChip("PNG"); button(starting: "Convert to").tap(); expect(text(containing: "PNG"), "PNG result")
         alive("studio")
     }
@@ -72,7 +72,7 @@ final class ToolFlowTests: XCTestCase {
     func testLongScreenshotStitchesSamplePair() {
         launch("stitch")
         let go = button(containing: "Stitch into one image"); expect(go, "stitch button", timeout: 20); go.tap()
-        expect(button(containing: "Save or share"), "stitched result", timeout: 90)
+        expect(button(containing: "Share"), "stitched result", timeout: 90)
         alive("stitch")
     }
 
@@ -84,14 +84,14 @@ final class ToolFlowTests: XCTestCase {
         while !go.isEnabled && Date() < deadline { sleep(1) }
         XCTAssertTrue(go.isEnabled, "detection never finished")
         go.tap()
-        expect(button(containing: "Save or share"), "clean copy", timeout: 60)
+        expect(button(containing: "Share"), "clean copy", timeout: 60)
         alive("scrub")
     }
 
     func testFormatFixerConvertsAndShareReadyPreparesPhoto() {
         launch("formatfix")
         let conv = button(starting: "Convert"); expect(conv, "convert button", timeout: 20); conv.tap()
-        expect(button(containing: "Save or share"), "converted files")
+        expect(button(containing: "Share"), "converted files")
         alive("formatfix")
         app.terminate()
 
@@ -160,11 +160,11 @@ final class ToolFlowTests: XCTestCase {
         tapChip("Make")
         let f = app.textFields.firstMatch; expect(f, "payload field", timeout: 10); f.tap(); f.typeText("https://tenzy.app")
         button(containing: "Make QR code").tap()
-        expect(button(containing: "Save or share"), "qr image", timeout: 30)
+        expect(button(containing: "Share"), "qr image", timeout: 30)
         button(containing: "Fi card").tap()
         let ssid = app.textFields.firstMatch; expect(ssid, "ssid field", timeout: 10); ssid.tap(); ssid.typeText("HomeNet")
         button(containing: "Make the card").tap()
-        expect(button(containing: "Save, share or print"), "wifi card", timeout: 30)
+        expect(button(containing: "Share"), "wifi card", timeout: 30)
         alive("qrwifi")
     }
 

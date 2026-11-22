@@ -137,7 +137,7 @@ struct FaceEmojiView: View {
             }
             if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let url = resultURL {
-                ShareLink(item: url) { Label(L("Save or share photo"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                KeepShare(url, tool: "Emoji faces")
             } else {
                 Button { make(img) } label: { Label(L("Done — make the photo"), systemImage: "checkmark").frame(maxWidth: .infinity) }
                     .primaryButton().disabled(working || covers.allSatisfy { $0.emoji == nil })

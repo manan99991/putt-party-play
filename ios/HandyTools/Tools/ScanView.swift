@@ -317,11 +317,11 @@ struct ScanView: View {
                         Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.success)
                         Text(outputs.count == 1 ? "PDF ready — \(SizeTarget.format(outputBytes))" : "\(outputs.count) PDFs ready — \(SizeTarget.format(outputBytes)) total").font(HandyFont.bodyStrong)
                     }
-                    ShareLink(items: outputs) { Label(outputs.count == 1 ? "Save or share PDF" : "Save or share all", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                    KeepShare(outputs.map(KeepItem.file), tool: "Scan")
                     if jpgOutputs.isEmpty {
                         Button { exportJPGs() } label: { Label(L("Pages as JPGs instead"), systemImage: "photo.stack") }.textButton()
                     } else {
-                        ShareLink(items: jpgOutputs) { Label("Save or share \(jpgOutputs.count) JPG\(jpgOutputs.count == 1 ? "" : "s")", systemImage: "photo.stack").frame(maxWidth: .infinity) }.secondaryButton()
+                        KeepShare(jpgOutputs.map(KeepItem.file), tool: "Scan")
                     }
                 }.cardStyle(padding: HandySpacing.s12)
             }
