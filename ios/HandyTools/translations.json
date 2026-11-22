@@ -41808,5 +41808,15 @@
   "ja": "の横",
   "pt": "junto a",
   "zh": "旁边"
+ },
+ "Reading it again with on-phone AI for anything missed — you can start ticking now.": {
+  "de": "Wird mit KI auf dem Handy noch einmal gelesen – du kannst schon abhaken.",
+  "es": "Leyéndolo otra vez con IA en el teléfono por si falta algo; ya puedes marcar.",
+  "fr": "Relecture avec l'IA du téléphone pour ce qui manque — vous pouvez déjà cocher.",
+  "hi": "कुछ छूटा हो तो फ़ोन के AI से फिर से पढ़ा जा रहा है — आप अभी टिक करना शुरू कर सकते हैं।",
+  "it": "Lo rileggo con l'IA del telefono per ciò che manca: puoi già spuntare.",
+  "ja": "見落としがないか端末のAIで再読み込み中 — もうチェックできます。",
+  "pt": "A ler de novo com a IA do telemóvel — já podes começar a riscar.",
+  "zh": "正在用手机端 AI 再读一遍以免遗漏——你现在就可以开始勾选。"
  }
 }

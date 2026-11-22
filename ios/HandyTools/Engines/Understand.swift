@@ -60,18 +60,30 @@ enum Understand {
     // MARK: read
 
     static func read(_ image: UIImage, now: Date = Date()) async -> Board {
+        let (rules, ocr) = await quick(image, now: now)
+        return await better(image, ocr: ocr, rules: rules, now: now) ?? rules
+    }
+
+    /// The fast read — text recognition and the rules, a few seconds on any phone. Shown straight away, so the person
+    /// is never left on "Working…" while the slower AI read runs (Manan, 22 Nov: Planner sat on Working… for 30 s+).
+    static func quick(_ image: UIImage, now: Date = Date()) async -> (Board, [DocEngine.OCRLine]) {
         let up = image.normalizedUp()
         let ocr = await Task.detached(priority: .userInitiated) { DocEngine.recognize(up) }.value
         var rules = parse(ocr, now: now)
+        rules.notes.append("Read by text recognition. Handwriting can be misread — tap any item to fix it.")
+        return (rules, ocr)
+    }
+
+    /// The on-phone AI's read of the same photo, when this phone has it — nil when it hasn't, or takes too long.
+    static func better(_ image: UIImage, ocr: [DocEngine.OCRLine], rules: Board, now: Date = Date()) async -> Board? {
         #if canImport(FoundationModels)
-        if #available(iOS 27.0, *), let ai = await readWithAI(up, ocr: ocr, hint: rules.kind, now: now), !ai.isEmpty {
+        if #available(iOS 27.0, *), let ai = await readWithAI(image.normalizedUp(), ocr: ocr, hint: rules.kind, now: now), !ai.isEmpty {
             var b = ai
-            b.notes += rules.notes.filter { !$0.contains("Arrows") }
+            b.notes += rules.notes.filter { !$0.contains("Arrows") && !$0.contains("text recognition") }
             return b
         }
         #endif
-        rules.notes.append("Read by text recognition. Handwriting can be misread — tap any item to fix it.")
-        return rules
+        return nil
     }
 
     // MARK: rules (every phone)
@@ -363,7 +375,7 @@ enum Understand {
                         Attachment(cg)
                     }.content
                 }
-                g.addTask { try await Task.sleep(nanoseconds: 45_000_000_000); return nil }
+                g.addTask { try await Task.sleep(nanoseconds: 25_000_000_000); return nil }
                 defer { g.cancelAll() }
                 return try await g.next() ?? nil
             }

@@ -8,6 +8,7 @@ struct BoardReview: View {
     var readNow = true
     @State private var board = Understand.Board()
     @State private var reading = true
+    @State private var improving = false
     @State private var status: String?
     @State private var bad = false
     @State private var busy = false
@@ -22,6 +23,13 @@ struct BoardReview: View {
                 Label(L("Nothing readable was found. Try a straighter, closer photo in good light."), systemImage: "exclamationmark.triangle.fill")
                     .font(HandyFont.body).foregroundStyle(HandyColor.amber).cardStyle(padding: HandySpacing.s12)
             } else {
+                if improving {
+                    HStack(spacing: 8) {
+                        ProgressView().controlSize(.small)
+                        Text(L("Reading it again with on-phone AI for anything missed — you can start ticking now."))
+                            .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    }
+                }
                 summary
                 if !board.events.isEmpty { eventsCard }
                 ForEach(groups, id: \.self) { g in sectionCard(g) }
@@ -36,8 +44,14 @@ struct BoardReview: View {
 
     private func read() async {
         reading = true
-        board = await Understand.read(photo)
+        let (rules, ocr) = await Understand.quick(photo)
+        board = rules
         reading = false
+        // Then the AI read, in the background: it replaces the quick one only if the person hasn't started editing.
+        improving = true
+        let better = await Understand.better(photo, ocr: ocr, rules: rules)
+        improving = false
+        if let better, board == rules { withAnimation { board = better } }
     }
 
     // MARK: what was found
