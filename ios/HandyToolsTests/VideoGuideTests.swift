@@ -27,10 +27,12 @@ final class VideoGuideTests: XCTestCase {
         XCTAssertEqual(job("chain-reel-captions"), "post")
         if ToolHandoff.tools(for: .video).contains("celebrate") { XCTAssertEqual(job("tool-celebrate"), "stunning") }
         // Every tool that can work on a video is offered — none hidden (precheck checks the pickers too).
-        for t in ["video", "celebrate", "fitit", "audiomix", "audioconvert", "ringtone", "audioclean", "audioedit", "audiocompress", "meetingnotes"] {
+        for t in ["video", "post", "celebrate", "fitit", "audiomix", "audioconvert", "ringtone", "audioclean", "audioedit", "audiocompress", "meetingnotes"] {
             XCTAssertNotNil(job("tool-" + t), "\(t) can work on a video but isn't offered for one")
         }
         XCTAssertEqual(job("tool-audioclean"), "sound")
+        XCTAssertEqual(job("tool-post"), "post")
+        XCTAssertEqual(jobs.first { $0.goal == "post" }?.options.first?.id, "tool-post")
         // The way most people mean comes first in its job.
         XCTAssertEqual(jobs.first { $0.goal == "send" }?.options.first?.id, "chain-video-chat")
         XCTAssertEqual(jobs.first { $0.goal == "fun" }?.options.first?.id, "chain-video-boomerang")

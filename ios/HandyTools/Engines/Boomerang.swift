@@ -64,7 +64,7 @@ enum Boomerang {
             out[out.count - 1].delay = 0.4
             let whip = Array(stride(from: last - 2, through: 1, by: -2))
             out += whip.enumerated().map { k, i in
-                Beat(frame: i, delay: 0.02, zoom: 1.15 - 0.15 * Double(k + 1) / Double(max(1, whip.count)), shake: k < 3)
+                Beat(frame: i, delay: 0.02, zoom: max(1, 1.15 - 0.15 * Double(k + 1) / Double(max(1, whip.count))), shake: k < 3)
             }
             return out
         case "dramatic":

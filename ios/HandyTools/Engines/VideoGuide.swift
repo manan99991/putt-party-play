@@ -11,7 +11,7 @@ extension Guide {
     static func videoGoal(_ id: String) -> Goal {
         switch id {
         case "stunning": return Goal(id: id, title: "Make it stunning", line: "Effects, filters, light and festive magic", icon: "wand.and.stars")
-        case "post":     return Goal(id: id, title: "Post it", line: "Tall for Reels, TikTok and Stories", icon: "play.square.stack.fill")
+        case "post":     return Goal(id: id, title: "Post it", line: "TikTok, Reels, Shorts and more", icon: "play.square.stack.fill")
         case "cut":      return Goal(id: id, title: "Cut it shorter", line: "Keep just the best part", icon: "scissors")
         case "send":     return Goal(id: id, title: "Send it", line: "Small enough for WhatsApp or email", icon: "paperplane.fill")
         case "fun":      return Goal(id: id, title: "Make it funny", line: "Boomerang, GIF, silly voices", icon: "face.smiling.inverse")
@@ -31,6 +31,7 @@ extension Guide {
             switch t {
             case "video": return "cut"
             case "fitit": return "send"
+            case "post": return "post"
             case "celebrate", "videofx": return "stunning"
             case "audiomix": return "speed"
             case "audioconvert", "ringtone", "audioclean", "audioedit", "audiocompress": return "sound"
@@ -54,7 +55,7 @@ extension Guide {
     }
 
     /// Ways listed first in their job: the one most people mean.
-    private static let videoFirst = ["tool-videofx", "chain-reel-captions", "tool-video", "chain-video-chat", "chain-video-boomerang", "chain-video-slowmo", "tool-audioconvert", "chain-video-quiet", "tool-audioclean", "chain-video-words", "chain-video-still"]
+    private static let videoFirst = ["tool-post", "tool-videofx", "chain-reel-captions", "tool-video", "chain-video-chat", "chain-video-boomerang", "chain-video-slowmo", "tool-audioconvert", "chain-video-quiet", "tool-audioclean", "chain-video-words", "chain-video-still"]
 
     /// Every way to work on this video, sorted into the jobs (in `videoGoalIDs` order, empty jobs left out).
     /// Anything that fits no job goes in "Something else" at the end, so nothing is ever lost.

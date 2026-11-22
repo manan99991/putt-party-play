@@ -72,6 +72,7 @@ struct VideoFinishCard: View {
     @State private var before: VideoFacts?
     @State private var player: AVPlayer?
     @State private var saved: String?
+    @State private var posting = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
@@ -87,8 +88,27 @@ struct VideoFinishCard: View {
             }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true) }
             KeepShare(url, lead: lead, tool: tool, original: original, originalBytes: originalBytes, record: record)
+            // Straight on to TikTok, Reels, Shorts… made the right shape, length and size first.
+            Button { posting = true } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "paperplane.circle.fill").font(.system(size: 22)).foregroundStyle(HandyColor.accent)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(L("Post it")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                        Text(L("TikTok, Reels, Shorts and more")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    }
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.right").font(.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+                .padding(10).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            }.buttonStyle(.plain).accessibilityIdentifier("video-post")
         }
         .cardStyle(padding: HandySpacing.s12)
+        .sheet(isPresented: $posting) {
+            NavigationStack {
+                PostItView(startURL: url)
+                    .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { posting = false } } }
+            }
+        }
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("video-finish")
         .task(id: url) {

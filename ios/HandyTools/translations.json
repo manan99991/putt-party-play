@@ -4580,13 +4580,13 @@
   "zh": "选择歌曲、录音或片段，然后剪辑、两端淡入淡出并去掉空白。"
  },
  "Choose a video": {
-  "de": "Video auswählen",
-  "es": "Elegir un vídeo",
-  "fr": "Choisir une vidéo",
+  "de": "Video wählen",
+  "es": "Elige un vídeo",
+  "fr": "Choisis une vidéo",
   "hi": "वीडियो चुनें",
   "it": "Scegli un video",
-  "ja": "動画を選択",
-  "pt": "Escolher um vídeo",
+  "ja": "動画を選ぶ",
+  "pt": "Escolha um vídeo",
   "zh": "选择视频"
  },
  "Choose a video or photo": {
@@ -9853,11 +9853,11 @@
   "de": "Für",
   "es": "Para",
   "fr": "Pour",
-  "hi": "के लिए",
+  "hi": "इसके लिए:",
   "it": "Per",
-  "ja": "宛先",
+  "ja": "対象：",
   "pt": "Para",
-  "zh": "发给"
+  "zh": "适配"
  },
  "For a photo that passes": {
   "de": "Für ein Foto, das durchgeht",
@@ -23502,12 +23502,12 @@
  "Saved to Photos.": {
   "de": "In Fotos gesichert.",
   "es": "Guardado en Fotos.",
-  "fr": "Enregistré dans Photos.",
-  "hi": "फ़ोटो में सेव हो गया।",
+  "fr": "Enregistrée dans Photos.",
+  "hi": "Photos में सहेजा गया।",
   "it": "Salvato in Foto.",
   "ja": "写真に保存しました。",
-  "pt": "Guardado em Fotos.",
-  "zh": "已保存到照片。"
+  "pt": "Salvo nas Fotos.",
+  "zh": "已存到照片。"
  },
  "Saved — this is what players will show:": {
   "de": "Gesichert – so zeigen es Player an:",
@@ -32820,12 +32820,12 @@
   "zh": "你们在哪里认识的？"
  },
  "Where is it going?": {
-  "de": "Wohin geht es?",
+  "de": "Wohin soll es?",
   "es": "¿A dónde va?",
-  "fr": "Où cela va-t-il ?",
-  "hi": "यह कहां जा रहा है?",
+  "fr": "Où va-t-elle ?",
+  "hi": "इसे कहाँ भेजना है?",
   "it": "Dove va?",
-  "ja": "どこへ送りますか？",
+  "ja": "どこに投稿しますか？",
   "pt": "Para onde vai?",
   "zh": "要发到哪里？"
  },
@@ -40028,5 +40028,275 @@
   "ja": "毎年",
   "pt": "Anual",
   "zh": "每年"
+ },
+ "Post it to TikTok, Reels, Shorts and more": {
+  "de": "Auf TikTok, Reels, Shorts und mehr posten",
+  "es": "Publícalo en TikTok, Reels, Shorts y más",
+  "fr": "Publie-la sur TikTok, Reels, Shorts et plus",
+  "hi": "TikTok, Reels, Shorts और बाकी पर पोस्ट करें",
+  "it": "Pubblicalo su TikTok, Reels, Shorts e altro",
+  "ja": "TikTok・リール・ショートなどに投稿",
+  "pt": "Publique no TikTok, Reels, Shorts e mais",
+  "zh": "发到 TikTok、Reels、Shorts 等平台"
+ },
+ "The right shape, length and size for where it's going — then the app opens on it": {
+  "de": "Die richtige Form, Länge und Größe für das Ziel – dann öffnet sich die App damit",
+  "es": "La forma, duración y tamaño adecuados para su destino, y luego se abre la app con él",
+  "fr": "La bonne forme, durée et taille pour sa destination — puis l'app s'ouvre dessus",
+  "hi": "जहाँ जा रहा है उसके लिए सही आकार, लंबाई और साइज़ — फिर ऐप उसी के साथ खुलता है",
+  "it": "Forma, durata e dimensioni giuste per la destinazione — poi l'app si apre con il video",
+  "ja": "行き先に合った形・長さ・サイズに — そしてアプリがその動画で開きます",
+  "pt": "O formato, a duração e o tamanho certos para o destino — depois o app abre com ele",
+  "zh": "按目标平台调好画幅、时长和大小——然后直接打开那个应用"
+ },
+ "Ready for TikTok, Reels, Shorts": {
+  "de": "Bereit für TikTok, Reels, Shorts",
+  "es": "Listo para TikTok, Reels, Shorts",
+  "fr": "Prête pour TikTok, Reels, Shorts",
+  "hi": "TikTok, Reels, Shorts के लिए तैयार",
+  "it": "Pronto per TikTok, Reels, Shorts",
+  "ja": "TikTok・リール・ショート向けに",
+  "pt": "Pronto para TikTok, Reels, Shorts",
+  "zh": "适配 TikTok、Reels、Shorts"
+ },
+ "Ready for TikTok, Reels, Shorts and more — the right shape, length and size, then straight into the app.": {
+  "de": "Bereit für TikTok, Reels, Shorts und mehr – richtige Form, Länge und Größe, dann direkt in die App.",
+  "es": "Listo para TikTok, Reels, Shorts y más: forma, duración y tamaño correctos, y directo a la app.",
+  "fr": "Prête pour TikTok, Reels, Shorts et plus — bonne forme, durée et taille, puis directement dans l'app.",
+  "hi": "TikTok, Reels, Shorts और बाकी के लिए तैयार — सही आकार, लंबाई और साइज़, फिर सीधे ऐप में।",
+  "it": "Pronto per TikTok, Reels, Shorts e altro — forma, durata e dimensioni giuste, poi dritto nell'app.",
+  "ja": "TikTok・リール・ショートなどに — 正しい形・長さ・サイズにして、そのままアプリへ。",
+  "pt": "Pronto para TikTok, Reels, Shorts e mais — formato, duração e tamanho certos, direto no app.",
+  "zh": "适配 TikTok、Reels、Shorts 等——调好画幅、时长和大小，直接进入应用。"
+ },
+ "TikTok, Reels, Shorts and more": {
+  "de": "TikTok, Reels, Shorts und mehr",
+  "es": "TikTok, Reels, Shorts y más",
+  "fr": "TikTok, Reels, Shorts et plus",
+  "hi": "TikTok, Reels, Shorts और बाकी",
+  "it": "TikTok, Reels, Shorts e altro",
+  "ja": "TikTok・リール・ショートなど",
+  "pt": "TikTok, Reels, Shorts e mais",
+  "zh": "TikTok、Reels、Shorts 等"
+ },
+ "Caption (copied for you)": {
+  "de": "Bildunterschrift (wird kopiert)",
+  "es": "Texto (se copia por ti)",
+  "fr": "Légende (copiée pour toi)",
+  "hi": "कैप्शन (आपके लिए कॉपी हो जाएगा)",
+  "it": "Didascalia (copiata per te)",
+  "ja": "キャプション（コピーされます）",
+  "pt": "Legenda (copiada para você)",
+  "zh": "文案（会帮你复制）"
+ },
+ "Get it ready for": {
+  "de": "Bereit machen für",
+  "es": "Prepararlo para",
+  "fr": "La préparer pour",
+  "hi": "इसके लिए तैयार करें:",
+  "it": "Preparalo per",
+  "ja": "準備する：",
+  "pt": "Preparar para",
+  "zh": "准备发到"
+ },
+ "Pick a video. Tenzy makes it the right shape, length and size for where it's going, then opens the app with it ready to post.": {
+  "de": "Wähle ein Video. Tenzy bringt es in die richtige Form, Länge und Größe für das Ziel und öffnet dann die App, bereit zum Posten.",
+  "es": "Elige un vídeo. Tenzy le da la forma, duración y tamaño adecuados para su destino y abre la app lista para publicar.",
+  "fr": "Choisis une vidéo. Tenzy lui donne la bonne forme, durée et taille pour sa destination, puis ouvre l'app prête à publier.",
+  "hi": "कोई वीडियो चुनें। Tenzy उसे सही आकार, लंबाई और साइज़ में बनाता है, फिर पोस्ट के लिए तैयार ऐप खोलता है।",
+  "it": "Scegli un video. Tenzy gli dà forma, durata e dimensioni giuste per la destinazione, poi apre l'app pronto da pubblicare.",
+  "ja": "動画を選ぶと、Tenzyが行き先に合った形・長さ・サイズにして、投稿できる状態でアプリを開きます。",
+  "pt": "Escolha um vídeo. O Tenzy deixa no formato, duração e tamanho certos para o destino e abre o app pronto para publicar.",
+  "zh": "选一段视频。Tenzy 会按目标平台调好画幅、时长和大小，然后打开应用，直接就能发。"
+ },
+ "Post it somewhere else": {
+  "de": "Woanders posten",
+  "es": "Publicar en otro sitio",
+  "fr": "Publier ailleurs",
+  "hi": "कहीं और पोस्ट करें",
+  "it": "Pubblica altrove",
+  "ja": "別の場所に投稿",
+  "pt": "Publicar em outro lugar",
+  "zh": "发到别的平台"
+ },
+ "Ready for": {
+  "de": "Bereit für",
+  "es": "Listo para",
+  "fr": "Prête pour",
+  "hi": "इसके लिए तैयार:",
+  "it": "Pronto per",
+  "ja": "準備完了：",
+  "pt": "Pronto para",
+  "zh": "已适配"
+ },
+ "Saves it to Photos, copies your caption, and opens the app — pick the video if it asks, paste the caption, tap Post.": {
+  "de": "Speichert es in Fotos, kopiert deine Bildunterschrift und öffnet die App – wähle das Video, falls gefragt, füge den Text ein und tippe auf Posten.",
+  "es": "Lo guarda en Fotos, copia tu texto y abre la app: elige el vídeo si lo pide, pega el texto y toca Publicar.",
+  "fr": "L'enregistre dans Photos, copie ta légende et ouvre l'app — choisis la vidéo si elle le demande, colle la légende, touche Publier.",
+  "hi": "इसे Photos में सहेजता है, कैप्शन कॉपी करता है और ऐप खोलता है — पूछे तो वीडियो चुनें, कैप्शन पेस्ट करें, पोस्ट पर टैप करें।",
+  "it": "Lo salva in Foto, copia la didascalia e apre l'app — scegli il video se lo chiede, incolla la didascalia, tocca Pubblica.",
+  "ja": "写真に保存し、キャプションをコピーしてアプリを開きます — 聞かれたら動画を選び、キャプションを貼り付けて投稿をタップ。",
+  "pt": "Salva nas Fotos, copia a legenda e abre o app — escolha o vídeo se pedir, cole a legenda e toque em Publicar.",
+  "zh": "存到照片、复制文案并打开应用——如有提示就选这段视频，粘贴文案，点发布。"
+ },
+ "Say something about it…": {
+  "de": "Schreib etwas dazu…",
+  "es": "Di algo sobre él…",
+  "fr": "Dis quelque chose…",
+  "hi": "इसके बारे में कुछ लिखें…",
+  "it": "Scrivi qualcosa…",
+  "ja": "ひとこと添えて…",
+  "pt": "Diga algo sobre ele…",
+  "zh": "说点什么…"
+ },
+ "Then: saved to Photos, caption copied, and the app opens on it — you tap Post.": {
+  "de": "Dann: in Fotos gesichert, Text kopiert, und die App öffnet sich damit – du tippst auf Posten.",
+  "es": "Luego: guardado en Fotos, texto copiado y la app se abre con él; tú tocas Publicar.",
+  "fr": "Ensuite : enregistrée dans Photos, légende copiée, et l'app s'ouvre dessus — tu touches Publier.",
+  "hi": "फिर: Photos में सहेजा, कैप्शन कॉपी, और ऐप उसी के साथ खुलता है — आप पोस्ट टैप करें।",
+  "it": "Poi: salvato in Foto, didascalia copiata e l'app si apre con il video — tu tocchi Pubblica.",
+  "ja": "次に：写真に保存、キャプションをコピー、アプリがその動画で開きます — 投稿はあなたがタップ。",
+  "pt": "Depois: salvo nas Fotos, legenda copiada e o app abre com ele — você toca em Publicar.",
+  "zh": "然后：存到照片、复制文案、打开应用——你点发布即可。"
+ },
+ "Adds": {
+  "de": "Fügt hinzu:",
+  "es": "Añade",
+  "fr": "Ajoute",
+  "hi": "जोड़ता है:",
+  "it": "Aggiunge",
+  "ja": "追加：",
+  "pt": "Adiciona",
+  "zh": "会加上"
+ },
+ "Saved to Photos · caption copied — paste it in.": {
+  "de": "In Fotos gesichert · Text kopiert – einfach einfügen.",
+  "es": "Guardado en Fotos · texto copiado: pégalo.",
+  "fr": "Enregistrée dans Photos · légende copiée — colle-la.",
+  "hi": "Photos में सहेजा · कैप्शन कॉपी — पेस्ट कर दें।",
+  "it": "Salvato in Foto · didascalia copiata — incollala.",
+  "ja": "写真に保存 · キャプションをコピーしました — 貼り付けてください。",
+  "pt": "Salvo nas Fotos · legenda copiada — é só colar.",
+  "zh": "已存到照片 · 文案已复制——粘贴即可。"
+ },
+ "Tenzy isn't allowed to add to Photos, so share it from the button below instead.": {
+  "de": "Tenzy darf nichts zu Fotos hinzufügen – teile es stattdessen mit der Taste unten.",
+  "es": "Tenzy no tiene permiso para añadir a Fotos; compártelo con el botón de abajo.",
+  "fr": "Tenzy n'a pas le droit d'ajouter à Photos — partage-la avec le bouton ci-dessous.",
+  "hi": "Tenzy को Photos में जोड़ने की अनुमति नहीं है, इसलिए नीचे वाले बटन से शेयर करें।",
+  "it": "Tenzy non può aggiungere a Foto: condividilo con il pulsante qui sotto.",
+  "ja": "Tenzyは写真に追加できないため、下のボタンから共有してください。",
+  "pt": "O Tenzy não pode adicionar às Fotos; compartilhe pelo botão abaixo.",
+  "zh": "Tenzy 没有权限存到照片，请用下面的按钮分享。"
+ },
+ "isn't on this phone, so the App Store opens. The video is in Photos when you're ready.": {
+  "de": "ist nicht auf diesem Telefon, daher öffnet sich der App Store. Das Video liegt in Fotos, wenn du so weit bist.",
+  "es": "no está en este teléfono, así que se abre la App Store. El vídeo está en Fotos cuando quieras.",
+  "fr": "n'est pas sur ce téléphone, l'App Store s'ouvre. La vidéo est dans Photos quand tu veux.",
+  "hi": "इस फ़ोन पर नहीं है, इसलिए App Store खुलता है। वीडियो Photos में है, जब चाहें।",
+  "it": "non è su questo telefono, quindi si apre l'App Store. Il video è in Foto quando vuoi.",
+  "ja": "がこの端末にないため、App Storeが開きます。動画は写真にあります。",
+  "pt": "não está neste telefone, então a App Store abre. O vídeo está nas Fotos quando quiser.",
+  "zh": "这台手机上没有，所以会打开 App Store。视频已在照片里，随时可用。"
+ },
+ "Made tall (9:16) — soft blurred sides, nothing cut off": {
+  "de": "Hochformat (9:16) – weich verschwommene Seiten, nichts abgeschnitten",
+  "es": "En vertical (9:16): lados difuminados, nada recortado",
+  "fr": "Mise en vertical (9:16) — côtés flous, rien de coupé",
+  "hi": "लंबा बनाया (9:16) — धुंधले किनारे, कुछ नहीं कटा",
+  "it": "Reso verticale (9:16) — lati sfocati, niente tagliato",
+  "ja": "縦長に（9:16）— 両側はやわらかくぼかし、切れません",
+  "pt": "Deixado vertical (9:16) — laterais desfocadas, nada cortado",
+  "zh": "改成竖屏（9:16）——两侧柔和虚化，画面不裁切"
+ },
+ "Keeps the liveliest": {
+  "de": "Behält die lebhaftesten",
+  "es": "Se queda con los mejores",
+  "fr": "Garde les plus vivantes",
+  "hi": "सबसे जानदार हिस्सा रखता है:",
+  "it": "Tiene i più vivaci",
+  "ja": "いちばん動きのある部分を残す：",
+  "pt": "Fica com os melhores",
+  "zh": "保留最精彩的"
+ },
+ "it's": {
+  "de": "es ist",
+  "es": "dura",
+  "fr": "elle fait",
+  "hi": "यह है",
+  "it": "dura",
+  "ja": "全体",
+  "pt": "tem",
+  "zh": "原长"
+ },
+ "takes up to": {
+  "de": "nimmt bis zu",
+  "es": "admite hasta",
+  "fr": "accepte jusqu'à",
+  "hi": "इतना तक लेता है:",
+  "it": "accetta fino a",
+  "ja": "の上限は",
+  "pt": "aceita até",
+  "zh": "最长"
+ },
+ "Made small enough for": {
+  "de": "Klein genug gemacht für",
+  "es": "Reducido lo suficiente para",
+  "fr": "Assez léger pour",
+  "hi": "इसके लिए काफ़ी छोटा बनाया:",
+  "it": "Reso abbastanza piccolo per",
+  "ja": "サイズを小さく：",
+  "pt": "Reduzido o bastante para",
+  "zh": "压缩到适合"
+ },
+ "Already the right shape, length and size for": {
+  "de": "Schon in der richtigen Form, Länge und Größe für",
+  "es": "Ya tiene la forma, duración y tamaño adecuados para",
+  "fr": "Déjà la bonne forme, durée et taille pour",
+  "hi": "पहले से सही आकार, लंबाई और साइज़ में:",
+  "it": "Ha già forma, durata e dimensioni giuste per",
+  "ja": "すでに最適な形・長さ・サイズ：",
+  "pt": "Já está no formato, duração e tamanho certos para",
+  "zh": "画幅、时长和大小已适合"
+ },
+ "Finding the liveliest part…": {
+  "de": "Suche den lebhaftesten Teil…",
+  "es": "Buscando la mejor parte…",
+  "fr": "Recherche du passage le plus vivant…",
+  "hi": "सबसे जानदार हिस्सा ढूँढ रहे हैं…",
+  "it": "Cerco la parte più vivace…",
+  "ja": "いちばん動きのある部分を探しています…",
+  "pt": "Procurando a melhor parte…",
+  "zh": "正在找最精彩的部分…"
+ },
+ "Making it tall…": {
+  "de": "Wird hochkant gemacht…",
+  "es": "Poniéndolo en vertical…",
+  "fr": "Mise en vertical…",
+  "hi": "लंबा बना रहे हैं…",
+  "it": "Lo rendo verticale…",
+  "ja": "縦長にしています…",
+  "pt": "Deixando vertical…",
+  "zh": "正在改成竖屏…"
+ },
+ "Making it small enough…": {
+  "de": "Wird verkleinert…",
+  "es": "Reduciendo el tamaño…",
+  "fr": "Réduction de la taille…",
+  "hi": "छोटा कर रहे हैं…",
+  "it": "Lo rimpicciolisco…",
+  "ja": "サイズを小さくしています…",
+  "pt": "Reduzindo o tamanho…",
+  "zh": "正在压缩…"
+ },
+ "That couldn't be made from this video — try another.": {
+  "de": "Das ließ sich aus diesem Video nicht machen – versuch ein anderes.",
+  "es": "No se pudo hacer con este vídeo; prueba otro.",
+  "fr": "Impossible avec cette vidéo — essaie-en une autre.",
+  "hi": "इस वीडियो से यह नहीं बन सका — कोई और आज़माएँ।",
+  "it": "Non è stato possibile con questo video — provane un altro.",
+  "ja": "この動画では作れませんでした — 別の動画で試してください。",
+  "pt": "Não foi possível com este vídeo — tente outro.",
+  "zh": "这段视频做不了——换一段试试。"
  }
 }

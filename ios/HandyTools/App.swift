@@ -167,6 +167,7 @@ struct Tool: Identifiable {
     Tool(id: "pdfform",    name: "Fill a Form",      blurb: "Fill in a PDF form on your phone",  icon: "pencil.and.list.clipboard",      page: 4, asset: "tool_scan", keywords: ["fill a form","fill in","form filler","application","tax form","checkbox","tick boxes","fillable","questionnaire","enrollment"]),
     Tool(id: "zipmaker",   name: "Make a Zip",       blurb: "Put many files into one zip",        icon: "doc.zipper",                          page: 4, asset: "tool_shareready", keywords: ["make a zip","zip files","create zip","bundle files","archive","compress files","send many files","package files","one file"]),
     Tool(id: "celebrate",  name: "Video effects",    blurb: "Make any video stunning", icon: "sparkles.tv.fill",                    page: 7, asset: "tool_studio", keywords: ["video effects","effects","filter","filters","look","lut","color grade","cinematic","glow","light leak","flare","neon","vhs","retro","film grain","vignette","zoom","beat","reels","tiktok","make it stunning","edit video","celebrate","celebration","festival","holiday","christmas","new year","diwali","holi","eid","ramadan","hanukkah","lunar new year","thanksgiving","halloween","birthday","wedding","greeting","greeting video","snow","fireworks","confetti","decorate video","text on video","caption video","wishes"]),
+    Tool(id: "post",       name: "Post it",          blurb: "Ready for TikTok, Reels, Shorts", icon: "paperplane.circle.fill",              page: 7, asset: "tool_studio", keywords: ["post","post it","tiktok","instagram","reels","reel","stories","story","youtube","shorts","youtube shorts","facebook","snapchat","twitter","x","whatsapp status","social media","upload","share video","vertical","9:16","hashtags","caption"]),
     Tool(id: "animate",    name: "Animate",          blurb: "Turn photos into a video", icon: "play.rectangle.on.rectangle.fill",          page: 7, asset: "tool_studio", keywords: ["animate","animation","slideshow","reel","reels","tiktok","shorts","story","ken burns","polaroid","film strip","cube","boomerang","photo video","video from photos","montage","collage video"]),
     Tool(id: "collage",    name: "Collage",          blurb: "Lay photos out in one picture",   icon: "rectangle.3.group.fill",              page: 7, asset: "tool_stitch", keywords: ["collage","photo collage","grid","mosaic","photo strip","layout","combine photos","story collage","photo grid","moodboard"]),
     Tool(id: "faceemoji",  name: "Face Emoji",       blurb: "Hide faces with emoji",  icon: "face.smiling.inverse",                page: 7, asset: "tool_scrub", keywords: ["face emoji","emoji face","cover faces","hide faces","hide kids faces","kids","children","blur faces","privacy photo","emoji over face","sticker face"]),
@@ -398,6 +399,7 @@ struct ToolDestination: View {
         case "zipmaker": ZipMakerView()
         case "animate": AnimateView()
         case "celebrate": CelebrateView()
+        case "post": PostItView()
         case "collage": CollageView()
         case "faceemoji": FaceEmojiView()
         case "comicstrip": ComicStripView()

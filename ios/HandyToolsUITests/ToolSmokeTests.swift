@@ -16,7 +16,7 @@ final class ToolSmokeTests: XCTestCase {
         "audioconvert", "audiocompress", "ringtone", "audioedit", "audiomix", "audiotags", "audioclean", "meetingnotes",
         "soundboard", "translate", "voicenotes", "shield", "contacts", "light", "measure", "gpsdash",
         "audiolab", "rest", "seeread", "colorvision", "fileviewer", "pricecheck", "vault", "speechnotes",
-        "audiostudio",
+        "audiostudio", "post",
         // Older screens still reachable from other tools and links.
         "magnify", "shareready", "lens", "livecaptions", "describe",
     ]

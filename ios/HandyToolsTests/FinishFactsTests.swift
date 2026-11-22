@@ -108,7 +108,9 @@ final class FinishFactsTests: XCTestCase {
         let video = ToolHandoff.tools(for: .video)
         XCTAssertEqual(video.first, "video")
         for must in ["audioconvert", "ringtone", "meetingnotes", "audiomix", "fitit"] { XCTAssertTrue(video.contains(must), "\(must) missing for a video") }
-        XCTAssertFalse(video.contains("audiotags")); XCTAssertFalse(video.contains("audiocompress"))
+        // Song info is about a music file, not a video; everything else that can work on a video is offered (no hidden tools).
+        XCTAssertFalse(video.contains("audiotags"))
+        for must in ["audioclean", "audioedit", "audiocompress", "celebrate"] { XCTAssertTrue(video.contains(must), "\(must) can work on a video but isn't offered") }
         for id in video where id != "video" && id != "fitit" {
             XCTAssertNotNil(Guide.videoNames[id], "\(id) is offered for a video under its audio name")
         }

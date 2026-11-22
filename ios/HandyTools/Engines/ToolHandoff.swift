@@ -32,13 +32,13 @@ final class ToolHandoff {
     nonisolated static func tools(for kind: ChainKind) -> [String] {
         switch kind {
         case .pdf: return ["pdfsign", "pdfform", "pdfsearchable", "pdfprotect", "pdfpages", "fitit", "zipmaker"]
-        case .image, .photoFile: return ["studio", "scrub", "fitit", "sticker", "animate", "celebrate", "collage", "faceemoji", "comicstrip", "menu", "cards"]
+        case .image, .photoFile: return ["scrub", "fitit", "studio", "sticker", "animate", "celebrate", "collage", "faceemoji", "comicstrip", "menu", "cards"]
         case .audio: return ["meetingnotes", "audioclean", "audioedit", "audiocompress", "audiomix", "audiotags", "audioconvert", "zipmaker"]
         // Every tool that can work on a video, named as a video job (Guide.videoNames): edit it, make it stunning, send it,
         // join or speed it, take its sound out (MP3/M4A, ringtone, cleaned up, trimmed, small) and get its words. precheck
         // fails if a tool that opens videos is missing here. Soundboard is the one left out: on a video, "Give a video a
         // funny voice" does the same with every voice and puts the new voice back on the video.
-        case .video: return ["video", "celebrate", "fitit", "audiomix", "audioconvert", "ringtone", "audioclean", "audioedit", "audiocompress", "meetingnotes"]
+        case .video: return ["video", "post", "celebrate", "fitit", "audiomix", "audioconvert", "ringtone", "audioclean", "audioedit", "audiocompress", "meetingnotes"]
         case .file: return ["zipmaker"]
         case .text: return []
         }
