@@ -505,7 +505,7 @@ struct BuilderView: View {
         // Scrolls when the page is taller than the phone (small phones, big text), so nothing ever sits under the
         // clock or behind another button.
         ScrollView {
-        VStack(alignment: .leading, spacing: HandySpacing.s16) {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
             // Problem first: the person says what they need; Tenzy finds the tool, or builds one. Kept short so
             // the whole front door — say it, start with what you have, or open any tool — fits one screen.
             Text(L("Let's make today easier")).font(.system(size: 28, weight: .bold)).lineLimit(1).minimumScaleFactor(0.8).frame(maxWidth: .infinity, alignment: .leading)
@@ -909,7 +909,7 @@ struct BuilderView: View {
                     Text(L("Paste")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                     Text(L(clipKind.map { "\($0) copied" } ?? "Nothing copied")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
                 }
-                .frame(maxWidth: .infinity, minHeight: 68, maxHeight: .infinity)
+                .frame(maxWidth: .infinity, minHeight: 64, maxHeight: .infinity)
                 .cardStyle(padding: HandySpacing.s8)
             }
             .fixedSize(horizontal: false, vertical: true)   // Paste has a second line; PDF and File grow to match it
@@ -966,7 +966,7 @@ struct BuilderView: View {
             Text(L(title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
             if let sub { Text(L(sub)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1) }
         }
-        .frame(maxWidth: .infinity, minHeight: 68, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, minHeight: 64, maxHeight: .infinity)
         .cardStyle(padding: HandySpacing.s8)
     }
 
@@ -1000,10 +1000,9 @@ struct BuilderView: View {
     private var firstTry: some View {
         HStack(spacing: HandySpacing.s12) {
             Image(systemName: "play.circle.fill").font(.system(size: 26)).foregroundStyle(HandyColor.accent).accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 1) {
-                Text(L("See it work in 10 seconds")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                Text(L("Hide private details, remove location, shrink — on a sample")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
-            }
+            Text(L("See it work in 10 seconds")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                .lineLimit(1).minimumScaleFactor(0.8)
+                .accessibilityHint(L("Hide private details, remove location, shrink — on a sample"))
             Spacer(minLength: 0)
             Button(L("Try it")) {
                 triedFirst = true
@@ -1018,7 +1017,7 @@ struct BuilderView: View {
             }
             .buttonStyle(.plain).accessibilityLabel(L("Not now"))
         }
-        .padding(.horizontal, HandySpacing.s12).padding(.vertical, 8)
+        .padding(.horizontal, HandySpacing.s12).padding(.vertical, 4)
         .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
@@ -1033,8 +1032,8 @@ struct BuilderView: View {
             Text(L(title)).font(.system(size: 12, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
                 .multilineTextAlignment(.center).lineLimit(2).minimumScaleFactor(0.85)
         }
-        .frame(maxWidth: .infinity, minHeight: 74)
-        .padding(.horizontal, 4).padding(.vertical, 6)
+        .frame(maxWidth: .infinity, minHeight: 68)
+        .padding(.horizontal, 4).padding(.vertical, 5)
         .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
         .contentShape(Rectangle())

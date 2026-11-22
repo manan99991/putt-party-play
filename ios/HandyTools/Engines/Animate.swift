@@ -230,9 +230,14 @@ enum Animate {
         let painter = Painter(images: images, size: size, framing: settings.framing)
         let style = settings.style
         let bitRate = Int(size.width * size.height * 4)               // ~8 Mbps at 1080×1920
-        return await encode(size: size, fps: fps, frameCount: tl.frameCount, bitRate: bitRate, progress: progress) { i, ctx in
-            painter.draw(style: style, frame: i, timeline: tl, in: ctx)
+        // One more try if the encoder fails to start or stalls (seen on a busy device): a slideshow is never lost to a hiccup.
+        for attempt in 0..<2 {
+            if let url = await encode(size: size, fps: fps, frameCount: tl.frameCount, bitRate: bitRate, progress: progress, draw: { i, ctx in
+                painter.draw(style: style, frame: i, timeline: tl, in: ctx)
+            }) { return url }
+            if Task.isCancelled || attempt == 1 { break }
         }
+        return nil
     }
 
     /// One still frame (for thumbnails and tests).
@@ -288,7 +293,8 @@ enum Animate {
             var waited = 0
             while !input.isReadyForMoreMediaData {
                 try? await Task.sleep(nanoseconds: 4_000_000); waited += 1
-                if waited > 2500 || writer.status == .failed { writer.cancelWriting(); return nil }   // ~10 s stuck
+                // A busy phone can hold the encoder for a while; only a truly stuck one (~60 s) gives up.
+                if waited > 15_000 || writer.status == .failed { writer.cancelWriting(); return nil }
             }
             var pb: CVPixelBuffer?
             if let pool = adaptor.pixelBufferPool { CVPixelBufferPoolCreatePixelBuffer(nil, pool, &pb) }
