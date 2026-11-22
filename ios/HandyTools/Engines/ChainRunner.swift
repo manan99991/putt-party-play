@@ -137,7 +137,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case readCode, pageText, textPdf
     case pdfShrink, pdfLock, pdfPages, pdfText
     case sticker, emojiFaces, meme, emojiMosaic, videoSpeed, videoLoop
-    case artFilter, voiceChange, videoCelebrate
+    case artFilter, voiceChange, videoCelebrate, postTo
 
     var id: String { rawValue }
     var title: String {
@@ -201,6 +201,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .videoSpeed: return "Slow it down or speed it up"
         case .videoLoop: return "Boomerang GIF"
         case .videoCelebrate: return "Decorate it for a celebration"
+        case .postTo: return "Get it ready to post"
         case .artFilter: return "Sketch, comic or pop art"
         case .voiceChange: return "Change the voice"
         }
@@ -209,7 +210,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         switch self {
         case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp, .readCode, .sticker, .emojiFaces, .meme, .emojiMosaic, .artFilter: return .image
         case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList, .chatLink, .contactQr, .wifiQr, .returnBy, .readAloud, .translate, .rewrite, .pageText, .textPdf: return .text
-        case .videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoLoop, .videoCelebrate: return .video
+        case .videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoLoop, .videoCelebrate, .postTo: return .video
         case .speechText, .voiceChange: return .audio
         case .pdfShrink, .pdfLock, .pdfPages, .pdfText: return .pdf
         }
@@ -221,7 +222,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto, .sticker: return .photoFile
         case .businessCard, .calendarEvent, .makeTable, .addToList, .returnBy, .videoGif, .videoLoop: return .file
         case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr, .wifiQr, .videoStill, .emojiFaces, .meme, .emojiMosaic, .artFilter: return .image
-        case .videoShrink, .videoMute, .videoTrim, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoCelebrate: return .video
+        case .videoShrink, .videoMute, .videoTrim, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoCelebrate, .postTo: return .video
         case .videoAudio, .readAloud, .voiceChange: return .audio
         case .photoPdf, .textPdf, .pdfShrink, .pdfLock, .pdfPages: return .pdf
         }
@@ -233,7 +234,7 @@ extension Block {
     /// "what do you want to do with it?" rather than a flat list of tools.
     var goal: String {
         switch self {
-        case .shrinkImage, .convertImage, .resizePhoto, .videoShrink, .videoTrim, .pdfShrink: return "Make it easy to send"
+        case .shrinkImage, .convertImage, .resizePhoto, .videoShrink, .videoTrim, .pdfShrink, .postTo: return "Make it easy to send"
         case .stripLocation, .hideSensitive, .watermark, .videoMute, .pdfLock: return "Keep it private"
         case .enhance, .cutout, .videoRotate, .videoVertical, .videoCaptions: return "Make it look better"
         case .readText, .describe, .identify, .readCode, .speechText, .pageText, .pdfText: return "Read what's in it"
@@ -320,6 +321,7 @@ extension Block {
         case .videoSpeed: return "speeds it up or slows it down"
         case .videoLoop: return "makes it loop"
         case .videoCelebrate: return "decorates it for a celebration, with your words"
+        case .postTo: return "makes it ready for TikTok, Reels, Shorts and more, then opens the app"
         case .artFilter: return "applies an art style"
         case .voiceChange: return "changes the voice"
         }
@@ -940,7 +942,7 @@ enum ResultScreens {
         case .pullDetails: return "Links, emails, phones"
         case .calendarEvent: return "Calendar event"
         case .businessCard: return "Contact card"
-        case .videoShrink, .videoTrim, .videoSpeed, .videoMute, .videoVertical, .videoCaptions, .videoRotate, .videoCelebrate: return "Video finish"
+        case .videoShrink, .videoTrim, .videoSpeed, .videoMute, .videoVertical, .videoCaptions, .videoRotate, .videoCelebrate, .postTo: return "Video finish"
         case .videoGif, .videoLoop: return "GIF finish"
         case .scamCheck: return "Scam verdict"
         case .voiceChange: return "Voice finish"
@@ -1030,6 +1032,7 @@ enum ChainTemplates {
         Chain(id: "meme", name: "Make a meme", steps: [ChainStep(block: .meme, settings: ["top": "", "bottom": ""])]),
         Chain(id: "emoji-mosaic", name: "Turn a photo into emoji art", steps: [ChainStep(block: .emojiMosaic)]),
         Chain(id: "video-celebrate", name: "Decorate a video for a celebration", steps: [ChainStep(block: .videoCelebrate, settings: ["theme": "", "text": ""])], blurb: "The next festival coming up (or any you pick) — snow, fireworks, diyas, lanterns — with its greeting placed clear of faces."),
+        Chain(id: "video-post", name: "Get a video ready for TikTok, Reels or Shorts", steps: [ChainStep(block: .postTo, settings: ["platform": "tiktok"])]),
         Chain(id: "video-boomerang", name: "Make a boomerang GIF from a video", steps: [ChainStep(block: .videoLoop, settings: ["style": "snap"])]),
         Chain(id: "video-slowmo", name: "Slow a video down", steps: [ChainStep(block: .videoSpeed, settings: ["speed": "slow"])]),
         Chain(id: "video-fast", name: "Speed a video up", steps: [ChainStep(block: .videoSpeed, settings: ["speed": "fast"])]),

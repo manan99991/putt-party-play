@@ -40,6 +40,7 @@ extension Guide {
             }
         case .chain(let c):
             let blocks = Set(c.steps.map(\.block))
+            if blocks.contains(.postTo) { return "post" }
             if c.finish?.kind == .mail || blocks.contains(.videoShrink) || blocks.contains(.chatLink) { return "send" }
             if blocks.contains(.videoVertical) || (blocks.contains(.videoCaptions) && blocks.contains(.videoTrim)) { return "post" }
             if blocks.contains(.videoCelebrate) { return "stunning" }

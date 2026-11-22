@@ -1307,7 +1307,11 @@ private struct ChainEditor: View {
                     connector
                     node(icon: "checkmark.circle.fill", title: "You get \(end.label)", sub: "Then copy it, save it or share it.", tint: HandyColor.success)
                 }
-                if endKind != nil { finishCard.padding(.top, HandySpacing.s12) }
+                if chain.steps.last?.block == .postTo {
+                    // Posting ends in Post it's own card — the app opens from there — so there's no "Then" to pick.
+                    Label(L("Then: the app opens with the video ready — you add a caption and tap Post."), systemImage: "arrow.up.forward.app.fill")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.top, HandySpacing.s12)
+                } else if endKind != nil { finishCard.padding(.top, HandySpacing.s12) }
                 if endKind != nil { ScheduleCard(schedule: $chain.schedule, name: chain.name, toolID: chain.id).padding(.top, HandySpacing.s12) }
                 if endKind == .text { WatchCard(watch: $chain.watch).padding(.top, HandySpacing.s12) }
                 if let p = chain.problem(starting: startKind), !chain.steps.isEmpty {
@@ -1601,7 +1605,7 @@ private struct ChainEditor: View {
         case .translate: return ["to": "en"]; case .rewrite: return ["style": "clear"]
         case .pdfShrink: return ["mb": "5"]; case .pdfLock: return ["password": ""]; case .pdfPages: return ["pages": ""]
         case .emojiFaces: return ["emoji": ChainText.faceEmojis[0]]; case .meme: return ["top": "", "bottom": ""]
-        case .videoSpeed: return ["speed": "slow"]; case .videoLoop: return ["style": "snap"]; case .videoCelebrate: return ["theme": "", "text": ""]
+        case .videoSpeed: return ["speed": "slow"]; case .videoLoop: return ["style": "snap"]; case .videoCelebrate: return ["theme": "", "text": ""]; case .postTo: return ["platform": "tiktok"]
         case .artFilter: return ["style": "sketch"]; case .voiceChange: return ["voice": "chipmunk"]
         default: return [:] }
     }
@@ -1742,7 +1746,18 @@ private struct ChainEditor: View {
             TextField(L("Words on the video (empty = the greeting)"), text: Binding(get: { chain.steps[i].settings["text"] ?? "" }, set: { chain.steps[i].settings["text"] = $0 }))
                 .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
                 .accessibilityIdentifier("celebrate-block-words")
-            Text(L("For dragging the words, more fonts and any typed celebration, open the Celebrate tool.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("For looks, light, motion, dragging the words and any typed celebration, open Video effects.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        case .postTo:
+            let current = SocialPost.platform(chain.steps[i].settings["platform"] ?? "")?.id ?? "tiktok"
+            HandyFlow(spacing: 6) {
+                ForEach(SocialPost.platforms) { p in
+                    HChip(text: L(p.name), selected: current == p.id) { chain.steps[i].settings["platform"] = p.id }
+                }
+            }
+            if let p = SocialPost.platform(current) {
+                Text("\(L("Made for")) \(L(p.name)): \(L(p.shape == .tall ? "tall 9:16" : "keeps its shape"))\(p.maxSeconds.map { ", " + L("up to") + " " + SocialPost.clock($0) } ?? ""). \(L("Then it opens the app with the video ready."))")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
         case .videoLoop:
             let current = Boomerang.style(chain.steps[i].settings["style"]).id
             HandyFlow(spacing: 6) {
@@ -2855,6 +2870,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             // Same finish as the Video tool: watch it, what changed against your original, each promise checked on the file.
             if chain.flipbook == true, !animPhotos.isEmpty {
                 AnimateFinishCard(photos: animPhotos, style: .flipbook, url: u).id(u)
+            } else if chain.steps.last?.block == .postTo {
+                // Post it's own card: made ready for the platform, then one tap into the app.
+                PostReadyCard(source: u, platform: SocialPost.platform(chain.steps.last?.settings["platform"] ?? "") ?? SocialPost.platforms[0]).id(u)
             } else if chain.steps.last?.block == .videoSpeed {
                 // Speed: sound kept at natural pitch, and every other speed one tap away on the same clip.
                 SpeedFinishCard(source: inputVideo, url: u, rate: ChainText.speedRate(chain.steps.last?.settings["speed"])).id(u)

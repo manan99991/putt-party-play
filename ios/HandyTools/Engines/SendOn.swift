@@ -12,13 +12,9 @@ enum SendOn {
 
     static let places: [Place] = [
         Place(id: "wa", name: "WhatsApp chat", icon: "message.fill", maxBytes: 16_000_000, maxSeconds: nil, splits: false),
-        Place(id: "wastatus", name: "WhatsApp status", icon: "circle.dashed", maxBytes: 16_000_000, maxSeconds: 30, splits: true),
-        Place(id: "igstory", name: "Instagram Story", icon: "rectangle.portrait.on.rectangle.portrait", maxBytes: nil, maxSeconds: 60, splits: true),
-        Place(id: "igreel", name: "Instagram Reel", icon: "play.rectangle.fill", maxBytes: nil, maxSeconds: 90, splits: false),
         Place(id: "email", name: "Email", icon: "envelope.fill", maxBytes: 20_000_000, maxSeconds: nil, splits: false),
         Place(id: "discord", name: "Discord", icon: "bubble.left.and.bubble.right.fill", maxBytes: 10_000_000, maxSeconds: nil, splits: false),
         Place(id: "imessage", name: "iMessage", icon: "message.badge.filled.fill", maxBytes: 100_000_000, maxSeconds: nil, splits: false),
-        Place(id: "x", name: "X", icon: "xmark", maxBytes: 512_000_000, maxSeconds: 140, splits: false),
     ]
 
     struct Plan: Equatable {

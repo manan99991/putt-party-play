@@ -25,6 +25,8 @@ enum SocialPost {
         /// The app's own link, and where to get it if it isn't installed.
         let app: String
         let store: String
+        /// A longer clip becomes several pieces in order (Stories, Status), instead of keeping one part.
+        var splits = false
     }
 
     static let platforms: [Platform] = [
@@ -33,7 +35,7 @@ enum SocialPost {
         Platform(id: "reels", name: "Instagram Reels", icon: "play.rectangle.on.rectangle", tint: 0xE1306C, shape: .tall, maxSeconds: 178, maxBytes: nil,
                  tags: ["#reels"], app: "instagram://", store: "https://apps.apple.com/app/id389801252"),
         Platform(id: "stories", name: "Instagram Stories", icon: "circle.dashed", tint: 0xF77737, shape: .tall, maxSeconds: 59, maxBytes: nil,
-                 tags: [], app: "instagram://story-camera", store: "https://apps.apple.com/app/id389801252"),
+                 tags: [], app: "instagram://story-camera", store: "https://apps.apple.com/app/id389801252", splits: true),
         Platform(id: "shorts", name: "YouTube Shorts", icon: "bolt.fill", tint: 0xFF0000, shape: .tall, maxSeconds: 178, maxBytes: nil,
                  tags: ["#shorts"], app: "youtube://", store: "https://apps.apple.com/app/id544007664"),
         Platform(id: "youtube", name: "YouTube", icon: "play.rectangle.fill", tint: 0xCC0000, shape: .wide, maxSeconds: nil, maxBytes: nil,
@@ -41,11 +43,11 @@ enum SocialPost {
         Platform(id: "facebook", name: "Facebook Reels", icon: "f.square.fill", tint: 0x1877F2, shape: .tall, maxSeconds: 88, maxBytes: nil,
                  tags: ["#reels"], app: "fb://", store: "https://apps.apple.com/app/id284882215"),
         Platform(id: "snapchat", name: "Snapchat", icon: "camera.fill", tint: 0xFFC800, shape: .tall, maxSeconds: 59, maxBytes: nil,
-                 tags: [], app: "snapchat://", store: "https://apps.apple.com/app/id447188370"),
+                 tags: [], app: "snapchat://", store: "https://apps.apple.com/app/id447188370", splits: true),
         Platform(id: "x", name: "X", icon: "xmark", tint: 0x000000, shape: .any, maxSeconds: 138, maxBytes: 500_000_000,
                  tags: [], app: "twitter://", store: "https://apps.apple.com/app/id333903271"),
         Platform(id: "whatsapp", name: "WhatsApp Status", icon: "circle.circle.fill", tint: 0x25D366, shape: .tall, maxSeconds: 59, maxBytes: 16_000_000,
-                 tags: [], app: "whatsapp://", store: "https://apps.apple.com/app/id310633997"),
+                 tags: [], app: "whatsapp://", store: "https://apps.apple.com/app/id310633997", splits: true),
     ]
     static func platform(_ id: String) -> Platform? { platforms.first { $0.id == id } }
 
@@ -54,10 +56,12 @@ enum SocialPost {
         var makeTall = false
         /// Keep this many seconds (the liveliest part) when it's longer than the platform takes.
         var keepSeconds: Double?
+        /// Or: the whole clip in pieces, in order.
+        var parts: [ClosedRange<Double>]?
         var underBytes: Int?
         /// Each step, in plain words, for the checklist.
         var steps: [String] = []
-        var nothingToChange: Bool { !makeTall && keepSeconds == nil && underBytes == nil }
+        var nothingToChange: Bool { !makeTall && keepSeconds == nil && parts == nil && underBytes == nil }
     }
 
     static func plan(_ p: Platform, seconds: Double, bytes: Int, size: CGSize) -> Plan {
@@ -68,12 +72,19 @@ enum SocialPost {
             plan.steps.append(L("Made tall (9:16) — soft blurred sides, nothing cut off"))
         }
         if let m = p.maxSeconds, seconds > m + 0.5 {
-            plan.keepSeconds = m
-            plan.steps.append("\(L("Keeps the liveliest")) \(clock(m)) · \(L("it's")) \(clock(seconds)), \(L(p.name)) \(L("takes up to")) \(clock(m))")
+            if p.splits {
+                let n = Int((seconds / m).rounded(.up)), each = seconds / Double(n)
+                plan.parts = (0..<n).map { Double($0) * each...min(seconds, Double($0 + 1) * each) }
+                plan.steps.append("\(L("Split into")) \(n) \(L("parts of")) \(clock(each)), \(L("in order — post them one after another")) (\(L(p.name)) \(L("takes up to")) \(clock(m)))")
+            } else {
+                plan.keepSeconds = m
+                plan.steps.append("\(L("Keeps the liveliest")) \(clock(m)) · \(L("it's")) \(clock(seconds)), \(L(p.name)) \(L("takes up to")) \(clock(m))")
+            }
         }
         if let b = p.maxBytes {
-            // Shortening shrinks it about in proportion; only shrink when it would still be over.
-            let after = plan.keepSeconds.map { Double(bytes) * $0 / max(1, seconds) } ?? Double(bytes)
+            // Shortening shrinks it about in proportion; only shrink when a piece would still be over.
+            let longest = plan.parts.map { $0.map { $0.upperBound - $0.lowerBound }.max() ?? seconds } ?? plan.keepSeconds ?? seconds
+            let after = Double(bytes) * longest / max(1, seconds)
             if after > Double(b) * 0.97 {
                 plan.underBytes = Int(Double(b) * 0.95)
                 plan.steps.append("\(L("Made small enough for")) \(L(p.name))")
@@ -103,28 +114,41 @@ enum SocialPost {
 
     // MARK: - Making it
 
-    /// The video ready for `p`: the best part, tall, small enough. nil if the phone couldn't make it.
-    static func prepare(_ url: URL, for p: Platform, progress: ((String) -> Void)? = nil) async -> URL? {
-        guard let f = await VideoFacts.read(url) else { return nil }
+    /// The video ready for `p` — one file, or the pieces in order for Stories and Status. Empty if it couldn't be made.
+    static func prepare(_ url: URL, for p: Platform, progress: ((String) -> Void)? = nil) async -> [URL] {
+        guard let f = await VideoFacts.read(url) else { return [] }
         let plan = plan(p, seconds: f.seconds, bytes: f.bytes, size: f.size)
-        var cur = url
-        if let keep = plan.keepSeconds {
+        var pieces: [URL] = []
+        if let parts = plan.parts {
+            for (i, r) in parts.enumerated() {
+                progress?("\(L("Making part")) \(i + 1) / \(parts.count)…")
+                guard let t = await VideoEngine.trim(url, start: r.lowerBound, end: r.upperBound) else { return [] }
+                pieces.append(t)
+            }
+        } else if let keep = plan.keepSeconds {
             progress?(L("Finding the liveliest part…"))
             let start = await VideoJoin.busiestMoment(url, length: keep)?.lowerBound ?? 0
-            guard let t = await VideoEngine.trim(cur, start: start, end: min(f.seconds, start + keep)) else { return nil }
-            cur = t
+            guard let t = await VideoEngine.trim(url, start: start, end: min(f.seconds, start + keep)) else { return [] }
+            pieces = [t]
+        } else {
+            pieces = [url]
         }
-        if plan.makeTall {
-            progress?(L("Making it tall…"))
-            guard let t = await tall(cur) else { return nil }
-            cur = t
+        var out: [URL] = []
+        for cur0 in pieces {
+            var cur = cur0
+            if plan.makeTall {
+                progress?(L("Making it tall…"))
+                guard let t = await tall(cur) else { return [] }
+                cur = t
+            }
+            if let b = plan.underBytes, (SizeTarget.fileSize(cur) ?? 0) > b {
+                progress?(L("Making it small enough…"))
+                guard let s = await SizeTarget.video(url: cur, targetBytes: b) else { return [] }
+                cur = s
+            }
+            out.append(cur)
         }
-        if let b = plan.underBytes, (SizeTarget.fileSize(cur) ?? 0) > b {
-            progress?(L("Making it small enough…"))
-            guard let s = await SizeTarget.video(url: cur, targetBytes: b) else { return nil }
-            cur = s
-        }
-        return cur
+        return out
     }
 
     /// Where the picture sits in a tall frame: as wide as the frame, in the middle; behind it, the same picture

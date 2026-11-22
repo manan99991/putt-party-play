@@ -63,6 +63,7 @@ extension Block {
         case .videoSpeed: return "gauge.with.dots.needle.67percent"
         case .videoLoop: return "arrow.left.arrow.right"
         case .videoCelebrate: return "sparkles.tv"
+        case .postTo: return "paperplane.circle"
         case .artFilter: return "paintbrush.pointed"
         case .voiceChange: return "music.mic"
         }
@@ -73,6 +74,7 @@ extension Block {
         case .shrinkImage, .convertImage, .stripLocation, .resizePhoto, .videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .pdfShrink: return Color(hex: 0x10B981)
         case .cutout, .enhance, .passportPhoto, .videoRotate, .videoVertical, .videoCaptions: return Color(hex: 0xA855F7)
         case .sticker, .emojiFaces, .meme, .emojiMosaic, .videoSpeed, .videoLoop, .artFilter, .voiceChange, .videoCelebrate: return Color(hex: 0xEAB308)
+        case .postTo: return Color(hex: 0xE1306C)
         case .hideSensitive, .scamCheck, .watermark, .pdfLock: return Color(hex: 0xF97316)
         case .businessCard, .calendarEvent, .makeTable, .photoPdf, .makeQr, .stamp, .addToList, .contactQr, .wifiQr, .returnBy, .readAloud, .textPdf, .pdfPages: return Color(hex: 0xEC4899)
         }
@@ -137,6 +139,7 @@ extension Block {
         case .emojiMosaic: return "Rebuilds the photo out of hundreds of emojis. Zoom in to see them."
         case .videoSpeed: return "Slow motion, or two or four times faster. Comes out without sound."
         case .videoLoop: return "The liveliest moment, looped with a twist — Snap, Stutter, Slingshot, Dramatic zoom, Echo trail or Mirror twins."
+        case .postTo: return "The right shape, length and size for TikTok, Reels, Stories, Shorts, YouTube, Facebook, Snapchat, X or WhatsApp Status — then it opens that app with the video ready."
         case .videoCelebrate: return "Snow, fireworks, diyas, lanterns — any of 50 celebrations, or one you type — with the greeting placed clear of faces."
         case .artFilter: return "Redraws the photo as a pencil sketch, a comic, black and white or pop art."
         case .voiceChange: return "Plays the recording as a chipmunk, a deep voice or a giant."

@@ -30610,14 +30610,14 @@
   "zh": "请换一张完整露出头和肩膀的照片。"
  },
  "Try again": {
-  "de": "Nochmal",
-  "es": "Intentar de nuevo",
+  "de": "Nochmal versuchen",
+  "es": "Reintentar",
   "fr": "Réessayer",
   "hi": "फिर से कोशिश करें",
   "it": "Riprova",
-  "ja": "撮り直す",
+  "ja": "もう一度",
   "pt": "Tentar de novo",
-  "zh": "再拍一张"
+  "zh": "再试一次"
  },
  "Try another animation on the same photos": {
   "de": "Andere Animation mit denselben Fotos",
@@ -40528,5 +40528,235 @@
   "ja": "字幕とメモ",
   "pt": "Legendas e notas",
   "zh": "字幕和笔记"
+ },
+ "For looks, light, motion, dragging the words and any typed celebration, open Video effects.": {
+  "de": "Für Looks, Licht, Bewegung, verschiebbare Worte und jedes eingetippte Fest öffne Videoeffekte.",
+  "es": "Para looks, luz, movimiento, mover el texto y cualquier fiesta escrita, abre Efectos de vídeo.",
+  "fr": "Pour les looks, la lumière, le mouvement, déplacer les mots et toute fête tapée, ouvre Effets vidéo.",
+  "hi": "लुक, रोशनी, मूवमेंट, शब्द खिसकाने और कोई भी लिखा त्योहार — वीडियो इफ़ेक्ट खोलें।",
+  "it": "Per look, luce, movimento, spostare le parole e qualsiasi festa scritta, apri Effetti video.",
+  "ja": "ルック・光・動き・文字の移動や入力したお祝いは、動画エフェクトで。",
+  "pt": "Para looks, luz, movimento, mover as palavras e qualquer festa digitada, abra Efeitos de vídeo.",
+  "zh": "色调、光效、动感、拖动文字和输入任何节日，请打开视频特效。"
+ },
+ "Getting it ready for": {
+  "de": "Wird vorbereitet für",
+  "es": "Preparándolo para",
+  "fr": "Préparation pour",
+  "hi": "इसके लिए तैयार हो रहा है:",
+  "it": "Lo preparo per",
+  "ja": "準備中：",
+  "pt": "Preparando para",
+  "zh": "正在适配"
+ },
+ "Made for": {
+  "de": "Gemacht für",
+  "es": "Hecho para",
+  "fr": "Fait pour",
+  "hi": "इसके लिए बना:",
+  "it": "Fatto per",
+  "ja": "対象：",
+  "pt": "Feito para",
+  "zh": "适配"
+ },
+ "Making part": {
+  "de": "Teil wird erstellt",
+  "es": "Creando la parte",
+  "fr": "Création de la partie",
+  "hi": "हिस्सा बना रहे हैं",
+  "it": "Creo la parte",
+  "ja": "パートを作成中",
+  "pt": "Criando a parte",
+  "zh": "正在制作第"
+ },
+ "Or send it in a chat or by email:": {
+  "de": "Oder in einem Chat oder per E-Mail senden:",
+  "es": "O envíalo por chat o correo:",
+  "fr": "Ou envoie-la dans un chat ou par e-mail :",
+  "hi": "या चैट या ईमेल में भेजें:",
+  "it": "Oppure invialo in chat o via e-mail:",
+  "ja": "またはチャットやメールで送る：",
+  "pt": "Ou envie num chat ou por e-mail:",
+  "zh": "或者在聊天或邮件里发送："
+ },
+ "Split into": {
+  "de": "Aufgeteilt in",
+  "es": "Dividido en",
+  "fr": "Découpée en",
+  "hi": "इतने हिस्सों में बाँटा:",
+  "it": "Diviso in",
+  "ja": "分割：",
+  "pt": "Dividido em",
+  "zh": "分成"
+ },
+ "Then it opens the app with the video ready.": {
+  "de": "Dann öffnet sich die App mit dem fertigen Video.",
+  "es": "Luego se abre la app con el vídeo listo.",
+  "fr": "Puis l'app s'ouvre avec la vidéo prête.",
+  "hi": "फिर तैयार वीडियो के साथ ऐप खुलता है।",
+  "it": "Poi l'app si apre con il video pronto.",
+  "ja": "そして動画が用意された状態でアプリが開きます。",
+  "pt": "Depois o app abre com o vídeo pronto.",
+  "zh": "然后打开应用，视频已就绪。"
+ },
+ "in order — post them one after another": {
+  "de": "in Reihenfolge – nacheinander posten",
+  "es": "en orden: publícalas una tras otra",
+  "fr": "dans l'ordre — publie-les l'une après l'autre",
+  "hi": "क्रम से — एक के बाद एक पोस्ट करें",
+  "it": "in ordine — pubblicale una dopo l'altra",
+  "ja": "順番どおり — 続けて投稿",
+  "pt": "em ordem — publique uma depois da outra",
+  "zh": "按顺序——一段接一段发"
+ },
+ "parts of": {
+  "de": "Teile à",
+  "es": "partes de",
+  "fr": "parties de",
+  "hi": "हिस्से, हर एक",
+  "it": "parti da",
+  "ja": "パート、各",
+  "pt": "partes de",
+  "zh": "段，每段"
+ },
+ "parts, in order": {
+  "de": "Teile, in Reihenfolge",
+  "es": "partes, en orden",
+  "fr": "parties, dans l'ordre",
+  "hi": "हिस्से, क्रम से",
+  "it": "parti, in ordine",
+  "ja": "パート（順番どおり）",
+  "pt": "partes, em ordem",
+  "zh": "段，按顺序"
+ },
+ "up to": {
+  "de": "bis zu",
+  "es": "hasta",
+  "fr": "jusqu'à",
+  "hi": "इतना तक:",
+  "it": "fino a",
+  "ja": "最大",
+  "pt": "até",
+  "zh": "最长"
+ },
+ "Saves every part to Photos in order, copies your caption, and opens the app — add the parts one after another, paste the caption, tap Post.": {
+  "de": "Speichert alle Teile der Reihe nach in Fotos, kopiert deine Bildunterschrift und öffnet die App – füge die Teile nacheinander hinzu, füge den Text ein, tippe auf Posten.",
+  "es": "Guarda cada parte en Fotos en orden, copia tu texto y abre la app: añade las partes una tras otra, pega el texto y toca Publicar.",
+  "fr": "Enregistre chaque partie dans Photos dans l'ordre, copie ta légende et ouvre l'app — ajoute les parties l'une après l'autre, colle la légende, touche Publier.",
+  "hi": "हर हिस्सा क्रम से Photos में सहेजता है, कैप्शन कॉपी करता है और ऐप खोलता है — हिस्से एक के बाद एक जोड़ें, कैप्शन पेस्ट करें, पोस्ट टैप करें।",
+  "it": "Salva ogni parte in Foto in ordine, copia la didascalia e apre l'app — aggiungi le parti una dopo l'altra, incolla la didascalia, tocca Pubblica.",
+  "ja": "すべてのパートを順番に写真に保存し、キャプションをコピーしてアプリを開きます — パートを順に追加し、キャプションを貼り付けて投稿。",
+  "pt": "Salva cada parte nas Fotos em ordem, copia a legenda e abre o app — adicione as partes uma depois da outra, cole a legenda e toque em Publicar.",
+  "zh": "把每一段按顺序存到照片、复制文案并打开应用——依次添加各段，粘贴文案，点发布。"
+ },
+ "keeps its shape": {
+  "de": "behält seine Form",
+  "es": "mantiene su forma",
+  "fr": "garde sa forme",
+  "hi": "आकार वैसा ही रहता है",
+  "it": "mantiene la forma",
+  "ja": "形はそのまま",
+  "pt": "mantém o formato",
+  "zh": "保持原画幅"
+ },
+ "tall 9:16": {
+  "de": "Hochformat 9:16",
+  "es": "vertical 9:16",
+  "fr": "vertical 9:16",
+  "hi": "लंबा 9:16",
+  "it": "verticale 9:16",
+  "ja": "縦長 9:16",
+  "pt": "vertical 9:16",
+  "zh": "竖屏 9:16"
+ },
+ "Get it ready to post": {
+  "de": "Zum Posten vorbereiten",
+  "es": "Prepararlo para publicar",
+  "fr": "La préparer à publier",
+  "hi": "पोस्ट के लिए तैयार करें",
+  "it": "Preparalo da pubblicare",
+  "ja": "投稿用に準備",
+  "pt": "Preparar para publicar",
+  "zh": "准备好发布"
+ },
+ "Get a video ready for TikTok, Reels or Shorts": {
+  "de": "Video für TikTok, Reels oder Shorts vorbereiten",
+  "es": "Prepara un vídeo para TikTok, Reels o Shorts",
+  "fr": "Préparer une vidéo pour TikTok, Reels ou Shorts",
+  "hi": "TikTok, Reels या Shorts के लिए वीडियो तैयार करें",
+  "it": "Prepara un video per TikTok, Reels o Shorts",
+  "ja": "TikTok・リール・ショート用に動画を準備",
+  "pt": "Preparar um vídeo para TikTok, Reels ou Shorts",
+  "zh": "为 TikTok、Reels 或 Shorts 准备视频"
+ },
+ "The right shape, length and size for TikTok, Reels, Stories, Shorts, YouTube, Facebook, Snapchat, X or WhatsApp Status — then it opens that app with the video ready.": {
+  "de": "Die richtige Form, Länge und Größe für TikTok, Reels, Stories, Shorts, YouTube, Facebook, Snapchat, X oder WhatsApp-Status – dann öffnet sich die App mit dem fertigen Video.",
+  "es": "La forma, duración y tamaño adecuados para TikTok, Reels, Historias, Shorts, YouTube, Facebook, Snapchat, X o Estado de WhatsApp, y se abre esa app con el vídeo listo.",
+  "fr": "La bonne forme, durée et taille pour TikTok, Reels, Stories, Shorts, YouTube, Facebook, Snapchat, X ou le statut WhatsApp — puis l'app s'ouvre avec la vidéo prête.",
+  "hi": "TikTok, Reels, Stories, Shorts, YouTube, Facebook, Snapchat, X या WhatsApp Status के लिए सही आकार, लंबाई और साइज़ — फिर वही ऐप तैयार वीडियो के साथ खुलता है।",
+  "it": "Forma, durata e dimensioni giuste per TikTok, Reels, Storie, Shorts, YouTube, Facebook, Snapchat, X o lo stato di WhatsApp — poi si apre l'app con il video pronto.",
+  "ja": "TikTok・リール・ストーリー・ショート・YouTube・Facebook・Snapchat・X・WhatsAppステータスに合った形・長さ・サイズにして、動画を用意した状態でアプリを開きます。",
+  "pt": "O formato, a duração e o tamanho certos para TikTok, Reels, Stories, Shorts, YouTube, Facebook, Snapchat, X ou Status do WhatsApp — depois o app abre com o vídeo pronto.",
+  "zh": "按 TikTok、Reels、快拍、Shorts、YouTube、Facebook、Snapchat、X 或 WhatsApp 状态调好画幅、时长和大小——然后打开该应用，视频已就绪。"
+ },
+ "makes it ready for TikTok, Reels, Shorts and more, then opens the app": {
+  "de": "macht es bereit für TikTok, Reels, Shorts und mehr und öffnet die App",
+  "es": "lo prepara para TikTok, Reels, Shorts y más, y abre la app",
+  "fr": "la prépare pour TikTok, Reels, Shorts et plus, puis ouvre l'app",
+  "hi": "इसे TikTok, Reels, Shorts और बाकी के लिए तैयार करके ऐप खोलता है",
+  "it": "lo prepara per TikTok, Reels, Shorts e altro, poi apre l'app",
+  "ja": "TikTok・リール・ショートなど用に準備してアプリを開く",
+  "pt": "prepara para TikTok, Reels, Shorts e mais e abre o app",
+  "zh": "为 TikTok、Reels、Shorts 等准备好，然后打开应用"
+ },
+ "It arrived ✓ — but banners are off for Tenzy, so it went straight to Notification Center. Turn on Banners in Settings › Notifications › Tenzy to see them pop up.": {
+  "de": "Sie ist angekommen ✓ – aber Banner sind für Tenzy aus, also ging sie direkt in die Mitteilungszentrale. Schalte Banner unter Einstellungen › Mitteilungen › Tenzy ein.",
+  "es": "Llegó ✓, pero los avisos emergentes están desactivados para Tenzy y fue directo al Centro de notificaciones. Activa Tiras en Ajustes › Notificaciones › Tenzy.",
+  "fr": "Elle est arrivée ✓ — mais les bannières sont désactivées pour Tenzy, elle est allée directement au Centre de notifications. Active Bannières dans Réglages › Notifications › Tenzy.",
+  "hi": "यह आ गया ✓ — पर Tenzy के लिए बैनर बंद हैं, इसलिए यह सीधे नोटिफ़िकेशन सेंटर में गया। सेटिंग्स › नोटिफ़िकेशन › Tenzy में बैनर चालू करें।",
+  "it": "È arrivato ✓ — ma i banner sono spenti per Tenzy, quindi è andato dritto nel Centro notifiche. Attiva i banner in Impostazioni › Notifiche › Tenzy.",
+  "ja": "届きました ✓ — ただしTenzyのバナーがオフのため、通知センターに直接入りました。設定 › 通知 › Tenzy でバナーをオンに。",
+  "pt": "Chegou ✓ — mas as faixas estão desligadas para o Tenzy, então foi direto para a Central de Notificações. Ative Faixas em Ajustes › Notificações › Tenzy.",
+  "zh": "已送达 ✓——但 Tenzy 的横幅已关闭，所以直接进了通知中心。到 设置 › 通知 › Tenzy 打开横幅。"
+ },
+ "It arrived ✓ — that's exactly what you'll get. Didn't see it pop up? A Focus like Sleep (the bed at the top of your screen) keeps alerts quiet; it's waiting in Notification Center — swipe down from the top.": {
+  "de": "Sie ist angekommen ✓ – genau so wird sie kommen. Nicht aufgepoppt? Ein Fokus wie Schlafen (das Bett oben auf dem Bildschirm) hält Hinweise still; sie wartet in der Mitteilungszentrale – von oben nach unten wischen.",
+  "es": "Llegó ✓: así es exactamente como llegará. ¿No apareció? Un modo de concentración como Dormir (la cama arriba en la pantalla) silencia los avisos; está esperando en el Centro de notificaciones: desliza hacia abajo desde arriba.",
+  "fr": "Elle est arrivée ✓ — c'est exactement ce que tu recevras. Pas de bannière ? Une concentration comme Sommeil (le lit en haut de l'écran) met les alertes en sourdine ; elle t'attend dans le Centre de notifications — balaie vers le bas depuis le haut.",
+  "hi": "यह आ गया ✓ — आपको बिल्कुल यही मिलेगा। दिखा नहीं? स्लीप जैसा फ़ोकस (स्क्रीन के ऊपर बिस्तर का निशान) अलर्ट चुप रखता है; यह नोटिफ़िकेशन सेंटर में है — ऊपर से नीचे स्वाइप करें।",
+  "it": "È arrivato ✓ — è esattamente ciò che riceverai. Non l'hai visto comparire? Una Full immersion come Riposo (il letto in alto sullo schermo) silenzia gli avvisi; ti aspetta nel Centro notifiche — scorri giù dall'alto.",
+  "ja": "届きました ✓ — 本番もこの通りです。表示されなかった？睡眠などの集中モード（画面上部のベッドのマーク）中は通知が静かになります。通知センターにあります — 上から下へスワイプ。",
+  "pt": "Chegou ✓ — é exatamente o que você vai receber. Não apareceu? Um Foco como Sono (a cama no topo da tela) silencia os alertas; ele está na Central de Notificações — deslize para baixo a partir do topo.",
+  "zh": "已送达 ✓——正式提醒就是这样。没看到弹出？睡眠等专注模式（屏幕顶部的床形图标）会静音提醒，它在通知中心里——从顶部往下滑即可看到。"
+ },
+ "It didn't arrive — notifications are off for Tenzy. Turn them on in Settings › Notifications › Tenzy.": {
+  "de": "Sie ist nicht angekommen – Mitteilungen sind für Tenzy aus. Schalte sie unter Einstellungen › Mitteilungen › Tenzy ein.",
+  "es": "No llegó: las notificaciones están desactivadas para Tenzy. Actívalas en Ajustes › Notificaciones › Tenzy.",
+  "fr": "Elle n'est pas arrivée — les notifications sont désactivées pour Tenzy. Active-les dans Réglages › Notifications › Tenzy.",
+  "hi": "यह नहीं आया — Tenzy के नोटिफ़िकेशन बंद हैं। सेटिंग्स › नोटिफ़िकेशन › Tenzy में चालू करें।",
+  "it": "Non è arrivato — le notifiche sono spente per Tenzy. Attivale in Impostazioni › Notifiche › Tenzy.",
+  "ja": "届きませんでした — Tenzyの通知がオフです。設定 › 通知 › Tenzy でオンにしてください。",
+  "pt": "Não chegou — as notificações estão desligadas para o Tenzy. Ative em Ajustes › Notificações › Tenzy.",
+  "zh": "没有送达——Tenzy 的通知已关闭。请到 设置 › 通知 › Tenzy 打开。"
+ },
+ "It didn't arrive yet. Check Settings › Notifications › Tenzy (Allow Notifications on) and that a Focus or Scheduled Summary isn't holding it.": {
+  "de": "Sie ist noch nicht angekommen. Prüfe Einstellungen › Mitteilungen › Tenzy (Mitteilungen erlauben an) und ob ein Fokus oder eine geplante Zusammenfassung sie zurückhält.",
+  "es": "Aún no llegó. Revisa Ajustes › Notificaciones › Tenzy (Permitir notificaciones activado) y que un modo de concentración o un Resumen programado no la retenga.",
+  "fr": "Elle n'est pas encore arrivée. Vérifie Réglages › Notifications › Tenzy (Autoriser les notifications activé) et qu'une concentration ou un résumé programmé ne la retient pas.",
+  "hi": "यह अभी नहीं आया। सेटिंग्स › नोटिफ़िकेशन › Tenzy (नोटिफ़िकेशन की अनुमति चालू) देखें, और कि कोई फ़ोकस या शेड्यूल्ड समरी इसे रोक तो नहीं रहा।",
+  "it": "Non è ancora arrivato. Controlla Impostazioni › Notifiche › Tenzy (Consenti notifiche attivo) e che una Full immersion o un Riepilogo programmato non lo trattenga.",
+  "ja": "まだ届いていません。設定 › 通知 › Tenzy（通知を許可がオン）と、集中モードや時刻指定要約が止めていないか確認してください。",
+  "pt": "Ainda não chegou. Verifique Ajustes › Notificações › Tenzy (Permitir Notificações ligado) e se um Foco ou Resumo Agendado não está segurando.",
+  "zh": "还没送达。请检查 设置 › 通知 › Tenzy（允许通知已打开），并确认专注模式或定时推送摘要没有拦下它。"
+ },
+ "Then: the app opens with the video ready — you add a caption and tap Post.": {
+  "de": "Dann: Die App öffnet sich mit dem fertigen Video – du fügst einen Text hinzu und tippst auf Posten.",
+  "es": "Luego: la app se abre con el vídeo listo; añades un texto y tocas Publicar.",
+  "fr": "Ensuite : l'app s'ouvre avec la vidéo prête — tu ajoutes une légende et touches Publier.",
+  "hi": "फिर: तैयार वीडियो के साथ ऐप खुलता है — आप कैप्शन जोड़कर पोस्ट टैप करें।",
+  "it": "Poi: l'app si apre con il video pronto — aggiungi una didascalia e tocchi Pubblica.",
+  "ja": "次に：動画が用意された状態でアプリが開きます — キャプションを添えて投稿をタップ。",
+  "pt": "Depois: o app abre com o vídeo pronto — você adiciona uma legenda e toca em Publicar.",
+  "zh": "然后：应用打开，视频已就绪——加上文案点发布即可。"
  }
 }

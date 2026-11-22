@@ -14,10 +14,13 @@ final class SocialPostTests: XCTestCase {
         XCTAssertEqual(pl.keepSeconds, 178)
         // WhatsApp Status: a minute at most, and small.
         pl = SocialPost.plan(p("whatsapp"), seconds: 30, bytes: 40_000_000, size: CGSize(width: 1080, height: 1920))
-        XCTAssertFalse(pl.makeTall); XCTAssertNil(pl.keepSeconds); XCTAssertNotNil(pl.underBytes)
-        // Shortening first can make shrinking unneeded.
+        XCTAssertFalse(pl.makeTall); XCTAssertNil(pl.keepSeconds); XCTAssertNil(pl.parts); XCTAssertNotNil(pl.underBytes)
+        // A longer Status or Story becomes pieces in order (nothing lost), each small enough.
         pl = SocialPost.plan(p("whatsapp"), seconds: 120, bytes: 24_000_000, size: CGSize(width: 1080, height: 1920))
-        XCTAssertEqual(pl.keepSeconds, 59); XCTAssertNil(pl.underBytes)
+        XCTAssertEqual(pl.parts?.count, 3); XCTAssertNil(pl.keepSeconds); XCTAssertNil(pl.underBytes, "8 MB pieces already fit")
+        XCTAssertEqual(pl.parts?.last?.upperBound ?? 0, 120, accuracy: 0.01)
+        XCTAssertTrue(pl.parts?.allSatisfy { $0.upperBound - $0.lowerBound <= 59 } ?? false)
+        XCTAssertEqual(SocialPost.plan(p("stories"), seconds: 100, bytes: 50_000_000, size: CGSize(width: 1080, height: 1920)).parts?.count, 2)
         // A tall short clip for Shorts: nothing to change, and it says so.
         pl = SocialPost.plan(p("shorts"), seconds: 20, bytes: 9_000_000, size: CGSize(width: 1080, height: 1920))
         XCTAssertTrue(pl.nothingToChange); XCTAssertEqual(pl.steps.count, 1)
@@ -51,7 +54,8 @@ final class SocialPostTests: XCTestCase {
         let made = await SampleAssets.movie(seconds: 2, size: CGSize(width: 640, height: 360))
         let src = try XCTUnwrap(made)
         let out = await SocialPost.prepare(src, for: p("reels"))
-        let u = try XCTUnwrap(out)
+        XCTAssertEqual(out.count, 1)
+        let u = try XCTUnwrap(out.first)
         let f = await VideoFacts.read(u)
         let facts = try XCTUnwrap(f)
         XCTAssertTrue(facts.isTall, "\(facts.size)")

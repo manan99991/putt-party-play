@@ -102,7 +102,7 @@ struct WarrantyView: View {
                         let r = store.receipts.first { $0.warrantyEnds != nil }
                         Task {
                             guard await NotifyPermission.ensure() else { notifOff = true; return }
-                            await WarrantyReminders.testRun(store: r?.store, ends: r?.warrantyEnds); testNote = L("Test sent — it arrives in 5 seconds.")
+                            await WarrantyReminders.testRun(store: r?.store, ends: r?.warrantyEnds); testNote = L("Test sent — it arrives in 5 seconds."); testNote = await NotifyCheck.report()
                         }
                     } label: { Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity) }.secondaryButton()
                         .accessibilityIdentifier("warranty-testrun")

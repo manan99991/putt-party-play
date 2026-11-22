@@ -142,6 +142,29 @@ final class ToolNotifications: NSObject, UNUserNotificationCenterDelegate {
     }
 }
 
+/// After a Test run: waits for the test alert to land, then says plainly what happened — so "it arrives in 5 seconds"
+/// is never a promise nobody checked. A Focus (Sleep, Do Not Disturb) silences alerts without blocking them, so the
+/// alert still lands in Notification Center and the person is told where to look.
+enum NotifyCheck {
+    static func report(after seconds: Double = 7) async -> String {
+        let since = Date().addingTimeInterval(-1)
+        try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+        let center = UNUserNotificationCenter.current()
+        let landed = await center.deliveredNotifications().contains { $0.date >= since && ($0.request.content.title.hasPrefix("Test") || $0.request.identifier.lowercased().contains("test")) }
+        let settings = await center.notificationSettings()
+        if landed {
+            if settings.alertSetting != .enabled {
+                return L("It arrived ✓ — but banners are off for Tenzy, so it went straight to Notification Center. Turn on Banners in Settings › Notifications › Tenzy to see them pop up.")
+            }
+            return L("It arrived ✓ — that's exactly what you'll get. Didn't see it pop up? A Focus like Sleep (the bed at the top of your screen) keeps alerts quiet; it's waiting in Notification Center — swipe down from the top.")
+        }
+        if settings.authorizationStatus == .denied {
+            return L("It didn't arrive — notifications are off for Tenzy. Turn them on in Settings › Notifications › Tenzy.")
+        }
+        return L("It didn't arrive yet. Check Settings › Notifications › Tenzy (Allow Notifications on) and that a Focus or Scheduled Summary isn't holding it.")
+    }
+}
+
 /// "Remind me": a switch, a time, and the days. Lives at the bottom of the builder.
 struct ScheduleCard: View {
     @Binding var schedule: ChainSchedule?
@@ -188,7 +211,7 @@ struct ScheduleCard: View {
                 Button {
                     Task {
                         guard await NotifyPermission.ensure() else { blocked = true; return }
-                        await ToolSchedules.testRun(name: name, toolID: toolID); testNote = L("Test sent — it arrives in 5 seconds.")
+                        await ToolSchedules.testRun(name: name, toolID: toolID); testNote = L("Test sent — it arrives in 5 seconds."); testNote = await NotifyCheck.report()
                     }
                 } label: { Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity) }.secondaryButton()
                     .accessibilityIdentifier("schedule-testrun")

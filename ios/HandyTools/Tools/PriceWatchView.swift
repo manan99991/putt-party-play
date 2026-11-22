@@ -51,7 +51,7 @@ struct WatchCard: View {
                         c.body = NumberReader.message(w, value: sample, previous: w.value, what: w.near.isEmpty ? "The number" : w.near.capitalized)
                         c.sound = .default
                         try? await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "watch-test-\(UUID().uuidString)", content: c, trigger: UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)))
-                        note = L("Test sent — it arrives in 5 seconds. That's what you'll see when it crosses.")
+                        note = L("Test sent — it arrives in 5 seconds. That's what you'll see when it crosses."); note = await NotifyCheck.report()
                     }
                 } label: { Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity) }.secondaryButton()
                 if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.success) }

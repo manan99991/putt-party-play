@@ -84,7 +84,7 @@ enum Guide {
         switch kind {
         case .video:
             switch block {
-            case .videoShrink, .videoMute, .videoRotate, .videoVertical: return "share"
+            case .videoShrink, .videoMute, .videoRotate, .videoVertical, .postTo: return "share"
             case .videoTrim, .videoGif, .videoSpeed, .videoLoop, .videoStill, .videoCelebrate: return "clip"
             case .videoAudio, .voiceChange: return "sound"
             case .videoCaptions, .speechText, .summarize, .translate: return "words"
@@ -193,7 +193,7 @@ enum Guide {
     /// choices that do the same job (the flows stay in Build your own for anyone who wants to change them).
     /// Ready-made flows that do exactly what a tool on the same list does: offered once, as the tool,
     /// so the list never shows the same job twice under two names.
-    static let coveredBy: [String: String] = ["card-to-contact": "cards", "safe-to-share": "scrub", "photo-under-2mb": "fitit",
+    static let coveredBy: [String: String] = ["card-to-contact": "cards", "safe-to-share": "scrub", "photo-under-2mb": "fitit", "video-post": "post",
                                               "sticker": "sticker", "hide-sensitive": "scrub",
                                               "video-celebrate": "celebrate", "sticker-maker": "sticker",
                                               "emoji-faces": "faceemoji", "what-is-this": "identify"]

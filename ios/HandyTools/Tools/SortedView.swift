@@ -125,7 +125,7 @@ struct SortedView: View {
                             let item = d.wrappedValue
                             Task {
                                 guard await NotifyPermission.ensure() else { notifOff = true; return }
-                                await SortedLetters.testRun(item); testNote = L("Test sent — it arrives in 5 seconds.")
+                                await SortedLetters.testRun(item); testNote = L("Test sent — it arrives in 5 seconds."); testNote = await NotifyCheck.report()
                             }
                         } label: { Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity) }.secondaryButton()
                             .accessibilityIdentifier("sorted-testrun")

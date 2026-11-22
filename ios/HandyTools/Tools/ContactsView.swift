@@ -207,7 +207,7 @@ struct ContactsView: View {
             }
             NotificationsOffCard(isOff: $notifOff)
             if autoBackup.frequency != .off {
-                Button { Task { await ContactBackupReminder.testRun(); backupNote = L("Test sent — it arrives in 5 seconds.") } } label: {
+                Button { Task { await ContactBackupReminder.testRun(); backupNote = L("Test sent — it arrives in 5 seconds."); backupNote = await NotifyCheck.report() } } label: {
                     Label(L("Test run"), systemImage: "checkmark.seal")
                 }.compactButton().accessibilityIdentifier("backup-test")
             }

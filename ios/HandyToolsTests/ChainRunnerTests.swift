@@ -1033,6 +1033,14 @@ final class NewKindTests: XCTestCase {
         XCTAssertEqual(blocks("turn a video into a gif"), [.videoGif])
         let story = ChainPlanner.keywordPlan("keep the first 15 seconds of a video and make it vertical")
         XCTAssertEqual(story?.steps.map(\.block), [.videoTrim, .videoVertical]); XCTAssertEqual(story?.steps.first?.settings["secs"], "15")
+        // Posting somewhere: the "Get it ready to post" step for that platform (Post it's own card at the end).
+        for (ask, id) in [("post my video on tiktok", "tiktok"), ("make it a reel", "reels"), ("upload this to youtube shorts", "shorts"),
+                          ("share this clip to my instagram story", "stories"), ("post on facebook", "facebook"), ("put it on my whatsapp status", "whatsapp")] {
+            let c = ChainPlanner.keywordPlan(ask)
+            XCTAssertEqual(c?.steps.map(\.block), [.postTo], ask)
+            XCTAssertEqual(c?.steps.first?.settings["platform"], id, ask)
+        }
+        XCTAssertEqual(blocks("make this video shorter"), blocks("make this video shorter").filter { $0 != .postTo }, "'shorter' isn't YouTube Shorts")
         let join = ChainPlanner.keywordPlan("merge pdfs into one")
         XCTAssertEqual(join?.steps.map(\.block), [.pdfPages]); XCTAssertEqual(join?.combine, true)
         XCTAssertEqual(ChainPlanner.keywordPlan("shrink a pdf under 2 mb")?.steps.first?.settings["mb"], "2")

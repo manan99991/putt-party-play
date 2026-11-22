@@ -82,6 +82,23 @@ enum ChainPlanner {
         return c
     }
 
+    /// The social platform a sentence names, as a Post it platform id (nil when it names none).
+    static func postPlatform(_ text: String) -> String? {
+        let s = " " + text.lowercased() + " "
+        func has(_ w: [String]) -> Bool { w.contains { s.contains($0) } }
+        if has(["whatsapp status"]) { return "whatsapp" }
+        if has(["facebook", " fb "]) { return "facebook" }
+        if has(["instagram stor", "insta stor", " ig stor"]) { return "stories" }
+        if has([" reel"]) { return "reels" }
+        if has(["youtube short", " shorts "]) { return "shorts" }
+        if has(["youtube", " yt "]) { return "youtube" }
+        if has(["tiktok", "tik tok"]) { return "tiktok" }
+        if has(["snapchat", " snap story"]) { return "snapchat" }
+        if has(["twitter", " on x ", " to x ", " for x "]) { return "x" }
+        if has(["instagram", " insta "]) { return "reels" }
+        return nil
+    }
+
     // MARK: keyword planner (works everywhere, unit-tested)
 
     /// The tool a sentence asks for, whatever its spelling. nil when it names nothing Tenzy works with.
@@ -94,7 +111,12 @@ enum ChainPlanner {
 
         // Just for fun. These requests name exactly what they want, so they are read before anything else.
         let film = has(["video", " clip", "movie", "footage", "live photo"])
-        if has(["boomerang"]) { return build(ask, [ChainStep(block: .videoLoop, settings: ["style": "boomerang"])]) }
+        if has(["boomerang"]) { return build(ask, [ChainStep(block: .videoLoop, settings: ["style": "snap"])]) }
+        // "Post on TikTok", "make it a reel", "upload to YouTube Shorts": made ready for that platform, then the app opens.
+        if let platform = postPlatform(s), !has([" photo", " pic", "picture", "image", "selfie", "screenshot"]),
+           film || has(["post", "upload", "publish", "share", " put ", " for ", " on ", " to ", " make it", "ready"]) {
+            return build(ask, [ChainStep(block: .postTo, settings: ["platform": platform])])
+        }
         // "Christmas video", "add fireworks to my clip", "Diwali greeting video": decorate it for that celebration.
         if film, has(["celebrat", "festival", "decorat", "greeting", "fireworks", "confetti", "snow", "festive", "holiday"]) || (film && Celebrate.match(ask) != nil) {
             let t = Celebrate.match(ask)

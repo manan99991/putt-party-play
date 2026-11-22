@@ -120,6 +120,11 @@ enum ChainMedia {
             guard let out = await Celebrate.export(url, theme: theme, amount: 1, caption: step.settings["words"] == "0" ? nil : cap) else { return .failure(.failed(b)) }
             return .success(.video(out))
 
+        case (.postTo, .video(let url)):
+            // The video goes on as it is: the finish is Post it's own card, which makes it ready for the platform
+            // (shape, length or story pieces, size) and opens the app — exactly as the Post it tool does.
+            return .success(.video(url))
+
         case (.videoLoop, .video(let url)):
             // The liveliest moment of the video, looped in the chosen style (Snap, Stutter, Slingshot, Dramatic zoom…).
             guard let gif = await Boomerang.make(url, style: step.settings["style"]),

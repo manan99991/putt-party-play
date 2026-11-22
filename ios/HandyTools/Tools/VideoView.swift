@@ -61,6 +61,7 @@ struct VideoView: View {
     @State private var socialFormat: VideoFormat.Spec = VideoFormat.presets[0]
     @State private var socialFit = false
     @State private var sendPlace: SendOn.Place?
+    @State private var posting = false
     @State private var sendParts: [URL] = []
     @State private var sendSaved: Int?
 
@@ -134,6 +135,26 @@ struct VideoView: View {
     @ViewBuilder private func sendOnCard(_ src: URL) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Label(L("Where are you sending it?"), systemImage: "paperplane.fill").font(HandyFont.bodyStrong)
+            // Posting (TikTok, Reels, Stories, Shorts, X, WhatsApp Status…) is Post it's job — one place for it.
+            Button { posting = true } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "paperplane.circle.fill").font(.system(size: 22)).foregroundStyle(HandyColor.accent)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(L("Post it")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                        Text(L("TikTok, Reels, Shorts and more")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    }
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.right").font(.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+                .padding(10).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            }.buttonStyle(.plain).accessibilityIdentifier("video-post")
+            .sheet(isPresented: $posting) {
+                NavigationStack {
+                    PostItView(startURL: src)
+                        .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { posting = false } } }
+                }
+            }
+            Text(L("Or send it in a chat or by email:")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(SendOn.places) { p in
                     HChip(text: p.name, selected: sendPlace?.id == p.id) { sendPlace = p; sendParts = []; sendSaved = nil }

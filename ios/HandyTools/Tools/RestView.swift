@@ -143,7 +143,7 @@ struct RestView: View {
             Button {
                 Task {
                     guard await NotifyPermission.ensure() else { notifyOff = true; return }
-                    await RestNight.testRun(); bedNote = L("Test sent — it arrives in 5 seconds.")
+                    await RestNight.testRun(); bedNote = L("Test sent — it arrives in 5 seconds."); bedNote = await NotifyCheck.report()
                 }
             } label: { Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity) }.secondaryButton()
             if let bedNote { Text(bedNote).font(HandyFont.caption).foregroundStyle(HandyColor.success) }
