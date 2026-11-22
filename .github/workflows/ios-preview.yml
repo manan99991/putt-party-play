@@ -1,0 +1,77 @@
+name: iOS App Store video
+
+# Films the App Store preview from the real app: builds for the 6.9-inch simulator, records the screen while
+# PreviewTourTests walks the tour, then trims and sizes it to Apple's preview spec (886x1920, 30 fps, H.264,
+# AAC stereo, 15-30 s). Run by hand; it never deploys anything.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  preview:
+    runs-on: xcode-27
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select newest Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)" && xcodebuild -version
+      - name: Build for testing (6.9-inch)
+        run: |
+          set -o pipefail
+          brew install xcodegen ffmpeg && xcodegen generate
+          xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          allv=[x for k,v in d.items() if "iOS" in k for x in v]
+          c=[x for x in allv if "Pro Max" in x["name"]]
+          c.sort(key=lambda x:(not x["name"].startswith("iPhone 17"), x["name"]))
+          print(c[0]["udid"])')
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+          xcodebuild build-for-testing -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee build.log | grep -E "error:|TEST BUILD|BUILD" || true
+          grep -qE "TEST BUILD SUCCEEDED|BUILD SUCCEEDED" build.log
+      - name: Film the tour
+        timeout-minutes: 30
+        run: |
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b || true
+          xcrun simctl ui "$UDID" appearance dark
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
+          mkdir -p preview
+          # Install + warm up once, so the recording starts on a launched app, not a cold boot.
+          PREVIEW_TOUR=0 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
+            -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO >/dev/null 2>&1 || true
+          xcrun simctl io "$UDID" recordVideo --codec h264 --force preview/raw.mov &
+          REC=$!
+          sleep 2
+          TEST_RUNNER_PREVIEW_TOUR=1 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
+            -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO \
+            2>&1 | grep -E "error:|Test Case|TEST (EXECUTE )?(SUCCEEDED|FAILED)" || true
+          kill -INT $REC; wait $REC || true
+          ls -la preview
+      - name: Make it App Store size
+        run: |
+          cd preview
+          D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 raw.mov | cut -d. -f1)
+          # Skip the app launch (first ~6 s), keep at most 30 s.
+          START=6; LEN=$(( D - START )); [ $LEN -gt 30 ] && LEN=30
+          ffmpeg -y -ss $START -t $LEN -i raw.mov -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 \
+            -vf "scale=886:1920:force_original_aspect_ratio=decrease,pad=886:1920:(ow-iw)/2:(oh-ih)/2,fps=30" \
+            -c:v libx264 -profile:v high -pix_fmt yuv420p -b:v 10M -c:a aac -b:a 256k -shortest -movflags +faststart \
+            tenzy-preview-6.9.mp4
+          for t in 1 6 12 18 24; do ffmpeg -y -ss $t -i tenzy-preview-6.9.mp4 -frames:v 1 -vf scale=443:-1 frame-$t.png >/dev/null 2>&1 || true; done
+          ffprobe -v error -show_entries format=duration:stream=width,height,codec_name -of compact tenzy-preview-6.9.mp4
+          rm -f raw.mov
+      - name: Publish
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh ios-preview ios/preview
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: ios-preview, path: ios/preview, retention-days: 7 }
