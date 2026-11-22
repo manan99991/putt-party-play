@@ -103,7 +103,7 @@ struct StillFinishCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Image(uiImage: image).resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 380)
+            Image(uiImage: image).resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 380).opensFullSize(image)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(alignment: .topTrailing) { if loading { BusySpinner().padding(8) } }
             if video != nil, length > 0 {

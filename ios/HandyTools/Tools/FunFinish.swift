@@ -46,7 +46,7 @@ struct FunFinishCard: View {
             } else {
                 ZStack {
                     if isSticker { Checkerboard().clipShape(RoundedRectangle(cornerRadius: 12)) }
-                    Image(uiImage: result).resizable().scaledToFit().padding(isSticker ? 12 : 0)
+                    Image(uiImage: result).resizable().scaledToFit().padding(isSticker ? 12 : 0).opensFullSize(result)
                 }
                 .frame(maxWidth: .infinity).frame(maxHeight: 380)
                 .clipShape(RoundedRectangle(cornerRadius: 12))

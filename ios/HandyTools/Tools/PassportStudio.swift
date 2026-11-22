@@ -111,7 +111,7 @@ struct PassportStudio: View {
 
     private func photo(_ m: PassportPhoto.Made) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Image(uiImage: holding ? original : m.image).resizable().scaledToFit()
+            Image(uiImage: holding ? original : m.image).resizable().scaledToFit().opensFullSize(m.image)
                 .overlay { if showGuides && !holding { GeometryReader { geo in guides(m, in: geo.size) } } }
                 .overlay(alignment: .topLeading) {
                     Text(holding ? L("Original") : "\(L(m.spec.short)) · \(Int(m.spec.px.width))×\(Int(m.spec.px.height))")

@@ -223,45 +223,73 @@ struct PermissionOffCard: View {
 /// was produced before saving or sharing. Image files show their pixels; video files show a frame.
 struct OutputPreviewStrip: View {
     let urls: [URL]
+    @State private var viewing: Int?
     var body: some View {
         if !urls.isEmpty {
-            HandyFlow(spacing: HandySpacing.s8) {
-                    ForEach(urls, id: \.self) { OutputThumb(url: $0) }
+            VStack(alignment: .leading, spacing: 6) {
+                // Big enough to check each one at a glance — three across, filling the width — and every one opens
+                // full screen to look closely, step through the batch, and save or share it.
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: urls.count == 1 ? 1 : (urls.count == 2 ? 2 : 3)),
+                          spacing: HandySpacing.s8) {
+                    ForEach(Array(urls.enumerated()), id: \.offset) { i, u in
+                        Button { viewing = i } label: { OutputThumb(url: u, tall: urls.count == 1) }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("\(L("View result")) \(i + 1) \(L("of")) \(urls.count)")
+                            .accessibilityIdentifier("result-thumb-\(i)")
+                    }
                 }
+                Label(L("Tap one to see it full size"), systemImage: "hand.tap").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            }
+            .fullScreenCover(item: Binding(get: { viewing.map { ViewIndex(i: $0) } }, set: { viewing = $0?.i })) { v in
+                ResultViewer(items: urls.map(ViewerItem.url), index: v.i)
+            }
         }
     }
 }
 
+struct ViewIndex: Identifiable { let i: Int; var id: Int { i } }
+
 private struct OutputThumb: View {
     let url: URL
+    var tall = false
     @State private var image: UIImage?
     private var isVideo: Bool { ["mp4", "mov", "m4v"].contains(url.pathExtension.lowercased()) }
     var body: some View {
-        ZStack {
-            HandyColor.surface
-            if let image {
-                Image(uiImage: image).resizable().scaledToFill()
-            } else {
-                Image(systemName: isVideo ? "film" : "doc.fill").foregroundStyle(HandyColor.textSecondary)
+        // A fixed box (square, or one tall preview for a single result) with the picture filling it — the picture
+        // never sets the size, so every cell lines up.
+        box
+            .overlay {
+                ZStack {
+                    HandyColor.surface
+                    if let image {
+                        Image(uiImage: image).resizable().aspectRatio(contentMode: tall ? .fit : .fill)
+                    } else {
+                        Image(systemName: isVideo ? "film" : "doc.fill").foregroundStyle(HandyColor.textSecondary)
+                    }
+                    if isVideo {
+                        Image(systemName: "play.circle.fill").font(.system(size: 28)).foregroundStyle(.white.opacity(0.9)).shadow(radius: 2)
+                    }
+                }
             }
-            if isVideo {
-                Image(systemName: "play.circle.fill").font(.system(size: 20)).foregroundStyle(.white.opacity(0.9)).shadow(radius: 2)
-            }
-        }
-        .frame(width: 72, height: 72)
-        .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+            .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+            .contentShape(Rectangle())
         .task(id: url) { image = await Self.thumbnail(url) }
+    }
+
+    @ViewBuilder private var box: some View {
+        if tall { Color.clear.frame(maxWidth: .infinity).frame(height: 260) }
+        else { Color.clear.frame(maxWidth: .infinity).aspectRatio(1, contentMode: .fit) }
     }
 
     static func thumbnail(_ url: URL) async -> UIImage? {
         let ext = url.pathExtension.lowercased()
         if ["jpg", "jpeg", "png", "heic", "heif", "gif", "webp", "tiff"].contains(ext) {
-            return await Task.detached { UIImage(contentsOfFile: url.path)?.resized(maxDimension: 200) }.value
+            return await Task.detached { UIImage(contentsOfFile: url.path)?.resized(maxDimension: 600) }.value
         }
         if ext == "pdf" {
             // The first page, so a batch of PDFs shows what's in each — not a row of file icons.
-            return await Task.detached { PDFDocument(url: url)?.page(at: 0)?.thumbnail(of: CGSize(width: 200, height: 200), for: .mediaBox) }.value
+            return await Task.detached { PDFDocument(url: url)?.page(at: 0)?.thumbnail(of: CGSize(width: 600, height: 600), for: .mediaBox) }.value
         }
         return await Task.detached { () -> UIImage? in
             let gen = AVAssetImageGenerator(asset: AVURLAsset(url: url))

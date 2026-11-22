@@ -41058,5 +41058,65 @@
   "ja": "下部",
   "pt": "Em baixo",
   "zh": "底部"
+ },
+ "Tap one to see it full size": {
+  "de": "Tippe eins an, um es groß zu sehen",
+  "es": "Toca uno para verlo en grande",
+  "fr": "Touchez-en un pour le voir en grand",
+  "hi": "बड़ा देखने के लिए किसी पर टैप करें",
+  "it": "Toccane uno per vederlo in grande",
+  "ja": "タップすると大きく表示",
+  "pt": "Toca num para o ver em grande",
+  "zh": "轻点任意一个查看大图"
+ },
+ "View result": {
+  "de": "Ergebnis ansehen",
+  "es": "Ver resultado",
+  "fr": "Voir le résultat",
+  "hi": "नतीजा देखें",
+  "it": "Vedi risultato",
+  "ja": "結果を見る",
+  "pt": "Ver resultado",
+  "zh": "查看结果"
+ },
+ "Your result, full size": {
+  "de": "Dein Ergebnis in voller Größe",
+  "es": "Tu resultado a tamaño completo",
+  "fr": "Votre résultat en taille réelle",
+  "hi": "आपका नतीजा, पूरे आकार में",
+  "it": "Il tuo risultato a grandezza piena",
+  "ja": "結果（フルサイズ）",
+  "pt": "O teu resultado em tamanho real",
+  "zh": "你的结果（原尺寸）"
+ },
+ "Opens it full size": {
+  "de": "Öffnet es in voller Größe",
+  "es": "Lo abre a tamaño completo",
+  "fr": "L'ouvre en taille réelle",
+  "hi": "इसे पूरे आकार में खोलता है",
+  "it": "Lo apre a grandezza piena",
+  "ja": "フルサイズで開く",
+  "pt": "Abre em tamanho real",
+  "zh": "以原尺寸打开"
+ },
+ "Plays the video": {
+  "de": "Spielt das Video ab",
+  "es": "Reproduce el vídeo",
+  "fr": "Lit la vidéo",
+  "hi": "वीडियो चलाता है",
+  "it": "Riproduce il video",
+  "ja": "動画を再生",
+  "pt": "Reproduz o vídeo",
+  "zh": "播放视频"
+ },
+ "See it full size": {
+  "de": "In voller Größe ansehen",
+  "es": "Verlo a tamaño completo",
+  "fr": "Voir en taille réelle",
+  "hi": "पूरे आकार में देखें",
+  "it": "Vedi a grandezza piena",
+  "ja": "フルサイズで見る",
+  "pt": "Ver em tamanho real",
+  "zh": "查看原尺寸"
  }
 }

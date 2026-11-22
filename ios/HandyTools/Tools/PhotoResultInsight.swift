@@ -116,7 +116,7 @@ struct PhotoResultInsight: View {
     @ViewBuilder private var compare: some View {
         if let a = afterImage, let b = beforeImage {
             VStack(alignment: .leading, spacing: 4) {
-                Image(uiImage: holding ? b : a).resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360)
+                Image(uiImage: holding ? b : a).resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360).opensFullSize(a)
                     .overlay(alignment: .topLeading) {
                         Text(holding ? L("Original") : L("New copy")).font(HandyFont.micro).padding(.horizontal, 8).padding(.vertical, 4)
                             .background(.black.opacity(0.6), in: Capsule()).foregroundStyle(.white).padding(8)

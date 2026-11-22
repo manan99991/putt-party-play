@@ -58,7 +58,7 @@ struct CollageView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             ZStack {
                 RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).fill(HandyColor.surface)
-                if let p = preview { Image(uiImage: p).resizable().scaledToFit() }
+                if let p = preview { Image(uiImage: p).resizable().scaledToFit().opensFullSize(p) }
             }
             .aspectRatio(format.size.width / format.size.height, contentMode: .fit)
             .frame(maxWidth: .infinity, maxHeight: 380)

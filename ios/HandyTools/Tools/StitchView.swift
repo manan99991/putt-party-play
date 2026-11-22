@@ -79,7 +79,7 @@ struct StitchView: View {
 
             if let result {
                 ScrollView {
-                    Image(uiImage: result).resizable().scaledToFit()
+                    Image(uiImage: result).resizable().scaledToFit().opensFullSize(result)
                         .overlay {
                             // The joins, marked so they can be checked before sharing.
                             GeometryReader { g in

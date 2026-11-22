@@ -2878,7 +2878,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             // A cut-out is finished here: subject picker, backdrop, shadow, shape, and Photos / chat / sticker / profile.
             CutoutResult(original: inputPhoto, firstCut: i)
         case .image(let i):
-            Image(uiImage: i).resizable().scaledToFit().frame(maxHeight: 320)
+            Image(uiImage: i).resizable().scaledToFit().frame(maxHeight: 320).opensFullSize(i, tool: chain.name)
                 .modifier(QRPeekIfCode(enabled: isQRResult, image: i))
             if isQRResult {
                 Text(L("Press and hold the code to see what's inside it, without opening it."))
@@ -2917,6 +2917,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             } else if ChainPayload.isPhoto(ext), originalPhoto == nil, let img = UIImage(data: d) {
                 // (With the original known, the insight above shows it — with press-and-hold to compare.)
                 Image(uiImage: img).resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360)
+                    .opensFullSize(img, tool: chain.name)
                     .cardStyle(padding: HandySpacing.s8)
             } else if ext.lowercased() == "pdf", PDFDocument(data: d)?.page(at: 0) != nil {
                 if chain.steps.contains(where: { $0.block == .photoPdf }) {

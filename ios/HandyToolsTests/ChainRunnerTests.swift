@@ -1710,3 +1710,40 @@ final class ProStepTests: XCTestCase {
     }
 
 }
+
+/// "Photo 1: 128 KB → 137 KB" (Manan, 22 Nov): hide faces re-saved the picture, then "shrink to size" kept it because
+/// it was already under 2 MB. A flow with a shrink step never hands back more than the person started with.
+final class ShrinkNeverBiggerTests: XCTestCase {
+    private func busyPhoto() -> UIImage {
+        UIGraphicsImageRenderer(size: CGSize(width: 900, height: 700)).image { c in
+            var g = SystemRandomNumberGenerator()
+            for _ in 0..<400 {
+                UIColor(hue: .random(in: 0...1, using: &g), saturation: 0.7, brightness: 0.8, alpha: 1).setFill()
+                c.fill(CGRect(x: .random(in: 0...880, using: &g), y: .random(in: 0...680, using: &g), width: 20, height: 20))
+            }
+        }
+    }
+
+    func testShrinkAimsAtTheStartingSizeWhenThePhotoStartedSmall() async throws {
+        let img = busyPhoto()
+        let start = try XCTUnwrap(img.jpegData(compressionQuality: 0.3))
+        let resaved = try XCTUnwrap(img.jpegData(compressionQuality: 0.95))
+        XCTAssertGreaterThan(resaved.count, start.count, "test photo should get bigger when re-saved at high quality")
+        let r = await ChainRunner.$startBytes.withValue(start.count) {
+            await ChainRunner.apply(ChainStep(block: .shrinkImage, settings: ["mb": "2"]), to: .file(resaved, ext: "jpg"))
+        }
+        guard case .success(.file(let out, _)) = r else { return XCTFail("shrink didn't make a file: \(r)") }
+        XCTAssertLessThanOrEqual(out.count, start.count, "came back bigger than the photo the person started with")
+    }
+
+    func testABigPhotoStillGoesUnderTheChosenSize() async throws {
+        let img = busyPhoto()
+        let start = try XCTUnwrap(img.jpegData(compressionQuality: 1.0))
+        let mb = Double(start.count) / 2 / 1_000_000
+        let r = await ChainRunner.$startBytes.withValue(start.count) {
+            await ChainRunner.apply(ChainStep(block: .shrinkImage, settings: ["mb": String(mb)]), to: .file(start, ext: "jpg"))
+        }
+        guard case .success(.file(let out, _)) = r else { return XCTFail("shrink didn't make a file: \(r)") }
+        XCTAssertLessThanOrEqual(out.count, Int(mb * 1_000_000))
+    }
+}

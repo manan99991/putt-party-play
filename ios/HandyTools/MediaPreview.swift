@@ -13,6 +13,7 @@ struct ResultPreview: View {
 
     @State private var thumb: UIImage?
     @State private var playing = false
+    @State private var viewing = false
 
     private var isVideo: Bool { if case .videoURL = kind { return true }; return false }
 
@@ -35,9 +36,22 @@ struct ResultPreview: View {
         .frame(maxHeight: maxHeight)
         .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
         .contentShape(Rectangle())
-        .onTapGesture { if isVideo { playing = true } }
+        // Tap any result to see it full size (zoom a photo, page a PDF); a video plays.
+        .onTapGesture { if isVideo { playing = true } else if thumb != nil { viewing = true } }
+        .accessibilityAddTraits(.isButton)
+        .accessibilityHint(L(isVideo ? "Plays the video" : "Opens it full size"))
+        .fullScreenCover(isPresented: $viewing) { if let v = viewerItem { ResultViewer(items: [v], index: 0) } }
         .task(id: taskKey) { thumb = await Self.makeThumb(kind) }
         .sheet(isPresented: $playing) { if case .videoURL(let url) = kind { MediaPlayerSheet(url: url) } }
+    }
+
+    private var viewerItem: ViewerItem? {
+        switch kind {
+        case .image(let i): return .image(i)
+        case .imageData(let d): return UIImage(data: d).map(ViewerItem.image)
+        case .pdfData(let d): return .pdf(d)
+        case .videoURL(let u): return .url(u)
+        }
     }
 
     private var taskKey: String {

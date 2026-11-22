@@ -282,4 +282,24 @@ final class PromiseTests: XCTestCase {
             XCTAssertTrue(editAll.waitForExistence(timeout: 10), "round \(round): Close didn't bring you back to Tenzy")
         }
     }
+
+    /// "Give them a preview when they click on the image… review each image… save it or share it. This applies to all
+    /// the tools" (Manan, 22 Nov): a finished photo opens full screen with Save / Share, and Done brings you back.
+    func testFinishedPhotoOpensFullSizeAndCloses() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "run-photo-under-2mb", "-uitest", "-sample"]
+        app.launch()
+        let open = app.buttons["full-size"].firstMatch
+        let thumb = app.buttons["result-thumb-0"].firstMatch
+        let deadline = Date().addingTimeInterval(90)
+        while Date() < deadline, !open.exists, !thumb.exists { sleep(2) }
+        XCTAssertTrue(open.exists || thumb.exists, "the finished photo has no way to see it full size")
+        (open.exists ? open : thumb).tap()
+        let done = app.buttons["viewer-done"]
+        XCTAssertTrue(done.waitForExistence(timeout: 10), "the full-size view didn't open")
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Share' OR label CONTAINS[c] 'Save'")).firstMatch.exists,
+                      "the full-size view has no Save or Share")
+        done.tap()
+        XCTAssertTrue(done.waitForNonExistence(timeout: 10), "Done didn't close the full-size view")
+    }
 }

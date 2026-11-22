@@ -57,7 +57,7 @@ struct CutoutResult: View {
         VStack(spacing: 6) {
             ZStack {
                 Checkerboard().clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                if let s = compare ? original : shown { Image(uiImage: s).resizable().scaledToFit().padding(6) }
+                if let s = compare ? original : shown { Image(uiImage: s).resizable().scaledToFit().padding(6).opensFullSize(shown) }
             }
             .frame(height: 340).frame(maxWidth: .infinity)
             .onLongPressGesture(minimumDuration: 0.05, pressing: { compare = $0 }, perform: {})

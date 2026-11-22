@@ -533,11 +533,16 @@ enum ChainRunner {
     /// produce anything stops the chain with a reason naming it (never a silent empty result).
     /// - Parameter dryRun: true while the builder previews a tool on sample data, so steps that keep something
     ///   (adding a row to a running list) show what they would do without saving it.
+    /// The size of the file the person started with, while a flow runs — so "shrink" never hands back a photo bigger
+    /// than the one they gave it, even after a step before it (hide faces) had to re-save the picture.
+    @TaskLocal static var startBytes: Int?
+    private static func bytes(_ p: ChainPayload) -> Int? { if case .file(let d, _) = p { return d.count }; return nil }
+
     static func run(_ chain: Chain, input: ChainPayload, dryRun: Bool = false) async -> Result<ChainPayload, Failure> {
         if let p = chain.problem(starting: input.kind) { return .failure(.invalid(p)) }
         var value = input
         for step in chain.steps {
-            switch await apply(step, to: value, dryRun: dryRun) {
+            switch await $startBytes.withValue(bytes(input)) { await apply(step, to: value, dryRun: dryRun) } {
             case .success(let next): value = next
             case .failure(let f): return .failure(f)
             }
@@ -562,7 +567,7 @@ enum ChainRunner {
         for (i, step) in chain.steps.enumerated() {
             let isLast = i == chain.steps.count - 1
             if isLast { lastIn = value }
-            switch await apply(step, to: value) {
+            switch await $startBytes.withValue(bytes(input)) { await apply(step, to: value) } {
             case .success(let next): value = next; best = next
             case .failure(.nothingFound) where !isLast && step.block.takes == step.block.gives:
                 // An optional same-type "find/extract" step (find links, find tasks, tidy… text→text) had
@@ -605,7 +610,7 @@ enum ChainRunner {
         for (i, step) in chain.steps.enumerated() {
             let isLast = i == chain.steps.count - 1
             if isLast { lastIn = value }
-            switch await apply(step, to: value) {
+            switch await $startBytes.withValue(bytes(input)) { await apply(step, to: value) } {
             case .success(let next):
                 value = next; best = next
                 lines.append(.init(block: step.block, mark: .ran))
@@ -654,7 +659,10 @@ enum ChainRunner {
         case (.shrinkImage, .image(let img)):
             let mb = Double(step.settings["mb"] ?? "") ?? 2
             // "2 MB" means 2,000,000 bytes — what upload sites count and what the phone shows — so it's always under.
-            let target = Int(max(0.01, mb) * 1_000_000)
+            var target = Int(max(0.01, mb) * 1_000_000)
+            // Never bigger than what the person started with: a 128 KB photo that went through "hide faces" first came
+            // back 137 KB (Manan, 22 Nov) — the hiding re-saved it. A photo that started under the size aims at its own size.
+            if let start = startBytes, start < target { target = start }
             // A JPEG already under the size is kept as it is (only its hidden data removed): re-saving it would
             // lose quality and could even make it bigger (119 KB came back as 124 KB, Nov 21).
             if case .file(let d, let ext) = rawInput, ImageClean.isJPEG(ext), d.count <= target, let same = ImageClean.withoutMetadata(d) {

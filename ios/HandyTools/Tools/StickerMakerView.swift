@@ -88,7 +88,7 @@ struct StickerMakerView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             ZStack {
                 Checkerboard().clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-                if let p = preview { Image(uiImage: p).resizable().scaledToFit().padding(HandySpacing.s12) }
+                if let p = preview { Image(uiImage: p).resizable().scaledToFit().padding(HandySpacing.s12).opensFullSize(p) }
                 else { BusySpinner() }
             }
             .frame(maxWidth: .infinity).frame(height: 320)

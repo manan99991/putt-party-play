@@ -1,4 +1,5 @@
 import QuickLookThumbnailing
+import QuickLook
 import SwiftUI
 import UIKit
 import ImageIO
@@ -294,7 +295,7 @@ struct ShareRunView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Label(model.results.count > 1 ? "\(model.noun) \(r.n) is ready" : "Ready: \(u.pathExtension.uppercased()) file", systemImage: "checkmark.circle.fill")
                                 .foregroundStyle(.green)
-                            SharePreviewThumb(url: u)
+                            SharePreviewThumb(url: u, all: model.results.compactMap { $0.note == nil ? $0.url : nil })
                         }
                     }
                 }
@@ -367,18 +368,59 @@ struct ShareWorking: View {
 /// A small picture of a finished file (photo or PDF page), made by the system's own thumbnailer.
 struct SharePreviewThumb: View {
     let url: URL
+    /// Every finished file, so the full-size view steps through the whole batch.
+    var all: [URL] = []
     @State private var thumb: UIImage?
+    @State private var viewing = false
     var body: some View {
         Group {
             if let thumb {
-                Image(uiImage: thumb).resizable().scaledToFit().frame(maxHeight: 220)
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                    .accessibilityLabel(Text("Preview of the result"))
+                // Tap to see it full size — zoom, page through the batch, share — same as in the app.
+                Button { viewing = true } label: {
+                    Image(uiImage: thumb).resizable().scaledToFit().frame(maxHeight: 220)
+                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        .overlay(alignment: .bottomTrailing) {
+                            Image(systemName: "arrow.up.left.and.arrow.down.right").font(.system(size: 13, weight: .bold))
+                                .foregroundStyle(.white).frame(width: 34, height: 34).background(.black.opacity(0.55), in: Circle()).padding(6)
+                        }
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(Text("Preview of the result"))
+                .accessibilityHint(Text("Opens it full size"))
+            }
+        }
+        .fullScreenCover(isPresented: $viewing) {
+            let list = all.isEmpty ? [url] : all
+            NavigationStack {
+                QuickLookPages(urls: list, start: list.firstIndex(of: url) ?? 0)
+                    .ignoresSafeArea(edges: .bottom)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { viewing = false } } }
             }
         }
         .task(id: url) {
             let req = QLThumbnailGenerator.Request(fileAt: url, size: CGSize(width: 600, height: 600), scale: 2, representationTypes: .thumbnail)
             thumb = try? await QLThumbnailGenerator.shared.generateBestRepresentation(for: req).uiImage
         }
+    }
+}
+
+/// Apple's own full-size viewer for the finished files: pinch to zoom, swipe between them, its share button.
+struct QuickLookPages: UIViewControllerRepresentable {
+    let urls: [URL]
+    let start: Int
+    func makeCoordinator() -> Source { Source(urls: urls) }
+    func makeUIViewController(context: Context) -> QLPreviewController {
+        let q = QLPreviewController()
+        q.dataSource = context.coordinator
+        q.currentPreviewItemIndex = start
+        return q
+    }
+    func updateUIViewController(_ q: QLPreviewController, context: Context) {}
+    final class Source: NSObject, QLPreviewControllerDataSource {
+        let urls: [URL]
+        init(urls: [URL]) { self.urls = urls }
+        func numberOfPreviewItems(in controller: QLPreviewController) -> Int { urls.count }
+        func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem { urls[index] as NSURL }
     }
 }
