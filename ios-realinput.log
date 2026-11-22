@@ -21,7 +21,7 @@ REALINPUT what-is-this: result (run-result)
 REALINPUT scan-to-pdf: result (run-result)
 REALINPUT sign-and-send: result (run-result)
 REALINPUT receipt-run: result (run-result)
-REALINPUT whatsapp-no-save: CRASHED after the result
+REALINPUT whatsapp-no-save: result (run-result)
 REALINPUT contact-qr: result (run-result)
 REALINPUT video-email: result (run-result)
 REALINPUT video-chat: result (run-result)
@@ -45,8 +45,7 @@ REALINPUT pdf-join: result (run-result)
 REALINPUT pdf-first-page: result (run-result)
 REALINPUT video-story: result (run-result)
 REALINPUT video-gif: result (run-result)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/RealInputTests.swift:73: error: -[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles] : XCTAssertTrue failed - The app closed on: whatsapp-no-save (after the result)
-Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' failed (912.497 seconds).
+Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (910.724 seconds).
 Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' started.
 REALINPUT video-words: result (run-steplog)
 REALINPUT photo-collage: result (run-result)
@@ -94,8 +93,8 @@ REALINPUT whiteboard-email: result (run-result)
 REALINPUT chat-scam: result (run-result)
 REALINPUT rewrite-clear: result (run-result)
 REALINPUT signature-contact: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (845.894 seconds).
-	 Executed 2 tests, with 1 failure (0 unexpected) in 1758.392 (1758.412) seconds
+Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (831.804 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 1742.529 (1742.544) seconds
 Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' started.
 TOOLINPUT studio: ok
 TOOLINPUT procam: ok
@@ -162,8 +161,8 @@ TOOLINPUT pricecheck: ok
 TOOLINPUT vault: ok
 TOOLINPUT speechnotes: ok
 TOOLINPUT audiostudio: ok
-Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' passed (1865.427 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 1865.427 (1865.428) seconds
-	 Executed 3 tests, with 1 failure (0 unexpected) in 3623.818 (3623.846) seconds
-	 Executed 3 tests, with 1 failure (0 unexpected) in 3623.818 (3623.847) seconds
-** TEST EXECUTE FAILED **
+Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' passed (1861.983 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 1861.983 (1861.984) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 3604.511 (3604.537) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 3604.511 (3604.538) seconds
+** TEST EXECUTE SUCCEEDED **
