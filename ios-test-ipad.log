@@ -1,8 +1,8 @@
 == ipad (results)
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1159.525 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (13.553 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (17.590 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1190.669 (1190.682) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1190.669 (1190.684) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1190.669 (1190.689) seconds
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (968.896 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (18.231 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (26.898 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1014.025 (1014.038) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1014.025 (1014.038) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1014.025 (1014.043) seconds
 ** TEST SUCCEEDED **
