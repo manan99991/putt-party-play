@@ -38628,5 +38628,35 @@
   "ja": "一番動きのある瞬間を、ひとひねりしてループ — スナップ、カクカク、パチンコ、ドラマチックズーム、残像エコー、ミラーツイン。",
   "pt": "O momento mais animado, em loop com um toque especial — Estalo, Gaguejo, Estilingue, Zoom dramático, Rastro de eco ou Gêmeos de espelho.",
   "zh": "最热闹的一刻，循环播放再加点花样——快闪、卡带、弹弓、戏剧变焦、残影或镜像双胞胎。"
+ },
+ "Phone language": {
+  "de": "Sprache des Telefons",
+  "es": "Idioma del teléfono",
+  "fr": "Langue du téléphone",
+  "hi": "फ़ोन की भाषा",
+  "it": "Lingua del telefono",
+  "ja": "端末の言語",
+  "pt": "Idioma do telefone",
+  "zh": "跟随手机语言"
+ },
+ "Show me": {
+  "de": "Zeig's mir",
+  "es": "Muéstramelo",
+  "fr": "Montre-moi",
+  "hi": "मुझे दिखाओ",
+  "it": "Mostrami",
+  "ja": "見てみる",
+  "pt": "Mostre-me",
+  "zh": "给我看看"
+ },
+ "Start using Tenzy": {
+  "de": "Tenzy jetzt nutzen",
+  "es": "Empezar a usar Tenzy",
+  "fr": "Commencer avec Tenzy",
+  "hi": "Tenzy इस्तेमाल करना शुरू करें",
+  "it": "Inizia a usare Tenzy",
+  "ja": "Tenzyを使い始める",
+  "pt": "Começar a usar o Tenzy",
+  "zh": "开始使用 Tenzy"
  }
 }

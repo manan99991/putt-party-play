@@ -27,7 +27,17 @@ struct OnboardingView: View {
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             VStack {
-                HStack { Spacer(); Button(L("Skip")) { onDone() }.font(HandyFont.bodyStrong).foregroundStyle(onBlue ? .white : HandyColor.accent).padding(HandySpacing.s16) }
+                HStack {
+                    // Choose the language before reading anything: the welcome redraws in it at once.
+                    LanguageMenu {
+                        Label(Localizer.chosenName, systemImage: "globe").font(HandyFont.caption.weight(.semibold))
+                            .foregroundStyle(onBlue ? .white : HandyColor.accent)
+                            .padding(.horizontal, 12).padding(.vertical, 8)
+                            .background((onBlue ? Color.white.opacity(0.18) : HandyColor.accentSoft), in: Capsule())
+                    }
+                    .padding(.leading, HandySpacing.s16)
+                    .accessibilityIdentifier("welcome-language")
+                    Spacer(); Button(L("Skip")) { onDone() }.font(HandyFont.bodyStrong).foregroundStyle(onBlue ? .white : HandyColor.accent).padding(HandySpacing.s16) }
                 Spacer()
                 HStack(spacing: 8) {
                     ForEach(0..<3, id: \.self) { i in
@@ -36,7 +46,7 @@ struct OnboardingView: View {
                     }
                 }
                 .padding(.bottom, HandySpacing.s16)
-                Button(page == 0 ? "Show me" : page == 1 ? "Next" : "Start using Tenzy") {
+                Button(L(page == 0 ? "Show me" : page == 1 ? "Next" : "Start using Tenzy")) {
                     if page < 2 { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.24)) { page += 1 } } else { onDone() }
                 }
                 .buttonStyle(OnboardingButtonStyle(onBlue: onBlue))

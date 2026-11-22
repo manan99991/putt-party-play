@@ -76,7 +76,7 @@ enum SceneDescriber {
         try? AVAudioSession.sharedInstance().setCategory(.playback, options: [.duckOthers]); try? AVAudioSession.sharedInstance().setActive(true)
         if synth.isSpeaking { synth.stopSpeaking(at: .immediate) }
         let u = AVSpeechUtterance(string: s); u.rate = rate
-        u.voice = Reader.bestVoice(forLanguage: Locale.preferredLanguages.first ?? "en-US")
+        u.voice = Reader.bestVoice(forLanguage: Localizer.shared.language)
         synth.speak(u); speaking = true
     }
     func speak(_ u: AVSpeechUtterance) {

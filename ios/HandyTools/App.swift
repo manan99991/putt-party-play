@@ -13,6 +13,8 @@ struct TenzyApp: App {
     @State private var showOnboarding = !OnboardingFlag.seen && Launch.route == nil
     @State private var onboardingPage = 0
     @State private var crashReport: String?
+    /// The language picked in Settings: a change redraws everything in it at once.
+    @AppStorage(Localizer.key) private var language = ""
 
     init() {
         Diagnostics.shared.start()
@@ -25,12 +27,13 @@ struct TenzyApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                HomeView().environmentObject(store).tint(HandyColor.accent)
+                HomeView().environmentObject(store).tint(HandyColor.accent).id("home-" + language)
                 if showOnboarding {
                     OnboardingView(startPage: onboardingPage,
                                    onDone: { OnboardingFlag.seen = true; withAnimation(.easeOut(duration: HandyMotion.slow)) { showOnboarding = false }; NotificationCenter.default.post(name: .showSetup, object: nil) },
                                    onSeePro: { OnboardingFlag.seen = true; showOnboarding = false; NotificationCenter.default.post(name: .showPaywall, object: nil) })
                         .environmentObject(store)
+                        .id("welcome-" + language)
                         .transition(.opacity)
                 }
             }

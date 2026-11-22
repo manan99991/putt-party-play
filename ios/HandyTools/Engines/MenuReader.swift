@@ -268,7 +268,7 @@ enum MenuReader {
         "凉菜": "cold dishes", "热菜": "hot dishes", "主食": "staples", "素菜": "vegetable dishes", "荤菜": "meat dishes",
     ]
 
-    static func needsTranslation(_ lines: [String], reader: String = Locale.preferredLanguages.first ?? "en") -> Bool {
+    static func needsTranslation(_ lines: [String], reader: String = Localizer.shared.language) -> Bool {
         let letters = lines.joined().filter(\.isLetter)
         guard !letters.isEmpty else { return false }
         let foreign = letters.filter { c in c.unicodeScalars.contains { $0.value > 0x24F } }.count

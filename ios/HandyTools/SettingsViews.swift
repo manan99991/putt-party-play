@@ -153,6 +153,28 @@ struct SettingsView: View {
                             if devTaps >= 7 { devUnlocked = true; HandyHaptics.success() }
                         }
 
+                    // Language first: someone who can't read the rest finds it at the top, in their own words too.
+                    LanguageMenu(picked: {
+                        // The app redraws in the new language; come straight back here.
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { NotificationCenter.default.post(name: .openTool, object: "settings") }
+                    }) {
+                        HStack(spacing: HandySpacing.s12) {
+                            ZStack {
+                                Circle().fill(HandyColor.accentSoft).frame(width: 44, height: 44)
+                                Image(systemName: "globe").foregroundStyle(HandyColor.accent)
+                            }
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(L("Language")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                Text(Localizer.chosenName).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.up.chevron.down").foregroundStyle(HandyColor.textSecondary)
+                        }
+                        .cardStyle()
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("settings-language")
+
                     Button { if !store.isPremium { showPaywall = true } } label: {
                         HStack(spacing: HandySpacing.s12) {
                             ZStack {

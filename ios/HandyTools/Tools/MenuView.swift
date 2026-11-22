@@ -246,7 +246,7 @@ struct MenuView: View {
 
     private func startTranslation() {
         translating = true; errorText = nil
-        let target = Locale.Language(identifier: Locale.preferredLanguages.first ?? "en")
+        let target = Locale.Language(identifier: Localizer.shared.language)
         let source = MenuReader.language(of: items.map(\.name))
         if translateConfig == nil || translateConfig?.source != source { translateConfig = TranslationSession.Configuration(source: source, target: target) } else { translateConfig?.invalidate() }
     }
