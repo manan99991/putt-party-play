@@ -1,0 +1,44 @@
+Einmal einrichten. Erledigt.
+
+Tenzy ist ein persönlicher Assistent auf deinem Handy. Sag ihm, was wichtig ist – deine Medikamente, die Rechnung bis Freitag, Mamas Geburtstag oder der Preis, auf den du wartest – und es kümmert sich ab dann darum. Jede Erinnerung hat einen Testlauf, damit du siehst, dass sie funktioniert, bevor du dich darauf verlässt. Kein Konto, nichts wird hochgeladen.
+
+DEIN TAG, IM GRIFF
+• Tägliche Übersicht: jeden Morgen eine Notiz mit den heutigen Einnahmen, fälligen Rechnungen, Geburtstagen und dem Wetter
+• Medikamenten-Erinnerungen: eine Genommen-Taste, ein Nachfüll-Countdown und eine Nachfrage, wenn eine Einnahme fehlt – mit einem Tipp schreibst du einer Betreuungsperson
+• Geburtstage aus deinen Kontakten, einen Tag vorher
+• Ein Hinweis zur Schlafenszeit und eine Parkuhr-Erinnerung, die dir sagt, wie weit dein Auto entfernt ist
+
+GELD & PAPIERKRAM
+• Rechnung oder Brief fotografieren: abgelegt, mit Erinnerung vor der Fälligkeit
+• Belege aufbewahrt, mit Hinweis, bevor eine Garantie endet
+• Als PDF scannen, unterschreiben, Formulare ausfüllen, private Angaben schwärzen
+• Preiswächter: Bescheid bekommen, wenn ein Preis auf einer Webseite fällt
+• Ein Jahr Papierkram als ein Zip für deine Steuerberatung
+
+MENSCHEN
+• Deine Kontakte geordnet: Suche, Gruppen, Favoriten und Notfallkontakte, viele auf einmal bearbeiten, nach Excel exportieren, Duplikate zusammenführen
+• Einen Anruf oder Besuch planen: kommt in deinen Kalender, mit „Zeit loszufahren“-Hinweis, Nummer und Adresse
+
+DEIN HANDY, IM GRIFF
+• Screenshots und Duplikate aufräumen, nur die neuesten behalten
+• Dateien öffnen, die dir geschickt werden, auch ungewöhnliche Formate
+• Fotos, Videos und PDFs für ein Upload-Limit verkleinern, HEIC und MOV umwandeln
+• Den Ort aus Fotos entfernen, bevor du sie teilst, und eine verdächtige Nachricht auf Betrug prüfen
+
+DEIN EIGENER HELFER
+Sag, was du brauchst („lies diesen Brief auf Englisch vor“, „verkleinere ein Foto, entferne den Ort und maile es“), und Tenzy stellt die Schritte für dich zusammen – oder nimm einen fertigen. Starte ihn über das Teilen-Menü, ein Widget oder Kurzbefehle, und lass dich bei bestimmten Ergebnissen benachrichtigen.
+
+UND ALLES ANDERE, WAS DU BRAUCHST
+Eine Kamera mit Szene-Einstellungen, ein Stimmverzerrer, Sticker und Collagen, eine Taschenlampe mit SOS, ein AR-Maßband, das Farbe und Boden für einen Raum berechnet, Übersetzen, weißes Rauschen, Farbsehen, ein GPS-Tacho und ein Tresor mit Face ID.
+
+Auf unterstützten iPhones nutzen die Denk- und Schreibwerkzeuge das Modell in deinem Handy. Verfügbar auf Deutsch, Englisch, Spanisch, Französisch, Hindi, Italienisch, Japanisch, Portugiesisch und Chinesisch.
+
+Tenzy erinnert dich; es gibt keinen medizinischen Rat. Frag zu deinen Medikamenten immer deine Ärztin, deinen Arzt oder die Apotheke.
+
+KOSTENLOS, MIT OPTIONALEM TENZY PRO
+Sieben Alltagswerkzeuge sind kostenlos (Taschenlampe+, QR & WLAN, Sehen & Lesen, Messen, Aufräumen, Übersetzen und der Face-ID-Tresor), und du kannst zwei eigene Helfer bauen und behalten. Tenzy Pro schaltet alles andere frei, unbegrenzt viele Helfer und alle Designs. Starte mit 3 Tagen gratis, danach 19,99 $ pro Jahr.
+
+DATENSCHUTZ
+Kein Konto, keine Werbung, kein Tracking. Deine Dateien bleiben auf deinem Gerät. Datenschutz: https://manan99991.github.io/tenzy/privacy.html
+Nutzungsbedingungen: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Abo: Tenzy Pro verlängert sich jedes Jahr automatisch, wenn es nicht mindestens 24 Stunden vor Ablauf gekündigt wird. Verwalten oder kündigen in deinen Apple-ID-Einstellungen.

@@ -1,0 +1,44 @@
+Imposta una volta. Fatto.
+
+Tenzy è un assistente personale che vive sul tuo telefono. Digli cosa conta — i tuoi farmaci, la bolletta in scadenza venerdì, il compleanno della mamma o il prezzo che aspetti — e da lì in poi ci pensa lui. Ogni promemoria ha una prova, così lo vedi funzionare prima di contarci. Nessun account, niente viene caricato.
+
+LA TUA GIORNATA, IN ORDINE
+• Riepilogo giornaliero: ogni mattina una nota con le dosi di oggi, le bollette in scadenza, i compleanni e il meteo
+• Promemoria farmaci: un tasto Presa, un conto alla rovescia per la ricarica e un avviso se salti una dose, con un tocco per scrivere a chi ti assiste
+• I compleanni dei tuoi contatti, il giorno prima
+• Un promemoria per andare a dormire e un avviso del parchimetro che ti dice quanto è lontana l'auto
+
+SOLDI E DOCUMENTI
+• Fotografa una bolletta o una lettera: viene archiviata, con un promemoria prima della scadenza
+• Scontrini conservati, con un avviso prima che scada una garanzia
+• Scansiona in PDF, firma, compila moduli, oscura i dati privati
+• Controllo prezzi: ti avvisa quando un prezzo su una pagina web scende
+• Esporta un anno di documenti in un solo zip per il commercialista
+
+PERSONE
+• I tuoi contatti in ordine: ricerca, gruppi, preferiti e contatti di emergenza, modificane molti insieme, esporta in Excel, unisci i doppioni
+• Pianifica una chiamata o una visita: finisce nel calendario con un avviso «è ora di partire», il numero e l'indirizzo
+
+IL TUO TELEFONO, IN ORDINE
+• Fai pulizia di screenshot e doppioni, tieni solo i più recenti
+• Apri i file che ti mandano, anche nei formati insoliti
+• Riduci foto, video e PDF per rispettare un limite di caricamento, e converti HEIC e MOV
+• Togli la posizione dalle foto prima di condividerle e controlla se un messaggio sospetto è una truffa
+
+IL TUO ASSISTENTE SU MISURA
+Di' cosa ti serve («leggimi questa lettera in inglese», «riduci una foto, togli la posizione e mandala via email») e Tenzy mette insieme i passaggi per te, oppure scegline uno pronto. Avvialo dal menu Condividi, da un widget o da Comandi rapidi, e ricevi un avviso in base al risultato.
+
+E TUTTO IL RESTO
+Una fotocamera che registra con impostazioni di scena, un modificatore di voce, sticker e collage, una torcia con SOS, un metro in realtà aumentata che calcola vernice e pavimento di una stanza, Traduci, rumore bianco, Visione colori, un cruscotto GPS e una cassaforte con Face ID.
+
+Sugli iPhone compatibili, gli strumenti per pensare e scrivere usano il modello integrato nel telefono. Disponibile in italiano, inglese, tedesco, spagnolo, francese, hindi, giapponese, portoghese e cinese.
+
+Tenzy ti ricorda; non dà consigli medici. Chiedi sempre al tuo medico o al farmacista per i tuoi farmaci.
+
+GRATIS, CON TENZY PRO FACOLTATIVO
+Sette strumenti di tutti i giorni sono gratis (Torcia+, QR e Wi-Fi, Vedi e leggi, Misura, Pulizia, Traduci e la Cassaforte con Face ID) e puoi creare e tenere due assistenti tuoi. Tenzy Pro sblocca tutto il resto, assistenti illimitati e tutti i temi. Inizia con 3 giorni di prova gratuita, poi 19,99 $ all'anno.
+
+PRIVACY
+Nessun account, nessuna pubblicità, nessun tracciamento. I tuoi file restano sul dispositivo. Informativa sulla privacy: https://manan99991.github.io/tenzy/privacy.html
+Condizioni d'uso: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Abbonamento: Tenzy Pro si rinnova automaticamente ogni anno, salvo disdetta almeno 24 ore prima della fine del periodo. Gestiscilo o disdicilo nelle impostazioni del tuo ID Apple.

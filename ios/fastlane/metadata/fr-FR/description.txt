@@ -1,0 +1,44 @@
+Réglez une fois. C'est géré.
+
+Tenzy est un assistant personnel qui vit sur votre téléphone. Dites-lui ce qui compte — vos médicaments, la facture à payer vendredi, l'anniversaire de maman ou le prix que vous attendez — et il s'en occupe dès lors. Chaque rappel a un test, pour le voir fonctionner avant d'y compter. Pas de compte, rien n'est envoyé.
+
+VOTRE JOURNÉE, BIEN TENUE
+• Point quotidien : une note chaque matin avec les prises du jour, les factures à payer, les anniversaires et la météo
+• Rappels de médicaments : un bouton Pris, un compte à rebours avant le renouvellement et une relance si une prise est oubliée, avec un toucher pour prévenir un aidant
+• Les anniversaires de vos contacts, la veille
+• Un rappel pour aller dormir et une alerte de parcmètre qui indique à quelle distance est votre voiture
+
+ARGENT ET PAPIERS
+• Photographiez une facture ou un courrier : c'est classé, avec un rappel avant l'échéance
+• Tickets conservés, avec un rappel avant la fin d'une garantie
+• Scanner en PDF, signer, remplir des formulaires, masquer les infos privées
+• Veille prix : soyez prévenu quand un prix baisse sur une page web
+• Exportez une année de papiers en un seul zip pour votre comptable
+
+VOS PROCHES
+• Vos contacts bien rangés : recherche, groupes, favoris et contacts d'urgence, modifiez-en plusieurs à la fois, exportez vers Excel, fusionnez les doublons
+• Prévoir un appel ou une visite : c'est ajouté à votre calendrier avec une alerte « il est temps de partir », le numéro et l'adresse
+
+VOTRE TÉLÉPHONE, BIEN TENU
+• Faites le tri dans les captures et les doublons, gardez seulement les plus récentes
+• Ouvrez les fichiers qu'on vous envoie, même dans des formats inhabituels
+• Réduisez photos, vidéos et PDF pour respecter une limite d'envoi, et convertissez HEIC et MOV
+• Retirez le lieu des photos avant de les partager, et vérifiez si un message suspect est une arnaque
+
+VOTRE PROPRE ASSISTANT
+Dites ce qu'il vous faut (« lis-moi ce courrier en anglais », « réduis une photo, retire le lieu et envoie-la par e-mail ») et Tenzy assemble les étapes pour vous, ou choisissez-en un tout prêt. Lancez-le depuis le menu Partager, un widget ou Raccourcis, et recevez une alerte selon son résultat.
+
+ET TOUT LE RESTE
+Un appareil photo qui filme avec des réglages de scène, un changeur de voix, des stickers et des collages, une lampe avec SOS, un mètre en réalité augmentée qui calcule la peinture et le sol d'une pièce, Traduire, du bruit blanc, Vision des couleurs, un tableau de bord GPS et un coffre-fort Face ID.
+
+Sur les iPhone compatibles, les outils pour réfléchir et écrire utilisent le modèle intégré à votre téléphone. Disponible en français, anglais, allemand, espagnol, hindi, italien, japonais, portugais et chinois.
+
+Tenzy vous rappelle ; il ne donne pas d'avis médical. Demandez toujours conseil à votre médecin ou pharmacien pour vos médicaments.
+
+GRATUIT, AVEC TENZY PRO EN OPTION
+Sept outils du quotidien sont gratuits (Lampe+, QR et Wi-Fi, Voir et lire, Mesurer, Nettoyeur, Traduire et le Coffre-fort Face ID), et vous pouvez créer et garder deux assistants à vous. Tenzy Pro débloque tout le reste, des assistants illimités et tous les thèmes. Commencez par 3 jours d'essai gratuit, puis 19,99 $ par an.
+
+CONFIDENTIALITÉ
+Pas de compte, pas de pub, pas de pistage. Vos fichiers restent sur votre appareil. Politique de confidentialité : https://manan99991.github.io/tenzy/privacy.html
+Conditions d'utilisation : https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Abonnement : Tenzy Pro se renouvelle automatiquement chaque année sauf résiliation au moins 24 heures avant la fin de la période. Gérez ou résiliez-le dans les réglages de votre identifiant Apple.

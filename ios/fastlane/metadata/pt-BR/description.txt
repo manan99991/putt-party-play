@@ -1,0 +1,44 @@
+Configure uma vez. Pronto.
+
+O Tenzy é um assistente pessoal que vive no seu celular. Diga o que importa — seus remédios, a conta que vence na sexta, o aniversário da sua mãe ou o preço que você está esperando — e ele cuida disso daí em diante. Cada lembrete tem um teste, para você ver que funciona antes de confiar nele. Sem conta, nada é enviado.
+
+SEU DIA, EM DIA
+• Resumo diário: uma nota toda manhã com as doses de hoje, contas a vencer, aniversários e o tempo
+• Lembretes de remédios: um botão Tomei, uma contagem para repor e um aviso se uma dose for esquecida, com um toque para avisar quem cuida de você
+• Aniversários dos seus contatos, um dia antes
+• Um lembrete para dormir e um alerta de parquímetro que diz a que distância está o seu carro
+
+DINHEIRO E PAPELADA
+• Fotografe uma conta ou carta: fica guardada, com um lembrete antes do vencimento
+• Notas fiscais guardadas, com um aviso antes de uma garantia acabar
+• Digitalize em PDF, assine, preencha formulários, oculte dados pessoais
+• Alerta de preço: receba um aviso quando o preço de uma página cair
+• Exporte um ano de papelada em um só zip para o seu contador
+
+PESSOAS
+• Seus contatos organizados: busca, grupos, favoritos e contatos de emergência, edite vários de uma vez, exporte para Excel, junte duplicados
+• Planeje uma ligação ou visita: vai para a sua agenda com um alerta de "hora de sair", o número e o endereço
+
+SEU CELULAR, EM DIA
+• Limpe capturas de tela e duplicados, fique só com as mais recentes
+• Abra os arquivos que te mandam, mesmo em formatos incomuns
+• Reduza fotos, vídeos e PDFs para caber em um limite de envio, e converta HEIC e MOV
+• Remova a localização das fotos antes de compartilhar e veja se uma mensagem suspeita é golpe
+
+SEU PRÓPRIO AJUDANTE
+Diga o que você precisa ("leia esta carta em inglês", "reduza uma foto, tire a localização e mande por e-mail") e o Tenzy monta os passos para você, ou escolha um pronto. Use pelo menu Compartilhar, um widget ou Atalhos, e receba avisos conforme o resultado.
+
+E TUDO O MAIS QUE VOCÊ USA
+Uma câmera que grava com ajustes de cena, um modificador de voz, figurinhas e colagens, uma lanterna com SOS, uma trena em realidade aumentada que calcula tinta e piso de um cômodo, Traduzir, ruído branco, Visão de cor, um painel GPS e um cofre com Face ID.
+
+Nos iPhones compatíveis, as ferramentas de pensar e escrever usam o modelo do próprio celular. Disponível em português, inglês, alemão, espanhol, francês, hindi, italiano, japonês e chinês.
+
+O Tenzy lembra você; ele não dá conselho médico. Sempre consulte seu médico ou farmacêutico sobre seus remédios.
+
+GRÁTIS, COM TENZY PRO OPCIONAL
+Sete ferramentas do dia a dia são grátis (Lanterna+, QR e Wi-Fi, Ver e ler, Medir, Limpador, Traduzir e o Cofre com Face ID), e você pode criar e manter dois ajudantes seus. O Tenzy Pro libera todo o resto, ajudantes ilimitados e todos os temas. Comece com 3 dias grátis, depois US$ 19,99 por ano.
+
+PRIVACIDADE
+Sem conta, sem anúncios, sem rastreamento. Seus arquivos ficam no seu aparelho. Política de privacidade: https://manan99991.github.io/tenzy/privacy.html
+Termos de uso: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Assinatura: o Tenzy Pro renova automaticamente todo ano, a menos que seja cancelado pelo menos 24 horas antes do fim do período. Gerencie ou cancele nos ajustes do seu ID Apple.
