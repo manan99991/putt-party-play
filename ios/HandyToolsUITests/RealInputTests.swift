@@ -18,7 +18,7 @@ final class RealInputTests: XCTestCase {
         "qr-safe", "sign-to-english", "page-to-pdf", "page-summary", "listen-later", "pdf-email",
         "pdf-join", "pdf-first-page", "video-story", "video-gif", "video-words", "photo-collage",
         "where-i-am", "photos-gif", "photos-flipbook", "sticker-maker", "emoji-faces", "meme",
-        "emoji-mosaic", "video-celebrate", "video-boomerang", "video-slowmo", "video-fast", "photo-sketch",
+        "emoji-mosaic", "video-celebrate", "video-post", "video-boomerang", "video-slowmo", "video-fast", "photo-sketch",
         "photo-comic", "voice-chipmunk", "voice-deep", "voice-helium", "voice-giant", "voice-robot",
         "voice-alien", "voice-monster", "voice-walkie", "voice-cave", "voice-ghost", "video-voice",
         "before-after", "photo-sell", "letter-listen", "lecture-summary", "meeting-email", "voice-spanish",

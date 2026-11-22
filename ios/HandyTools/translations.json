@@ -40679,16 +40679,6 @@
   "pt": "Preparar para publicar",
   "zh": "准备好发布"
  },
- "Get a video ready for TikTok, Reels or Shorts": {
-  "de": "Video für TikTok, Reels oder Shorts vorbereiten",
-  "es": "Prepara un vídeo para TikTok, Reels o Shorts",
-  "fr": "Préparer une vidéo pour TikTok, Reels ou Shorts",
-  "hi": "TikTok, Reels या Shorts के लिए वीडियो तैयार करें",
-  "it": "Prepara un video per TikTok, Reels o Shorts",
-  "ja": "TikTok・リール・ショート用に動画を準備",
-  "pt": "Preparar um vídeo para TikTok, Reels ou Shorts",
-  "zh": "为 TikTok、Reels 或 Shorts 准备视频"
- },
  "The right shape, length and size for TikTok, Reels, Stories, Shorts, YouTube, Facebook, Snapchat, X or WhatsApp Status — then it opens that app with the video ready.": {
   "de": "Die richtige Form, Länge und Größe für TikTok, Reels, Stories, Shorts, YouTube, Facebook, Snapchat, X oder WhatsApp-Status – dann öffnet sich die App mit dem fertigen Video.",
   "es": "La forma, duración y tamaño adecuados para TikTok, Reels, Historias, Shorts, YouTube, Facebook, Snapchat, X o Estado de WhatsApp, y se abre esa app con el vídeo listo.",
@@ -41008,5 +40998,15 @@
   "ja": "試す",
   "pt": "Experimentar",
   "zh": "试一试"
+ },
+ "Post a video to TikTok, Reels or Shorts": {
+  "de": "Ein Video auf TikTok, Reels oder Shorts posten",
+  "es": "Publicar un vídeo en TikTok, Reels o Shorts",
+  "fr": "Publier une vidéo sur TikTok, Reels ou Shorts",
+  "hi": "वीडियो को TikTok, Reels या Shorts पर पोस्ट करो",
+  "it": "Pubblica un video su TikTok, Reels o Shorts",
+  "ja": "動画をTikTok・リール・ショートに投稿",
+  "pt": "Publicar um vídeo no TikTok, Reels ou Shorts",
+  "zh": "把视频发到 TikTok、Reels 或 Shorts"
  }
 }

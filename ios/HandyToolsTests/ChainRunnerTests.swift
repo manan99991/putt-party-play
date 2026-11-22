@@ -86,7 +86,7 @@ final class ChainRowTests: XCTestCase {
 
 final class ChainTemplateTests: XCTestCase {
     func testTwentyEightTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 91)
+        XCTAssertEqual(ChainTemplates.all.count, 92)
         XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, ChainTemplates.all.count)
     }
     func testShareRoundTripAndRejectsJunk() throws {
@@ -870,7 +870,7 @@ final class ReturnByTests: XCTestCase {
 
 final class VideoTests: XCTestCase {
     func testVideoStepsOnlyFitAVideoAndSayWhatTheyGive() {
-        let v: [Block] = [.videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoLoop, .videoCelebrate]
+        let v: [Block] = [.videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoLoop, .videoCelebrate, .postTo]
         XCTAssertTrue(v.allSatisfy { $0.takes == .video })
         XCTAssertEqual(Block.starting(with: .video), v)
         XCTAssertFalse(Block.starting(with: .image).contains(.videoShrink)); XCTAssertFalse(Block.starting(with: .text).contains(.videoStill))
@@ -1332,7 +1332,7 @@ final class FunStepTests: XCTestCase {
         XCTAssertEqual(planned("remove the background"), [.cutout])
         XCTAssertEqual(planned("put an emoji on my kids faces"), [.emojiFaces]); XCTAssertEqual(planned("hide faces with emojis"), [.emojiFaces])
         XCTAssertEqual(planned("emoji mosaic of my selfie"), [.emojiMosaic]); XCTAssertEqual(planned("photo made of emojis"), [.emojiMosaic])
-        XCTAssertEqual(planned("boomerang"), [.videoLoop]); XCTAssertEqual(ChainPlanner.keywordPlan("bomerang of my video")?.steps.first?.settings["style"], "boomerang")
+        XCTAssertEqual(planned("boomerang"), [.videoLoop]); XCTAssertEqual(ChainPlanner.keywordPlan("bomerang of my video")?.steps.first?.settings["style"], "snap")   // the classic boomerang look
         XCTAssertEqual(ChainPlanner.keywordPlan("play my video backwards")?.steps.first?.settings["style"], "reverse")
         XCTAssertEqual(ChainPlanner.keywordPlan("slow motion video")?.steps.first?.settings["speed"], "slow"); XCTAssertEqual(planned("slow mo"), [.videoSpeed])
         XCTAssertEqual(ChainPlanner.keywordPlan("speed up my video")?.steps.first?.settings["speed"], "fast"); XCTAssertEqual(ChainPlanner.keywordPlan("make a timelapse")?.steps.first?.settings["speed"], "faster")

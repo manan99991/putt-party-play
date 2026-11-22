@@ -1032,7 +1032,7 @@ enum ChainTemplates {
         Chain(id: "meme", name: "Make a meme", steps: [ChainStep(block: .meme, settings: ["top": "", "bottom": ""])]),
         Chain(id: "emoji-mosaic", name: "Turn a photo into emoji art", steps: [ChainStep(block: .emojiMosaic)]),
         Chain(id: "video-celebrate", name: "Decorate a video for a celebration", steps: [ChainStep(block: .videoCelebrate, settings: ["theme": "", "text": ""])], blurb: "The next festival coming up (or any you pick) — snow, fireworks, diyas, lanterns — with its greeting placed clear of faces."),
-        Chain(id: "video-post", name: "Get a video ready for TikTok, Reels or Shorts", steps: [ChainStep(block: .postTo, settings: ["platform": "tiktok"])]),
+        Chain(id: "video-post", name: "Post a video to TikTok, Reels or Shorts", steps: [ChainStep(block: .postTo, settings: ["platform": "tiktok"])]),
         Chain(id: "video-boomerang", name: "Make a boomerang GIF from a video", steps: [ChainStep(block: .videoLoop, settings: ["style": "snap"])]),
         Chain(id: "video-slowmo", name: "Slow a video down", steps: [ChainStep(block: .videoSpeed, settings: ["speed": "slow"])]),
         Chain(id: "video-fast", name: "Speed a video up", steps: [ChainStep(block: .videoSpeed, settings: ["speed": "fast"])]),

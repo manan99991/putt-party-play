@@ -773,8 +773,9 @@ struct BuilderView: View {
             if Launch.screenshots, Launch.route == "templates" { showTemplates = true }
             if Launch.screenshots, Launch.route == "mytools" { showMine = true }
             // UI tests: one saved tool to run from My tools (a fresh simulator has none).
-            if Launch.uitest, Launch.args.contains("-seedtool"), mine.isEmpty,
-               let t = ChainTemplates.all.first(where: { $0.id == "photo-under-2mb" }) { mine = [t]; persist() }
+            // (Other UI tests may have saved tools on the same simulator, so add it by id rather than only when empty.)
+            if Launch.uitest, Launch.args.contains("-seedtool"), let t = ChainTemplates.all.first(where: { $0.id == "photo-under-2mb" }),
+               !mine.contains(where: { $0.id == t.id }) { mine.insert(t, at: 0); persist() }
             if openMine { showMine = true }
             if showDemo, var demo = ChainTemplates.all.first(where: { $0.id == BuilderIntro.demoID }) {
                 demo.id = UUID().uuidString; demo.name += " (mine)"; editing = demo
