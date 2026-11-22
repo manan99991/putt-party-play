@@ -68,14 +68,15 @@ jobs:
           s=float(open("preview/start.t").read()) if __import__("os").path.exists("preview/start.t") else t0+30
           e=float(open("preview/end.t").read()) if __import__("os").path.exists("preview/end.t") else s+30
           a=max(0,s-t0-0.3); l=min(30,max(15,e-s+0.5))
-          open("preview/cut.txt","w").write(f"{a:.2f} {l:.2f}")
+          open("preview/cut.txt","w").write(f"{a:.2f} {l:.2f}\n")
           print("cut", a, l)
           PY
           ls -la preview
       - name: Make it App Store size
         run: |
           cd preview
-          read START LEN < cut.txt
+          read START LEN < cut.txt || true   # (no trailing newline must not stop the step)
+          echo "cut from $START for $LEN s"
           ffmpeg -y -ss $START -i raw.mov -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 \
             -vf "scale=886:1920:force_original_aspect_ratio=decrease,pad=886:1920:(ow-iw)/2:(oh-ih)/2,fps=30" \
             -c:v libx264 -profile:v high -pix_fmt yuv420p -b:v 10M -c:a aac -b:a 256k -t $LEN -movflags +faststart \
