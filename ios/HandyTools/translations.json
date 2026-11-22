@@ -41218,5 +41218,185 @@
   "ja": "送れる返信の例",
   "pt": "Uma resposta que podias enviar",
   "zh": "你可以发送的回复"
+ },
+ "Receipts and warranty cards": {
+  "de": "Quittungen und Garantiekarten",
+  "es": "Recibos y tarjetas de garantía",
+  "fr": "Reçus et cartes de garantie",
+  "hi": "रसीदें और वारंटी कार्ड",
+  "it": "Scontrini e certificati di garanzia",
+  "ja": "レシートと保証書",
+  "pt": "Recibos e cartões de garantia",
+  "zh": "收据和保修卡"
+ },
+ "Documents and letters": {
+  "de": "Dokumente und Briefe",
+  "es": "Documentos y cartas",
+  "fr": "Documents et courriers",
+  "hi": "दस्तावेज़ और पत्र",
+  "it": "Documenti e lettere",
+  "ja": "書類と手紙",
+  "pt": "Documentos e cartas",
+  "zh": "文件和信件"
+ },
+ "Business cards": {
+  "de": "Visitenkarten",
+  "es": "Tarjetas de visita",
+  "fr": "Cartes de visite",
+  "hi": "बिज़नेस कार्ड",
+  "it": "Biglietti da visita",
+  "ja": "名刺",
+  "pt": "Cartões de visita",
+  "zh": "名片"
+ },
+ "Menus": {
+  "de": "Speisekarten",
+  "es": "Menús",
+  "fr": "Menus",
+  "hi": "मेन्यू",
+  "it": "Menù",
+  "ja": "メニュー",
+  "pt": "Menus",
+  "zh": "菜单"
+ },
+ "Photos of a face": {
+  "de": "Fotos eines Gesichts",
+  "es": "Fotos de una cara",
+  "fr": "Photos d'un visage",
+  "hi": "चेहरे की फ़ोटो",
+  "it": "Foto di un volto",
+  "ja": "顔の写真",
+  "pt": "Fotos de um rosto",
+  "zh": "人脸照片"
+ },
+ "Whiteboards, lists and calendars": {
+  "de": "Whiteboards, Listen und Kalender",
+  "es": "Pizarras, listas y calendarios",
+  "fr": "Tableaux, listes et calendriers",
+  "hi": "व्हाइटबोर्ड, सूचियाँ और कैलेंडर",
+  "it": "Lavagne, liste e calendari",
+  "ja": "ホワイトボード・リスト・カレンダー",
+  "pt": "Quadros, listas e calendários",
+  "zh": "白板、清单和日历"
+ },
+ "Screenshots": {
+  "de": "Bildschirmfotos",
+  "es": "Capturas de pantalla",
+  "fr": "Captures d'écran",
+  "hi": "स्क्रीनशॉट",
+  "it": "Screenshot",
+  "ja": "スクリーンショット",
+  "pt": "Capturas de ecrã",
+  "zh": "截图"
+ },
+ "Photos with a QR code or barcode": {
+  "de": "Fotos mit QR-Code oder Barcode",
+  "es": "Fotos con código QR o de barras",
+  "fr": "Photos avec un QR code ou code-barres",
+  "hi": "QR या बारकोड वाली फ़ोटो",
+  "it": "Foto con QR o codice a barre",
+  "ja": "QR・バーコードのある写真",
+  "pt": "Fotos com código QR ou de barras",
+  "zh": "带二维码或条形码的照片"
+ },
+ "Things you might sell or list": {
+  "de": "Dinge zum Verkaufen",
+  "es": "Cosas que podrías vender",
+  "fr": "Objets à vendre",
+  "hi": "बेचने लायक चीज़ें",
+  "it": "Cose da vendere",
+  "ja": "売れそうなもの",
+  "pt": "Coisas para vender",
+  "zh": "可出售的物品"
+ },
+ "Found in your photos — tap one to use it.": {
+  "de": "In deinen Fotos gefunden – tippe eins an.",
+  "es": "Encontradas en tus fotos: toca una para usarla.",
+  "fr": "Trouvées dans vos photos — touchez-en une.",
+  "hi": "आपकी फ़ोटो में मिलीं — इस्तेमाल के लिए टैप करें।",
+  "it": "Trovate nelle tue foto: toccane una.",
+  "ja": "写真から見つけました — タップして使う",
+  "pt": "Encontradas nas tuas fotos — toca numa.",
+  "zh": "在你的照片中找到 — 轻点即可使用"
+ },
+ "Looking through your photos": {
+  "de": "Deine Fotos werden durchsucht",
+  "es": "Buscando en tus fotos",
+  "fr": "Recherche dans vos photos",
+  "hi": "आपकी फ़ोटो देखी जा रही हैं",
+  "it": "Cerco tra le tue foto",
+  "ja": "写真を確認中",
+  "pt": "A procurar nas tuas fotos",
+  "zh": "正在查看你的照片"
+ },
+ "found in your last": {
+  "de": "gefunden in deinen letzten",
+  "es": "encontradas en tus últimas",
+  "fr": "trouvées dans vos",
+  "hi": "मिलीं, आपकी पिछली",
+  "it": "trovate nelle ultime",
+  "ja": "件見つかりました（直近",
+  "pt": "encontradas nas últimas",
+  "zh": "个，来自最近"
+ },
+ "Tenzy can only see the photos you've shared with it. To look through all of them, allow Full Access in Settings.": {
+  "de": "Tenzy sieht nur die Fotos, die du freigegeben hast. Für alle erlaube in den Einstellungen vollen Zugriff.",
+  "es": "Tenzy solo ve las fotos que has compartido. Para buscar en todas, permite acceso completo en Ajustes.",
+  "fr": "Tenzy ne voit que les photos partagées. Pour toutes, autorisez l'accès complet dans Réglages.",
+  "hi": "Tenzy सिर्फ़ आपकी साझा की गई फ़ोटो देख सकता है। सब देखने के लिए Settings में पूरा एक्सेस दें।",
+  "it": "Tenzy vede solo le foto condivise. Per cercare in tutte, consenti l'accesso completo in Impostazioni.",
+  "ja": "Tenzyは共有した写真だけを見られます。すべて見るには設定でフルアクセスを許可してください。",
+  "pt": "A Tenzy só vê as fotos que partilhaste. Para procurar em todas, permite acesso total nas Definições.",
+  "zh": "Tenzy 只能看到你共享的照片。要查看全部，请在设置中允许完全访问。"
+ },
+ "To find these for you, Tenzy needs to look through your photos — on this phone only, nothing is uploaded.": {
+  "de": "Dafür muss Tenzy deine Fotos durchsehen – nur auf diesem Handy, nichts wird hochgeladen.",
+  "es": "Para encontrarlas, Tenzy necesita mirar tus fotos, solo en este teléfono; no se sube nada.",
+  "fr": "Pour les trouver, Tenzy doit parcourir vos photos — sur ce téléphone, rien n'est envoyé.",
+  "hi": "इन्हें ढूँढने के लिए Tenzy को आपकी फ़ोटो देखनी होंगी — सिर्फ़ इसी फ़ोन पर, कुछ भी अपलोड नहीं।",
+  "it": "Per trovarle, Tenzy deve guardare le tue foto, solo su questo telefono; nulla viene caricato.",
+  "ja": "見つけるには写真を確認する必要があります（この端末内のみ、アップロードなし）。",
+  "pt": "Para as encontrar, a Tenzy precisa de ver as tuas fotos — só neste telemóvel, nada é enviado.",
+  "zh": "要找到它们，Tenzy 需要查看你的照片——仅在本机，不会上传。"
+ },
+ "Allow in Settings": {
+  "de": "In Einstellungen erlauben",
+  "es": "Permitir en Ajustes",
+  "fr": "Autoriser dans Réglages",
+  "hi": "Settings में अनुमति दें",
+  "it": "Consenti in Impostazioni",
+  "ja": "設定で許可",
+  "pt": "Permitir nas Definições",
+  "zh": "在设置中允许"
+ },
+ "All photos": {
+  "de": "Alle Fotos",
+  "es": "Todas las fotos",
+  "fr": "Toutes les photos",
+  "hi": "सभी फ़ोटो",
+  "it": "Tutte le foto",
+  "ja": "すべての写真",
+  "pt": "Todas as fotos",
+  "zh": "所有照片"
+ },
+ "None found in your recent photos": {
+  "de": "Nichts in deinen neuesten Fotos gefunden",
+  "es": "No se encontró ninguna en tus fotos recientes",
+  "fr": "Rien trouvé dans vos photos récentes",
+  "hi": "हाल की फ़ोटो में कुछ नहीं मिला",
+  "it": "Nessuna trovata nelle foto recenti",
+  "ja": "最近の写真には見つかりませんでした",
+  "pt": "Nada encontrado nas fotos recentes",
+  "zh": "最近的照片中未找到"
+ },
+ "Tap All photos below to pick any picture yourself.": {
+  "de": "Tippe unten auf Alle Fotos, um selbst eins zu wählen.",
+  "es": "Toca Todas las fotos abajo para elegir tú mismo.",
+  "fr": "Touchez Toutes les photos ci-dessous pour choisir vous-même.",
+  "hi": "खुद चुनने के लिए नीचे सभी फ़ोटो पर टैप करें।",
+  "it": "Tocca Tutte le foto qui sotto per sceglierne una.",
+  "ja": "下の「すべての写真」から自分で選べます。",
+  "pt": "Toca em Todas as fotos abaixo para escolher.",
+  "zh": "轻点下方“所有照片”自行选择。"
  }
 }

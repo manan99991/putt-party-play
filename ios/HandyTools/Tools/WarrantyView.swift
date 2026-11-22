@@ -10,6 +10,7 @@ struct WarrantyView: View {
     @State private var query = ""
     @State private var pickerItem: PhotosPickerItem?
     @State private var showCamera = false
+    @State private var smartPick = false
     @State private var draft: Draft?
     @State private var open: Receipt?
     @State private var busy = false
@@ -35,7 +36,9 @@ struct WarrantyView: View {
 
             HStack(spacing: HandySpacing.s8) {
                 Button { showCamera = true } label: { Label(L("Photograph"), systemImage: "camera.fill").frame(maxWidth: .infinity) }.primaryButton()
-                PhotosPicker(selection: $pickerItem, matching: .images) { Label(L("From Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton()
+                // Opens on the photos that look like receipts or warranty cards, with All photos a tap away.
+                Button { smartPick = true } label: { Label(L("From Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }
+                    .secondaryButton().accessibilityIdentifier("warranty-from-photos")
             }
             if busy { ToolProgressBar(label: "Reading the receipt…") }
             alertsCard
@@ -71,6 +74,7 @@ struct WarrantyView: View {
                 if let img { DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { startDraft(img) } }
             }.ignoresSafeArea()
         }
+        .sheet(isPresented: $smartPick) { SmartPhotoPicker(kind: .receipt) { imgs in if let i = imgs.first { startDraft(i) } } }
         .sheet(item: $draft) { d in DraftSheet(draft: d, store: store) }
         .sheet(item: $open) { r in ReceiptDetail(receipt: r, store: store) }
         .onChange(of: pickerItem) { _, item in

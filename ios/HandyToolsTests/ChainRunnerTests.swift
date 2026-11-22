@@ -1763,3 +1763,31 @@ final class ThinkLeakTests: XCTestCase {
         XCTAssertFalse(ThinkBrain.leaked("Shower first — 10 minutes", asked: "I have to shower and get ready before the party, should I go?"))
     }
 }
+
+/// The smart photo picker's sorting: a receipt photo scores as a receipt, a selfie as a face, a business card as a card,
+/// and none of them leaks into another kind's first page.
+final class PhotoFinderScoreTests: XCTestCase {
+    private func seen(_ text: String = "", labels: [String] = [], faces: Int = 0, codes: Int = 0, shot: Bool = false) -> PhotoFinder.Seen {
+        PhotoFinder.Seen(modified: 0, labels: labels, text: text, faces: faces, codes: codes, screenshot: shot)
+    }
+    let receipt = "BLUE BOTTLE COFFEE\nCappuccino 4.75\nAlmond Croissant 5.25\nSubtotal 10.75\nTax 0.97\nTotal 13.72\nVISA ****4421\nThank you for visiting!"
+    let warranty = "LIMITED WARRANTY\nModel No. TX-55\nSerial S/N 88231\nPurchase date 03/14/2026\nKeep this proof of purchase"
+    let card = "Jane Rivera\nSenior Designer\nAcme Studio\n+1 312 555 0142\njane@acme.studio\nwww.acme.studio"
+
+    func testReceiptsAndWarrantyCardsComeFirstForReceipts() {
+        XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(receipt, labels: ["document"]), for: .receipt), PhotoFinder.threshold)
+        XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(warranty), for: .receipt), PhotoFinder.threshold)
+        XCTAssertLessThan(PhotoFinder.score(seen(labels: ["dog", "grass"], faces: 0), for: .receipt), PhotoFinder.threshold)
+        XCTAssertLessThan(PhotoFinder.score(seen(labels: ["people"], faces: 1), for: .receipt), PhotoFinder.threshold)
+    }
+
+    func testEachKindFindsItsOwn() {
+        XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(card), for: .card), PhotoFinder.threshold)
+        XCTAssertLessThan(PhotoFinder.score(seen(receipt), for: .card), PhotoFinder.score(seen(card), for: .card))
+        XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(labels: ["people", "portrait"], faces: 1), for: .face), PhotoFinder.threshold)
+        XCTAssertLessThan(PhotoFinder.score(seen(receipt), for: .face), PhotoFinder.threshold)
+        XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(shot: true), for: .screenshot), PhotoFinder.threshold)
+        XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(codes: 1), for: .code), PhotoFinder.threshold)
+        XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen("STARTERS\nSoup 6.50\nSalad 8.00\nMAINS\nChicken pasta 16.00\nBurger 14.50\nDESSERT"), for: .menu), PhotoFinder.threshold)
+    }
+}
