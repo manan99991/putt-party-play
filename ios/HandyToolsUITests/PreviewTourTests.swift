@@ -5,24 +5,30 @@ import XCTest
 /// so it only runs from the ios-preview workflow (PREVIEW_TOUR=1), never in the normal test runs.
 final class PreviewTourTests: XCTestCase {
     func testStoreVideoTour() throws {
-        try XCTSkipUnless(ProcessInfo.processInfo.environment["PREVIEW_TOUR"] == "1", "only for the store video")
+        let mode = ProcessInfo.processInfo.environment["PREVIEW_TOUR"] ?? ""
+        try XCTSkipUnless(mode == "1" || mode == "warm", "only for the store video")
         let app = XCUIApplication()
-        app.launchArguments = ["-route", "home", "-uitest"]
+        app.launchArguments = ["-route", "home", "-uitest", "-resetfirsttry"]
         app.launch()
         let any = app.descendants(matching: .any)
         XCTAssertTrue(any["first-try"].waitForExistence(timeout: 30))
-        // The simulator's one-time keyboard tip would cover half the video: open and close the keyboard once first.
         let field = app.textFields["describe-field"].exists ? app.textFields["describe-field"] : app.textViews["describe-field"]
-        field.tap()
-        if app.buttons["Continue"].waitForExistence(timeout: 2) { app.buttons["Continue"].tap() }
-        app.swipeDown(velocity: .fast)
-        sleep(1)
+        if mode == "warm" {
+            // Warm-up (not filmed): run the demo once so the phone's text and face models are loaded for the take,
+            // and clear the simulator's one-time keyboard tip.
+            any["first-try"].tap()
+            _ = app.staticTexts["Your result"].waitForExistence(timeout: 90)
+            if app.buttons["Done"].firstMatch.exists { app.buttons["Done"].firstMatch.tap() }
+            field.tap()
+            if app.buttons["Continue"].waitForExistence(timeout: 3) { app.buttons["Continue"].tap() }
+            return
+        }
 
         mark("TOUR-START")                         // the workflow cuts the video from here (30 s in all)
         sleep(2)                                   // the headline and Home, still
 
         any["first-try"].tap()                     // a real job on a sample: hidden, stripped, shrunk
-        _ = app.staticTexts["Your result"].waitForExistence(timeout: 12)
+        _ = app.staticTexts["Your result"].waitForExistence(timeout: 15)
         sleep(2)                                   // the result, on screen
         if app.buttons["Done"].firstMatch.exists { app.buttons["Done"].firstMatch.tap() }
         sleep(1)

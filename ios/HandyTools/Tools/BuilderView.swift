@@ -775,6 +775,8 @@ struct BuilderView: View {
             // Store screenshots: open the Templates or My tools sheet straight away.
             if Launch.screenshots, Launch.route == "templates" { showTemplates = true }
             if Launch.screenshots, Launch.route == "mytools" { showMine = true }
+            // Store video: the warm-up run tried the demo already; show the card again for the take.
+            if Launch.uitest, Launch.args.contains("-resetfirsttry") { triedFirst = false }
             // UI tests: one saved tool to run from My tools (a fresh simulator has none).
             // (Other UI tests may have saved tools on the same simulator, so add it by id rather than only when empty.)
             if Launch.uitest, Launch.args.contains("-seedtool"), let t = ChainTemplates.all.first(where: { $0.id == "photo-under-2mb" }),

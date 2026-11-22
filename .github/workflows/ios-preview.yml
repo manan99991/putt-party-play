@@ -46,7 +46,7 @@ jobs:
           xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
           mkdir -p preview
           # Install + warm up once, so the recording starts on a launched app, not a cold boot.
-          PREVIEW_TOUR=0 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
+          TEST_RUNNER_PREVIEW_TOUR=warm xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO >/dev/null 2>&1 || true
           xcrun simctl io "$UDID" recordVideo --codec h264 --force preview/raw.mov &
           REC=$!
