@@ -62,14 +62,19 @@ jobs:
                 case "$line" in *error:*|*"Test Case"*|*TEST\ *) echo "$line";; esac
               done
           sleep 1
+          T1=$(python3 -c 'import time;print(time.time())')
           kill -INT $REC; wait $REC || true
+          D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 preview/raw.mov)
+          # Count back from the END of the recording: the recorder can skip the idle start (cold app launch),
+          # so its clock is only reliable relative to when it stopped.
           python3 - <<PY
-          t0=$T0
-          s=float(open("preview/start.t").read()) if __import__("os").path.exists("preview/start.t") else t0+30
-          e=float(open("preview/end.t").read()) if __import__("os").path.exists("preview/end.t") else s+30
-          a=max(0,s-t0-0.3); l=min(30,max(15,e-s+0.5))
+          import os
+          t0=$T0; t1=$T1; d=float("$D" or 0)
+          s=float(open("preview/start.t").read()) if os.path.exists("preview/start.t") else t1-35
+          e=float(open("preview/end.t").read()) if os.path.exists("preview/end.t") else s+30
+          a=max(0, d-(t1-s)-0.3); l=min(30, max(15, e-s+0.5))
           open("preview/cut.txt","w").write(f"{a:.2f} {l:.2f}\n")
-          print("cut", a, l)
+          print("recording", d, "s; wall", t1-t0, "s; cut", a, l)
           PY
           ls -la preview
       - name: Make it App Store size
