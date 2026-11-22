@@ -490,6 +490,9 @@ struct BuilderView: View {
     @State private var gettingReady = false
     // Everything past the two front-door actions lives one tap away, so the start stays one clean page.
     @State private var showMine = false
+    /// A row in My tools opened something (Run, Edit, Rename…): My tools closed to make room, so it isn't a
+    /// "close this page" and comes back once that thing is done.
+    @State private var backToMine = false
     @State private var showTemplates = false
     @State private var showGuide = false
 
@@ -520,7 +523,7 @@ struct BuilderView: View {
         .padding(.vertical, HandySpacing.s8)
         }
         .scrollDismissesKeyboard(.interactively)
-        .sheet(item: $editing) { c in
+        .sheet(item: $editing, onDismiss: returnToMine) { c in
             NavigationStack {
                 ChainEditor(chain: c, hint: editHint, good: editGood, gaps: editGaps, ask: editAsk) { saved in
                     if let i = mine.firstIndex(where: { $0.id == saved.id }) { mine[i] = saved; persist(); editing = nil; editHint = nil }
@@ -529,7 +532,7 @@ struct BuilderView: View {
                 }
             }
         }
-        .sheet(item: $running) { c in NavigationStack { ChainRunView(chain: c) } }
+        .sheet(item: $running, onDismiss: returnToMine) { c in NavigationStack { ChainRunView(chain: c) } }
         .sheet(item: $given) { g in
             if GuideView.skip.contains("all") { Text(verbatim: "What do you want to do?") }   // UI tests only: is it the guide or the sheet?
             else { GuideView(given: g, mine: mine) }
@@ -601,15 +604,15 @@ struct BuilderView: View {
         }
         .sheet(isPresented: $showSheets, onDismiss: { sheets = RunningList.all() }) { NavigationStack { SheetsView() } }
         .sheet(isPresented: $showHistory, onDismiss: { history = RunHistory.all() }) { NavigationStack { HistoryView() } }
-        .sheet(item: $linking) { c in NavigationStack { ToolLinkSheet(chain: c) } }
-        .sheet(item: $homing) { c in
+        .sheet(item: $linking, onDismiss: returnToMine) { c in NavigationStack { ToolLinkSheet(chain: c) } }
+        .sheet(item: $homing, onDismiss: returnToMine) { c in
             NavigationStack {
                 HomeScreenHowTo(chain: c, isFirst: mine.first?.id == c.id) {
                     mine.removeAll { $0.id == c.id }; mine.insert(c, at: 0); persist()
                 }
             }
         }
-        .sheet(isPresented: $showMine, onDismiss: { if openMine { dismissPage() } }) {
+        .sheet(isPresented: $showMine, onDismiss: { if openMine && !backToMine { dismissPage() } }) {
             NavigationStack {
                 ScrollView {
                     VStack(alignment: .leading, spacing: HandySpacing.s12) {
@@ -761,6 +764,7 @@ struct BuilderView: View {
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { showGuide = false } } }
             }
         }
+        .onChange(of: renaming?.id) { _, now in if now == nil { returnToMine() } }   // Rename from My tools → back to the list
         .onChange(of: running?.id) { _, now in if now == nil { sheets = RunningList.all(); history = RunHistory.all() } }   // a run may have added to a sheet, and to the recent results
         .onChange(of: given?.id) { _, now in if now == nil { history = RunHistory.all() } }
         .onAppear {
@@ -768,6 +772,9 @@ struct BuilderView: View {
             // Store screenshots: open the Templates or My tools sheet straight away.
             if Launch.screenshots, Launch.route == "templates" { showTemplates = true }
             if Launch.screenshots, Launch.route == "mytools" { showMine = true }
+            // UI tests: one saved tool to run from My tools (a fresh simulator has none).
+            if Launch.uitest, Launch.args.contains("-seedtool"), mine.isEmpty,
+               let t = ChainTemplates.all.first(where: { $0.id == "photo-under-2mb" }) { mine = [t]; persist() }
             if openMine { showMine = true }
             // Store screenshots: a video handed over, so "What to do with it" shows the video page.
             if Launch.screenshots, Launch.route == "guidevideo" {
@@ -811,8 +818,16 @@ struct BuilderView: View {
 
     /// An action from a row in My tools that opens its own screen: My tools is itself a sheet, and iPhone can't
     /// show a second sheet from behind it — so close My tools first, then open the next one.
+    /// Whatever a My tools row opened has closed → back to My tools, where the person was.
+    private func returnToMine() {
+        guard backToMine else { return }
+        backToMine = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { showMine = true }
+    }
+
     private func fromMine(_ act: @escaping () -> Void) {
         guard showMine else { act(); return }
+        backToMine = true
         showMine = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { act() }
     }

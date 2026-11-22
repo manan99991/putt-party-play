@@ -12,6 +12,23 @@ final class PromiseTests: XCTestCase {
         return app
     }
 
+    /// "Every built tool closes instead of running" (user, Nov 22): My stuff › My tools › Run must stay on the run
+    /// screen, and Done must land back on My tools — not close everything.
+    func testRunFromMyToolsStaysOpenAndComesBack() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "mytools", "-uitest", "-seedtool"]
+        app.launch()
+        let name = "Shrink a photo to under 2 MB"
+        let run = app.buttons["Run \(name)"]
+        XCTAssertTrue(run.waitForExistence(timeout: 20), "My tools didn't list the saved tool")
+        run.tap()
+        sleep(3)
+        XCTAssertTrue(app.staticTexts[name].exists, "Run closed instead of showing the tool")
+        XCTAssertFalse(run.exists, "still on My tools after tapping Run")
+        app.buttons["Done"].firstMatch.tap()
+        XCTAssertTrue(run.waitForExistence(timeout: 10), "Done after a run didn't come back to My tools")
+    }
+
     /// "Editable watermark text — type the words instead of a fixed message" (said done; was only in Edit tool).
     func testWatermarkToolsLetYouTypeYourOwnWords() {
         for id in ["id-copy-watermarked", "id-both-sides"] {
