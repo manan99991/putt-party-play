@@ -41818,5 +41818,75 @@
   "ja": "見落としがないか端末のAIで再読み込み中 — もうチェックできます。",
   "pt": "A ler de novo com a IA do telemóvel — já podes começar a riscar.",
   "zh": "正在用手机端 AI 再读一遍以免遗漏——你现在就可以开始勾选。"
+ },
+ "Almost done…": {
+  "de": "Fast fertig…",
+  "es": "Casi listo…",
+  "fr": "Presque fini…",
+  "hi": "लगभग हो गया…",
+  "it": "Quasi fatto…",
+  "ja": "もうすぐ完了…",
+  "pt": "Quase pronto…",
+  "zh": "快好了…"
+ },
+ "Taking a little longer than usual": {
+  "de": "Dauert etwas länger als sonst",
+  "es": "Tarda un poco más de lo normal",
+  "fr": "Un peu plus long que d'habitude",
+  "hi": "आम से थोड़ा ज़्यादा समय लग रहा है",
+  "it": "Ci vuole un po' più del solito",
+  "ja": "いつもより少し時間がかかっています",
+  "pt": "Está a demorar um pouco mais do que o habitual",
+  "zh": "比平时稍慢一些"
+ },
+ "Here's the first read. A more careful AI read is on its way — you can start ticking now.": {
+  "de": "Hier das erste Ergebnis. Eine genauere KI-Lesung kommt gleich – du kannst schon abhaken.",
+  "es": "Aquí está la primera lectura. Llega una lectura más cuidadosa con IA; ya puedes marcar.",
+  "fr": "Voici une première lecture. Une lecture plus soignée par l'IA arrive — vous pouvez déjà cocher.",
+  "hi": "यह पहला नतीजा है। AI से और ध्यान से पढ़ा गया नतीजा आ रहा है — आप अभी टिक करना शुरू कर सकते हैं।",
+  "it": "Ecco la prima lettura. Sta arrivando una lettura più accurata con l'IA: puoi già spuntare.",
+  "ja": "まずはこの結果です。AIによる丁寧な読み取りがまもなく届きます — もうチェックできます。",
+  "pt": "Aqui está a primeira leitura. Vem aí uma leitura mais cuidada com IA — já podes riscar.",
+  "zh": "这是初步结果。更仔细的 AI 识别马上就到——你现在就可以开始勾选。"
+ },
+ "Updated with the AI read — check anything handwritten.": {
+  "de": "Mit der KI-Lesung aktualisiert – prüfe Handschriftliches.",
+  "es": "Actualizado con la lectura de IA; revisa lo escrito a mano.",
+  "fr": "Mis à jour avec la lecture de l'IA — vérifiez l'écriture manuscrite.",
+  "hi": "AI के नतीजे से अपडेट किया गया — हाथ से लिखा हुआ जाँच लें।",
+  "it": "Aggiornato con la lettura IA: controlla le parti scritte a mano.",
+  "ja": "AIの読み取りで更新しました — 手書き部分を確認してください。",
+  "pt": "Atualizado com a leitura da IA — confirma o que está escrito à mão.",
+  "zh": "已用 AI 识别结果更新——请核对手写内容。"
+ },
+ "The AI read is ready. You've already made changes, so it's here if you want it.": {
+  "de": "Die KI-Lesung ist fertig. Du hast schon etwas geändert – hier ist sie, falls du sie willst.",
+  "es": "La lectura de IA está lista. Ya hiciste cambios, así que aquí la tienes si la quieres.",
+  "fr": "La lecture de l'IA est prête. Vous avez déjà modifié, elle est là si vous la voulez.",
+  "hi": "AI का नतीजा तैयार है। आपने पहले ही बदलाव किए हैं, इसलिए चाहें तो इसे यहाँ से लें।",
+  "it": "La lettura IA è pronta. Hai già fatto modifiche, quindi è qui se la vuoi.",
+  "ja": "AIの読み取りが完了しました。すでに編集済みなので、必要ならこちらからどうぞ。",
+  "pt": "A leitura da IA está pronta. Já fizeste alterações, por isso está aqui se a quiseres.",
+  "zh": "AI 识别已完成。你已做过修改，如需要可在这里使用。"
+ },
+ "Use the AI read instead": {
+  "de": "Stattdessen die KI-Lesung verwenden",
+  "es": "Usar la lectura de IA",
+  "fr": "Utiliser la lecture de l'IA",
+  "hi": "इसकी जगह AI का नतीजा इस्तेमाल करें",
+  "it": "Usa la lettura IA",
+  "ja": "AIの読み取りを使う",
+  "pt": "Usar a leitura da IA",
+  "zh": "改用 AI 识别结果"
+ },
+ "Switched to the AI read.": {
+  "de": "Zur KI-Lesung gewechselt.",
+  "es": "Cambiado a la lectura de IA.",
+  "fr": "Lecture de l'IA utilisée.",
+  "hi": "AI के नतीजे पर बदल दिया।",
+  "it": "Passato alla lettura IA.",
+  "ja": "AIの読み取りに切り替えました。",
+  "pt": "Mudado para a leitura da IA.",
+  "zh": "已切换为 AI 识别结果。"
  }
 }

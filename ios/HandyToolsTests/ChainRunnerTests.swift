@@ -1824,3 +1824,21 @@ final class PriceWatchPickTests: XCTestCase {
         XCTAssertTrue(c[0].words.lowercased().contains("plan"), c[0].words)
     }
 }
+
+/// Honest time left for work with no progress of its own (Planner's text read and AI read, Manan 22 Nov).
+final class WorkClockTests: XCTestCase {
+    func testLearnsHowLongWorkTakesOnThisPhone() {
+        let k = "test.\(UUID().uuidString)"
+        XCTAssertEqual(WorkClock.expected(k, fallback: 5), 5)
+        WorkClock.record(k, seconds: 10)
+        XCTAssertEqual(WorkClock.expected(k, fallback: 5), 10, accuracy: 0.001)
+        WorkClock.record(k, seconds: 20)
+        XCTAssertEqual(WorkClock.expected(k, fallback: 5), 14, accuracy: 0.001)   // 60% old + 40% new
+    }
+
+    func testStatusSaysTimeLeftThenAlmostThenLonger() {
+        XCTAssertTrue(EstimatedProgressBar.status(elapsed: 2, expected: 12).contains("10"))
+        XCTAssertTrue(EstimatedProgressBar.status(elapsed: 11.5, expected: 12).contains("Almost"))
+        XCTAssertTrue(EstimatedProgressBar.status(elapsed: 20, expected: 12).contains("longer"))
+    }
+}

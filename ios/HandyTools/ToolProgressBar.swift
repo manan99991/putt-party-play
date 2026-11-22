@@ -319,3 +319,49 @@ struct BusySpinner: View {
         .onAppear { started = Date() }
     }
 }
+
+/// How long a kind of work really takes on THIS phone, learned from the last runs (a running average), so a bar can
+/// show an honest time left for work that can't report its own progress — text reading, an AI read.
+enum WorkClock {
+    private static func key(_ k: String) -> String { "workclock.\(k)" }
+    /// Seconds this work usually takes here; `fallback` until it has been timed once.
+    static func expected(_ k: String, fallback: Double) -> Double {
+        let v = UserDefaults.standard.double(forKey: key(k))
+        return v > 0 ? v : fallback
+    }
+    /// Records one real run: the estimate moves 40% of the way to it, so one odd run doesn't throw it off.
+    static func record(_ k: String, seconds: Double) {
+        guard seconds > 0.2, seconds < 600 else { return }
+        let old = UserDefaults.standard.double(forKey: key(k))
+        UserDefaults.standard.set(old > 0 ? old * 0.6 + seconds * 0.4 : seconds, forKey: key(k))
+    }
+}
+
+/// A bar for work with no progress of its own: it fills by the time this work has taken on this phone before, shows
+/// the real time left, and — if it runs long — says so honestly with a running clock instead of sitting at 99%.
+struct EstimatedProgressBar: View {
+    let label: String
+    let expected: Double
+    let startedAt: Date
+    var body: some View {
+        TimelineView(.periodic(from: startedAt, by: 0.5)) { ctx in
+            let elapsed = max(0, ctx.date.timeIntervalSince(startedAt))
+            let v = min(0.95, elapsed / max(1, expected))
+            VStack(alignment: .leading, spacing: 6) {
+                ProgressView(value: v).tint(HandyColor.accent)
+                if !label.isEmpty {
+                    Text(L(label)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                }
+                Text(Self.status(elapsed: elapsed, expected: expected))
+                    .font(HandyFont.micro.monospacedDigit()).foregroundStyle(HandyColor.textSecondary)
+            }
+        }
+        .accessibilityElement(children: .combine)
+    }
+    static func status(elapsed: Double, expected: Double) -> String {
+        let left = expected - elapsed
+        if left > 1.5 { return "\(L("About")) \(Int(left.rounded()))s \(L("left"))" }
+        if left > -2 { return L("Almost done…") }
+        return "\(L("Taking a little longer than usual")) · \(Int(elapsed.rounded()))s"
+    }
+}

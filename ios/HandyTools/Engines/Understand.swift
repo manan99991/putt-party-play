@@ -74,6 +74,14 @@ enum Understand {
         return (rules, ocr)
     }
 
+    /// Whether this phone can do the AI read at all (so the screen only promises it where it'll come).
+    static var aiAvailable: Bool {
+        #if canImport(FoundationModels)
+        if #available(iOS 27.0, *), case .available = SystemLanguageModel.default.availability { return true }
+        #endif
+        return false
+    }
+
     /// The on-phone AI's read of the same photo, when this phone has it — nil when it hasn't, or takes too long.
     static func better(_ image: UIImage, ocr: [DocEngine.OCRLine], rules: Board, now: Date = Date()) async -> Board? {
         #if canImport(FoundationModels)
@@ -360,6 +368,7 @@ enum Understand {
     static func readWithAI(_ image: UIImage, ocr: [DocEngine.OCRLine], hint: Kind, now: Date) async -> Board? {
         guard case .available = SystemLanguageModel.default.availability, let cg = image.cgImage else { return nil }
         let hintText = String(ChainRunner.rows(ocr).prefix(1800))
+        let ask = hintText.isEmpty ? "Read this photo." : "Read this photo. The camera's text reading, which may have mistakes, was:\n\(hintText)"
         let session = LanguageModelSession(instructions: """
         You read photos of whiteboards, wall calendars, sticky notes, to-do lists and schedules, and write down \
         exactly what is on them so the person can put it in their planner. Keep every item; never invent one. \
@@ -371,7 +380,7 @@ enum Understand {
             let r = try await withThrowingTaskGroup(of: AIBoard?.self) { g in
                 g.addTask {
                     try await session.respond(generating: AIBoard.self, options: GenerationOptions(samplingMode: .greedy)) {
-                        "Read this photo. The camera's text reading, which may have mistakes, was:\n\(hintText)"
+                        ask
                         Attachment(cg)
                     }.content
                 }

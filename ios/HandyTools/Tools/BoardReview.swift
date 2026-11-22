@@ -9,6 +9,10 @@ struct BoardReview: View {
     @State private var board = Understand.Board()
     @State private var reading = true
     @State private var improving = false
+    @State private var quickStart = Date()
+    @State private var aiStart: Date?
+    @State private var aiNote: String?
+    @State private var aiOffer: Understand.Board?
     @State private var status: String?
     @State private var bad = false
     @State private var busy = false
@@ -18,17 +22,34 @@ struct BoardReview: View {
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             if reading {
-                ToolProgressBar(label: L("Reading the photo — headings, ticks, dates and names…"))
+                EstimatedProgressBar(label: "Reading the photo — headings, ticks, dates and names…",
+                                     expected: WorkClock.expected("board.quick", fallback: 5), startedAt: quickStart)
             } else if board.isEmpty {
                 Label(L("Nothing readable was found. Try a straighter, closer photo in good light."), systemImage: "exclamationmark.triangle.fill")
                     .font(HandyFont.body).foregroundStyle(HandyColor.amber).cardStyle(padding: HandySpacing.s12)
             } else {
-                if improving {
-                    HStack(spacing: 8) {
-                        ProgressView().controlSize(.small)
-                        Text(L("Reading it again with on-phone AI for anything missed — you can start ticking now."))
-                            .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                if improving, let start = aiStart {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Label(L("Here's the first read. A more careful AI read is on its way — you can start ticking now."), systemImage: "sparkles")
+                            .font(HandyFont.caption.weight(.semibold)).fixedSize(horizontal: false, vertical: true)
+                        EstimatedProgressBar(label: "", expected: WorkClock.expected("board.ai", fallback: 15), startedAt: start)
                     }
+                    .cardStyle(padding: HandySpacing.s12)
+                    .accessibilityIdentifier("board-ai-coming")
+                }
+                if let n = aiNote {
+                    Label(L(n), systemImage: "checkmark.seal.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                if let offer = aiOffer {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(L("The AI read is ready. You've already made changes, so it's here if you want it.")).font(HandyFont.caption)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Button { withAnimation { board = offer; aiOffer = nil; aiNote = "Switched to the AI read." } } label: {
+                            Label(L("Use the AI read instead"), systemImage: "sparkles").frame(maxWidth: .infinity)
+                        }.secondaryButton()
+                    }
+                    .cardStyle(padding: HandySpacing.s12)
                 }
                 summary
                 if !board.events.isEmpty { eventsCard }
@@ -42,16 +63,26 @@ struct BoardReview: View {
         .sheet(isPresented: $showPlanner) { NavigationStack { PlannerView().toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { showPlanner = false } } } } }
     }
 
+    /// Both reads start together (Manan, 22 Nov: "can both be triggered at the same time"). The quick one shows as
+    /// soon as it's done; the AI one says it's coming, with its real time left, and takes over when it lands — unless
+    /// the person has already started editing, in which case it's offered instead of replacing their work.
     private func read() async {
         reading = true
-        let (rules, ocr) = await Understand.quick(photo)
+        let now = Date()
+        quickStart = now
+        if Understand.aiAvailable { aiStart = now; improving = true }
+        async let ai: Understand.Board? = Understand.better(photo, ocr: [], rules: Understand.Board(), now: now)
+        let t0 = Date()
+        let (rules, _) = await Understand.quick(photo)
+        WorkClock.record("board.quick", seconds: Date().timeIntervalSince(t0))
         board = rules
         reading = false
-        // Then the AI read, in the background: it replaces the quick one only if the person hasn't started editing.
-        improving = true
-        let better = await Understand.better(photo, ocr: ocr, rules: rules)
+        let better = await ai
+        if let s = aiStart { WorkClock.record("board.ai", seconds: Date().timeIntervalSince(s)) }
         improving = false
-        if let better, board == rules { withAnimation { board = better } }
+        guard let better else { return }
+        if board == rules { withAnimation { board = better }; aiNote = "Updated with the AI read — check anything handwritten." }
+        else { aiOffer = better }
     }
 
     // MARK: what was found
