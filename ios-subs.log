@@ -1,21 +1,21 @@
-[17:30:28]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[17:30:28]: fastlane 2.241.2 (Ruby 3.4.12, gem)
-[17:30:29]: Sending anonymous analytics information
-[17:30:29]: Learn more at https://docs.fastlane.tools/#metrics
-[17:30:29]: No personal or sensitive data is sent.
-[17:30:29]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[17:30:29]: [32m------------------------------[0m
-[17:30:29]: [32m--- Step: default_platform ---[0m
-[17:30:29]: [32m------------------------------[0m
-[17:30:29]: [32mDriving the lane 'ios subscriptions' 🚀[0m
-[17:30:30]: App 6824023361
-[17:30:31]: Territories: 175
-[17:30:31]: tenzy_pro_yearly exists (6824154364)
-[17:30:32]: [32m  price -> 409 near $19.99 (19.99) {"errors" => [{"id" => "821efcdd-c5b7-440f-b776-f4ea3974dacf", "status" => "409", "code" => "STATE_ERROR", "title" => "The request cannot be fulfilled because of the state of another resource.", "detail" => "Initial price cannot be created again after subscription is approved."}]}[0m
-[17:30:33]: [32m  intro offer 3-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
-[17:30:34]:   removed stale review screenshot; re-uploading current paywall
-[17:30:38]: [32m  uploaded subscription review screenshot (200)[0m
-[17:30:38]: [32mSubscriptions reconciled.[0m
+[22:08:05]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[22:08:05]: fastlane 2.241.2 (Ruby 3.4.12, gem)
+[22:08:07]: Sending anonymous analytics information
+[22:08:07]: Learn more at https://docs.fastlane.tools/#metrics
+[22:08:07]: No personal or sensitive data is sent.
+[22:08:07]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[22:08:07]: [32m------------------------------[0m
+[22:08:07]: [32m--- Step: default_platform ---[0m
+[22:08:07]: [32m------------------------------[0m
+[22:08:07]: [32mDriving the lane 'ios subscriptions' 🚀[0m
+[22:08:07]: App 6824023361
+[22:08:08]: Territories: 175
+[22:08:08]: tenzy_pro_yearly exists (6824154364)
+[22:08:09]: [32m  price -> 409 near $19.99 (19.99) {"errors" => [{"id" => "d91a4f4c-29d7-4044-9d37-b838610064ac", "status" => "409", "code" => "STATE_ERROR", "title" => "The request cannot be fulfilled because of the state of another resource.", "detail" => "Initial price cannot be created again after subscription is approved."}]}[0m
+[22:08:09]: [32m  intro offer 3-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
+[22:08:10]:   removed stale review screenshot; re-uploading current paywall
+[22:08:13]: [32m  uploaded subscription review screenshot (200)[0m
+[22:08:13]: [32mSubscriptions reconciled.[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -25,13 +25,11 @@
 | 1    | default_platform | 0           |
 +------+------------------+-------------+
 
-[17:30:38]: [32mfastlane.tools finished successfully 🎉[0m
+[22:08:13]: [32mfastlane.tools finished successfully 🎉[0m
 
 #######################################################################
 # fastlane 2.242.0 is available. You are on 2.241.2.
 # You should use the latest version.
 # Please update using `gem install fastlane`.
 # To see what's new, open https://github.com/fastlane/fastlane/releases.
-#######################################################################
-# Run `gem cleanup` from time to time to speed up fastlane
 #######################################################################
