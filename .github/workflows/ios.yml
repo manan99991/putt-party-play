@@ -305,6 +305,8 @@ jobs:
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
           grep -E "error:|Test Case|Executed|TEST (EXECUTE )?(SUCCEEDED|FAILED)|REALINPUT|TOOLINPUT|failed -" ios/realinput.log 2>/dev/null | head -400 > ios-realinput.log || true
+          # Any crash during the real-file run: the symbol summary only (no screen content), so a "closed" is diagnosable.
+          { ls -t ~/Library/Logs/DiagnosticReports/HandyTools-* 2>/dev/null | head -3 | xargs -r python3 tools/ips_summary.py; } >> ios-realinput.log 2>&1 || true
           bash .github/publish-log.sh ios-realinput ios-realinput.log || true
 
   testflight:

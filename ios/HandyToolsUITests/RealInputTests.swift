@@ -60,7 +60,10 @@ final class RealInputTests: XCTestCase {
             _ = app.debugDescription
             app.swipeUp(); app.swipeUp()
             _ = app.debugDescription
-            guard app.state == .runningForeground else { crashed.append("\(id) (after the result)"); print("REALINPUT \(id): CRASHED after the result"); continue }
+            // A swipe over a short result can land as a tap on its link button (WhatsApp, Maps…), which hands off
+            // to another app — the app is then in the background, not crashed. Only "not running" is a crash.
+            if app.state == .notRunning { crashed.append("\(id) (after the result)"); print("REALINPUT \(id): CRASHED after the result"); continue }
+            if app.state != .runningForeground { print("REALINPUT \(id): handed off to another app from the result"); app.activate(); _ = app.wait(for: .runningForeground, timeout: 10) }
             if let f = finishes.first(where: { app.descendants(matching: .any)[$0].exists }) {
                 print("REALINPUT \(id): result (\(f))")
             } else if app.descendants(matching: .any)["run-message"].exists {
