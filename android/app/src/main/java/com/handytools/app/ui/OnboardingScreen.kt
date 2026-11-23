@@ -98,7 +98,7 @@ fun OnboardingScreen(startPage: Int = 0, onDone: () -> Unit, onSeePro: () -> Uni
             // Short phones leave the drawing out so the seven choices and Start still fit.
             if (tall) {
                 AnimatedContent(idx, transitionSpec = { fadeIn(tween(400)) togetherWith fadeOut(tween(400)) }, label = "illo") { i ->
-                    Image(painterResource(ILLOS[i]), null, Modifier.size(120.dp))
+                    Image(painterResource(ILLOS[i]), null, Modifier.size(120.dp), colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(HandyColors.OnAccent))
                 }
                 Spacer(Modifier.height(HandyTokens.Space12))
             }
