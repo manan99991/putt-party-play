@@ -19,6 +19,7 @@ struct SmartPhotoPicker: View {
     /// Where each photo sits on screen, so a swipe across them picks every one it passes over.
     @State private var frames: [String: CGRect] = [:]
     @State private var swipeAdds: Bool?
+    @State private var lastSwipe: CGPoint?
     @Environment(\.dismiss) private var dismiss
 
     private let cols = Array(repeating: GridItem(.flexible(), spacing: 6), count: 3)
@@ -42,7 +43,7 @@ struct SmartPhotoPicker: View {
                             .coordinateSpace(name: "finder-grid")
                             .onPreferenceChange(CellFrames.self) { frames = $0 }
                             .gesture(SwipeSelect(enabled: maxCount > 1, began: { swipe(at: $0, first: true) }, moved: { swipe(at: $0, first: false) },
-                                                 ended: { swipeAdds = nil }))
+                                                 ended: { swipeAdds = nil; lastSwipe = nil }))
                         }
                         status
                     }
@@ -115,10 +116,18 @@ struct SmartPhotoPicker: View {
     /// Swipe sideways across photos to pick them all, the way Photos does: the first photo touched decides whether the
     /// swipe ticks or unticks every photo it passes over.
     private func swipe(at p: CGPoint, first: Bool) {
-        guard let id = frames.first(where: { $0.value.contains(p) })?.key else { return }
-        if first || swipeAdds == nil { swipeAdds = !picked.contains(id) }
-        if swipeAdds == true, !picked.contains(id), picked.count < maxCount { picked.append(id); HandyHaptics.light() }
-        if swipeAdds == false, picked.contains(id) { picked.removeAll { $0 == id }; HandyHaptics.light() }
+        // A quick swipe skips over photos between two touch reports — walk the line between them so none is missed.
+        let from = first ? p : (lastSwipe ?? p)
+        lastSwipe = p
+        let steps = max(1, Int((hypot(p.x - from.x, p.y - from.y) / 8).rounded(.up)))
+        for i in 0...steps {
+            let t = CGFloat(i) / CGFloat(steps)
+            let q = CGPoint(x: from.x + (p.x - from.x) * t, y: from.y + (p.y - from.y) * t)
+            guard let id = frames.first(where: { $0.value.contains(q) })?.key else { continue }
+            if swipeAdds == nil || (first && i == 0) { swipeAdds = !picked.contains(id) }
+            if swipeAdds == true, !picked.contains(id), picked.count < maxCount { picked.append(id); HandyHaptics.light() }
+            if swipeAdds == false, picked.contains(id) { picked.removeAll { $0 == id }; HandyHaptics.light() }
+        }
     }
 
     private func cell(_ a: PHAsset) -> some View {
