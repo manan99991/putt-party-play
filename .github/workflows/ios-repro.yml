@@ -34,7 +34,7 @@ jobs:
         run: |
           set -o pipefail
           # A "#device: iPad" line in REPRO_TESTS.txt runs the tests on an iPad simulator (iPhone otherwise).
-          DEV=$(grep -m1 '^#device:' REPRO_TESTS.txt | cut -d: -f2 | tr -d ' '); DEV=${DEV:-iPhone}
+          DEV=$( (grep -m1 '^#device:' REPRO_TESTS.txt || true) | cut -d: -f2 | tr -d ' '); DEV=${DEV:-iPhone}
           UDID=$(xcrun simctl list devices available -j | python3 -c '
           import json,sys
           d=json.load(sys.stdin)["devices"]
