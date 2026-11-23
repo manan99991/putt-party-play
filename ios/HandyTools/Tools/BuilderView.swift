@@ -496,7 +496,9 @@ struct BuilderView: View {
     /// "close this page" and comes back once that thing is done.
     @State private var backToMine = false
     @State private var showTemplates = false
-    @State private var shelf: HomeShelves.Shelf?
+    /// The Home category tab last picked, remembered between visits.
+    @AppStorage("tenzy.homeTab") private var homeTab = "camera"
+    private var currentTab: HomeShelves.Shelf { HomeShelves.all.first { $0.id == homeTab } ?? HomeShelves.all[0] }
     /// The first-minute demo: until it's tried or dismissed, Home offers to show a real job on a sample.
     @AppStorage("tenzy.firstTry") private var triedFirst = false
     @State private var demoRun: Chain?
@@ -535,14 +537,6 @@ struct BuilderView: View {
         .sheet(item: $demoRun, onDismiss: { Completion.holdPrompt(false) }) { c in
             NavigationStack { ChainRunView(chain: c, initial: .image(SampleAssets.photo()), demo: true) }
                 .onAppear { Completion.holdPrompt(true) }
-        }
-        .sheet(item: $shelf) { sh in
-            ShelfSheet(shelf: sh) { id in
-                shelf = nil
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    NotificationCenter.default.post(name: .openTool, object: id, userInfo: ["from": "builder"])
-                }
-            }
         }
         .sheet(item: $given) { g in
             if GuideView.skip.contains("all") { Text(verbatim: "What do you want to do?") }   // UI tests only: is it the guide or the sheet?
@@ -923,37 +917,64 @@ struct BuilderView: View {
         .buttonStyle(.plain)
     }
 
-    /// One even grid, three across: the six things you might have (a photo, a video, a recording, a PDF, a file,
-    /// something copied), the five shelves that hold every other tool, and Think. Twelve tiles, one shape, no scrolling.
+    /// Start with what you have (six small tiles, one row), then the category tabs — all eight on screen, no sideways
+    /// scrolling — and every tool in the picked tab as its own tile (Manan, 23 Nov: "Contacts and other tabs are
+    /// missing — make sure nothing is missing from the home page"). A tab holds at most nine tools, so it all fits.
     private var anythingTiles: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text(L("Start with what you have — or open a tool")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Start with what you have")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            let cols = Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3)
-            LazyVGrid(columns: cols, spacing: HandySpacing.s8) {
+            HStack(spacing: 6) {
                 // Our own photo grid: big tiles, tap or swipe a finger across to pick several (Manan, 22 Nov), originals kept.
                 SmartPhotoFilesButton(kind: .any, max: 20, picked: { files in
                     guard !files.isEmpty else { return }
                     gettingReady = true; note = nil
                     Task { await takePhotos(files, asked: files.count) }
-                }) { PostTile(title: "Photo", icon: "photo.on.rectangle.angled", hex: 0xEC4899) }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
-                PhotosPicker(selection: $anyPick, matching: .videos) { PostTile(title: "Video", icon: "film", hex: 0x8B5CF6) }
+                }) { HaveChip(title: "Photo", icon: "photo.on.rectangle.angled", hex: 0xEC4899) }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
+                PhotosPicker(selection: $anyPick, matching: .videos) { HaveChip(title: "Video", icon: "film", hex: 0x8B5CF6) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-video")
-                Button { pickTypes = audioImportTypes; pickingAny = true } label: { PostTile(title: "Audio", icon: "waveform", hex: 0xF59E0B) }
+                Button { pickTypes = audioImportTypes; pickingAny = true } label: { HaveChip(title: "Audio", icon: "waveform", hex: 0xF59E0B) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-audio")
-                Button { pickTypes = [.pdf]; pickingAny = true } label: { PostTile(title: "PDF", icon: "doc.richtext", hex: 0xEF4444) }
+                Button { pickTypes = [.pdf]; pickingAny = true } label: { HaveChip(title: "PDF", icon: "doc.richtext", hex: 0xEF4444) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-pdf")
-                Button { pickTypes = [.item]; pickingAny = true } label: { PostTile(title: "File", icon: "folder", hex: 0x3B82F6) }
+                Button { pickTypes = [.item]; pickingAny = true } label: { HaveChip(title: "File", icon: "folder", hex: 0x3B82F6) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-file")
                 pasteTile
-                ForEach(HomeShelves.all) { sh in
-                    Button { shelf = sh } label: { PostTile(title: sh.title, icon: sh.icon, hex: sh.hex) }
-                        .buttonStyle(.plain).accessibilityIdentifier("shelf-\(sh.id)")
-                }
-                Button { NotificationCenter.default.post(name: .openTool, object: "thinking", userInfo: ["from": "builder"]) } label: {
-                    PostTile(title: "Think", icon: "lightbulb.max.fill", hex: 0x22C55E)
-                }.buttonStyle(.plain).accessibilityIdentifier("have-think")
             }
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 4), spacing: 6) {
+                ForEach(HomeShelves.all) { sh in
+                    let on = sh.id == currentTab.id
+                    Button { withAnimation(.easeOut(duration: HandyMotion.fast)) { homeTab = sh.id } } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: sh.icon).font(.system(size: 11, weight: .bold)).accessibilityHidden(true)
+                            Text(L(sh.title)).font(.system(size: 12, weight: .semibold)).lineLimit(2).minimumScaleFactor(0.7)
+                                .multilineTextAlignment(.center)
+                        }
+                        .foregroundStyle(on ? Color.white : HandyColor.textPrimary)
+                        .padding(.horizontal, 4)
+                        .frame(maxWidth: .infinity, minHeight: 36)
+                        .background(on ? AnyShapeStyle(Color(hex: sh.hex).gradient) : AnyShapeStyle(.ultraThinMaterial),
+                                    in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(on ? Color.clear : HandyColor.border, lineWidth: 1))
+                        .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("tab-\(sh.id)")
+                    .accessibilityAddTraits(on ? .isSelected : [])
+                }
+            }
+            Text(L(currentTab.line)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                .lineLimit(1).minimumScaleFactor(0.8).frame(maxWidth: .infinity, alignment: .leading)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
+                ForEach(currentTab.tools.compactMap { id in TOOLS.first { $0.id == id } }) { t in
+                    Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
+                        HomeToolTile(tool: t, hex: currentTab.hex)
+                    }
+                    .buttonStyle(.plain).accessibilityIdentifier("home-tool-\(t.id)")
+                }
+            }
+            .id(currentTab.id)
+            .transition(.opacity)
             if gettingReady {
                 HStack(spacing: HandySpacing.s8) {
                     BusySpinner()
@@ -972,19 +993,17 @@ struct BuilderView: View {
     /// Paste, shaped like its neighbours. The system paste control reads the clipboard with no "Allow Paste?" prompt and
     /// can never be refused — a custom button reading UIPasteboard asked every time, and dead-ended on "Don't Allow".
     private var pasteTile: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(spacing: 4) {
             PasteButton(supportedContentTypes: [.image, .url, .plainText]) { providers in pasteHome(providers) }
                 .labelStyle(.iconOnly)
                 .buttonBorderShape(.roundedRectangle(radius: 9))
                 .tint(.white)
                 .accessibilityIdentifier("have-paste")
-            Spacer(minLength: 0)
-            Text(L("Paste")).font(.system(size: 14, weight: .bold)).foregroundStyle(.white)
-            Text(L(clipKind.map { "\($0) copied" } ?? "Nothing copied")).font(.system(size: 10, weight: .semibold)).foregroundStyle(.white.opacity(0.85)).lineLimit(1)
+            Text(L("Paste")).font(.system(size: 11, weight: .bold)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.8)
         }
-        .padding(10)
-        .frame(maxWidth: .infinity, minHeight: 76, maxHeight: 76, alignment: .leading)
-        .background(PostTileGround(hex: 0x14B8A6, icon: "doc.on.clipboard"))
+        .frame(maxWidth: .infinity, minHeight: 58, maxHeight: 58)
+        .background(PostTileGround(hex: 0x14B8A6))
+        .accessibilityHint(L(clipKind.map { "\($0) copied" } ?? "Nothing copied"))
     }
     /// What the paste control handed over: a picture, a link or text, each starting the matching tools.
     private func pasteHome(_ providers: [NSItemProvider]) {

@@ -24,26 +24,38 @@ final class PromiseTests: XCTestCase {
         XCTAssertEqual(app.state, .runningForeground, "the demo closed the app")
     }
 
-    /// "The home page fits with no scrolling, and every tool — the flashlight too — is there" (user, Nov 22).
+    /// "The home page fits with no scrolling, and every tool — the flashlight too — is there" (user, Nov 22), and
+    /// "Contacts and other tabs are missing — make sure nothing is missing" (Nov 23): every tab, tapped, shows every
+    /// one of its tools on screen without scrolling, and a tool opens from its tile.
     func testHomeFitsOneScreenAndShelvesOpenTools() {
         let app = XCUIApplication()
         app.launchArguments = ["-route", "home", "-uitest"]
         app.launch()
         let mine = app.buttons["home-mytools"]
         XCTAssertTrue(mine.waitForExistence(timeout: 20), "no My tools on Home")
-        let screen = app.windows.firstMatch.frame
-        XCTAssertTrue(mine.isHittable, "Home doesn't fit: My tools at \(mine.frame), screen \(screen), tab bar top \(app.buttons["Home"].firstMatch.frame.minY)")
-        for id in ["have-photo", "have-paste", "shelf-camera", "shelf-phone", "have-think", "have-reminders", "home-templates"] {
-            XCTAssertTrue(app.descendants(matching: .any)[id].firstMatch.isHittable, "\(id) isn't on screen without scrolling")
+        let any = app.descendants(matching: .any)
+        for id in ["home-mytools", "have-photo", "have-paste", "have-reminders", "home-templates"] {
+            XCTAssertTrue(any[id].firstMatch.isHittable, "\(id) isn't on screen without scrolling")
+        }
+        let tabs = ["camera": 9, "photos": 8, "video": 5, "pdf": 9, "audio": 6, "words": 6, "day": 9, "phone": 5]
+        for (tab, count) in tabs.sorted(by: { $0.key < $1.key }) {
+            let t = any["tab-\(tab)"].firstMatch
+            XCTAssertTrue(t.isHittable, "tab \(tab) isn't on screen")
+            t.tap()
+            let tiles = any.matching(NSPredicate(format: "identifier BEGINSWITH 'home-tool-'"))
+            let shown = (0..<tiles.count).map { tiles.element(boundBy: $0) }
+            let off = shown.filter { !$0.isHittable }.map(\.identifier)
+            XCTAssertEqual(shown.count, count, "tab \(tab) shows \(shown.count) tools")
+            XCTAssertEqual(off, [], "tab \(tab): these tools need scrolling to reach")
         }
         XCTAssertFalse(app.buttons["Guide"].exists, "Guide is still on Home (it lives in Settings now)")
-        XCTAssertFalse(app.buttons["All tools"].exists, "All tools is back on Home (My tools, Templates and Reminders replaced it)")
-        app.buttons["shelf-phone"].tap()
-        let light = app.buttons["shelf-tool-light"]
-        XCTAssertTrue(light.waitForExistence(timeout: 5), "Flashlight & phone shelf has no Flashlight")
+        any["tab-phone"].firstMatch.tap()
+        XCTAssertTrue(any["home-tool-contacts"].firstMatch.isHittable, "Contacts has no tile")
+        let light = any["home-tool-light"].firstMatch
+        XCTAssertTrue(light.isHittable, "Contacts & phone has no Flashlight")
         light.tap()
         sleep(2)
-        XCTAssertFalse(light.exists, "tapping Flashlight didn't open it")
+        XCTAssertFalse(light.isHittable, "tapping Flashlight didn't open it")
         XCTAssertEqual(app.state, .runningForeground)
     }
 

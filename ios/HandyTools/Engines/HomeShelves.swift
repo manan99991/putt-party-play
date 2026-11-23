@@ -1,9 +1,10 @@
 import Foundation
 
-/// Home's "…or open a tool" shelves: every tool that doesn't start from a file you already have — the flashlight,
-/// the camera helpers, your day — grouped by the job people think in. Together with the "start with what you have"
-/// tiles (each lists the tools for that kind of file) they reach every tool Tenzy has, and each tool sits on one shelf
-/// only. Pure, so a unit test proves nothing built is ever missing from Home.
+/// Home's category tabs (Manan, 23 Nov: "Contacts and other tabs are missing — make sure nothing is missing from the
+/// home page"): eight tabs, all on screen at once (no sideways scrolling), and the tab you pick shows every one of its
+/// tools as its own tile — at most nine, so a tab always fits without scrolling. Every tool sits in exactly one tab;
+/// the only ones not listed are those that live inside another tool (`Tool.homes`), which open from that tool.
+/// Pure, so a unit test proves nothing built is ever missing from Home.
 enum HomeShelves {
     struct Shelf: Equatable, Identifiable {
         let id: String
@@ -14,26 +15,38 @@ enum HomeShelves {
         let tools: [String]
     }
 
+    /// A tab never holds more than this many tools (three rows of three), so it fits the screen.
+    static let maxPerTab = 9
+
     static let all: [Shelf] = [
-        Shelf(id: "camera", title: "Camera", line: "Point your camera: scan, identify, measure, read",
+        Shelf(id: "camera", title: "Camera", line: "Point your camera: scan, identify, measure, read a menu",
               icon: "camera.fill", hex: 0x0EA5E9,
-              tools: ["scan", "identify", "procam", "measure", "qrwifi", "menu", "cards", "datagrab", "seeread", "colorvision"]),
-        Shelf(id: "phone", title: "Flashlight & phone", line: "Light, speed, sound checks, space and privacy",
-              icon: "flashlight.on.fill", hex: 0xEAB308,
-              tools: ["light", "gpsdash", "audiolab", "rest", "cleaner", "vault", "fileviewer", "formatfix", "stitch", "zipmaker"]),
-        Shelf(id: "create", title: "Create", line: "Make something: stickers, collages, effects, posts",
-              icon: "wand.and.stars", hex: 0xEC4899,
-              tools: ["studio", "sticker", "collage", "comicstrip", "animate", "scrub", "celebrate", "post", "video", "audiostudio", "soundboard"]),
-        Shelf(id: "words", title: "Words & voice", line: "Write, translate, take notes, spot scams",
+              tools: ["scan", "identify", "procam", "measure", "qrwifi", "menu", "cards", "datagrab", "colorvision"]),
+        Shelf(id: "photos", title: "Photos", line: "Fix, cut out, hide, join and find your photos",
+              icon: "photo.on.rectangle.angled", hex: 0xEC4899,
+              tools: ["studio", "sticker", "collage", "comicstrip", "scrub", "stitch", "formatfix", "memory"]),
+        Shelf(id: "video", title: "Video", line: "Shrink, trim, add effects, post, or make one from photos",
+              icon: "film.fill", hex: 0x8B5CF6,
+              tools: ["video", "celebrate", "post", "animate", "fitit"]),
+        Shelf(id: "pdf", title: "PDF & files", line: "Sign, black out, fill, organize, lock and open files",
+              icon: "doc.richtext.fill", hex: 0xEF4444,
+              tools: ["pdfsign", "pdfredact", "pdfform", "pdfannotate", "pdfpages", "pdfconvert", "pdfprotect", "zipmaker", "fileviewer"]),
+        Shelf(id: "audio", title: "Audio", line: "Edit recordings, ringtones, song info, sounds to sleep to",
+              icon: "waveform", hex: 0xF59E0B,
+              tools: ["audiostudio", "audioconvert", "audiotags", "soundboard", "audiolab", "rest"]),
+        Shelf(id: "words", title: "Words", line: "Write, translate, notes from speech, read aloud, spot scams, think",
               icon: "text.bubble.fill", hex: 0x22C55E,
-              tools: ["textstudio", "translate", "speechnotes", "shield", "memory"]),
-        Shelf(id: "day", title: "Daily life", line: "Medicine, plans, contacts, moods, bills, prices and receipts",
+              tools: ["textstudio", "translate", "speechnotes", "seeread", "shield", "thinking"]),
+        Shelf(id: "day", title: "Daily life", line: "Medicine, plans, bills, moods, prices and receipts",
               icon: "calendar", hex: 0xF97316,
-              tools: ["medreminder", "untangle", "planner", "brief", "contacts", "daydiary", "sorted", "warranty", "pricewatch", "pricecheck"]),
+              tools: ["medreminder", "untangle", "planner", "brief", "daydiary", "sorted", "warranty", "pricewatch", "pricecheck"]),
+        Shelf(id: "phone", title: "Contacts & phone", line: "Your contacts, flashlight, speed, space and a private vault",
+              icon: "person.2.fill", hex: 0x14B8A6,
+              tools: ["contacts", "light", "cleaner", "gpsdash", "vault"]),
     ]
 
     /// Tools Home opens straight from their own tile (no shelf needed).
-    static let ownTiles: Set<String> = ["thinking"]
+    static let ownTiles: Set<String> = []
 
     /// The shelf a tool sits on, if any.
     static func shelf(of tool: String) -> Shelf? { all.first { $0.tools.contains(tool) } }

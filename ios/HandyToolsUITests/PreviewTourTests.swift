@@ -35,10 +35,9 @@ final class PreviewTourTests: XCTestCase {
         sleep(2)                                   // the result, on screen
         if app.buttons["Done"].firstMatch.exists { app.buttons["Done"].firstMatch.tap() }
 
-        let shelf = any["shelf-phone"]             // every tool, one tap away
-        if shelf.waitForExistence(timeout: 5) { shelf.tap() }
+        let tab = any["tab-phone"]                 // every tool has its own tile, one tab away
+        if tab.waitForExistence(timeout: 5) { tab.tap() }
         sleep(2)
-        if app.buttons["Done"].firstMatch.exists { app.buttons["Done"].firstMatch.tap() }
 
         field.tap()
         field.typeText("Shrink a photo and email it")

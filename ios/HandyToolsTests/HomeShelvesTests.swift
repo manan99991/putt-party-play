@@ -5,10 +5,25 @@ import XCTest
 /// shelf, its own tile, or the "start with what you have" tile for its kind of file — and no shelf repeats a tool.
 @MainActor
 final class HomeShelvesTests: XCTestCase {
-    func testEveryToolIsReachableFromHome() {
-        let reached = HomeShelves.reached(handoff: { ToolHandoff.tools(for: $0) }, homes: Tool.homes)
-        let missing = TOOLS.map(\.id).filter { !reached.contains($0) }
-        XCTAssertEqual(missing, [], "Not reachable from Home: \(missing)")
+    /// "Contacts and other tabs are missing — make sure nothing is missing from the home page" (Manan, 23 Nov): every
+    /// tool has its own tile in one of Home's tabs. Only tools that live inside another tool are left out, and that
+    /// tool must be in a tab. (Until 23 Nov this test also counted "pick a file first" as reachable, which let ten
+    /// tools — Sign, Redact and the other PDF tools among them — pass with no tile anywhere on Home.)
+    func testEveryToolHasItsOwnTileInATab() {
+        let tiled = Set(HomeShelves.all.flatMap(\.tools))
+        let missing = TOOLS.map(\.id).filter { !tiled.contains($0) && Tool.homes[$0] == nil }
+        XCTAssertEqual(missing, [], "No tile on Home: \(missing)")
+        for (child, parent) in Tool.homes { XCTAssertTrue(tiled.contains(parent), "\(child) lives in \(parent), which has no Home tile") }
+        let inside = HomeShelves.all.flatMap(\.tools).filter { Tool.homes[$0] != nil }
+        XCTAssertEqual(inside, [], "These live inside another tool, so a tile would repeat it: \(inside)")
+    }
+
+    /// A tab fits the screen: never more than three rows of three.
+    func testEveryTabFitsWithoutScrolling() {
+        for s in HomeShelves.all {
+            XCTAssertLessThanOrEqual(s.tools.count, HomeShelves.maxPerTab, "\(s.title) has \(s.tools.count) tools")
+        }
+        XCTAssertEqual(HomeShelves.all.count, 8, "eight tabs: four across, two rows")
     }
 
     func testNoToolSitsOnTwoShelves() {
@@ -26,15 +41,10 @@ final class HomeShelvesTests: XCTestCase {
         }
     }
 
-    /// The flashlight — the one the user couldn't find — sits on a shelf, not only in All tools.
-    func testFlashlightHasAShelf() {
+    /// The flashlight — the one the user couldn't find — and Contacts each have a tile, in a tab that says so.
+    func testFlashlightAndContactsHaveTiles() {
         XCTAssertEqual(HomeShelves.shelf(of: "light")?.id, "phone")
-    }
-
-    /// One even grid, three across, four rows (Manan, 23 Nov: "3 grids on top and then 4 at the bottom" looked wrong):
-    /// the six "start with what you have" tiles, the shelves and Think fill it exactly — no half-empty row.
-    func testHomeGridIsWholeRowsOfThree() {
-        XCTAssertEqual(6 + HomeShelves.all.count + HomeShelves.ownTiles.count, 12)
-        XCTAssertEqual(HomeShelves.shelf(of: "contacts")?.id, "day", "Contacts lives on Daily life now")
+        XCTAssertEqual(HomeShelves.shelf(of: "contacts")?.title, "Contacts & phone")
+        XCTAssertEqual(HomeShelves.shelf(of: "pdfsign")?.id, "pdf")
     }
 }
