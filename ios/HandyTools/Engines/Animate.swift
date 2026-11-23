@@ -992,12 +992,11 @@ enum Animate {
                 .applyingFilter("CIVibrance", parameters: ["inputAmount": 0.22])
                 .applyingFilter("CIColorControls", parameters: [kCIInputContrastKey: 1.05, kCIInputSaturationKey: 1.0, kCIInputBrightnessKey: 0.0])
             guard let made = ci.createCGImage(out, from: CGRect(x: 0, y: 0, width: cg.width, height: cg.height)) else { return nil }
-            // Copy it into a bitmap with NO alpha channel: a photo canvas is always solid. The graded image's own alpha
-            // came out wrong, so drawn half see-through it vanished and every dissolve stayed on the first photo
-            // (23 Nov: plain pictures mixed 133 of 135, graded ones stayed at photo A's 122 by every drawing method).
+            // Copy it into an ordinary bitmap. An image straight from Core Image didn't show when drawn half see-through,
+            // so a dissolve was a cut at its end (Crossfade, Ken Burns); a plain bitmap blends at any opacity.
             guard let space = CGColorSpace(name: CGColorSpace.sRGB),
                   let bm = CGContext(data: nil, width: cg.width, height: cg.height, bitsPerComponent: 8, bytesPerRow: 0, space: space,
-                                     bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue) else { return made }
+                                     bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return made }
             bm.draw(made, in: CGRect(x: 0, y: 0, width: cg.width, height: cg.height))
             return bm.makeImage() ?? made
         }

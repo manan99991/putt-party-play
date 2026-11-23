@@ -2179,8 +2179,55 @@ final class EngineTests: XCTestCase {
         print("MIXING \(report)")
         XCTAssertTrue(ways.contains { abs(mean($0.1) - want) < tol }, "no way mixed the two pictures: \(report)")
         XCTAssertEqual(mean(ways[0].1), want, accuracy: tol, "the crossfade's way: \(report)")
-        // A photo canvas is solid: no alpha channel for drawing to misread.
-        XCTAssertTrue([.noneSkipLast, .noneSkipFirst, .none].contains(cb.alphaInfo), "canvas alpha \(cb.alphaInfo.rawValue)")
+    }
+
+    /// Where the colour-graded photo loses its mix. 23 Nov rounds 2–3: plain pictures mix half-and-half, graded photo
+    /// canvases stay on the first photo by every drawing method, even after the canvas lost its alpha channel. This takes
+    /// the blend apart step by step (each picture alone on black, ungraded vs graded, re-encoded) and prints the result.
+    func testWhereTheGradedPhotoLosesItsMix() throws {
+        let a = Self.solid(UIColor(red: 0.9, green: 0.15, blue: 0.15, alpha: 1), mark: "A")
+        let b = Self.solid(UIColor(red: 0.45, green: 0.75, blue: 1.0, alpha: 1), mark: "B")
+        func mean(_ img: CGImage?) -> Int {
+            guard let img else { return -1 }
+            let g = VideoJoin.gray(img)
+            return g.isEmpty ? -1 : g.reduce(0) { $0 + Int($1) } / g.count
+        }
+        func centre(_ img: CGImage?) -> String {
+            guard let img, let c = CGContext(data: nil, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4, space: CGColorSpaceCreateDeviceRGB(),
+                                             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return "?" }
+            c.interpolationQuality = .none
+            c.draw(img, in: CGRect(x: -CGFloat(img.width) / 2 + 0.5, y: -CGFloat(img.height) / 3, width: CGFloat(img.width), height: CGFloat(img.height)))
+            guard let d = c.data?.assumingMemoryBound(to: UInt8.self) else { return "?" }
+            return "\(d[0]),\(d[1]),\(d[2]),\(d[3])"
+        }
+        func desc(_ i: CGImage) -> String {
+            "\(i.width)x\(i.height) bpp\(i.bitsPerPixel) bpc\(i.bitsPerComponent) alpha\(i.alphaInfo.rawValue) info\(i.bitmapInfo.rawValue) \((i.colorSpace?.name as String?) ?? "no space")"
+        }
+        let size = CGSize(width: 108, height: 108), rect = CGRect(origin: .zero, size: size)
+        let painter = Animate.Painter(images: [a, b], size: size, framing: .fill)
+        let ca = try XCTUnwrap(painter.canvas(0)), cb = try XCTUnwrap(painter.canvas(1))
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
+        func render(_ body: (CGContext) -> Void) -> CGImage? { UIGraphicsImageRenderer(size: size, format: fmt).image { body($0.cgContext) }.cgImage }
+        let rawA = try XCTUnwrap(render { _ in a.draw(in: rect) }), rawB = try XCTUnwrap(render { _ in b.draw(in: rect) })
+        let pngB = try XCTUnwrap(UIImage(cgImage: cb).pngData().flatMap { UIImage(data: $0)?.cgImage })
+        let black = { (c: CGContext) in c.setFillColor(UIColor.black.cgColor); c.fill(rect) }
+        let rows: [(String, CGImage?)] = [
+            ("graded B alone", cb), ("graded A alone", ca), ("ungraded B alone", rawB),
+            ("graded B on black at 1", render { c in black(c); c.draw(cb, in: rect) }),
+            ("graded B on black at 0.5", render { c in black(c); c.setAlpha(0.5); c.draw(cb, in: rect) }),
+            ("ungraded B on black at 0.5", render { c in black(c); c.setAlpha(0.5); c.draw(rawB, in: rect) }),
+            ("graded A then graded B at 1", render { c in c.draw(ca, in: rect); c.draw(cb, in: rect) }),
+            ("graded A then graded B at 0.5", render { c in c.draw(ca, in: rect); c.setAlpha(0.5); c.draw(cb, in: rect) }),
+            ("ungraded A then ungraded B at 0.5", render { c in c.draw(rawA, in: rect); c.setAlpha(0.5); c.draw(rawB, in: rect) }),
+            ("ungraded A then graded B at 0.5", render { c in c.draw(rawA, in: rect); c.setAlpha(0.5); c.draw(cb, in: rect) }),
+            ("graded A then ungraded B at 0.5", render { c in c.draw(ca, in: rect); c.setAlpha(0.5); c.draw(rawB, in: rect) }),
+            ("graded A then PNG-copied B at 0.5", render { c in c.draw(ca, in: rect); c.setAlpha(0.5); c.draw(pngB, in: rect) }),
+        ]
+        let report = "canvas A [\(desc(ca))] canvas B [\(desc(cb))] raw B [\(desc(rawB))] PNG B [\(desc(pngB))] || "
+            + rows.map { "\($0.0): grey \(mean($0.1)) centre \(centre($0.1))" }.joined(separator: " | ")
+        print("GRADEDMIX \(report)")
+        let mixed = mean(rows[7].1), want = (mean(ca) + mean(cb)) / 2
+        XCTAssertEqual(mixed, want, accuracy: abs(mean(cb) - mean(ca)) / 5, "graded photos mixed half-and-half: \(report)")
     }
 
     /// Every transition really moves: halfway through it the frame is neither photo — no hard cuts dressed up as styles.

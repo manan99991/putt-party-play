@@ -1,5 +1,3 @@
-# Tonight's two TestFlight blockers, proven on their own before any re-send (Nov 23).
+# The dissolve blocker: take the graded-photo blend apart before changing any more code (Nov 23, round 4).
+HandyToolsTests/EngineTests/testWhereTheGradedPhotoLosesItsMix
 HandyToolsTests/EngineTests/testWhichWayOfMixingTwoPicturesWorks
-HandyToolsTests/EngineTests/testCrossfadeHalfwayIsAMixOfBothPhotos
-HandyToolsTests/EngineTests/testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook
-HandyToolsUITests/PromiseTests/testSwipeAcrossPhotosPicksSeveral
