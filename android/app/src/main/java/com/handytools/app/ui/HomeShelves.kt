@@ -71,7 +71,7 @@ object HomeShelves {
         BusinessJob("expense", "Log an expense", "receipts"),
         BusinessJob("table", "Receipt to spreadsheet", "scancsv"),
         BusinessJob("customer", "Save a customer", "docs"),
-        BusinessJob("reviewqr", "Review or menu QR code", "codes"),
+        BusinessJob("reviewqr", "Make a QR code", "codes"),
         BusinessJob("product", "Product photo to sell", "media"),
     )
     /** Tools whose only tile is on the Business tab. */

@@ -80,7 +80,7 @@ enum HomeShelves {
         BusinessJob(id: "product", title: "Product photo to sell", icon: "bag.fill", chain: "photo-sell", tool: nil),
         BusinessJob(id: "customer", title: "Save a customer", icon: "person.crop.rectangle.fill", chain: "card-to-contact", tool: nil),
         BusinessJob(id: "contract", title: "Sign and send back", icon: "signature", chain: "sign-and-send", tool: nil),
-        BusinessJob(id: "reviewqr", title: "Review or menu QR code", icon: "qrcode", chain: "text-to-qr", tool: nil),
+        BusinessJob(id: "reviewqr", title: "Make a QR code", icon: "qrcode", chain: "text-to-qr", tool: nil),
         BusinessJob(id: "mycard", title: "Share my contact", icon: "person.text.rectangle.fill", chain: "contact-qr", tool: nil),
         BusinessJob(id: "promo", title: "Post a promo video", icon: "megaphone.fill", chain: "video-post", tool: nil),
     ]

@@ -9879,15 +9879,15 @@
   "pt": "Foto de produto para vender",
   "zh": "商品图"
  },
- "Review or menu QR code": {
-  "de": "QR-Code für Bewertung oder Menü",
-  "es": "QR de reseñas o menú",
-  "fr": "QR code avis ou menu",
-  "hi": "रिव्यू या मेन्यू QR कोड",
-  "it": "QR per recensioni o menù",
-  "ja": "レビュー・メニュー用QR",
-  "pt": "QR de avaliação ou cardápio",
-  "zh": "评价或菜单二维码"
+ "Make a QR code": {
+  "de": "QR-Code erstellen",
+  "es": "Crear un código QR",
+  "fr": "Créer un code QR",
+  "hi": "QR कोड बनाएँ",
+  "it": "Crea un codice QR",
+  "ja": "QRコードを作る",
+  "pt": "Criar um código QR",
+  "zh": "制作二维码"
  },
  "Save a customer": {
   "de": "Kunden speichern",

@@ -1,13 +1,5 @@
-# 23 Nov (fourth try: a test read the tool list off the main actor. Third try: the Business commit never compiled — `business` named both the switch and the tab), UX audit phase 1 (Manan: yes to all six) and the Business tab. Second try: the For you card's buttons were
-# hidden inside the card (it read as one element), and "Copy a receipt or table" needed three lines. Proven on their
-# own, on a fresh install of the test phone, before the full run. Also Invoices & Quotes (Business tab).
+# 23 Nov, fifth try. The fourth run passed everything (For you, Home fit, welcome, Business tab, invoices with
+# their PDF and unpaid list, Ready-made tools) except one Business tile name that needed three lines:
+# "Review or menu QR code" is now "Make a QR code" (both phones, 8 languages). Proving the tile test on its own.
 HandyToolsTests/HomeShelvesTests
-HandyToolsTests/ForYouTests
 HandyToolsTests/InvoiceTests
-HandyToolsTests/ToolCatalogCoverageTests
-HandyToolsUITests/PromiseTests/testForYouCardShowsTheCarAndNotNowPutsItAway
-HandyToolsUITests/PromiseTests/testHomeFitsOneScreenAndShelvesOpenTools
-HandyToolsUITests/PromiseTests/testWelcomeIsOneScreenAndOpensTheChosenTab
-HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen
-HandyToolsUITests/PromiseTests/testReadyMadeToolsOpenFromMyStuffAndComeBack
-HandyToolsUITests/PromiseTests/testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid
