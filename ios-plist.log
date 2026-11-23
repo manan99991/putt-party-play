@@ -1,5 +1,6 @@
 === /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Products/Debug-iphonesimulator/HandyTools.app/Info.plist ===
       "CFBundleURLSchemes" => [
+  "NSAppleMusicUsageDescription" => "Lets you add a song from your Music app to a video you make. Songs are read on your phone and never uploaded."
   "NSCalendarsWriteOnlyAccessUsageDescription" => "Needed so Tenzy can add the events it reads from your posters and invites straight to your calendar when you tap Add all. It only adds; it never reads your calendar."
   "NSCameraUsageDescription" => "Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded."
   "NSContactsUsageDescription" => "Needed to find duplicate contacts, merge them without losing a number, back them up to a file, and copy or move them between your accounts. Your contacts stay on this phone and are never uploaded."
