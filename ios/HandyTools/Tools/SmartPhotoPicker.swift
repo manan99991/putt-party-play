@@ -123,7 +123,8 @@ struct SmartPhotoPicker: View {
     /// swipe ticks or unticks every photo it passes over.
     private func swipe(at p: CGPoint, first: Bool) {
         let ids = finder.matches.map(\.localIdentifier)
-        guard let here = nearest(p, ids) else { return }
+        // The swipe's first photo is the closest one to the press, however far; after that only photos near the finger.
+        guard let here = nearest(p, ids, within: first ? .infinity : 40) else { return }
         if first || swipeFrom == nil {
             swipeFrom = here
             swipeBase = picked
@@ -143,7 +144,7 @@ struct SmartPhotoPicker: View {
     }
 
     /// The photo under the finger — or the closest one when it's in the gap between two.
-    private func nearest(_ p: CGPoint, _ ids: [String]) -> Int? {
+    private func nearest(_ p: CGPoint, _ ids: [String], within limit: CGFloat = 40) -> Int? {
         var best: (i: Int, d: CGFloat)?
         for (i, id) in ids.enumerated() {
             guard let f = frames[id] else { continue }
@@ -152,7 +153,7 @@ struct SmartPhotoPicker: View {
             if d == 0 { return i }
             if best == nil || d < best!.d { best = (i, d) }
         }
-        guard let best, best.d < 40 * 40 else { return nil }
+        guard let best, best.d < limit * limit else { return nil }
         return best.i
     }
 
@@ -293,9 +294,11 @@ private struct SwipeSelect: UIGestureRecognizerRepresentable {
         let p = context.converter.location(in: .named("finder-grid"))
         switch g.state {
         case .began:
-            // The press point, then where the finger is now.
-            let t = g.translation(in: g.view)
-            began(CGPoint(x: p.x - t.x, y: p.y - t.y)); moved(p)
+            // The press point (where the finger first came down, recorded on touch-down — a pan's own translation can
+            // leave out the distance it needed to recognise, so a quick swipe started one photo late), then where it is now.
+            let now = g.location(in: g.view)
+            let d = context.coordinator.down.map { CGPoint(x: now.x - $0.x, y: now.y - $0.y) } ?? g.translation(in: g.view)
+            began(CGPoint(x: p.x - d.x, y: p.y - d.y)); moved(p)
         case .changed: moved(p)
         case .ended:
             // Where the finger lifted counts too — a quick swipe's last report can come only with the lift.
@@ -305,6 +308,12 @@ private struct SwipeSelect: UIGestureRecognizerRepresentable {
     }
 
     final class Coordinator: NSObject, UIGestureRecognizerDelegate {
+        /// Where the finger came down, in the recogniser's view.
+        var down: CGPoint?
+        func gestureRecognizer(_ g: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+            down = touch.location(in: g.view)
+            return true
+        }
         func gestureRecognizerShouldBegin(_ g: UIGestureRecognizer) -> Bool {
             guard let pan = g as? UIPanGestureRecognizer else { return true }
             let v = pan.velocity(in: pan.view), t = pan.translation(in: pan.view)

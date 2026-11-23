@@ -173,6 +173,9 @@ enum MusicTrack {
         for i in raw.indices { for (j, w) in kernel.enumerated() { let k = i + j - 2; if k >= 0, k < raw.count { sm[i] += raw[k] * w } } }
         let mean = sm.reduce(0, +) / Float(sm.count)
         let o = sm.map { $0 - mean }
+        // A flat curve (silence, steady noise) has no beat: it must actually rise and fall.
+        let spread = sqrt(o.reduce(0) { $0 + $1 * $1 } / Float(o.count))
+        guard spread > 0.05 * max(abs(mean), 1e-6) else { return nil }
         let minLag = Int(rate * 60 / 180), maxLag = Int(rate * 60 / 70) + 1
         var scores: [Int: Double] = [:]
         for lag in minLag...maxLag {

@@ -991,7 +991,14 @@ enum Animate {
             let out = CIImage(cgImage: cg)
                 .applyingFilter("CIVibrance", parameters: ["inputAmount": 0.22])
                 .applyingFilter("CIColorControls", parameters: [kCIInputContrastKey: 1.05, kCIInputSaturationKey: 1.0, kCIInputBrightnessKey: 0.0])
-            return ci.createCGImage(out, from: CGRect(x: 0, y: 0, width: cg.width, height: cg.height))
+            guard let made = ci.createCGImage(out, from: CGRect(x: 0, y: 0, width: cg.width, height: cg.height)) else { return nil }
+            // Copy it into an ordinary bitmap. An image straight from Core Image didn't show when drawn half see-through,
+            // so a dissolve was a cut at its end (Crossfade, Ken Burns); a plain bitmap blends at any opacity.
+            guard let space = CGColorSpace(name: CGColorSpace.sRGB),
+                  let bm = CGContext(data: nil, width: cg.width, height: cg.height, bitsPerComponent: 8, bytesPerRow: 0, space: space,
+                                     bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return made }
+            bm.draw(made, in: CGRect(x: 0, y: 0, width: cg.width, height: cg.height))
+            return bm.makeImage() ?? made
         }
 
         private var backs: [Int: CGImage] = [:]

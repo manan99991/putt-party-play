@@ -2130,7 +2130,7 @@ final class EngineTests: XCTestCase {
             let mid = try XCTUnwrap(Animate.still([a, b], settings: s, at: at(tl.hold + tl.trans * 0.5), scale: 0.1), style.title)
             let second = try XCTUnwrap(Animate.still([a, b], settings: s, at: at(tl.hold * 1.5 + tl.trans), scale: 0.1))
             XCTAssertGreaterThan(diff(first, second), 10, "\(style.title): the two photos differ")
-            XCTAssertGreaterThan(diff(mid, first), 4, "\(style.title): halfway is not still the first photo")
+            XCTAssertGreaterThan(diff(mid, first), 4, "\(style.title): halfway is not still the first photo (first→second \(diff(first, second)), mid→second \(diff(mid, second)))")
             if style != .glitch && style != .zoomPulse && style != .pixelate {
                 XCTAssertGreaterThan(diff(mid, second), 4, "\(style.title): halfway is not already the second photo")
             }
