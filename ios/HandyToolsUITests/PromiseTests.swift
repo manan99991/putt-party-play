@@ -357,6 +357,6 @@ final class PromiseTests: XCTestCase {
         from.press(forDuration: 0.05, thenDragTo: to)
         let use = app.buttons["finder-use"]
         XCTAssertTrue(use.waitForExistence(timeout: 5), "swiping across photos didn't pick any")
-        XCTAssertTrue(use.label.contains("3"), "a swipe across three photos picked: \(use.label)")
+        XCTAssertTrue(use.label.contains("3"), "a swipe across three photos picked: \(use.label) — \(use.value as? String ?? "") (cells 0–2: \((0...2).map { Int(cells.element(boundBy: $0).frame.midX) }))")
     }
 }

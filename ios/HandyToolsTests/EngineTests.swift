@@ -2109,6 +2109,42 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Animate.Style.cube.minPhotos, 2)
     }
 
+    /// Halfway through a crossfade the picture is half of each photo. Reports every step on its own (the timing,
+    /// each frame's brightness, and the same two photos mixed by hand), so a weak dissolve says where it goes wrong.
+    func testCrossfadeHalfwayIsAMixOfBothPhotos() throws {
+        let a = Self.solid(UIColor(red: 0.9, green: 0.15, blue: 0.15, alpha: 1), mark: "A")
+        let b = Self.solid(UIColor(red: 0.45, green: 0.75, blue: 1.0, alpha: 1), mark: "B")
+        func mean(_ img: CGImage?) -> Double {
+            guard let img else { return -1 }
+            let g = VideoJoin.gray(img)
+            return g.isEmpty ? -1 : Double(g.reduce(0) { $0 + Int($1) }) / Double(g.count)
+        }
+        var s = Animate.Settings(); s.style = .crossfade; s.format = try XCTUnwrap(VideoFormat.preset("square"))
+        let tl = Animate.timeline(count: 2, settings: s)
+        let midT = tl.hold + tl.trans * 0.5
+        let idx = Int(Double(tl.frameCount) * (midT / tl.seconds))
+        let phase = Animate.phase(frame: idx, in: tl)
+        let first = mean(Animate.still([a, b], settings: s, at: tl.hold * 0.5 / tl.seconds, scale: 0.1)?.cgImage)
+        let mid = mean(Animate.still([a, b], settings: s, at: midT / tl.seconds, scale: 0.1)?.cgImage)
+        let second = mean(Animate.still([a, b], settings: s, at: (tl.hold * 1.5 + tl.trans) / tl.seconds, scale: 0.1)?.cgImage)
+        let size = Animate.evenSize(CGSize(width: s.format.size.width * 0.1, height: s.format.size.height * 0.1))
+        let painter = Animate.Painter(images: [a, b], size: size, framing: s.framing)
+        let ca = painter.canvas(0), cb = painter.canvas(1)
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
+        let hand = UIGraphicsImageRenderer(size: size, format: fmt).image { c in
+            if let ca { c.cgContext.draw(ca, in: CGRect(origin: .zero, size: size)) }
+            c.cgContext.setAlpha(0.5)
+            if let cb { c.cgContext.draw(cb, in: CGRect(origin: .zero, size: size)) }
+        }.cgImage
+        let report = "phase \(phase) at frame \(idx) of \(tl.frameCount); grey first \(Int(first)) mid \(Int(mid)) second \(Int(second)); "
+            + "canvases \(Int(mean(ca))) \(Int(mean(cb))), mixed by hand \(Int(mean(hand)))"
+        print("CROSSFADE \(report)")
+        guard case .move(_, let v) = phase else { return XCTFail("halfway isn't in the move: \(report)") }
+        XCTAssertEqual(v, 0.5, accuracy: 0.1, report)
+        XCTAssertEqual(mean(hand), (mean(ca) + mean(cb)) / 2, accuracy: abs(mean(cb) - mean(ca)) * 0.2, "a plain half-and-half mix: \(report)")
+        XCTAssertEqual(mid, (first + second) / 2, accuracy: abs(second - first) * 0.25, "halfway is half of each photo: \(report)")
+    }
+
     /// Every transition really moves: halfway through it the frame is neither photo — no hard cuts dressed up as styles.
     /// And the page curl turns like a book (the right edge lifts first).
     func testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook() throws {

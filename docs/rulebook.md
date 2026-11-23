@@ -167,3 +167,14 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   (`MainActivity.checkForUpdate`, `com.google.android.play:app-update`). It can be backed out of, by design: a failed download must never
   lock anyone out. This applies to every track, production included; revisit before a production release if asking on every open is too much
   for the public (Play's update priority can limit it to important releases).
+
+## 8. Fixing a failing test (Manan, 23 Nov: "stop repeating the same failures")
+
+- **No re-send on an unproven fix.** A test that failed a TestFlight run is fixed, then proven green on its own
+  through `ios/REPRO_TESTS.txt` (the iOS crash repro workflow, ~20 min) before `Ship-Build=YES` goes on any commit.
+- **Same failure twice = the theory was wrong.** Stop changing code; add diagnostics that print what the app actually saw
+  (values, indices, points) and run them alone first. Never change a threshold to make a check pass.
+- **Find when it last passed.** `git log` the code under test between the last green run and the first red one, and read
+  that diff before guessing. (23 Nov: the dissolve check broke when the simulator pop-out was switched off, not from drawing.)
+- **Prove the mechanism, not the hope.** A fix that depends on something being called (a delegate, a callback, an event)
+  must show it was called, in a test or a printed trace.

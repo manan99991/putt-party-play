@@ -1,6 +1,7 @@
 import SwiftUI
 import Photos
 import PhotosUI
+import UIKit.UIGestureRecognizerSubclass
 
 /// The photo picker that already knows what you're looking for: a tool that needs a receipt opens on "Receipts and
 /// warranty cards" — only the photos that look like one, newest first — with "All photos" one tap away for anything
@@ -24,6 +25,8 @@ struct SmartPhotoPicker: View {
     /// from where it started to where the finger is — like Photos — even if a quick swipe skipped some touch reports.
     @State private var swipeFrom: Int?
     @State private var swipeBase: [String] = []
+    /// Under UI tests only: which photo the swipe started and ended on, so a failed swipe check says why.
+    @State private var swipeTrace = ""
     @Environment(\.dismiss) private var dismiss
 
     private let cols = Array(repeating: GridItem(.flexible(), spacing: 6), count: 3)
@@ -131,6 +134,10 @@ struct SmartPhotoPicker: View {
             swipeAdds = !picked.contains(ids[here])
         }
         guard let from = swipeFrom else { return }
+        if Launch.uitest {
+            let at = "\(here)@\(Int(p.x)),\(Int(p.y))"
+            swipeTrace = first ? "start \(at)" : (swipeTrace.components(separatedBy: " end ").first ?? "") + " end \(at)"
+        }
         let span = ids[min(from, here)...max(from, here)]
         let before = picked.count
         if swipeAdds == true {
@@ -183,7 +190,7 @@ struct SmartPhotoPicker: View {
             if maxCount > 1, !picked.isEmpty {
                 Button { use(picked) } label: {
                     Text("\(L("Use")) \(picked.count) \(L(picked.count == 1 ? "photo" : "photos"))").frame(maxWidth: .infinity)
-                }.primaryButton().accessibilityIdentifier("finder-use")
+                }.primaryButton().accessibilityIdentifier("finder-use").accessibilityValue(Launch.uitest ? swipeTrace : "")
             }
             PhotosPicker(selection: $allItems, maxSelectionCount: maxCount, matching: .images) {
                 HStack { if loading { ProgressView() }; Label(L("All photos"), systemImage: "photo.on.rectangle") }.frame(maxWidth: .infinity)
@@ -283,21 +290,22 @@ private struct SwipeSelect: UIGestureRecognizerRepresentable {
     var ended: () -> Void
 
     func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator { Coordinator() }
-    func makeUIGestureRecognizer(context: Context) -> UIPanGestureRecognizer {
-        let g = UIPanGestureRecognizer()
+    func makeUIGestureRecognizer(context: Context) -> PressPan {
+        let g = PressPan()
         g.delegate = context.coordinator
         g.maximumNumberOfTouches = 1
         return g
     }
-    func updateUIGestureRecognizer(_ g: UIPanGestureRecognizer, context: Context) { g.isEnabled = enabled }
-    func handleUIGestureRecognizerAction(_ g: UIPanGestureRecognizer, context: Context) {
+    func updateUIGestureRecognizer(_ g: PressPan, context: Context) { g.isEnabled = enabled }
+    func handleUIGestureRecognizerAction(_ g: PressPan, context: Context) {
         let p = context.converter.location(in: .named("finder-grid"))
         switch g.state {
         case .began:
-            // The press point (where the finger first came down, recorded on touch-down — a pan's own translation can
-            // leave out the distance it needed to recognise, so a quick swipe started one photo late), then where it is now.
+            // The press point, recorded by the recogniser itself on touch-down (the delegate isn't guaranteed to be
+            // asked — SwiftUI manages it — and a pan's own translation leaves out the distance it needed to recognise,
+            // so a quick swipe started one photo late three times), then where the finger is now.
             let now = g.location(in: g.view)
-            let d = context.coordinator.down.map { CGPoint(x: now.x - $0.x, y: now.y - $0.y) } ?? g.translation(in: g.view)
+            let d = g.pressPoint.map { CGPoint(x: now.x - $0.x, y: now.y - $0.y) } ?? g.translation(in: g.view)
             began(CGPoint(x: p.x - d.x, y: p.y - d.y)); moved(p)
         case .changed: moved(p)
         case .ended:
@@ -307,13 +315,17 @@ private struct SwipeSelect: UIGestureRecognizerRepresentable {
         }
     }
 
-    final class Coordinator: NSObject, UIGestureRecognizerDelegate {
-        /// Where the finger came down, in the recogniser's view.
-        var down: CGPoint?
-        func gestureRecognizer(_ g: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-            down = touch.location(in: g.view)
-            return true
+    /// A pan that remembers where the finger first came down, in its own view.
+    final class PressPan: UIPanGestureRecognizer {
+        private(set) var pressPoint: CGPoint?
+        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+            if numberOfTouches == 0 { pressPoint = touches.first?.location(in: view) }
+            super.touchesBegan(touches, with: event)
         }
+        override func reset() { super.reset(); pressPoint = nil }
+    }
+
+    final class Coordinator: NSObject, UIGestureRecognizerDelegate {
         func gestureRecognizerShouldBegin(_ g: UIGestureRecognizer) -> Bool {
             guard let pan = g as? UIPanGestureRecognizer else { return true }
             let v = pan.velocity(in: pan.view), t = pan.translation(in: pan.view)

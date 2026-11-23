@@ -1,2 +1,4 @@
-# The first-minute demo closed the app in the store-video take (Nov 22).
-HandyToolsUITests/PromiseTests/testFirstMinuteDemoFinishesWithAResult
+# Tonight's two TestFlight blockers, proven on their own before any re-send (Nov 23).
+HandyToolsTests/EngineTests/testCrossfadeHalfwayIsAMixOfBothPhotos
+HandyToolsTests/EngineTests/testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook
+HandyToolsUITests/PromiseTests/testSwipeAcrossPhotosPicksSeveral
