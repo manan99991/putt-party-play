@@ -38,6 +38,10 @@ import androidx.compose.material.icons.outlined.Hearing
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Medication
 import androidx.compose.material.icons.outlined.WbSunny
+import androidx.compose.material.icons.outlined.FolderZip
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Transform
+import androidx.compose.material.icons.outlined.Layers
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.PieChart
@@ -182,6 +186,22 @@ val TOOLS = listOf(
         listOf("morning","summary","brief","daily","today","my day","agenda","digest","birthday","birthdays","doses","overview","wake"),
         about = "One short note each morning with what matters today — your medicines, late invoices, birthdays, your parked car and a tidy-up nudge. Set it once and it just comes.",
         tint = Color(0xFFF59E0B), vicon = Icons.Outlined.WbSunny),
+    HTool("pdfpages", "Organize Pages", "Reorder, rotate or remove pages", 0, 0,
+        listOf("organize","pages","reorder","rotate","delete page","remove page","merge","combine","split","blank page","pdf"),
+        about = "Reorder, rotate or remove pages, add another PDF, drop blank pages or split into single pages — then save a clean new PDF.",
+        tint = Color(0xFF2563EB), vicon = Icons.Outlined.Layers),
+    HTool("pdfconvert", "Convert", "Turn a PDF into photos or text", 0, 0,
+        listOf("convert","pdf to jpg","pdf to image","pdf to photo","pdf to text","extract text","copy text","pdf"),
+        about = "Turn every page into a photo, or pull out the text to copy — a scan's words are read right on your phone.",
+        tint = Color(0xFF0EA5E9), vicon = Icons.Outlined.Transform),
+    HTool("pdfprotect", "Protect", "Lock a PDF with a password", 0, 0,
+        listOf("password","protect","lock","encrypt","unlock","secure","pdf"),
+        about = "Lock a PDF with a password so only people you tell can open it — or take the lock off one you know the password to.",
+        tint = Color(0xFF7C3AED), vicon = Icons.Outlined.Lock),
+    HTool("zipmaker", "Make a Zip", "Put many files into one zip", 0, 0,
+        listOf("zip","compress","archive","bundle","many files","attachment","send files"),
+        about = "Put photos, PDFs or any files into one zip, to send as a single attachment.",
+        tint = Color(0xFF64748B), vicon = Icons.Outlined.FolderZip),
 )
 
 /** The tools folded into the "Scan & Sort" tile — snap paper, get data/actions back. Off the main

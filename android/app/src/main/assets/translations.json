@@ -11508,5 +11508,645 @@
   "ja": "テストを送信しました — 通知を確認してください。毎朝このように届きます。",
   "pt": "Teste enviado — veja suas notificações. É assim que cada manhã vai chegar.",
   "zh": "测试已发送——请查看通知。每天早上就是这样。"
+ },
+ "Choose a PDF, then move, turn or remove its pages.": {
+  "de": "Wähle ein PDF und verschiebe, drehe oder entferne Seiten.",
+  "es": "Elige un PDF y mueve, gira o quita sus páginas.",
+  "fr": "Choisissez un PDF, puis déplacez, pivotez ou supprimez ses pages.",
+  "hi": "PDF चुनें, फिर पेज हिलाएं, घुमाएं या हटाएं।",
+  "it": "Scegli un PDF, poi sposta, ruota o rimuovi le pagine.",
+  "ja": "PDFを選び、ページの移動・回転・削除を行います。",
+  "pt": "Escolha um PDF e mova, gire ou remova páginas.",
+  "zh": "选择 PDF，然后移动、旋转或删除页面。"
+ },
+ "Choose files": {
+  "de": "Dateien wählen",
+  "es": "Elegir archivos",
+  "fr": "Choisir des fichiers",
+  "hi": "फ़ाइलें चुनें",
+  "it": "Scegli file",
+  "ja": "ファイルを選択",
+  "pt": "Escolher arquivos",
+  "zh": "选择文件"
+ },
+ "Contacts & phone": {
+  "de": "Kontakte & Telefon",
+  "es": "Contactos y teléfono",
+  "fr": "Contacts et téléphone",
+  "hi": "संपर्क और फ़ोन",
+  "it": "Contatti e telefono",
+  "ja": "連絡先と電話",
+  "pt": "Contatos e telefone",
+  "zh": "联系人与手机"
+ },
+ "Convert": {
+  "de": "Umwandeln",
+  "es": "Convertir",
+  "fr": "Convertir",
+  "hi": "कन्वर्ट करें",
+  "it": "Converti",
+  "ja": "変換",
+  "pt": "Converter",
+  "zh": "转换"
+ },
+ "Daily life": {
+  "de": "Alltag",
+  "es": "Día a día",
+  "fr": "Quotidien",
+  "hi": "रोज़मर्रा",
+  "it": "Vita quotidiana",
+  "ja": "毎日の暮らし",
+  "pt": "Dia a dia",
+  "zh": "日常生活"
+ },
+ "Drop blank pages": {
+  "de": "Leere Seiten entfernen",
+  "es": "Quitar páginas en blanco",
+  "fr": "Retirer les pages blanches",
+  "hi": "खाली पेज हटाएँ",
+  "it": "Togli le pagine bianche",
+  "ja": "白紙ページを削除",
+  "pt": "Tirar páginas em branco",
+  "zh": "去掉空白页"
+ },
+ "Lock a PDF": {
+  "de": "PDF sperren",
+  "es": "Proteger un PDF",
+  "fr": "Verrouiller un PDF",
+  "hi": "PDF लॉक करें",
+  "it": "Blocca un PDF",
+  "ja": "PDFにロック",
+  "pt": "Bloquear um PDF",
+  "zh": "加密 PDF"
+ },
+ "Lock a PDF with a password": {
+  "de": "PDF mit Passwort sperren",
+  "es": "Protege un PDF con contraseña",
+  "fr": "Verrouiller un PDF par mot de passe",
+  "hi": "PDF पर पासवर्ड लगाएँ",
+  "it": "Blocca un PDF con password",
+  "ja": "PDFにパスワード",
+  "pt": "Proteja um PDF com senha",
+  "zh": "给 PDF 加密码"
+ },
+ "Make a Zip": {
+  "de": "Zip erstellen",
+  "es": "Crear un Zip",
+  "fr": "Créer un Zip",
+  "hi": "Zip बनाएँ",
+  "it": "Crea uno Zip",
+  "ja": "Zipを作成",
+  "pt": "Criar um Zip",
+  "zh": "创建Zip"
+ },
+ "Organize Pages": {
+  "de": "Seiten ordnen",
+  "es": "Organizar páginas",
+  "fr": "Organiser les pages",
+  "hi": "पेज व्यवस्थित करें",
+  "it": "Organizza pagine",
+  "ja": "ページを整理",
+  "pt": "Organizar páginas",
+  "zh": "整理页面"
+ },
+ "PDF & files": {
+  "de": "PDF & Dateien",
+  "es": "PDF y archivos",
+  "fr": "PDF et fichiers",
+  "hi": "PDF और फ़ाइलें",
+  "it": "PDF e file",
+  "ja": "PDFとファイル",
+  "pt": "PDF e arquivos",
+  "zh": "PDF 与文件"
+ },
+ "PDF to photos or text": {
+  "de": "PDF in Fotos oder Text",
+  "es": "PDF a fotos o texto",
+  "fr": "PDF en photos ou texte",
+  "hi": "PDF से फ़ोटो या टेक्स्ट",
+  "it": "PDF in foto o testo",
+  "ja": "PDFを写真や文字に",
+  "pt": "PDF em fotos ou texto",
+  "zh": "PDF 转图片或文字"
+ },
+ "Page": {
+  "de": "Seite",
+  "es": "Página",
+  "fr": "Page",
+  "hi": "पेज",
+  "it": "Pagina",
+  "ja": "ページ",
+  "pt": "Página",
+  "zh": "页"
+ },
+ "Protect": {
+  "de": "Schützen",
+  "es": "Proteger",
+  "fr": "Protéger",
+  "hi": "सुरक्षित करें",
+  "it": "Proteggi",
+  "ja": "保護",
+  "pt": "Proteger",
+  "zh": "保护"
+ },
+ "Put many files into one zip": {
+  "de": "Viele Dateien in ein ZIP packen",
+  "es": "Pon muchos archivos en un zip",
+  "fr": "Mettre plusieurs fichiers dans un zip",
+  "hi": "कई फ़ाइलें एक zip में रखें",
+  "it": "Metti tanti file in un unico zip",
+  "ja": "複数のファイルを1つのzipに",
+  "pt": "Junte vários arquivos num zip",
+  "zh": "把多个文件打包成 zip"
+ },
+ "Ready": {
+  "de": "Fertig",
+  "es": "Listo",
+  "fr": "Prêt",
+  "hi": "तैयार",
+  "it": "Pronto",
+  "ja": "完成",
+  "pt": "Pronto",
+  "zh": "完成"
+ },
+ "Removed": {
+  "de": "Entfernt",
+  "es": "Quitado",
+  "fr": "Retiré",
+  "hi": "हटाया",
+  "it": "Rimosso",
+  "ja": "削除済み",
+  "pt": "Removido",
+  "zh": "已移除"
+ },
+ "Reorder PDF pages": {
+  "de": "PDF-Seiten ordnen",
+  "es": "Ordenar páginas PDF",
+  "fr": "Réorganiser les pages",
+  "hi": "PDF पेज क्रम बदलें",
+  "it": "Riordina pagine PDF",
+  "ja": "PDFのページ整理",
+  "pt": "Reordenar páginas",
+  "zh": "调整 PDF 页面"
+ },
+ "Reorder, rotate or remove pages": {
+  "de": "Seiten umsortieren, drehen oder löschen",
+  "es": "Reordena, gira o quita páginas",
+  "fr": "Réordonnez, pivotez ou supprimez des pages",
+  "hi": "पेज का क्रम बदलें, घुमाएँ या हटाएँ",
+  "it": "Riordina, ruota o rimuovi pagine",
+  "ja": "ページの並べ替え・回転・削除",
+  "pt": "Reordene, gire ou remova páginas",
+  "zh": "重新排序、旋转或删除页面"
+ },
+ "Reorder, rotate or remove pages, add another PDF, drop blank pages or split into single pages — then save a clean new PDF.": {
+  "de": "Seiten sortieren, drehen oder entfernen, ein weiteres PDF anhängen, leere Seiten löschen oder in Einzelseiten teilen – dann ein sauberes neues PDF sichern.",
+  "es": "Ordena, gira o quita páginas, añade otro PDF, elimina páginas en blanco o divídelo en páginas sueltas, y guarda un PDF nuevo y limpio.",
+  "fr": "Réordonnez, tournez ou retirez des pages, ajoutez un autre PDF, supprimez les pages blanches ou séparez en pages — puis enregistrez un nouveau PDF propre.",
+  "hi": "पेज का क्रम बदलें, घुमाएँ या हटाएँ, दूसरा PDF जोड़ें, खाली पेज हटाएँ या अलग-अलग पेज में बाँटें — फिर नया साफ़ PDF सेव करें।",
+  "it": "Riordina, ruota o rimuovi pagine, aggiungi un altro PDF, togli le pagine bianche o dividi in pagine singole, poi salva un nuovo PDF pulito.",
+  "ja": "ページの並べ替え・回転・削除、別のPDFの追加、白紙ページの削除、1ページずつに分割 — そして新しいPDFとして保存。",
+  "pt": "Reordene, gire ou remova páginas, adicione outro PDF, tire páginas em branco ou divida em páginas avulsas — e salve um PDF novo e limpo.",
+  "zh": "重新排序、旋转或删除页面，追加另一个 PDF，去掉空白页或拆成单页——然后保存为新的 PDF。"
+ },
+ "Split into one PDF per page": {
+  "de": "In ein PDF pro Seite teilen",
+  "es": "Dividir en un PDF por página",
+  "fr": "Séparer en un PDF par page",
+  "hi": "हर पेज का अलग PDF बनाएँ",
+  "it": "Dividi in un PDF per pagina",
+  "ja": "1ページずつのPDFに分割",
+  "pt": "Dividir em um PDF por página",
+  "zh": "拆成每页一个 PDF"
+ },
+ "Strong": {
+  "de": "Stark",
+  "es": "Fuerte",
+  "fr": "Fort",
+  "hi": "तेज़",
+  "it": "Forte",
+  "ja": "強め",
+  "pt": "Forte",
+  "zh": "强力"
+ },
+ "The text": {
+  "de": "Die Nachricht, die",
+  "es": "El mensaje que",
+  "fr": "Le message que",
+  "hi": "यह मैसेज",
+  "it": "Il messaggio che",
+  "ja": "届く文面：",
+  "pt": "A mensagem que",
+  "zh": "这条消息会发给"
+ },
+ "Turn a PDF into photos or text": {
+  "de": "PDF in Fotos oder Text umwandeln",
+  "es": "Convierte un PDF en fotos o texto",
+  "fr": "Transformer un PDF en photos ou texte",
+  "hi": "PDF को फ़ोटो या टेक्स्ट में बदलें",
+  "it": "Trasforma un PDF in foto o testo",
+  "ja": "PDFを画像やテキストに",
+  "pt": "Transforme um PDF em fotos ou texto",
+  "zh": "把 PDF 转成图片或文字"
+ },
+ "Type it again": {
+  "de": "Nochmal eingeben",
+  "es": "Escríbelo de nuevo",
+  "fr": "Saisissez-le à nouveau",
+  "hi": "फिर से लिखें",
+  "it": "Digitalo di nuovo",
+  "ja": "もう一度入力",
+  "pt": "Digite de novo",
+  "zh": "再输入一次"
+ },
+ "Zip files together": {
+  "de": "Dateien zippen",
+  "es": "Comprimir archivos",
+  "fr": "Zipper des fichiers",
+  "hi": "फ़ाइलें ज़िप करें",
+  "it": "Comprimi file",
+  "ja": "ファイルをZIPに",
+  "pt": "Compactar arquivos",
+  "zh": "打包压缩文件"
+ },
+ "files": {
+  "de": "Dateien",
+  "es": "archivos",
+  "fr": "fichiers",
+  "hi": "फ़ाइलें",
+  "it": "file",
+  "ja": "ファイル",
+  "pt": "arquivos",
+  "zh": "个文件"
+ },
+ "pages": {
+  "de": "Seiten",
+  "es": "páginas",
+  "fr": "pages",
+  "hi": "पेज",
+  "it": "pagine",
+  "ja": "ページ",
+  "pt": "páginas",
+  "zh": "页"
+ },
+ "Add more files": {
+  "de": "Weitere Dateien hinzufügen",
+  "es": "Añadir más archivos",
+  "fr": "Ajouter des fichiers",
+  "hi": "और फ़ाइलें जोड़ें",
+  "it": "Aggiungi altri file",
+  "ja": "ファイルを追加",
+  "pt": "Adicionar mais arquivos",
+  "zh": "添加更多文件"
+ },
+ "Choose a PDF to lock with a password — or one that's locked, to take the lock off.": {
+  "de": "Wähle ein PDF, das du mit einem Passwort sperren willst – oder ein gesperrtes, um die Sperre zu entfernen.",
+  "es": "Elige un PDF para protegerlo con contraseña, o uno protegido para quitarle el bloqueo.",
+  "fr": "Choisissez un PDF à verrouiller par mot de passe – ou un PDF verrouillé pour retirer le verrou.",
+  "hi": "पासवर्ड से लॉक करने के लिए PDF चुनें — या लॉक वाला, ताला हटाने के लिए।",
+  "it": "Scegli un PDF da proteggere con password, o uno protetto per togliere il blocco.",
+  "ja": "パスワードで保護するPDFを選択 — 保護済みなら解除できます。",
+  "pt": "Escolha um PDF para proteger com senha — ou um protegido, para tirar a proteção.",
+  "zh": "选择要加密的 PDF——或选择已加密的 PDF 来解除密码。"
+ },
+ "Choose a PDF to turn into photos or into text you can copy.": {
+  "de": "Wähle ein PDF, das zu Fotos oder kopierbarem Text werden soll.",
+  "es": "Elige un PDF para convertirlo en fotos o en texto que puedas copiar.",
+  "fr": "Choisissez un PDF à transformer en photos ou en texte à copier.",
+  "hi": "फ़ोटो या कॉपी करने लायक टेक्स्ट बनाने के लिए PDF चुनें।",
+  "it": "Scegli un PDF da trasformare in foto o in testo da copiare.",
+  "ja": "写真またはコピーできるテキストに変換するPDFを選択。",
+  "pt": "Escolha um PDF para virar fotos ou texto que você pode copiar.",
+  "zh": "选择要转换成照片或可复制文字的 PDF。"
+ },
+ "Choose a password. Anyone opening the PDF will need it.": {
+  "de": "Wähle ein Passwort. Wer das PDF öffnet, braucht es.",
+  "es": "Elige una contraseña. Quien abra el PDF la necesitará.",
+  "fr": "Choisissez un mot de passe. Il faudra le saisir pour ouvrir le PDF.",
+  "hi": "पासवर्ड चुनें। PDF खोलने वाले को इसकी ज़रूरत होगी।",
+  "it": "Scegli una password. Servirà a chiunque apra il PDF.",
+  "ja": "パスワードを決めてください。PDFを開くときに必要になります。",
+  "pt": "Escolha uma senha. Quem abrir o PDF vai precisar dela.",
+  "zh": "设置密码。打开这个 PDF 时需要输入它。"
+ },
+ "Couldn't lock it. Try again.": {
+  "de": "Sperren hat nicht geklappt. Versuch es noch einmal.",
+  "es": "No se pudo proteger. Inténtalo de nuevo.",
+  "fr": "Impossible de le verrouiller. Réessayez.",
+  "hi": "लॉक नहीं हो सका। फिर कोशिश करें।",
+  "it": "Non è stato possibile proteggerlo. Riprova.",
+  "ja": "保護できませんでした。もう一度お試しください。",
+  "pt": "Não foi possível proteger. Tente de novo.",
+  "zh": "加密失败，请重试。"
+ },
+ "Couldn't make the PDF. Try again.": {
+  "de": "Das PDF konnte nicht erstellt werden. Versuch es noch einmal.",
+  "es": "No se pudo crear el PDF. Inténtalo de nuevo.",
+  "fr": "Impossible de créer le PDF. Réessayez.",
+  "hi": "PDF नहीं बन सका। फिर कोशिश करें।",
+  "it": "Non è stato possibile creare il PDF. Riprova.",
+  "ja": "PDFを作成できませんでした。もう一度お試しください。",
+  "pt": "Não foi possível criar o PDF. Tente de novo.",
+  "zh": "无法生成 PDF，请重试。"
+ },
+ "Couldn't open it with that password. The file may be damaged.": {
+  "de": "Mit diesem Passwort ließ es sich nicht öffnen. Die Datei ist evtl. beschädigt.",
+  "es": "No se pudo abrir con esa contraseña. Puede que el archivo esté dañado.",
+  "fr": "Impossible de l'ouvrir avec ce mot de passe. Le fichier est peut-être endommagé.",
+  "hi": "इस पासवर्ड से नहीं खुला। फ़ाइल ख़राब हो सकती है।",
+  "it": "Non si apre con questa password. Il file potrebbe essere danneggiato.",
+  "ja": "このパスワードでは開けませんでした。ファイルが破損している可能性があります。",
+  "pt": "Não abriu com essa senha. O arquivo pode estar danificado.",
+  "zh": "用这个密码无法打开，文件可能已损坏。"
+ },
+ "Good": {
+  "de": "Gut",
+  "es": "Buena",
+  "fr": "Correct",
+  "hi": "अच्छा",
+  "it": "Buona",
+  "ja": "良い",
+  "pt": "Boa",
+  "zh": "良好"
+ },
+ "Lock a PDF with a password so only people you tell can open it — or take the lock off one you know the password to.": {
+  "de": "Sperre ein PDF mit einem Passwort, damit es nur öffnet, wem du es sagst – oder entferne die Sperre, wenn du das Passwort kennst.",
+  "es": "Protege un PDF con contraseña para que solo lo abra quien tú digas, o quita el bloqueo de uno cuya contraseña conoces.",
+  "fr": "Verrouillez un PDF par mot de passe pour que seules les personnes prévenues l'ouvrent – ou retirez le verrou d'un PDF dont vous connaissez le mot de passe.",
+  "hi": "PDF को पासवर्ड से लॉक करें ताकि सिर्फ़ वही खोल सकें जिन्हें आप बताएँ — या जिसका पासवर्ड पता है उसका ताला हटाएँ।",
+  "it": "Proteggi un PDF con una password perché lo apra solo chi vuoi tu, o togli il blocco da uno di cui conosci la password.",
+  "ja": "PDFにパスワードをかけて、伝えた人だけが開けるようにします。パスワードがわかればロック解除も。",
+  "pt": "Proteja um PDF com senha para só quem você contar conseguir abrir — ou tire a proteção de um cuja senha você sabe.",
+  "zh": "给 PDF 加上密码，只有你告诉的人才能打开——知道密码的也可以解除。"
+ },
+ "Lock the PDF": {
+  "de": "PDF sperren",
+  "es": "Proteger el PDF",
+  "fr": "Verrouiller le PDF",
+  "hi": "PDF लॉक करें",
+  "it": "Proteggi il PDF",
+  "ja": "PDFを保護",
+  "pt": "Proteger o PDF",
+  "zh": "加密 PDF"
+ },
+ "Locked. It opens only with your password — keep it somewhere safe; it can't be recovered.": {
+  "de": "Gesperrt. Es öffnet sich nur mit deinem Passwort – bewahre es gut auf, es lässt sich nicht wiederherstellen.",
+  "es": "Protegido. Solo se abre con tu contraseña; guárdala bien, no se puede recuperar.",
+  "fr": "Verrouillé. Il ne s'ouvre qu'avec votre mot de passe – gardez-le en lieu sûr, il est irrécupérable.",
+  "hi": "लॉक हो गया। यह सिर्फ़ आपके पासवर्ड से खुलेगा — उसे सुरक्षित रखें, वापस नहीं मिल सकता।",
+  "it": "Protetto. Si apre solo con la tua password: conservala bene, non si può recuperare.",
+  "ja": "保護しました。パスワードでのみ開けます — 復元できないので大切に保管してください。",
+  "pt": "Protegido. Só abre com a sua senha — guarde-a bem; ela não pode ser recuperada.",
+  "zh": "已加密，只能用你的密码打开——请妥善保存，密码无法找回。"
+ },
+ "Make the zip": {
+  "de": "Zip erstellen",
+  "es": "Crear el zip",
+  "fr": "Créer le zip",
+  "hi": "ज़िप बनाएँ",
+  "it": "Crea lo zip",
+  "ja": "Zipを作成",
+  "pt": "Criar o zip",
+  "zh": "生成压缩包"
+ },
+ "No words were found in this PDF.": {
+  "de": "In diesem PDF wurden keine Wörter gefunden.",
+  "es": "No se encontraron palabras en este PDF.",
+  "fr": "Aucun mot trouvé dans ce PDF.",
+  "hi": "इस PDF में कोई शब्द नहीं मिला।",
+  "it": "Nessuna parola trovata in questo PDF.",
+  "ja": "このPDFに文字は見つかりませんでした。",
+  "pt": "Nenhuma palavra foi encontrada neste PDF.",
+  "zh": "这个 PDF 里没有找到文字。"
+ },
+ "Organize, lock, convert, zip and open files": {
+  "de": "Ordnen, sperren, umwandeln, zippen und öffnen",
+  "es": "Ordena, protege, convierte, comprime y abre archivos",
+  "fr": "Organiser, verrouiller, convertir, zipper et ouvrir",
+  "hi": "व्यवस्थित, लॉक, कन्वर्ट, ज़िप करें और फ़ाइलें खोलें",
+  "it": "Organizza, proteggi, converti, comprimi e apri file",
+  "ja": "整理・保護・変換・Zip・ファイルを開く",
+  "pt": "Organize, proteja, converta, compacte e abra arquivos",
+  "zh": "整理、加密、转换、压缩和打开文件"
+ },
+ "Pick the files to put together — photos, PDFs, anything. They go into one zip you can send as a single attachment.": {
+  "de": "Wähle die Dateien – Fotos, PDFs, alles. Sie kommen in eine Zip-Datei, die du als einen Anhang senden kannst.",
+  "es": "Elige los archivos que quieras juntar: fotos, PDF, lo que sea. Van en un zip que puedes enviar como un solo adjunto.",
+  "fr": "Choisissez les fichiers à regrouper – photos, PDF, n'importe quoi. Ils vont dans un zip à envoyer en une seule pièce jointe.",
+  "hi": "साथ रखने वाली फ़ाइलें चुनें — फ़ोटो, PDF, कुछ भी। ये एक ज़िप में जाएँगी जिसे एक अटैचमेंट की तरह भेज सकते हैं।",
+  "it": "Scegli i file da unire: foto, PDF, qualsiasi cosa. Finiscono in uno zip da inviare come un solo allegato.",
+  "ja": "まとめるファイルを選択 — 写真、PDF、何でも。1つのZipになり、1つの添付として送れます。",
+  "pt": "Escolha os arquivos para juntar — fotos, PDFs, qualquer coisa. Eles vão para um zip que você envia como um anexo só.",
+  "zh": "选择要打包的文件——照片、PDF，什么都行。它们会放进一个压缩包，作为一个附件发送。"
+ },
+ "Put photos, PDFs or any files into one zip, to send as a single attachment.": {
+  "de": "Fotos, PDFs oder beliebige Dateien in eine Zip-Datei packen und als einen Anhang senden.",
+  "es": "Pon fotos, PDF o cualquier archivo en un zip para enviarlo como un solo adjunto.",
+  "fr": "Regroupez photos, PDF ou tout fichier dans un zip, à envoyer en une seule pièce jointe.",
+  "hi": "फ़ोटो, PDF या कोई भी फ़ाइलें एक ज़िप में रखें, एक अटैचमेंट की तरह भेजने के लिए।",
+  "it": "Metti foto, PDF o qualsiasi file in uno zip da inviare come un solo allegato.",
+  "ja": "写真やPDFなどを1つのZipにまとめ、1つの添付として送れます。",
+  "pt": "Coloque fotos, PDFs ou qualquer arquivo em um zip para enviar como um anexo só.",
+  "zh": "把照片、PDF 或任何文件打包成一个压缩包，作为一个附件发送。"
+ },
+ "Reading page": {
+  "de": "Lese Seite",
+  "es": "Leyendo página",
+  "fr": "Lecture de la page",
+  "hi": "पेज पढ़ रहे हैं",
+  "it": "Lettura pagina",
+  "ja": "ページを読み取り中",
+  "pt": "Lendo página",
+  "zh": "正在读取页面"
+ },
+ "Reverse the order": {
+  "de": "Reihenfolge umdrehen",
+  "es": "Invertir el orden",
+  "fr": "Inverser l'ordre",
+  "hi": "क्रम उलटें",
+  "it": "Inverti l'ordine",
+  "ja": "順番を逆にする",
+  "pt": "Inverter a ordem",
+  "zh": "倒转顺序"
+ },
+ "Save as a text file": {
+  "de": "Als Textdatei sichern",
+  "es": "Guardar como archivo de texto",
+  "fr": "Enregistrer en fichier texte",
+  "hi": "टेक्स्ट फ़ाइल के रूप में सहेजें",
+  "it": "Salva come file di testo",
+  "ja": "テキストファイルとして保存",
+  "pt": "Salvar como arquivo de texto",
+  "zh": "保存为文本文件"
+ },
+ "Save to my files": {
+  "de": "In meinen Dateien sichern",
+  "es": "Guardar en mis archivos",
+  "fr": "Enregistrer dans mes fichiers",
+  "hi": "मेरी फ़ाइलों में सहेजें",
+  "it": "Salva nei miei file",
+  "ja": "ファイルに保存",
+  "pt": "Salvar nos meus arquivos",
+  "zh": "保存到我的文件"
+ },
+ "Share the text": {
+  "de": "Text teilen",
+  "es": "Compartir el texto",
+  "fr": "Partager le texte",
+  "hi": "टेक्स्ट शेयर करें",
+  "it": "Condividi il testo",
+  "ja": "テキストを共有",
+  "pt": "Compartilhar o texto",
+  "zh": "分享文字"
+ },
+ "Start again": {
+  "de": "Neu beginnen",
+  "es": "Empezar de nuevo",
+  "fr": "Recommencer",
+  "hi": "फिर से शुरू करें",
+  "it": "Ricomincia",
+  "ja": "やり直す",
+  "pt": "Começar de novo",
+  "zh": "重新开始"
+ },
+ "Take the lock off": {
+  "de": "Sperre entfernen",
+  "es": "Quitar el bloqueo",
+  "fr": "Retirer le verrou",
+  "hi": "ताला हटाएँ",
+  "it": "Togli il blocco",
+  "ja": "ロックを解除",
+  "pt": "Tirar a proteção",
+  "zh": "解除密码"
+ },
+ "That PDF couldn't be opened.": {
+  "de": "Dieses PDF ließ sich nicht öffnen.",
+  "es": "No se pudo abrir ese PDF.",
+  "fr": "Impossible d'ouvrir ce PDF.",
+  "hi": "वह PDF नहीं खुल सका।",
+  "it": "Impossibile aprire quel PDF.",
+  "ja": "そのPDFは開けませんでした。",
+  "pt": "Não foi possível abrir esse PDF.",
+  "zh": "无法打开这个 PDF。"
+ },
+ "That PDF couldn't be opened. It may be damaged or locked with a password.": {
+  "de": "Dieses PDF ließ sich nicht öffnen. Es ist evtl. beschädigt oder mit einem Passwort gesperrt.",
+  "es": "No se pudo abrir ese PDF. Puede estar dañado o protegido con contraseña.",
+  "fr": "Impossible d'ouvrir ce PDF. Il est peut-être endommagé ou protégé par mot de passe.",
+  "hi": "वह PDF नहीं खुल सका। यह ख़राब या पासवर्ड से लॉक हो सकता है।",
+  "it": "Impossibile aprire quel PDF. Potrebbe essere danneggiato o protetto da password.",
+  "ja": "そのPDFは開けませんでした。破損しているか、パスワードで保護されている可能性があります。",
+  "pt": "Não foi possível abrir esse PDF. Ele pode estar danificado ou protegido com senha.",
+  "zh": "无法打开这个 PDF，可能已损坏或设置了密码。"
+ },
+ "That password isn't right. Try again.": {
+  "de": "Das Passwort stimmt nicht. Versuch es noch einmal.",
+  "es": "Esa contraseña no es correcta. Inténtalo de nuevo.",
+  "fr": "Ce mot de passe n'est pas le bon. Réessayez.",
+  "hi": "यह पासवर्ड सही नहीं है। फिर कोशिश करें।",
+  "it": "La password non è corretta. Riprova.",
+  "ja": "パスワードが違います。もう一度お試しください。",
+  "pt": "Essa senha não está certa. Tente de novo.",
+  "zh": "密码不对，请重试。"
+ },
+ "The lock is off. Anyone can open this copy.": {
+  "de": "Die Sperre ist entfernt. Diese Kopie kann jeder öffnen.",
+  "es": "Bloqueo quitado. Cualquiera puede abrir esta copia.",
+  "fr": "Le verrou est retiré. Tout le monde peut ouvrir cette copie.",
+  "hi": "ताला हट गया। यह कॉपी कोई भी खोल सकता है।",
+  "it": "Blocco tolto. Chiunque può aprire questa copia.",
+  "ja": "ロックを解除しました。このコピーは誰でも開けます。",
+  "pt": "A proteção foi retirada. Qualquer pessoa pode abrir esta cópia.",
+  "zh": "密码已解除，这份副本谁都能打开。"
+ },
+ "The two passwords don't match.": {
+  "de": "Die beiden Passwörter stimmen nicht überein.",
+  "es": "Las dos contraseñas no coinciden.",
+  "fr": "Les deux mots de passe ne correspondent pas.",
+  "hi": "दोनों पासवर्ड मेल नहीं खाते।",
+  "it": "Le due password non coincidono.",
+  "ja": "2つのパスワードが一致しません。",
+  "pt": "As duas senhas não são iguais.",
+  "zh": "两次输入的密码不一致。"
+ },
+ "This PDF is locked. Type its password to save an unlocked copy.": {
+  "de": "Dieses PDF ist gesperrt. Gib sein Passwort ein, um eine entsperrte Kopie zu sichern.",
+  "es": "Este PDF está protegido. Escribe su contraseña para guardar una copia sin bloqueo.",
+  "fr": "Ce PDF est verrouillé. Saisissez son mot de passe pour enregistrer une copie déverrouillée.",
+  "hi": "यह PDF लॉक है। अनलॉक कॉपी सहेजने के लिए इसका पासवर्ड लिखें।",
+  "it": "Questo PDF è protetto. Inserisci la password per salvare una copia sbloccata.",
+  "ja": "このPDFは保護されています。パスワードを入力すると、ロックなしのコピーを保存できます。",
+  "pt": "Este PDF está protegido. Digite a senha para salvar uma cópia sem proteção.",
+  "zh": "这个 PDF 已加密。输入密码即可保存一份未加密的副本。"
+ },
+ "Too short — use at least 6 characters": {
+  "de": "Zu kurz – mindestens 6 Zeichen",
+  "es": "Demasiado corta: usa al menos 6 caracteres",
+  "fr": "Trop court – au moins 6 caractères",
+  "hi": "बहुत छोटा — कम से कम 6 अक्षर रखें",
+  "it": "Troppo corta: almeno 6 caratteri",
+  "ja": "短すぎます — 6文字以上にしてください",
+  "pt": "Muito curta — use pelo menos 6 caracteres",
+  "zh": "太短——至少 6 个字符"
+ },
+ "Turn every page into a photo, or pull out the text to copy — a scan's words are read right on your phone.": {
+  "de": "Mach aus jeder Seite ein Foto oder hol den Text zum Kopieren heraus – die Wörter eines Scans werden direkt auf dem Telefon gelesen.",
+  "es": "Convierte cada página en una foto o saca el texto para copiarlo; las palabras de un escaneo se leen en tu teléfono.",
+  "fr": "Transformez chaque page en photo, ou extrayez le texte à copier – les mots d'un scan sont lus sur votre téléphone.",
+  "hi": "हर पेज को फ़ोटो बनाएँ, या कॉपी करने के लिए टेक्स्ट निकालें — स्कैन के शब्द फ़ोन पर ही पढ़े जाते हैं।",
+  "it": "Trasforma ogni pagina in una foto o estrai il testo da copiare: le parole di una scansione vengono lette sul telefono.",
+  "ja": "各ページを写真にしたり、テキストを取り出してコピー — スキャンの文字も端末上で読み取ります。",
+  "pt": "Transforme cada página em foto ou tire o texto para copiar — as palavras de um escaneamento são lidas no próprio telefone.",
+  "zh": "把每一页变成照片，或提取文字来复制——扫描件里的字也能在手机上识别。"
+ },
+ "Turn into photos": {
+  "de": "In Fotos umwandeln",
+  "es": "Convertir en fotos",
+  "fr": "Transformer en photos",
+  "hi": "फ़ोटो बनाएँ",
+  "it": "Trasforma in foto",
+  "ja": "写真に変換",
+  "pt": "Transformar em fotos",
+  "zh": "转成照片"
+ },
+ "Turn into text": {
+  "de": "In Text umwandeln",
+  "es": "Convertir en texto",
+  "fr": "Transformer en texte",
+  "hi": "टेक्स्ट बनाएँ",
+  "it": "Trasforma in testo",
+  "ja": "テキストに変換",
+  "pt": "Transformar em texto",
+  "zh": "转成文字"
+ },
+ "Weak — mix letters, numbers and symbols": {
+  "de": "Schwach – mische Buchstaben, Zahlen und Zeichen",
+  "es": "Débil: mezcla letras, números y símbolos",
+  "fr": "Faible – mélangez lettres, chiffres et symboles",
+  "hi": "कमज़ोर — अक्षर, अंक और चिह्न मिलाएँ",
+  "it": "Debole: mescola lettere, numeri e simboli",
+  "ja": "弱い — 文字・数字・記号を組み合わせて",
+  "pt": "Fraca — misture letras, números e símbolos",
+  "zh": "较弱——请混合字母、数字和符号"
+ },
+ "blank pages": {
+  "de": "leere Seiten",
+  "es": "páginas en blanco",
+  "fr": "pages blanches",
+  "hi": "खाली पेज",
+  "it": "pagine vuote",
+  "ja": "白紙ページ",
+  "pt": "páginas em branco",
+  "zh": "空白页"
+ },
+ "photos, one per page": {
+  "de": "Fotos, eins pro Seite",
+  "es": "fotos, una por página",
+  "fr": "photos, une par page",
+  "hi": "फ़ोटो, हर पेज की एक",
+  "it": "foto, una per pagina",
+  "ja": "枚の写真（1ページ1枚）",
+  "pt": "fotos, uma por página",
+  "zh": "张照片，每页一张"
  }
 }

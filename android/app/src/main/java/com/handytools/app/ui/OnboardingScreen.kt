@@ -59,7 +59,7 @@ private val ILLOS = listOf(R.drawable.illo_clipboard, R.drawable.illo_alarm, R.d
 
 /** What the welcome's optional "What do you want help with?" offers, and the Home tab each opens (same as iPhone). */
 enum class WelcomeChoice(val title: String, val homeTab: String) {
-    PHOTOS("Photos and space", "photos"), DOCUMENTS("Documents and PDFs", "files"), DAILY("Daily life and health", "day"),
+    PHOTOS("Photos and space", "photos"), DOCUMENTS("Documents and PDFs", "pdf"), DAILY("Daily life and health", "day"),
     CAR("Car and travel", "phone"), CONTACTS("Contacts and phone", "phone"), WORDS("Words and messages", "words"),
     BUSINESS("Running a small business", "business");
     companion object {

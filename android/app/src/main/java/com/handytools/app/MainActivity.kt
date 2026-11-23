@@ -225,6 +225,10 @@ class MainActivity : ComponentActivity() {
                     composable("timer") { TimersScreen() }
                     composable("wallet") { WalletScreen() }
                     composable("medreminder") { com.handytools.app.tools.meds.MedRemindersScreen() }
+                    composable("pdfpages") { com.handytools.app.tools.pdf.PdfPagesScreen() }
+                    composable("pdfconvert") { com.handytools.app.tools.pdf.PdfConvertScreen() }
+                    composable("pdfprotect") { com.handytools.app.tools.pdf.PdfProtectScreen() }
+                    composable("zipmaker") { com.handytools.app.tools.zip.ZipScreen() }
                     composable("brief") { com.handytools.app.tools.brief.MorningSummaryScreen(onOpen = openTool) }
                     composable("translate") { com.handytools.app.tools.power.TranslateToolScreen() }
                     composable("sorted") { SortedScreen() }

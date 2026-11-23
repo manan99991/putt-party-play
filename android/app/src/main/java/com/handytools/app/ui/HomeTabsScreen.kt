@@ -132,7 +132,7 @@ private fun medDoses(ctx: Context): List<Triple<String, Long, Boolean>> {
 private fun tabIcon(id: String): ImageVector = when (id) {
     "camera" -> Icons.Outlined.CameraAlt
     "photos" -> Icons.Outlined.Image
-    "files" -> Icons.Outlined.Folder
+    "pdf" -> Icons.Outlined.Folder
     "audio" -> Icons.Outlined.GraphicEq
     "words" -> Icons.Outlined.Translate
     "day" -> Icons.Outlined.Event
@@ -274,7 +274,9 @@ private fun TabChip(s: HomeShelves.Shelf, selected: Boolean, modifier: Modifier,
     ) {
         Icon(tabIcon(s.id), null, tint = if (selected) accent else Handy.palette.textSecondary, modifier = Modifier.size(16.dp))
         Spacer(Modifier.width(4.dp))
-        Text(I18n.t(s.title), fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis,
+        // Two lines when a name is long ("Contacts & phone"), never cut off.
+        Text(I18n.t(s.title), fontSize = 12.sp, lineHeight = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
             color = if (selected) accent else MaterialTheme.colorScheme.onSurface)
     }
 }

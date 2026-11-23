@@ -21,17 +21,17 @@ object HomeShelves {
             listOf("docs", "identify", "procam", "codes", "scancsv", "colorvision")),
         Shelf("photos", "Photos", "Fix, shrink and share photos and videos",
             listOf("media", "scrubber", "stitch", "gifmaker", "memory")),
-        Shelf("files", "Files", "Open, convert and send any file",
-            listOf("fileviewer", "converter", "share")),
-        Shelf("audio", "Sound", "Record, listen and sleep",
+        Shelf("pdf", "PDF & files", "Organize, lock, convert, zip and open files",
+            listOf("pdfpages", "pdfconvert", "pdfprotect", "zipmaker", "fileviewer", "converter", "share")),
+        Shelf("audio", "Audio", "Record, listen and sleep",
             listOf("voice", "rest", "hearing")),
         Shelf("words", "Words", "Translate, read aloud, check and plan",
             listOf("translate", "lens", "safety", "texttools", "thinking")),
         // No Alarm tile: that tool was cut on 2 Nov (Google reserves exact alarms for alarm apps), so its screen
         // can't ring. Timers runs only while open, so it isn't offered either.
-        Shelf("day", "My day", "Medicines, your morning, bills, receipts and cards",
+        Shelf("day", "Daily life", "Medicines, your morning, bills, receipts and cards",
             listOf("medreminder", "brief", "sorted", "receipts", "pricecheck", "wallet")),
-        Shelf("phone", "Phone", "Space, battery, network, light and your car",
+        Shelf("phone", "Contacts & phone", "Space, battery, network, light and your car",
             listOf("cleanup", "storage", "myphone", "network", "instruments", "flashlight", "quick", "parked", "gpsdash")),
     )
 
@@ -41,7 +41,8 @@ object HomeShelves {
         "codes" to "Scan a QR code", "scancsv" to "Copy a table", "colorvision" to "Tell colors apart",
         "media" to "Shrink or cut out", "scrubber" to "Hide faces and location", "stitch" to "Join screenshots",
         "gifmaker" to "Make a GIF", "memory" to "Find a photo",
-        "fileviewer" to "Open any file", "converter" to "Change a file's format", "share" to "Send files nearby",
+        "fileviewer" to "Open any file", "pdfpages" to "Reorder PDF pages", "pdfconvert" to "PDF to photos or text",
+        "pdfprotect" to "Lock a PDF", "zipmaker" to "Zip files together", "converter" to "Change a file's format", "share" to "Send files nearby",
         "voice" to "Record and transcribe", "rest" to "Sleep sounds", "hearing" to "Hear better",
         "translate" to "Translate anything", "lens" to "Read it aloud", "safety" to "Is this a scam?",
         "texttools" to "Fix up text", "thinking" to "Plan my day",
