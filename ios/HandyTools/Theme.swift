@@ -607,16 +607,16 @@ struct HomeToolTile: View {
     let tool: Tool
     let hex: UInt32
     var compact = false
+    /// The job name ("Sign a PDF"), falling back to the tool's own name.
+    private var title: String { L(HomeShelves.jobName(tool.id) ?? tool.name) }
     var body: some View {
         Group {
             if compact {
-                HStack(spacing: 6) {
-                    ToolIconBadge(id: tool.id, symbol: tool.icon, size: 24)
-                    name
-                    Spacer(minLength: 0)
-                }
-                .padding(.horizontal, 8)
-                .frame(maxWidth: .infinity, minHeight: 48, maxHeight: 48, alignment: .leading)
+                // Short screens: the words alone, so a two-line job name always fits (an icon beside it left ~9
+                // letters a line). The tab's colour on the border keeps the group visible.
+                name
+                    .padding(.horizontal, 8)
+                    .frame(maxWidth: .infinity, minHeight: 48, maxHeight: 48, alignment: .leading)
             } else {
                 VStack(alignment: .leading, spacing: 4) {
                     ToolIconBadge(id: tool.id, symbol: tool.icon, size: 28)
@@ -631,12 +631,13 @@ struct HomeToolTile: View {
         .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Color(hex: hex).opacity(0.45), lineWidth: 1))
         .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(L(tool.name))
+        .accessibilityLabel(title)
         .accessibilityHint(L(tool.blurb))
     }
+    /// One size everywhere (23 Nov audit: shrink-to-fit made tile names uneven); names are chosen to fit two lines.
     private var name: some View {
-        Text(L(tool.name)).font(.system(size: compact ? 12 : 13, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
-            .lineLimit(2).minimumScaleFactor(0.75).multilineTextAlignment(.leading)
+        Text(title).font(.system(size: compact ? 12 : 13, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
+            .lineLimit(2).multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
     }
 }
 

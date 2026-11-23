@@ -139,6 +139,8 @@ struct AutomationsView: View {
                 }
                 Spacer(minLength: 0)
             }
+            // A row of zeros greets a new person with emptiness (23 Nov audit): the counts show once there's something to count.
+            if toolCount + onCount + made > 0 {
             HStack(spacing: 0) {
                 stat(toolCount, toolCount == 1 ? "tool" : "tools")
                 Rectangle().fill(HandyColor.border).frame(width: 1, height: 28)
@@ -149,8 +151,11 @@ struct AutomationsView: View {
             .padding(.vertical, HandySpacing.s12)
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-            HStack(spacing: HandySpacing.s8) {
+            }
+            // Two even rows: what you made and what's ready-made, then everything it made and Settings.
+            LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8)], spacing: HandySpacing.s8) {
                 shortcut("My tools", "square.stack.3d.up.fill", 0x7B5CFF, sub: toolCount == 0 ? L("Build one") : "\(toolCount) \(L("saved"))", "mytools")
+                shortcut("Ready-made tools", "square.grid.2x2.fill", 0xEC4899, sub: "Start from one", "readymade")
                 shortcut("History", "clock.arrow.circlepath", 0x0EA5E9, sub: "Every result", "results")
                 shortcut("Settings", "gearshape.fill", 0x64748B, sub: "Theme, language", "settings")
             }

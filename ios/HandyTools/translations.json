@@ -43388,5 +43388,485 @@
   "ja": "連絡先、ライト、速度、空き容量、プライベート保管庫",
   "pt": "Seus contatos, lanterna, velocidade, espaço e um cofre privado",
   "zh": "联系人、手电筒、速度、空间和私密保险箱"
+ },
+ "Take better photos": {
+  "de": "Bessere Fotos",
+  "es": "Mejores fotos",
+  "fr": "De meilleures photos",
+  "hi": "बेहतर फ़ोटो लें",
+  "it": "Foto migliori",
+  "ja": "きれいに撮る",
+  "pt": "Fotos melhores",
+  "zh": "拍出好照片"
+ },
+ "Measure a room": {
+  "de": "Raum ausmessen",
+  "es": "Medir una habitación",
+  "fr": "Mesurer une pièce",
+  "hi": "कमरा नापें",
+  "it": "Misura una stanza",
+  "ja": "部屋を測る",
+  "pt": "Medir um cômodo",
+  "zh": "测量房间"
+ },
+ "Scan a QR code": {
+  "de": "QR-Code scannen",
+  "es": "Escanear un QR",
+  "fr": "Scanner un QR code",
+  "hi": "QR कोड स्कैन करें",
+  "it": "Scansiona un QR",
+  "ja": "QRコードを読む",
+  "pt": "Ler um QR code",
+  "zh": "扫描二维码"
+ },
+ "Save a business card": {
+  "de": "Visitenkarte speichern",
+  "es": "Guardar una tarjeta",
+  "fr": "Garder une carte de visite",
+  "hi": "विज़िटिंग कार्ड सहेजें",
+  "it": "Salva un biglietto",
+  "ja": "名刺を保存",
+  "pt": "Salvar cartão de visita",
+  "zh": "保存名片"
+ },
+ "Copy a receipt or table": {
+  "de": "Beleg oder Tabelle kopieren",
+  "es": "Copiar recibo o tabla",
+  "fr": "Copier reçu ou tableau",
+  "hi": "रसीद या तालिका कॉपी करें",
+  "it": "Copia scontrino o tabella",
+  "ja": "レシートや表を写す",
+  "pt": "Copiar recibo ou tabela",
+  "zh": "复制收据或表格"
+ },
+ "Tell colors apart": {
+  "de": "Farben erkennen",
+  "es": "Distinguir colores",
+  "fr": "Distinguer les couleurs",
+  "hi": "रंग पहचानें",
+  "it": "Distingui i colori",
+  "ja": "色を見分ける",
+  "pt": "Distinguir cores",
+  "zh": "分辨颜色"
+ },
+ "Fix a photo": {
+  "de": "Foto verbessern",
+  "es": "Arreglar una foto",
+  "fr": "Retoucher une photo",
+  "hi": "फ़ोटो सुधारें",
+  "it": "Sistema una foto",
+  "ja": "写真を補正",
+  "pt": "Arrumar uma foto",
+  "zh": "修照片"
+ },
+ "Make a collage": {
+  "de": "Collage machen",
+  "es": "Hacer un collage",
+  "fr": "Faire un collage",
+  "hi": "कोलाज बनाएँ",
+  "it": "Crea un collage",
+  "ja": "コラージュを作る",
+  "pt": "Fazer colagem",
+  "zh": "做拼图"
+ },
+ "Make a comic": {
+  "de": "Comic machen",
+  "es": "Hacer un cómic",
+  "fr": "Faire une BD",
+  "hi": "कॉमिक बनाएँ",
+  "it": "Crea un fumetto",
+  "ja": "マンガを作る",
+  "pt": "Fazer quadrinho",
+  "zh": "做漫画"
+ },
+ "Hide faces and location": {
+  "de": "Gesichter und Ort verbergen",
+  "es": "Ocultar caras y ubicación",
+  "fr": "Masquer visages et lieu",
+  "hi": "चेहरे और लोकेशन छिपाएँ",
+  "it": "Nascondi volti e luogo",
+  "ja": "顔と位置を隠す",
+  "pt": "Ocultar rostos e local",
+  "zh": "隐藏人脸和位置"
+ },
+ "Join screenshots": {
+  "de": "Screenshots verbinden",
+  "es": "Unir capturas",
+  "fr": "Assembler des captures",
+  "hi": "स्क्रीनशॉट जोड़ें",
+  "it": "Unisci screenshot",
+  "ja": "スクショをつなぐ",
+  "pt": "Juntar capturas",
+  "zh": "拼接截图"
+ },
+ "Fix files that won't open": {
+  "de": "Dateien öffnen, die nicht aufgehen",
+  "es": "Abrir archivos que fallan",
+  "fr": "Ouvrir les fichiers rebelles",
+  "hi": "न खुलने वाली फ़ाइलें ठीक करें",
+  "it": "Apri file che non si aprono",
+  "ja": "開けないファイルを直す",
+  "pt": "Abrir arquivos que não abrem",
+  "zh": "修复打不开的文件"
+ },
+ "Find a photo": {
+  "de": "Foto finden",
+  "es": "Encontrar una foto",
+  "fr": "Trouver une photo",
+  "hi": "फ़ोटो खोजें",
+  "it": "Trova una foto",
+  "ja": "写真を探す",
+  "pt": "Encontrar uma foto",
+  "zh": "找照片"
+ },
+ "Shrink or trim a video": {
+  "de": "Video kürzen oder verkleinern",
+  "es": "Reducir o recortar un vídeo",
+  "fr": "Réduire ou couper une vidéo",
+  "hi": "वीडियो छोटा या ट्रिम करें",
+  "it": "Riduci o taglia un video",
+  "ja": "動画を縮小・トリム",
+  "pt": "Reduzir ou cortar vídeo",
+  "zh": "压缩或剪辑视频"
+ },
+ "Add effects to a video": {
+  "de": "Effekte zum Video",
+  "es": "Efectos para un vídeo",
+  "fr": "Effets sur une vidéo",
+  "hi": "वीडियो में इफ़ेक्ट जोड़ें",
+  "it": "Effetti su un video",
+  "ja": "動画にエフェクト",
+  "pt": "Efeitos no vídeo",
+  "zh": "给视频加特效"
+ },
+ "Size a video for social": {
+  "de": "Video für Social Media",
+  "es": "Vídeo para redes sociales",
+  "fr": "Vidéo pour les réseaux",
+  "hi": "सोशल के लिए वीडियो",
+  "it": "Video per i social",
+  "ja": "SNS用に動画を調整",
+  "pt": "Vídeo para redes sociais",
+  "zh": "为社交平台调尺寸"
+ },
+ "Fit under a size limit": {
+  "de": "Unter ein Größenlimit",
+  "es": "Bajo un límite de tamaño",
+  "fr": "Sous une taille limite",
+  "hi": "साइज़ लिमिट में लाएँ",
+  "it": "Sotto un limite di peso",
+  "ja": "サイズ上限に収める",
+  "pt": "Abaixo do limite",
+  "zh": "压到大小限制内"
+ },
+ "Black out text": {
+  "de": "Text schwärzen",
+  "es": "Tachar texto",
+  "fr": "Caviarder du texte",
+  "hi": "टेक्स्ट काला करें",
+  "it": "Oscura il testo",
+  "ja": "文字を黒塗り",
+  "pt": "Tarjar texto",
+  "zh": "涂黑文字"
+ },
+ "Fill in a form": {
+  "de": "Formular ausfüllen",
+  "es": "Rellenar un formulario",
+  "fr": "Remplir un formulaire",
+  "hi": "फ़ॉर्म भरें",
+  "it": "Compila un modulo",
+  "ja": "フォームに記入",
+  "pt": "Preencher formulário",
+  "zh": "填写表格"
+ },
+ "Mark up a PDF": {
+  "de": "PDF markieren",
+  "es": "Anotar un PDF",
+  "fr": "Annoter un PDF",
+  "hi": "PDF पर निशान लगाएँ",
+  "it": "Annota un PDF",
+  "ja": "PDFに書き込む",
+  "pt": "Marcar um PDF",
+  "zh": "标注 PDF"
+ },
+ "Reorder PDF pages": {
+  "de": "PDF-Seiten ordnen",
+  "es": "Ordenar páginas PDF",
+  "fr": "Réorganiser les pages",
+  "hi": "PDF पेज क्रम बदलें",
+  "it": "Riordina pagine PDF",
+  "ja": "PDFのページ整理",
+  "pt": "Reordenar páginas",
+  "zh": "调整 PDF 页面"
+ },
+ "PDF to photos or text": {
+  "de": "PDF in Fotos oder Text",
+  "es": "PDF a fotos o texto",
+  "fr": "PDF en photos ou texte",
+  "hi": "PDF से फ़ोटो या टेक्स्ट",
+  "it": "PDF in foto o testo",
+  "ja": "PDFを写真や文字に",
+  "pt": "PDF em fotos ou texto",
+  "zh": "PDF 转图片或文字"
+ },
+ "Lock a PDF": {
+  "de": "PDF sperren",
+  "es": "Proteger un PDF",
+  "fr": "Verrouiller un PDF",
+  "hi": "PDF लॉक करें",
+  "it": "Blocca un PDF",
+  "ja": "PDFにロック",
+  "pt": "Bloquear um PDF",
+  "zh": "加密 PDF"
+ },
+ "Zip files together": {
+  "de": "Dateien zippen",
+  "es": "Comprimir archivos",
+  "fr": "Zipper des fichiers",
+  "hi": "फ़ाइलें ज़िप करें",
+  "it": "Comprimi file",
+  "ja": "ファイルをZIPに",
+  "pt": "Compactar arquivos",
+  "zh": "打包压缩文件"
+ },
+ "Open any file": {
+  "de": "Jede Datei öffnen",
+  "es": "Abrir cualquier archivo",
+  "fr": "Ouvrir tout fichier",
+  "hi": "कोई भी फ़ाइल खोलें",
+  "it": "Apri qualsiasi file",
+  "ja": "どんなファイルも開く",
+  "pt": "Abrir qualquer arquivo",
+  "zh": "打开任意文件"
+ },
+ "Edit a recording": {
+  "de": "Aufnahme bearbeiten",
+  "es": "Editar una grabación",
+  "fr": "Modifier un enregistrement",
+  "hi": "रिकॉर्डिंग एडिट करें",
+  "it": "Modifica una registrazione",
+  "ja": "録音を編集",
+  "pt": "Editar gravação",
+  "zh": "编辑录音"
+ },
+ "Change audio format": {
+  "de": "Audioformat ändern",
+  "es": "Cambiar formato de audio",
+  "fr": "Changer le format audio",
+  "hi": "ऑडियो फ़ॉर्मेट बदलें",
+  "it": "Cambia formato audio",
+  "ja": "音声形式を変える",
+  "pt": "Mudar formato de áudio",
+  "zh": "转换音频格式"
+ },
+ "Fix song info": {
+  "de": "Song-Infos korrigieren",
+  "es": "Corregir datos de canción",
+  "fr": "Corriger les infos du titre",
+  "hi": "गाने की जानकारी ठीक करें",
+  "it": "Correggi info brano",
+  "ja": "曲情報を直す",
+  "pt": "Corrigir info da música",
+  "zh": "修正歌曲信息"
+ },
+ "Change your voice": {
+  "de": "Stimme verändern",
+  "es": "Cambiar tu voz",
+  "fr": "Changer de voix",
+  "hi": "आवाज़ बदलें",
+  "it": "Cambia la tua voce",
+  "ja": "声を変える",
+  "pt": "Mudar sua voz",
+  "zh": "变声"
+ },
+ "Tune an instrument": {
+  "de": "Instrument stimmen",
+  "es": "Afinar un instrumento",
+  "fr": "Accorder un instrument",
+  "hi": "वाद्य ट्यून करें",
+  "it": "Accorda uno strumento",
+  "ja": "楽器のチューニング",
+  "pt": "Afinar instrumento",
+  "zh": "给乐器调音"
+ },
+ "Fix or rewrite text": {
+  "de": "Text korrigieren",
+  "es": "Corregir o reescribir",
+  "fr": "Corriger ou réécrire",
+  "hi": "टेक्स्ट सुधारें या लिखें",
+  "it": "Correggi o riscrivi",
+  "ja": "文章を直す",
+  "pt": "Corrigir ou reescrever",
+  "zh": "修改或改写文字"
+ },
+ "Translate anything": {
+  "de": "Alles übersetzen",
+  "es": "Traducir lo que sea",
+  "fr": "Tout traduire",
+  "hi": "कुछ भी अनुवाद करें",
+  "it": "Traduci tutto",
+  "ja": "何でも翻訳",
+  "pt": "Traduzir qualquer coisa",
+  "zh": "翻译任何内容"
+ },
+ "Notes from speech": {
+  "de": "Notizen aus Sprache",
+  "es": "Notas de voz",
+  "fr": "Notes vocales",
+  "hi": "बोलकर नोट्स",
+  "it": "Note dalla voce",
+  "ja": "音声からメモ",
+  "pt": "Notas por voz",
+  "zh": "语音转笔记"
+ },
+ "Magnify and read aloud": {
+  "de": "Vergrößern und vorlesen",
+  "es": "Ampliar y leer en voz alta",
+  "fr": "Agrandir et lire à voix haute",
+  "hi": "बड़ा करें और पढ़कर सुनाएँ",
+  "it": "Ingrandisci e leggi",
+  "ja": "拡大して読み上げ",
+  "pt": "Ampliar e ler em voz alta",
+  "zh": "放大并朗读"
+ },
+ "Is this a scam?": {
+  "de": "Ist das Betrug?",
+  "es": "¿Es una estafa?",
+  "fr": "Est-ce une arnaque ?",
+  "hi": "क्या यह घोटाला है?",
+  "it": "È una truffa?",
+  "ja": "これは詐欺？",
+  "pt": "É golpe?",
+  "zh": "这是诈骗吗？"
+ },
+ "Photo to checklist": {
+  "de": "Foto zur Checkliste",
+  "es": "Foto a lista",
+  "fr": "Photo en liste",
+  "hi": "फ़ोटो से चेकलिस्ट",
+  "it": "Foto in checklist",
+  "ja": "写真をリストに",
+  "pt": "Foto em checklist",
+  "zh": "照片转清单"
+ },
+ "Morning summary": {
+  "de": "Morgen-Überblick",
+  "es": "Resumen matutino",
+  "fr": "Résumé du matin",
+  "hi": "सुबह का सारांश",
+  "it": "Riepilogo del mattino",
+  "ja": "朝のまとめ",
+  "pt": "Resumo da manhã",
+  "zh": "早间摘要"
+ },
+ "Mood diary": {
+  "de": "Stimmungstagebuch",
+  "es": "Diario de ánimo",
+  "fr": "Journal d'humeur",
+  "hi": "मूड डायरी",
+  "it": "Diario dell'umore",
+  "ja": "気分日記",
+  "pt": "Diário de humor",
+  "zh": "心情日记"
+ },
+ "Track a bill": {
+  "de": "Rechnung im Blick",
+  "es": "Seguir una factura",
+  "fr": "Suivre une facture",
+  "hi": "बिल पर नज़र रखें",
+  "it": "Segui una bolletta",
+  "ja": "請求書を管理",
+  "pt": "Acompanhar conta",
+  "zh": "追踪账单"
+ },
+ "Keep receipts": {
+  "de": "Belege aufbewahren",
+  "es": "Guardar recibos",
+  "fr": "Garder les reçus",
+  "hi": "रसीदें सँभालें",
+  "it": "Conserva scontrini",
+  "ja": "レシートを保管",
+  "pt": "Guardar recibos",
+  "zh": "保存收据"
+ },
+ "Compare prices": {
+  "de": "Preise vergleichen",
+  "es": "Comparar precios",
+  "fr": "Comparer les prix",
+  "hi": "कीमतें तुलना करें",
+  "it": "Confronta i prezzi",
+  "ja": "価格を比べる",
+  "pt": "Comparar preços",
+  "zh": "比价"
+ },
+ "Contacts and backup": {
+  "de": "Kontakte und Backup",
+  "es": "Contactos y copia",
+  "fr": "Contacts et sauvegarde",
+  "hi": "संपर्क और बैकअप",
+  "it": "Contatti e backup",
+  "ja": "連絡先とバックアップ",
+  "pt": "Contatos e backup",
+  "zh": "联系人与备份"
+ },
+ "Flashlight and SOS": {
+  "de": "Taschenlampe und SOS",
+  "es": "Linterna y SOS",
+  "fr": "Lampe et SOS",
+  "hi": "टॉर्च और SOS",
+  "it": "Torcia e SOS",
+  "ja": "ライトとSOS",
+  "pt": "Lanterna e SOS",
+  "zh": "手电筒与 SOS"
+ },
+ "Free up space": {
+  "de": "Speicher freigeben",
+  "es": "Liberar espacio",
+  "fr": "Libérer de l'espace",
+  "hi": "जगह खाली करें",
+  "it": "Libera spazio",
+  "ja": "空き容量を増やす",
+  "pt": "Liberar espaço",
+  "zh": "释放空间"
+ },
+ "Find my car": {
+  "de": "Mein Auto finden",
+  "es": "Encontrar mi coche",
+  "fr": "Retrouver ma voiture",
+  "hi": "मेरी कार ढूँढें",
+  "it": "Trova la mia auto",
+  "ja": "車を探す",
+  "pt": "Encontrar meu carro",
+  "zh": "找我的车"
+ },
+ "Hide private photos": {
+  "de": "Private Fotos verstecken",
+  "es": "Ocultar fotos privadas",
+  "fr": "Cacher des photos privées",
+  "hi": "निजी फ़ोटो छिपाएँ",
+  "it": "Nascondi foto private",
+  "ja": "写真を隠す",
+  "pt": "Ocultar fotos privadas",
+  "zh": "隐藏私密照片"
+ },
+ "Ready-made tools": {
+  "de": "Fertige Werkzeuge",
+  "es": "Herramientas listas",
+  "fr": "Outils tout prêts",
+  "hi": "तैयार टूल",
+  "it": "Strumenti pronti",
+  "ja": "既製のツール",
+  "pt": "Ferramentas prontas",
+  "zh": "现成工具"
+ },
+ "Start from one": {
+  "de": "Mit einem starten",
+  "es": "Empieza con una",
+  "fr": "Partir d'un modèle",
+  "hi": "किसी एक से शुरू करें",
+  "it": "Parti da uno",
+  "ja": "ここから始める",
+  "pt": "Comece por uma",
+  "zh": "从一个开始"
  }
 }

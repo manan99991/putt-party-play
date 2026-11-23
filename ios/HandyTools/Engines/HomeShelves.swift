@@ -51,6 +51,33 @@ enum HomeShelves {
     /// The shelf a tool sits on, if any.
     static func shelf(of tool: String) -> Shelf? { all.first { $0.tools.contains(tool) } }
 
+    /// What each Home tile says: the job, in the words people search with (Manan, 23 Nov, UX audit decision 1:
+    /// "Scan a document", not "Scan"; "Copy a receipt or table", not "Data Grabber"). The tool keeps its own name on
+    /// its own screen. Every name fits two lines on the narrowest iPhone (a unit test measures it).
+    static let jobNames: [String: String] = [
+        "scan": "Scan a document", "identify": "What is this?", "procam": "Take better photos", "measure": "Measure a room",
+        "qrwifi": "Scan a QR code", "menu": "Read a menu", "cards": "Save a business card",
+        "datagrab": "Copy a receipt or table", "colorvision": "Tell colors apart",
+        "studio": "Fix a photo", "sticker": "Make a sticker", "collage": "Make a collage", "comicstrip": "Make a comic",
+        "scrub": "Hide faces and location", "stitch": "Join screenshots", "formatfix": "Fix files that won't open",
+        "memory": "Find a photo",
+        "video": "Shrink or trim a video", "celebrate": "Add effects to a video", "post": "Size a video for social",
+        "animate": "Turn photos into a video", "fitit": "Fit under a size limit",
+        "pdfsign": "Sign a PDF", "pdfredact": "Black out text", "pdfform": "Fill in a form", "pdfannotate": "Mark up a PDF",
+        "pdfpages": "Reorder PDF pages", "pdfconvert": "PDF to photos or text", "pdfprotect": "Lock a PDF",
+        "zipmaker": "Zip files together", "fileviewer": "Open any file",
+        "audiostudio": "Edit a recording", "audioconvert": "Change audio format", "audiotags": "Fix song info",
+        "soundboard": "Change your voice", "audiolab": "Tune an instrument", "rest": "Sleep sounds",
+        "textstudio": "Fix or rewrite text", "translate": "Translate anything", "speechnotes": "Notes from speech",
+        "seeread": "Magnify and read aloud", "shield": "Is this a scam?", "thinking": "Think it through",
+        "medreminder": "Medicine reminders", "untangle": "Plan my day", "planner": "Photo to checklist",
+        "brief": "Morning summary", "daydiary": "Mood diary", "sorted": "Track a bill", "warranty": "Keep receipts",
+        "pricewatch": "Watch a price", "pricecheck": "Compare prices",
+        "contacts": "Contacts and backup", "light": "Flashlight and SOS", "cleaner": "Free up space",
+        "gpsdash": "Find my car", "vault": "Hide private photos",
+    ]
+    static func jobName(_ id: String) -> String? { jobNames[id] }
+
     /// Every tool id Home reaches: its shelves, its own tiles, and the tools each "start with what you have" tile
     /// offers. A tool that lives inside another one (`homes`) counts when that one is reached.
     static func reached(handoff: (ChainKind) -> [String], homes: [String: String]) -> Set<String> {

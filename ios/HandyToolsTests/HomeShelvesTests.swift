@@ -47,4 +47,24 @@ final class HomeShelvesTests: XCTestCase {
         XCTAssertEqual(HomeShelves.shelf(of: "contacts")?.title, "Contacts & phone")
         XCTAssertEqual(HomeShelves.shelf(of: "pdfsign")?.id, "pdf")
     }
+
+    /// Audit decision 1 (23 Nov): every Home tile says the job, each one different, and fits two lines at one text size
+    /// on the narrowest iPhone (375 points wide): 89 points of text in the roomy tile, 93 in the compact one.
+    func testEveryTileHasAJobNameThatFitsTwoLines() {
+        let tiled = HomeShelves.all.flatMap(\.tools)
+        let missing = tiled.filter { HomeShelves.jobName($0) == nil }
+        XCTAssertEqual(missing, [], "No job name: \(missing)")
+        let names = tiled.compactMap { HomeShelves.jobName($0) }
+        XCTAssertEqual(Set(names).count, names.count, "Two tiles say the same thing")
+        func lines(_ text: String, size: CGFloat, width: CGFloat) -> Int {
+            let font = UIFont.systemFont(ofSize: size, weight: .semibold)
+            let r = (text as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: [.usesLineFragmentOrigin],
+                                                     attributes: [.font: font], context: nil)
+            return Int((r.height / font.lineHeight).rounded())
+        }
+        for n in names {
+            XCTAssertLessThanOrEqual(lines(n, size: 13, width: 89), 2, "\"\(n)\" needs more than two lines in a tile")
+            XCTAssertLessThanOrEqual(lines(n, size: 12, width: 93), 2, "\"\(n)\" needs more than two lines in a compact tile")
+        }
+    }
 }

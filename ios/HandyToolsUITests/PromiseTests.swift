@@ -31,10 +31,11 @@ final class PromiseTests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["-route", "home", "-uitest"]
         app.launch()
-        let mine = app.buttons["home-mytools"]
-        XCTAssertTrue(mine.waitForExistence(timeout: 20), "no My tools on Home")
         let any = app.descendants(matching: .any)
-        for id in ["home-mytools", "have-photo", "have-paste", "have-reminders", "home-templates"] {
+        XCTAssertTrue(any["have-photo"].firstMatch.waitForExistence(timeout: 20), "Home didn't open")
+        // My tools, Ready-made tools and Reminders moved to the My stuff tab (23 Nov audit decision 3).
+        XCTAssertFalse(any["home-templates"].firstMatch.exists, "Templates is still on Home")
+        for id in ["have-photo", "have-paste"] {
             XCTAssertTrue(any[id].firstMatch.isHittable, "\(id) isn't on screen without scrolling")
         }
         let tabs = ["camera": 9, "photos": 8, "video": 5, "pdf": 9, "audio": 6, "words": 6, "day": 9, "phone": 5]
@@ -83,6 +84,21 @@ final class PromiseTests: XCTestCase {
         XCTAssertFalse(run.exists, "still on My tools after tapping Run")
         app.buttons["Done"].firstMatch.tap()
         XCTAssertTrue(run.waitForExistence(timeout: 10), "Done after a run didn't come back to My tools")
+    }
+
+    /// Audit decision 3 (23 Nov): Templates moved off Home into My stuff as "Ready-made tools". It opens the list, and
+    /// Done lands back on My stuff, never a blank page.
+    func testReadyMadeToolsOpenFromMyStuffAndComeBack() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "mystuff", "-uitest"]
+        app.launch()
+        let entry = app.descendants(matching: .any)["mine-readymade"].firstMatch
+        XCTAssertTrue(entry.waitForExistence(timeout: 20), "My stuff has no Ready-made tools")
+        entry.tap()
+        XCTAssertTrue(app.navigationBars["Ready-made tools"].waitForExistence(timeout: 15), "Ready-made tools didn't open")
+        app.buttons["Done"].firstMatch.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["mine-readymade"].firstMatch.waitForExistence(timeout: 10),
+                      "Done didn't come back to My stuff")
     }
 
     /// "Editable watermark text — type the words instead of a fixed message" (said done; was only in Edit tool).

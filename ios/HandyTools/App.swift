@@ -567,6 +567,7 @@ struct HomeView: View {
                 case "builder": BuilderView().toolbarRole(.editor)
                 case "builderdemo": BuilderView(showDemo: true).toolbarRole(.editor)   // Settings › How Tenzy works › Show me one
                 case "mytools": BuilderView(openMine: true).toolbarRole(.editor)   // My stuff › My tools
+                case "readymade": BuilderView(openReadyMade: true).toolbarRole(.editor)   // My stuff › Ready-made tools
                 case "explore": ExploreView().toolbarRole(.editor)                 // Home › All tools
                 case "automations": AutomationsView().toolbarRole(.editor)   // the personal-assistant hub
                 case "results": HistoryView().toolbarRole(.editor)   // a finished-job notification lands here

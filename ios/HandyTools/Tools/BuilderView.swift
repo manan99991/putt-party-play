@@ -440,6 +440,8 @@ fileprivate func loadWithinTimeout<T: Sendable>(_ seconds: Double, _ work: @esca
 struct BuilderView: View {
     /// Opened from My stuff › My tools: show the saved tools straight away, and go back when they're closed.
     var openMine = false
+    /// Opened from My stuff › Ready-made tools: show the ready-made list straight away, and go back when it's closed.
+    var openReadyMade = false
     /// Opened from Settings › How Tenzy works › Show me one: a ready-made tool in the editor, steps working on a sample.
     var showDemo = false
     @Environment(\.dismiss) private var dismissPage
@@ -695,7 +697,7 @@ struct BuilderView: View {
                 } message: { Text(deleteMessage) }
             }
         }
-        .sheet(isPresented: $showTemplates, onDismiss: { pasteNote = nil }) {
+        .sheet(isPresented: $showTemplates, onDismiss: { pasteNote = nil; if openReadyMade && editing == nil { dismissPage() } }) {
             NavigationStack {
                 ScrollView {
                     VStack(alignment: .leading, spacing: HandySpacing.s12) {
@@ -753,7 +755,7 @@ struct BuilderView: View {
                         }
                     }.padding(HandySpacing.gutter)
                 }
-                .navigationTitle(L("Templates")).navigationBarTitleDisplayMode(.inline)
+                .navigationTitle(L("Ready-made tools")).navigationBarTitleDisplayMode(.inline)
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { showTemplates = false } } }
             }
         }
@@ -774,6 +776,7 @@ struct BuilderView: View {
             if Launch.uitest, Launch.args.contains("-seedtool"), let t = ChainTemplates.all.first(where: { $0.id == "photo-under-2mb" }),
                !mine.contains(where: { $0.id == t.id }) { mine.insert(t, at: 0); persist() }
             if openMine { showMine = true }
+            if openReadyMade { showTemplates = true }
             if showDemo, var demo = ChainTemplates.all.first(where: { $0.id == BuilderIntro.demoID }) {
                 demo.id = UUID().uuidString; demo.name += " (mine)"; editing = demo
             }
@@ -893,34 +896,9 @@ struct BuilderView: View {
                 }
                 Spacer(minLength: 0)
             }
-            HStack(spacing: HandySpacing.s8) {
-                profileAction("My tools", icon: "square.stack.3d.up.fill", count: mine.count) { showMine = true }
-                    .accessibilityIdentifier("home-mytools")
-                profileAction("Templates", icon: "square.grid.2x2.fill", count: nil) { showTemplates = true }
-                    .accessibilityIdentifier("home-templates")
-                profileAction("Reminders", icon: "bell.badge.fill", count: nil) { NotificationCenter.default.post(name: .showMyStuff, object: nil) }
-                    .accessibilityIdentifier("have-reminders")
-            }
+            // My tools, Ready-made tools and Reminders live in the My stuff tab (23 Nov audit decision 3: they repeated it
+            // here and took the room the "For you now" cards need).
         }
-    }
-
-    private func profileAction(_ title: String, icon: String, count: Int?, _ action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: 6) {
-                Image(systemName: icon).font(.system(size: 13, weight: .semibold)).foregroundStyle(HandyColor.accent).accessibilityHidden(true)
-                Text(L(title)).font(.system(size: 14, weight: .semibold)).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.75)
-                if let count, count > 0 {
-                    Text("\(count)").font(.system(size: 11, weight: .bold)).foregroundStyle(HandyColor.onAccent)
-                        .padding(.horizontal, 6).padding(.vertical, 1).background(HandyColor.accent, in: Capsule())
-                }
-            }
-            .padding(.horizontal, 6)
-            .frame(maxWidth: .infinity, minHeight: shortScreen ? 40 : 44)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-            .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-        }
-        .buttonStyle(.plain)
     }
 
     /// Start with what you have (six small tiles, one row), then the category tabs — all eight on screen, no sideways
