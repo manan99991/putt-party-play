@@ -338,9 +338,11 @@ private struct ResultTile: View {
 private struct VideoPlayerSheet: View {
     let url: URL
     @State private var player = AVPlayer()
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         VideoPlayer(player: player)
             .ignoresSafeArea()
+            .sheetCloseButton { dismiss() }
             .onAppear { player.replaceCurrentItem(with: AVPlayerItem(url: url)); player.play() }
             .onDisappear { player.pause() }
     }

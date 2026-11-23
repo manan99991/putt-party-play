@@ -599,6 +599,16 @@ enum Transcriber {
                 if scored.count > 1, scored[1].1 > b.1 - 0.2, let r = SFSpeechRecognizer(locale: scored[1].0) { also = r }
             }
         }
+        // The phone's best transcriber first (BestSpeech): the whole file in one pass, nothing dropped after a pause.
+        // When two languages came close (mixed talk), the older per-stretch comparison below handles it instead.
+        if also == nil {
+            let readable = await readableAudioURL(for: url)
+            await MainActor.run { RunProgress.shared.begin() }
+            let best = await BestSpeech.transcribe(readable, locale: locale) { p in Task { @MainActor in RunProgress.shared.set(p) } }
+            await MainActor.run { RunProgress.shared.end() }
+            if readable != url { try? FileManager.default.removeItem(at: readable) }
+            if let best { return .success(Heard(text: best.text, words: best.words, cantDo: cantDo)) }
+        }
         // The chosen language first; fall back to the device's, then any available recognizer, so a tool
         // set to transcribe Hindi uses a Hindi recogniser instead of forcing the words through English.
         guard let recognizer = (SFSpeechRecognizer(locale: locale).flatMap { $0.supportsOnDeviceRecognition ? $0 : nil })

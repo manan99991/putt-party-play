@@ -53,12 +53,16 @@ enum MeetingNotes {
         Permission.speech { asked.finish($0) }
         let status = await withCheckedContinuation { asked.wait($0) }
         guard status == .authorized else { return .failure(.denied) }
+        let readURL = await Transcriber.readableAudioURL(for: url)
+        defer { if readURL != url { try? FileManager.default.removeItem(at: readURL) } }
+        // The phone's best transcriber first — the whole recording, every word (BestSpeech).
+        if let best = await BestSpeech.transcribe(readURL, locale: locale, progress: progress) {
+            return .success((best.text, best.words.map { Timed(text: $0.text, start: $0.start, end: $0.end) }))
+        }
         guard let recognizer = (SFSpeechRecognizer(locale: locale).flatMap { $0.supportsOnDeviceRecognition ? $0 : nil })
                 ?? SFSpeechRecognizer(locale: Locale.current) ?? SFSpeechRecognizer(),
               recognizer.isAvailable, recognizer.supportsOnDeviceRecognition else { return .failure(.unavailable) }
 
-        let readURL = await Transcriber.readableAudioURL(for: url)
-        defer { if readURL != url { try? FileManager.default.removeItem(at: readURL) } }
         guard let file = try? AVAudioFile(forReading: readURL) else { return .failure(.nothing) }
         let fmt = file.processingFormat
         let total = file.length

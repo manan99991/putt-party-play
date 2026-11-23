@@ -399,6 +399,7 @@ struct DiaryCalendarView: View {
 struct DiaryDayView: View {
     let day: DayDiary.Day
     @State private var playable: [UUID: URL] = [:]
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         NavigationStack {
             List {
@@ -419,6 +420,8 @@ struct DiaryDayView: View {
             }
             .navigationTitle(Self.title(day.key))
             .navigationBarTitleDisplayMode(.inline)
+            // Every page has a way out (Manan, 22 Nov: "missing a close page button here").
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() }.accessibilityIdentifier("diary-day-done") } }
         }
         .onAppear {
             for n in day.notes { if let a = n.audio, let u = DiaryStore.shared.playable(a) { playable[n.id] = u } }
