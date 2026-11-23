@@ -41,6 +41,14 @@ class HomeShelvesTest {
         HomeShelves.all.flatMap { it.tools }.forEach { assertTrue("$it isn't a screen", it in routes) }
     }
 
+    @Test fun welcomeChoicesOpenARealTab() {
+        val ids = HomeShelves.tabs(true).map { it.id }.toSet()
+        WelcomeChoice.values().forEach { assertTrue("$it opens ${it.homeTab}, which Home doesn't have", it.homeTab in ids) }
+        assertEquals(null, WelcomeChoice.homeTab(emptySet()))
+        assertEquals("business", WelcomeChoice.homeTab(setOf(WelcomeChoice.PHOTOS, WelcomeChoice.BUSINESS)))
+        assertEquals("photos", WelcomeChoice.homeTab(setOf(WelcomeChoice.WORDS, WelcomeChoice.PHOTOS)))
+    }
+
     @Test fun theCarCardShowsForTwoDaysAndNotNowHidesIt() {
         val now = 1_795_460_400_000L
         assertEquals(emptyList<ForYouAndroid.Card>(), ForYouAndroid.cards(null, now, emptyMap()))

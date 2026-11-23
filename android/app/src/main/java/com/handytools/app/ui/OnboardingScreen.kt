@@ -9,6 +9,10 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.ui.platform.testTag
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,44 +57,85 @@ object Onboarding {
 
 private val ILLOS = listOf(R.drawable.illo_clipboard, R.drawable.illo_alarm, R.drawable.illo_screenshot, R.drawable.illo_flashlight, R.drawable.illo_sticky, R.drawable.illo_qr)
 
-/** Three pages, shown once. Skip on every page. Page 1 is the brand-blue hero with the illustration set cycling. */
-@OptIn(ExperimentalFoundationApi::class)
+/** What the welcome's optional "What do you want help with?" offers, and the Home tab each opens (same as iPhone). */
+enum class WelcomeChoice(val title: String, val homeTab: String) {
+    PHOTOS("Photos and space", "photos"), DOCUMENTS("Documents and PDFs", "files"), DAILY("Daily life and health", "day"),
+    CAR("Car and travel", "phone"), CONTACTS("Contacts and phone", "phone"), WORDS("Words and messages", "words"),
+    BUSINESS("Running a small business", "business");
+    companion object {
+        /** Running a small business opens the Business tab first; otherwise the first choice in the order shown decides. */
+        fun homeTab(picked: Set<WelcomeChoice>): String? =
+            if (BUSINESS in picked) "business" else values().firstOrNull { it in picked }?.homeTab
+    }
+}
+
+/**
+ * One welcome screen, shown once (UX audit decision 4, same as the iPhone): what Tenzy is in one line, an optional
+ * "What do you want help with?", then Home. No permission prompts here — each tool asks when it's first used.
+ * [startPage] and [onSeePro] stay for the old routes; there is one page now and no price talk before the app is used.
+ */
 @Composable
 fun OnboardingScreen(startPage: Int = 0, onDone: () -> Unit, onSeePro: () -> Unit) {
-    val pager = rememberPagerState(initialPage = startPage) { 3 }
-    val scope = rememberCoroutineScope()
-    val onBlue = pager.currentPage == 0
-
-    Box(Modifier.fillMaxSize().background(if (onBlue) HandyColors.Accent else MaterialTheme.colorScheme.background)) {
-        HorizontalPager(pager, Modifier.fillMaxSize()) { page ->
-            when (page) {
-                0 -> HeroPage()
-                1 -> GridPage()
-                else -> ProPage(onSeePro)
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    var picked by remember { androidx.compose.runtime.mutableStateOf(setOf<WelcomeChoice>()) }
+    var idx by remember { mutableIntStateOf(0) }
+    LaunchedEffect(Unit) { while (true) { delay(2200); idx = (idx + 1) % ILLOS.size } }
+    fun finish() {
+        if (WelcomeChoice.BUSINESS in picked) HomeShelves.setBusiness(ctx, true)
+        WelcomeChoice.homeTab(picked)?.let { ctx.getSharedPreferences(HomeShelves.PREFS, 0).edit().putString(HomeShelves.TAB_KEY, it).apply() }
+        onDone()
+    }
+    androidx.compose.foundation.layout.BoxWithConstraints(Modifier.fillMaxSize().background(HandyColors.Accent)) {
+        val tall = maxHeight >= 720.dp
+        Column(
+            Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().padding(horizontal = HandyTokens.Space24, vertical = HandyTokens.Space16),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Row(Modifier.fillMaxWidth()) {
+                Spacer(Modifier.weight(1f))
+                HTextButtonOn(Color.White, com.handytools.app.I18n.t("Skip"), Modifier) { finish() }
             }
-        }
-        // Skip
-        HTextButtonOn(if (onBlue) Color.White else HandyColors.Accent, "Skip", Modifier.align(Alignment.TopEnd).statusBarsPadding().padding(HandyTokens.Space8)) { onDone() }
-        // Dots + primary
-        Column(Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(horizontal = HandyTokens.Space24, vertical = HandyTokens.Space24), horizontalAlignment = Alignment.CenterHorizontally) {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                repeat(3) { i ->
-                    val active = i == pager.currentPage
-                    Box(Modifier.size(if (active) 10.dp else 8.dp).background(
-                        if (onBlue) Color.White.copy(alpha = if (active) 1f else 0.4f) else if (active) HandyColors.Accent else Handy.palette.border, CircleShape))
+            // Short phones leave the drawing out so the seven choices and Start still fit.
+            if (tall) {
+                AnimatedContent(idx, transitionSpec = { fadeIn(tween(400)) togetherWith fadeOut(tween(400)) }, label = "illo") { i ->
+                    Image(painterResource(ILLOS[i]), null, Modifier.size(120.dp))
                 }
+                Spacer(Modifier.height(HandyTokens.Space12))
             }
-            Spacer(Modifier.height(HandyTokens.Space16))
-            val label = when (pager.currentPage) { 0 -> "Show me"; 1 -> "Next"; else -> "Start using Tenzy" }
-            if (onBlue) {
-                androidx.compose.material3.Button(
-                    onClick = { scope.launch { pager.animateScrollToPage(1) } },
-                    modifier = Modifier.fillMaxWidth().height(HandyTokens.PrimaryButtonHeight),
-                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = HandyColors.Accent)
-                ) { Text(label, style = MaterialTheme.typography.labelLarge) }
-            } else {
-                HPrimaryButton(label) { if (pager.currentPage < 2) scope.launch { pager.animateScrollToPage(pager.currentPage + 1) } else onDone() }
+            Text(com.handytools.app.I18n.t("Everyday jobs, done on your phone"), color = Color.White, fontSize = 30.sp, lineHeight = 36.sp,
+                fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+            Spacer(Modifier.height(HandyTokens.Space8))
+            Text(com.handytools.app.I18n.t("Sign a PDF, shrink a video, find your car, remember your pills. Nothing is uploaded."),
+                color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.bodyLarge, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+            Spacer(Modifier.weight(1f))
+            Text(com.handytools.app.I18n.t("What do you want help with? (optional)"), color = Color.White, fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.fillMaxWidth())
+            Spacer(Modifier.height(HandyTokens.Space8))
+            WelcomeChoice.values().toList().chunked(2).forEach { row ->
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    row.forEach { c ->
+                        val on = c in picked
+                        Text(
+                            (if (on) "✓  " else "") + com.handytools.app.I18n.t(c.title), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 2,
+                            color = if (on) HandyColors.Accent else Color.White,
+                            modifier = Modifier.weight(1f).height(52.dp)
+                                .background(if (on) Color.White else Color.White.copy(alpha = 0.10f), androidx.compose.foundation.shape.RoundedCornerShape(14.dp))
+                                .border(1.dp, Color.White.copy(alpha = if (on) 0f else 0.35f), androidx.compose.foundation.shape.RoundedCornerShape(14.dp))
+                                .clickable { picked = if (on) picked - c else picked + c }
+                                .testTag("welcome-${c.name.lowercase()}")
+                                .wrapContentHeight(Alignment.CenterVertically).padding(horizontal = 12.dp),
+                        )
+                    }
+                    if (row.size == 1) Spacer(Modifier.weight(1f))
+                }
+                Spacer(Modifier.height(8.dp))
             }
+            Spacer(Modifier.height(HandyTokens.Space8))
+            androidx.compose.material3.Button(
+                onClick = { finish() },
+                modifier = Modifier.fillMaxWidth().height(HandyTokens.PrimaryButtonHeight).testTag("welcome-start"),
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = HandyColors.Accent),
+            ) { Text(com.handytools.app.I18n.t("Start"), style = MaterialTheme.typography.labelLarge) }
         }
     }
 }
@@ -98,91 +143,4 @@ fun OnboardingScreen(startPage: Int = 0, onDone: () -> Unit, onSeePro: () -> Uni
 @Composable
 private fun HTextButtonOn(color: Color, text: String, modifier: Modifier, onClick: () -> Unit) {
     androidx.compose.material3.TextButton(onClick = onClick, modifier = modifier) { Text(text, color = color, style = MaterialTheme.typography.labelLarge) }
-}
-
-@Composable
-private fun HeroPage() {
-    var idx by remember { mutableIntStateOf(0) }
-    LaunchedEffect(Unit) { while (true) { delay(2200); idx = (idx + 1) % ILLOS.size } }
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(horizontal = HandyTokens.Space24), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(Modifier.weight(0.6f))
-        AnimatedContent(idx, transitionSpec = { fadeIn(tween(400)) togetherWith fadeOut(tween(400)) }, label = "illo") { i ->
-            Image(painterResource(ILLOS[i]), null, Modifier.size(240.dp))
-        }
-        Spacer(Modifier.weight(0.5f))
-        Text("$TENZY_TOOL_COUNT tools your phone forgot.", color = Color.White, fontSize = 34.sp, lineHeight = 40.sp, fontWeight = FontWeight.Bold, letterSpacing = (-0.5).sp,
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Spacer(Modifier.height(HandyTokens.Space12))
-        Text(com.handytools.app.I18n.t("One tap each. Nothing leaves your phone."), color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.bodyLarge,
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Spacer(Modifier.weight(1.2f))
-    }
-}
-
-@Composable
-private fun GridPage() {
-    var hi by remember { mutableIntStateOf(0) }
-    val highlight = listOf(0, 4, 1) // Multi-Clipboard, Alarm Pro, Screenshot+
-    LaunchedEffect(Unit) { while (true) { delay(900); hi = (hi + 1) % highlight.size } }
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(horizontal = HandyTokens.Space24), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(Modifier.weight(0.5f))
-        // A non-interactive miniature of the real grid, highlighting three cards in sequence
-        Column(Modifier.fillMaxWidth(0.82f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            // Only tiles with real art — the fallback (tint+icon) tiles have iconRes 0, which would
-            // crash painterResource below.
-            TOOLS.filter { it.iconRes != 0 }.take(6).chunked(2).forEachIndexed { r, pair ->
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    pair.forEachIndexed { c, t ->
-                        val i = r * 2 + c
-                        val lit = highlight[hi] == i
-                        Box(Modifier.weight(1f).height(84.dp).background(if (lit) Handy.palette.accentSoft else MaterialTheme.colorScheme.surface, MaterialTheme.shapes.medium)
-                            .padding(12.dp)) {
-                            Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
-                                androidx.compose.foundation.Image(androidx.compose.ui.res.painterResource(t.iconRes), null, Modifier.size(24.dp))
-                                Text(t.name, style = MaterialTheme.typography.labelMedium, maxLines = 1)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        Spacer(Modifier.weight(0.5f))
-        Text(com.handytools.app.I18n.t("Pick a tool. It explains itself."), style = MaterialTheme.typography.headlineMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Spacer(Modifier.height(HandyTokens.Space12))
-        Text(com.handytools.app.I18n.t("Each one asks for only the permission it needs, when you turn it on."), style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary,
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Spacer(Modifier.weight(1.2f))
-    }
-}
-
-@Composable
-private fun ProPage(onSeePro: () -> Unit) {
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(horizontal = HandyTokens.Space24), horizontalAlignment = Alignment.CenterHorizontally) {
-        Spacer(Modifier.weight(0.5f))
-        HCard(Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(HandyTokens.Space16)) {
-                Row { Spacer(Modifier.weight(1.4f)); Cell("Free", true); Cell("Pro", true, accent = true) }
-                listOf("Tools" to ("A few" to "All of them"), "Clipboard history" to ("20" to "Unlimited"), "Alarms" to ("3" to "Unlimited"), "Price" to ("Free" to "$19.99 a year")).forEach { (k, v) ->
-                    Box(Modifier.fillMaxWidth().height(1.dp).background(Handy.palette.border))
-                    Row(Modifier.padding(vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text(k, Modifier.weight(1.4f), style = MaterialTheme.typography.bodyLarge); Cell(v.first); Cell(v.second, accent = true)
-                    }
-                }
-            }
-        }
-        Spacer(Modifier.weight(0.5f))
-        Text(com.handytools.app.I18n.t("Free stays free."), style = MaterialTheme.typography.headlineMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Spacer(Modifier.height(HandyTokens.Space12))
-        Text(com.handytools.app.I18n.t("Pro unlocks every tool, with no daily limits."), style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
-        Spacer(Modifier.height(HandyTokens.Space8))
-        HTextButton("See Pro", onClick = onSeePro)
-        Spacer(Modifier.weight(1.2f))
-    }
-}
-
-@Composable
-private fun androidx.compose.foundation.layout.RowScope.Cell(text: String, header: Boolean = false, accent: Boolean = false) {
-    Text(text, Modifier.weight(1f), style = if (header) MaterialTheme.typography.labelMedium else MaterialTheme.typography.bodyMedium,
-        color = if (accent) HandyColors.Accent else if (header) Handy.palette.textSecondary else MaterialTheme.colorScheme.onSurface,
-        fontWeight = if (accent && !header) FontWeight.SemiBold else null)
 }
