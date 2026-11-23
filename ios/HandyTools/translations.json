@@ -43178,5 +43178,105 @@
   "ja": "薬・予定・連絡先・気分・請求・値段・レシート",
   "pt": "Medicação, planos, contactos, humor, contas, preços e recibos",
   "zh": "用药、计划、联系人、心情、账单、价格和收据"
+ },
+ "Pro finish": {
+  "de": "Profi-Finish",
+  "es": "Acabado pro",
+  "fr": "Finition pro",
+  "hi": "प्रो फ़िनिश",
+  "it": "Finitura pro",
+  "ja": "プロ仕上げ",
+  "pt": "Acabamento pro",
+  "zh": "专业润色"
+ },
+ "Looking at your clip…": {
+  "de": "Dein Clip wird angesehen …",
+  "es": "Mirando tu clip…",
+  "fr": "Analyse de votre clip…",
+  "hi": "आपकी क्लिप देख रहे हैं…",
+  "it": "Sto guardando la tua clip…",
+  "ja": "クリップを確認中…",
+  "pt": "A analisar o seu clip…",
+  "zh": "正在查看你的视频…"
+ },
+ "This clip can't take the Pro finish — it's kept as filmed.": {
+  "de": "Dieser Clip kann kein Profi-Finish bekommen – er bleibt wie gefilmt.",
+  "es": "Este clip no admite el acabado pro: se queda tal como se grabó.",
+  "fr": "Ce clip ne peut pas recevoir la finition pro : il reste tel que filmé.",
+  "hi": "इस क्लिप पर प्रो फ़िनिश नहीं लग सकता — यह जैसा फ़िल्माया वैसा रहेगा।",
+  "it": "Questa clip non può avere la finitura pro: resta com'è stata girata.",
+  "ja": "このクリップにはプロ仕上げを使えません。撮影したまま残します。",
+  "pt": "Este clip não aceita o acabamento pro — fica como foi filmado.",
+  "zh": "此视频无法使用专业润色——保持原样。"
+ },
+ "Already level and well exposed — nothing to change.": {
+  "de": "Schon gerade und gut belichtet – nichts zu ändern.",
+  "es": "Ya está nivelado y bien expuesto: nada que cambiar.",
+  "fr": "Déjà droit et bien exposé : rien à changer.",
+  "hi": "पहले से सीधा और सही रोशनी में — कुछ बदलना नहीं।",
+  "it": "Già dritta e ben esposta: niente da cambiare.",
+  "ja": "すでに水平で露出も良好。変更は不要です。",
+  "pt": "Já está nivelado e bem exposto — nada a mudar.",
+  "zh": "已经水平且曝光良好——无需调整。"
+ },
+ "Horizon levelled": {
+  "de": "Horizont gerade gerückt",
+  "es": "Horizonte nivelado",
+  "fr": "Horizon redressé",
+  "hi": "क्षितिज सीधा किया",
+  "it": "Orizzonte raddrizzato",
+  "ja": "水平線を補正",
+  "pt": "Horizonte nivelado",
+  "zh": "已校正地平线"
+ },
+ "light and colour set": {
+  "de": "Licht und Farbe eingestellt",
+  "es": "luz y color ajustados",
+  "fr": "lumière et couleur réglées",
+  "hi": "रोशनी और रंग ठीक किए",
+  "it": "luce e colore regolati",
+  "ja": "明るさと色を調整",
+  "pt": "luz e cor ajustadas",
+  "zh": "已调整光线和色彩"
+ },
+ "Light and colour set the way a pro would.": {
+  "de": "Licht und Farbe eingestellt, wie es ein Profi tun würde.",
+  "es": "Luz y color ajustados como lo haría un profesional.",
+  "fr": "Lumière et couleur réglées comme le ferait un pro.",
+  "hi": "रोशनी और रंग वैसे ठीक किए जैसे कोई प्रो करता।",
+  "it": "Luce e colore regolati come farebbe un professionista.",
+  "ja": "プロのように明るさと色を調整しました。",
+  "pt": "Luz e cor ajustadas como um profissional faria.",
+  "zh": "像专业人士一样调整了光线和色彩。"
+ },
+ "Saved to Photos with the Pro finish.": {
+  "de": "Mit Profi-Finish in Fotos gesichert.",
+  "es": "Guardado en Fotos con el acabado pro.",
+  "fr": "Enregistré dans Photos avec la finition pro.",
+  "hi": "प्रो फ़िनिश के साथ Photos में सहेजा।",
+  "it": "Salvata in Foto con la finitura pro.",
+  "ja": "プロ仕上げで写真に保存しました。",
+  "pt": "Guardado em Fotografias com o acabamento pro.",
+  "zh": "已带专业润色保存到照片。"
+ },
+ "Finishing…": {
+  "de": "Wird fertiggestellt …",
+  "es": "Terminando…",
+  "fr": "Finalisation…",
+  "hi": "तैयार हो रहा है…",
+  "it": "Rifinitura…",
+  "ja": "仕上げ中…",
+  "pt": "A finalizar…",
+  "zh": "正在润色…"
+ },
+ "The finish couldn't be written on this phone — the clip is kept as filmed.": {
+  "de": "Das Finish ließ sich auf diesem Handy nicht schreiben – der Clip bleibt wie gefilmt.",
+  "es": "No se pudo aplicar el acabado en este teléfono: el clip se queda tal como se grabó.",
+  "fr": "La finition n'a pas pu être écrite sur ce téléphone : le clip reste tel que filmé.",
+  "hi": "इस फ़ोन पर फ़िनिश नहीं लिखा जा सका — क्लिप जैसी फ़िल्माई वैसी रहेगी।",
+  "it": "Non è stato possibile applicare la finitura su questo telefono: la clip resta com'è.",
+  "ja": "この端末では仕上げを書き出せませんでした。撮影したまま残します。",
+  "pt": "Não foi possível aplicar o acabamento neste telemóvel — o clip fica como foi filmado.",
+  "zh": "此手机无法写入润色——视频保持原样。"
  }
 }

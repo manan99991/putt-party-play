@@ -612,7 +612,8 @@ private struct ShotReview: View {
 
 struct VideoClip: Identifiable { let id = UUID(); let url: URL }
 
-/// Watch the clip before it goes anywhere: Save to Photos, Share, or Delete.
+/// Watch the clip before it goes anywhere — with the Pro finish already on it (level horizon, light and colour set the
+/// way a pro would), switchable off to compare — then Save to Photos, Share, or Delete.
 private struct VideoReview: View {
     let clip: VideoClip
     let done: (String) -> Void
@@ -620,11 +621,20 @@ private struct VideoReview: View {
     @State private var player: AVPlayer
     @State private var saving = false
     @State private var info = ""
+    @State private var pro = true
+    @State private var planning = true
+    @State private var composition: AVVideoComposition?
+    @State private var proNote: String?
+    /// The finished file, made once and reused by Save and Share.
+    @State private var finished: URL?
+    @State private var finishing = false
 
     init(clip: VideoClip, done: @escaping (String) -> Void) {
         self.clip = clip; self.done = done
         _player = State(initialValue: AVPlayer(url: clip.url))
     }
+
+    private var asset: AVURLAsset { AVURLAsset(url: clip.url) }
 
     var body: some View {
         NavigationStack {
@@ -634,19 +644,28 @@ private struct VideoReview: View {
                     .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .accessibilityIdentifier("procam-review-player")
                 if !info.isEmpty { Text(info).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                proRow
                 Button {
                     saving = true
                     Task {
-                        let ok = await VideoRecorder.saveToPhotos(clip.url)
+                        let url = await outputURL()
+                        let ok = await VideoRecorder.saveToPhotos(url)
                         saving = false
-                        if ok { HandyHaptics.success(); done(L("Saved to Photos.")); dismiss() }
+                        if ok { HandyHaptics.success(); done(L(pro && composition != nil ? "Saved to Photos with the Pro finish." : "Saved to Photos.")); dismiss() }
                         else { info = L("Photos access is off — allow it in Settings, or use Share to save it to Files.") }
                     }
-                } label: { Label(saving ? L("Saving…") : L("Save to Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }
-                    .primaryButton().disabled(saving).accessibilityIdentifier("procam-review-save")
+                } label: { Label(saving ? L(finishing ? "Finishing…" : "Saving…") : L("Save to Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }
+                    .primaryButton().disabled(saving || planning).accessibilityIdentifier("procam-review-save")
                 HStack(spacing: HandySpacing.s8) {
-                    ShareLink(item: clip.url) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
-                    Button(role: .destructive) { try? FileManager.default.removeItem(at: clip.url); done(L("Clip deleted.")); dismiss() } label: {
+                    if pro && composition != nil && finished == nil {
+                        // The finished file isn't made yet: make it, then the share sheet opens on it.
+                        Button { Task { _ = await outputURL() } } label: {
+                            Label(finishing ? L("Finishing…") : L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                        }.secondaryButton().disabled(finishing)
+                    } else {
+                        ShareLink(item: pro ? (finished ?? clip.url) : clip.url) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                    }
+                    Button(role: .destructive) { try? FileManager.default.removeItem(at: clip.url); if let f = finished { try? FileManager.default.removeItem(at: f) }; done(L("Clip deleted.")); dismiss() } label: {
                         Label(L("Delete"), systemImage: "trash").frame(maxWidth: .infinity)
                     }.secondaryButton()
                 }
@@ -661,13 +680,60 @@ private struct VideoReview: View {
             try? AVAudioSession.sharedInstance().setActive(true)
             player.play()
             Task {
-                let a = AVURLAsset(url: clip.url)
+                let a = asset
                 let d = (try? await a.load(.duration).seconds) ?? 0
                 let size = ((try? FileManager.default.attributesOfItem(atPath: clip.url.path)[.size]) as? NSNumber)?.int64Value ?? 0
                 let tracks = (try? await a.loadTracks(withMediaType: .audio).count) ?? 0
                 info = "\(FilmingCoach.timeText(d)) · \(ByteCountFormatter.string(fromByteCount: size, countStyle: .file))" + (tracks == 0 ? " · \(L("no sound"))" : "")
+                // The Pro finish, worked out once from the middle of the clip and shown live in the player.
+                if let plan = await VideoPro.plan(for: a) {
+                    if plan.isEmpty { proNote = L("Already level and well exposed — nothing to change.") }
+                    else if let comp = await VideoPro.composition(for: a, plan: plan) {
+                        composition = comp
+                        proNote = plan.tilt.map { "\(L("Horizon levelled")) (\(String(format: "%.1f", abs($0)))°) · \(L("light and colour set"))" } ?? L("Light and colour set the way a pro would.")
+                        show()
+                    }
+                }
+                planning = false
             }
         }
+        .onChange(of: pro) { _, _ in show() }
         .onDisappear { player.pause() }
+    }
+
+    private var proRow: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Toggle(isOn: $pro) {
+                Label(L("Pro finish"), systemImage: "wand.and.stars").font(HandyFont.bodyStrong)
+            }
+            .tint(HandyColor.accent).disabled(planning || composition == nil)
+            .accessibilityIdentifier("procam-review-pro")
+            Text(planning ? L("Looking at your clip…") : (proNote ?? L("This clip can't take the Pro finish — it's kept as filmed.")))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+        }
+        .cardStyle(padding: HandySpacing.s12)
+    }
+
+    /// Show the clip with or without the finish, from where it was playing.
+    private func show() {
+        let at = player.currentTime()
+        let item = AVPlayerItem(asset: asset)
+        if pro, let composition { item.videoComposition = composition }
+        player.replaceCurrentItem(with: item)
+        player.seek(to: at)
+        player.play()
+    }
+
+    /// The file to save or share: the finished one when the Pro finish is on (made once), else the original.
+    private func outputURL() async -> URL {
+        guard pro, let composition else { return clip.url }
+        if let finished { return finished }
+        finishing = true
+        defer { finishing = false }
+        guard let url = await VideoPro.export(asset, composition: composition) else {
+            proNote = L("The finish couldn't be written on this phone — the clip is kept as filmed."); return clip.url
+        }
+        finished = url
+        return url
     }
 }
