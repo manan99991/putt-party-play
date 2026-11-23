@@ -2179,6 +2179,8 @@ final class EngineTests: XCTestCase {
         print("MIXING \(report)")
         XCTAssertTrue(ways.contains { abs(mean($0.1) - want) < tol }, "no way mixed the two pictures: \(report)")
         XCTAssertEqual(mean(ways[0].1), want, accuracy: tol, "the crossfade's way: \(report)")
+        // A photo canvas is solid: no alpha channel for drawing to misread.
+        XCTAssertTrue([.noneSkipLast, .noneSkipFirst, .none].contains(cb.alphaInfo), "canvas alpha \(cb.alphaInfo.rawValue)")
     }
 
     /// Every transition really moves: halfway through it the frame is neither photo — no hard cuts dressed up as styles.
