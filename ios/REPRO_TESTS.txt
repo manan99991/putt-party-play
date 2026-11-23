@@ -1,4 +1,4 @@
-# 23 Nov (third try: the Business commit never compiled — `business` named both the switch and the tab), UX audit phase 1 (Manan: yes to all six) and the Business tab. Second try: the For you card's buttons were
+# 23 Nov (fourth try: a test read the tool list off the main actor. Third try: the Business commit never compiled — `business` named both the switch and the tab), UX audit phase 1 (Manan: yes to all six) and the Business tab. Second try: the For you card's buttons were
 # hidden inside the card (it read as one element), and "Copy a receipt or table" needed three lines. Proven on their
 # own, on a fresh install of the test phone, before the full run. Also Invoices & Quotes (Business tab).
 HandyToolsTests/HomeShelvesTests

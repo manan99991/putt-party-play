@@ -169,6 +169,7 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(make.isEnabled, "the sample invoice can't be made. Total reads: \(any["invoice-total"].firstMatch.label)")
         make.tap()
         XCTAssertTrue(any["invoice-send"].firstMatch.waitForExistence(timeout: 10), "no Send button after Make PDF")
+        XCTAssertTrue(any["invoice-preview"].firstMatch.exists, "no preview of the finished page before Send")
         XCTAssertEqual(paid.count, before + 1, "the new invoice isn't in the unpaid list")
         any["invoice-another"].firstMatch.tap()
         paid.element(boundBy: 0).tap()

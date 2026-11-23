@@ -33,7 +33,7 @@ final class InvoiceTests: XCTestCase {
         XCTAssertEqual(Invoice.nextNumber(.quote, after: docs), "Q-0010")
     }
 
-    func testThreeFreeAMonthAndProHasNoLimit() {
+    @MainActor func testThreeFreeAMonthAndProHasNoLimit() {
         let thisMonth = (0..<3).map { doc(number: "INV-000\($0)", date: now.addingTimeInterval(Double(-$0) * 3600)) }
         let lastMonth = doc(number: "INV-0009", date: cal.date(byAdding: .month, value: -1, to: now))
         XCTAssertEqual(Invoice.left([], premium: false, now: now, cal: cal), 3)

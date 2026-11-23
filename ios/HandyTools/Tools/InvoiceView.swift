@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import PDFKit
 
 /// Invoices & Quotes (Business tab). One screen: what's still unpaid at the top, then the form — your details (typed
 /// once, remembered), who it's for, the lines, tax, notes — with the totals worked out as you type. Make PDF saves it
@@ -31,6 +32,7 @@ struct InvoiceView: View {
     @State private var notes = ""
     @State private var ready: Invoice.Doc?
     @State private var readyURL: URL?
+    @State private var readyPage: UIImage?
     @State private var seeded = false
 
     private var premium: Bool { pro.isPremium || Launch.uitest || Launch.screenshots || AppEnv.isTestBuild }
@@ -218,6 +220,13 @@ struct InvoiceView: View {
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
             }
+            // The finished page, before it's sent (every output is previewed before Share).
+            if let readyPage {
+                Image(uiImage: readyPage).resizable().scaledToFit().frame(maxWidth: .infinity)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                    .accessibilityLabel(L("Preview")).accessibilityIdentifier("invoice-preview")
+            }
             ShareLink(item: url, subject: Text(Invoice.fileName(d)), preview: SharePreview(Invoice.fileName(d))) {
                 Label(L("Send"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
             }
@@ -263,13 +272,21 @@ struct InvoiceView: View {
         guard canMake, let url = InvoiceStore.file(for: d) else { return }
         book.add(d)
         HandyHaptics.success()
+        readyPage = Self.firstPage(url)
         withAnimation { ready = d; readyURL = url }
         to = ""; lines = [Draft()]; notes = ""
     }
 
     private func show(_ d: Invoice.Doc) {
         guard let url = InvoiceStore.file(for: d) else { return }
+        readyPage = Self.firstPage(url)
         withAnimation { ready = d; readyURL = url }
+    }
+
+    private static func firstPage(_ url: URL) -> UIImage? {
+        guard let page = PDFDocument(url: url)?.page(at: 0) else { return nil }
+        let box = page.bounds(for: .mediaBox)
+        return page.thumbnail(of: CGSize(width: box.width * 1.5, height: box.height * 1.5), for: .mediaBox)
     }
 
     /// UI tests and store screenshots (`-sample`): a filled-in invoice from a made-up business, so the tool shows its
