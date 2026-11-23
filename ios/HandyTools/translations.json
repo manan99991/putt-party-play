@@ -43278,5 +43278,115 @@
   "ja": "この端末では仕上げを書き出せませんでした。撮影したまま残します。",
   "pt": "Não foi possível aplicar o acabamento neste telemóvel — o clip fica como foi filmado.",
   "zh": "此手机无法写入润色——视频保持原样。"
+ },
+ "Start with what you have": {
+  "de": "Fang mit dem an, was du hast",
+  "es": "Empieza con lo que tienes",
+  "fr": "Partez de ce que vous avez",
+  "hi": "जो आपके पास है उससे शुरू करें",
+  "it": "Parti da quello che hai",
+  "ja": "手元のものから始める",
+  "pt": "Comece com o que tem",
+  "zh": "从手头的东西开始"
+ },
+ "Contacts & phone": {
+  "de": "Kontakte & Telefon",
+  "es": "Contactos y teléfono",
+  "fr": "Contacts et téléphone",
+  "hi": "संपर्क और फ़ोन",
+  "it": "Contatti e telefono",
+  "ja": "連絡先と電話",
+  "pt": "Contatos e telefone",
+  "zh": "联系人与手机"
+ },
+ "PDF & files": {
+  "de": "PDF & Dateien",
+  "es": "PDF y archivos",
+  "fr": "PDF et fichiers",
+  "hi": "PDF और फ़ाइलें",
+  "it": "PDF e file",
+  "ja": "PDFとファイル",
+  "pt": "PDF e arquivos",
+  "zh": "PDF 与文件"
+ },
+ "Point your camera: scan, identify, measure, read a menu": {
+  "de": "Kamera drauf: scannen, erkennen, messen, Speisekarte lesen",
+  "es": "Apunta la cámara: escanea, identifica, mide, lee un menú",
+  "fr": "Pointez l'appareil : scanner, identifier, mesurer, lire un menu",
+  "hi": "कैमरा दिखाएँ: स्कैन करें, पहचानें, नापें, मेन्यू पढ़ें",
+  "it": "Punta la fotocamera: scansiona, identifica, misura, leggi un menù",
+  "ja": "カメラを向けて：スキャン、識別、計測、メニューを読む",
+  "pt": "Aponte a câmera: digitalize, identifique, meça, leia um cardápio",
+  "zh": "对准相机：扫描、识别、测量、看菜单"
+ },
+ "Fix, cut out, hide, join and find your photos": {
+  "de": "Fotos verbessern, freistellen, verbergen, verbinden und finden",
+  "es": "Arregla, recorta, oculta, une y encuentra tus fotos",
+  "fr": "Corriger, détourer, masquer, assembler et retrouver vos photos",
+  "hi": "फ़ोटो सुधारें, काटें, छिपाएँ, जोड़ें और खोजें",
+  "it": "Sistema, ritaglia, nascondi, unisci e trova le tue foto",
+  "ja": "写真の補正、切り抜き、隠す、つなぐ、探す",
+  "pt": "Corrija, recorte, oculte, junte e encontre suas fotos",
+  "zh": "修图、抠图、遮挡、拼接、查找照片"
+ },
+ "Shrink, trim, add effects, post, or make one from photos": {
+  "de": "Verkleinern, kürzen, Effekte, posten oder aus Fotos machen",
+  "es": "Reduce, recorta, añade efectos, publica o crea uno con fotos",
+  "fr": "Réduire, couper, ajouter des effets, publier ou créer depuis des photos",
+  "hi": "छोटा करें, ट्रिम करें, इफ़ेक्ट जोड़ें, पोस्ट करें या फ़ोटो से बनाएँ",
+  "it": "Riduci, taglia, aggiungi effetti, pubblica o creane uno dalle foto",
+  "ja": "縮小、トリム、エフェクト、投稿、写真から作成",
+  "pt": "Reduza, corte, adicione efeitos, publique ou crie com fotos",
+  "zh": "压缩、剪辑、加特效、发布，或用照片制作"
+ },
+ "Sign, black out, fill, organize, lock and open files": {
+  "de": "Unterschreiben, schwärzen, ausfüllen, ordnen, sperren, Dateien öffnen",
+  "es": "Firma, tacha, rellena, organiza, bloquea y abre archivos",
+  "fr": "Signer, caviarder, remplir, organiser, verrouiller et ouvrir des fichiers",
+  "hi": "साइन करें, काला करें, भरें, व्यवस्थित करें, लॉक करें, फ़ाइलें खोलें",
+  "it": "Firma, oscura, compila, organizza, blocca e apri file",
+  "ja": "署名、黒塗り、記入、整理、ロック、ファイルを開く",
+  "pt": "Assine, tarje, preencha, organize, bloqueie e abra arquivos",
+  "zh": "签名、涂黑、填写、整理、加锁、打开文件"
+ },
+ "Edit recordings, ringtones, song info, sounds to sleep to": {
+  "de": "Aufnahmen bearbeiten, Klingeltöne, Song-Infos, Schlafklänge",
+  "es": "Edita grabaciones, tonos, datos de canciones, sonidos para dormir",
+  "fr": "Enregistrements, sonneries, infos de morceaux, sons pour dormir",
+  "hi": "रिकॉर्डिंग, रिंगटोन, गाने की जानकारी, नींद की आवाज़ें",
+  "it": "Registrazioni, suonerie, info brani, suoni per dormire",
+  "ja": "録音の編集、着信音、曲情報、睡眠用サウンド",
+  "pt": "Edite gravações, toques, info de músicas, sons para dormir",
+  "zh": "编辑录音、铃声、歌曲信息、助眠声音"
+ },
+ "Write, translate, notes from speech, read aloud, spot scams, think": {
+  "de": "Schreiben, übersetzen, Notizen aus Sprache, vorlesen, Betrug erkennen, nachdenken",
+  "es": "Escribe, traduce, notas de voz, lee en voz alta, detecta estafas, piensa",
+  "fr": "Écrire, traduire, notes vocales, lire à voix haute, repérer les arnaques, réfléchir",
+  "hi": "लिखें, अनुवाद करें, बोलकर नोट्स, पढ़कर सुनाएँ, घोटाले पहचानें, सोचें",
+  "it": "Scrivi, traduci, note dalla voce, leggi ad alta voce, scova truffe, rifletti",
+  "ja": "書く、翻訳、音声メモ、読み上げ、詐欺チェック、考える",
+  "pt": "Escreva, traduza, notas de voz, leia em voz alta, detecte golpes, pense",
+  "zh": "写作、翻译、语音笔记、朗读、识别诈骗、理清思路"
+ },
+ "Medicine, plans, bills, moods, prices and receipts": {
+  "de": "Medikamente, Pläne, Rechnungen, Stimmungen, Preise und Belege",
+  "es": "Medicinas, planes, facturas, ánimo, precios y recibos",
+  "fr": "Médicaments, plans, factures, humeurs, prix et reçus",
+  "hi": "दवा, योजनाएँ, बिल, मूड, कीमतें और रसीदें",
+  "it": "Medicine, piani, bollette, umore, prezzi e scontrini",
+  "ja": "薬、予定、請求書、気分、価格、レシート",
+  "pt": "Remédios, planos, contas, humor, preços e recibos",
+  "zh": "用药、计划、账单、心情、价格和收据"
+ },
+ "Your contacts, flashlight, speed, space and a private vault": {
+  "de": "Deine Kontakte, Taschenlampe, Tempo, Speicher und ein privater Tresor",
+  "es": "Tus contactos, linterna, velocidad, espacio y una bóveda privada",
+  "fr": "Vos contacts, lampe, vitesse, espace et un coffre privé",
+  "hi": "आपके संपर्क, टॉर्च, स्पीड, जगह और एक निजी वॉल्ट",
+  "it": "I tuoi contatti, torcia, velocità, spazio e una cassaforte privata",
+  "ja": "連絡先、ライト、速度、空き容量、プライベート保管庫",
+  "pt": "Seus contatos, lanterna, velocidade, espaço e um cofre privado",
+  "zh": "联系人、手电筒、速度、空间和私密保险箱"
  }
 }
