@@ -93,7 +93,7 @@ fun OnboardingScreen(startPage: Int = 0, onDone: () -> Unit, onSeePro: () -> Uni
         ) {
             Row(Modifier.fillMaxWidth()) {
                 Spacer(Modifier.weight(1f))
-                HTextButtonOn(Color.White, com.handytools.app.I18n.t("Skip"), Modifier) { finish() }
+                HTextButtonOn(HandyColors.OnAccent, com.handytools.app.I18n.t("Skip"), Modifier) { finish() }
             }
             // Short phones leave the drawing out so the seven choices and Start still fit.
             if (tall) {
@@ -102,13 +102,13 @@ fun OnboardingScreen(startPage: Int = 0, onDone: () -> Unit, onSeePro: () -> Uni
                 }
                 Spacer(Modifier.height(HandyTokens.Space12))
             }
-            Text(com.handytools.app.I18n.t("Everyday jobs, done on your phone"), color = Color.White, fontSize = 30.sp, lineHeight = 36.sp,
+            Text(com.handytools.app.I18n.t("Everyday jobs, done on your phone"), color = HandyColors.OnAccent, fontSize = 30.sp, lineHeight = 36.sp,
                 fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
             Spacer(Modifier.height(HandyTokens.Space8))
             Text(com.handytools.app.I18n.t("Sign a PDF, shrink a video, find your car, remember your pills. Nothing is uploaded."),
-                color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.bodyLarge, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                color = HandyColors.OnAccent.copy(alpha = 0.85f), style = MaterialTheme.typography.bodyLarge, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
             Spacer(Modifier.weight(1f))
-            Text(com.handytools.app.I18n.t("What do you want help with? (optional)"), color = Color.White, fontWeight = FontWeight.SemiBold,
+            Text(com.handytools.app.I18n.t("What do you want help with? (optional)"), color = HandyColors.OnAccent, fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.fillMaxWidth())
             Spacer(Modifier.height(HandyTokens.Space8))
             WelcomeChoice.values().toList().chunked(2).forEach { row ->
@@ -117,10 +117,10 @@ fun OnboardingScreen(startPage: Int = 0, onDone: () -> Unit, onSeePro: () -> Uni
                         val on = c in picked
                         Text(
                             (if (on) "✓  " else "") + com.handytools.app.I18n.t(c.title), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 2,
-                            color = if (on) HandyColors.Accent else Color.White,
+                            color = if (on) HandyColors.Accent else HandyColors.OnAccent,
                             modifier = Modifier.weight(1f).height(52.dp)
-                                .background(if (on) Color.White else Color.White.copy(alpha = 0.10f), androidx.compose.foundation.shape.RoundedCornerShape(14.dp))
-                                .border(1.dp, Color.White.copy(alpha = if (on) 0f else 0.35f), androidx.compose.foundation.shape.RoundedCornerShape(14.dp))
+                                .background(if (on) HandyColors.OnAccent else HandyColors.OnAccent.copy(alpha = 0.10f), androidx.compose.foundation.shape.RoundedCornerShape(14.dp))
+                                .border(1.dp, HandyColors.OnAccent.copy(alpha = if (on) 0f else 0.35f), androidx.compose.foundation.shape.RoundedCornerShape(14.dp))
                                 .clickable { picked = if (on) picked - c else picked + c }
                                 .testTag("welcome-${c.name.lowercase()}")
                                 .wrapContentHeight(Alignment.CenterVertically).padding(horizontal = 12.dp),
@@ -134,7 +134,7 @@ fun OnboardingScreen(startPage: Int = 0, onDone: () -> Unit, onSeePro: () -> Uni
             androidx.compose.material3.Button(
                 onClick = { finish() },
                 modifier = Modifier.fillMaxWidth().height(HandyTokens.PrimaryButtonHeight).testTag("welcome-start"),
-                colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = HandyColors.Accent),
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = HandyColors.OnAccent, contentColor = HandyColors.Accent),
             ) { Text(com.handytools.app.I18n.t("Start"), style = MaterialTheme.typography.labelLarge) }
         }
     }

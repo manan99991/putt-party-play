@@ -218,7 +218,7 @@ fun HomeTabsScreen(onOpen: (String) -> Unit) {
             val rowsN = (tiles.size + 2) / 3
             val gap = HandyTokens.Space8
             val fit = (maxHeight - gap * (rowsN - 1).coerceAtLeast(0)) / rowsN.coerceAtLeast(1)
-            val h = fit.coerceIn(76.dp, 112.dp)
+            val h = fit.coerceIn(76.dp, 136.dp)
             val scroll = h * rowsN + gap * (rowsN - 1) > maxHeight
             Column(
                 if (scroll) Modifier.fillMaxSize().verticalScroll(rememberScrollState()) else Modifier.fillMaxSize(),

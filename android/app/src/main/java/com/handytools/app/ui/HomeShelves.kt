@@ -19,7 +19,7 @@ object HomeShelves {
     val all: List<Shelf> = listOf(
         Shelf("camera", "Camera", "Point your camera at something",
             listOf("docs", "identify", "procam", "codes", "scancsv", "colorvision")),
-        Shelf("photos", "Photos & video", "Fix, shrink and share photos and videos",
+        Shelf("photos", "Photos", "Fix, shrink and share photos and videos",
             listOf("media", "scrubber", "stitch", "gifmaker", "memory")),
         Shelf("files", "Files", "Open, convert and send any file",
             listOf("fileviewer", "converter", "share")),
