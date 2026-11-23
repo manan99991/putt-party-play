@@ -1,84 +1,44 @@
-2026-11-23 20:36:00.790496+0000 HandyTools[28288:81239] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-23 20:36:02.528475+0000 HandyTools[28288:81264] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
-2026-11-23 20:36:02.994437+0000 HandyTools[28288:81266] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
-2026-11-23 20:36:04.115767+0000 HandyTools[28288:81257] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 20:36:04.148394+0000 HandyTools[28288:81257] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 20:36:04.149866+0000 HandyTools[28288:81257] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 20:36:04.150454+0000 HandyTools[28288:81257] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 20:36:04.205215+0000 HandyTools[28288:81257] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 20:36:04.205541+0000 HandyTools[28288:81257] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-Test Case '-[HandyToolsTests.ForYouTests testABillMoreThanThreeDaysOutWaits]' started.
-Test Case '-[HandyToolsTests.ForYouTests testABillMoreThanThreeDaysOutWaits]' passed (0.011 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testAMeterRunningOutOutranksABill]' started.
-Test Case '-[HandyToolsTests.ForYouTests testAMeterRunningOutOutranksABill]' passed (0.008 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testAMissedDoseComesFirstAndMarksTaken]' started.
-Test Case '-[HandyToolsTests.ForYouTests testAMissedDoseComesFirstAndMarksTaken]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testATakenOrFarOffDoseShowsNothing]' started.
-Test Case '-[HandyToolsTests.ForYouTests testATakenOrFarOffDoseShowsNothing]' passed (0.062 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testContactsBackupOnlyForABigListWithNoRecentBackup]' started.
-Test Case '-[HandyToolsTests.ForYouTests testContactsBackupOnlyForABigListWithNoRecentBackup]' passed (0.017 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testNeverMoreThanTwo]' started.
-Test Case '-[HandyToolsTests.ForYouTests testNeverMoreThanTwo]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testNothingSetUpMeansNoCards]' started.
-Test Case '-[HandyToolsTests.ForYouTests testNothingSetUpMeansNoCards]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testNotNowHidesThatCardAndDontSuggestHidesTheKind]' started.
-Test Case '-[HandyToolsTests.ForYouTests testNotNowHidesThatCardAndDontSuggestHidesTheKind]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testTheCarGivesWalkingDirectionsForTwoDays]' started.
-Test Case '-[HandyToolsTests.ForYouTests testTheCarGivesWalkingDirectionsForTwoDays]' passed (0.001 seconds).
-	 Executed 9 tests, with 0 failures (0 unexpected) in 0.103 (0.249) seconds
+2026-11-23 21:21:14.232205+0000 HandyTools[30624:85840] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-23 21:21:18.390915+0000 HandyTools[30624:85843] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 21:21:18.416132+0000 HandyTools[30624:85843] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 21:21:18.416813+0000 HandyTools[30624:85843] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 21:21:18.417913+0000 HandyTools[30624:85843] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 21:21:18.441038+0000 HandyTools[30624:85843] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 21:21:18.441797+0000 HandyTools[30624:85843] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
 Test Case '-[HandyToolsTests.HomeShelvesTests testBusinessTabOnlyWhenOnAndEveryJobIsReal]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/HomeShelvesTests.swift:97: error: -[HandyToolsTests.HomeShelvesTests testBusinessTabOnlyWhenOnAndEveryJobIsReal] : XCTAssertLessThanOrEqual failed: ("3") is greater than ("2") - Review or menu QR code needs more than two lines
-Test Case '-[HandyToolsTests.HomeShelvesTests testBusinessTabOnlyWhenOnAndEveryJobIsReal]' failed (1.007 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testBusinessTabOnlyWhenOnAndEveryJobIsReal]' passed (0.074 seconds).
 Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' started.
 Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTileHasAJobNameThatFitsTwoLines]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTileHasAJobNameThatFitsTwoLines]' passed (0.012 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTileHasAJobNameThatFitsTwoLines]' passed (0.018 seconds).
 Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' passed (2.723 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' passed (0.005 seconds).
 Test Case '-[HandyToolsTests.HomeShelvesTests testWelcomeChoicesOpenARealTab]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testWelcomeChoicesOpenARealTab]' passed (0.001 seconds).
-	 Executed 8 tests, with 1 failure (0 unexpected) in 3.749 (4.290) seconds
+Test Case '-[HandyToolsTests.HomeShelvesTests testWelcomeChoicesOpenARealTab]' passed (0.002 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.107 (0.148) seconds
 Test Case '-[HandyToolsTests.InvoiceTests testHomeSaysWhenACustomerHasntPaid]' started.
-Test Case '-[HandyToolsTests.InvoiceTests testHomeSaysWhenACustomerHasntPaid]' passed (0.009 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testHomeSaysWhenACustomerHasntPaid]' passed (1.266 seconds).
 Test Case '-[HandyToolsTests.InvoiceTests testNumbersCountUpPerKind]' started.
-Test Case '-[HandyToolsTests.InvoiceTests testNumbersCountUpPerKind]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testNumbersCountUpPerKind]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.InvoiceTests testOverdueOnlyForUnpaidInvoicesPastTheirDay]' started.
-Test Case '-[HandyToolsTests.InvoiceTests testOverdueOnlyForUnpaidInvoicesPastTheirDay]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testOverdueOnlyForUnpaidInvoicesPastTheirDay]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.InvoiceTests testPaperFollowsTheRegion]' started.
-Test Case '-[HandyToolsTests.InvoiceTests testPaperFollowsTheRegion]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testPaperFollowsTheRegion]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.InvoiceTests testThePDFHoldsWhatWasTyped]' started.
-Test Case '-[HandyToolsTests.InvoiceTests testThePDFHoldsWhatWasTyped]' passed (0.224 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testThePDFHoldsWhatWasTyped]' passed (0.265 seconds).
 Test Case '-[HandyToolsTests.InvoiceTests testTheUnpaidListIsKeptAndMarkedPaid]' started.
-Test Case '-[HandyToolsTests.InvoiceTests testTheUnpaidListIsKeptAndMarkedPaid]' passed (1.758 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testTheUnpaidListIsKeptAndMarkedPaid]' passed (0.033 seconds).
 Test Case '-[HandyToolsTests.InvoiceTests testThreeFreeAMonthAndProHasNoLimit]' started.
 Test Case '-[HandyToolsTests.InvoiceTests testThreeFreeAMonthAndProHasNoLimit]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.InvoiceTests testTotalsAreRightToTheCent]' started.
 Test Case '-[HandyToolsTests.InvoiceTests testTotalsAreRightToTheCent]' passed (0.001 seconds).
-	 Executed 8 tests, with 0 failures (0 unexpected) in 1.999 (2.060) seconds
-Test Case '-[HandyToolsTests.ToolCatalogCoverageTests testSmokeTestOpensEveryTool]' started.
-Test Case '-[HandyToolsTests.ToolCatalogCoverageTests testSmokeTestOpensEveryTool]' passed (0.019 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.019 (0.341) seconds
-	 Executed 26 tests, with 1 failure (0 unexpected) in 5.870 (6.944) seconds
-	 Executed 26 tests, with 1 failure (0 unexpected) in 5.870 (6.944) seconds
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (54.212 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' passed (19.575 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools]' passed (43.275 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid]' passed (25.585 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testReadyMadeToolsOpenFromMyStuffAndComeBack]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testReadyMadeToolsOpenFromMyStuffAndComeBack]' passed (33.025 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' passed (29.881 seconds).
-	 Executed 6 tests, with 0 failures (0 unexpected) in 205.552 (205.566) seconds
-	 Executed 6 tests, with 0 failures (0 unexpected) in 205.552 (205.568) seconds
-	 Executed 6 tests, with 0 failures (0 unexpected) in 205.552 (205.570) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 1.570 (2.987) seconds
+	 Executed 16 tests, with 0 failures (0 unexpected) in 1.677 (3.143) seconds
+	 Executed 16 tests, with 0 failures (0 unexpected) in 1.677 (3.347) seconds
 == crash reports
