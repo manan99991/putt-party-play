@@ -10858,5 +10858,15 @@
   "ja": "小さな商売の運営",
   "pt": "Administrar um pequeno negócio",
   "zh": "经营小生意"
+ },
+ "Bills, receipts, prices and cards": {
+  "de": "Rechnungen, Belege, Preise und Karten",
+  "es": "Facturas, recibos, precios y tarjetas",
+  "fr": "Factures, reçus, prix et cartes",
+  "hi": "बिल, रसीदें, दाम और कार्ड",
+  "it": "Bollette, scontrini, prezzi e carte",
+  "ja": "請求書、レシート、価格、カード",
+  "pt": "Contas, recibos, preços e cartões",
+  "zh": "账单、收据、价格和卡片"
  }
 }

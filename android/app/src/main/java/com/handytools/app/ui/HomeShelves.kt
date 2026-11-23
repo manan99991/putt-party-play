@@ -27,8 +27,10 @@ object HomeShelves {
             listOf("voice", "rest", "hearing")),
         Shelf("words", "Words", "Translate, read aloud, check and plan",
             listOf("translate", "lens", "safety", "texttools", "thinking")),
-        Shelf("day", "My day", "Bills, receipts, prices, cards and alarms",
-            listOf("sorted", "receipts", "pricecheck", "wallet", "alarm", "timer")),
+        // No Alarm tile: that tool was cut on 2 Nov (Google reserves exact alarms for alarm apps), so its screen
+        // can't ring. Timers runs only while open, so it isn't offered either.
+        Shelf("day", "My day", "Bills, receipts, prices and cards",
+            listOf("sorted", "receipts", "pricecheck", "wallet")),
         Shelf("phone", "Phone", "Space, battery, network, light and your car",
             listOf("cleanup", "storage", "myphone", "network", "instruments", "flashlight", "quick", "parked", "gpsdash")),
     )
@@ -44,7 +46,7 @@ object HomeShelves {
         "translate" to "Translate anything", "lens" to "Read it aloud", "safety" to "Is this a scam?",
         "texttools" to "Fix up text", "thinking" to "Plan my day",
         "sorted" to "Track a bill", "receipts" to "Keep receipts", "pricecheck" to "Compare prices",
-        "wallet" to "Keep my cards", "alarm" to "Set an alarm", "timer" to "Timers",
+        "wallet" to "Keep my cards",
         "cleanup" to "Free up space", "storage" to "See what's using space", "myphone" to "About my phone",
         "network" to "Test my internet", "instruments" to "Level, compass, meters", "flashlight" to "Flashlight and SOS",
         "quick" to "Quick buttons", "parked" to "Find my car", "gpsdash" to "Speedometer",

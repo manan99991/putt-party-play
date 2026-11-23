@@ -36,7 +36,9 @@ class HomeShelvesTest {
     @Test fun businessOnlyWhenOn() {
         assertFalse(HomeShelves.tabs(false).any { it.id == "business" })
         assertTrue(HomeShelves.tabs(true).last().id == "business")
-        val routes = ALL_TOOLS.map { it.route }.toSet() + setOf("wallet", "alarm", "timer")
+        val routes = ALL_TOOLS.map { it.route }.toSet() + setOf("wallet")
+        assertFalse("the Alarm tool was cut (no exact-alarm permission); its tile can't be on Home",
+            HomeShelves.all.any { "alarm" in it.tools })
         HomeShelves.businessJobs.forEach { assertTrue("${it.id} opens ${it.route}, which isn't a tool", it.route in routes) }
         HomeShelves.all.flatMap { it.tools }.forEach { assertTrue("$it isn't a screen", it in routes) }
     }
