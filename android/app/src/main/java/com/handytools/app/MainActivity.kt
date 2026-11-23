@@ -194,7 +194,7 @@ class MainActivity : ComponentActivity() {
                     composable("ocr") { ScreenTextScreen() }
                     composable("notifs") { NotifHistoryScreen() }
                     composable("scancsv") { ScanCsvScreen() }
-                    composable("invoice") { QuickInvoiceScreen() }
+                    composable("invoice") { QuickInvoiceScreen(onUpgrade = { nav.navigate("paywall") }) }
                     composable("receipts") { ReceiptKeeperScreen() }
                     composable("gifmaker") { GifMakerScreen() }
                     // --- Rebuilt 10-power-tool catalog routes (interim targets reuse existing

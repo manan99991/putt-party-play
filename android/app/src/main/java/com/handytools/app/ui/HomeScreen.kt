@@ -140,9 +140,9 @@ val TOOLS = listOf(
         listOf("park","parked","car","find","where","garage","lot","vehicle","location","walk back","pin"),
         about = "Drop a pin where you parked, then get the distance and a compass arrow back to your car later. Saved on your phone.",
         tint = Color(0xFF0284C7), vicon = Icons.Outlined.DirectionsCar),
-    HTool("invoice", "Invoice", "Quick invoices to send", 0, 0,
+    HTool("invoice", "Invoices & Quotes", "Make a PDF invoice or quote, track unpaid", 0, 0,
         listOf("invoice","bill","client","charge","quote","pdf","payment","freelance","receipt","line item"),
-        about = "Fill in who it's for and a few line items, and Tenzy builds a clean PDF invoice you can share — made entirely on your phone.",
+        about = "Make a clean PDF invoice or quote, send it, and see what's still unpaid — your details remembered, totals worked out. Made on your phone; 3 a month free.",
         tint = Color(0xFFEA580C), vicon = Icons.Outlined.ReceiptLong),
     HTool("storage", "Storage", "See what's filling your phone", 0, 0,
         listOf("storage","space","full","breakdown","disk","gb","files","photos","videos","folders","largest","clean"),
@@ -224,9 +224,11 @@ val MORE_TOOLS = listOf(
  *  One place to tune the split — change [FREE] and both the badges and the gate follow. */
 object ToolGate {
     val FREE: Set<String> = setOf("fileviewer", "codes", "instruments", "cleanup", "myphone")
+    /** Open to everyone with a monthly allowance the tool counts itself (Invoices: 3 a month), like the iPhone. */
+    val METERED: Set<String> = setOf("invoice")
     private val CATALOG: Set<String> by lazy { (TOOLS + SCANSORT_TOOLS + MORE_TOOLS).map { it.route }.toSet() }
     /** A catalog tool that isn't in the free set — shows a lock for non-Pro users. */
-    fun isPro(route: String): Boolean = route in CATALOG && route !in FREE
+    fun isPro(route: String): Boolean = route in CATALOG && route !in FREE && route !in METERED
     /** True when this route should show the unlock screen instead of the tool right now. */
     fun locked(route: String): Boolean = isPro(route) && !HandyApp.instance.billing.isPremium.value
 }

@@ -39,6 +39,7 @@ import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.GraphicEq
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Lightbulb
+import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Timer
@@ -80,10 +81,16 @@ import java.util.Calendar
  * Pure choosing, so it's unit-tested.
  */
 object ForYouAndroid {
-    data class Card(val id: String, val title: String, val why: String, val button: String, val route: String)
+    data class Card(val id: String, val title: String, val why: String, val button: String, val route: String, val kind: String)
 
-    fun cards(parkedAt: Long?, now: Long, hidden: Map<String, Long>): List<Card> {
+    fun cards(parkedAt: Long?, now: Long, hidden: Map<String, Long>,
+              invoices: List<com.handytools.app.tools.invoice.InvoiceLogic.Doc> = emptyList()): List<Card> {
         val out = mutableListOf<Card>()
+        // The invoice a customer is most overdue on (Business, 23 Nov) comes before the car.
+        invoices.filter { it.overdue(now) }.minByOrNull { it.due ?: now }?.let { d ->
+            out += Card("invoice-${d.id}", if (d.who.isEmpty()) "${d.number} isn't paid yet" else "${d.who} hasn't paid yet",
+                "${d.currency}${"%,.2f".format(d.total)} · ${d.number}", "See unpaid", "invoice", "invoice")
+        }
         if (parkedAt != null && parkedAt > 0 && now - parkedAt < 48L * 3600_000) {
             val mins = ((now - parkedAt) / 60_000).toInt()
             val ago = when {
@@ -92,7 +99,7 @@ object ForYouAndroid {
                 mins < 24 * 60 -> "Parked ${mins / 60} h ago"
                 else -> "Parked yesterday"
             }
-            out += Card("car-$parkedAt", "Your car is saved", ago, "Find it", "parked")
+            out += Card("car-$parkedAt", "Your car is saved", ago, "Find it", "parked", "car")
         }
         return out.filter { (hidden[it.id] ?: 0L) <= now }.take(1)
     }
@@ -144,7 +151,8 @@ fun HomeTabsScreen(onOpen: (String) -> Unit) {
     val tabs = HomeShelves.tabs(business)
     var tabId by remember { mutableStateOf(prefs.getString(HomeShelves.TAB_KEY, null)?.takeIf { id -> tabs.any { it.id == id } } ?: tabs.first().id) }
     var query by remember { mutableStateOf("") }
-    var cards by remember { mutableStateOf(ForYouAndroid.cards(ForYouAndroid.parkedAt(ctx), System.currentTimeMillis(), ForYouAndroid.hidden(ctx))) }
+    var cards by remember { mutableStateOf(ForYouAndroid.cards(ForYouAndroid.parkedAt(ctx), System.currentTimeMillis(), ForYouAndroid.hidden(ctx),
+        com.handytools.app.tools.invoice.InvoiceStore.load(ctx))) }
 
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(horizontal = HandyTokens.Gutter)) {
         Spacer(Modifier.height(HandyTokens.Space8))
@@ -278,12 +286,13 @@ private fun JobTile(tag: String, title: String, route: String, height: Dp, modif
 private fun ForYouCard(c: ForYouAndroid.Card, onAct: () -> Unit, onNotNow: () -> Unit) {
     Row(
         Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, Handy.palette.border, RoundedCornerShape(16.dp)).testTag("foryou-${c.id.substringBefore('-')}")
+            .border(1.dp, Handy.palette.border, RoundedCornerShape(16.dp)).testTag("foryou-${c.kind}")
             .padding(start = 12.dp, top = 10.dp, bottom = 10.dp, end = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.size(36.dp).background(Color(0xFF2563EB), RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
-            Icon(Icons.Outlined.DirectionsCar, null, tint = Color.White, modifier = Modifier.size(20.dp))
+        val invoice = c.kind == "invoice"
+        Box(Modifier.size(36.dp).background(if (invoice) Color(0xFF0D9488) else Color(0xFF2563EB), RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
+            Icon(if (invoice) Icons.Outlined.ReceiptLong else Icons.Outlined.DirectionsCar, null, tint = Color.White, modifier = Modifier.size(20.dp))
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
