@@ -288,14 +288,14 @@ enum ChainMedia {
         }
         guard !mono.isEmpty else { return nil }
         // The character itself — ring-modulated robot, radio with static, echoing cave… — then levelled.
-        let rate = engine.manualRenderingFormat.sampleRate
-        let shaped = VoiceFX.apply(voice, mono, rate: rate)
+        let sampleRate = engine.manualRenderingFormat.sampleRate
+        let shaped = VoiceFX.apply(voice, mono, rate: sampleRate)
         var pcm = [UInt8](); pcm.reserveCapacity(shaped.count * 2)
         for v in shaped {
             let s16 = Int16(max(-1, min(1, v)) * 32767)
             pcm.append(UInt8(truncatingIfNeeded: s16)); pcm.append(UInt8(truncatingIfNeeded: s16 >> 8))
         }
-        return Data(ChainText.wavHeader(sampleRate: Int(rate.rounded()), channels: 1, dataBytes: pcm.count)) + Data(pcm)
+        return Data(ChainText.wavHeader(sampleRate: Int(sampleRate.rounded()), channels: 1, dataBytes: pcm.count)) + Data(pcm)
     }
 
     /// Soundboard: apply one named character voice to an already-readable audio file, returning 16-bit mono WAV.
