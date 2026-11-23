@@ -1,4 +1,4 @@
-# 23 Nov: the iPad smoke tests passed on a fresh iPad (3 of 3). The other blocker: the real-files tool pass timed out
-# at 105 minutes right after soundboard. Is that one tool stalling (translate is next) or a slow runner? Each tool's
-# time is now in its TOOLINPUT line; run the tool pass alone on iPhone, as the full run does (rulebook section 8).
-HandyToolsUITests/ToolRealInputTests
+# 23 Nov: the real-files tool pass, alone, passed every tool in 30-61 s each (no stall) — the full run's 105-minute
+# limit was simply too short. Now: the new Home tabs, proven on their own beside tonight's TestFlight run.
+HandyToolsTests/HomeShelvesTests
+HandyToolsUITests/PromiseTests/testHomeFitsOneScreenAndShelvesOpenTools

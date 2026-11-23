@@ -272,7 +272,7 @@ jobs:
   realinput:
     if: "${{ contains(github.event.head_commit.message, 'Ship-Build=YES') }}"
     runs-on: xcode-27
-    timeout-minutes: 120
+    timeout-minutes: 165
     defaults:
       run: { working-directory: ios }
     steps:
@@ -281,8 +281,11 @@ jobs:
       - run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
       - name: Generate project
         run: brew install xcodegen >/dev/null && xcodegen generate
+      # 23 Nov: 105 min stopped it mid-run with nothing wrong. Measured alone, every tool took 30-61 s (66 tools, 40 min);
+      # with the ~20 min build and the ~55 min flow tests that is ~115 min. 150 leaves room; a tool that truly hangs
+      # still fails (each tool's time is in its TOOLINPUT line).
       - name: Real files through every tool (gates the upload)
-        timeout-minutes: 105
+        timeout-minutes: 150
         run: |
           set -o pipefail
           UDID=$(xcrun simctl list devices available -j | python3 -c '
