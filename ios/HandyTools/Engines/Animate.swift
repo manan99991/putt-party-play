@@ -1,6 +1,7 @@
 import AVFoundation
 import CoreImage
 import UIKit
+import Vision
 
 /// Animate — photos in, a polished, post-ready video out. 26 styles, drawn with Core Graphics and Core
 /// Image, and encoded with the phone's own H.264 encoder, so it works on every iPhone, offline, in any
@@ -141,6 +142,8 @@ enum Animate {
         var format: VideoFormat.Spec = VideoFormat.presets[0]
         var framing: Framing = .fill
         var pace: Pace = .normal
+        /// Seconds between the music's beats — each new photo lands on a beat and every beat gives a small push.
+        var beat: Double? = nil
     }
 
     /// Smart default for how many photos were picked.
@@ -161,6 +164,8 @@ enum Animate {
         let trans: Double         // seconds each transition takes
         let count: Int
         let frameCount: Int
+        /// Seconds between the music's beats, when there's music.
+        var beat: Double? = nil
         var seconds: Double { Double(frameCount) / Double(fps) }
     }
 
@@ -183,6 +188,16 @@ enum Animate {
         case .cube, .cardFlip, .fold, .swirl, .heart, .shatter: trans = 0.85 * f
         case .pageTurn, .doors, .copyMachine, .lightLeak, .ripple, .dust: trans = 1.05 * f
         default: trans = 0.5 * f
+        }
+        // With music: every photo lasts a whole number of beats, so each one arrives exactly on a beat, and the
+        // video ends on one.
+        if let b = settings.beat, b >= 0.25, b <= 1.5 {
+            let beats = max(1, ((hold + trans) / b).rounded())
+            let seg = beats * b
+            let tr = min(trans, seg * 0.45)
+            let total = Double(n) * seg
+            return Timeline(fps: fps, hold: seg - tr, trans: tr, count: n,
+                            frameCount: max(1, Int((total * Double(fps)).rounded())), beat: b)
         }
         let total = Double(n) * hold + Double(n - 1) * trans
         return Timeline(fps: fps, hold: hold, trans: trans, count: n, frameCount: max(1, Int((total * Double(fps)).rounded())))
@@ -331,6 +346,16 @@ enum Animate {
         private var canvases: [Int: CGImage] = [:]
         private var cards: [Int: CGImage] = [:]
         private let ci = CIContext(options: [.useSoftwareRenderer: false])
+        /// The frame being drawn (seconds) and its timeline — every photo keeps moving through its whole time on screen.
+        private var now = 0.0
+        private var line: Timeline?
+        /// Whether photos drift (styles with their own camera move — Ken Burns, film strip, Polaroids, carousel,
+        /// boomerang — don't get a second one).
+        private var drifting = false
+        /// Each photo's subject, lifted off its background and laid out like its canvas (for the pop-out).
+        private struct Subject { let image: CGImage; let center: CGPoint }
+        private var subjects: [Int: Subject] = [:]
+        private var noSubject: Set<Int> = []
 
         init(images: [UIImage], size: CGSize, framing: Framing) {
             self.images = images; self.size = size; self.framing = framing
@@ -338,8 +363,24 @@ enum Animate {
 
         var full: CGRect { CGRect(origin: .zero, size: size) }
 
+        /// One finished frame: the style's picture, moving all the time, pushed on every beat, then the finish —
+        /// a soft vignette, fine film grain, and a fade up from black at the start and down at the end.
         func draw(style: Style, frame i: Int, timeline tl: Timeline, in ctx: CGContext) {
+            now = Double(i) / Double(tl.fps); line = tl
+            drifting = ![.kenBurns, .boomerang, .filmStrip, .polaroid, .carousel].contains(style)
             ctx.setFillColor(UIColor(white: 0.06, alpha: 1).cgColor); ctx.fill(full)
+            let push = Animate.push(at: now, timeline: tl)
+            ctx.saveGState()
+            if push != 1 {
+                ctx.translateBy(x: size.width / 2, y: size.height / 2); ctx.scaleBy(x: push, y: push)
+                ctx.translateBy(x: -size.width / 2, y: -size.height / 2)
+            }
+            drawStyle(style: style, frame: i, timeline: tl, in: ctx)
+            ctx.restoreGState()
+            finish(i, tl, ctx)
+        }
+
+        private func drawStyle(style: Style, frame i: Int, timeline tl: Timeline, in ctx: CGContext) {
             if style == .boomerang { boomerang(i, tl, ctx); return }
             switch style {
             case .filmStrip: filmStrip(i, tl, ctx); return
@@ -352,9 +393,9 @@ enum Animate {
             case .hold(let k, let u):
                 if style == .zoomPulse {
                     let punch = 1 + 0.10 * (1 - Animate.easeOut(min(1, u * 3)))
-                    photo(k, ctx, scale: punch)
+                    photo(k, ctx, scale: punch, pop: popAmount(u))
                 } else {
-                    photo(k, ctx)
+                    photo(k, ctx, pop: popAmount(u))
                 }
             case .move(let k, let v):
                 let e = Animate.easeInOut(v)
@@ -402,15 +443,16 @@ enum Animate {
                 let life = tl.hold + (j > 0 ? tl.trans : 0) + (j < tl.count - 1 ? tl.trans : 0)
                 return min(1, max(0, (t - start) / max(life, 0.001)))
             }
-            func drawKB(_ j: Int, alpha: CGFloat) {
+            func drawKB(_ j: Int, alpha: CGFloat, pop: CGFloat = 0) {
                 let m = CGFloat(Animate.easeInOut(motion(j)))
                 let zoomIn = j % 2 == 0
-                let s = zoomIn ? 1.0 + 0.14 * m : 1.14 - 0.14 * m
+                // Always a little over full size, so the pan never shows an edge.
+                let s = zoomIn ? 1.04 + 0.13 * m : 1.17 - 0.13 * m
                 let dir: CGFloat = (j / 2) % 2 == 0 ? 1 : -1
-                photo(j, ctx, scale: s, dx: dir * 0.035 * size.width * (m - 0.5), dy: 0.02 * size.height * (m - 0.5), alpha: alpha)
+                photo(j, ctx, scale: s, dx: dir * 0.035 * size.width * (m - 0.5), dy: 0.02 * size.height * (m - 0.5), alpha: alpha, pop: pop)
             }
             switch Animate.phase(frame: i, in: tl) {
-            case .hold(let k, _): drawKB(k, alpha: 1)
+            case .hold(let k, let u): drawKB(k, alpha: 1, pop: popAmount(u))
             case .move(let k, let v): drawKB(k, alpha: 1); drawKB(k + 1, alpha: CGFloat(Animate.easeInOut(v)))
             }
             prepareAhead(Animate.phase(frame: i, in: tl))
@@ -418,7 +460,17 @@ enum Animate {
 
         // MARK: Core Image / 3D styles
 
-        private func ciCanvas(_ j: Int) -> CIImage? { canvas(j).map { CIImage(cgImage: $0) } }
+        /// Photo `j` as Core Image, already where its drift has carried it at this moment.
+        private func ciCanvas(_ j: Int) -> CIImage? {
+            guard let cg = canvas(j) else { return nil }
+            let base = CIImage(cgImage: cg)
+            let d = drift(j)
+            guard d.s != 1 || d.dx != 0 || d.dy != 0 else { return base }
+            let t = CGAffineTransform(translationX: -size.width / 2, y: -size.height / 2)
+                .concatenating(CGAffineTransform(scaleX: d.s, y: d.s))
+                .concatenating(CGAffineTransform(translationX: size.width / 2 + d.dx, y: size.height / 2 + d.dy))
+            return base.transformed(by: t).cropped(to: full)
+        }
 
         /// Draw a Core Image result over whatever is already on the frame (transparent parts let it show).
         private func put(_ img: CIImage, _ ctx: CGContext) {
@@ -791,13 +843,110 @@ enum Animate {
 
         // Drawing helpers
 
-        private func photo(_ j: Int, _ ctx: CGContext, scale: CGFloat = 1, dx: CGFloat = 0, dy: CGFloat = 0, alpha: CGFloat = 1) {
-            let w = size.width * scale, h = size.height * scale
-            let rect = CGRect(x: (size.width - w) / 2 + dx, y: (size.height - h) / 2 + dy, width: w, height: h)
+        private func photo(_ j: Int, _ ctx: CGContext, scale: CGFloat = 1, dx: CGFloat = 0, dy: CGFloat = 0, alpha: CGFloat = 1, pop: CGFloat = 0) {
+            let d = drift(j)
+            let w = size.width * scale * d.s, h = size.height * scale * d.s
+            let rect = CGRect(x: (size.width - w) / 2 + dx + d.dx, y: (size.height - h) / 2 + dy + d.dy, width: w, height: h)
             ctx.saveGState(); ctx.setAlpha(alpha)
             drawCanvas(j, in: rect, ctx: ctx)
+            // The pop-out: the person (or pet, or thing) lifts off the photo toward you, with a soft shadow under it.
+            if pop > 0.01, let sub = subject(j) {
+                let k = 1 + 0.055 * pop
+                let c = CGPoint(x: rect.minX + sub.center.x / size.width * rect.width,
+                                y: rect.minY + sub.center.y / size.height * rect.height)
+                let r = CGRect(x: c.x - (c.x - rect.minX) * k, y: c.y - (c.y - rect.minY) * k + size.height * 0.008 * pop,
+                               width: rect.width * k, height: rect.height * k)
+                ctx.setShadow(offset: CGSize(width: 0, height: -size.width * 0.014 * pop), blur: size.width * 0.05 * pop,
+                              color: UIColor(white: 0, alpha: 0.55 * pop).cgColor)
+                ctx.draw(sub.image, in: r)
+            }
             ctx.restoreGState()
         }
+
+        /// Where photo `j` has drifted to now: a slow push in (or out) and a gentle sideways glide across its whole
+        /// time on screen, transitions included — so nothing ever sits still like a slide.
+        private func drift(_ j: Int) -> (s: CGFloat, dx: CGFloat, dy: CGFloat) {
+            guard drifting, let tl = line, tl.count > 0 else { return (1, 0, 0) }
+            let seg = tl.hold + tl.trans
+            let start = Double(j) * seg - (j > 0 ? tl.trans : 0)
+            let life = tl.hold + (j > 0 ? tl.trans : 0) + (j < tl.count - 1 ? tl.trans : 0)
+            let m = CGFloat(min(1, max(0, (now - start) / max(life, 0.001))))
+            let zoomIn = j % 2 == 0
+            let s: CGFloat = zoomIn ? 1.03 + 0.07 * m : 1.10 - 0.07 * m
+            let dir: CGFloat = (j / 2) % 2 == 0 ? 1 : -1
+            return (s, dir * 0.022 * size.width * (m - 0.5), 0.012 * size.height * (m - 0.5))
+        }
+
+        /// How far the subject has popped out during a rest: it rises in, holds, and settles back before the next move.
+        private func popAmount(_ u: Double) -> CGFloat {
+            guard let tl = line, tl.hold >= 0.9 else { return 0 }
+            func smooth(_ a: Double, _ b: Double, _ x: Double) -> Double { let t = min(1, max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t) }
+            return CGFloat(smooth(0.06, 0.4, u) * (1 - smooth(0.8, 0.98, u)))
+        }
+
+        /// Photo `j`'s subject, cut out and laid out exactly like its canvas. nil when there's no clear subject
+        /// (a landscape, a document) — those just drift.
+        private func subject(_ j: Int) -> Subject? {
+            if let s = subjects[j] { return s }
+            guard !noSubject.contains(j), images.indices.contains(j) else { return nil }
+            let src = images[j].normalizedUp()
+            guard let cut = Animate.subjectCut(images[j]) else { noSubject.insert(j); return nil }
+            let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = false
+            let laid = UIGraphicsImageRenderer(size: size, format: fmt).image { _ in
+                if framing == .fill {
+                    let crop = VideoFormat.fillCrop(source: src.size, target: size)
+                    let k = size.width / crop.width
+                    cut.draw(in: CGRect(x: -crop.minX * k, y: -crop.minY * k, width: src.size.width * k, height: src.size.height * k))
+                } else {
+                    cut.draw(in: VideoFormat.fitRect(source: src.size, target: size))
+                }
+            }.cgImage
+            guard let laid, let c = Animate.alphaCentre(laid) else { noSubject.insert(j); return nil }
+            // Centre in the frame's y-up space; skip subjects that barely show in this crop.
+            guard c.share > 0.02 else { noSubject.insert(j); return nil }
+            let s = Subject(image: laid, center: CGPoint(x: c.x * size.width, y: (1 - c.y) * size.height))
+            subjects[j] = s
+            return s
+        }
+
+        /// The finish on top of every frame.
+        private func finish(_ i: Int, _ tl: Timeline, _ ctx: CGContext) {
+            if let v = vignette { ctx.draw(v, in: full) }
+            if let g = grain {
+                var rng = SeededRandom(seed: UInt64(i + 7) &* 2654435761)
+                let gw = CGFloat(g.width), gh = CGFloat(g.height)
+                ctx.saveGState()
+                ctx.setBlendMode(.overlay); ctx.setAlpha(0.55)
+                ctx.clip(to: full)
+                ctx.draw(g, in: CGRect(x: -CGFloat(rng.next()) * gw, y: -CGFloat(rng.next()) * gh, width: gw, height: gh), byTiling: true)
+                ctx.restoreGState()
+            }
+            let fadeIn = max(0, 1 - now / 0.35), fadeOut = max(0, 1 - (tl.seconds - now) / 0.3)
+            let black = CGFloat(min(1, max(fadeIn, fadeOut)))
+            if black > 0.004 { ctx.setFillColor(UIColor(white: 0, alpha: black).cgColor); ctx.fill(full) }
+        }
+
+        /// Darker corners that draw the eye in, like a lens does.
+        private lazy var vignette: CGImage? = {
+            let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = false
+            let sz = self.size
+            return UIGraphicsImageRenderer(size: sz, format: fmt).image { c in
+                let cols = [UIColor(white: 0, alpha: 0).cgColor, UIColor(white: 0, alpha: 0.12).cgColor, UIColor(white: 0, alpha: 0.42).cgColor] as CFArray
+                guard let g = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: cols, locations: [0, 0.62, 1]) else { return }
+                let centre = CGPoint(x: sz.width / 2, y: sz.height / 2)
+                c.cgContext.drawRadialGradient(g, startCenter: centre, startRadius: 0, endCenter: centre,
+                                               endRadius: hypot(sz.width, sz.height) * 0.55, options: [.drawsAfterEndLocation])
+            }.cgImage
+        }()
+
+        /// Fine, soft film grain (a tile, moved every frame so it lives instead of sitting on the picture).
+        private lazy var grain: CGImage? = {
+            let side: CGFloat = 256
+            guard let noise = CIFilter(name: "CIRandomGenerator")?.outputImage?
+                .applyingFilter("CIColorControls", parameters: [kCIInputSaturationKey: 0, kCIInputContrastKey: 0.22])
+                .cropped(to: CGRect(x: 0, y: 0, width: side, height: side)) else { return nil }
+            return self.ci.createCGImage(noise, from: noise.extent)
+        }()
 
         private func drawCanvas(_ j: Int, in rect: CGRect, ctx: CGContext) {
             guard let img = canvas(j) else { return }
@@ -822,8 +971,18 @@ enum Animate {
                     src.draw(in: VideoFormat.fitRect(source: src.size, target: size))
                 }
             }.cgImage
-            canvases[j] = img
-            return img
+            let graded = grade(img) ?? img
+            canvases[j] = graded
+            return graded
+        }
+
+        /// A light colour grade: a touch more life in muted colours and a little more contrast.
+        private func grade(_ cg: CGImage?) -> CGImage? {
+            guard let cg else { return nil }
+            let out = CIImage(cgImage: cg)
+                .applyingFilter("CIVibrance", parameters: ["inputAmount": 0.22])
+                .applyingFilter("CIColorControls", parameters: [kCIInputContrastKey: 1.05, kCIInputSaturationKey: 1.0, kCIInputBrightnessKey: 0.0])
+            return ci.createCGImage(out, from: CGRect(x: 0, y: 0, width: cg.width, height: cg.height))
         }
 
         private var backs: [Int: CGImage] = [:]
@@ -900,6 +1059,7 @@ enum Animate {
 
         private func evict(keep: Set<Int>) {
             if canvases.count > 3 { canvases = canvases.filter { keep.contains($0.key) } }
+            if subjects.count > 3 { subjects = subjects.filter { keep.contains($0.key) } }
         }
     }
 
@@ -924,6 +1084,59 @@ enum Animate {
         }
         return .pi
     }()
+
+    /// How much the whole picture is pushed in at `t`: it settles in at the start, and with music every beat gives a
+    /// small kick — a bigger one when a new photo arrives.
+    static func push(at t: Double, timeline tl: Timeline) -> CGFloat {
+        let intro = 1 + 0.05 * (1 - easeOut(min(1, t / 0.8)))
+        guard let b = tl.beat, b > 0 else { return CGFloat(intro) }
+        let sinceBeat = t.truncatingRemainder(dividingBy: b)
+        let seg = tl.hold + tl.trans
+        let newPhoto = seg > 0 && t.truncatingRemainder(dividingBy: seg) < b * 0.5
+        let kick = (newPhoto ? 0.035 : 0.014) * exp(-sinceBeat / 0.12)
+        return CGFloat(intro * (1 + kick))
+    }
+
+    private static let cutLock = NSLock()
+    private static let cuts = NSMapTable<UIImage, AnyObject>(keyOptions: .weakMemory, valueOptions: .strongMemory)
+
+    /// The photo's subject cut out (people, pets, things), worked out once per photo and kept while the photo is in
+    /// use, so the live preview doesn't redo it on every change. nil for photos with no clear subject.
+    static func subjectCut(_ image: UIImage) -> UIImage? {
+        cutLock.lock()
+        if let hit = cuts.object(forKey: image) { cutLock.unlock(); return hit as? UIImage }
+        cutLock.unlock()
+        var made: UIImage?
+        if let cg = image.resized(maxDimension: 1024).normalizedUp().cgImage {
+            let handler = VNImageRequestHandler(cgImage: cg)
+            let req = VNGenerateForegroundInstanceMaskRequest()
+            if (try? handler.perform([req])) != nil, let res = req.results?.first, !res.allInstances.isEmpty,
+               let mask = try? res.generateScaledMaskForImage(forInstances: res.allInstances, from: handler),
+               let cut = ImageStudio.refinedCutout(cg, mask: CIImage(cvPixelBuffer: mask)) {
+                let share = ImageStudio.visibleShare(cut)
+                // A clear subject: not a speck, not the whole picture.
+                if share > 0.03 && share < 0.72 { made = cut }
+            }
+        }
+        cutLock.lock(); cuts.setObject(made ?? NSNull(), forKey: image); cutLock.unlock()
+        return made
+    }
+
+    /// The centre of what's opaque in a picture (0–1, from the top-left) and how much of it is opaque.
+    static func alphaCentre(_ cg: CGImage) -> (x: CGFloat, y: CGFloat, share: Double)? {
+        let n = 64
+        var px = [UInt8](repeating: 0, count: n * n * 4)
+        guard let ctx = CGContext(data: &px, width: n, height: n, bitsPerComponent: 8, bytesPerRow: n * 4,
+                                  space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: n, height: n))
+        var sx = 0.0, sy = 0.0, w = 0.0
+        for row in 0..<n { for col in 0..<n {
+            let a = Double(px[(row * n + col) * 4 + 3]) / 255
+            if a > 0.12 { sx += Double(col) * a; sy += Double(row) * a; w += a }
+        } }
+        guard w > 0 else { return nil }
+        return (CGFloat(sx / w / Double(n - 1)), CGFloat(sy / w / Double(n - 1)), w / Double(n * n))
+    }
 
     static func easeInOut(_ t: Double) -> Double { t * t * (3 - 2 * t) }
     static func easeOut(_ t: Double) -> Double { 1 - pow(1 - t, 3) }

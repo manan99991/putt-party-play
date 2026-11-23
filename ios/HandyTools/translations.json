@@ -41888,5 +41888,265 @@
   "ja": "AIの読み取りに切り替えました。",
   "pt": "Mudado para a leitura da IA.",
   "zh": "已切换为 AI 识别结果。"
+ },
+ "Add music": {
+  "de": "Musik hinzufügen",
+  "es": "Añadir música",
+  "fr": "Ajouter de la musique",
+  "hi": "संगीत जोड़ें",
+  "it": "Aggiungi musica",
+  "ja": "音楽を追加",
+  "pt": "Adicionar música",
+  "zh": "添加音乐"
+ },
+ "Browse all files": {
+  "de": "Alle Dateien durchsuchen",
+  "es": "Buscar en todos los archivos",
+  "fr": "Parcourir tous les fichiers",
+  "hi": "सभी फ़ाइलें देखें",
+  "it": "Sfoglia tutti i file",
+  "ja": "すべてのファイルから選ぶ",
+  "pt": "Procurar em todos os ficheiros",
+  "zh": "浏览所有文件"
+ },
+ "Finding the beat and the best part…": {
+  "de": "Beat und beste Stelle werden gesucht…",
+  "es": "Buscando el ritmo y la mejor parte…",
+  "fr": "Recherche du rythme et du meilleur passage…",
+  "hi": "बीट और सबसे अच्छा हिस्सा ढूँढ रहे हैं…",
+  "it": "Cerco il ritmo e la parte migliore…",
+  "ja": "ビートといちばん盛り上がる部分を探しています…",
+  "pt": "A encontrar o ritmo e a melhor parte…",
+  "zh": "正在找节拍和最精彩的部分…"
+ },
+ "Finding your songs…": {
+  "de": "Deine Songs werden gesucht…",
+  "es": "Buscando tus canciones…",
+  "fr": "Recherche de vos morceaux…",
+  "hi": "आपके गाने ढूँढ रहे हैं…",
+  "it": "Cerco i tuoi brani…",
+  "ja": "曲を探しています…",
+  "pt": "A procurar as suas músicas…",
+  "zh": "正在查找你的歌曲…"
+ },
+ "MP3, WAV, M4A, AAC or AIFF — from Files, iCloud Drive or Downloads.": {
+  "de": "MP3, WAV, M4A, AAC oder AIFF – aus Dateien, iCloud Drive oder Downloads.",
+  "es": "MP3, WAV, M4A, AAC o AIFF, desde Archivos, iCloud Drive o Descargas.",
+  "fr": "MP3, WAV, M4A, AAC ou AIFF — depuis Fichiers, iCloud Drive ou Téléchargements.",
+  "hi": "MP3, WAV, M4A, AAC या AIFF — Files, iCloud Drive या Downloads से।",
+  "it": "MP3, WAV, M4A, AAC o AIFF — da File, iCloud Drive o Download.",
+  "ja": "MP3、WAV、M4A、AAC、AIFF — ファイル、iCloud Drive、ダウンロードから。",
+  "pt": "MP3, WAV, M4A, AAC ou AIFF — de Ficheiros, iCloud Drive ou Transferências.",
+  "zh": "MP3、WAV、M4A、AAC 或 AIFF —— 来自“文件”、iCloud 云盘或下载。"
+ },
+ "No songs on this phone can go into a video yet. Use Browse all files for a song you have as a file.": {
+  "de": "Auf diesem Telefon gibt es noch keine Songs, die in ein Video dürfen. Nutze „Alle Dateien durchsuchen“ für einen Song, den du als Datei hast.",
+  "es": "Aún no hay canciones en este teléfono que puedan ir en un vídeo. Usa «Buscar en todos los archivos» para una canción que tengas como archivo.",
+  "fr": "Aucun morceau de ce téléphone ne peut encore aller dans une vidéo. Utilisez « Parcourir tous les fichiers » pour un morceau que vous avez en fichier.",
+  "hi": "इस फ़ोन पर अभी कोई गाना वीडियो में नहीं डाला जा सकता। जो गाना फ़ाइल के रूप में है, उसके लिए 'सभी फ़ाइलें देखें' इस्तेमाल करें।",
+  "it": "Su questo telefono non ci sono ancora brani che possano andare in un video. Usa «Sfoglia tutti i file» per un brano che hai come file.",
+  "ja": "この端末には、まだ動画に使える曲がありません。ファイルで持っている曲は「すべてのファイルから選ぶ」から選んでください。",
+  "pt": "Ainda não há músicas neste telemóvel que possam ir para um vídeo. Use «Procurar em todos os ficheiros» para uma música que tenha como ficheiro.",
+  "zh": "这部手机上还没有可以放进视频的歌曲。如果歌曲是文件，请用“浏览所有文件”。"
+ },
+ "Pick a song from your phone — the photos change on its beat.": {
+  "de": "Wähle einen Song von deinem Telefon – die Fotos wechseln im Takt.",
+  "es": "Elige una canción de tu teléfono: las fotos cambian al ritmo.",
+  "fr": "Choisissez un morceau sur votre téléphone — les photos changent sur le rythme.",
+  "hi": "अपने फ़ोन से गाना चुनें — फ़ोटो उसकी बीट पर बदलेंगी।",
+  "it": "Scegli un brano dal telefono: le foto cambiano a ritmo.",
+  "ja": "端末の曲を選ぶと、写真がビートに合わせて切り替わります。",
+  "pt": "Escolha uma música do telemóvel — as fotos mudam ao ritmo.",
+  "zh": "从手机里选一首歌——照片会踩着节拍切换。"
+ },
+ "Remove the music": {
+  "de": "Musik entfernen",
+  "es": "Quitar la música",
+  "fr": "Retirer la musique",
+  "hi": "संगीत हटाएँ",
+  "it": "Rimuovi la musica",
+  "ja": "音楽を外す",
+  "pt": "Remover a música",
+  "zh": "移除音乐"
+ },
+ "Search songs": {
+  "de": "Songs suchen",
+  "es": "Buscar canciones",
+  "fr": "Rechercher des morceaux",
+  "hi": "गाने खोजें",
+  "it": "Cerca brani",
+  "ja": "曲を検索",
+  "pt": "Procurar músicas",
+  "zh": "搜索歌曲"
+ },
+ "Show songs from the Music app": {
+  "de": "Songs aus der Musik-App zeigen",
+  "es": "Mostrar canciones de la app Música",
+  "fr": "Afficher les morceaux de l’app Musique",
+  "hi": "Music ऐप के गाने दिखाएँ",
+  "it": "Mostra i brani dell’app Musica",
+  "ja": "ミュージックアプリの曲を表示",
+  "pt": "Mostrar músicas da app Música",
+  "zh": "显示“音乐”App 里的歌曲"
+ },
+ "Songs on this phone": {
+  "de": "Songs auf diesem Telefon",
+  "es": "Canciones en este teléfono",
+  "fr": "Morceaux sur ce téléphone",
+  "hi": "इस फ़ोन पर गाने",
+  "it": "Brani su questo telefono",
+  "ja": "この端末の曲",
+  "pt": "Músicas neste telemóvel",
+  "zh": "这部手机上的歌曲"
+ },
+ "Tenzy isn't allowed to see your songs. Turn on Media & Apple Music for Tenzy in Settings.": {
+  "de": "Tenzy darf deine Songs nicht sehen. Aktiviere in den Einstellungen „Medien & Apple Music“ für Tenzy.",
+  "es": "Tenzy no tiene permiso para ver tus canciones. Activa «Contenido y Apple Music» para Tenzy en Ajustes.",
+  "fr": "Tenzy n’a pas accès à vos morceaux. Activez « Média et Apple Music » pour Tenzy dans Réglages.",
+  "hi": "Tenzy को आपके गाने देखने की अनुमति नहीं है। Settings में Tenzy के लिए Media & Apple Music चालू करें।",
+  "it": "Tenzy non può vedere i tuoi brani. Attiva «Contenuti multimediali e Apple Music» per Tenzy in Impostazioni.",
+  "ja": "Tenzy は曲を見る許可がありません。設定で Tenzy の「メディアと Apple Music」をオンにしてください。",
+  "pt": "O Tenzy não tem permissão para ver as suas músicas. Ative «Multimédia e Apple Music» para o Tenzy nas Definições.",
+  "zh": "Tenzy 没有权限查看你的歌曲。请在“设置”中为 Tenzy 打开“媒体与 Apple Music”。"
+ },
+ "Untitled": {
+  "de": "Ohne Titel",
+  "es": "Sin título",
+  "fr": "Sans titre",
+  "hi": "बिना शीर्षक",
+  "it": "Senza titolo",
+  "ja": "無題",
+  "pt": "Sem título",
+  "zh": "未命名"
+ },
+ "Your music in Tenzy": {
+  "de": "Deine Musik in Tenzy",
+  "es": "Tu música en Tenzy",
+  "fr": "Votre musique dans Tenzy",
+  "hi": "Tenzy में आपका संगीत",
+  "it": "La tua musica in Tenzy",
+  "ja": "Tenzy に入れた音楽",
+  "pt": "A sua música no Tenzy",
+  "zh": "Tenzy 里的音乐"
+ },
+ "beats a minute — photos change on the beat": {
+  "de": "Schläge pro Minute – Fotos wechseln im Takt",
+  "es": "pulsos por minuto: las fotos cambian al ritmo",
+  "fr": "battements par minute — les photos changent sur le rythme",
+  "hi": "बीट प्रति मिनट — फ़ोटो बीट पर बदलती हैं",
+  "it": "battiti al minuto — le foto cambiano a ritmo",
+  "ja": "BPM — 写真がビートで切り替わります",
+  "pt": "batidas por minuto — as fotos mudam ao ritmo",
+  "zh": "拍/分钟——照片踩着节拍切换"
+ },
+ "songs from Apple Music are copy-protected by Apple, so no app can put them in a video. Songs you bought or added from your computer work.": {
+  "de": "Songs aus Apple Music sind von Apple kopiergeschützt, daher kann keine App sie in ein Video setzen. Gekaufte oder vom Computer hinzugefügte Songs funktionieren.",
+  "es": "canciones de Apple Music están protegidas por Apple, así que ninguna app puede ponerlas en un vídeo. Las que compraste o añadiste desde el ordenador sí funcionan.",
+  "fr": "morceaux d’Apple Music sont protégés par Apple : aucune app ne peut les mettre dans une vidéo. Ceux que vous avez achetés ou ajoutés depuis votre ordinateur fonctionnent.",
+  "hi": "Apple Music के गाने Apple द्वारा कॉपी-सुरक्षित हैं, इसलिए कोई ऐप उन्हें वीडियो में नहीं डाल सकता। खरीदे गए या कंप्यूटर से जोड़े गए गाने चलते हैं।",
+  "it": "brani di Apple Music sono protetti da Apple, quindi nessuna app può metterli in un video. Quelli acquistati o aggiunti dal computer funzionano.",
+  "ja": "曲は Apple Music のコピー保護付きのため、どのアプリでも動画に使えません。購入した曲やパソコンから追加した曲は使えます。",
+  "pt": "músicas do Apple Music estão protegidas pela Apple, por isso nenhuma app as pode pôr num vídeo. As que comprou ou adicionou a partir do computador funcionam.",
+  "zh": "首歌来自 Apple Music，受 Apple 版权保护，任何 App 都不能把它们放进视频。你购买的或从电脑添加的歌曲可以使用。"
+ },
+ "starts at": {
+  "de": "beginnt bei",
+  "es": "empieza en",
+  "fr": "commence à",
+  "hi": "यहाँ से शुरू",
+  "it": "parte da",
+  "ja": "開始",
+  "pt": "começa em",
+  "zh": "从此处开始"
+ },
+ "The song couldn't be added, so this one is without it — try another song.": {
+  "de": "Der Song konnte nicht hinzugefügt werden, dieses Video ist ohne ihn – versuch einen anderen Song.",
+  "es": "No se pudo añadir la canción, así que este vídeo va sin ella; prueba con otra.",
+  "fr": "Le morceau n’a pas pu être ajouté, cette vidéo est donc sans lui — essayez-en un autre.",
+  "hi": "गाना जोड़ा नहीं जा सका, इसलिए यह वीडियो उसके बिना है — कोई दूसरा गाना आज़माएँ।",
+  "it": "Non è stato possibile aggiungere il brano, quindi questo video è senza — prova un altro brano.",
+  "ja": "曲を追加できなかったため、この動画は曲なしです。別の曲を試してください。",
+  "pt": "Não foi possível adicionar a música, por isso este vídeo vai sem ela — experimente outra.",
+  "zh": "歌曲没能加进去，所以这个视频没有音乐——换一首试试。"
+ },
+ "That song couldn't be read — try another.": {
+  "de": "Dieser Song konnte nicht gelesen werden – versuch einen anderen.",
+  "es": "No se pudo leer esa canción; prueba con otra.",
+  "fr": "Ce morceau n’a pas pu être lu — essayez-en un autre.",
+  "hi": "वह गाना पढ़ा नहीं जा सका — कोई दूसरा आज़माएँ।",
+  "it": "Non è stato possibile leggere quel brano — provane un altro.",
+  "ja": "その曲を読み込めませんでした。別の曲を試してください。",
+  "pt": "Não foi possível ler essa música — experimente outra.",
+  "zh": "读不了这首歌——换一首试试。"
+ },
+ "No steady beat in this song, so the photos keep their own pace.": {
+  "de": "Dieser Song hat keinen gleichmäßigen Beat, daher behalten die Fotos ihr eigenes Tempo.",
+  "es": "Esta canción no tiene un ritmo constante, así que las fotos mantienen su propio ritmo.",
+  "fr": "Pas de rythme régulier dans ce morceau, les photos gardent donc leur propre tempo.",
+  "hi": "इस गाने में स्थिर बीट नहीं है, इसलिए फ़ोटो अपनी ही रफ़्तार से चलेंगी।",
+  "it": "Questo brano non ha un ritmo regolare, quindi le foto mantengono il loro passo.",
+  "ja": "この曲には一定のビートがないため、写真はいつものペースで切り替わります。",
+  "pt": "Esta música não tem um ritmo certo, por isso as fotos mantêm o seu próprio ritmo.",
+  "zh": "这首歌没有稳定的节拍，所以照片按原来的节奏切换。"
+ },
+ "That file couldn't be opened — try another.": {
+  "de": "Diese Datei konnte nicht geöffnet werden – versuch eine andere.",
+  "es": "No se pudo abrir ese archivo; prueba con otro.",
+  "fr": "Ce fichier n’a pas pu être ouvert — essayez-en un autre.",
+  "hi": "वह फ़ाइल खोली नहीं जा सकी — कोई दूसरी आज़माएँ।",
+  "it": "Non è stato possibile aprire quel file — provane un altro.",
+  "ja": "そのファイルを開けませんでした。別のファイルを試してください。",
+  "pt": "Não foi possível abrir esse ficheiro — experimente outro.",
+  "zh": "打不开这个文件——换一个试试。"
+ },
+ "That file has no sound Tenzy can read — try another.": {
+  "de": "Diese Datei enthält keinen Ton, den Tenzy lesen kann – versuch eine andere.",
+  "es": "Ese archivo no tiene sonido que Tenzy pueda leer; prueba con otro.",
+  "fr": "Ce fichier ne contient aucun son que Tenzy puisse lire — essayez-en un autre.",
+  "hi": "उस फ़ाइल में ऐसी आवाज़ नहीं है जिसे Tenzy पढ़ सके — कोई दूसरी आज़माएँ।",
+  "it": "Quel file non contiene audio che Tenzy possa leggere — provane un altro.",
+  "ja": "そのファイルには Tenzy が読める音声がありません。別のファイルを試してください。",
+  "pt": "Esse ficheiro não tem som que o Tenzy consiga ler — experimente outro.",
+  "zh": "这个文件里没有 Tenzy 能读取的声音——换一个试试。"
+ },
+ "Adding your song…": {
+  "de": "Dein Song wird hinzugefügt…",
+  "es": "Añadiendo tu canción…",
+  "fr": "Ajout de votre morceau…",
+  "hi": "आपका गाना जोड़ रहे हैं…",
+  "it": "Aggiungo il tuo brano…",
+  "ja": "曲を追加しています…",
+  "pt": "A adicionar a sua música…",
+  "zh": "正在加入你的歌曲…"
+ },
+ "Music": {
+  "de": "Musik",
+  "es": "Música",
+  "fr": "Musique",
+  "hi": "संगीत",
+  "it": "Musica",
+  "ja": "音楽",
+  "pt": "Música",
+  "zh": "音乐"
+ },
+ "Instagram post": {
+  "de": "Instagram-Beitrag",
+  "es": "Publicación de Instagram",
+  "fr": "Publication Instagram",
+  "hi": "Instagram पोस्ट",
+  "it": "Post di Instagram",
+  "ja": "Instagram 投稿",
+  "pt": "Publicação do Instagram",
+  "zh": "Instagram 帖子"
+ },
+ "Facebook post": {
+  "de": "Facebook-Beitrag",
+  "es": "Publicación de Facebook",
+  "fr": "Publication Facebook",
+  "hi": "Facebook पोस्ट",
+  "it": "Post di Facebook",
+  "ja": "Facebook 投稿",
+  "pt": "Publicação do Facebook",
+  "zh": "Facebook 帖子"
  }
 }

@@ -25,6 +25,11 @@ enum VideoFormat {
 
     static func preset(_ id: String) -> Spec? { presets.first { $0.id == id } }
 
+    /// The canvas for a video made for one platform (Instagram post 4:5, TikTok 9:16, YouTube 16:9…).
+    static func spec(for p: SocialPost.Platform) -> Spec {
+        Spec(id: p.id, name: p.name, size: p.canvasSize, ratio: p.ratio)
+    }
+
     /// Aspect-FILL: the crop of `source` (in source pixels) that exactly fills `target` with no bars,
     /// centered — subjects stay centered, edges are trimmed. This is the default for social.
     static func fillCrop(source: CGSize, target: CGSize) -> CGRect {

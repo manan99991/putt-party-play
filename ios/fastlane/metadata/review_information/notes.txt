@@ -13,13 +13,14 @@ PERMISSIONS (all processed on-device; nothing is uploaded)
 - Contacts: the Contacts tool finds duplicate contacts, merges them without losing a number, exports a .vcf backup, and copies or moves contacts between the user's own accounts on the device (for example Gmail to iCloud). Requested only when the user opens that tool; nothing is uploaded.
 - Microphone: Audio Lab (decibel meter / tuner), Voice to Notes, Meeting Notes, Translate's voice mode and Pro Camera's video mode (sound for the clip). Audio is metered or transcribed on-device; a recording is saved only when the user taps record.
 - Camera: Scan, Studio, Measure, Pro Camera, Identify, Translate (camera mode), and See & Read.
-- Photos: Cleaner, Studio, Privacy Scrubber, and Memory read photos the user selects; Memory indexes screenshots on-device only.
+- Photos: Cleaner, Photo Studio, Privacy Scrubber and Search My Photos read photos the user selects, on-device only.
+- Media & Apple Music: Animate's "Add music" lists songs on the phone that aren't copy-protected, to put under a video. Read on-device.
 - Motion: the level, compass and sensors inside Measure.
-- Location (when in use): the compass (true north), altitude, the GPS Dashboard and parked-car distance, Daily Brief weather (Apple WeatherKit), travel times (Apple Maps) and arrival reminders in Untangle and Contacts (UNLocationNotificationTrigger, handled by iOS). Location stays on the phone.
+- Location (when in use): compass, altitude, GPS Dashboard, parked-car distance, Morning Summary weather (WeatherKit), travel times (Apple Maps) and arrival reminders (handled by iOS). It stays on the phone.
 - Speech Recognition: Voice to Notes and Translate's voice mode transcribe speech on-device where supported.
 - Background audio: Rest keeps playing sleep sounds (or listening for snoring when the user starts it) with the screen off. It runs only after the user taps start.
 - Face ID: unlocks the private Vault.
-- Notifications: only reminders the user turns on (medicines, birthdays, Daily Brief, parking meter, bedtime, contact backup, Price Watch, bills, warranties, tool reminders). Every one has a "Test run" button that sends a sample within seconds.
+- Notifications: only reminders the user turns on (medicines, birthdays, Morning Summary, parking meter, bedtime, contact backup, Price Watch, bills, warranties, tool reminders). Every one has a "Test run" button that sends a sample within seconds.
 - Background App Refresh: used only for the user's own "tell me when" alerts (screenshot count, free space) and Price Watch, which downloads the web pages the user added (at most 10) a few times a day when iOS allows. Nothing else runs in the background.
 - Network: See & Read and the "Read the page at a link" step fetch only the page the user gives; Price Watch fetches the pages the user added. No data about the user is sent.
 - Calendar: plans open the system's own event editor (EKEventEditViewController); nothing is read.

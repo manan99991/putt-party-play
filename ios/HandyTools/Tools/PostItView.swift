@@ -77,28 +77,7 @@ struct PostItView: View {
         }
     }
 
-    private var platformGrid: some View {
-        LazyVGrid(columns: cols, spacing: 8) {
-            ForEach(SocialPost.platforms) { p in
-                let on = p.id == platformID
-                Button { platformID = p.id } label: {
-                    VStack(spacing: 5) {
-                        Image(systemName: p.icon).font(.system(size: 18, weight: .bold)).foregroundStyle(.white)
-                            .frame(width: 40, height: 40)
-                            .background(Color(hex: p.tint), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
-                            .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).stroke(.white.opacity(0.25), lineWidth: 1))
-                        Text(L(p.name)).font(HandyFont.micro).foregroundStyle(HandyColor.textPrimary).lineLimit(2).multilineTextAlignment(.center).minimumScaleFactor(0.8)
-                    }
-                    .frame(maxWidth: .infinity, minHeight: 84).padding(.vertical, 4)
-                    .background(on ? HandyColor.accentSoft : HandyColor.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(on ? HandyColor.accent : HandyColor.border, lineWidth: on ? 2 : 1))
-                }
-                .buttonStyle(.plain)
-                .accessibilityAddTraits(on ? [.isButton, .isSelected] : .isButton)
-                .accessibilityIdentifier("post-\(p.id)")
-            }
-        }
-    }
+    private var platformGrid: some View { PlatformGrid(selected: $platformID) }
 
     /// Exactly what will happen to this video for this platform.
     @ViewBuilder private var plan: some View {
@@ -228,6 +207,42 @@ struct PostReadyCard: View {
         if !(await UIApplication.shared.open(target)), let store = URL(string: platform.store) {
             note = "\(L(platform.name)) — \(L("isn't on this phone, so the App Store opens. The video is in Photos when you're ready."))"
             await UIApplication.shared.open(store)
+        }
+    }
+}
+
+
+/// Every place a video can go — TikTok, Instagram (Reels, Stories, posts), YouTube (Shorts and wide), Facebook (Reels
+/// and posts), Snapchat, WhatsApp Status, X, Threads, LinkedIn, Pinterest — all laid out at once, each in its own
+/// colour with the shape it takes. The same grid wherever Tenzy asks "Where will you post it?".
+struct PlatformGrid: View {
+    @Binding var selected: String
+    var showsShape = false
+    private let cols = [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)]
+
+    var body: some View {
+        LazyVGrid(columns: cols, spacing: 8) {
+            ForEach(SocialPost.platforms) { p in
+                let on = p.id == selected
+                Button { selected = p.id } label: {
+                    VStack(spacing: 5) {
+                        Image(systemName: p.icon).font(.system(size: 18, weight: .bold)).foregroundStyle(.white)
+                            .frame(width: 40, height: 40)
+                            .background(Color(hex: p.tint), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+                            .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).stroke(.white.opacity(0.25), lineWidth: 1))
+                        Text(L(p.name)).font(HandyFont.micro).foregroundStyle(HandyColor.textPrimary).lineLimit(2).multilineTextAlignment(.center).minimumScaleFactor(0.8)
+                        if showsShape {
+                            Text(p.ratio).font(HandyFont.micro.monospacedDigit()).foregroundStyle(HandyColor.textSecondary)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, minHeight: showsShape ? 96 : 84).padding(.vertical, 4)
+                    .background(on ? HandyColor.accentSoft : HandyColor.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(on ? HandyColor.accent : HandyColor.border, lineWidth: on ? 2 : 1))
+                }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(on ? [.isButton, .isSelected] : .isButton)
+                .accessibilityIdentifier("post-\(p.id)")
+            }
         }
     }
 }

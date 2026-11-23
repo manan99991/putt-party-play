@@ -25,6 +25,16 @@ struct AnimateView: View {
     @State private var styledPhotos: [UIImage] = []
     @State private var printURL: URL?
     @State private var makingGIF = false
+    /// Where it's going (TikTok, Instagram post, YouTube…) — sets the shape, and the finish hands it straight to that app.
+    @State private var postTo = "tiktok"
+    @State private var choosingPlace = false
+    /// The song under the video, if any.
+    @State private var music: MusicTrack.Pick?
+    @State private var pickingMusic = false
+    @State private var readingSong = false
+    @State private var musicPlayer = AVPlayer()
+    @State private var note: String?
+    @State private var stage = ""
 
     static let maxPhotos = 24
     private let cols = [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8),
@@ -47,9 +57,15 @@ struct AnimateView: View {
         .onChange(of: settings) { _, _ in schedulePreview() }
         .onChange(of: look) { _, _ in restyle() }
         .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { n in
-            if (n.object as? AVPlayerItem) == player.currentItem { player.seek(to: .zero); player.play() }
+            if (n.object as? AVPlayerItem) == player.currentItem, resultURL == nil {
+                player.seek(to: .zero); player.play(); startMusic()
+            }
         }
-        .onDisappear { player.pause(); previewTask?.cancel() }
+        .onChange(of: postTo) { _, id in
+            if let p = SocialPost.platform(id) { settings.format = VideoFormat.spec(for: p) }
+        }
+        .sheet(isPresented: $pickingMusic) { MusicPickerSheet { song in useSong(song) } }
+        .onDisappear { player.pause(); musicPlayer.pause(); previewTask?.cancel() }
         .finishes(working, tool: "Animate")
     }
 
@@ -87,6 +103,8 @@ struct AnimateView: View {
                     }.accessibilityLabel(L("Change photos"))
                 }
 
+            musicCard
+
             section("Style")
             ForEach(Animate.Style.Group.allCases) { g in
                 Text(L(g.rawValue)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -96,21 +114,7 @@ struct AnimateView: View {
             }
 
             section("Where will you post it?")
-            HandyFlow(spacing: HandySpacing.s8) {
-                    ForEach(VideoFormat.presets) { f in
-                        Button { settings.format = f } label: {
-                            VStack(spacing: 2) {
-                                Text(L(f.name)).font(HandyFont.caption).lineLimit(1)
-                                Text(f.ratio).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
-                            }
-                            .padding(.horizontal, 12).padding(.vertical, 8)
-                            .background(settings.format == f ? HandyColor.accent.opacity(0.15) : HandyColor.surface,
-                                        in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                            .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .stroke(settings.format == f ? HandyColor.accent : HandyColor.border, lineWidth: 1))
-                        }.buttonStyle(.plain)
-                    }
-                }
+            PlatformGrid(selected: $postTo, showsShape: true)
             section("Look")
             Picker("", selection: $look) {
                 ForEach(Animate.Look.allCases) { Text(L($0.title)).tag($0) }
@@ -126,9 +130,47 @@ struct AnimateView: View {
             Button { make() } label: {
                 Label(L("Make video"), systemImage: "film.stack").frame(maxWidth: .infinity)
             }.primaryButton().disabled(working)
-            if working { ToolProgressBar(value: progress, label: "Making your \(Int(settings.format.size.width))×\(Int(settings.format.size.height)) video…") }
+            if working { ToolProgressBar(value: progress, label: stage.isEmpty ? "Making your \(Int(settings.format.size.width))×\(Int(settings.format.size.height)) video…" : stage) }
             Button(L("Start over")) { reset() }.textButton().font(HandyFont.caption).frame(maxWidth: .infinity)
         }
+    }
+
+    /// The song under the video: add one, hear it in the preview, change or remove it.
+    @ViewBuilder private var musicCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            section("Music")
+            if readingSong {
+                HStack(spacing: 8) { BusySpinner(); Text(L("Finding the beat and the best part…")).font(HandyFont.caption) }
+            } else if let m = music {
+                HStack(spacing: HandySpacing.s12) {
+                    Image(systemName: "music.note").font(.system(size: 18, weight: .bold)).foregroundStyle(.white)
+                        .frame(width: 40, height: 40).background(HandyColor.accent, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(m.song.title).font(HandyFont.bodyStrong).lineLimit(1)
+                        Text(musicLine(m)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
+                    }
+                    Spacer(minLength: 4)
+                    Button(L("Change")) { pickingMusic = true }.font(HandyFont.caption.weight(.semibold)).accessibilityIdentifier("animate-music-change")
+                    Button { removeMusic() } label: { Image(systemName: "xmark.circle.fill").font(.system(size: 22)).foregroundStyle(HandyColor.textSecondary) }
+                        .buttonStyle(.plain).accessibilityLabel(L("Remove the music")).accessibilityIdentifier("animate-music-remove")
+                }
+            } else {
+                Button { pickingMusic = true } label: {
+                    Label(L("Add music"), systemImage: "music.note.list").frame(maxWidth: .infinity)
+                }.secondaryButton().accessibilityIdentifier("animate-add-music")
+                Text(L("Pick a song from your phone — the photos change on its beat.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            }
+            if let note { Text(L(note)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+    }
+
+    private func musicLine(_ m: MusicTrack.Pick) -> String {
+        var parts: [String] = []
+        if !m.song.artist.isEmpty { parts.append(m.song.artist) }
+        if m.start > 1 { parts.append("\(L("starts at")) \(SocialPost.clock(m.start))") }
+        if let b = m.beat { parts.append("\(Int((60 / b).rounded())) \(L("beats a minute — photos change on the beat"))") }
+        return parts.joined(separator: " · ")
     }
 
     private var previewBox: some View {
@@ -187,11 +229,16 @@ struct AnimateView: View {
                   systemImage: "checkmark.circle.fill")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.success)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            VideoPlayer(player: player)
-                .aspectRatio(settings.format.size.width / settings.format.size.height, contentMode: .fit)
-                .frame(maxWidth: .infinity, maxHeight: 460)
-                .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-            KeepShare(url, tool: "Animate")
+            if choosingPlace {
+                Text(L("Where will you post it?")).font(HandyFont.bodyStrong).frame(maxWidth: .infinity, alignment: .leading)
+                PlatformGrid(selected: $postTo)
+                Button(L("Done")) { choosingPlace = false }.secondaryButton()
+            } else {
+                PostReadyCard(source: url, platform: SocialPost.platform(postTo) ?? SocialPost.platforms[0],
+                              another: { choosingPlace = true })
+                    .id("\(url.lastPathComponent)-\(postTo)")
+            }
+            if let note { Text(L(note)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading) }
             if let g = gifURL {
                 ShareLink(item: g) {
                     Label(L("Save or share GIF"), systemImage: "photo.stack").frame(maxWidth: .infinity)
@@ -208,7 +255,7 @@ struct AnimateView: View {
                     Label(L("Print it as a paper flipbook"), systemImage: "book.pages").frame(maxWidth: .infinity)
                 }.secondaryButton()
             }
-            Button(L("Try another style")) { resultURL = nil; gifURL = nil; printURL = nil; schedulePreview() }.textButton().font(HandyFont.caption)
+            Button(L("Try another style")) { resultURL = nil; gifURL = nil; printURL = nil; choosingPlace = false; schedulePreview() }.textButton().font(HandyFont.caption)
         }
     }
 
@@ -256,7 +303,7 @@ struct AnimateView: View {
             try? await Task.sleep(nanoseconds: 350_000_000)
             if Task.isCancelled { return }
             let url = await Task.detached(priority: .userInitiated) {
-                await Animate.render(imgs, settings: s, scale: 0.3, fps: 15)
+                await Animate.render(imgs, settings: s, scale: 0.4, fps: 24)
             }.value
             if Task.isCancelled { if let url { try? FileManager.default.removeItem(at: url) }; return }
             await MainActor.run {
@@ -267,6 +314,7 @@ struct AnimateView: View {
                     player.replaceCurrentItem(with: AVPlayerItem(url: url))
                     player.isMuted = true
                     player.play()
+                    startMusic()
                 }
             }
         }
@@ -274,14 +322,24 @@ struct AnimateView: View {
 
     private func make() {
         guard !photos.isEmpty else { return }
-        previewTask?.cancel(); player.pause()
-        working = true; errorText = nil; progress = 0
-        let imgs = animPhotos, s = settings
+        previewTask?.cancel(); player.pause(); musicPlayer.pause()
+        working = true; errorText = nil; progress = 0; note = nil; stage = ""
+        let imgs = animPhotos, s = settings, song = music
         Task {
-            let url = await Task.detached(priority: .userInitiated) {
-                await Animate.render(imgs, settings: s) { p in Task { @MainActor in progress = p } }
+            var url = await Task.detached(priority: .userInitiated) {
+                await Animate.render(imgs, settings: s) { p in Task { @MainActor in progress = p * (song == nil ? 1 : 0.92) } }
             }.value
+            if let silent = url, let song {
+                await MainActor.run { stage = "Adding your song…"; progress = 0.94 }
+                if let withSong = await MusicTrack.addMusic(song, to: silent) {
+                    try? FileManager.default.removeItem(at: silent)
+                    url = withSong
+                } else {
+                    await MainActor.run { note = "The song couldn't be added, so this one is without it — try another song." }
+                }
+            }
             await MainActor.run {
+                stage = ""
                 working = false
                 guard let url else { errorText = "Couldn't make the video — try again, or fewer photos."; return }
                 let named = FileManager.default.temporaryDirectory
@@ -289,9 +347,7 @@ struct AnimateView: View {
                 try? FileManager.default.removeItem(at: named)
                 let final = (try? FileManager.default.moveItem(at: url, to: named)) != nil ? named : url
                 resultURL = final
-                player.replaceCurrentItem(with: AVPlayerItem(url: final))
-                player.isMuted = false
-                player.play()
+                player.replaceCurrentItem(with: nil)
                 HandyHaptics.success()
             }
         }
@@ -339,10 +395,42 @@ struct AnimateView: View {
         }
     }
 
+    /// A song was picked: find its beat and its liveliest part, then the preview plays with it.
+    private func useSong(_ song: MusicTrack.Song) {
+        readingSong = true; note = nil
+        let length = Animate.timeline(count: Animate.playCount(photos.count, settings: settings), settings: settings).seconds
+        Task {
+            let pick = await MusicTrack.prepare(song, videoLength: length)
+            await MainActor.run {
+                readingSong = false
+                guard let pick else { note = "That song couldn't be read — try another."; return }
+                music = pick
+                if pick.beat == nil { note = "No steady beat in this song, so the photos keep their own pace." }
+                musicPlayer.replaceCurrentItem(with: AVPlayerItem(url: pick.file))
+                if settings.beat != pick.beat { settings.beat = pick.beat } else { schedulePreview() }
+            }
+        }
+    }
+
+    private func removeMusic() {
+        musicPlayer.pause(); musicPlayer.replaceCurrentItem(with: nil)
+        music = nil; note = nil
+        settings.beat = nil
+    }
+
+    /// Play the song from its start point alongside the preview (they loop together).
+    private func startMusic() {
+        guard let m = music, resultURL == nil else { musicPlayer.pause(); return }
+        if musicPlayer.currentItem == nil { musicPlayer.replaceCurrentItem(with: AVPlayerItem(url: m.file)) }
+        musicPlayer.seek(to: CMTime(seconds: m.start, preferredTimescale: 600), toleranceBefore: .zero, toleranceAfter: .zero)
+        musicPlayer.play()
+    }
+
     private func reset() {
         previewTask?.cancel(); player.pause()
         photos = []; picks = []; previewURL = nil; resultURL = nil; errorText = nil; styleTouched = false
         styledPhotos = []; look = .original; gifURL = nil; printURL = nil
+        musicPlayer.pause(); music = nil; note = nil; choosingPlace = false; postTo = "tiktok"
         settings = Animate.Settings()
     }
 }

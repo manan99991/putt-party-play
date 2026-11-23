@@ -273,6 +273,23 @@ enum VideoEngine {
         return await export(comp, preset: AVAssetExportPresetHighestQuality, type: .mov, ext: "mov")
     }
 
+    /// A soundtrack (AAC) laid under a silent video — picture and sound both copied as they are, so it takes seconds
+    /// and the picture loses nothing. Re-encodes only if this phone can't copy them straight across.
+    static func layAudio(_ audio: URL, under src: URL) async -> URL? {
+        let v = AVURLAsset(url: src), a = AVURLAsset(url: audio)
+        guard let vTrack = try? await v.loadTracks(withMediaType: .video).first,
+              let aTrack = try? await a.loadTracks(withMediaType: .audio).first,
+              let vDur = try? await v.load(.duration), let aDur = try? await a.load(.duration) else { return nil }
+        let comp = AVMutableComposition()
+        guard let cv = comp.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid),
+              let ca = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
+        guard (try? cv.insertTimeRange(CMTimeRange(start: .zero, duration: vDur), of: vTrack, at: .zero)) != nil,
+              (try? ca.insertTimeRange(CMTimeRange(start: .zero, duration: CMTimeMinimum(vDur, aDur)), of: aTrack, at: .zero)) != nil else { return nil }
+        cv.preferredTransform = (try? await vTrack.load(.preferredTransform)) ?? .identity
+        if let fast = await export(comp, preset: AVAssetExportPresetPassthrough, type: .mp4, ext: "mp4") { return fast }
+        return await export(comp, preset: AVAssetExportPresetHighestQuality, type: .mp4, ext: "mp4")
+    }
+
     /// Audio only, as M4A (AAC). iOS has no built-in MP3 encoder; M4A plays everywhere.
     static func extractAudio(_ src: URL) async -> URL? {
         let asset = AVURLAsset(url: src)

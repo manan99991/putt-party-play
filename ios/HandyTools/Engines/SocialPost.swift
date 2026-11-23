@@ -3,8 +3,8 @@ import CoreImage
 import Photos
 import UIKit
 
-/// Post it — a video made right for where it's going (TikTok, Instagram Reels and Stories, YouTube Shorts and
-/// YouTube, Facebook Reels, Snapchat, X, WhatsApp Status): the right shape (tall with soft blurred sides, nothing cut
+/// Post it — a video made right for where it's going (TikTok, Instagram Reels, Stories and posts, YouTube Shorts and
+/// YouTube, Facebook Reels and posts, Snapchat, WhatsApp Status, X, Threads, LinkedIn, Pinterest): the right shape (tall with soft blurred sides, nothing cut
 /// off), the best part when it's longer than the platform takes, small enough when there's a size limit. Then it's
 /// saved to Photos, the caption (with that platform's tags) is copied, and the app opens on it — Instagram straight
 /// to the new post with the video picked. The apps don't let anyone publish for you without signing in to them, so
@@ -27,6 +27,18 @@ enum SocialPost {
         let store: String
         /// A longer clip becomes several pieces in order (Stories, Status), instead of keeping one part.
         var splits = false
+        /// The canvas a video made for it uses, when it isn't simply tall (9:16) or wide (16:9) — feed posts are 4:5.
+        var canvas: CGSize? = nil
+
+        /// The exact size a video made for this platform is drawn at.
+        var canvasSize: CGSize { canvas ?? (shape == .wide ? CGSize(width: 1920, height: 1080) : CGSize(width: 1080, height: 1920)) }
+        /// "9:16", "4:5", "16:9" or "1:1".
+        var ratio: String {
+            let s = canvasSize
+            if abs(s.width - s.height) < 1 { return "1:1" }
+            if s.width > s.height { return "16:9" }
+            return s.height / s.width > 1.5 ? "9:16" : "4:5"
+        }
     }
 
     static let platforms: [Platform] = [
@@ -36,18 +48,28 @@ enum SocialPost {
                  tags: ["#reels"], app: "instagram://", store: "https://apps.apple.com/app/id389801252"),
         Platform(id: "stories", name: "Instagram Stories", icon: "circle.dashed", tint: 0xF77737, shape: .tall, maxSeconds: 59, maxBytes: nil,
                  tags: [], app: "instagram://story-camera", store: "https://apps.apple.com/app/id389801252", splits: true),
+        Platform(id: "igpost", name: "Instagram post", icon: "square.grid.3x3.fill", tint: 0xC13584, shape: .any, maxSeconds: 895, maxBytes: nil,
+                 tags: [], app: "instagram://", store: "https://apps.apple.com/app/id389801252", canvas: CGSize(width: 1080, height: 1350)),
         Platform(id: "shorts", name: "YouTube Shorts", icon: "bolt.fill", tint: 0xFF0000, shape: .tall, maxSeconds: 178, maxBytes: nil,
                  tags: ["#shorts"], app: "youtube://", store: "https://apps.apple.com/app/id544007664"),
         Platform(id: "youtube", name: "YouTube", icon: "play.rectangle.fill", tint: 0xCC0000, shape: .wide, maxSeconds: nil, maxBytes: nil,
                  tags: [], app: "youtube://", store: "https://apps.apple.com/app/id544007664"),
         Platform(id: "facebook", name: "Facebook Reels", icon: "f.square.fill", tint: 0x1877F2, shape: .tall, maxSeconds: 88, maxBytes: nil,
                  tags: ["#reels"], app: "fb://", store: "https://apps.apple.com/app/id284882215"),
+        Platform(id: "fbpost", name: "Facebook post", icon: "f.square", tint: 0x1877F2, shape: .any, maxSeconds: nil, maxBytes: nil,
+                 tags: [], app: "fb://", store: "https://apps.apple.com/app/id284882215", canvas: CGSize(width: 1080, height: 1350)),
         Platform(id: "snapchat", name: "Snapchat", icon: "camera.fill", tint: 0xFFC800, shape: .tall, maxSeconds: 59, maxBytes: nil,
                  tags: [], app: "snapchat://", store: "https://apps.apple.com/app/id447188370", splits: true),
         Platform(id: "x", name: "X", icon: "xmark", tint: 0x000000, shape: .any, maxSeconds: 138, maxBytes: 500_000_000,
-                 tags: [], app: "twitter://", store: "https://apps.apple.com/app/id333903271"),
+                 tags: [], app: "twitter://", store: "https://apps.apple.com/app/id333903271", canvas: CGSize(width: 1080, height: 1350)),
         Platform(id: "whatsapp", name: "WhatsApp Status", icon: "circle.circle.fill", tint: 0x25D366, shape: .tall, maxSeconds: 59, maxBytes: 16_000_000,
                  tags: [], app: "whatsapp://", store: "https://apps.apple.com/app/id310633997", splits: true),
+        Platform(id: "threads", name: "Threads", icon: "at", tint: 0x101010, shape: .any, maxSeconds: 295, maxBytes: nil,
+                 tags: [], app: "barcelona://", store: "https://apps.apple.com/app/id6446901002", canvas: CGSize(width: 1080, height: 1350)),
+        Platform(id: "linkedin", name: "LinkedIn", icon: "briefcase.fill", tint: 0x0A66C2, shape: .any, maxSeconds: 595, maxBytes: nil,
+                 tags: [], app: "linkedin://", store: "https://apps.apple.com/app/id288429040", canvas: CGSize(width: 1080, height: 1350)),
+        Platform(id: "pinterest", name: "Pinterest", icon: "pin.fill", tint: 0xE60023, shape: .tall, maxSeconds: 895, maxBytes: nil,
+                 tags: [], app: "pinterest://", store: "https://apps.apple.com/app/id429047995"),
     ]
     static func platform(_ id: String) -> Platform? { platforms.first { $0.id == id } }
 
@@ -106,7 +128,7 @@ enum SocialPost {
 
     /// Where to send the person: Instagram opens on the saved video, ready to post; the rest open the app.
     static func openURL(_ p: Platform, assetID: String?) -> URL? {
-        if p.id == "reels", let id = assetID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+        if p.id == "reels" || p.id == "igpost", let id = assetID?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
             return URL(string: "instagram://library?LocalIdentifier=\(id)")
         }
         return URL(string: p.app)

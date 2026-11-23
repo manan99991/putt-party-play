@@ -96,6 +96,11 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   hand over only the contact the person taps and need no permission. Speech uses the existing microphone and speech strings on iOS
   and the phone's own voice typing on Android.
 - Shortcuts actions (iOS) run tools on the device and return the result to the shortcut. No new data leaves the phone.
+- Animate's "Add music" (iOS) asks for Media & Apple Music (`NSAppleMusicUsageDescription`) only when the person taps "Show
+  songs from the Music app". It lists songs that are on the phone and not copy-protected (`hasProtectedAsset == false`,
+  not cloud items) and reads them on-device to put under a video; streamed Apple Music songs are never offered or copied.
+  Files picked with "Browse all files" are copied into Tenzy's own Music folder. Nothing is uploaded, so App Privacy is
+  unchanged. Never ship songs or loops in the app that Tenzy doesn't own the rights to.
 - Shortcuts action titles, descriptions and phrases must never contain "iPhone", "iPad", "Apple" or "Siri": App Store Connect rejects the upload (ITMS-90626) after the build has already passed. Say "your device".
 - Build your own, steps that can be missing on a phone: `speechText` and `videoCaptions` need on-device speech recognition, `rewrite` needs an
   on-device writing model (never on Android today), `videoCaptions` is iPhone only. The app greys these out and says why. **Never list one

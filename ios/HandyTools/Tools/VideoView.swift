@@ -60,6 +60,7 @@ struct VideoView: View {
     @State private var gifPhotos: [Data] = []
     @State private var socialFormat: VideoFormat.Spec = VideoFormat.presets[0]
     @State private var socialFit = false
+    @State private var socialPlace = "tiktok"
     @State private var sendPlace: SendOn.Place?
     @State private var posting = false
     @State private var sendParts: [URL] = []
@@ -303,11 +304,10 @@ struct VideoView: View {
     private var socialControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text(L("Where will you post it?")).font(HandyFont.bodyStrong)
-            HandyFlow(spacing: HandySpacing.s8) {
-                ForEach(VideoFormat.presets) { f in
-                    HChip(text: "\(f.name) · \(f.ratio)", selected: socialFormat == f) { socialFormat = f }
+            PlatformGrid(selected: $socialPlace, showsShape: true)
+                .onChange(of: socialPlace) { _, id in
+                    if let p = SocialPost.platform(id) { socialFormat = VideoFormat.spec(for: p) }
                 }
-            }
             Picker("", selection: $socialFit) {
                 Text(L("Fill the frame")).tag(false)
                 Text(L("Show whole video")).tag(true)

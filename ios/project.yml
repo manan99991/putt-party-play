@@ -228,6 +228,7 @@ targets:
         # --- Tool permissions ---
         NSCameraUsageDescription: Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded.
         NSMicrophoneUsageDescription: Needed for the sound meter and voice tools. Levels are measured on your phone; nothing is uploaded.
+        NSAppleMusicUsageDescription: Lets you add a song from your Music app to a video you make. Songs are read on your phone and never uploaded.
         NSLocationWhenInUseUsageDescription: Needed for the compass (true north), altitude, the GPS dashboard, and to put where you are into a tool when you tap Location. It is only shared if you send it.
         NSMotionUsageDescription: Needed for the level, barometer/altimeter and metal detector readings.
         NSSpeechRecognitionUsageDescription: Needed to transcribe your voice to text. Audio is processed on your phone and never uploaded.
