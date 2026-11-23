@@ -219,10 +219,17 @@ final class ToolFlowTests: XCTestCase {
 
     func testRestPlaysSoundsSetsTimerAndShowsRecorder() {
         launch("rest")
-        app.buttons["Brown"].firstMatch.tap(); sleep(1)
+        // A ready-made mix plays two sounds at once (Brown + Deep calm), and Your mix lists both.
+        let mix = app.buttons["rest-mix-deep"].firstMatch
+        expect(mix, "ready-made mixes", timeout: 15)
+        mix.tap(); sleep(1)
+        expect(text(containing: "Deep calm"), "the mix in Your mix", timeout: 10)
         tapChip("15 min")
         expect(text(containing: "fades out in"), "sleep timer", timeout: 10)
-        app.buttons["Rain"].firstMatch.tap(); sleep(1); app.buttons["Rain"].firstMatch.tap()
+        // A third sound joins the mix, and tapping it again takes it out.
+        app.buttons["Rain"].firstMatch.tap(); sleep(1)
+        expect(text(containing: "Brown + Deep calm + Rain"), "three-sound mix", timeout: 10)
+        app.buttons["Rain"].firstMatch.tap()
         app.buttons["Night recorder"].firstMatch.tap()
         expect(button(containing: "Start listening"), "recorder", timeout: 10)
         alive("rest")

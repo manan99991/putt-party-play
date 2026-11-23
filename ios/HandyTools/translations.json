@@ -42538,5 +42538,505 @@
   "ja": "まだ何も設定されていません。上から1つオンにしましょう。各1分、テスト実行つき。",
   "pt": "Ainda nada definido. Ative um acima — cada um leva um minuto e tem um teste.",
   "zh": "还没有设置。在上面打开一个——每个只需一分钟，并可试运行。"
+ },
+ "Brown": {
+  "de": "Braun",
+  "es": "Marrón",
+  "fr": "Brun",
+  "hi": "भूरा",
+  "it": "Marrone",
+  "ja": "ブラウン",
+  "pt": "Castanho",
+  "zh": "棕色"
+ },
+ "Fan": {
+  "de": "Ventilator",
+  "es": "Ventilador",
+  "fr": "Ventilateur",
+  "hi": "पंखा",
+  "it": "Ventilatore",
+  "ja": "扇風機",
+  "pt": "Ventoinha",
+  "zh": "风扇"
+ },
+ "Rain": {
+  "de": "Regen",
+  "es": "Lluvia",
+  "fr": "Pluie",
+  "hi": "बारिश",
+  "it": "Pioggia",
+  "ja": "雨",
+  "pt": "Chuva",
+  "zh": "雨声"
+ },
+ "Ocean": {
+  "de": "Meer",
+  "es": "Océano",
+  "fr": "Océan",
+  "hi": "समुद्र",
+  "it": "Oceano",
+  "ja": "海",
+  "pt": "Oceano",
+  "zh": "海浪"
+ },
+ "Thunderstorm": {
+  "de": "Gewitter",
+  "es": "Tormenta",
+  "fr": "Orage",
+  "hi": "आंधी-तूफ़ान",
+  "it": "Temporale",
+  "ja": "雷雨",
+  "pt": "Trovoada",
+  "zh": "雷雨"
+ },
+ "Stream": {
+  "de": "Bach",
+  "es": "Arroyo",
+  "fr": "Ruisseau",
+  "hi": "झरना",
+  "it": "Ruscello",
+  "ja": "小川",
+  "pt": "Riacho",
+  "zh": "溪流"
+ },
+ "Wind": {
+  "de": "Wind",
+  "es": "Viento",
+  "fr": "Vent",
+  "hi": "हवा",
+  "it": "Vento",
+  "ja": "風",
+  "pt": "Vento",
+  "zh": "风声"
+ },
+ "Forest": {
+  "de": "Wald",
+  "es": "Bosque",
+  "fr": "Forêt",
+  "hi": "जंगल",
+  "it": "Bosco",
+  "ja": "森",
+  "pt": "Floresta",
+  "zh": "森林"
+ },
+ "Crickets": {
+  "de": "Grillen",
+  "es": "Grillos",
+  "fr": "Grillons",
+  "hi": "झींगुर",
+  "it": "Grilli",
+  "ja": "コオロギ",
+  "pt": "Grilos",
+  "zh": "蟋蟀"
+ },
+ "Campfire": {
+  "de": "Lagerfeuer",
+  "es": "Fogata",
+  "fr": "Feu de camp",
+  "hi": "अलाव",
+  "it": "Falò",
+  "ja": "焚き火",
+  "pt": "Fogueira",
+  "zh": "篝火"
+ },
+ "Plane cabin": {
+  "de": "Flugzeugkabine",
+  "es": "Cabina de avión",
+  "fr": "Cabine d'avion",
+  "hi": "विमान केबिन",
+  "it": "Cabina d'aereo",
+  "ja": "機内",
+  "pt": "Cabine de avião",
+  "zh": "机舱"
+ },
+ "Train": {
+  "de": "Zug",
+  "es": "Tren",
+  "fr": "Train",
+  "hi": "ट्रेन",
+  "it": "Treno",
+  "ja": "電車",
+  "pt": "Comboio",
+  "zh": "火车"
+ },
+ "Singing bowl": {
+  "de": "Klangschale",
+  "es": "Cuenco tibetano",
+  "fr": "Bol chantant",
+  "hi": "सिंगिंग बाउल",
+  "it": "Campana tibetana",
+  "ja": "シンギングボウル",
+  "pt": "Taça tibetana",
+  "zh": "颂钵"
+ },
+ "Deep calm": {
+  "de": "Tiefe Ruhe",
+  "es": "Calma profunda",
+  "fr": "Calme profond",
+  "hi": "गहरी शांति",
+  "it": "Calma profonda",
+  "ja": "深い静けさ",
+  "pt": "Calma profunda",
+  "zh": "深度平静"
+ },
+ "Wind chimes": {
+  "de": "Windspiel",
+  "es": "Campanillas de viento",
+  "fr": "Carillon à vent",
+  "hi": "विंड चाइम्स",
+  "it": "Campanelle a vento",
+  "ja": "ウィンドチャイム",
+  "pt": "Espanta-espíritos",
+  "zh": "风铃"
+ },
+ "Music box": {
+  "de": "Spieluhr",
+  "es": "Caja de música",
+  "fr": "Boîte à musique",
+  "hi": "संगीत बॉक्स",
+  "it": "Carillon",
+  "ja": "オルゴール",
+  "pt": "Caixa de música",
+  "zh": "八音盒"
+ },
+ "Heartbeat": {
+  "de": "Herzschlag",
+  "es": "Latido",
+  "fr": "Battement de cœur",
+  "hi": "दिल की धड़कन",
+  "it": "Battito",
+  "ja": "心音",
+  "pt": "Batimento cardíaco",
+  "zh": "心跳"
+ },
+ "Womb": {
+  "de": "Mutterleib",
+  "es": "Útero",
+  "fr": "Ventre maternel",
+  "hi": "गर्भ",
+  "it": "Grembo materno",
+  "ja": "胎内音",
+  "pt": "Útero",
+  "zh": "子宫"
+ },
+ "Roof rain": {
+  "de": "Regen aufs Dach",
+  "es": "Lluvia en el tejado",
+  "fr": "Pluie sur le toit",
+  "hi": "छत पर बारिश",
+  "it": "Pioggia sul tetto",
+  "ja": "屋根の雨",
+  "pt": "Chuva no telhado",
+  "zh": "屋顶雨声"
+ },
+ "Nature": {
+  "de": "Natur",
+  "es": "Naturaleza",
+  "fr": "Nature",
+  "hi": "प्रकृति",
+  "it": "Natura",
+  "ja": "自然",
+  "pt": "Natureza",
+  "zh": "自然"
+ },
+ "Noise": {
+  "de": "Rauschen",
+  "es": "Ruido",
+  "fr": "Bruit",
+  "hi": "शोर",
+  "it": "Rumore",
+  "ja": "ノイズ",
+  "pt": "Ruído",
+  "zh": "噪声"
+ },
+ "Calm": {
+  "de": "Ruhe",
+  "es": "Calma",
+  "fr": "Calme",
+  "hi": "शांति",
+  "it": "Calma",
+  "ja": "静けさ",
+  "pt": "Calma",
+  "zh": "宁静"
+ },
+ "Cosy cabin": {
+  "de": "Gemütliche Hütte",
+  "es": "Cabaña acogedora",
+  "fr": "Chalet douillet",
+  "hi": "आरामदायक कुटिया",
+  "it": "Baita accogliente",
+  "ja": "山小屋",
+  "pt": "Cabana aconchegante",
+  "zh": "温馨小屋"
+ },
+ "Summer night": {
+  "de": "Sommernacht",
+  "es": "Noche de verano",
+  "fr": "Nuit d'été",
+  "hi": "गर्मी की रात",
+  "it": "Notte d'estate",
+  "ja": "夏の夜",
+  "pt": "Noite de verão",
+  "zh": "夏夜"
+ },
+ "Ocean breeze": {
+  "de": "Meeresbrise",
+  "es": "Brisa marina",
+  "fr": "Brise marine",
+  "hi": "समुद्री हवा",
+  "it": "Brezza marina",
+  "ja": "海風",
+  "pt": "Brisa do mar",
+  "zh": "海风"
+ },
+ "Deep sleep": {
+  "de": "Tiefschlaf",
+  "es": "Sueño profundo",
+  "fr": "Sommeil profond",
+  "hi": "गहरी नींद",
+  "it": "Sonno profondo",
+  "ja": "深い眠り",
+  "pt": "Sono profundo",
+  "zh": "深度睡眠"
+ },
+ "Meditate": {
+  "de": "Meditieren",
+  "es": "Meditar",
+  "fr": "Méditer",
+  "hi": "ध्यान",
+  "it": "Meditare",
+  "ja": "瞑想",
+  "pt": "Meditar",
+  "zh": "冥想"
+ },
+ "Baby sleep": {
+  "de": "Babyschlaf",
+  "es": "Sueño del bebé",
+  "fr": "Sommeil de bébé",
+  "hi": "बच्चे की नींद",
+  "it": "Nanna",
+  "ja": "赤ちゃんの眠り",
+  "pt": "Sono do bebé",
+  "zh": "宝宝睡眠"
+ },
+ "Ready-made mixes": {
+  "de": "Fertige Mischungen",
+  "es": "Mezclas listas",
+  "fr": "Mélanges prêts",
+  "hi": "तैयार मिक्स",
+  "it": "Mix pronti",
+  "ja": "おすすめミックス",
+  "pt": "Misturas prontas",
+  "zh": "现成混音"
+ },
+ "One tap plays sounds that belong together.": {
+  "de": "Ein Tipp spielt Klänge, die zusammenpassen.",
+  "es": "Un toque reproduce sonidos que van juntos.",
+  "fr": "Un geste joue des sons qui vont ensemble.",
+  "hi": "एक टैप से साथ जमने वाली आवाज़ें बजती हैं।",
+  "it": "Un tocco riproduce suoni che stanno bene insieme.",
+  "ja": "タップひとつで相性の良い音をまとめて再生。",
+  "pt": "Um toque toca sons que combinam.",
+  "zh": "一键播放相配的声音。"
+ },
+ "Rain, waves, wind and wild things.": {
+  "de": "Regen, Wellen, Wind und Wildes.",
+  "es": "Lluvia, olas, viento y naturaleza salvaje.",
+  "fr": "Pluie, vagues, vent et nature sauvage.",
+  "hi": "बारिश, लहरें, हवा और जंगल की आवाज़ें।",
+  "it": "Pioggia, onde, vento e natura selvaggia.",
+  "ja": "雨、波、風、生きものたちの音。",
+  "pt": "Chuva, ondas, vento e natureza selvagem.",
+  "zh": "雨声、海浪、风声与自然万物。"
+ },
+ "Steady sound that hides traffic and snoring.": {
+  "de": "Gleichmäßiges Rauschen, das Verkehr und Schnarchen überdeckt.",
+  "es": "Sonido constante que tapa el tráfico y los ronquidos.",
+  "fr": "Un son régulier qui couvre la circulation et les ronflements.",
+  "hi": "एकसार आवाज़ जो ट्रैफ़िक और खर्राटे छिपा देती है।",
+  "it": "Suono costante che copre traffico e russare.",
+  "ja": "車の音やいびきを隠す一定の音。",
+  "pt": "Som constante que abafa o trânsito e o ressonar.",
+  "zh": "稳定的声音，盖住车流和鼾声。"
+ },
+ "Slow tones and heartbeats to breathe with.": {
+  "de": "Langsame Töne und Herzschläge zum Mitatmen.",
+  "es": "Tonos lentos y latidos para respirar con calma.",
+  "fr": "Des sons lents et des battements pour respirer en rythme.",
+  "hi": "धीमे स्वर और धड़कनें, साथ में साँस लेने के लिए।",
+  "it": "Toni lenti e battiti per respirare con calma.",
+  "ja": "呼吸を合わせる、ゆったりした音と心音。",
+  "pt": "Tons lentos e batimentos para respirar com calma.",
+  "zh": "舒缓的音调与心跳，跟着呼吸。"
+ },
+ "Now playing": {
+  "de": "Läuft gerade",
+  "es": "Reproduciendo",
+  "fr": "En cours",
+  "hi": "अभी बज रहा है",
+  "it": "In riproduzione",
+  "ja": "再生中",
+  "pt": "A tocar",
+  "zh": "正在播放"
+ },
+ "Your mix": {
+  "de": "Deine Mischung",
+  "es": "Tu mezcla",
+  "fr": "Votre mélange",
+  "hi": "आपका मिक्स",
+  "it": "Il tuo mix",
+  "ja": "あなたのミックス",
+  "pt": "A sua mistura",
+  "zh": "你的混音"
+ },
+ "Pick up to three sounds": {
+  "de": "Bis zu drei Klänge wählen",
+  "es": "Elige hasta tres sonidos",
+  "fr": "Choisissez jusqu'à trois sons",
+  "hi": "तीन तक आवाज़ें चुनें",
+  "it": "Scegli fino a tre suoni",
+  "ja": "音を3つまで選ぶ",
+  "pt": "Escolha até três sons",
+  "zh": "最多选三种声音"
+ },
+ "Pause": {
+  "de": "Pause",
+  "es": "Pausa",
+  "fr": "Pause",
+  "hi": "रोकें",
+  "it": "Pausa",
+  "ja": "一時停止",
+  "pt": "Pausa",
+  "zh": "暂停"
+ },
+ "Tap sounds below to layer them — rain with a crackling fire, waves with a breeze. Each gets its own level.": {
+  "de": "Tippe unten auf Klänge, um sie zu mischen – Regen mit knisterndem Feuer, Wellen mit einer Brise. Jeder bekommt seine eigene Lautstärke.",
+  "es": "Toca sonidos abajo para combinarlos: lluvia con un fuego crepitante, olas con brisa. Cada uno tiene su propio volumen.",
+  "fr": "Touchez des sons ci-dessous pour les superposer : la pluie avec un feu qui crépite, les vagues avec une brise. Chacun a son propre volume.",
+  "hi": "नीचे आवाज़ें टैप करके उन्हें मिलाएँ — चटकती आग के साथ बारिश, हवा के साथ लहरें। हर एक का अपना वॉल्यूम है।",
+  "it": "Tocca i suoni qui sotto per sovrapporli: pioggia con un fuoco scoppiettante, onde con una brezza. Ognuno ha il suo volume.",
+  "ja": "下の音をタップして重ねましょう。パチパチ燃える火と雨、そよ風と波。音ごとに音量を変えられます。",
+  "pt": "Toque nos sons abaixo para os juntar — chuva com uma fogueira a crepitar, ondas com uma brisa. Cada um tem o seu volume.",
+  "zh": "点按下方的声音来叠加——雨声配噼啪的篝火，海浪配微风。每种声音都可单独调音量。"
+ },
+ "Volume": {
+  "de": "Lautstärke",
+  "es": "Volumen",
+  "fr": "Volume",
+  "hi": "वॉल्यूम",
+  "it": "Volume",
+  "ja": "音量",
+  "pt": "Volume",
+  "zh": "音量"
+ },
+ "level": {
+  "de": "Lautstärke",
+  "es": "volumen",
+  "fr": "volume",
+  "hi": "स्तर",
+  "it": "volume",
+  "ja": "音量",
+  "pt": "volume",
+  "zh": "音量"
+ },
+ "fades out in": {
+  "de": "blendet aus in",
+  "es": "se apaga en",
+  "fr": "s'estompe dans",
+  "hi": "बंद होने में",
+  "it": "sfuma tra",
+  "ja": "フェードアウトまで",
+  "pt": "desvanece em",
+  "zh": "淡出倒计时"
+ },
+ "In your mix": {
+  "de": "In deiner Mischung",
+  "es": "En tu mezcla",
+  "fr": "Dans votre mélange",
+  "hi": "आपके मिक्स में",
+  "it": "Nel tuo mix",
+  "ja": "ミックスに追加済み",
+  "pt": "Na sua mistura",
+  "zh": "已在混音中"
+ },
+ "Playing": {
+  "de": "Läuft",
+  "es": "Reproduciendo",
+  "fr": "En lecture",
+  "hi": "चल रहा है",
+  "it": "In riproduzione",
+  "ja": "再生中",
+  "pt": "A tocar",
+  "zh": "播放中"
+ },
+ "Keeps playing with the screen locked. Every sound is made live on your phone, so it never loops. Brown, Fan and Roof rain mask traffic and snoring best.": {
+  "de": "Läuft bei gesperrtem Bildschirm weiter. Jeder Klang entsteht live auf deinem Handy und wiederholt sich daher nie. Braun, Ventilator und Regen aufs Dach überdecken Verkehr und Schnarchen am besten.",
+  "es": "Sigue sonando con la pantalla bloqueada. Cada sonido se crea en directo en tu teléfono, así que nunca se repite en bucle. Marrón, Ventilador y Lluvia en el tejado tapan mejor el tráfico y los ronquidos.",
+  "fr": "Continue avec l'écran verrouillé. Chaque son est créé en direct sur votre téléphone, il ne tourne donc jamais en boucle. Brun, Ventilateur et Pluie sur le toit couvrent le mieux la circulation et les ronflements.",
+  "hi": "स्क्रीन लॉक होने पर भी बजता रहता है। हर आवाज़ आपके फ़ोन पर लाइव बनती है, इसलिए कभी दोहराती नहीं। भूरा, पंखा और छत पर बारिश ट्रैफ़िक और खर्राटों को सबसे अच्छा छिपाते हैं।",
+  "it": "Continua a suonare con lo schermo bloccato. Ogni suono è creato dal vivo sul telefono, quindi non si ripete mai in loop. Marrone, Ventilatore e Pioggia sul tetto coprono meglio traffico e russare.",
+  "ja": "画面をロックしても再生が続きます。音はすべて端末上でその場で作られるので、ループしません。車の音やいびきを隠すにはブラウン、扇風機、屋根の雨が最適です。",
+  "pt": "Continua a tocar com o ecrã bloqueado. Cada som é criado ao vivo no telemóvel, por isso nunca se repete em ciclo. Castanho, Ventoinha e Chuva no telhado abafam melhor o trânsito e o ressonar.",
+  "zh": "锁屏后仍会继续播放。每种声音都在手机上实时生成，因此永远不会循环重复。棕色、风扇和屋顶雨声最能盖住车流和鼾声。"
+ },
+ "made way — a mix holds three sounds.": {
+  "de": "hat Platz gemacht – eine Mischung hat höchstens drei Klänge.",
+  "es": "dejó su sitio: una mezcla admite tres sonidos.",
+  "fr": "a laissé sa place : un mélange contient trois sons.",
+  "hi": "हटा दिया गया — एक मिक्स में तीन आवाज़ें होती हैं।",
+  "it": "ha lasciato il posto: un mix contiene tre suoni.",
+  "ja": "を外しました（ミックスは3つまで）。",
+  "pt": "deu lugar — uma mistura leva três sons.",
+  "zh": "已移出——混音最多三种声音。"
+ },
+ "Sleep sounds": {
+  "de": "Schlafklänge",
+  "es": "Sonidos para dormir",
+  "fr": "Sons pour dormir",
+  "hi": "नींद की आवाज़ें",
+  "it": "Suoni per dormire",
+  "ja": "睡眠サウンド",
+  "pt": "Sons para dormir",
+  "zh": "助眠声音"
+ },
+ "Rich sleep sounds you can mix — rain, waves, fire, birdsong, bowls and more — with a fading timer, a bedtime nudge, and a recorder that keeps only the noisy moments.": {
+  "de": "Vielfältige Schlafklänge zum Mischen – Regen, Wellen, Feuer, Vogelgesang, Klangschalen und mehr – mit Timer zum Ausblenden, Erinnerung zur Schlafenszeit und einem Rekorder, der nur die lauten Momente behält.",
+  "es": "Sonidos para dormir que puedes mezclar —lluvia, olas, fuego, pájaros, cuencos y más— con temporizador que se desvanece, aviso para ir a dormir y una grabadora que solo guarda los momentos ruidosos.",
+  "fr": "Des sons pour dormir à mélanger — pluie, vagues, feu, chants d'oiseaux, bols et plus — avec minuterie en fondu, rappel du coucher et un enregistreur qui ne garde que les moments bruyants.",
+  "hi": "मिलाने लायक नींद की ढेरों आवाज़ें — बारिश, लहरें, आग, चिड़ियों का गाना, सिंगिंग बाउल और भी — धीरे बंद होने वाले टाइमर, सोने के समय की याद और ऐसे रिकॉर्डर के साथ जो सिर्फ़ शोर वाले पल रखता है।",
+  "it": "Suoni per dormire da mixare — pioggia, onde, fuoco, canto degli uccelli, campane tibetane e altro — con timer in dissolvenza, promemoria della nanna e un registratore che tiene solo i momenti rumorosi.",
+  "ja": "雨、波、焚き火、鳥のさえずり、シンギングボウルなど、重ねて楽しめる豊かな睡眠サウンド。フェードアウトするタイマー、就寝リマインダー、うるさい瞬間だけを残す録音機能つき。",
+  "pt": "Sons para dormir que pode misturar — chuva, ondas, fogo, cantos de pássaros, taças e mais — com temporizador que desvanece, lembrete para deitar e um gravador que só guarda os momentos ruidosos.",
+  "zh": "可自由混合的丰富助眠声音——雨声、海浪、篝火、鸟鸣、颂钵等——配有渐弱定时器、睡前提醒，以及只保留吵闹时刻的录音器。"
+ },
+ "Tap a sound to play it — rain, waves, a campfire, birds, a singing bowl and more.": {
+  "de": "Tippe auf einen Klang, um ihn abzuspielen – Regen, Wellen, Lagerfeuer, Vögel, Klangschale und mehr.",
+  "es": "Toca un sonido para reproducirlo: lluvia, olas, fogata, pájaros, cuenco tibetano y más.",
+  "fr": "Touchez un son pour le jouer — pluie, vagues, feu de camp, oiseaux, bol chantant et plus.",
+  "hi": "कोई आवाज़ टैप करके चलाएँ — बारिश, लहरें, अलाव, चिड़ियाँ, सिंगिंग बाउल और भी।",
+  "it": "Tocca un suono per riprodurlo: pioggia, onde, falò, uccelli, campana tibetana e altro.",
+  "ja": "音をタップして再生。雨、波、焚き火、鳥、シンギングボウルなど。",
+  "pt": "Toque num som para o ouvir — chuva, ondas, fogueira, pássaros, taça tibetana e mais.",
+  "zh": "点按声音即可播放——雨声、海浪、篝火、鸟鸣、颂钵等。"
+ },
+ "Tap two or three to mix them and set each one's level, or tap a ready-made mix.": {
+  "de": "Tippe zwei oder drei an, um sie zu mischen, und stelle für jeden die Lautstärke ein – oder wähle eine fertige Mischung.",
+  "es": "Toca dos o tres para mezclarlos y ajusta el volumen de cada uno, o elige una mezcla lista.",
+  "fr": "Touchez-en deux ou trois pour les mélanger et réglez le volume de chacun, ou choisissez un mélange prêt.",
+  "hi": "दो या तीन टैप करके मिलाएँ और हर एक का स्तर तय करें, या कोई तैयार मिक्स चुनें।",
+  "it": "Toccane due o tre per mixarli e regola il volume di ciascuno, oppure scegli un mix pronto.",
+  "ja": "2〜3個タップして重ね、それぞれの音量を調整。おすすめミックスも選べます。",
+  "pt": "Toque em dois ou três para os misturar e ajuste o volume de cada um, ou escolha uma mistura pronta.",
+  "zh": "点按两到三种声音进行混合并分别调音量，或选择现成混音。"
+ },
+ "Rain, waves, fire, birdsong — mix your own": {
+  "de": "Regen, Wellen, Feuer, Vogelgesang – selbst gemischt",
+  "es": "Lluvia, olas, fuego, pájaros: mezcla los tuyos",
+  "fr": "Pluie, vagues, feu, oiseaux — à mélanger soi-même",
+  "hi": "बारिश, लहरें, आग, चिड़ियाँ — अपना मिक्स बनाएँ",
+  "it": "Pioggia, onde, fuoco, uccelli: crea il tuo mix",
+  "ja": "雨、波、焚き火、鳥の声を自由にミックス",
+  "pt": "Chuva, ondas, fogo, pássaros — faça a sua mistura",
+  "zh": "雨声、海浪、篝火、鸟鸣——自己混合"
  }
 }
