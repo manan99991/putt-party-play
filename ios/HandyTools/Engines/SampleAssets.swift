@@ -148,6 +148,7 @@ enum SampleAssets {
         let out = tmp.appendingPathComponent("sample-\(UUID().uuidString.prefix(6)).mov")
         do { try await s.export(to: out, as: .mov) } catch { return nil }
         try? FileManager.default.removeItem(at: wav)
+        try? FileManager.default.removeItem(at: video)   // only the input with sound is left, so testers check the right file
         return FileManager.default.fileExists(atPath: out.path) ? out : nil
     }
 
@@ -200,6 +201,8 @@ enum SampleAssets {
         ]
         CGImageDestinationAddImage(dest, cg, props as CFDictionary)
         guard CGImageDestinationFinalize(dest) else { return nil }
+        // a copy of exactly what went in, so a tester can confirm the input really had a location
+        try? (out as Data).write(to: FileManager.default.temporaryDirectory.appendingPathComponent("sample-photo-\(UUID().uuidString.prefix(6)).jpg"))
         return out as Data
     }
 
