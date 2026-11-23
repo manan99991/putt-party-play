@@ -600,11 +600,20 @@ enum Transcriber {
             }
         }
         // The phone's best transcriber first (BestSpeech): the whole file in one pass, nothing dropped after a pause.
-        // When two languages came close (mixed talk), the older per-stretch comparison below handles it instead.
-        if also == nil {
+        // When two languages came close (talk that mixes English with Hindi, say), both are heard in full and the one
+        // the phone is surer of is kept — never a few stray words from the older recogniser.
+        do {
             let readable = await readableAudioURL(for: url)
+            let tries = [locale] + (also.map { [$0.locale] } ?? [])
             await MainActor.run { RunProgress.shared.begin() }
-            let best = await BestSpeech.transcribe(readable, locale: locale) { p in Task { @MainActor in RunProgress.shared.set(p) } }
+            var best: BestSpeech.Heard?
+            for (i, l) in tries.enumerated() {
+                let share = 1 / Double(tries.count), base = Double(i) * share
+                if let h = await BestSpeech.transcribe(readable, locale: l, progress: { p in Task { @MainActor in RunProgress.shared.set(base + p * share) } }),
+                   best == nil || h.sure * Double(min(h.words.count, 40)) > best!.sure * Double(min(best!.words.count, 40)) {
+                    best = h
+                }
+            }
             await MainActor.run { RunProgress.shared.end() }
             if readable != url { try? FileManager.default.removeItem(at: readable) }
             if let best { return .success(Heard(text: best.text, words: best.words, cantDo: cantDo)) }
@@ -628,7 +637,9 @@ enum Transcriber {
         let fmt = file.processingFormat
         let total = file.length
         guard total > 0, fmt.sampleRate > 0 else { return .failure(.nothing) }
-        let windowFrames = AVAudioFrameCount(fmt.sampleRate * windowSeconds)
+        // Short stretches: the older recogniser keeps only what it heard after the last pause in a request, so a long
+        // stretch lost most of a chatty video (22 Nov: 6 words from a minute of talk).
+        let windowFrames = AVAudioFrameCount(fmt.sampleRate * 12)
 
         await MainActor.run { RunProgress.shared.begin() }
         defer { Task { @MainActor in RunProgress.shared.end() } }

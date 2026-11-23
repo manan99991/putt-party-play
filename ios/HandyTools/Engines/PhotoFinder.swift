@@ -32,6 +32,22 @@ enum PhotoFinder {
             case .product: return "Things you might sell or list"
             }
         }
+        /// What the finder is looking for, in plain words, shown above the photos it found.
+        var lookingFor: String {
+            switch self {
+            case .receipt: return "Looking for receipts, invoices and warranty cards — paper or screenshots."
+            case .document: return "Looking for letters, bills, forms and pages of print."
+            case .card: return "Looking for business cards — a name with a phone number or email."
+            case .menu: return "Looking for restaurant menus and price boards, in any language."
+            case .face: return "Looking for photos with one clear face."
+            case .people: return "Looking for photos with people in them."
+            case .any: return "Your newest photos first."
+            case .board: return "Looking for whiteboards, calendars, notes and to-do lists."
+            case .screenshot: return "Looking for your screenshots."
+            case .code: return "Looking for photos with a QR code or barcode in them."
+            case .product: return "Looking for photos of things — not people or screenshots."
+            }
+        }
         var icon: String {
             switch self {
             case .receipt: return "receipt"
@@ -67,6 +83,21 @@ enum PhotoFinder {
     }
 
     /// How strongly a photo looks like `kind` — 0 means "not at all"; anything at or above `threshold` is shown first.
+    /// Food words menus use, in many languages and scripts (counted once each).
+    static let foodWords = ["menu", "appetizer", "appetiser", "starters", "entree", "entrée", "mains", "main course", "dessert", "desserts",
+                            "drinks", "beverages", "salad", "chicken", "beef", "pork", "lamb", "fish", "shrimp", "prawn", "pasta", "pizza",
+                            "soup", "rice", "noodle", "burger", "sandwich", "wine", "beer", "coffee", "tea", "latte", "juice", "smoothie",
+                            "shake", "ice cream", "scoop", "sundae", "cake", "pastry", "fries", "curry", "biryani", "paneer", "naan",
+                            "dosa", "thali", "kulfi", "falooda", "lassi", "taco", "burrito", "sushi", "ramen", "tofu", "dumpling",
+                            "breakfast", "lunch", "dinner", "combo", "platter", "sides", "kids menu", "vegetarian", "vegan", "gluten",
+                            "postre", "bebidas", "plato", "boissons", "plats", "getränke", "vorspeise", "bevande", "primi", "secondi",
+                            "元", "饭", "面", "汤", "鸡", "鱼", "肉", "菜", "粥", "虾", "牛", "豆腐", "炒", "套餐",
+                            "ラーメン", "定食", "円", "寿司", "메뉴", "밥", "₹", "€", "£", "¥"]
+    /// Words that mean money apps and statements, not a menu or a shop receipt.
+    static let financeWords = ["shares", "portfolio", "market value", "total return", "today's return", "position", "p&l", "dividend",
+                               "balance", "available", "account", "transfer", "deposit", "withdraw", "stock", "equity", "options",
+                               "average cost", "buying power", "net worth", "crypto"]
+
     static func score(_ s: Seen, for kind: Kind) -> Double {
         let t = s.text.lowercased()
         let words = t.split { $0 == " " || $0 == "\n" }.count
@@ -78,6 +109,7 @@ enum PhotoFinder {
                                  "change due", "qty", "order #", "order no", "store #", "thank you for", "warranty", "guarantee",
                                  "serial", "s/n", "model no", "purchase date", "proof of purchase", "return policy", "valid until"])
             return Double(words) * 1.2 + money * 0.6 + label(["receipt", "document", "paper"]) * 1.5 - (s.screenshot ? 1 : 0)
+                - Double(hits(t, financeWords)) * 1.5
         case .document:
             return (words > 60 ? 2.5 : words > 25 ? 1.5 : 0) + label(["document", "paper", "text", "letter"]) * 1.5
                 + Double(hits(t, ["dear", "sincerely", "page ", "account", "date:", "re:", "agreement", "form"])) * 0.6 - (s.screenshot ? 1.5 : 0)
@@ -87,9 +119,13 @@ enum PhotoFinder {
             let web = matches(t, #"(www\.|\.com\b|\.io\b|\.co\b)"#) > 0 ? 0.7 : 0
             return phone + email + web + (words > 3 && words < 70 ? 0.8 : -1) + label(["business card", "card"]) * 1.0 - (s.screenshot ? 2 : 0)
         case .menu:
-            return Double(hits(t, ["menu", "appetizer", "starters", "entree", "entrée", "mains", "dessert", "drinks", "salad",
-                                   "chicken", "beef", "pasta", "pizza", "soup", "rice", "burger", "sandwich", "wine", "beer"])) * 0.8
-                + money * 0.4 + label(["menu"]) * 2
+            // A menu is food words AND a column of prices (or Vision calling it a menu). Prices alone — a stock app, a
+            // bank statement — never are.
+            let food = Double(min(8, hits(t, foodWords)))
+            let prices = Double(min(10, matches(t, #"(?m)(\$|€|£|¥|₹)\s?\d|\d+(\.\d{2})?\s?(元|円)|\d+[.,]\d{2}\s*$"#)))
+            let finance = Double(hits(t, financeWords))
+            guard food >= 2 || label(["menu"]) > 0 else { return 0 }
+            return food * 0.6 + prices * 0.3 + label(["menu", "restaurant", "cafe"]) * 1.5 - finance * 1.5 - (s.screenshot ? 1.0 : 0)
         case .face:
             return s.faces == 1 ? 3 : (s.faces > 1 ? 1 : 0) - (s.screenshot ? 2 : 0) - (words > 20 ? 1 : 0)
         case .any:
@@ -116,7 +152,7 @@ enum PhotoFinder {
     private static var cacheURL: URL {
         let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        return dir.appendingPathComponent("photo-finder.json")
+        return dir.appendingPathComponent("photo-finder-v2.json")   // v2: careful reading in any language
     }
     static func loadCache() -> [String: Seen] {
         (try? Data(contentsOf: cacheURL)).flatMap { try? JSONDecoder().decode([String: Seen].self, from: $0) } ?? [:]
@@ -168,13 +204,22 @@ enum PhotoFinder {
         let shot = a.mediaSubtypes.contains(.photoScreenshot)
         return await Task.detached(priority: .utility) { () -> Seen in
             let cls = VNClassifyImageRequest()
-            let txt = VNRecognizeTextRequest(); txt.recognitionLevel = .fast; txt.usesLanguageCorrection = false
+            let lines = VNDetectTextRectanglesRequest()      // where writing is, in any script — cheap
             let face = VNDetectFaceRectanglesRequest()
             let code = VNDetectBarcodesRequest()
-            try? VNImageRequestHandler(cgImage: cg, options: [:]).perform([cls, txt, face, code])
+            let handler = VNImageRequestHandler(cgImage: cg, options: [:])
+            try? handler.perform([cls, lines, face, code])
             let labels = (cls.results ?? []).filter { $0.confidence > 0.25 }.prefix(12).map { $0.identifier.lowercased().replacingOccurrences(of: "_", with: " ") }
-            let text = (txt.results ?? []).compactMap { $0.topCandidates(1).first?.string }.joined(separator: "\n")
-            return Seen(modified: a.modificationDate?.timeIntervalSince1970 ?? 0, labels: Array(labels), text: String(text.prefix(600)),
+            // Only photos with real writing on them are read word by word — carefully, in whatever language it's in
+            // (a Chinese menu read by the quick English-only pass came back empty).
+            var text = ""
+            if (lines.results?.count ?? 0) >= 3 {
+                let txt = VNRecognizeTextRequest()
+                txt.recognitionLevel = .accurate; txt.usesLanguageCorrection = false; txt.automaticallyDetectsLanguage = true
+                try? handler.perform([txt])
+                text = (txt.results ?? []).compactMap { $0.topCandidates(1).first?.string }.joined(separator: "\n")
+            }
+            return Seen(modified: a.modificationDate?.timeIntervalSince1970 ?? 0, labels: Array(labels), text: String(text.prefix(1200)),
                         faces: face.results?.count ?? 0, codes: code.results?.count ?? 0, screenshot: shot)
         }.value
     }
@@ -195,7 +240,12 @@ enum PhotoFinder {
         task = Task {
             if access == .notDetermined { access = await PHPhotoLibrary.requestAuthorization(for: .readWrite) }
             guard access == .authorized || access == .limited else { finished = true; return }
-            let assets = PhotoFinder.recentPhotos(limit: kind == .any ? 2000 : limit)
+            // Kinds found by their words can use what Search My Photos already read (the whole library); the rest look
+            // through the newest photos themselves.
+            let byText: Set<PhotoFinder.Kind> = [.receipt, .document, .card, .menu, .board]
+            let index: [String: MemoryEngine.Entry] = byText.contains(kind)
+                ? Dictionary(MemoryEngine.loadCache().map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a }) : [:]
+            let assets = PhotoFinder.recentPhotos(limit: kind == .any ? 2000 : (index.count > 200 ? 12000 : limit))
             total = assets.count; looked = 0; matches = []; finished = false
             // Any photo will do: show them all at once — nothing to read.
             if kind == .any { matches = assets; looked = assets.count; finished = true; return }
@@ -206,7 +256,14 @@ enum PhotoFinder {
                 if Task.isCancelled { break }
                 let mod = a.modificationDate?.timeIntervalSince1970 ?? 0
                 var seen = cache[a.localIdentifier]
-                if seen == nil || seen!.modified != mod {
+                // The newest few hundred are read here, carefully, in any language. Older ones use what Search My Photos
+                // already read, so the whole library is searched without reading 9,000 photos again.
+                if looked >= limit, seen == nil || seen!.modified != mod {
+                    if let e = index[a.localIdentifier], e.readOK ?? true {
+                        seen = PhotoFinder.Seen(modified: mod, labels: e.labels ?? [], text: String(e.text.prefix(1200)), faces: 0, codes: 0,
+                                                screenshot: e.isScreenshot ?? a.mediaSubtypes.contains(.photoScreenshot))
+                    } else { looked += 1; continue }
+                } else if seen == nil || seen!.modified != mod {
                     seen = await PhotoFinder.read(a)
                     if let s = seen { cache[a.localIdentifier] = s; fresh += 1 }
                     if fresh > 0, fresh % 40 == 0 { PhotoFinder.saveCache(cache) }

@@ -1792,6 +1792,23 @@ final class PhotoFinderScoreTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(codes: 1), for: .code), PhotoFinder.threshold)
         XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen("STARTERS\nSoup 6.50\nSalad 8.00\nMAINS\nChicken pasta 16.00\nBurger 14.50\nDESSERT"), for: .menu), PhotoFinder.threshold)
     }
+
+    /// Manan's 22 Nov menus: two Chinese menus and an ice-cream shop's boards were missed, while a stock app's screenshot
+    /// and Tenzy's own menu screen were offered as "menus".
+    func testMenusInAnyLanguageAndNeverAMoneyApp() {
+        let chinese = "特色篇\n巫山烤全鱼\n香辣鱼 50元\n烤虾 68元\n酸菜鱼 45元\n水煮鱼 50元\n凉菜篇\n口水鸡 20元"
+        let chinese2 = "中式套餐\n黑椒牛肉烩饭-----18元\n鸡腿饭套餐-----18元\n粥、汤面类\n皮蛋瘦肉粥-----6元\n海鲜汤面-----7元"
+        let kwality = "Ice Creams\nClassic Scoops\nRegular - 1 Scoop $4.99\nRegular - 2 Scoops $7.99\nKulfi\nKulfi Slices $5.49\nFresh Juices\nSugarcane $5.99\nFalooda & Shakes\nMango Mojito $6.99"
+        for (name, m) in [("chinese", chinese), ("chinese2", chinese2), ("kwality", kwality)] {
+            XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(m), for: .menu), PhotoFinder.threshold, name)
+        }
+        let stocks = "Your position\nShares 6,000\nMarket value $389,610.00\nAverage cost $116.05\nToday's return -$5,490.00 (-1.39%)\nTotal return -$306,666.22"
+        XCTAssertLessThan(PhotoFinder.score(seen(stocks, shot: true), for: .menu), PhotoFinder.threshold, "a stock app isn't a menu")
+        XCTAssertLessThan(PhotoFinder.score(seen(stocks, shot: true), for: .receipt), PhotoFinder.threshold, "nor a receipt")
+        let tenzy = "Translate dishes\nWhat should I order?\nNo shellfish\nNo nuts\nGluten-free\nDairy-free\nOnly show what fits my diet"
+        XCTAssertLessThan(PhotoFinder.score(seen(tenzy, shot: true), for: .menu), PhotoFinder.threshold, "Tenzy's own screen isn't a menu")
+        XCTAssertFalse(PhotoFinder.Kind.menu.lookingFor.isEmpty)
+    }
 }
 
 /// Manan's Micro Center PC (22 Nov): Price Watch said "Found 169.99" — the first amount on the page (an add-on) —

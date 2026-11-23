@@ -79,8 +79,10 @@ struct SmartPhotoPicker: View {
             Image(systemName: kind.icon).font(.system(size: 18, weight: .semibold)).foregroundStyle(HandyColor.accent)
             VStack(alignment: .leading, spacing: 2) {
                 Text(L(kind.title)).font(HandyFont.bodyStrong)
+                // What it's looking for, in plain words, then how to pick.
+                Text(L(kind.lookingFor)).font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary).fixedSize(horizontal: false, vertical: true)
                 Text(maxCount > 1 ? L("Tap photos, or swipe a finger across them to pick several at once.")
-                     : (kind == .any ? L("Tap one to use it.") : L("Found in your photos — tap one to use it.")))
+                     : L("Tap one to use it. Not here? All photos is at the bottom."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }
         }

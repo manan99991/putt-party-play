@@ -11,14 +11,20 @@ import Speech
 /// falls back to the older recogniser only where this one can't run (an unsupported language, a model that won't
 /// download).
 enum BestSpeech {
-    struct Heard { let text: String; let words: [(text: String, start: Double, end: Double)] }
+    struct Heard {
+        let text: String
+        let words: [(text: String, start: Double, end: Double)]
+        /// How sure the transcriber was, 0…1, averaged over what it heard — used to pick the right language for talk
+        /// that could be English or Hindi, say.
+        var sure: Double = 0
+    }
 
     /// nil when this phone/language can't use the new transcriber — the caller then uses the older path.
     static func transcribe(_ url: URL, locale: Locale = .current, progress: @escaping (Double) -> Void = { _ in }) async -> Heard? {
         guard SpeechTranscriber.isAvailable,
               let lang = await SpeechTranscriber.supportedLocale(equivalentTo: locale) else { return nil }
         let transcriber = SpeechTranscriber(locale: lang, transcriptionOptions: [], reportingOptions: [],
-                                            attributeOptions: [.audioTimeRange])
+                                            attributeOptions: [.audioTimeRange, .transcriptionConfidence])
         // The language model is downloaded once (in the background, by the system) the first time it's needed.
         do {
             if let req = try await AssetInventory.assetInstallationRequest(supporting: [transcriber]) {
@@ -32,6 +38,7 @@ enum BestSpeech {
         let collect = Task { () -> Heard in
             var text = ""
             var words: [(text: String, start: Double, end: Double)] = []
+            var sureSum = 0.0, sureN = 0.0
             do {
                 for try await r in transcriber.results where r.isFinal {
                     let piece = String(r.text.characters)
@@ -40,6 +47,7 @@ enum BestSpeech {
                         text += piece
                     }
                     for run in r.text.runs {
+                        if let c = run.transcriptionConfidence { sureSum += c; sureN += 1 }
                         let w = String(r.text[run.range].characters).trimmingCharacters(in: .whitespaces)
                         guard !w.isEmpty, let tr = run.audioTimeRange else { continue }
                         words.append((w, tr.start.seconds, tr.end.seconds))
@@ -47,7 +55,7 @@ enum BestSpeech {
                     if total > 0 { progress(min(0.99, r.range.end.seconds / total)) }
                 }
             } catch {}
-            return Heard(text: text.trimmingCharacters(in: .whitespacesAndNewlines), words: words)
+            return Heard(text: text.trimmingCharacters(in: .whitespacesAndNewlines), words: words, sure: sureN > 0 ? sureSum / sureN : 0.5)
         }
         do {
             try await analyzer.start(inputAudioFile: file, finishAfterFile: true)

@@ -42258,5 +42258,125 @@
   "ja": "太陽が低い — 一日でいちばんきれいな光です。今撮りましょう。",
   "pt": "O sol está baixo — a melhor luz do dia. Fotografe agora.",
   "zh": "太阳很低——一天中最好的光线，现在就拍。"
+ },
+ "Looking for receipts, invoices and warranty cards — paper or screenshots.": {
+  "de": "Suche nach Belegen, Rechnungen und Garantiekarten – auf Papier oder als Bildschirmfoto.",
+  "es": "Buscando recibos, facturas y tarjetas de garantía, en papel o capturas.",
+  "fr": "Recherche de reçus, factures et cartes de garantie — papier ou captures.",
+  "hi": "रसीदें, बिल और वारंटी कार्ड ढूँढ रहे हैं — कागज़ या स्क्रीनशॉट।",
+  "it": "Cerco scontrini, fatture e certificati di garanzia — su carta o screenshot.",
+  "ja": "レシート・請求書・保証書を探しています（紙でもスクショでも）。",
+  "pt": "À procura de recibos, faturas e cartões de garantia — em papel ou capturas.",
+  "zh": "正在查找收据、发票和保修卡——纸质或截图。"
+ },
+ "Looking for letters, bills, forms and pages of print.": {
+  "de": "Suche nach Briefen, Rechnungen, Formularen und Druckseiten.",
+  "es": "Buscando cartas, facturas, formularios y páginas impresas.",
+  "fr": "Recherche de lettres, factures, formulaires et pages imprimées.",
+  "hi": "चिट्ठियाँ, बिल, फ़ॉर्म और छपे पन्ने ढूँढ रहे हैं।",
+  "it": "Cerco lettere, bollette, moduli e pagine stampate.",
+  "ja": "手紙・請求書・書類・印刷物を探しています。",
+  "pt": "À procura de cartas, contas, formulários e páginas impressas.",
+  "zh": "正在查找信件、账单、表格和印刷页。"
+ },
+ "Looking for business cards — a name with a phone number or email.": {
+  "de": "Suche nach Visitenkarten – ein Name mit Telefonnummer oder E-Mail.",
+  "es": "Buscando tarjetas de visita: un nombre con teléfono o correo.",
+  "fr": "Recherche de cartes de visite — un nom avec un numéro ou un e-mail.",
+  "hi": "बिज़नेस कार्ड ढूँढ रहे हैं — नाम के साथ फ़ोन नंबर या ईमेल।",
+  "it": "Cerco biglietti da visita — un nome con telefono o email.",
+  "ja": "名刺を探しています（名前と電話番号やメール）。",
+  "pt": "À procura de cartões de visita — um nome com telefone ou e-mail.",
+  "zh": "正在查找名片——有姓名和电话或邮箱。"
+ },
+ "Looking for restaurant menus and price boards, in any language.": {
+  "de": "Suche nach Speisekarten und Preistafeln, in jeder Sprache.",
+  "es": "Buscando cartas de restaurante y tablones de precios, en cualquier idioma.",
+  "fr": "Recherche de menus de restaurant et de tableaux de prix, dans toutes les langues.",
+  "hi": "रेस्तराँ के मेन्यू और दाम-बोर्ड ढूँढ रहे हैं, किसी भी भाषा में।",
+  "it": "Cerco menu di ristoranti e listini prezzi, in qualsiasi lingua.",
+  "ja": "レストランのメニューや料金表を探しています（どの言語でも）。",
+  "pt": "À procura de menus de restaurante e quadros de preços, em qualquer língua.",
+  "zh": "正在查找餐厅菜单和价目表，任何语言都可以。"
+ },
+ "Looking for photos with one clear face.": {
+  "de": "Suche nach Fotos mit einem deutlichen Gesicht.",
+  "es": "Buscando fotos con una cara bien visible.",
+  "fr": "Recherche de photos avec un visage bien net.",
+  "hi": "एक साफ़ चेहरे वाली फ़ोटो ढूँढ रहे हैं।",
+  "it": "Cerco foto con un volto ben visibile.",
+  "ja": "顔がはっきり写った写真を探しています。",
+  "pt": "À procura de fotos com um rosto nítido.",
+  "zh": "正在查找有一张清晰人脸的照片。"
+ },
+ "Looking for photos with people in them.": {
+  "de": "Suche nach Fotos mit Menschen.",
+  "es": "Buscando fotos con personas.",
+  "fr": "Recherche de photos avec des personnes.",
+  "hi": "लोगों वाली फ़ोटो ढूँढ रहे हैं।",
+  "it": "Cerco foto con persone.",
+  "ja": "人が写っている写真を探しています。",
+  "pt": "À procura de fotos com pessoas.",
+  "zh": "正在查找有人物的照片。"
+ },
+ "Your newest photos first.": {
+  "de": "Deine neuesten Fotos zuerst.",
+  "es": "Tus fotos más recientes primero.",
+  "fr": "Vos photos les plus récentes d’abord.",
+  "hi": "आपकी सबसे नई फ़ोटो पहले।",
+  "it": "Prima le tue foto più recenti.",
+  "ja": "新しい写真から順に表示。",
+  "pt": "As suas fotos mais recentes primeiro.",
+  "zh": "最新的照片排在前面。"
+ },
+ "Looking for whiteboards, calendars, notes and to-do lists.": {
+  "de": "Suche nach Whiteboards, Kalendern, Notizen und To-do-Listen.",
+  "es": "Buscando pizarras, calendarios, notas y listas de tareas.",
+  "fr": "Recherche de tableaux blancs, calendriers, notes et listes de tâches.",
+  "hi": "व्हाइटबोर्ड, कैलेंडर, नोट्स और काम की सूचियाँ ढूँढ रहे हैं।",
+  "it": "Cerco lavagne, calendari, appunti ed elenchi di cose da fare.",
+  "ja": "ホワイトボード・カレンダー・メモ・ToDoリストを探しています。",
+  "pt": "À procura de quadros brancos, calendários, notas e listas de tarefas.",
+  "zh": "正在查找白板、日历、笔记和待办清单。"
+ },
+ "Looking for your screenshots.": {
+  "de": "Suche nach deinen Bildschirmfotos.",
+  "es": "Buscando tus capturas de pantalla.",
+  "fr": "Recherche de vos captures d’écran.",
+  "hi": "आपके स्क्रीनशॉट ढूँढ रहे हैं।",
+  "it": "Cerco i tuoi screenshot.",
+  "ja": "スクリーンショットを探しています。",
+  "pt": "À procura das suas capturas de ecrã.",
+  "zh": "正在查找你的截图。"
+ },
+ "Looking for photos with a QR code or barcode in them.": {
+  "de": "Suche nach Fotos mit QR-Code oder Barcode.",
+  "es": "Buscando fotos con un código QR o de barras.",
+  "fr": "Recherche de photos avec un QR code ou un code-barres.",
+  "hi": "QR कोड या बारकोड वाली फ़ोटो ढूँढ रहे हैं।",
+  "it": "Cerco foto con un codice QR o a barre.",
+  "ja": "QRコードやバーコードが写った写真を探しています。",
+  "pt": "À procura de fotos com um código QR ou de barras.",
+  "zh": "正在查找含二维码或条形码的照片。"
+ },
+ "Looking for photos of things — not people or screenshots.": {
+  "de": "Suche nach Fotos von Dingen – keine Menschen, keine Bildschirmfotos.",
+  "es": "Buscando fotos de objetos, no de personas ni capturas.",
+  "fr": "Recherche de photos d’objets — pas de personnes ni de captures.",
+  "hi": "चीज़ों की फ़ोटो ढूँढ रहे हैं — लोग या स्क्रीनशॉट नहीं।",
+  "it": "Cerco foto di oggetti — non persone né screenshot.",
+  "ja": "物の写真を探しています（人やスクショ以外）。",
+  "pt": "À procura de fotos de objetos — não de pessoas nem capturas.",
+  "zh": "正在查找物品的照片——不是人物或截图。"
+ },
+ "Tap one to use it. Not here? All photos is at the bottom.": {
+  "de": "Tippe eins an. Nicht dabei? „Alle Fotos“ ist unten.",
+  "es": "Toca una para usarla. ¿No está? «Todas las fotos» está abajo.",
+  "fr": "Touchez-en une. Pas là ? « Toutes les photos » est en bas.",
+  "hi": "इस्तेमाल के लिए एक पर टैप करें। यहाँ नहीं? नीचे 'सभी फ़ोटो' है।",
+  "it": "Toccane una per usarla. Non c’è? «Tutte le foto» è in basso.",
+  "ja": "タップして使います。見つからなければ下の「すべての写真」へ。",
+  "pt": "Toque numa para a usar. Não está? «Todas as fotos» está em baixo.",
+  "zh": "点一张即可使用。没有？底部有“所有照片”。"
  }
 }

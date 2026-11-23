@@ -98,6 +98,8 @@ enum AIEngine {
                 }
                 req.recognitionLevel = .accurate
                 req.usesLanguageCorrection = true
+                // Any language the phone can read — a Chinese menu or a Japanese sign, not just English.
+                req.automaticallyDetectsLanguage = true
                 do { try handler.perform([req]) } catch { }
                 if !resumed { cont.resume(returning: "") }
             }
