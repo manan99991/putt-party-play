@@ -318,6 +318,9 @@ enum Guide {
             if c.flipbook == true { return "A flip-book video of your photos" }
             if c.versus == true { return "Before and after, side by side" }
             if c.combine == true { return "One PDF with every page" }
+            // A ready-made tool's own line says what it's for ("Puts your address and a map link into a message") —
+            // its first step alone ("tidies the spacing") would be wrong.
+            if let b = c.blurb, !b.isEmpty { return b }
             let b = keyBlock(c, kind: kind)
             let does = b.does
             return does.prefix(1).uppercased() + does.dropFirst()

@@ -364,6 +364,23 @@ extension Chain {
         else { body = parts.dropLast().joined(separator: ", ") + ", then " + parts.last! }
         return body.prefix(1).uppercased() + body.dropFirst() + "."
     }
+    /// The ways to hand this tool its words, besides typing and Paste — only the ones that make sense for it: a scam
+    /// check takes a screenshot or a photo of the message (never "Speak"), a contact QR takes a contact, "Send where I
+    /// am" fills itself in. Pure, so it's unit-tested.
+    enum TextInput: String { case screenshot, photo, pdf, speak, contact, location }
+    var textInputs: [TextInput] {
+        if id == "where-i-am" { return [.location] }
+        switch steps.first?.block {
+        case .scamCheck?: return [.screenshot, .photo, .pdf]
+        case .contactQr?: return [.contact, .speak]
+        case .chatLink?: return [.contact]
+        case .pageText?, .cleanLinks?: return [.screenshot]
+        case .wifiQr?, .makeQr?: return [.screenshot, .photo]
+        case .readAloud?, .translate?, .rewrite?, .summarize?, .actionItems?, .textPdf?: return [.screenshot, .pdf, .speak]
+        default: return [.screenshot, .pdf, .speak]
+        }
+    }
+
     /// What good input looks like, from the first step — the hint shown under the description.
     /// The most telling step's hint: a receipt tool says "a photo of a receipt…", not the reading step's general one.
     var wants: String? {
@@ -1032,7 +1049,7 @@ enum ChainTemplates {
         Chain(id: "video-words", name: "Write out what was said in a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .speechText)]),
         Chain(id: "photo-collage", name: "Photos into one collage", steps: [ChainStep(block: .stripLocation)], collage: true, blurb: "Lays your chosen photos out as one combined picture."),
         Chain(id: "where-i-am", name: "Send where I am", steps: [ChainStep(block: .cleanText)], finish: ChainFinish(kind: .message, to: ""),
-              blurb: "Puts your address and a map link into a message, ready to send."),
+              blurb: "Finds where you are and puts your address and a map link into a message, ready to send."),
         Chain(id: "photos-gif", name: "Turn photos into a GIF", steps: [ChainStep(block: .stripLocation)], blurb: "Plays your chosen photos one after another as a looping GIF.", gif: true),
         Chain(id: "photos-flipbook", name: "Turn photos into a flipbook", steps: [ChainStep(block: .stripLocation)], blurb: "Flips your chosen photos like the pages of a book — a looping page-riffle video to share.", flipbook: true),
         Chain(id: "sticker-maker", name: "Turn a photo into a sticker", steps: [ChainStep(block: .sticker)]),

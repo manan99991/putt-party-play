@@ -2143,11 +2143,23 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                         .foregroundStyle(HandyColor.accent)
                         .frame(maxWidth: .infinity, minHeight: 44)
                         .accessibilityIdentifier("in-paste")
+                    // Only the ways that make sense for this tool (a scam check takes a screenshot or photo of the
+                    // message; nobody speaks one in).
                     HStack(spacing: HandySpacing.s8) {
-                        fill(speech.running ? "Stop" : "Speak", speech.running ? "stop.circle.fill" : "mic", id: "in-speak") { toggleSpeech() }
-                        fill("Contact", "person.crop.circle", id: "in-contact") { pickingContact = true }
-                        fill("PDF", "doc.richtext", id: "in-pdf") { pickingPDF = true }
-                        fill(here.looking ? "Finding…" : "Location", "location", id: "in-location") { addLocation() }
+                        ForEach(chain.textInputs, id: \.self) { k in
+                            switch k {
+                            case .screenshot:
+                                SmartPhotoButton(kind: .screenshot, max: 1, picked: { imgs in readWords(imgs) }) { fillLabel("Screenshot", "iphone") }
+                                    .buttonStyle(.plain).accessibilityIdentifier("in-screenshot")
+                            case .photo:
+                                SmartPhotoButton(kind: .any, max: 1, picked: { imgs in readWords(imgs) }) { fillLabel("Photo", "photo") }
+                                    .buttonStyle(.plain).accessibilityIdentifier("in-photo")
+                            case .pdf: fill("PDF", "doc.richtext", id: "in-pdf") { pickingPDF = true }
+                            case .speak: fill(speech.running ? "Stop" : "Speak", speech.running ? "stop.circle.fill" : "mic", id: "in-speak") { toggleSpeech() }
+                            case .contact: fill("Contact", "person.crop.circle", id: "in-contact") { pickingContact = true }
+                            case .location: fill(here.looking ? "Finding…" : "Where I am", "location", id: "in-location") { addLocation() }
+                            }
+                        }
                     }
                     if speech.running { Text(speech.live.isEmpty ? "Listening… tap Stop when you're done." : speech.live).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
                     if let e = speech.errorText { Text(e).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
@@ -2313,6 +2325,23 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             if initial == nil, initialMany.isEmpty, !started, !busy {
                 result = nil; batch = []; outbox = nil; report = nil; message = nil; picks = []; memePhotos = []
             }
+            // "Send where I am" does it all: finds where you are, fills in the address and map link (never whatever
+            // happens to be on the clipboard), and opens the message ready to send.
+            if chain.id == "where-i-am", initial == nil, !started, !busy, !Launch.uitest {
+                started = true
+                text = ""
+                message = "Finding where you are…"
+                here.find { found in
+                    guard let found else {
+                        message = "Tenzy couldn't find where you are. Check that Location is allowed for Tenzy in Settings, then tap Where I am."
+                        started = false
+                        return
+                    }
+                    message = nil
+                    text = found
+                    go(.text(found))
+                }
+            }
             // UI tests can't draw on the signature pad: a made-up signature stands in, so a signing tool's real
             // signed result is what gets checked.
             if Launch.uitest, Launch.sample, signsForYou, DocEngine.savedSignature == nil {
@@ -2445,11 +2474,34 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     }
 
     private func fill(_ title: String, _ icon: String, id: String, _ act: @escaping () -> Void) -> some View {
-        Button(action: act) {
-            VStack(spacing: 4) { Image(systemName: icon).font(.system(size: 18, weight: .semibold)); Text(title).font(HandyFont.micro).lineLimit(1).minimumScaleFactor(0.7) }
-                .frame(maxWidth: .infinity, minHeight: 52)
-                .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-        }.buttonStyle(.plain).foregroundStyle(HandyColor.accent).accessibilityIdentifier(id)
+        Button(action: act) { fillLabel(title, icon) }.buttonStyle(.plain).accessibilityIdentifier(id)
+    }
+
+    private func fillLabel(_ title: String, _ icon: String) -> some View {
+        VStack(spacing: 4) { Image(systemName: icon).font(.system(size: 18, weight: .semibold)); Text(L(title)).font(HandyFont.micro).lineLimit(1).minimumScaleFactor(0.7) }
+            .frame(maxWidth: .infinity, minHeight: 52)
+            .foregroundStyle(HandyColor.accent)
+            .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+
+    /// A screenshot or photo of the message: its words go in the box, and when that's all there is, the tool runs
+    /// straight away — no extra tap.
+    private func readWords(_ imgs: [UIImage]) {
+        guard let img = imgs.first else { return }
+        message = "Reading the words from your picture…"
+        let wasEmpty = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        Task.detached(priority: .userInitiated) {
+            let words = DocEngine.text(DocEngine.recognize(img.normalizedUp()))
+            await MainActor.run {
+                guard !words.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                    message = "That picture has no words Tenzy can read. Try a sharper screenshot, or paste the text."
+                    return
+                }
+                message = nil
+                text = InputText.joined(text, words)
+                if wasEmpty { go(.text(text)) }
+            }
+        }
     }
 
     /// Handle what the system paste control handed over: text first (joined in), otherwise an image, whose

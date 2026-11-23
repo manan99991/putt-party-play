@@ -42178,5 +42178,55 @@
   "ja": "音を出す",
   "pt": "Som ligado",
   "zh": "打开声音"
+ },
+ "Where I am": {
+  "de": "Mein Standort",
+  "es": "Dónde estoy",
+  "fr": "Où je suis",
+  "hi": "मैं कहाँ हूँ",
+  "it": "Dove sono",
+  "ja": "現在地",
+  "pt": "Onde estou",
+  "zh": "我的位置"
+ },
+ "Finding…": {
+  "de": "Suche…",
+  "es": "Buscando…",
+  "fr": "Recherche…",
+  "hi": "ढूँढ रहे हैं…",
+  "it": "Cerco…",
+  "ja": "探しています…",
+  "pt": "A procurar…",
+  "zh": "正在查找…"
+ },
+ "Finds where you are and puts your address and a map link into a message, ready to send.": {
+  "de": "Findet heraus, wo du bist, und setzt deine Adresse und einen Kartenlink in eine Nachricht, bereit zum Senden.",
+  "es": "Encuentra dónde estás y pone tu dirección y un enlace al mapa en un mensaje, listo para enviar.",
+  "fr": "Trouve où vous êtes et met votre adresse et un lien de carte dans un message, prêt à envoyer.",
+  "hi": "पता लगाता है कि आप कहाँ हैं और आपका पता व मैप लिंक एक मैसेज में डाल देता है, भेजने के लिए तैयार।",
+  "it": "Trova dove sei e mette il tuo indirizzo e un link alla mappa in un messaggio, pronto da inviare.",
+  "ja": "現在地を見つけ、住所と地図リンクをメッセージに入れて、すぐ送れるようにします。",
+  "pt": "Descobre onde está e coloca a sua morada e um link do mapa numa mensagem, pronta a enviar.",
+  "zh": "找到你所在的位置，把地址和地图链接放进一条消息，随时可以发送。"
+ },
+ "Finding where you are…": {
+  "de": "Dein Standort wird gesucht…",
+  "es": "Buscando dónde estás…",
+  "fr": "Recherche de votre position…",
+  "hi": "आपकी जगह ढूँढ रहे हैं…",
+  "it": "Cerco dove sei…",
+  "ja": "現在地を探しています…",
+  "pt": "A procurar onde está…",
+  "zh": "正在查找你的位置…"
+ },
+ "Reading the words from your picture…": {
+  "de": "Die Wörter auf deinem Bild werden gelesen…",
+  "es": "Leyendo las palabras de tu imagen…",
+  "fr": "Lecture des mots de votre image…",
+  "hi": "आपकी तस्वीर से शब्द पढ़ रहे हैं…",
+  "it": "Leggo le parole della tua immagine…",
+  "ja": "画像の文字を読み取っています…",
+  "pt": "A ler as palavras da sua imagem…",
+  "zh": "正在读取图片中的文字…"
  }
 }
