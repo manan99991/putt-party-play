@@ -103,6 +103,11 @@
             </intent-filter>
         </receiver>
 
+        <!-- Medicine Reminders: dose alerts, follow-up nudges, and the Taken / Snooze buttons on each alert. -->
+        <receiver
+            android:name=".tools.meds.MedReceiver"
+            android:exported="false" />
+
         <!-- Notices a new photo or screenshot so a tool can offer itself (only armed while a tool asks for it). -->
         <service
             android:name=".tools.builder.PhotoWatchJob"

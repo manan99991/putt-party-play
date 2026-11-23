@@ -39,6 +39,7 @@ import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.GraphicEq
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Lightbulb
+import androidx.compose.material.icons.outlined.Medication
 import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.Search
@@ -84,8 +85,16 @@ object ForYouAndroid {
     data class Card(val id: String, val title: String, val why: String, val button: String, val route: String, val kind: String)
 
     fun cards(parkedAt: Long?, now: Long, hidden: Map<String, Long>,
-              invoices: List<com.handytools.app.tools.invoice.InvoiceLogic.Doc> = emptyList()): List<Card> {
+              invoices: List<com.handytools.app.tools.invoice.InvoiceLogic.Doc> = emptyList(),
+              doses: List<Triple<String, Long, Boolean>> = emptyList()): List<Card> {
         val out = mutableListOf<Card>()
+        // A dose due within the hour, or missed in the last 3 hours and not marked taken, comes first (as on iPhone).
+        doses.filter { (_, at, taken) -> !taken && at <= now + 3_600_000 && at >= now - 3 * 3_600_000 }.minByOrNull { it.second }?.let { (name, at, _) ->
+            val c = java.util.Calendar.getInstance().apply { timeInMillis = at }
+            val t = com.handytools.app.tools.meds.TimeOfDay(c.get(java.util.Calendar.HOUR_OF_DAY), c.get(java.util.Calendar.MINUTE)).label(false)
+            out += if (at < now) Card("dose-$name-$at", "$name: did you take it?", "It was due at $t and isn't marked taken", "Open", "medreminder", "dose")
+                   else Card("dose-$name-$at", "$name at $t", "Your next dose is coming up", "Open", "medreminder", "dose")
+        }
         // The invoice a customer is most overdue on (Business, 23 Nov) comes before the car.
         invoices.filter { it.overdue(now) }.minByOrNull { it.due ?: now }?.let { d ->
             out += Card("invoice-${d.id}", if (d.who.isEmpty()) "${d.number} isn't paid yet" else "${d.who} hasn't paid yet",
@@ -111,6 +120,13 @@ object ForYouAndroid {
     fun notNow(ctx: Context, c: Card, now: Long = System.currentTimeMillis()) =
         ctx.getSharedPreferences(PREFS, 0).edit().putLong(c.id, now + 7L * 86_400_000).apply()
     fun parkedAt(ctx: Context): Long? = ctx.getSharedPreferences("parked_spot", 0).getLong("at", 0L).takeIf { it > 0 }
+}
+
+/** Today's doses for the For you card: (name, time, taken). */
+private fun medDoses(ctx: Context): List<Triple<String, Long, Boolean>> {
+    val (meds, log) = com.handytools.app.tools.meds.MedStore.load(ctx)
+    return com.handytools.app.tools.meds.MedLogic.today(meds, System.currentTimeMillis())
+        .map { (m, at) -> Triple(m.name, at, com.handytools.app.tools.meds.MedStore.isTaken(log, m, at)) }
 }
 
 private fun tabIcon(id: String): ImageVector = when (id) {
@@ -152,7 +168,7 @@ fun HomeTabsScreen(onOpen: (String) -> Unit) {
     var tabId by remember { mutableStateOf(prefs.getString(HomeShelves.TAB_KEY, null)?.takeIf { id -> tabs.any { it.id == id } } ?: tabs.first().id) }
     var query by remember { mutableStateOf("") }
     var cards by remember { mutableStateOf(ForYouAndroid.cards(ForYouAndroid.parkedAt(ctx), System.currentTimeMillis(), ForYouAndroid.hidden(ctx),
-        com.handytools.app.tools.invoice.InvoiceStore.load(ctx))) }
+        com.handytools.app.tools.invoice.InvoiceStore.load(ctx), medDoses(ctx))) }
 
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(horizontal = HandyTokens.Gutter)) {
         Spacer(Modifier.height(HandyTokens.Space8))
@@ -290,9 +306,13 @@ private fun ForYouCard(c: ForYouAndroid.Card, onAct: () -> Unit, onNotNow: () ->
             .padding(start = 12.dp, top = 10.dp, bottom = 10.dp, end = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        val invoice = c.kind == "invoice"
-        Box(Modifier.size(36.dp).background(if (invoice) Color(0xFF0D9488) else Color(0xFF2563EB), RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
-            Icon(if (invoice) Icons.Outlined.ReceiptLong else Icons.Outlined.DirectionsCar, null, tint = Color.White, modifier = Modifier.size(20.dp))
+        val (hex, icon) = when (c.kind) {
+            "invoice" -> Color(0xFF0D9488) to Icons.Outlined.ReceiptLong
+            "dose" -> Color(0xFF22C55E) to Icons.Outlined.Medication
+            else -> Color(0xFF2563EB) to Icons.Outlined.DirectionsCar
+        }
+        Box(Modifier.size(36.dp).background(hex, RoundedCornerShape(10.dp)), contentAlignment = Alignment.Center) {
+            Icon(icon, null, tint = Color.White, modifier = Modifier.size(20.dp))
         }
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {

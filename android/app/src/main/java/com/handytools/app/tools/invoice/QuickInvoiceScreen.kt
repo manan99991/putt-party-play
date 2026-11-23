@@ -124,7 +124,7 @@ fun QuickInvoiceScreen(onUpgrade: () -> Unit = {}) {
                     }
                     Text(money(u.total, u.currency), fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
                     Spacer(Modifier.width(8.dp))
-                    HSecondaryButton("Paid", modifier = Modifier.testTag("invoice-paid-${u.number}")) {
+                    HSecondaryButton("Paid", modifier = Modifier.width(96.dp).testTag("invoice-paid-${u.number}")) {
                         InvoiceStore.setPaid(ctx, u.id, true); docs = InvoiceStore.load(ctx); HandyHaptics.success(ctx)
                     }
                 }

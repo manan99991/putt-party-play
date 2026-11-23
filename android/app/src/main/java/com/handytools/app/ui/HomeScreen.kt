@@ -36,6 +36,7 @@ import androidx.compose.material.icons.outlined.Gif
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Hearing
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Medication
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.PieChart
@@ -172,6 +173,10 @@ val TOOLS = listOf(
         listOf("more","everything","else","other","extra","pro camera","color vision","long screenshot","price check","rest","gps","identify","see and read","lens"),
         about = "A handful of more specialised tools, kept together here so the main grid stays tidy — tap in to find them.",
         tint = Color(0xFF64748B), vicon = Icons.Outlined.Apps),
+    HTool("medreminder", "Medicine Reminders", "Dose alerts with a Taken button and refills", 0, 0,
+        listOf("medicine","medication","pill","pills","tablet","dose","doses","reminder","remind","vitamin","refill","pharmacy","caregiver","parent","health","schedule"),
+        about = "Add a medicine and when you take it — Tenzy reminds you, and you tap Taken right from the alert. Counts pills for a refill alert and can nudge someone who helps. Stays on this phone.",
+        tint = Color(0xFF22C55E), vicon = Icons.Outlined.Medication),
 )
 
 /** The tools folded into the "Scan & Sort" tile — snap paper, get data/actions back. Off the main

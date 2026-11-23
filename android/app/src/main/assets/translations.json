@@ -10868,5 +10868,505 @@
   "ja": "請求書、レシート、価格、カード",
   "pt": "Contas, recibos, preços e cartões",
   "zh": "账单、收据、价格和卡片"
+ },
+ "1 hour": {
+  "de": "1 Stunde",
+  "es": "1 hora",
+  "fr": "1 heure",
+  "hi": "1 घंटा",
+  "it": "1 ora",
+  "ja": "1時間",
+  "pt": "1 hora",
+  "zh": "1 小时"
+ },
+ "30 min": {
+  "de": "30 Min.",
+  "es": "30 min",
+  "fr": "30 min",
+  "hi": "30 मिनट",
+  "it": "30 min",
+  "ja": "30分",
+  "pt": "30 min",
+  "zh": "30 分钟"
+ },
+ "A reminder tool, not medical advice — always follow your doctor's or pharmacist's instructions. Stays on this phone.": {
+  "de": "Ein Erinnerungswerkzeug, keine medizinische Beratung – folge immer den Anweisungen deines Arztes oder Apothekers. Bleibt auf diesem Telefon.",
+  "es": "Una herramienta de recordatorios, no consejo médico: sigue siempre las indicaciones de tu médico o farmacéutico. Se queda en este teléfono.",
+  "fr": "Un outil de rappel, pas un avis médical – suivez toujours votre médecin ou pharmacien. Reste sur ce téléphone.",
+  "hi": "यह रिमाइंडर टूल है, चिकित्सा सलाह नहीं — हमेशा अपने डॉक्टर या फ़ार्मासिस्ट के निर्देश मानें। डेटा इसी फ़ोन पर रहता है।",
+  "it": "Uno strumento di promemoria, non un consiglio medico: segui sempre le indicazioni del medico o del farmacista. Resta su questo telefono.",
+  "ja": "リマインダーであり医療アドバイスではありません — 必ず医師・薬剤師の指示に従ってください。データはこの端末内に保存。",
+  "pt": "Uma ferramenta de lembretes, não conselho médico — siga sempre as orientações do seu médico ou farmacêutico. Fica neste telefone.",
+  "zh": "这是提醒工具，不是医疗建议——请始终遵循医生或药师的指示。数据只保存在本机。"
+ },
+ "Add a medicine": {
+  "de": "Medikament hinzufügen",
+  "es": "Añadir una medicina",
+  "fr": "Ajouter un médicament",
+  "hi": "दवा जोड़ें",
+  "it": "Aggiungi un farmaco",
+  "ja": "お薬を追加",
+  "pt": "Adicionar remédio",
+  "zh": "添加药品"
+ },
+ "Add your first medicine — name, dose and when. Tenzy reminds you, and you tap Taken right from the alert.": {
+  "de": "Füge dein erstes Medikament hinzu – Name, Dosis und Zeit. Tenzy erinnert dich, und du tippst direkt im Hinweis auf „Genommen“.",
+  "es": "Añade tu primera medicina: nombre, dosis y cuándo. Tenzy te avisa y tocas «Tomado» desde el aviso.",
+  "fr": "Ajoutez votre premier médicament – nom, dose et horaire. Tenzy vous le rappelle et vous touchez « Pris » depuis l'alerte.",
+  "hi": "अपनी पहली दवा जोड़ें — नाम, खुराक और समय। Tenzy याद दिलाएगा, और आप अलर्ट से ही “ले ली” टैप करें।",
+  "it": "Aggiungi il primo farmaco: nome, dose e orario. Tenzy te lo ricorda e tocchi «Preso» direttamente dall'avviso.",
+  "ja": "最初のお薬を追加 — 名前・量・時間。Tenzyが知らせ、通知から「飲んだ」をタップ。",
+  "pt": "Adicione seu primeiro remédio — nome, dose e horário. O Tenzy lembra e você toca «Tomei» direto no alerta.",
+  "zh": "添加第一种药——名称、剂量和时间。Tenzy会提醒你，直接在通知里点“已服用”。"
+ },
+ "Delete this medicine": {
+  "de": "Dieses Medikament löschen",
+  "es": "Eliminar esta medicina",
+  "fr": "Supprimer ce médicament",
+  "hi": "यह दवा हटाएँ",
+  "it": "Elimina questo farmaco",
+  "ja": "このお薬を削除",
+  "pt": "Excluir este remédio",
+  "zh": "删除此药品"
+ },
+ "Dose alerts with a Taken button and refills": {
+  "de": "Dosis-Erinnerungen mit Eingenommen-Taste und Nachfüllen",
+  "es": "Avisos de dosis con botón Tomado y recargas",
+  "fr": "Rappels de dose avec bouton Pris et renouvellements",
+  "hi": "'ले लिया' बटन और रीफ़िल के साथ दवा अलर्ट",
+  "it": "Avvisi delle dosi con tasto Presa e ricariche",
+  "ja": "「服用した」ボタンと補充のお知らせ付き",
+  "pt": "Alertas de dose com botão Tomado e recargas",
+  "zh": "带“已服用”按钮和补药提醒的服药提醒"
+ },
+ "Every day": {
+  "de": "Jeden Tag",
+  "es": "Todos los días",
+  "fr": "Tous les jours",
+  "hi": "हर दिन",
+  "it": "Ogni giorno",
+  "ja": "毎日",
+  "pt": "Todos os dias",
+  "zh": "每天"
+ },
+ "Every few hours": {
+  "de": "Alle paar Stunden",
+  "es": "Cada pocas horas",
+  "fr": "Toutes les quelques heures",
+  "hi": "हर कुछ घंटे",
+  "it": "Ogni poche ore",
+  "ja": "数時間ごと",
+  "pt": "A cada poucas horas",
+  "zh": "每隔几小时"
+ },
+ "Family & caregiver": {
+  "de": "Familie & Betreuung",
+  "es": "Familia y cuidador",
+  "fr": "Famille et aidant",
+  "hi": "परिवार और देखभाल",
+  "it": "Famiglia e caregiver",
+  "ja": "家族・介護者",
+  "pt": "Família e cuidador",
+  "zh": "家人与照护"
+ },
+ "From": {
+  "de": "Ab",
+  "es": "Desde",
+  "fr": "De",
+  "hi": "से",
+  "it": "Dalle",
+  "ja": "開始",
+  "pt": "De",
+  "zh": "从"
+ },
+ "Medicine Reminders": {
+  "de": "Medikamenten-Erinnerungen",
+  "es": "Recordatorios de medicinas",
+  "fr": "Rappels de médicaments",
+  "hi": "दवा रिमाइंडर",
+  "it": "Promemoria farmaci",
+  "ja": "お薬リマインダー",
+  "pt": "Lembretes de remédios",
+  "zh": "服药提醒"
+ },
+ "Medicine reminders": {
+  "de": "Medikamenten-Erinnerungen",
+  "es": "Recordatorios de medicinas",
+  "fr": "Rappels de médicaments",
+  "hi": "दवा रिमाइंडर",
+  "it": "Promemoria per i farmaci",
+  "ja": "服薬リマインダー",
+  "pt": "Lembretes de remédios",
+  "zh": "用药提醒"
+ },
+ "Missed?": {
+  "de": "Verpasst?",
+  "es": "¿Olvidada?",
+  "fr": "Oubliée ?",
+  "hi": "छूट गई?",
+  "it": "Saltata?",
+  "ja": "飲み忘れ？",
+  "pt": "Esqueceu?",
+  "zh": "漏服？"
+ },
+ "Nothing due today.": {
+  "de": "Heute nichts fällig.",
+  "es": "Nada pendiente hoy.",
+  "fr": "Rien de prévu aujourd'hui.",
+  "hi": "आज कुछ नहीं लेना है।",
+  "it": "Niente in programma oggi.",
+  "ja": "今日の予定はありません。",
+  "pt": "Nada para hoje.",
+  "zh": "今天没有安排。"
+ },
+ "Off": {
+  "de": "Aus",
+  "es": "No",
+  "fr": "Non",
+  "hi": "बंद",
+  "it": "No",
+  "ja": "オフ",
+  "pt": "Não",
+  "zh": "关闭"
+ },
+ "Paused": {
+  "de": "Pausiert",
+  "es": "En pausa",
+  "fr": "En pause",
+  "hi": "रुका हुआ",
+  "it": "In pausa",
+  "ja": "一時停止中",
+  "pt": "Pausado",
+  "zh": "已暂停"
+ },
+ "Refill": {
+  "de": "Nachschub",
+  "es": "Reposición",
+  "fr": "Renouvellement",
+  "hi": "रीफ़िल",
+  "it": "Rifornimento",
+  "ja": "補充",
+  "pt": "Reposição",
+  "zh": "补药"
+ },
+ "Some days": {
+  "de": "An bestimmten Tagen",
+  "es": "Algunos días",
+  "fr": "Certains jours",
+  "hi": "कुछ दिन",
+  "it": "Alcuni giorni",
+  "ja": "特定の曜日",
+  "pt": "Alguns dias",
+  "zh": "某些天"
+ },
+ "Test run": {
+  "de": "Probelauf",
+  "es": "Prueba",
+  "fr": "Essai",
+  "hi": "टेस्ट रन",
+  "it": "Prova",
+  "ja": "テスト実行",
+  "pt": "Teste",
+  "zh": "测试一下"
+ },
+ "This week": {
+  "de": "Diese Woche",
+  "es": "Esta semana",
+  "fr": "Cette semaine",
+  "hi": "इस हफ़्ते",
+  "it": "Questa settimana",
+  "ja": "今週",
+  "pt": "Esta semana",
+  "zh": "本周"
+ },
+ "Today": {
+  "de": "Heute",
+  "es": "Hoy",
+  "fr": "Aujourd'hui",
+  "hi": "आज",
+  "it": "Oggi",
+  "ja": "今日",
+  "pt": "Hoje",
+  "zh": "今天"
+ },
+ "When": {
+  "de": "Wann",
+  "es": "Cuándo",
+  "fr": "Quand",
+  "hi": "कब",
+  "it": "Quando",
+  "ja": "いつ",
+  "pt": "Quando",
+  "zh": "时间"
+ },
+ "You get one alert when the count reaches your number. Tenzy never orders or suggests doses — ask your pharmacist about refills.": {
+  "de": "Du bekommst eine Mitteilung, wenn deine Zahl erreicht ist. Tenzy bestellt nichts und schlägt keine Dosen vor – frag deine Apotheke.",
+  "es": "Recibes un aviso cuando se llegue a tu número. Tenzy nunca pide ni sugiere dosis: consulta a tu farmacéutico.",
+  "fr": "Vous recevez une alerte quand votre nombre est atteint. Tenzy ne commande rien et ne suggère aucune dose — demandez à votre pharmacien.",
+  "hi": "संख्या पहुँचने पर आपको एक अलर्ट मिलेगा। Tenzy कभी ऑर्डर नहीं करता या ख़ुराक नहीं बताता — रीफ़िल के लिए फ़ार्मासिस्ट से पूछें।",
+  "it": "Ricevi un avviso quando si arriva al tuo numero. Tenzy non ordina né suggerisce dosi: chiedi al farmacista.",
+  "ja": "数に達したら1回だけ通知します。Tenzy が注文したり用量を提案したりすることはありません。補充は薬剤師に相談してください。",
+  "pt": "Recebe um alerta quando chegar ao seu número. O Tenzy nunca encomenda nem sugere doses — fale com o farmacêutico.",
+  "zh": "数量到达时提醒一次。Tenzy 不会代购药品或建议剂量，补药请咨询药剂师。"
+ },
+ "Your medicines": {
+  "de": "Deine Medikamente",
+  "es": "Tus medicinas",
+  "fr": "Vos médicaments",
+  "hi": "आपकी दवाएँ",
+  "it": "I tuoi farmaci",
+  "ja": "あなたのお薬",
+  "pt": "Seus remédios",
+  "zh": "你的药品"
+ },
+ "15 min": {
+  "de": "15 Min.",
+  "es": "15 min",
+  "fr": "15 min",
+  "hi": "15 मिनट",
+  "it": "15 min",
+  "ja": "15分",
+  "pt": "15 min",
+  "zh": "15 分钟"
+ },
+ "Add a time": {
+  "de": "Uhrzeit hinzufügen",
+  "es": "Añadir una hora",
+  "fr": "Ajouter une heure",
+  "hi": "समय जोड़ें",
+  "it": "Aggiungi un orario",
+  "ja": "時刻を追加",
+  "pt": "Adicionar horário",
+  "zh": "添加时间"
+ },
+ "Add your first medicine — name, dose and when. Tenzy reminds you, and you tap Taken right from the alert. Counts pills for a refill alert and can nudge someone who helps. Stays on this phone.": {
+  "de": "Füge dein erstes Medikament hinzu – Name, Dosis und wann. Tenzy erinnert dich, und du tippst direkt in der Meldung auf Genommen. Zählt Tabletten für eine Nachfüll-Erinnerung und kann eine helfende Person anstupsen. Bleibt auf diesem Telefon.",
+  "es": "Añade tu primer medicamento: nombre, dosis y cuándo. Tenzy te lo recuerda y tocas Tomado desde el aviso. Cuenta pastillas para avisarte de reponer y puede avisar a quien te ayuda. Se queda en este teléfono.",
+  "fr": "Ajoutez votre premier médicament – nom, dose et horaire. Tenzy vous le rappelle et vous touchez Pris depuis l'alerte. Compte les comprimés pour une alerte de renouvellement et peut prévenir un proche aidant. Reste sur ce téléphone.",
+  "hi": "अपनी पहली दवा जोड़ें — नाम, खुराक और कब। Tenzy याद दिलाएगा, और आप सूचना से ही 'ले ली' दबाएँ। रीफ़िल के लिए गोलियाँ गिनता है और मदद करने वाले को याद दिला सकता है। इसी फ़ोन पर रहता है।",
+  "it": "Aggiungi il primo farmaco: nome, dose e quando. Tenzy te lo ricorda e tocchi Preso direttamente dall'avviso. Conta le pillole per avvisarti di riordinare e può avvisare chi ti aiuta. Resta su questo telefono.",
+  "ja": "最初の薬を追加しましょう — 名前、量、時間。Tenzyがお知らせし、通知から「服用済み」をタップできます。残数を数えて補充をお知らせし、介助者に知らせることもできます。データは端末内に保存。",
+  "pt": "Adicione seu primeiro remédio — nome, dose e quando. O Tenzy lembra você, e você toca Tomei direto no alerta. Conta os comprimidos para avisar da reposição e pode avisar quem ajuda você. Fica neste telefone.",
+  "zh": "添加你的第一种药——名称、剂量和时间。Tenzy 会提醒你，你可以直接在通知里点“已服用”。还能数药片提醒补药，并可提醒照顾你的人。只存在这部手机上。"
+ },
+ "Added": {
+  "de": "Hinzugefügt",
+  "es": "Añadido",
+  "fr": "Ajouté",
+  "hi": "जोड़ा गया",
+  "it": "Aggiunto",
+  "ja": "追加しました",
+  "pt": "Adicionado",
+  "zh": "已添加"
+ },
+ "Alert at": {
+  "de": "Melden bei",
+  "es": "Avisar con",
+  "fr": "Alerte à",
+  "hi": "इतने पर सूचना",
+  "it": "Avvisa a",
+  "ja": "通知する残数",
+  "pt": "Avisar com",
+  "zh": "剩余提醒"
+ },
+ "Alerts are off, so reminders can't reach you.": {
+  "de": "Mitteilungen sind aus, daher erreichen dich keine Erinnerungen.",
+  "es": "Los avisos están desactivados, así que los recordatorios no te llegarán.",
+  "fr": "Les alertes sont désactivées, les rappels ne peuvent pas vous parvenir.",
+  "hi": "सूचनाएँ बंद हैं, इसलिए रिमाइंडर आप तक नहीं पहुँचेंगे।",
+  "it": "Gli avvisi sono disattivati, quindi i promemoria non ti arrivano.",
+  "ja": "通知がオフのため、リマインダーが届きません。",
+  "pt": "Os alertas estão desligados, então os lembretes não chegam até você.",
+  "zh": "通知已关闭，提醒无法送达。"
+ },
+ "Android lets only alarm-clock apps ring at the exact minute, so an alert can arrive a few minutes after its time when the phone is resting.": {
+  "de": "Android erlaubt nur Wecker-Apps, auf die Minute genau zu klingeln. Wenn das Telefon ruht, kann eine Erinnerung daher ein paar Minuten später kommen.",
+  "es": "Android solo deja sonar al minuto exacto a las apps de alarma, así que un aviso puede llegar unos minutos tarde si el teléfono está en reposo.",
+  "fr": "Android ne permet qu'aux applis réveil de sonner à la minute près : une alerte peut donc arriver quelques minutes après l'heure quand le téléphone est en veille.",
+  "hi": "Android सिर्फ़ अलार्म-घड़ी ऐप को ठीक मिनट पर बजने देता है, इसलिए फ़ोन आराम में हो तो सूचना कुछ मिनट देर से आ सकती है।",
+  "it": "Android permette solo alle app sveglia di suonare al minuto esatto, quindi un avviso può arrivare qualche minuto dopo quando il telefono è a riposo.",
+  "ja": "Androidでは時刻ちょうどに鳴らせるのは目覚ましアプリだけのため、端末が休止中は通知が数分遅れることがあります。",
+  "pt": "O Android só deixa apps de despertador tocarem no minuto exato, então um alerta pode chegar alguns minutos depois quando o telefone está em repouso.",
+  "zh": "Android 只允许闹钟类应用准点响铃，因此手机休眠时提醒可能晚几分钟到达。"
+ },
+ "Copy their whole message first, then tap Paste.": {
+  "de": "Kopiere zuerst die ganze Nachricht und tippe dann auf Einfügen.",
+  "es": "Copia primero su mensaje completo y luego toca Pegar.",
+  "fr": "Copiez d'abord tout son message, puis touchez Coller.",
+  "hi": "पहले उनका पूरा संदेश कॉपी करें, फिर पेस्ट दबाएँ।",
+  "it": "Copia prima tutto il messaggio, poi tocca Incolla.",
+  "ja": "相手のメッセージ全体をコピーしてから「貼り付け」をタップしてください。",
+  "pt": "Copie a mensagem inteira primeiro e depois toque em Colar.",
+  "zh": "请先复制对方的完整消息，再点粘贴。"
+ },
+ "Dose — e.g. 1 tablet, 5 ml": {
+  "de": "Dosis – z. B. 1 Tablette, 5 ml",
+  "es": "Dosis: p. ej. 1 pastilla, 5 ml",
+  "fr": "Dose – ex. 1 comprimé, 5 ml",
+  "hi": "खुराक — जैसे 1 गोली, 5 ml",
+  "it": "Dose – es. 1 compressa, 5 ml",
+  "ja": "量 — 例：1錠、5 ml",
+  "pt": "Dose — ex.: 1 comprimido, 5 ml",
+  "zh": "剂量——例如 1 片、5 毫升"
+ },
+ "Medicine name": {
+  "de": "Name des Medikaments",
+  "es": "Nombre del medicamento",
+  "fr": "Nom du médicament",
+  "hi": "दवा का नाम",
+  "it": "Nome del farmaco",
+  "ja": "薬の名前",
+  "pt": "Nome do remédio",
+  "zh": "药名"
+ },
+ "Medicines, bills, receipts, prices and cards": {
+  "de": "Medikamente, Rechnungen, Belege, Preise und Karten",
+  "es": "Medicinas, facturas, recibos, precios y tarjetas",
+  "fr": "Médicaments, factures, reçus, prix et cartes",
+  "hi": "दवाएँ, बिल, रसीदें, दाम और कार्ड",
+  "it": "Farmaci, bollette, scontrini, prezzi e carte",
+  "ja": "薬、請求書、レシート、価格、カード",
+  "pt": "Remédios, contas, recibos, preços e cartões",
+  "zh": "药品、账单、收据、价格和卡片"
+ },
+ "Note — e.g. with food (optional)": {
+  "de": "Hinweis – z. B. zum Essen (optional)",
+  "es": "Nota: p. ej. con comida (opcional)",
+  "fr": "Note – ex. pendant le repas (facultatif)",
+  "hi": "नोट — जैसे खाने के साथ (वैकल्पिक)",
+  "it": "Nota – es. a stomaco pieno (facoltativo)",
+  "ja": "メモ — 例：食後（任意）",
+  "pt": "Observação — ex.: com comida (opcional)",
+  "zh": "备注——例如随餐（可选）"
+ },
+ "Nudge me again if I haven't tapped Taken": {
+  "de": "Erinnere mich erneut, wenn ich nicht auf Genommen getippt habe",
+  "es": "Avísame otra vez si no he tocado Tomado",
+  "fr": "Me rappeler si je n'ai pas touché Pris",
+  "hi": "अगर मैंने 'ले ली' नहीं दबाया तो फिर याद दिलाएँ",
+  "it": "Ricordamelo di nuovo se non ho toccato Preso",
+  "ja": "「服用済み」をタップしていなければ再通知",
+  "pt": "Me lembre de novo se eu não tocar em Tomei",
+  "zh": "如果我没点“已服用”就再提醒我"
+ },
+ "Paste a list someone sent me": {
+  "de": "Liste einfügen, die mir jemand geschickt hat",
+  "es": "Pegar una lista que me enviaron",
+  "fr": "Coller une liste qu'on m'a envoyée",
+  "hi": "किसी की भेजी सूची पेस्ट करें",
+  "it": "Incolla una lista che mi hanno inviato",
+  "ja": "送ってもらったリストを貼り付け",
+  "pt": "Colar uma lista que me enviaram",
+  "zh": "粘贴别人发给我的清单"
+ },
+ "Per dose": {
+  "de": "Pro Dosis",
+  "es": "Por dosis",
+  "fr": "Par prise",
+  "hi": "प्रति खुराक",
+  "it": "Per dose",
+  "ja": "1回分",
+  "pt": "Por dose",
+  "zh": "每次"
+ },
+ "Pills left": {
+  "de": "Tabletten übrig",
+  "es": "Pastillas restantes",
+  "fr": "Comprimés restants",
+  "hi": "बची गोलियाँ",
+  "it": "Pillole rimaste",
+  "ja": "残りの錠数",
+  "pt": "Comprimidos restantes",
+  "zh": "剩余药片"
+ },
+ "Send the list to another phone": {
+  "de": "Liste an ein anderes Telefon senden",
+  "es": "Enviar la lista a otro teléfono",
+  "fr": "Envoyer la liste à un autre téléphone",
+  "hi": "सूची दूसरे फ़ोन पर भेजें",
+  "it": "Invia la lista a un altro telefono",
+  "ja": "リストを別の端末に送る",
+  "pt": "Enviar a lista para outro telefone",
+  "zh": "把清单发到另一部手机"
+ },
+ "Sends you a dose alert now, exactly as it will come.": {
+  "de": "Sendet dir jetzt eine Erinnerung, genau so, wie sie kommen wird.",
+  "es": "Te envía ahora un aviso de dosis, tal como llegará.",
+  "fr": "Vous envoie une alerte maintenant, exactement comme elle arrivera.",
+  "hi": "अभी एक खुराक सूचना भेजता है, ठीक वैसी जैसी आएगी।",
+  "it": "Ti invia ora un avviso, esattamente come arriverà.",
+  "ja": "実際と同じ服用通知を今すぐ送ります。",
+  "pt": "Envia agora um alerta de dose, exatamente como ele vai chegar.",
+  "zh": "立即发送一条服药提醒，和实际收到的一样。"
+ },
+ "Someone who helps — a son, a daughter, a nurse": {
+  "de": "Jemand, der hilft – Sohn, Tochter, Pflegekraft",
+  "es": "Alguien que te ayuda: hijo, hija, enfermera",
+  "fr": "Quelqu'un qui aide – un fils, une fille, une infirmière",
+  "hi": "कोई जो मदद करता है — बेटा, बेटी, नर्स",
+  "it": "Chi ti aiuta – un figlio, una figlia, un'infermiera",
+  "ja": "手伝ってくれる人 — 息子、娘、看護師など",
+  "pt": "Alguém que ajuda — filho, filha, enfermeira",
+  "zh": "照顾你的人——儿子、女儿、护士"
+ },
+ "Stop on a date": {
+  "de": "An einem Datum beenden",
+  "es": "Terminar en una fecha",
+  "fr": "Arrêter à une date",
+  "hi": "किसी तारीख को बंद करें",
+  "it": "Termina in una data",
+  "ja": "終了日を設定",
+  "pt": "Parar em uma data",
+  "zh": "在某天停止"
+ },
+ "Tenzy writes it; you see it and tap send. It never texts anyone by itself.": {
+  "de": "Tenzy schreibt sie; du siehst sie und tippst auf Senden. Tenzy schreibt nie selbst jemandem.",
+  "es": "Tenzy lo escribe; tú lo ves y tocas enviar. Nunca escribe a nadie por su cuenta.",
+  "fr": "Tenzy le rédige ; vous le voyez et touchez Envoyer. Il n'écrit jamais à personne tout seul.",
+  "hi": "Tenzy लिखता है; आप देखकर भेजें दबाएँ। यह खुद किसी को मैसेज नहीं करता।",
+  "it": "Tenzy lo scrive; tu lo vedi e tocchi Invia. Non scrive mai a nessuno da solo.",
+  "ja": "Tenzyが文面を作り、確認して送信をタップ。勝手に送ることはありません。",
+  "pt": "O Tenzy escreve; você vê e toca em enviar. Ele nunca manda mensagem sozinho.",
+  "zh": "Tenzy 帮你写好，你确认后再发送。它从不自行发消息。"
+ },
+ "Text an update": {
+  "de": "Update per SMS senden",
+  "es": "Enviar una actualización",
+  "fr": "Envoyer un point par SMS",
+  "hi": "अपडेट मैसेज करें",
+  "it": "Invia un aggiornamento",
+  "ja": "近況をメッセージで送る",
+  "pt": "Enviar uma atualização",
+  "zh": "发条近况短信"
+ },
+ "Their phone number": {
+  "de": "Ihre Telefonnummer",
+  "es": "Su número de teléfono",
+  "fr": "Son numéro de téléphone",
+  "hi": "उनका फ़ोन नंबर",
+  "it": "Il suo numero di telefono",
+  "ja": "相手の電話番号",
+  "pt": "O telefone da pessoa",
+  "zh": "对方的电话号码"
+ },
+ "Turn on alerts": {
+  "de": "Mitteilungen einschalten",
+  "es": "Activar avisos",
+  "fr": "Activer les alertes",
+  "hi": "सूचनाएँ चालू करें",
+  "it": "Attiva gli avvisi",
+  "ja": "通知をオンにする",
+  "pt": "Ativar alertas",
+  "zh": "打开通知"
+ },
+ "to": {
+  "de": "bis",
+  "es": "a",
+  "fr": "à",
+  "hi": "तक",
+  "it": "alle",
+  "ja": "〜",
+  "pt": "às",
+  "zh": "至"
  }
 }

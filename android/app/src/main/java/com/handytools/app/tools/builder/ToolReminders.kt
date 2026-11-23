@@ -113,6 +113,7 @@ class ToolReminderReceiver : BroadcastReceiver() {
             intent.getStringExtra("tool")?.let { ToolReminders.show(ctx, it) }
             ToolReminders.resync(ctx)
             PhotoWatch.arm(ctx)
+            if (intent.action == Intent.ACTION_BOOT_COMPLETED) com.handytools.app.tools.meds.MedAlarms.sync(ctx)
         }
     }
 }

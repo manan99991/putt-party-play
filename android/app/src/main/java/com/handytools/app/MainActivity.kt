@@ -224,6 +224,7 @@ class MainActivity : ComponentActivity() {
                     composable("hearing") { HearingBoostScreen() }
                     composable("timer") { TimersScreen() }
                     composable("wallet") { WalletScreen() }
+                    composable("medreminder") { com.handytools.app.tools.meds.MedRemindersScreen() }
                     composable("translate") { com.handytools.app.tools.power.TranslateToolScreen() }
                     composable("sorted") { SortedScreen() }
                     composable("memory") { MemoryScreen() }
