@@ -7,7 +7,7 @@ import CoreLocation
 /// one main action, and a Not now. The choosing is pure (unit-tested); gathering reads the phone.
 enum ForYou {
     enum Kind: String, CaseIterable, Codable {
-        case dose, car, bill, birthday, space, screenshots, contactsBackup
+        case dose, car, bill, invoice, birthday, space, screenshots, contactsBackup
     }
 
     /// What one tap does.
@@ -42,6 +42,7 @@ enum ForYou {
         var screenshotLimit: Int?
         var contactCount: Int?          // only when Contacts access was already given
         var lastContactsBackup: Date?
+        var invoices: [Invoice.Doc] = []     // made in Invoices & Quotes (Business tab)
     }
 
     static let maxCards = 2
@@ -83,6 +84,14 @@ enum ForYou {
                                 button: "Open", action: .open("sorted"), icon: "doc.text.fill", hex: 0xF97316,
                                 priority: days < 0 ? 88 : 80))
             }
+        }
+        // The invoice a customer is most overdue on (Business tab, 23 Nov).
+        if let d = f.invoices.filter({ $0.overdue(now: now, cal: cal) }).sorted(by: { ($0.due ?? now) < ($1.due ?? now) }).first {
+            let due = (d.due ?? now).formatted(.dateTime.month(.abbreviated).day())
+            out.append(Card(id: "invoice-\(d.id)", kind: .invoice,
+                            title: d.who.isEmpty ? "\(d.number) isn't paid yet" : "\(d.who) hasn't paid yet",
+                            why: "\(Invoice.money(d.total, currency: d.currency)) · was due \(due)",
+                            button: "See unpaid", action: .open("invoice"), icon: "doc.text.fill", hex: 0x0D9488, priority: 78))
         }
         if let p = f.birthdays.first(where: \.today) {
             out.append(Card(id: "birthday-\(p.name)-\(cal.component(.year, from: now))", kind: .birthday,
@@ -145,6 +154,7 @@ enum ForYou {
         f.screenshots = brief.screenshots; f.screenshotLimit = brief.screenshotLimit; f.freeGB = brief.freeGB
         if let c = ParkStore.load(), let at = ParkStore.date() { f.car = (c.latitude, c.longitude, at) }
         f.meterEnds = ParkingMeter.endsAt
+        f.invoices = InvoiceStore.shared.docs
         if CNContactStore.authorizationStatus(for: .contacts) == .authorized {
             f.contactCount = await Task.detached(priority: .utility) { () -> Int? in
                 let r = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as CNKeyDescriptor])

@@ -149,6 +149,34 @@ final class PromiseTests: XCTestCase {
         XCTAssertEqual(app.state, .runningForeground)
     }
 
+    /// Business (23 Nov): Send an invoice opens Invoices & Quotes from the Business tab; a filled-in invoice makes a PDF
+    /// with a Send button, then waits in the unpaid list until Paid takes it off.
+    func testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "home", "-uitest", "-sample", "-tenzy.business", "YES"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let tab = any["tab-business"].firstMatch
+        XCTAssertTrue(tab.waitForExistence(timeout: 20), "no Business tab")
+        tab.tap()
+        let job = any["home-job-invoice"].firstMatch
+        XCTAssertTrue(job.waitForExistence(timeout: 5), "the Business tab has no Send an invoice")
+        job.tap()
+        let make = any["invoice-make"].firstMatch
+        XCTAssertTrue(make.waitForExistence(timeout: 15), "Send an invoice didn't open Invoices & Quotes")
+        let paid = any.matching(NSPredicate(format: "identifier BEGINSWITH 'invoice-paid-'"))
+        let before = paid.count
+        XCTAssertTrue(make.isEnabled, "the sample invoice can't be made. Total reads: \(any["invoice-total"].firstMatch.label)")
+        make.tap()
+        XCTAssertTrue(any["invoice-send"].firstMatch.waitForExistence(timeout: 10), "no Send button after Make PDF")
+        XCTAssertEqual(paid.count, before + 1, "the new invoice isn't in the unpaid list")
+        any["invoice-another"].firstMatch.tap()
+        paid.element(boundBy: 0).tap()
+        sleep(1)
+        XCTAssertEqual(paid.count, before, "Paid didn't take it off the unpaid list")
+        XCTAssertEqual(app.state, .runningForeground)
+    }
+
     /// Audit decision 3 (23 Nov): Templates moved off Home into My stuff as "Ready-made tools". It opens the list, and
     /// Done lands back on My stuff, never a blank page.
     func testReadyMadeToolsOpenFromMyStuffAndComeBack() {

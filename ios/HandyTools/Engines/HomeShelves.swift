@@ -60,6 +60,9 @@ enum HomeShelves {
     static let business = Shelf(id: "business", title: "Business", line: "Expenses, product photos, customers, contracts and QR codes",
                                 icon: "briefcase.fill", hex: 0x0D9488, tools: [])
 
+    /// Tools made for running a business. Their tile is on the Business tab only (search still finds them).
+    static var businessTools: Set<String> { Set(businessJobs.compactMap(\.tool)) }
+
     /// Home's tabs: the eight for everyone, plus Business for people who run one (then the grid is 3 x 3).
     static func tabs(business: Bool) -> [Shelf] { business ? all + [business] : all }
 
@@ -72,6 +75,7 @@ enum HomeShelves {
         let tool: String?      // or a tool id
     }
     static let businessJobs: [BusinessJob] = [
+        BusinessJob(id: "invoice", title: "Send an invoice", icon: "doc.text.fill", chain: nil, tool: "invoice"),
         BusinessJob(id: "expense", title: "Log an expense", icon: "receipt.fill", chain: "receipt-run", tool: nil),
         BusinessJob(id: "product", title: "Product photo to sell", icon: "bag.fill", chain: "photo-sell", tool: nil),
         BusinessJob(id: "customer", title: "Save a customer", icon: "person.crop.rectangle.fill", chain: "card-to-contact", tool: nil),

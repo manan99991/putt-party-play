@@ -51,7 +51,7 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   The Android listing states only what the Android build ships.
 - The listing must represent the **free/Pro split honestly**: seven tools are free (`Tool.freeIDs`: Flashlight,
   QR & Wi-Fi, See & Read, Measure, Cleaner, Translate, Vault), plus 2 saved tools of your own with the free
-  builder steps; the rest are Tenzy Pro.
+  builder steps; Invoices & Quotes (Business tab) makes 3 a month free (`Tool.meteredIDs`); the rest are Tenzy Pro.
   Do not imply the whole app is free. The paywall screen must show price, the 3-day trial terms,
   auto-renew disclosure, and working Terms (EULA) + Privacy links (Guideline 3.1.2).
 

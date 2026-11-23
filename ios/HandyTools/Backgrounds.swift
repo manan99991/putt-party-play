@@ -42,6 +42,7 @@ enum TenzyArt {
         "fileviewer": "lens",
         "warranty": "shareready",
         "pricecheck": "livecaptions",
+        "invoice": "sorted",
         "pdfredact": "scrub",
         "pdfannotate": "scan",
         "pdfconvert": "scan",

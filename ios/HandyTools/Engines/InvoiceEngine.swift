@@ -64,8 +64,9 @@ enum Invoice {
 
     /// How many more can be made this month without Pro (nil: no limit).
     static func left(_ docs: [Doc], premium: Bool, now: Date = Date(), cal: Calendar = .current) -> Int? {
-        premium ? nil : max(0, freePerMonth - madeThisMonth(docs, now: now, cal: cal))
+        left(made: madeThisMonth(docs, now: now, cal: cal), premium: premium)
     }
+    static func left(made: Int, premium: Bool) -> Int? { premium ? nil : max(0, freePerMonth - made) }
 
     static func money(_ v: Double, currency: String, locale: Locale = .current) -> String {
         v.formatted(.currency(code: currency).locale(locale))
@@ -199,7 +200,17 @@ final class InvoiceStore: ObservableObject {
     /// Who it's from, typed once and remembered.
     static let fromKey = "invoice.from", currencyKey = "invoice.currency", taxKey = "invoice.tax"
 
-    func add(_ d: Invoice.Doc) { docs.insert(d, at: 0); save() }
+    func add(_ d: Invoice.Doc) {
+        docs.insert(d, at: 0); save()
+        UserDefaults.standard.set(madeThisMonth + 1, forKey: monthKey())
+    }
+
+    /// Made this calendar month — counted when made, so deleting one doesn't hand back a free one.
+    var madeThisMonth: Int { max(UserDefaults.standard.integer(forKey: monthKey()), Invoice.madeThisMonth(docs)) }
+    private func monthKey(_ now: Date = Date()) -> String {
+        let c = Calendar.current.dateComponents([.year, .month], from: now)
+        return "invoice.made.\(c.year ?? 0)-\(c.month ?? 0)"
+    }
     func setPaid(_ id: UUID, _ paid: Bool) {
         guard let i = docs.firstIndex(where: { $0.id == id }) else { return }
         docs[i].paid = paid; save()

@@ -129,7 +129,10 @@ struct Tool: Identifiable {
 
     /// The everyday basics stay free; everything else is a Pro tool. One place to tune the split.
     static let freeIDs: Set<String> = ["light", "qrwifi", "seeread", "measure", "cleaner", "translate", "vault"]
-    var pro: Bool { !Tool.freeIDs.contains(id) }
+    /// Open to everyone with a monthly allowance; Pro removes the limit (the tool counts and asks itself).
+    /// Invoices & Quotes: 3 a month (`Invoice.freePerMonth`).
+    static let meteredIDs: Set<String> = ["invoice"]
+    var pro: Bool { !Tool.freeIDs.contains(id) && !Tool.meteredIDs.contains(id) }
 
     /// Tools that live inside another tool now (so there's one clear place for each kind of job). They keep every
     /// feature and their own screen — they're reached from inside that tool, from search and from shortcuts.
@@ -212,6 +215,8 @@ struct Tool: Identifiable {
     Tool(id: "fileviewer", name: "File Opener",      blurb: "Open files people send you",              icon: "doc.fill",                            page: 3, asset: "tool_lens", keywords: ["file","open","opener","viewer","docx","pages","keynote","numbers","xls","zip","epub","unknown","won't open","can't open","any file"]),
     Tool(id: "pricecheck", name: "Price Check",      blurb: "Compare sizes and prices in the store",  icon: "tag.fill",                            page: 3, asset: "tool_livecaptions", keywords: ["price","unit price","compare","deal","cheaper","per 100g","per unit","budget","cart","shopping","grocery","value","label","ingredients","nutrition","additives","allergens"]),
     Tool(id: "vault",      name: "Vault",            blurb: "Lock away private photos and files",                    icon: "lock.fill",                           page: 3, asset: "tool_vault", keywords: ["vault","secure","private","lock","face id","hidden","photos","notes","files","cards","safe"]),
+    // Business tab (shown only to people who say they run a business): invoices and quotes as a clean PDF, with an unpaid list.
+    Tool(id: "invoice",    name: "Invoices & Quotes", blurb: "Make a PDF invoice or quote, track unpaid", icon: "doc.text.fill",             page: 2, asset: "tool_sorted", keywords: ["invoice","invoices","quote","quotes","estimate","bill a customer","billing","receipt for customer","business","small business","freelance","contractor","unpaid","paid","overdue","customer","client","pdf invoice","send invoice"]),
     // Hubs: one place for jobs that belong together. Each job inside is the full tool it always was.
     Tool(id: "speechnotes", name: "Notes from Speech", blurb: "Live notes, or notes from a recording", icon: "waveform.and.mic", page: 2, ai: true, asset: "tool_voicenotes", keywords: ["action items","ai","audio","call notes","dictation","follow up email","follow-up email","interview","meeting","meeting minutes","meeting notes","meeting recap","meeting recording","minutes","notes","recap","record","record a meeting","speech","stand-up","standup","summary","transcribe","transcript","turns","voice","who said what","notes from speech"]),
     Tool(id: "audiostudio", name: "Audio Editor", blurb: "Trim, ringtone, join, clean up", icon: "slider.horizontal.3", page: 5, asset: "tool_audiolab", keywords: ["2x","alarm sound","append","audio cleanup","audio editor","background noise","boost volume","clean audio","clean up audio","clearer","clearer voice","combine audio","crop audio","custom ringtone","cut audio","cut silence","dead air","edit audio","even out volume","fade","fade in","fade out","faster","gap","hiss","hum","join audio","join clips","lecture speed","louder","m4r","make a ringtone","merge audio","noise reduction","noisy recording","normalize audio","phone ringtone","playback speed","reduce noise","remove noise","remove silence","ring tone","ringtone","ringtones","rumble","shorten audio","silence","slow down audio","slower","song to ringtone","speed up audio","stitch","trim audio","voice clarity","audio editor","ringtone","join","speed","cleanup"]),
@@ -402,6 +407,7 @@ struct ToolDestination: View {
         case "fileviewer": FileViewerView()
         case "warranty": WarrantyView()
         case "pricecheck": PriceCheckView()
+        case "invoice": InvoiceView()
         case "identify": IdentifyView()
         case "seeread": SeeReadView()
         case "pdfredact": PDFRedactView()

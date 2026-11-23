@@ -44188,5 +44188,425 @@
   "ja": "小さな商売の運営",
   "pt": "Administrar um pequeno negócio",
   "zh": "经营小生意"
+ },
+ "%d of 3 free this month left": {
+  "de": "Noch %d von 3 kostenlosen diesen Monat",
+  "es": "Te quedan %d de 3 gratis este mes",
+  "fr": "Encore %d sur 3 gratuits ce mois-ci",
+  "hi": "इस महीने 3 में से %d मुफ़्त बाकी",
+  "it": "Ne restano %d su 3 gratis questo mese",
+  "ja": "今月の無料分 残り%d/3",
+  "pt": "Restam %d de 3 grátis este mês",
+  "zh": "本月还剩 %d/3 个免费名额"
+ },
+ "14 days": {
+  "de": "14 Tage",
+  "es": "14 días",
+  "fr": "14 jours",
+  "hi": "14 दिन",
+  "it": "14 giorni",
+  "ja": "14日",
+  "pt": "14 dias",
+  "zh": "14 天"
+ },
+ "30 days": {
+  "de": "30 Tage",
+  "es": "30 días",
+  "fr": "30 jours",
+  "hi": "30 दिन",
+  "it": "30 giorni",
+  "ja": "30日",
+  "pt": "30 dias",
+  "zh": "30 天"
+ },
+ "7 days": {
+  "de": "7 Tage",
+  "es": "7 días",
+  "fr": "7 jours",
+  "hi": "7 दिन",
+  "it": "7 giorni",
+  "ja": "7日",
+  "pt": "7 dias",
+  "zh": "7 天"
+ },
+ "Add a line": {
+  "de": "Zeile hinzufügen",
+  "es": "Añadir línea",
+  "fr": "Ajouter une ligne",
+  "hi": "पंक्ति जोड़ें",
+  "it": "Aggiungi riga",
+  "ja": "行を追加",
+  "pt": "Adicionar linha",
+  "zh": "添加一行"
+ },
+ "Add who it's for and what you did or sold. Totals work themselves out.": {
+  "de": "Gib an, für wen es ist und was du gemacht oder verkauft hast. Die Summen rechnen sich selbst.",
+  "es": "Añade para quién es y qué hiciste o vendiste. Los totales se calculan solos.",
+  "fr": "Indiquez pour qui c'est et ce que vous avez fait ou vendu. Les totaux se calculent seuls.",
+  "hi": "किसके लिए है और आपने क्या काम किया या बेचा, लिखें। कुल अपने-आप बन जाता है।",
+  "it": "Aggiungi per chi è e cosa hai fatto o venduto. I totali si calcolano da soli.",
+  "ja": "宛先と、行った作業や販売した品を入力。合計は自動で計算されます。",
+  "pt": "Diga para quem é e o que você fez ou vendeu. Os totais se calculam sozinhos.",
+  "zh": "填写开给谁、做了什么或卖了什么，合计会自动算好。"
+ },
+ "Add who it's from, who it's for, and at least one line with a price.": {
+  "de": "Gib Absender, Empfänger und mindestens eine Zeile mit Preis an.",
+  "es": "Añade de quién es, para quién y al menos una línea con precio.",
+  "fr": "Indiquez l'expéditeur, le destinataire et au moins une ligne avec un prix.",
+  "hi": "किसकी ओर से, किसके लिए, और कम से कम एक पंक्ति कीमत के साथ जोड़ें।",
+  "it": "Aggiungi mittente, destinatario e almeno una riga con un prezzo.",
+  "ja": "差出人、宛先、価格付きの行を1つ以上入力してください。",
+  "pt": "Informe de quem é, para quem é e pelo menos uma linha com preço.",
+  "zh": "请填写开票方、收票方，以及至少一行带价格的项目。"
+ },
+ "Bill to — customer name and address": {
+  "de": "Rechnung an – Name und Adresse des Kunden",
+  "es": "Facturar a: nombre y dirección del cliente",
+  "fr": "Facturer à – nom et adresse du client",
+  "hi": "बिल किसे – ग्राहक का नाम और पता",
+  "it": "Fattura a – nome e indirizzo del cliente",
+  "ja": "請求先 — お客様の名前と住所",
+  "pt": "Cobrar de — nome e endereço do cliente",
+  "zh": "开给 — 客户姓名和地址"
+ },
+ "Due": {
+  "de": "Fällig",
+  "es": "Vence",
+  "fr": "Échéance",
+  "hi": "देय",
+  "it": "Scadenza",
+  "ja": "支払期限",
+  "pt": "Vence",
+  "zh": "到期"
+ },
+ "FOR": {
+  "de": "FÜR",
+  "es": "PARA",
+  "fr": "POUR",
+  "hi": "किसके लिए",
+  "it": "PER",
+  "ja": "宛先",
+  "pt": "PARA",
+  "zh": "客户"
+ },
+ "For — customer name and address": {
+  "de": "Für – Name und Adresse des Kunden",
+  "es": "Para: nombre y dirección del cliente",
+  "fr": "Pour – nom et adresse du client",
+  "hi": "किसके लिए – ग्राहक का नाम और पता",
+  "it": "Per – nome e indirizzo del cliente",
+  "ja": "宛先 — お客様の名前と住所",
+  "pt": "Para — nome e endereço do cliente",
+  "zh": "客户 — 姓名和地址"
+ },
+ "From — your name or business, phone, email": {
+  "de": "Von – dein Name oder Firma, Telefon, E-Mail",
+  "es": "De: tu nombre o negocio, teléfono, correo",
+  "fr": "De – votre nom ou entreprise, téléphone, e-mail",
+  "hi": "की ओर से – आपका नाम या व्यवसाय, फ़ोन, ईमेल",
+  "it": "Da – il tuo nome o attività, telefono, email",
+  "ja": "差出人 — お名前または屋号、電話、メール",
+  "pt": "De — seu nome ou empresa, telefone, e-mail",
+  "zh": "开票方 — 你的名字或商号、电话、邮箱"
+ },
+ "Invoice %@ is ready": {
+  "de": "Rechnung %@ ist fertig",
+  "es": "La factura %@ está lista",
+  "fr": "La facture %@ est prête",
+  "hi": "इनवॉइस %@ तैयार है",
+  "it": "La fattura %@ è pronta",
+  "ja": "請求書 %@ ができました",
+  "pt": "A fatura %@ está pronta",
+  "zh": "发票 %@ 已做好"
+ },
+ "Invoices & Quotes": {
+  "de": "Rechnungen & Angebote",
+  "es": "Facturas y presupuestos",
+  "fr": "Factures et devis",
+  "hi": "इनवॉइस और कोटेशन",
+  "it": "Fatture e preventivi",
+  "ja": "請求書と見積書",
+  "pt": "Faturas e orçamentos",
+  "zh": "发票与报价"
+ },
+ "It's in your unpaid list until you mark it paid.": {
+  "de": "Sie bleibt in deiner Liste offener Rechnungen, bis du sie als bezahlt markierst.",
+  "es": "Queda en tu lista de impagadas hasta que la marques como pagada.",
+  "fr": "Elle reste dans votre liste d'impayés jusqu'à ce que vous la marquiez payée.",
+  "hi": "जब तक आप इसे भुगतान हुआ नहीं बताते, यह बकाया सूची में रहेगा।",
+  "it": "Resta nell'elenco da incassare finché non la segni come pagata.",
+  "ja": "支払い済みにするまで未払いリストに残ります。",
+  "pt": "Ela fica na lista de não pagas até você marcar como paga.",
+  "zh": "在你标记为已付之前，它会留在未付清单里。"
+ },
+ "Make PDF": {
+  "de": "PDF erstellen",
+  "es": "Crear PDF",
+  "fr": "Créer le PDF",
+  "hi": "PDF बनाएँ",
+  "it": "Crea PDF",
+  "ja": "PDFを作成",
+  "pt": "Criar PDF",
+  "zh": "生成 PDF"
+ },
+ "Make PDF, then Send it by Mail, Messages or any app.": {
+  "de": "PDF erstellen und dann per Mail, Nachrichten oder einer anderen App senden.",
+  "es": "Crea el PDF y envíalo por Mail, Mensajes o cualquier app.",
+  "fr": "Créez le PDF, puis envoyez-le par Mail, Messages ou toute autre app.",
+  "hi": "PDF बनाएँ, फिर Mail, Messages या किसी भी ऐप से भेजें।",
+  "it": "Crea il PDF, poi invialo con Mail, Messaggi o qualsiasi app.",
+  "ja": "PDFを作成し、メール、メッセージ、他のアプリで送信。",
+  "pt": "Crie o PDF e envie por Mail, Mensagens ou qualquer app.",
+  "zh": "生成 PDF，然后用邮件、信息或任何 App 发送。"
+ },
+ "Make a PDF invoice or quote, track unpaid": {
+  "de": "PDF-Rechnung oder -Angebot, Offenes im Blick",
+  "es": "Factura o presupuesto en PDF, controla impagos",
+  "fr": "Facture ou devis en PDF, suivi des impayés",
+  "hi": "PDF इनवॉइस या कोटेशन, बकाया पर नज़र",
+  "it": "Fattura o preventivo in PDF, segui gli insoluti",
+  "ja": "PDFの請求書・見積書、未払いも管理",
+  "pt": "Fatura ou orçamento em PDF, acompanhe pendentes",
+  "zh": "PDF 发票或报价，跟踪未付款"
+ },
+ "Make a clean PDF invoice or quote, send it, and see what's still unpaid.": {
+  "de": "Erstelle eine saubere PDF-Rechnung oder ein Angebot, sende es und sieh, was noch offen ist.",
+  "es": "Crea una factura o presupuesto en PDF, envíalo y ve lo que sigue sin pagar.",
+  "fr": "Créez une facture ou un devis PDF soigné, envoyez-le et voyez ce qui reste impayé.",
+  "hi": "साफ़-सुथरा PDF इनवॉइस या कोटेशन बनाएँ, भेजें, और देखें क्या अभी बकाया है।",
+  "it": "Crea una fattura o un preventivo PDF pulito, invialo e vedi cosa resta da incassare.",
+  "ja": "きれいなPDFの請求書や見積書を作って送信し、未払いを確認できます。",
+  "pt": "Crie uma fatura ou orçamento em PDF, envie e veja o que ainda não foi pago.",
+  "zh": "做一份整洁的 PDF 发票或报价，发出去，并查看哪些还没付。"
+ },
+ "NOTES": {
+  "de": "NOTIZEN",
+  "es": "NOTAS",
+  "fr": "NOTES",
+  "hi": "टिप्पणियाँ",
+  "it": "NOTE",
+  "ja": "備考",
+  "pt": "OBSERVAÇÕES",
+  "zh": "备注"
+ },
+ "Notes — payment details, thank-you (optional)": {
+  "de": "Notizen – Zahlungsangaben, Dank (optional)",
+  "es": "Notas: datos de pago, agradecimiento (opcional)",
+  "fr": "Notes – modalités de paiement, remerciements (facultatif)",
+  "hi": "टिप्पणी – भुगतान विवरण, धन्यवाद (वैकल्पिक)",
+  "it": "Note – dati di pagamento, ringraziamento (facoltativo)",
+  "ja": "備考 — 支払い方法、お礼など（任意）",
+  "pt": "Observações — dados de pagamento, agradecimento (opcional)",
+  "zh": "备注 — 付款方式、致谢（可选）"
+ },
+ "On receipt": {
+  "de": "Bei Erhalt",
+  "es": "Al recibir",
+  "fr": "À réception",
+  "hi": "मिलते ही",
+  "it": "Al ricevimento",
+  "ja": "受領時",
+  "pt": "No recebimento",
+  "zh": "收到即付"
+ },
+ "Overdue since": {
+  "de": "Überfällig seit",
+  "es": "Vencida desde",
+  "fr": "En retard depuis le",
+  "hi": "से बकाया",
+  "it": "Scaduta dal",
+  "ja": "期限切れ：",
+  "pt": "Vencida desde",
+  "zh": "已逾期，自"
+ },
+ "Paid": {
+  "de": "Bezahlt",
+  "es": "Pagada",
+  "fr": "Payée",
+  "hi": "भुगतान हुआ",
+  "it": "Pagata",
+  "ja": "支払済",
+  "pt": "Paga",
+  "zh": "已付"
+ },
+ "Price each": {
+  "de": "Einzelpreis",
+  "es": "Precio unitario",
+  "fr": "Prix unitaire",
+  "hi": "प्रति इकाई कीमत",
+  "it": "Prezzo unitario",
+  "ja": "単価",
+  "pt": "Preço unitário",
+  "zh": "单价"
+ },
+ "QUOTE": {
+  "de": "ANGEBOT",
+  "es": "PRESUPUESTO",
+  "fr": "DEVIS",
+  "hi": "कोटेशन",
+  "it": "PREVENTIVO",
+  "ja": "見積書",
+  "pt": "ORÇAMENTO",
+  "zh": "报价单"
+ },
+ "Quote": {
+  "de": "Angebot",
+  "es": "Presupuesto",
+  "fr": "Devis",
+  "hi": "कोटेशन",
+  "it": "Preventivo",
+  "ja": "見積書",
+  "pt": "Orçamento",
+  "zh": "报价"
+ },
+ "Quote %@ is ready": {
+  "de": "Angebot %@ ist fertig",
+  "es": "El presupuesto %@ está listo",
+  "fr": "Le devis %@ est prêt",
+  "hi": "कोटेशन %@ तैयार है",
+  "it": "Il preventivo %@ è pronto",
+  "ja": "見積書 %@ ができました",
+  "pt": "O orçamento %@ está pronto",
+  "zh": "报价 %@ 已做好"
+ },
+ "Remove line": {
+  "de": "Zeile entfernen",
+  "es": "Quitar línea",
+  "fr": "Supprimer la ligne",
+  "hi": "पंक्ति हटाएँ",
+  "it": "Rimuovi riga",
+  "ja": "行を削除",
+  "pt": "Remover linha",
+  "zh": "删除此行"
+ },
+ "See Tenzy Pro": {
+  "de": "Tenzy Pro ansehen",
+  "es": "Ver Tenzy Pro",
+  "fr": "Voir Tenzy Pro",
+  "hi": "Tenzy Pro देखें",
+  "it": "Scopri Tenzy Pro",
+  "ja": "Tenzy Proを見る",
+  "pt": "Ver o Tenzy Pro",
+  "zh": "查看 Tenzy Pro"
+ },
+ "See unpaid": {
+  "de": "Offene ansehen",
+  "es": "Ver impagadas",
+  "fr": "Voir les impayés",
+  "hi": "बकाया देखें",
+  "it": "Vedi insoluti",
+  "ja": "未払いを見る",
+  "pt": "Ver pendentes",
+  "zh": "查看未付"
+ },
+ "Send again": {
+  "de": "Erneut senden",
+  "es": "Enviar de nuevo",
+  "fr": "Renvoyer",
+  "hi": "फिर से भेजें",
+  "it": "Invia di nuovo",
+  "ja": "もう一度送る",
+  "pt": "Enviar de novo",
+  "zh": "再次发送"
+ },
+ "Send an invoice": {
+  "de": "Rechnung senden",
+  "es": "Enviar una factura",
+  "fr": "Envoyer une facture",
+  "hi": "इनवॉइस भेजें",
+  "it": "Invia una fattura",
+  "ja": "請求書を送る",
+  "pt": "Enviar uma fatura",
+  "zh": "开发票"
+ },
+ "Stays on your phone. Nothing is uploaded.": {
+  "de": "Bleibt auf deinem Telefon. Nichts wird hochgeladen.",
+  "es": "Se queda en tu teléfono. No se sube nada.",
+  "fr": "Reste sur votre téléphone. Rien n'est envoyé en ligne.",
+  "hi": "आपके फ़ोन पर ही रहता है। कुछ भी अपलोड नहीं होता।",
+  "it": "Resta sul telefono. Non viene caricato nulla.",
+  "ja": "データは端末内に保存。アップロードされません。",
+  "pt": "Fica no seu telefone. Nada é enviado.",
+  "zh": "只存在你的手机上，不会上传任何内容。"
+ },
+ "Tenzy Pro makes as many invoices and quotes as you need.": {
+  "de": "Mit Tenzy Pro erstellst du so viele Rechnungen und Angebote, wie du brauchst.",
+  "es": "Con Tenzy Pro haces todas las facturas y presupuestos que necesites.",
+  "fr": "Avec Tenzy Pro, créez autant de factures et de devis que nécessaire.",
+  "hi": "Tenzy Pro से जितने चाहें इनवॉइस और कोटेशन बनाएँ।",
+  "it": "Con Tenzy Pro crei tutte le fatture e i preventivi che ti servono.",
+  "ja": "Tenzy Proなら請求書と見積書を必要なだけ作成できます。",
+  "pt": "Com o Tenzy Pro você cria quantas faturas e orçamentos precisar.",
+  "zh": "Tenzy Pro 可无限制作发票和报价。"
+ },
+ "Type your business details once — Tenzy remembers them.": {
+  "de": "Gib deine Firmendaten einmal ein – Tenzy merkt sie sich.",
+  "es": "Escribe los datos de tu negocio una vez; Tenzy los recuerda.",
+  "fr": "Saisissez vos coordonnées une seule fois – Tenzy s'en souvient.",
+  "hi": "अपने व्यवसाय का विवरण एक बार लिखें — Tenzy याद रखेगा।",
+  "it": "Inserisci i dati della tua attività una volta: Tenzy li ricorda.",
+  "ja": "事業者情報は一度入力すれば、Tenzyが覚えます。",
+  "pt": "Digite os dados da sua empresa uma vez — o Tenzy lembra.",
+  "zh": "商家信息只需填一次，Tenzy 会记住。"
+ },
+ "Unpaid invoices stay at the top until you mark them paid. Home tells you when one is overdue.": {
+  "de": "Offene Rechnungen bleiben oben, bis du sie als bezahlt markierst. Der Start zeigt dir, wenn eine überfällig ist.",
+  "es": "Las facturas impagadas quedan arriba hasta que las marques como pagadas. Inicio te avisa si alguna vence.",
+  "fr": "Les factures impayées restent en haut jusqu'à ce que vous les marquiez payées. L'accueil vous prévient en cas de retard.",
+  "hi": "बकाया इनवॉइस ऊपर रहते हैं जब तक आप उन्हें भुगतान हुआ न बताएँ। देर होने पर होम पर सूचना मिलती है।",
+  "it": "Le fatture non pagate restano in alto finché non le segni come pagate. La Home ti avvisa se una è scaduta.",
+  "ja": "未払いの請求書は支払済にするまで上に表示。期限切れはホームでお知らせします。",
+  "pt": "Faturas não pagas ficam no topo até você marcar como pagas. O Início avisa quando uma vencer.",
+  "zh": "未付发票会一直置顶，直到你标记为已付。逾期时首页会提醒你。"
+ },
+ "Use the tax rate that applies to you — check with your accountant if you're not sure.": {
+  "de": "Nutze den Steuersatz, der für dich gilt – frag im Zweifel deine Steuerberatung.",
+  "es": "Usa el tipo de impuesto que te corresponda; consulta con tu contable si no estás seguro.",
+  "fr": "Utilisez le taux de taxe qui vous concerne – demandez à votre comptable en cas de doute.",
+  "hi": "जो टैक्स दर आप पर लागू हो वही लगाएँ — पक्का न हों तो अपने अकाउंटेंट से पूछें।",
+  "it": "Usa l'aliquota che si applica a te; se hai dubbi chiedi al tuo commercialista.",
+  "ja": "適用される税率を入力してください。不明な場合は税理士にご確認を。",
+  "pt": "Use a alíquota que se aplica a você — na dúvida, fale com seu contador.",
+  "zh": "请使用适用于你的税率，不确定时请咨询你的会计师。"
+ },
+ "Valid for 30 days": {
+  "de": "30 Tage gültig",
+  "es": "Válido 30 días",
+  "fr": "Valable 30 jours",
+  "hi": "30 दिन मान्य",
+  "it": "Valido 30 giorni",
+  "ja": "有効期限30日",
+  "pt": "Válido por 30 dias",
+  "zh": "30 天内有效"
+ },
+ "Waiting to be paid": {
+  "de": "Noch nicht bezahlt",
+  "es": "Pendientes de pago",
+  "fr": "En attente de paiement",
+  "hi": "भुगतान बाकी",
+  "it": "In attesa di pagamento",
+  "ja": "支払い待ち",
+  "pt": "Aguardando pagamento",
+  "zh": "等待付款"
+ },
+ "Work done or item sold": {
+  "de": "Erledigte Arbeit oder verkaufter Artikel",
+  "es": "Trabajo hecho o artículo vendido",
+  "fr": "Travail effectué ou article vendu",
+  "hi": "किया गया काम या बेचा गया सामान",
+  "it": "Lavoro svolto o articolo venduto",
+  "ja": "作業内容または販売品",
+  "pt": "Serviço feito ou item vendido",
+  "zh": "完成的工作或售出的商品"
+ },
+ "You've made 3 this month": {
+  "de": "Du hast diesen Monat 3 erstellt",
+  "es": "Ya hiciste 3 este mes",
+  "fr": "Vous en avez créé 3 ce mois-ci",
+  "hi": "आप इस महीने 3 बना चुके हैं",
+  "it": "Ne hai creati 3 questo mese",
+  "ja": "今月は3件作成済みです",
+  "pt": "Você já criou 3 este mês",
+  "zh": "本月已制作 3 份"
  }
 }

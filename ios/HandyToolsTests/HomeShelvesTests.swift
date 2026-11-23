@@ -11,7 +11,8 @@ final class HomeShelvesTests: XCTestCase {
     /// tools — Sign, Redact and the other PDF tools among them — pass with no tile anywhere on Home.)
     func testEveryToolHasItsOwnTileInATab() {
         let tiled = Set(HomeShelves.all.flatMap(\.tools))
-        let missing = TOOLS.map(\.id).filter { !tiled.contains($0) && Tool.homes[$0] == nil }
+        // A tool made for running a business has its tile on the Business tab (shown to people who run one).
+        let missing = TOOLS.map(\.id).filter { !tiled.contains($0) && Tool.homes[$0] == nil && !HomeShelves.businessTools.contains($0) }
         XCTAssertEqual(missing, [], "No tile on Home: \(missing)")
         for (child, parent) in Tool.homes { XCTAssertTrue(tiled.contains(parent), "\(child) lives in \(parent), which has no Home tile") }
         let inside = HomeShelves.all.flatMap(\.tools).filter { Tool.homes[$0] != nil }
