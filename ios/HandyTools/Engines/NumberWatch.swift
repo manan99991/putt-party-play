@@ -53,7 +53,8 @@ enum NumberReader {
     }
 
     private static let pattern = try! NSRegularExpression(
-        pattern: #"(?:[$€£₹¥]\s?)?-?\d{1,3}(?:[,.]\d{3})*(?:[.,]\d{1,2})?(?:\s?[$€£₹¥])?|(?:[$€£₹¥]\s?)?-?\d+(?:[.,]\d+)?"#)
+        // (?!\d) stops "$3499.99" being read as "$349" (the grouped form must end where the digits do).
+        pattern: #"(?:[$€£₹¥]\s?)?-?\d{1,3}(?:[,.]\d{3})*(?:[.,]\d{1,2})?(?!\d)(?:\s?[$€£₹¥])?|(?:[$€£₹¥]\s?)?-?\d+(?:[.,]\d+)?"#)
 
     struct Found: Equatable { let value: Double; let money: Bool; let offset: Int }
 

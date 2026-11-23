@@ -19,7 +19,6 @@ struct SmartPhotoPicker: View {
     /// Where each photo sits on screen, so a swipe across them picks every one it passes over.
     @State private var frames: [String: CGRect] = [:]
     @State private var swipeAdds: Bool?
-    @State private var swipeSkip = false
     @Environment(\.dismiss) private var dismiss
 
     private let cols = Array(repeating: GridItem(.flexible(), spacing: 6), count: 3)
@@ -42,7 +41,8 @@ struct SmartPhotoPicker: View {
                             }
                             .coordinateSpace(name: "finder-grid")
                             .onPreferenceChange(CellFrames.self) { frames = $0 }
-                            .simultaneousGesture(maxCount > 1 ? swipeSelect : nil)
+                            .gesture(SwipeSelect(enabled: maxCount > 1, began: { swipe(at: $0, first: true) }, moved: { swipe(at: $0, first: false) },
+                                                 ended: { swipeAdds = nil }))
                         }
                         status
                     }
@@ -113,22 +113,12 @@ struct SmartPhotoPicker: View {
     }
 
     /// Swipe sideways across photos to pick them all, the way Photos does: the first photo touched decides whether the
-    /// swipe ticks or unticks. A mostly-up-or-down drag is left to scroll the page.
-    private var swipeSelect: some Gesture {
-        DragGesture(minimumDistance: 12, coordinateSpace: .named("finder-grid"))
-            .onChanged { v in
-                if swipeAdds == nil && !swipeSkip {
-                    if abs(v.translation.height) > abs(v.translation.width) { swipeSkip = true; return }
-                }
-                guard !swipeSkip else { return }
-                for p in [v.startLocation, v.location] {
-                    guard let id = frames.first(where: { $0.value.contains(p) })?.key else { continue }
-                    if swipeAdds == nil { swipeAdds = !picked.contains(id) }
-                    if swipeAdds == true, !picked.contains(id), picked.count < maxCount { picked.append(id); HandyHaptics.light() }
-                    if swipeAdds == false, picked.contains(id) { picked.removeAll { $0 == id }; HandyHaptics.light() }
-                }
-            }
-            .onEnded { _ in swipeAdds = nil; swipeSkip = false }
+    /// swipe ticks or unticks every photo it passes over.
+    private func swipe(at p: CGPoint, first: Bool) {
+        guard let id = frames.first(where: { $0.value.contains(p) })?.key else { return }
+        if first || swipeAdds == nil { swipeAdds = !picked.contains(id) }
+        if swipeAdds == true, !picked.contains(id), picked.count < maxCount { picked.append(id); HandyHaptics.light() }
+        if swipeAdds == false, picked.contains(id) { picked.removeAll { $0 == id }; HandyHaptics.light() }
     }
 
     private func cell(_ a: PHAsset) -> some View {
@@ -244,5 +234,48 @@ struct SmartPhotoFilesButton<Content: View>: View {
     var body: some View {
         Button { open = true } label: { label() }
             .sheet(isPresented: $open) { SmartPhotoPicker(kind: kind, maxCount: max, doneFiles: picked) }
+    }
+}
+
+/// The sideways swipe, done in UIKit so it wins over the page's scrolling only when the finger moves sideways: a
+/// SwiftUI drag inside a scroll view gets cancelled the moment the scroll view's own pan starts (the first swipe test
+/// picked just one photo). Mostly-vertical drags fail at once and the page scrolls as normal.
+private struct SwipeSelect: UIGestureRecognizerRepresentable {
+    var enabled: Bool
+    var began: (CGPoint) -> Void
+    var moved: (CGPoint) -> Void
+    var ended: () -> Void
+
+    func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator { Coordinator() }
+    func makeUIGestureRecognizer(context: Context) -> UIPanGestureRecognizer {
+        let g = UIPanGestureRecognizer()
+        g.delegate = context.coordinator
+        g.maximumNumberOfTouches = 1
+        return g
+    }
+    func updateUIGestureRecognizer(_ g: UIPanGestureRecognizer, context: Context) { g.isEnabled = enabled }
+    func handleUIGestureRecognizerAction(_ g: UIPanGestureRecognizer, context: Context) {
+        let p = context.converter.location(in: .named("finder-grid"))
+        switch g.state {
+        case .began:
+            // The press point, then where the finger is now.
+            let t = g.translation(in: g.view)
+            began(CGPoint(x: p.x - t.x, y: p.y - t.y)); moved(p)
+        case .changed: moved(p)
+        default: ended()
+        }
+    }
+
+    final class Coordinator: NSObject, UIGestureRecognizerDelegate {
+        func gestureRecognizerShouldBegin(_ g: UIGestureRecognizer) -> Bool {
+            guard let pan = g as? UIPanGestureRecognizer else { return true }
+            let v = pan.velocity(in: pan.view), t = pan.translation(in: pan.view)
+            let dx = abs(v.x) + abs(t.x), dy = abs(v.y) + abs(t.y)
+            return dx > dy
+        }
+        // The page's scrolling waits for a sideways swipe to fail before it starts.
+        func gestureRecognizer(_ g: UIGestureRecognizer, shouldBeRequiredToFailBy other: UIGestureRecognizer) -> Bool {
+            other.view is UIScrollView && other is UIPanGestureRecognizer
+        }
     }
 }
