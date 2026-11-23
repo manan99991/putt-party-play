@@ -35,6 +35,7 @@ import androidx.compose.material.icons.outlined.DocumentScanner
 import androidx.compose.material.icons.outlined.Gif
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Hearing
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.PieChart
@@ -275,7 +276,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
     val premium by HandyApp.instance.billing.isPremium.collectAsState()
     var query by remember { mutableStateOf("") }
     val results = if (query.trim().isEmpty()) TOOLS else searchTools(query)
-    var tab by remember { mutableStateOf(0) }   // 0 Build · 1 Search · 2 Settings
+    var tab by remember { mutableStateOf(0) }   // 0 Home · 1 Build · 2 Settings (the old Search tab is Home's search box)
 
     Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         // A soft wash in the current theme's primary colour so the home page has some life AND follows
@@ -294,7 +295,9 @@ fun HomeScreen(onOpen: (String) -> Unit) {
           // the map + themes + plan. One screen each, no horizontal rails — the whole app from one bar.
           Box(Modifier.weight(1f).fillMaxWidth()) {
             when (tab) {
-                0 -> Box(Modifier.fillMaxSize().statusBarsPadding()) { com.handytools.app.tools.builder.BuilderScreen() }
+                // Home (23 Nov, same design as the iPhone): For you, every tab on screen, tiles named for the job.
+                0 -> HomeTabsScreen(onOpen = onOpen)
+                1 -> Box(Modifier.fillMaxSize().statusBarsPadding()) { com.handytools.app.tools.builder.BuilderScreen() }
                 2 -> SettingsScreen(onOpen = onOpen)
                 else -> Column(Modifier.fillMaxSize().statusBarsPadding()) {
             // Search
@@ -372,8 +375,8 @@ fun HomeScreen(onOpen: (String) -> Unit) {
 @Composable
 private fun TenzyTabBar(selected: Int, onSelect: (Int) -> Unit) {
     val items = listOf(
-        Triple(0, Icons.Outlined.Bolt, "Build"),
-        Triple(1, Icons.Outlined.Search, "Search"),
+        Triple(0, Icons.Outlined.Home, "Home"),
+        Triple(1, Icons.Outlined.Bolt, "Build"),
         Triple(2, Icons.Outlined.Settings, "Settings")
     )
     Row(
@@ -391,7 +394,7 @@ private fun TenzyTabBar(selected: Int, onSelect: (Int) -> Unit) {
             ) {
                 Icon(icon, label, tint = tint)
                 Spacer(Modifier.height(2.dp))
-                Text(label, style = MaterialTheme.typography.labelSmall, color = tint)
+                Text(com.handytools.app.I18n.t(label), style = MaterialTheme.typography.labelSmall, color = tint)
             }
         }
     }

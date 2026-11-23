@@ -198,6 +198,7 @@ fun ParkedScreen() {
                             .putFloat("lat", loc.latitude.toFloat())
                             .putFloat("lon", loc.longitude.toFloat())
                             .putString("note", note)
+                            .putLong("at", System.currentTimeMillis())
                             .apply()
                         savedLat = loc.latitude; savedLon = loc.longitude
                         HandyHaptics.success(ctx)

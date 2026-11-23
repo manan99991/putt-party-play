@@ -9698,5 +9698,675 @@
   "ja": "‹ 戻る",
   "pt": "‹ Voltar",
   "zh": "‹ 返回"
+ },
+ "Business": {
+  "de": "Geschäft",
+  "es": "Negocio",
+  "fr": "Entreprise",
+  "hi": "बिज़नेस",
+  "it": "Attività",
+  "ja": "ビジネス",
+  "pt": "Negócio",
+  "zh": "商务"
+ },
+ "Compare prices": {
+  "de": "Preise vergleichen",
+  "es": "Comparar precios",
+  "fr": "Comparer les prix",
+  "hi": "कीमतें तुलना करें",
+  "it": "Confronta i prezzi",
+  "ja": "価格を比べる",
+  "pt": "Comparar preços",
+  "zh": "比价"
+ },
+ "Copy a table": {
+  "de": "Tabelle kopieren",
+  "es": "Copiar una tabla",
+  "fr": "Copier un tableau",
+  "hi": "तालिका कॉपी करें",
+  "it": "Copia una tabella",
+  "ja": "表を写す",
+  "pt": "Copiar uma tabela",
+  "zh": "复制表格"
+ },
+ "Find a photo": {
+  "de": "Foto finden",
+  "es": "Encontrar una foto",
+  "fr": "Trouver une photo",
+  "hi": "फ़ोटो खोजें",
+  "it": "Trova una foto",
+  "ja": "写真を探す",
+  "pt": "Encontrar uma foto",
+  "zh": "找照片"
+ },
+ "Find my car": {
+  "de": "Mein Auto finden",
+  "es": "Encontrar mi coche",
+  "fr": "Retrouver ma voiture",
+  "hi": "मेरी कार ढूँढें",
+  "it": "Trova la mia auto",
+  "ja": "車を探す",
+  "pt": "Encontrar meu carro",
+  "zh": "找我的车"
+ },
+ "Flashlight and SOS": {
+  "de": "Taschenlampe und SOS",
+  "es": "Linterna y SOS",
+  "fr": "Lampe et SOS",
+  "hi": "टॉर्च और SOS",
+  "it": "Torcia e SOS",
+  "ja": "ライトとSOS",
+  "pt": "Lanterna e SOS",
+  "zh": "手电筒与 SOS"
+ },
+ "Free up space": {
+  "de": "Speicher freigeben",
+  "es": "Liberar espacio",
+  "fr": "Libérer de l'espace",
+  "hi": "जगह खाली करें",
+  "it": "Libera spazio",
+  "ja": "空き容量を増やす",
+  "pt": "Liberar espaço",
+  "zh": "释放空间"
+ },
+ "Hide faces and location": {
+  "de": "Gesichter und Ort verbergen",
+  "es": "Ocultar caras y ubicación",
+  "fr": "Masquer visages et lieu",
+  "hi": "चेहरे और लोकेशन छिपाएँ",
+  "it": "Nascondi volti e luogo",
+  "ja": "顔と位置を隠す",
+  "pt": "Ocultar rostos e local",
+  "zh": "隐藏人脸和位置"
+ },
+ "Home": {
+  "de": "Privat",
+  "es": "Casa",
+  "fr": "Domicile",
+  "hi": "घर",
+  "it": "Casa",
+  "ja": "自宅",
+  "pt": "Casa",
+  "zh": "住宅"
+ },
+ "I run a small business": {
+  "de": "Ich habe ein kleines Unternehmen",
+  "es": "Tengo un pequeño negocio",
+  "fr": "J'ai une petite entreprise",
+  "hi": "मेरा छोटा बिज़नेस है",
+  "it": "Ho una piccola attività",
+  "ja": "小さな商売をしている",
+  "pt": "Tenho um pequeno negócio",
+  "zh": "我经营小生意"
+ },
+ "Is this a scam?": {
+  "de": "Ist das Betrug?",
+  "es": "¿Es una estafa?",
+  "fr": "Est-ce une arnaque ?",
+  "hi": "क्या यह घोटाला है?",
+  "it": "È una truffa?",
+  "ja": "これは詐欺？",
+  "pt": "É golpe?",
+  "zh": "这是诈骗吗？"
+ },
+ "Join screenshots": {
+  "de": "Screenshots verbinden",
+  "es": "Unir capturas",
+  "fr": "Assembler des captures",
+  "hi": "स्क्रीनशॉट जोड़ें",
+  "it": "Unisci screenshot",
+  "ja": "スクショをつなぐ",
+  "pt": "Juntar capturas",
+  "zh": "拼接截图"
+ },
+ "Keep receipts": {
+  "de": "Belege aufbewahren",
+  "es": "Guardar recibos",
+  "fr": "Garder les reçus",
+  "hi": "रसीदें सँभालें",
+  "it": "Conserva scontrini",
+  "ja": "レシートを保管",
+  "pt": "Guardar recibos",
+  "zh": "保存收据"
+ },
+ "Log an expense": {
+  "de": "Ausgabe erfassen",
+  "es": "Registrar un gasto",
+  "fr": "Noter une dépense",
+  "hi": "खर्च दर्ज करें",
+  "it": "Registra una spesa",
+  "ja": "経費を記録",
+  "pt": "Registrar despesa",
+  "zh": "记一笔开支"
+ },
+ "My day": {
+  "de": "Mein Tag",
+  "es": "Mi día",
+  "fr": "Ma journée",
+  "hi": "मेरा दिन",
+  "it": "La mia giornata",
+  "ja": "私の一日",
+  "pt": "O meu dia",
+  "zh": "我的一天"
+ },
+ "Open any file": {
+  "de": "Jede Datei öffnen",
+  "es": "Abrir cualquier archivo",
+  "fr": "Ouvrir tout fichier",
+  "hi": "कोई भी फ़ाइल खोलें",
+  "it": "Apri qualsiasi file",
+  "ja": "どんなファイルも開く",
+  "pt": "Abrir qualquer arquivo",
+  "zh": "打开任意文件"
+ },
+ "Plan my day": {
+  "de": "Meinen Tag planen",
+  "es": "Planear mi día",
+  "fr": "Planifier ma journée",
+  "hi": "मेरा दिन प्लान करें",
+  "it": "Pianifica la mia giornata",
+  "ja": "今日の計画",
+  "pt": "Planejar meu dia",
+  "zh": "规划我的一天"
+ },
+ "Product photo to sell": {
+  "de": "Produktfoto zum Verkaufen",
+  "es": "Foto de producto para vender",
+  "fr": "Photo produit à vendre",
+  "hi": "बेचने के लिए प्रोडक्ट फ़ोटो",
+  "it": "Foto prodotto da vendere",
+  "ja": "販売用の商品写真",
+  "pt": "Foto de produto para vender",
+  "zh": "商品图"
+ },
+ "Review or menu QR code": {
+  "de": "QR-Code für Bewertung oder Menü",
+  "es": "QR de reseñas o menú",
+  "fr": "QR code avis ou menu",
+  "hi": "रिव्यू या मेन्यू QR कोड",
+  "it": "QR per recensioni o menù",
+  "ja": "レビュー・メニュー用QR",
+  "pt": "QR de avaliação ou cardápio",
+  "zh": "评价或菜单二维码"
+ },
+ "Save a customer": {
+  "de": "Kunden speichern",
+  "es": "Guardar un cliente",
+  "fr": "Enregistrer un client",
+  "hi": "ग्राहक सहेजें",
+  "it": "Salva un cliente",
+  "ja": "顧客を保存",
+  "pt": "Salvar cliente",
+  "zh": "保存客户"
+ },
+ "Scan a QR code": {
+  "de": "QR-Code scannen",
+  "es": "Escanear un QR",
+  "fr": "Scanner un QR code",
+  "hi": "QR कोड स्कैन करें",
+  "it": "Scansiona un QR",
+  "ja": "QRコードを読む",
+  "pt": "Ler um QR code",
+  "zh": "扫描二维码"
+ },
+ "Send an invoice": {
+  "de": "Rechnung senden",
+  "es": "Enviar una factura",
+  "fr": "Envoyer une facture",
+  "hi": "इनवॉइस भेजें",
+  "it": "Invia una fattura",
+  "ja": "請求書を送る",
+  "pt": "Enviar uma fatura",
+  "zh": "开发票"
+ },
+ "Sleep sounds": {
+  "de": "Schlafklänge",
+  "es": "Sonidos para dormir",
+  "fr": "Sons pour dormir",
+  "hi": "नींद की आवाज़ें",
+  "it": "Suoni per dormire",
+  "ja": "睡眠サウンド",
+  "pt": "Sons para dormir",
+  "zh": "助眠声音"
+ },
+ "Take better photos": {
+  "de": "Bessere Fotos",
+  "es": "Mejores fotos",
+  "fr": "De meilleures photos",
+  "hi": "बेहतर फ़ोटो लें",
+  "it": "Foto migliori",
+  "ja": "きれいに撮る",
+  "pt": "Fotos melhores",
+  "zh": "拍出好照片"
+ },
+ "Tell colors apart": {
+  "de": "Farben erkennen",
+  "es": "Distinguir colores",
+  "fr": "Distinguer les couleurs",
+  "hi": "रंग पहचानें",
+  "it": "Distingui i colori",
+  "ja": "色を見分ける",
+  "pt": "Distinguir cores",
+  "zh": "分辨颜色"
+ },
+ "Track a bill": {
+  "de": "Rechnung im Blick",
+  "es": "Seguir una factura",
+  "fr": "Suivre une facture",
+  "hi": "बिल पर नज़र रखें",
+  "it": "Segui una bolletta",
+  "ja": "請求書を管理",
+  "pt": "Acompanhar conta",
+  "zh": "追踪账单"
+ },
+ "Translate anything": {
+  "de": "Alles übersetzen",
+  "es": "Traducir lo que sea",
+  "fr": "Tout traduire",
+  "hi": "कुछ भी अनुवाद करें",
+  "it": "Traduci tutto",
+  "ja": "何でも翻訳",
+  "pt": "Traduzir qualquer coisa",
+  "zh": "翻译任何内容"
+ },
+ "What do you want to do?": {
+  "de": "Was möchtest du tun?",
+  "es": "¿Qué quieres hacer?",
+  "fr": "Que voulez-vous faire ?",
+  "hi": "आप क्या करना चाहते हैं?",
+  "it": "Cosa vuoi fare?",
+  "ja": "何をしますか？",
+  "pt": "O que você quer fazer?",
+  "zh": "你想做什么？"
+ },
+ "What else would help?": {
+  "de": "Was würde noch helfen?",
+  "es": "¿Qué más te ayudaría?",
+  "fr": "Quoi d'autre vous aiderait ?",
+  "hi": "और क्या मदद करेगा?",
+  "it": "Cos'altro ti aiuterebbe?",
+  "ja": "他に何があると便利？",
+  "pt": "O que mais ajudaria?",
+  "zh": "还需要什么？"
+ },
+ "What is this?": {
+  "de": "Was ist das?",
+  "es": "¿Qué es esto?",
+  "fr": "Qu'est-ce que c'est ?",
+  "hi": "यह क्या है?",
+  "it": "Che cos'è?",
+  "ja": "これは何？",
+  "pt": "O que é isto?",
+  "zh": "这是什么？"
+ },
+ "Words": {
+  "de": "Worte",
+  "es": "Palabras",
+  "fr": "Mots",
+  "hi": "शब्द",
+  "it": "Parole",
+  "ja": "文字",
+  "pt": "Palavras",
+  "zh": "文字"
+ },
+ "Your car is saved": {
+  "de": "Dein Auto ist gespeichert",
+  "es": "Tu coche está guardado",
+  "fr": "Votre voiture est enregistrée",
+  "hi": "आपकी कार सेव है",
+  "it": "La tua auto è salvata",
+  "ja": "車の位置を保存済み",
+  "pt": "Seu carro está salvo",
+  "zh": "已记住停车位置"
+ },
+ "About my phone": {
+  "de": "Über mein Telefon",
+  "es": "Sobre mi teléfono",
+  "fr": "À propos de mon téléphone",
+  "hi": "मेरे फ़ोन के बारे में",
+  "it": "Info sul mio telefono",
+  "ja": "この端末について",
+  "pt": "Sobre meu telefone",
+  "zh": "关于我的手机"
+ },
+ "Adds a Business tab to Home: invoices, expenses, customers and QR codes.": {
+  "de": "Fügt dem Start einen Tab „Business“ hinzu: Rechnungen, Ausgaben, Kunden und QR-Codes.",
+  "es": "Añade una pestaña Negocio en Inicio: facturas, gastos, clientes y códigos QR.",
+  "fr": "Ajoute un onglet Entreprise à l'accueil : factures, dépenses, clients et codes QR.",
+  "hi": "होम पर बिज़नेस टैब जोड़ता है: इनवॉइस, खर्च, ग्राहक और QR कोड।",
+  "it": "Aggiunge una scheda Attività alla Home: fatture, spese, clienti e codici QR.",
+  "ja": "ホームにビジネスタブを追加：請求書、経費、顧客、QRコード。",
+  "pt": "Adiciona uma aba Negócio ao Início: faturas, despesas, clientes e códigos QR.",
+  "zh": "在首页添加“商务”标签：发票、开支、客户和二维码。"
+ },
+ "Bills, receipts, prices, cards and alarms": {
+  "de": "Rechnungen, Belege, Preise, Karten und Wecker",
+  "es": "Facturas, recibos, precios, tarjetas y alarmas",
+  "fr": "Factures, reçus, prix, cartes et alarmes",
+  "hi": "बिल, रसीदें, दाम, कार्ड और अलार्म",
+  "it": "Bollette, scontrini, prezzi, carte e sveglie",
+  "ja": "請求書、レシート、価格、カード、アラーム",
+  "pt": "Contas, recibos, preços, cartões e alarmes",
+  "zh": "账单、收据、价格、卡片和闹钟"
+ },
+ "Change a file's format": {
+  "de": "Dateiformat ändern",
+  "es": "Cambiar el formato",
+  "fr": "Changer le format",
+  "hi": "फ़ाइल का फ़ॉर्मेट बदलें",
+  "it": "Cambia formato file",
+  "ja": "ファイル形式を変換",
+  "pt": "Mudar o formato",
+  "zh": "转换文件格式"
+ },
+ "Files": {
+  "de": "Dateien",
+  "es": "Archivos",
+  "fr": "Fichiers",
+  "hi": "फ़ाइलें",
+  "it": "File",
+  "ja": "ファイル",
+  "pt": "Arquivos",
+  "zh": "文件"
+ },
+ "Find it": {
+  "de": "Finden",
+  "es": "Encontrarlo",
+  "fr": "Le retrouver",
+  "hi": "ढूँढें",
+  "it": "Trovala",
+  "ja": "探す",
+  "pt": "Encontrar",
+  "zh": "去找车"
+ },
+ "Fix up text": {
+  "de": "Text aufräumen",
+  "es": "Arreglar texto",
+  "fr": "Nettoyer un texte",
+  "hi": "टेक्स्ट ठीक करें",
+  "it": "Sistema il testo",
+  "ja": "テキストを整える",
+  "pt": "Arrumar texto",
+  "zh": "整理文字"
+ },
+ "Fix, shrink and share photos and videos": {
+  "de": "Fotos und Videos verbessern, verkleinern und teilen",
+  "es": "Arregla, reduce y comparte fotos y vídeos",
+  "fr": "Retoucher, réduire et partager photos et vidéos",
+  "hi": "फ़ोटो और वीडियो ठीक करें, छोटा करें और शेयर करें",
+  "it": "Sistema, riduci e condividi foto e video",
+  "ja": "写真と動画を補正・縮小・共有",
+  "pt": "Ajuste, reduza e compartilhe fotos e vídeos",
+  "zh": "修图、压缩并分享照片和视频"
+ },
+ "Good afternoon": {
+  "de": "Guten Tag",
+  "es": "Buenas tardes",
+  "fr": "Bon après-midi",
+  "hi": "नमस्कार",
+  "it": "Buon pomeriggio",
+  "ja": "こんにちは",
+  "pt": "Boa tarde",
+  "zh": "下午好"
+ },
+ "Good evening": {
+  "de": "Guten Abend",
+  "es": "Buenas noches",
+  "fr": "Bonsoir",
+  "hi": "शुभ संध्या",
+  "it": "Buonasera",
+  "ja": "こんばんは",
+  "pt": "Boa noite",
+  "zh": "晚上好"
+ },
+ "Good morning": {
+  "de": "Guten Morgen",
+  "es": "Buenos días",
+  "fr": "Bonjour",
+  "hi": "सुप्रभात",
+  "it": "Buongiorno",
+  "ja": "おはようございます",
+  "pt": "Bom dia",
+  "zh": "早上好"
+ },
+ "Hear better": {
+  "de": "Besser hören",
+  "es": "Oír mejor",
+  "fr": "Mieux entendre",
+  "hi": "बेहतर सुनें",
+  "it": "Sentire meglio",
+  "ja": "聞こえを良く",
+  "pt": "Ouvir melhor",
+  "zh": "听得更清楚"
+ },
+ "Invoices, expenses, customers and QR codes": {
+  "de": "Rechnungen, Ausgaben, Kunden und QR-Codes",
+  "es": "Facturas, gastos, clientes y códigos QR",
+  "fr": "Factures, dépenses, clients et codes QR",
+  "hi": "इनवॉइस, खर्च, ग्राहक और QR कोड",
+  "it": "Fatture, spese, clienti e codici QR",
+  "ja": "請求書、経費、顧客、QRコード",
+  "pt": "Faturas, despesas, clientes e códigos QR",
+  "zh": "发票、开支、客户和二维码"
+ },
+ "Keep my cards": {
+  "de": "Karten aufbewahren",
+  "es": "Guardar mis tarjetas",
+  "fr": "Garder mes cartes",
+  "hi": "मेरे कार्ड रखें",
+  "it": "Tieni le mie carte",
+  "ja": "カードを保管",
+  "pt": "Guardar meus cartões",
+  "zh": "收好我的卡"
+ },
+ "Level, compass, meters": {
+  "de": "Wasserwaage, Kompass, Messer",
+  "es": "Nivel, brújula, medidores",
+  "fr": "Niveau, boussole, mesures",
+  "hi": "लेवल, कम्पास, मीटर",
+  "it": "Livella, bussola, misure",
+  "ja": "水平器・方位・計測",
+  "pt": "Nível, bússola, medidores",
+  "zh": "水平仪、指南针、测量"
+ },
+ "Make a GIF": {
+  "de": "GIF erstellen",
+  "es": "Crear un GIF",
+  "fr": "Créer un GIF",
+  "hi": "GIF बनाएँ",
+  "it": "Crea una GIF",
+  "ja": "GIFを作る",
+  "pt": "Criar um GIF",
+  "zh": "做个 GIF"
+ },
+ "No tool does that yet.": {
+  "de": "Dafür gibt es noch kein Werkzeug.",
+  "es": "Ninguna herramienta hace eso todavía.",
+  "fr": "Aucun outil ne fait encore cela.",
+  "hi": "अभी कोई टूल यह नहीं करता।",
+  "it": "Nessuno strumento lo fa ancora.",
+  "ja": "それができるツールはまだありません。",
+  "pt": "Nenhuma ferramenta faz isso ainda.",
+  "zh": "暂时还没有能做这件事的工具。"
+ },
+ "Open, convert and send any file": {
+  "de": "Jede Datei öffnen, umwandeln und senden",
+  "es": "Abre, convierte y envía cualquier archivo",
+  "fr": "Ouvrir, convertir et envoyer n'importe quel fichier",
+  "hi": "कोई भी फ़ाइल खोलें, बदलें और भेजें",
+  "it": "Apri, converti e invia qualsiasi file",
+  "ja": "どんなファイルも開く・変換・送信",
+  "pt": "Abra, converta e envie qualquer arquivo",
+  "zh": "打开、转换和发送任何文件"
+ },
+ "Parked just now": {
+  "de": "Gerade geparkt",
+  "es": "Aparcado ahora mismo",
+  "fr": "Garée à l'instant",
+  "hi": "अभी पार्क की",
+  "it": "Parcheggiata ora",
+  "ja": "たった今駐車",
+  "pt": "Estacionado agora",
+  "zh": "刚刚停好"
+ },
+ "Parked yesterday": {
+  "de": "Gestern geparkt",
+  "es": "Aparcado ayer",
+  "fr": "Garée hier",
+  "hi": "कल पार्क की",
+  "it": "Parcheggiata ieri",
+  "ja": "昨日駐車",
+  "pt": "Estacionado ontem",
+  "zh": "昨天停的"
+ },
+ "Photos & video": {
+  "de": "Fotos & Video",
+  "es": "Fotos y vídeo",
+  "fr": "Photos et vidéo",
+  "hi": "फ़ोटो और वीडियो",
+  "it": "Foto e video",
+  "ja": "写真と動画",
+  "pt": "Fotos e vídeo",
+  "zh": "照片和视频"
+ },
+ "Point your camera at something": {
+  "de": "Richte die Kamera auf etwas",
+  "es": "Apunta la cámara a algo",
+  "fr": "Pointez l'appareil photo sur quelque chose",
+  "hi": "कैमरा किसी चीज़ पर रखें",
+  "it": "Inquadra qualcosa",
+  "ja": "カメラを向けるだけ",
+  "pt": "Aponte a câmera para algo",
+  "zh": "用相机对准它"
+ },
+ "Quick buttons": {
+  "de": "Schnelltasten",
+  "es": "Botones rápidos",
+  "fr": "Boutons rapides",
+  "hi": "झटपट बटन",
+  "it": "Pulsanti rapidi",
+  "ja": "クイックボタン",
+  "pt": "Botões rápidos",
+  "zh": "快捷按钮"
+ },
+ "Receipt to spreadsheet": {
+  "de": "Beleg zu Tabelle",
+  "es": "Recibo a hoja de cálculo",
+  "fr": "Reçu vers tableur",
+  "hi": "रसीद से स्प्रेडशीट",
+  "it": "Scontrino in tabella",
+  "ja": "レシートを表に",
+  "pt": "Recibo para planilha",
+  "zh": "收据转表格"
+ },
+ "Record and transcribe": {
+  "de": "Aufnehmen und abschreiben",
+  "es": "Grabar y transcribir",
+  "fr": "Enregistrer et transcrire",
+  "hi": "रिकॉर्ड करें और लिखें",
+  "it": "Registra e trascrivi",
+  "ja": "録音して文字に",
+  "pt": "Gravar e transcrever",
+  "zh": "录音并转文字"
+ },
+ "Record, listen and sleep": {
+  "de": "Aufnehmen, zuhören und schlafen",
+  "es": "Graba, escucha y duerme",
+  "fr": "Enregistrer, écouter et dormir",
+  "hi": "रिकॉर्ड करें, सुनें और सोएँ",
+  "it": "Registra, ascolta e dormi",
+  "ja": "録音・聞く・眠る",
+  "pt": "Grave, ouça e durma",
+  "zh": "录音、聆听和助眠"
+ },
+ "See what's using space": {
+  "de": "Was belegt Speicher?",
+  "es": "Qué ocupa espacio",
+  "fr": "Ce qui prend de la place",
+  "hi": "जगह किसने घेरी है",
+  "it": "Cosa occupa spazio",
+  "ja": "容量の内訳を見る",
+  "pt": "O que ocupa espaço",
+  "zh": "看看什么占空间"
+ },
+ "Send files nearby": {
+  "de": "Dateien in der Nähe senden",
+  "es": "Enviar archivos cerca",
+  "fr": "Envoyer à proximité",
+  "hi": "पास में फ़ाइलें भेजें",
+  "it": "Invia file vicino",
+  "ja": "近くにファイル送信",
+  "pt": "Enviar arquivos perto",
+  "zh": "近距离传文件"
+ },
+ "Set an alarm": {
+  "de": "Wecker stellen",
+  "es": "Poner una alarma",
+  "fr": "Régler une alarme",
+  "hi": "अलार्म लगाएँ",
+  "it": "Imposta una sveglia",
+  "ja": "アラームを設定",
+  "pt": "Definir um alarme",
+  "zh": "设个闹钟"
+ },
+ "Shrink or cut out": {
+  "de": "Verkleinern oder freistellen",
+  "es": "Reducir o recortar",
+  "fr": "Réduire ou détourer",
+  "hi": "छोटा करें या काटें",
+  "it": "Riduci o scontorna",
+  "ja": "縮小・切り抜き",
+  "pt": "Reduzir ou recortar",
+  "zh": "压缩或抠图"
+ },
+ "Space, battery, network, light and your car": {
+  "de": "Speicher, Akku, Netz, Licht und dein Auto",
+  "es": "Espacio, batería, red, luz y tu coche",
+  "fr": "Espace, batterie, réseau, lumière et votre voiture",
+  "hi": "जगह, बैटरी, नेटवर्क, रोशनी और आपकी कार",
+  "it": "Spazio, batteria, rete, luce e la tua auto",
+  "ja": "容量、電池、通信、ライト、車",
+  "pt": "Espaço, bateria, rede, luz e seu carro",
+  "zh": "空间、电池、网络、手电和你的车"
+ },
+ "Speedometer": {
+  "de": "Tacho",
+  "es": "Velocímetro",
+  "fr": "Compteur de vitesse",
+  "hi": "स्पीडोमीटर",
+  "it": "Tachimetro",
+  "ja": "スピードメーター",
+  "pt": "Velocímetro",
+  "zh": "测速表"
+ },
+ "Test my internet": {
+  "de": "Internet testen",
+  "es": "Probar mi internet",
+  "fr": "Tester mon internet",
+  "hi": "इंटरनेट जाँचें",
+  "it": "Prova la mia rete",
+  "ja": "ネット速度を測る",
+  "pt": "Testar minha internet",
+  "zh": "测测网速"
+ },
+ "Timers": {
+  "de": "Timer",
+  "es": "Temporizadores",
+  "fr": "Minuteurs",
+  "hi": "टाइमर",
+  "it": "Timer",
+  "ja": "タイマー",
+  "pt": "Temporizadores",
+  "zh": "计时器"
+ },
+ "Translate, read aloud, check and plan": {
+  "de": "Übersetzen, vorlesen, prüfen und planen",
+  "es": "Traduce, lee en voz alta, comprueba y planifica",
+  "fr": "Traduire, lire à voix haute, vérifier et planifier",
+  "hi": "अनुवाद करें, पढ़कर सुनाएँ, जाँचें और योजना बनाएँ",
+  "it": "Traduci, leggi ad alta voce, controlla e pianifica",
+  "ja": "翻訳・読み上げ・確認・計画",
+  "pt": "Traduza, leia em voz alta, verifique e planeje",
+  "zh": "翻译、朗读、核查和计划"
  }
 }

@@ -100,6 +100,10 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             }
 
             Spacer(Modifier.height(HandyTokens.Space24))
+            SettingsSectionLabel("You")
+            BusinessSwitchRow()
+
+            Spacer(Modifier.height(HandyTokens.Space24))
             SettingsSectionLabel("Appearance")
             Text(com.handytools.app.I18n.t("Theme"), style = MaterialTheme.typography.bodyLarge)
             Spacer(Modifier.height(HandyTokens.Space4))
