@@ -98,7 +98,7 @@ enum ChainMedia {
             // Character voices (robot/alien/monster) pitch-shift without changing tempo via offline DSP; the classic
             // chipmunk/deep/giant/helium stay on the simple varispeed path. DSP falls back to varispeed on any failure.
             let voiceID = step.settings["voice"]
-            let wav = (voiceID.flatMap { characters[$0] }.flatMap { revoiceDSP(url, $0) })
+            let wav = (voiceID.flatMap { id in characters[id].flatMap { revoiceDSP(url, $0, voice: id) } })
                 ?? revoice(url, rate: ChainText.voiceRate(voiceID))
             guard let wav else {
                 return .failure(.invalid("Change the voice couldn't read that recording. Try another one."))
@@ -222,22 +222,27 @@ enum ChainMedia {
     /// Every voice is a real pitch shift that keeps the words clear, tuned per character: a touch faster for
     /// the small voices, slower and roomier for the big ones, a timbre for the strange ones.
     static let characters: [String: VoiceCharacter] = [
-        "chipmunk": VoiceCharacter(pitchCents: 1000, distortion: nil, wet: 0, rate: 1.12),
-        "helium":   VoiceCharacter(pitchCents:  700, distortion: nil, wet: 0, rate: 1.04, reverb: .smallRoom, reverbWet: 8),
-        "deep":     VoiceCharacter(pitchCents: -450, distortion: nil, wet: 0, rate: 0.97),
-        "giant":    VoiceCharacter(pitchCents: -900, distortion: nil, wet: 0, rate: 0.9, reverb: .largeHall, reverbWet: 22),
-        "robot":    VoiceCharacter(pitchCents: -150, distortion: .multiDecimated2,    wet: 55),
-        "alien":    VoiceCharacter(pitchCents:  500, distortion: .speechAlienChatter, wet: 45),
-        "monster":  VoiceCharacter(pitchCents: -650, distortion: .multiBrokenSpeaker, wet: 35, rate: 0.95, reverb: .mediumHall, reverbWet: 15),
-        "walkie":   VoiceCharacter(pitchCents:    0, distortion: .speechRadioTower,   wet: 60),
-        "cave":     VoiceCharacter(pitchCents: -100, distortion: nil, wet: 0, reverb: .cathedral, reverbWet: 45),
-        "ghost":    VoiceCharacter(pitchCents:  250, distortion: .speechWaves,        wet: 30, rate: 0.93, reverb: .largeHall2, reverbWet: 40),
+        "chipmunk":   VoiceCharacter(pitchCents: 1100, distortion: nil, wet: 0, rate: 1.18),
+        "helium":     VoiceCharacter(pitchCents:  500, distortion: nil, wet: 0, rate: 1.0),
+        "deep":       VoiceCharacter(pitchCents: -500, distortion: nil, wet: 0, rate: 0.96),
+        "giant":      VoiceCharacter(pitchCents: -1000, distortion: nil, wet: 0, rate: 0.86, reverb: .largeHall, reverbWet: 20),
+        "robot":      VoiceCharacter(pitchCents: -200, distortion: nil, wet: 0),
+        "alien":      VoiceCharacter(pitchCents:  600, distortion: nil, wet: 0, rate: 1.02),
+        "monster":    VoiceCharacter(pitchCents: -800, distortion: nil, wet: 0, rate: 0.93, reverb: .mediumHall, reverbWet: 12),
+        "walkie":     VoiceCharacter(pitchCents:    0, distortion: nil, wet: 0),
+        "cave":       VoiceCharacter(pitchCents: -100, distortion: nil, wet: 0, reverb: .cathedral, reverbWet: 35),
+        "ghost":      VoiceCharacter(pitchCents:  300, distortion: nil, wet: 0, rate: 0.92, reverb: .largeHall2, reverbWet: 45),
+        "baby":       VoiceCharacter(pitchCents:  800, distortion: nil, wet: 0, rate: 1.08),
+        "oldman":     VoiceCharacter(pitchCents: -250, distortion: nil, wet: 0, rate: 0.9),
+        "underwater": VoiceCharacter(pitchCents: -150, distortion: nil, wet: 0, rate: 0.97),
+        "megaphone":  VoiceCharacter(pitchCents:    0, distortion: nil, wet: 0),
+        "villain":    VoiceCharacter(pitchCents: -650, distortion: nil, wet: 0, rate: 0.95, reverb: .mediumHall, reverbWet: 15),
     ]
 
     /// Pitch-shifts a recording without changing its tempo and adds a character timbre, rendered entirely offline
     /// on the phone (no playback, nothing uploaded). Returns 16-bit mono WAV, or nil so the caller falls back to
     /// the simple varispeed path — any failure is graceful, never a crash.
-    static func revoiceDSP(_ url: URL, _ c: VoiceCharacter, maxSeconds: Double? = nil) -> Data? {
+    static func revoiceDSP(_ url: URL, _ c: VoiceCharacter, voice: String = "", maxSeconds: Double? = nil) -> Data? {
         guard let file = try? AVAudioFile(forReading: url) else { return nil }
         let format = file.processingFormat
         guard format.sampleRate > 0, file.length > 0, file.length < Int64(format.sampleRate * 600) else { return nil }
@@ -269,9 +274,8 @@ enum ChainMedia {
         player.play()
         guard let render = AVAudioPCMBuffer(pcmFormat: engine.manualRenderingFormat, frameCapacity: engine.manualRenderingMaximumFrameCount) else { return nil }
         let lanes = max(1, Int(engine.manualRenderingFormat.channelCount))
-        let cap = Int(outFrames) * 2
-        var pcm: [UInt8] = []; pcm.reserveCapacity(cap)
-        while engine.manualRenderingSampleTime < outFrames && pcm.count < cap {
+        var mono: [Float] = []; mono.reserveCapacity(Int(outFrames))
+        while engine.manualRenderingSampleTime < outFrames && mono.count < Int(outFrames) {
             let remaining = outFrames - engine.manualRenderingSampleTime
             let frames = AVAudioFrameCount(min(Int64(render.frameCapacity), remaining))
             guard let status = try? engine.renderOffline(frames, to: render), status == .success,
@@ -279,12 +283,19 @@ enum ChainMedia {
             for i in 0..<Int(render.frameLength) {
                 var sum: Float = 0
                 for c2 in 0..<lanes { sum += ch[c2][i] }
-                let v = Int16(max(-1, min(1, sum / Float(lanes))) * 32767)
-                pcm.append(UInt8(truncatingIfNeeded: v)); pcm.append(UInt8(truncatingIfNeeded: v >> 8))
+                mono.append(sum / Float(lanes))
             }
         }
-        guard !pcm.isEmpty else { return nil }
-        return Data(ChainText.wavHeader(sampleRate: Int(engine.manualRenderingFormat.sampleRate.rounded()), channels: 1, dataBytes: pcm.count)) + Data(pcm)
+        guard !mono.isEmpty else { return nil }
+        // The character itself — ring-modulated robot, radio with static, echoing cave… — then levelled.
+        let rate = engine.manualRenderingFormat.sampleRate
+        let shaped = VoiceFX.apply(voice, mono, rate: rate)
+        var pcm = [UInt8](); pcm.reserveCapacity(shaped.count * 2)
+        for v in shaped {
+            let s16 = Int16(max(-1, min(1, v)) * 32767)
+            pcm.append(UInt8(truncatingIfNeeded: s16)); pcm.append(UInt8(truncatingIfNeeded: s16 >> 8))
+        }
+        return Data(ChainText.wavHeader(sampleRate: Int(rate.rounded()), channels: 1, dataBytes: pcm.count)) + Data(pcm)
     }
 
     /// Soundboard: apply one named character voice to an already-readable audio file, returning 16-bit mono WAV.
@@ -295,11 +306,11 @@ enum ChainMedia {
     /// The opening seconds of a recording in a voice, for "hear it before you choose".
     static func previewVoice(_ url: URL, voice: String, seconds: Double = 8) -> Data? {
         guard let c = characters[voice] else { return nil }
-        return revoiceDSP(url, c, maxSeconds: seconds)
+        return revoiceDSP(url, c, voice: voice, maxSeconds: seconds)
     }
 
     static func soundboardVoice(_ url: URL, voice: String) -> Data? {
-        if let c = characters[voice], let dsp = revoiceDSP(url, c) { return dsp }
+        if let c = characters[voice], let dsp = revoiceDSP(url, c, voice: voice) { return dsp }
         return revoice(url, rate: ChainText.voiceRate(voice))
     }
 

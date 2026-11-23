@@ -42378,5 +42378,105 @@
   "ja": "タップして使います。見つからなければ下の「すべての写真」へ。",
   "pt": "Toque numa para a usar. Não está? «Todas as fotos» está em baixo.",
   "zh": "点一张即可使用。没有？底部有“所有照片”。"
+ },
+ "Baby": {
+  "de": "Baby",
+  "es": "Bebé",
+  "fr": "Bébé",
+  "hi": "बच्चा",
+  "it": "Bebè",
+  "ja": "赤ちゃん",
+  "pt": "Bebé",
+  "zh": "宝宝"
+ },
+ "Old man": {
+  "de": "Opa",
+  "es": "Anciano",
+  "fr": "Vieil homme",
+  "hi": "बूढ़ा आदमी",
+  "it": "Vecchietto",
+  "ja": "おじいさん",
+  "pt": "Velhote",
+  "zh": "老爷爷"
+ },
+ "Underwater": {
+  "de": "Unter Wasser",
+  "es": "Bajo el agua",
+  "fr": "Sous l’eau",
+  "hi": "पानी के अंदर",
+  "it": "Sott’acqua",
+  "ja": "水中",
+  "pt": "Debaixo de água",
+  "zh": "水下"
+ },
+ "Megaphone": {
+  "de": "Megafon",
+  "es": "Megáfono",
+  "fr": "Mégaphone",
+  "hi": "मेगाफ़ोन",
+  "it": "Megafono",
+  "ja": "メガホン",
+  "pt": "Megafone",
+  "zh": "扩音器"
+ },
+ "Villain": {
+  "de": "Bösewicht",
+  "es": "Villano",
+  "fr": "Méchant",
+  "hi": "खलनायक",
+  "it": "Cattivo",
+  "ja": "悪役",
+  "pt": "Vilão",
+  "zh": "反派"
+ },
+ "Little and wobbly, goo-goo": {
+  "de": "Klein und wackelig, gu-gu",
+  "es": "Pequeñito y tembloroso, agú",
+  "fr": "Petit et tremblotant, areu areu",
+  "hi": "छोटा और लड़खड़ाता, गू-गू",
+  "it": "Piccolo e tremolante, gu-gu",
+  "ja": "小さくてふにゃふにゃ、ばぶー",
+  "pt": "Pequenino e trémulo, gugu",
+  "zh": "小小的、奶声奶气，咿咿呀呀"
+ },
+ "Shaky and creaky, back in my day": {
+  "de": "Zittrig und knarzig, früher war alles besser",
+  "es": "Tembloroso y crujiente, en mis tiempos",
+  "fr": "Tremblant et grinçant, de mon temps",
+  "hi": "काँपती, चरमराती आवाज़ — हमारे ज़माने में",
+  "it": "Tremolante e scricchiolante, ai miei tempi",
+  "ja": "震えてしわがれた声、わしの若い頃は",
+  "pt": "Trémulo e rangente, no meu tempo",
+  "zh": "颤颤巍巍，想当年"
+ },
+ "Glub glub — talking from the bottom of the sea": {
+  "de": "Blubb blubb – vom Meeresgrund",
+  "es": "Glu glu: hablando desde el fondo del mar",
+  "fr": "Glou glou — depuis le fond de la mer",
+  "hi": "गुड़ गुड़ — समुद्र की गहराई से",
+  "it": "Blu blu — dal fondo del mare",
+  "ja": "ゴボゴボ、海の底から話しているみたい",
+  "pt": "Glu glu — a falar do fundo do mar",
+  "zh": "咕噜咕噜——在海底说话"
+ },
+ "Loud, tinny, coach on the field": {
+  "de": "Laut und blechern, wie ein Trainer am Spielfeld",
+  "es": "Fuerte y metálico, como un entrenador en el campo",
+  "fr": "Fort et métallique, comme un coach sur le terrain",
+  "hi": "ज़ोरदार और खड़खड़ाती, मैदान पर कोच जैसी",
+  "it": "Forte e metallico, come un allenatore in campo",
+  "ja": "大きくてキンキン、グラウンドのコーチ",
+  "pt": "Alto e metálico, treinador no campo",
+  "zh": "响亮又尖细，像球场上的教练"
+ },
+ "Dark, low and menacing": {
+  "de": "Düster, tief und bedrohlich",
+  "es": "Oscuro, grave y amenazante",
+  "fr": "Sombre, grave et menaçant",
+  "hi": "गहरी, भारी और डरावनी",
+  "it": "Cupo, grave e minaccioso",
+  "ja": "暗くて低く、不気味",
+  "pt": "Sombrio, grave e ameaçador",
+  "zh": "阴沉、低沉、充满威胁"
  }
 }

@@ -1516,7 +1516,7 @@ enum ChainText {
     // Every voice renders with offline DSP (ChainMedia.characters: pitch without changing the words' speed, plus
     // timbre and room). The rate here is only the fallback if DSP can't run on the device. Robot/alien/monster: offline
     // DSP (ChainMedia.characters) — their rate here is only a fallback if DSP is unavailable on the device.
-    static let voices: [(id: String, name: String, rate: Double)] = [("chipmunk", "Chipmunk", 1.5), ("helium", "Helium", 1.9), ("deep", "Deep", 0.75), ("giant", "Giant", 0.6), ("robot", "Robot", 0.9), ("alien", "Alien", 1.7), ("monster", "Monster", 0.6), ("walkie", "Walkie-talkie", 1.0), ("cave", "Echo cave", 0.95), ("ghost", "Ghost", 1.1)]
+    static let voices: [(id: String, name: String, rate: Double)] = [("chipmunk", "Chipmunk", 1.5), ("helium", "Helium", 1.9), ("deep", "Deep", 0.75), ("giant", "Giant", 0.6), ("robot", "Robot", 0.9), ("alien", "Alien", 1.7), ("monster", "Monster", 0.6), ("walkie", "Walkie-talkie", 1.0), ("cave", "Echo cave", 0.95), ("ghost", "Ghost", 1.1), ("baby", "Baby", 1.4), ("oldman", "Old man", 0.9), ("underwater", "Underwater", 0.95), ("megaphone", "Megaphone", 1.0), ("villain", "Villain", 0.7)]
     /// How each voice looks and what it sounds like, for the picker: a picture (emoji) and one line.
     static let voiceLooks: [String: (emoji: String, line: String)] = [
         "chipmunk": ("🐿️", "Tiny, quick and squeaky"),
@@ -1529,6 +1529,11 @@ enum ChainText {
         "walkie":   ("📻", "Crackly radio, over and out"),
         "cave":     ("🦇", "Echoing in a giant cave"),
         "ghost":    ("👻", "Floaty, spooky and far away"),
+        "baby":     ("👶", "Little and wobbly, goo-goo"),
+        "oldman":   ("👴", "Shaky and creaky, back in my day"),
+        "underwater": ("🐠", "Glub glub — talking from the bottom of the sea"),
+        "megaphone": ("📣", "Loud, tinny, coach on the field"),
+        "villain":  ("🦹", "Dark, low and menacing"),
     ]
     static func voiceRate(_ setting: String?) -> Double { voices.first { $0.id == setting }?.rate ?? 1.5 }
 
