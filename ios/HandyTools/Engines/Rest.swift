@@ -88,7 +88,7 @@ enum NoiseSynth {
         let d3, d4, d5, d7, d12, d22: Double
         init(fs: Double) {
             self.fs = fs
-            func c(_ hz: Double) -> Double { fs > 0 ? 1 - exp(-2 * .pi * hz / fs) : 0 }
+            func c(_ hz: Double) -> Double { fs > 0 ? 1 - exp(-2 * Double.pi * hz / fs) : 0 }
             func d(_ ms: Double) -> Double { fs > 0 ? exp(-1 / (ms * 0.001 * fs)) : 0 }
             c140 = c(140); c260 = c(260); c300 = c(300); c600 = c(600); c700 = c(700); c900 = c(900); c1500 = c(1500); c7000 = c(7000)
             d3 = d(3); d4 = d(4); d5 = d(5); d7 = d(7); d12 = d(12); d22 = d(22)
@@ -168,7 +168,8 @@ enum NoiseSynth {
                 let b = wn(); R = brown(1, b)
             case .fan:
                 // brown noise with a gentle 3 Hz blade wobble, a soft low-pass and the motor's faint hum
-                let w = 1 + 0.12 * sin(2 * .pi * 3.1 * t), hum = 0.025 * sin(2 * .pi * 100 * t)
+                let w: Double = 1 + 0.12 * sin(2 * Double.pi * 3.1 * t)
+                let hum: Double = 0.025 * sin(2 * Double.pi * 100 * t)
                 for c in 0..<2 {
                     let w0 = wn(); let n = brown(c, w0) * w
                     let x = Self.pole(&p[c], n, 0.08) * 1.6 + hum
@@ -216,7 +217,8 @@ enum NoiseSynth {
                 let tt = t - t0
                 if t0 > 0 && tt < aux[4] * 2.5 {
                     let roll = 0.55 + 0.45 * drift(1, 3, 4, fs)
-                    let e = (1 - exp(-tt / 0.06)) * exp(-tt / (aux[4] * 0.4)) * roll * aux[5]
+                    let rise: Double = 1 - exp(-tt / 0.06)
+                    let e: Double = rise * exp(-tt / (aux[4] * 0.4)) * roll * aux[5]
                     let crack = exp(-tt / 0.18) * aux[5]
                     for c in 0..<2 {
                         let w0 = wn(); let b = brown(2 + c, w0)
@@ -255,7 +257,9 @@ enum NoiseSynth {
                     var x = 0.0
                     for b in 0..<3 {
                         let m = drift(b, 14, 60, fs)
-                        x += Self.band(&sv[c * 3 + b], pn, Self.streamBands[b] * (1 + 0.1 * Double(c)), 0.35, fs) * (0.15 + 0.85 * m * m) * 0.9
+                        let hz: Double = NoiseSynth.streamBands[b] * (1 + 0.1 * Double(c))
+                        let babble: Double = (0.15 + 0.85 * m * m) * 0.9
+                        x += Self.band(&sv[c * 3 + b], pn, hz, 0.35, fs) * babble
                     }
                     x += pn * 0.08
                     if c == 0 { L = x } else { R = x }
@@ -297,11 +301,15 @@ enum NoiseSynth {
                 for i in 0..<3 {
                     let act = drift(i, 0.08, 0.6, fs)
                     if act < 0.25 { continue }
-                    let ct = (t + Self.cricketOffset[i]).truncatingRemainder(dividingBy: Self.cricketEvery[i])
+                    let ct = (t + NoiseSynth.cricketOffset[i]).truncatingRemainder(dividingBy: NoiseSynth.cricketEvery[i])
                     let pulse = Int(ct / 0.032), pt = ct.truncatingRemainder(dividingBy: 0.032)
                     if pulse < 3 && pt < 0.014 {
-                        let x = sin(2 * .pi * Self.cricketHz[i] * t) * sin(.pi * pt / 0.014) * Self.cricketAmp[i] * min(1, (act - 0.25) * 3)
-                        L += x * cos(Self.cricketPan[i] * .pi / 2); R += x * sin(Self.cricketPan[i] * .pi / 2)
+                        let carrier: Double = sin(2 * Double.pi * NoiseSynth.cricketHz[i] * t)
+                        let shape: Double = sin(Double.pi * pt / 0.014)
+                        let fadeIn: Double = min(1, (act - 0.25) * 3)
+                        let x: Double = carrier * shape * NoiseSynth.cricketAmp[i] * fadeIn
+                        let pan: Double = NoiseSynth.cricketPan[i] * Double.pi / 2
+                        L += x * cos(pan); R += x * sin(pan)
                     }
                 }
             case .campfire:
@@ -324,8 +332,10 @@ enum NoiseSynth {
                 voices(&L, &R, fs)
             case .cabin:
                 // the steady, muffled roar of a plane at cruise, with the engines' low drone
-                let wob = 1 + 0.06 * sin(2 * .pi * 0.07 * t)
-                let tone = 0.02 * sin(2 * .pi * 78 * t) + 0.012 * sin(2 * .pi * 156.4 * t)
+                let wob = 1 + 0.06 * sin(2 * Double.pi * 0.07 * t)
+                let drone1: Double = 0.02 * sin(2 * Double.pi * 78 * t)
+                let drone2: Double = 0.012 * sin(2 * Double.pi * 156.4 * t)
+                let tone = drone1 + drone2
                 for c in 0..<2 {
                     let w0 = wn(), w1 = wn()
                     let n = pink(c, w0) * 0.9 + brown(c, w1)
@@ -334,7 +344,7 @@ enum NoiseSynth {
                 }
             case .train:
                 // a carriage rumbling and swaying, wheels clicking over the rail joints: ta-tak … ta-tak
-                let sway = 0.8 + 0.2 * sin(2 * .pi * 0.31 * t)
+                let sway = 0.8 + 0.2 * sin(2 * Double.pi * 0.31 * t)
                 for c in 0..<2 {
                     let w0 = wn(); let bn = brown(c, w0)
                     let r1 = Self.pole(&p[c], bn, k.c300)
@@ -348,7 +358,7 @@ enum NoiseSynth {
                     let nx = (idx + 1) % 4
                     if nx == 0 { t0 += 1.72 }
                     let j = wn()
-                    nextEv = t0 + Self.trainPattern[nx] + 0.008 * j; idx = nx
+                    nextEv = t0 + NoiseSynth.trainPattern[nx] + 0.008 * j; idx = nx
                 }
                 for c in 0..<2 {
                     env[c] *= k.d22
@@ -362,7 +372,7 @@ enum NoiseSynth {
                 if t >= nextEv {
                     let r1 = rnd(), r2 = rnd(), r3 = rnd()
                     nextEv = t + 8 + 6 * r1
-                    strike(Self.bowlNotes[min(3, Int(r2 * 4))], 0.22, Self.bowlRatio, Self.bowlGain, Self.bowlDecay, count: 4, pan: 0.35 + 0.3 * r3, detune: 0.7, fs)
+                    strike(NoiseSynth.bowlNotes[min(3, Int(r2 * 4))], 0.22, NoiseSynth.bowlRatio, NoiseSynth.bowlGain, NoiseSynth.bowlDecay, count: 4, pan: 0.35 + 0.3 * r3, detune: 0.7, fs)
                     env[0] = 0.12
                 }
                 env[0] *= k.d12
@@ -374,15 +384,16 @@ enum NoiseSynth {
             case .pad:
                 // a slow, warm chord that drifts to the next one every 16 s, each note gently breathing
                 if t >= nextEv { nextEv = t + 16; if t > 0 { idx = (idx + 1) % 4 } }
-                if pf[0] == 0 { for i in 0..<4 { pf[i] = Self.padChords[i] } }
+                if pf[0] == 0 { for i in 0..<4 { pf[i] = NoiseSynth.padChords[i] } }
                 for i in 0..<4 {
-                    pf[i] += (Self.padChords[idx * 4 + i] - pf[i]) * (1 / (2.5 * fs))
-                    let lfo = 0.6 + 0.4 * sin(2 * .pi * (0.05 + 0.013 * Double(i)) * t + Double(i) * 1.7)
+                    pf[i] += (NoiseSynth.padChords[idx * 4 + i] - pf[i]) * (1 / (2.5 * fs))
+                    let rate: Double = 0.05 + 0.013 * Double(i)
+                    let lfo: Double = 0.6 + 0.4 * sin(2 * Double.pi * rate * t + Double(i) * 1.7)
                     ph[i] += pf[i] * 1.0015 / fs; ph[i] -= floor(ph[i])
                     ph[4 + i] += pf[i] * 0.9985 / fs; ph[4 + i] -= floor(ph[4 + i])
-                    let a = sin(2 * .pi * ph[i]) + 0.15 * sin(4 * .pi * ph[i])
-                    let b = sin(2 * .pi * ph[4 + i]) + 0.15 * sin(4 * .pi * ph[4 + i])
-                    let amp = 0.07 * lfo * (i == 0 ? 1.2 : 1)
+                    let a: Double = sin(2 * Double.pi * ph[i]) + 0.15 * sin(4 * Double.pi * ph[i])
+                    let b: Double = sin(2 * Double.pi * ph[4 + i]) + 0.15 * sin(4 * Double.pi * ph[4 + i])
+                    let amp: Double = 0.07 * lfo * (i == 0 ? 1.2 : 1)
                     L += (a * 0.7 + b * 0.3) * amp; R += (a * 0.3 + b * 0.7) * amp
                 }
                 let w0 = wn(), w1 = wn()
@@ -403,7 +414,7 @@ enum NoiseSynth {
                 if step == 0 || r0 < (0.25 + 3.0 * gst * gst) / fs {
                     step = 1
                     let r1 = rnd(), r2 = rnd(), r3 = rnd()
-                    strike(Self.chimeNotes[min(5, Int(r1 * 6))], 0.06 + 0.07 * r2, Self.chimeRatio, Self.chimeGain, Self.chimeDecay, count: 3, pan: r3, detune: 0, fs)
+                    strike(NoiseSynth.chimeNotes[min(5, Int(r1 * 6))], 0.06 + 0.07 * r2, NoiseSynth.chimeRatio, NoiseSynth.chimeGain, NoiseSynth.chimeDecay, count: 3, pan: r3, detune: 0, fs)
                 }
                 voices(&L, &R, fs)
             case .musicBox:
@@ -414,14 +425,14 @@ enum NoiseSynth {
                     if n == 0 { idx = 4 }
                     let r0 = rnd()
                     if r0 > 0.12 || n == 0 {
-                        if n > 0 { let r = rnd(); idx += Self.melodySteps[min(3, Int(r * 4))] }
+                        if n > 0 { let r = rnd(); idx += NoiseSynth.melodySteps[min(3, Int(r * 4))] }
                         if idx < 0 { idx = 1 }
                         if idx > 9 { idx = 8 }
                         let r2 = rnd()
-                        strike(523.25 * pow(2, Double(Self.pentatonic[idx]) / 12), 0.11, Self.boxRatio, Self.boxGain, Self.boxDecay, count: 4, pan: 0.3 + 0.4 * r2, detune: 0, fs)
+                        strike(523.25 * pow(2, Double(NoiseSynth.pentatonic[idx]) / 12), 0.11, NoiseSynth.boxRatio, NoiseSynth.boxGain, NoiseSynth.boxDecay, count: 4, pan: 0.3 + 0.4 * r2, detune: 0, fs)
                     }
                     if n % 4 == 0 {
-                        strike(261.63 * pow(2, Double(n % 8 == 0 ? 0 : 7) / 12), 0.07, Self.boxRatio, Self.boxGain, Self.boxDecay, count: 3, pan: 0.5, detune: 0, fs)
+                        strike(261.63 * pow(2, Double(n % 8 == 0 ? 0 : 7) / 12), 0.07, NoiseSynth.boxRatio, NoiseSynth.boxGain, NoiseSynth.boxDecay, count: 3, pan: 0.5, detune: 0, fs)
                     }
                 }
                 voices(&L, &R, fs)
@@ -430,15 +441,15 @@ enum NoiseSynth {
                 let period = kind == .heartbeat ? 1.0 : 0.86
                 let tb = t.truncatingRemainder(dividingBy: period)
                 var f = 0.0, e = 0.0, heart = 0.0
-                if tb < 0.12 { let s = sin(.pi * tb / 0.12); e = s * s; f = 58 - 120 * tb }
-                else if tb >= 0.27 && tb < 0.37 { let u = (tb - 0.27) / 0.1; let s = sin(.pi * u); e = 0.7 * s * s; f = 72 - 160 * (tb - 0.27) }
-                if f > 0 { ph[0] += f / fs; ph[0] -= floor(ph[0]); heart = sin(2 * .pi * ph[0]) * e } else { ph[0] = 0 }
+                if tb < 0.12 { let s = sin(Double.pi * tb / 0.12); e = s * s; f = 58 - 120 * tb }
+                else if tb >= 0.27 && tb < 0.37 { let u = (tb - 0.27) / 0.1; let s = sin(Double.pi * u); e = 0.7 * s * s; f = 72 - 160 * (tb - 0.27) }
+                if f > 0 { ph[0] += f / fs; ph[0] -= floor(ph[0]); heart = sin(2 * Double.pi * ph[0]) * e } else { ph[0] = 0 }
                 let pulse = exp(-tb / 0.28)
                 for c in 0..<2 {
                     let w0 = wn(); let bn = brown(c, w0)
                     let r1 = Self.pole(&p[c], bn, k.c300)
                     let wh = Self.pole(&p[2 + c], r1, k.c300)
-                    let x = kind == .heartbeat ? heart * 0.55 + wh * 0.5 : wh * (1.2 + 1.6 * pulse) + heart * 0.18
+                    let x: Double = kind == .heartbeat ? heart * 0.55 + wh * 0.5 : wh * (1.2 + 1.6 * pulse) + heart * 0.18
                     if c == 0 { L = x } else { R = x }
                 }
             }
@@ -506,8 +517,8 @@ enum NoiseSynth {
         }
         private mutating func voices(_ L: inout Double, _ R: inout Double, _ fs: Double) {
             for i in 0..<v.count where v[i].a >= 1e-5 {
-                let x = sin(2 * .pi * v[i].ph) * v[i].a
-                L += x * cos(v[i].pan * .pi / 2); R += x * sin(v[i].pan * .pi / 2)
+                let x = sin(2 * Double.pi * v[i].ph) * v[i].a
+                L += x * cos(v[i].pan * Double.pi / 2); R += x * sin(v[i].pan * Double.pi / 2)
                 v[i].ph += v[i].f / fs; v[i].ph -= floor(v[i].ph)
                 v[i].a *= v[i].dec; v[i].f *= v[i].glide
                 if v[i].f > fs / 3 { v[i].a = 0 }
@@ -534,10 +545,10 @@ enum NoiseSynth {
                 let u = (t - bd.start) / bd.dur
                 if u >= 0 && u < 1 {
                     var f = bd.f0 + (bd.f1 - bd.f0) * u
-                    if bd.species == 1 { f *= 1 + 0.03 * sin(2 * .pi * 28 * (t - bd.start)) }
+                    if bd.species == 1 { f *= 1 + 0.03 * sin(2 * Double.pi * 28 * (t - bd.start)) }
                     bd.ph += f / fs; bd.ph -= floor(bd.ph)
-                    let x = sin(2 * .pi * bd.ph) * sin(.pi * u) * bd.amp
-                    L += x * cos(bd.pan * .pi / 2); R += x * sin(bd.pan * .pi / 2)
+                    let x = sin(2 * Double.pi * bd.ph) * sin(Double.pi * u) * bd.amp
+                    L += x * cos(bd.pan * Double.pi / 2); R += x * sin(bd.pan * Double.pi / 2)
                 } else if u >= 1 {
                     let gap = bd.species == 1 ? 0.035 : 0.12
                     if u >= 1 + gap / bd.dur {
