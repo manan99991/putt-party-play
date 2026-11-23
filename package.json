@@ -1,0 +1,16 @@
+{
+  "name": "putt-party-app",
+  "private": true,
+  "description": "Native shell for Putt Party (built by .github/workflows/app.yml from the live site on main)",
+  "dependencies": {
+    "@capacitor/android": "8.6.0",
+    "@capacitor/core": "8.6.0",
+    "@capacitor/ios": "8.6.0",
+    "@capacitor/screen-orientation": "8.0.2",
+    "@capacitor/splash-screen": "8.0.2",
+    "@capacitor/status-bar": "8.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.0"
+  }
+}

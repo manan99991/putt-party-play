@@ -1,0 +1,31 @@
+{
+  "appId": "com.puttparty.game",
+  "appName": "Putt Party",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#0d140b",
+    "preferredContentMode": "mobile"
+  },
+  "android": {
+    "backgroundColor": "#0d140b",
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 800,
+      "backgroundColor": "#0d140b",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "overlaysWebView": true
+    },
+    "ScreenOrientation": {
+      "lockToPortrait": true
+    }
+  }
+}

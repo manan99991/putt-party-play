@@ -1,0 +1,81 @@
+# Putt Party native apps (lives ONLY on the `app` branch of the public putt-party-play repo, so the Mac
+# runner is free). Every push to `app` (or a manual run) packages the LIVE game from `main` and:
+#   - iOS: archives + uploads to TestFlight when the App Store Connect secrets exist (else an unsigned compile check)
+#   - Android: builds an installable APK and publishes it on the "app-latest" release
+# Secrets (repo Settings → Secrets and variables → Actions): ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8, APPLE_TEAM_ID
+name: App builds
+on:
+  push:
+    branches: [app]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  ios:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with: { ref: main, path: site }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm install --no-audit --no-fund
+      - run: node tools/pack-app.mjs site www
+      - run: npx cap sync ios
+      - name: Signing secrets present?
+        id: keys
+        env: { K: "${{ secrets.ASC_KEY_ID }}", T: "${{ secrets.APPLE_TEAM_ID }}" }
+        run: |
+          if [ -n "$K" ] && [ -n "$T" ]; then echo "ok=1" >> "$GITHUB_OUTPUT"; else echo "::warning::No App Store Connect key yet — compile check only, nothing uploaded"; fi
+      - name: Compile check (unsigned)
+        if: steps.keys.outputs.ok != '1'
+        run: xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build | tail -20
+      - name: Archive + upload to TestFlight
+        if: steps.keys.outputs.ok == '1'
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+          TEAM: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          set -eo pipefail
+          KP="$RUNNER_TEMP/AuthKey_$ASC_KEY_ID.p8"; printf '%s\n' "$ASC_KEY_P8" > "$KP"
+          AUTH=(-allowProvisioningUpdates -authenticationKeyPath "$KP" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID")
+          BUILD=$((GITHUB_RUN_NUMBER + 100))
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" archive DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic \
+            CURRENT_PROJECT_VERSION="$BUILD" MARKETING_VERSION=1.0 "${AUTH[@]}" | tail -30
+          cat > "$RUNNER_TEMP/export.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>$TEAM</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict></plist>
+          PLIST
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/App.xcarchive" -exportOptionsPlist "$RUNNER_TEMP/export.plist" \
+            -exportPath "$RUNNER_TEMP/out" "${AUTH[@]}" | tail -30
+          echo "### Uploaded build 1.0 ($BUILD) to App Store Connect — it appears in TestFlight after Apple's processing (~10–30 min)" >> "$GITHUB_STEP_SUMMARY"
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with: { ref: main, path: site }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - run: npm install --no-audit --no-fund
+      - run: node tools/pack-app.mjs site www
+      - run: npx cap sync android
+      - run: cd android && ./gradlew --no-daemon assembleDebug
+      - name: Publish the APK (open this release on an Android phone to install)
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk PuttParty.apk
+          gh release view app-latest >/dev/null 2>&1 || gh release create app-latest --target app --title "Putt Party — latest app build" --notes "Android: download PuttParty.apk on your phone and open it to install (allow installs from your browser when asked)."
+          gh release upload app-latest PuttParty.apk --clobber

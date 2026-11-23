@@ -1,0 +1,9 @@
+node_modules/
+www/
+site/
+android/app/src/main/assets/public/
+ios/App/App/public/
+android/.gradle/
+android/build/
+android/app/build/
+ios/DerivedData/
