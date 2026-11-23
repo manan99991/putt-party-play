@@ -2578,7 +2578,9 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(S.scene(n), .stars)
         n.shake = 1.2; XCTAssertTrue(S.coach(n, scene: .stars)!.hasPrefix("Hold still"))
         n.labels = [:]; n.hour = 14; n.iso = 1200; n.meanLuma = 0.12; XCTAssertEqual(S.scene(n), .night)
-        var d = S.Signals(); d.labels = ["document": 0.7]; XCTAssertEqual(S.scene(d), .document)
+        var d = S.Signals(); d.labels = ["document": 0.7]; d.textBoxes = 6; XCTAssertEqual(S.scene(d), .document)
+        // White closet doors read as "paper" but carry no writing: not a page (Manan's 22 Nov recording).
+        d.textBoxes = 0; d.labels = ["paper": 0.6, "door": 0.5]; XCTAssertNotEqual(S.scene(d), .document)
         var f = S.Signals(); f.labels = ["food": 0.6]; XCTAssertEqual(S.scene(f), .food)
         var m = S.Signals(); m.motion = 0.2; XCTAssertEqual(S.scene(m), .action)
         XCTAssertEqual(S.scene(S.Signals()), .everyday); XCTAssertNil(S.coach(S.Signals(), scene: .everyday))
@@ -2589,6 +2591,12 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(S.motion([0, 0], [255, 255]), 1, accuracy: 0.001)
         XCTAssertEqual(S.tilt(gravityX: 0, gravityY: -1), 0, accuracy: 0.01)
         XCTAssertGreaterThan(S.tilt(gravityX: 0.1, gravityY: -0.99), 4)
+        // Held level on its side (either way) or upside down: level, not "crooked" (Manan's 22 Nov recording).
+        XCTAssertEqual(S.tilt(gravityX: 1, gravityY: 0), 0, accuracy: 0.01)
+        XCTAssertEqual(S.tilt(gravityX: -1, gravityY: 0), 0, accuracy: 0.01)
+        XCTAssertEqual(S.tilt(gravityX: 0, gravityY: 1), 0, accuracy: 0.01)
+        // On its side and a few degrees off: the few degrees are what's reported.
+        XCTAssertEqual(abs(S.tilt(gravityX: cos(5 * .pi / 180), gravityY: sin(5 * .pi / 180))), 5, accuracy: 0.1)
         // Every scene has a button, a reason and looks that start with "As shot"; every look renders.
         let img = CIImage(color: CIColor(red: 0.8, green: 0.5, blue: 0.3)).cropped(to: CGRect(x: 0, y: 0, width: 64, height: 64))
         for sc in S.Scene.allCases {

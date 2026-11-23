@@ -271,6 +271,9 @@ private struct SwipeSelect: UIGestureRecognizerRepresentable {
             let t = g.translation(in: g.view)
             began(CGPoint(x: p.x - t.x, y: p.y - t.y)); moved(p)
         case .changed: moved(p)
+        case .ended:
+            // Where the finger lifted counts too — a quick swipe's last report can come only with the lift.
+            moved(p); ended()
         default: ended()
         }
     }

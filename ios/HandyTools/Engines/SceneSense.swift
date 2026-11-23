@@ -28,6 +28,7 @@ enum SceneSense {
         var shake: Double = 0                 // how much the phone moves (rad/s)
         var tilt: Double = 0                  // degrees off level (+ = clockwise)
         var hour = 12
+        var textBoxes = 0                     // lines of text Vision sees — a page has many; a door has none
     }
 
     enum Scene: String, CaseIterable {
@@ -111,7 +112,9 @@ enum SceneSense {
         func lab(_ keys: [String], _ min: Float = 0.3) -> Bool {
             s.labels.contains { k, v in v >= min && keys.contains { k.contains($0) } }
         }
-        if lab(["document", "text", "paper", "receipt", "handwriting", "whiteboard"], 0.4) { return .document }
+        // A page needs real writing on it: white closet doors or a blank wall look like "paper" to the classifier,
+        // so the page mode only switches on when Vision also sees several lines of text.
+        if s.textBoxes >= 4, lab(["document", "text", "paper", "receipt", "handwriting", "whiteboard"], 0.3) || s.textBoxes >= 10 { return .document }
         if s.faces >= 2 { return .group }
         if s.faces == 1, s.faceArea >= 0.02 { return .portrait }
         if lab(["dog", "cat", "puppy", "kitten", "pet", "animal"], 0.35) { return .pet }
@@ -192,10 +195,12 @@ enum SceneSense {
         return Double(d) / Double(a.count * 255)
     }
 
-    /// Degrees off level from gravity, for a phone held upright in portrait (0 = level, + = turned clockwise).
+    /// Degrees off level from gravity, however the phone is held — upright, on either side or upside down — so a phone
+    /// held level on its side reads level (0 = level, + = turned clockwise from the nearest of the four ways round).
     static func tilt(gravityX x: Double, gravityY y: Double) -> Double {
-        guard abs(x) + abs(y) > 0.3 else { return 0 }   // lying flat: no horizon to level
-        return atan2(x, -y) * 180 / .pi
+        guard abs(x) + abs(y) > 0.3 else { return 0 }   // lying flat (shooting straight down): no horizon to level
+        let a = atan2(x, -y) * 180 / .pi
+        return a - (a / 90).rounded() * 90
     }
 
     // MARK: - Looks after the shot
@@ -305,7 +310,9 @@ enum SceneSense {
             // Vision: what's in it, and where the faces are.
             let classify = VNClassifyImageRequest()
             let faces = VNDetectFaceRectanglesRequest()
-            try? VNImageRequestHandler(cgImage: tCG, options: [:]).perform([classify, faces])
+            let text = VNDetectTextRectanglesRequest()
+            try? VNImageRequestHandler(cgImage: tCG, options: [:]).perform([classify, faces, text])
+            let lines = text.results?.count ?? 0
             var labels: [String: Float] = [:]
             for o in (classify.results ?? []).prefix(40) where o.confidence > 0.15 { labels[o.identifier.lowercased()] = o.confidence }
             let fs = faces.results ?? []
@@ -318,7 +325,7 @@ enum SceneSense {
                 s.meanLuma = tones.mean; s.highlights = tones.highlights; s.shadows = tones.shadows
                 s.warmth = tones.warmth; s.centerVsEdge = tones.centerVsEdge
                 s.iso = iso; s.shutter = shutter.isFinite && shutter > 0 ? shutter : 1.0 / 60
-                s.motion = mot; s.hour = hour
+                s.motion = mot; s.hour = hour; s.textBoxes = lines
                 self.signals = s
                 self.lastGray = gray
                 // Steady the label: switch scene only when two readings in a row agree.
