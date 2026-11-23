@@ -499,6 +499,9 @@ struct BuilderView: View {
     /// The Home category tab last picked, remembered between visits.
     @AppStorage("tenzy.homeTab") private var homeTab = "camera"
     private var currentTab: HomeShelves.Shelf { HomeShelves.all.first { $0.id == homeTab } ?? HomeShelves.all[0] }
+    /// A short screen (an iPhone SE, a folded phone: under 760 points tall) gets the compact Home so a full tab of
+    /// tools still fits without scrolling (23 Nov: on a 678-point screen the third row sat under the tab bar).
+    private var shortScreen: Bool { UIScreen.main.bounds.height < 760 }
     /// The first-minute demo: until it's tried or dismissed, Home offers to show a real job on a sample.
     @AppStorage("tenzy.firstTry") private var triedFirst = false
     @State private var demoRun: Chain?
@@ -507,7 +510,7 @@ struct BuilderView: View {
         // Scrolls when the page is taller than the phone (small phones, big text), so nothing ever sits under the
         // clock or behind another button.
         ScrollView {
-        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+        VStack(alignment: .leading, spacing: shortScreen ? 10 : HandySpacing.s12) {
             // Problem first: the person says what they need; Tenzy finds the tool, or builds one. Kept short so
             // the whole front door — say it, start with what you have, or open any tool — fits one screen.
             // Laid out like a profile: who (the Tenzy mark and its promise), three actions, the say-it line, then one even
@@ -516,7 +519,6 @@ struct BuilderView: View {
             hero
             if let b = builtIn { builtInCard(b) }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-            if !triedFirst, !Launch.screenshots, builtIn == nil, ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { firstTry }
             anythingTiles
         }
         .frame(maxWidth: .infinity, alignment: .top)
@@ -878,12 +880,14 @@ struct BuilderView: View {
     private var profileHeader: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             HStack(spacing: HandySpacing.s12) {
-                TenzyMark(size: 48)
+                TenzyMark(size: shortScreen ? 40 : 48)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(L("Let's make today easier")).font(.system(size: 24, weight: .bold)).foregroundStyle(HandyColor.textPrimary)
                         .lineLimit(1).minimumScaleFactor(0.7).accessibilityAddTraits(.isHeader)
-                    Text(L("Say it, or start with what you have.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                        .lineLimit(1).minimumScaleFactor(0.8)
+                    if offerFirstTry { firstTry } else {
+                        Text(L("Say it, or start with what you have.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                            .lineLimit(1).minimumScaleFactor(0.8)
+                    }
                 }
                 Spacer(minLength: 0)
             }
@@ -909,7 +913,7 @@ struct BuilderView: View {
                 }
             }
             .padding(.horizontal, 6)
-            .frame(maxWidth: .infinity, minHeight: 44)
+            .frame(maxWidth: .infinity, minHeight: shortScreen ? 40 : 44)
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
             .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
@@ -930,14 +934,14 @@ struct BuilderView: View {
                     guard !files.isEmpty else { return }
                     gettingReady = true; note = nil
                     Task { await takePhotos(files, asked: files.count) }
-                }) { HaveChip(title: "Photo", icon: "photo.on.rectangle.angled", hex: 0xEC4899) }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
-                PhotosPicker(selection: $anyPick, matching: .videos) { HaveChip(title: "Video", icon: "film", hex: 0x8B5CF6) }
+                }) { HaveChip(title: "Photo", icon: "photo.on.rectangle.angled", hex: 0xEC4899, height: shortScreen ? 48 : 58) }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
+                PhotosPicker(selection: $anyPick, matching: .videos) { HaveChip(title: "Video", icon: "film", hex: 0x8B5CF6, height: shortScreen ? 48 : 58) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-video")
-                Button { pickTypes = audioImportTypes; pickingAny = true } label: { HaveChip(title: "Audio", icon: "waveform", hex: 0xF59E0B) }
+                Button { pickTypes = audioImportTypes; pickingAny = true } label: { HaveChip(title: "Audio", icon: "waveform", hex: 0xF59E0B, height: shortScreen ? 48 : 58) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-audio")
-                Button { pickTypes = [.pdf]; pickingAny = true } label: { HaveChip(title: "PDF", icon: "doc.richtext", hex: 0xEF4444) }
+                Button { pickTypes = [.pdf]; pickingAny = true } label: { HaveChip(title: "PDF", icon: "doc.richtext", hex: 0xEF4444, height: shortScreen ? 48 : 58) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-pdf")
-                Button { pickTypes = [.item]; pickingAny = true } label: { HaveChip(title: "File", icon: "folder", hex: 0x3B82F6) }
+                Button { pickTypes = [.item]; pickingAny = true } label: { HaveChip(title: "File", icon: "folder", hex: 0x3B82F6, height: shortScreen ? 48 : 58) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-file")
                 pasteTile
             }
@@ -952,7 +956,7 @@ struct BuilderView: View {
                         }
                         .foregroundStyle(on ? Color.white : HandyColor.textPrimary)
                         .padding(.horizontal, 4)
-                        .frame(maxWidth: .infinity, minHeight: 36)
+                        .frame(maxWidth: .infinity, minHeight: shortScreen ? 32 : 36)
                         .background(on ? AnyShapeStyle(Color(hex: sh.hex).gradient) : AnyShapeStyle(.ultraThinMaterial),
                                     in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(on ? Color.clear : HandyColor.border, lineWidth: 1))
@@ -968,7 +972,7 @@ struct BuilderView: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
                 ForEach(currentTab.tools.compactMap { id in TOOLS.first { $0.id == id } }) { t in
                     Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
-                        HomeToolTile(tool: t, hex: currentTab.hex)
+                        HomeToolTile(tool: t, hex: currentTab.hex, compact: shortScreen)
                     }
                     .buttonStyle(.plain).accessibilityIdentifier("home-tool-\(t.id)")
                 }
@@ -1001,7 +1005,7 @@ struct BuilderView: View {
                 .accessibilityIdentifier("have-paste")
             Text(L("Paste")).font(.system(size: 11, weight: .bold)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.8)
         }
-        .frame(maxWidth: .infinity, minHeight: 58, maxHeight: 58)
+        .frame(maxWidth: .infinity, minHeight: shortScreen ? 48 : 58, maxHeight: shortScreen ? 48 : 58)
         .background(PostTileGround(hex: 0x14B8A6))
         .accessibilityHint(L(clipKind.map { "\($0) copied" } ?? "Nothing copied"))
     }
@@ -1030,28 +1034,32 @@ struct BuilderView: View {
     }
     /// "See it work in 10 seconds": one real job on a sample photo — the phone number hidden, where it was taken
     /// removed, made small enough to send — so a new person sees Tenzy work before doing anything themselves.
+    /// First visit only: "See it work in 10 seconds" sits in the line under the greeting (23 Nov: as its own card it
+    /// pushed a full tab of tools below the screen on short phones). Tapping it runs a real job on a sample.
+    private var offerFirstTry: Bool {
+        !triedFirst && !Launch.screenshots && builtIn == nil && ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
     private var firstTry: some View {
-        HStack(spacing: HandySpacing.s12) {
-            Image(systemName: "play.circle.fill").font(.system(size: 26)).foregroundStyle(HandyColor.accent).accessibilityHidden(true)
-            Text(L("See it work in 10 seconds")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                .lineLimit(1).minimumScaleFactor(0.8)
-                .accessibilityHint(L("Hide private details, remove location, shrink — on a sample"))
-            Spacer(minLength: 0)
-            Button(L("Try it")) {
+        HStack(spacing: 6) {
+            Button {
                 triedFirst = true
                 if let c = ChainTemplates.all.first(where: { $0.id == BuilderIntro.demoID }) { Completion.holdPrompt(true); demoRun = c }
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "play.circle.fill").font(.system(size: 14, weight: .semibold)).accessibilityHidden(true)
+                    Text(L("See it work in 10 seconds")).font(.system(size: 13, weight: .semibold)).lineLimit(1).minimumScaleFactor(0.75)
+                }
+                .foregroundStyle(HandyColor.accent)
+                .frame(minHeight: 32)
+                .contentShape(Rectangle())
             }
-            .font(HandyFont.bodyStrong).foregroundStyle(HandyColor.onAccent)
-            .padding(.horizontal, 14).frame(minHeight: 40)
-            .background(HandyColor.accent, in: Capsule())
             .buttonStyle(.plain).accessibilityIdentifier("first-try")
+            .accessibilityHint(L("Hide private details, remove location, shrink — on a sample"))
             Button { withAnimation { triedFirst = true } } label: {
-                Image(systemName: "xmark").font(.system(size: 13, weight: .bold)).foregroundStyle(HandyColor.textSecondary).frame(width: 32, height: 40)
+                Image(systemName: "xmark").font(.system(size: 10, weight: .bold)).foregroundStyle(HandyColor.textSecondary).frame(width: 28, height: 32)
             }
             .buttonStyle(.plain).accessibilityLabel(L("Not now"))
         }
-        .padding(.horizontal, HandySpacing.s12).padding(.vertical, 4)
-        .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
     /// While the person types: the tools and ready-made tools that already do it, one tap away — before anything is built.

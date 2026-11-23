@@ -589,36 +589,54 @@ struct HaveChip: View {
     let title: String
     let icon: String
     let hex: UInt32
+    var height: CGFloat = 58
     var body: some View {
         VStack(spacing: 4) {
             Image(systemName: icon).font(.system(size: 17, weight: .bold)).foregroundStyle(.white).accessibilityHidden(true)
             Text(L(title)).font(.system(size: 11, weight: .bold)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.8)
         }
-        .frame(maxWidth: .infinity, minHeight: 58, maxHeight: 58)
+        .frame(maxWidth: .infinity, minHeight: height, maxHeight: height)
         .background(PostTileGround(hex: hex))
         .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 }
 
-/// One tool on Home's picked tab: its own icon and its name, so every tool is visible as itself.
+/// One tool on Home's picked tab: its own icon and its name, so every tool is visible as itself. `compact` lays the
+/// icon beside the name in a shorter tile, for short screens (an iPhone SE, a folded phone) so a full tab still fits.
 struct HomeToolTile: View {
     let tool: Tool
     let hex: UInt32
+    var compact = false
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            ToolIconBadge(id: tool.id, symbol: tool.icon, size: 28)
-            Spacer(minLength: 0)
-            Text(L(tool.name)).font(.system(size: 13, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
-                .lineLimit(2).minimumScaleFactor(0.8).multilineTextAlignment(.leading)
+        Group {
+            if compact {
+                HStack(spacing: 6) {
+                    ToolIconBadge(id: tool.id, symbol: tool.icon, size: 24)
+                    name
+                    Spacer(minLength: 0)
+                }
+                .padding(.horizontal, 8)
+                .frame(maxWidth: .infinity, minHeight: 48, maxHeight: 48, alignment: .leading)
+            } else {
+                VStack(alignment: .leading, spacing: 4) {
+                    ToolIconBadge(id: tool.id, symbol: tool.icon, size: 28)
+                    Spacer(minLength: 0)
+                    name
+                }
+                .padding(10)
+                .frame(maxWidth: .infinity, minHeight: 74, maxHeight: 74, alignment: .leading)
+            }
         }
-        .padding(10)
-        .frame(maxWidth: .infinity, minHeight: 74, maxHeight: 74, alignment: .leading)
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Color(hex: hex).opacity(0.45), lineWidth: 1))
         .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(L(tool.name))
         .accessibilityHint(L(tool.blurb))
+    }
+    private var name: some View {
+        Text(L(tool.name)).font(.system(size: compact ? 12 : 13, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
+            .lineLimit(2).minimumScaleFactor(0.75).multilineTextAlignment(.leading)
     }
 }
 
