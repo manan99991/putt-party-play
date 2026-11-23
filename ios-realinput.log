@@ -21,7 +21,7 @@ REALINPUT what-is-this: result (run-result)
 REALINPUT scan-to-pdf: result (run-result)
 REALINPUT sign-and-send: result (run-result)
 REALINPUT receipt-run: result (run-result)
-REALINPUT whatsapp-no-save: CRASHED
+REALINPUT whatsapp-no-save: result (run-result)
 REALINPUT contact-qr: result (run-result)
 REALINPUT video-email: result (run-result)
 REALINPUT video-chat: result (run-result)
@@ -45,8 +45,7 @@ REALINPUT pdf-join: result (run-result)
 REALINPUT pdf-first-page: result (run-result)
 REALINPUT video-story: result (run-result)
 REALINPUT video-gif: result (run-result)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/RealInputTests.swift:76: error: -[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles] : XCTAssertTrue failed - The app closed on: whatsapp-no-save
-Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' failed (1444.875 seconds).
+Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (1637.755 seconds).
 Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' started.
 REALINPUT video-words: result (run-steplog)
 REALINPUT photo-collage: result (run-result)
@@ -94,8 +93,8 @@ REALINPUT whiteboard-email: result (run-result)
 REALINPUT chat-scam: result (run-result)
 REALINPUT rewrite-clear: result (run-result)
 REALINPUT signature-contact: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1319.129 seconds).
-	 Executed 2 tests, with 1 failure (0 unexpected) in 2764.004 (2764.015) seconds
+Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1568.544 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 3206.299 (3206.450) seconds
 Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' started.
 TOOLINPUT studio: ok
 TOOLINPUT procam: ok
@@ -146,24 +145,3 @@ TOOLINPUT audiotags: ok
 TOOLINPUT audioclean: ok
 TOOLINPUT meetingnotes: ok
 TOOLINPUT soundboard: ok
-TOOLINPUT translate: ok
-TOOLINPUT voicenotes: ok
-TOOLINPUT shield: ok
-TOOLINPUT contacts: ok
-TOOLINPUT light: ok
-TOOLINPUT measure: ok
-TOOLINPUT gpsdash: ok
-TOOLINPUT audiolab: ok
-TOOLINPUT rest: ok
-TOOLINPUT seeread: ok
-TOOLINPUT colorvision: ok
-TOOLINPUT fileviewer: ok
-TOOLINPUT pricecheck: ok
-TOOLINPUT vault: ok
-TOOLINPUT speechnotes: ok
-TOOLINPUT audiostudio: ok
-Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' passed (2155.408 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 2155.408 (2155.411) seconds
-	 Executed 3 tests, with 1 failure (0 unexpected) in 4919.413 (4919.443) seconds
-	 Executed 3 tests, with 1 failure (0 unexpected) in 4919.413 (4919.445) seconds
-** TEST EXECUTE FAILED **
