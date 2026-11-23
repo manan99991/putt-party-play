@@ -42478,5 +42478,65 @@
   "ja": "暗くて低く、不気味",
   "pt": "Sombrio, grave e ameaçador",
   "zh": "阴沉、低沉、充满威胁"
+ },
+ "Save to a cloud drive": {
+  "de": "In einem Cloud-Speicher sichern",
+  "es": "Guardar en una nube",
+  "fr": "Enregistrer dans un cloud",
+  "hi": "क्लाउड ड्राइव में सेव करें",
+  "it": "Salva su un cloud",
+  "ja": "クラウドに保存",
+  "pt": "Guardar numa nuvem",
+  "zh": "保存到云盘"
+ },
+ "Google Drive, Dropbox, OneDrive or iCloud Drive — any drive app on your phone shows up. Pick a folder once; the file is copied there.": {
+  "de": "Google Drive, Dropbox, OneDrive oder iCloud Drive – jede Speicher-App auf deinem Telefon erscheint. Wähle einen Ordner; die Datei wird dorthin kopiert.",
+  "es": "Google Drive, Dropbox, OneDrive o iCloud Drive: aparece cualquier app de almacenamiento de tu teléfono. Elige una carpeta y el archivo se copia allí.",
+  "fr": "Google Drive, Dropbox, OneDrive ou iCloud Drive — toute app de stockage de votre téléphone apparaît. Choisissez un dossier ; le fichier y est copié.",
+  "hi": "Google Drive, Dropbox, OneDrive या iCloud Drive — आपके फ़ोन की हर ड्राइव ऐप दिखती है। एक फ़ोल्डर चुनें; फ़ाइल वहाँ कॉपी हो जाती है।",
+  "it": "Google Drive, Dropbox, OneDrive o iCloud Drive — appare ogni app di archiviazione del telefono. Scegli una cartella; il file viene copiato lì.",
+  "ja": "Google Drive・Dropbox・OneDrive・iCloud Drive など、端末のストレージアプリが表示されます。フォルダを選ぶとそこにコピーされます。",
+  "pt": "Google Drive, Dropbox, OneDrive ou iCloud Drive — aparece qualquer app de armazenamento do telemóvel. Escolha uma pasta; o ficheiro é copiado para lá.",
+  "zh": "Google 云端硬盘、Dropbox、OneDrive 或 iCloud 云盘——手机上的云盘 App 都会出现。选一个文件夹，文件就会复制过去。"
+ },
+ "Saved to your drive.": {
+  "de": "In deinem Speicher gesichert.",
+  "es": "Guardado en tu nube.",
+  "fr": "Enregistré dans votre cloud.",
+  "hi": "आपकी ड्राइव में सेव हो गया।",
+  "it": "Salvato nel tuo cloud.",
+  "ja": "ドライブに保存しました。",
+  "pt": "Guardado na sua nuvem.",
+  "zh": "已保存到你的云盘。"
+ },
+ "Build your own reminder": {
+  "de": "Eigene Erinnerung erstellen",
+  "es": "Crea tu propio recordatorio",
+  "fr": "Créer votre propre rappel",
+  "hi": "अपना रिमाइंडर बनाएँ",
+  "it": "Crea il tuo promemoria",
+  "ja": "自分のリマインダーを作る",
+  "pt": "Criar o seu próprio lembrete",
+  "zh": "创建你自己的提醒"
+ },
+ "Say what you want and when — it reminds you and opens ready to run.": {
+  "de": "Sag, was du willst und wann – es erinnert dich und öffnet sich startbereit.",
+  "es": "Di qué quieres y cuándo: te lo recuerda y se abre listo para usar.",
+  "fr": "Dites quoi et quand — il vous le rappelle et s’ouvre prêt à lancer.",
+  "hi": "बताइए क्या और कब — यह याद दिलाएगा और चलाने के लिए तैयार खुलेगा।",
+  "it": "Di’ cosa vuoi e quando — te lo ricorda e si apre pronto all’uso.",
+  "ja": "何をいつしたいか伝えるだけ。時間になると知らせて、すぐ使える状態で開きます。",
+  "pt": "Diga o quê e quando — lembra-o e abre pronto a usar.",
+  "zh": "说出你想做什么、什么时候——到时提醒你，并直接打开可用。"
+ },
+ "Nothing is set yet. Switch one on above — each takes a minute and has a Test run.": {
+  "de": "Noch nichts eingerichtet. Schalte oben eine ein – jede dauert eine Minute und hat einen Testlauf.",
+  "es": "Aún no hay nada. Activa uno arriba: cada uno lleva un minuto y tiene una prueba.",
+  "fr": "Rien n’est encore réglé. Activez-en un ci-dessus — une minute chacun, avec un essai.",
+  "hi": "अभी कुछ सेट नहीं है। ऊपर कोई एक चालू करें — हर एक में एक मिनट लगता है और टेस्ट रन है।",
+  "it": "Ancora niente. Attivane uno qui sopra — un minuto ciascuno, con prova.",
+  "ja": "まだ何も設定されていません。上から1つオンにしましょう。各1分、テスト実行つき。",
+  "pt": "Ainda nada definido. Ative um acima — cada um leva um minuto e tem um teste.",
+  "zh": "还没有设置。在上面打开一个——每个只需一分钟，并可试运行。"
  }
 }

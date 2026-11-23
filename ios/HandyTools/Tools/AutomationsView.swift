@@ -72,29 +72,38 @@ struct AutomationsView: View {
                     }
                 }
                 if denied { notificationsOff }
-                SectionLabel(text: L("Set and running"), icon: "checkmark.seal.fill")
-                if !loaded {
-                    HStack { BusySpinner(); Text(L("Looking at what's set…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-                } else if rows.isEmpty && rules.filter(\.on).isEmpty {
-                    Text(L("Nothing is set yet. Pick one below — each takes a minute and has a Test run."))
-                        .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).cardStyle()
-                }
-                ForEach(rows) { r in running(r) }
-                ForEach(rules.filter(\.on)) { r in ruleRow(r) }
-                // The ready-made ones not set yet, right here (no extra screen), then your own.
+                // 1. Your own first: the most powerful way in, made obvious.
+                Button { open("builder") } label: {
+                    HStack(spacing: HandySpacing.s12) {
+                        Image(systemName: "wand.and.stars").font(.system(size: 22, weight: .bold)).foregroundStyle(.white)
+                            .frame(width: 48, height: 48)
+                            .background(LinearGradient(colors: [HandyColor.accent, Color(hex: 0x8B5CF6)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                                        in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(L("Build your own reminder")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                            Text(L("Say what you want and when — it reminds you and opens ready to run."))
+                                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                        }
+                        Spacer(minLength: 0)
+                        Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(HandyColor.textSecondary)
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s12).accessibilityIdentifier("auto-own")
+                // 2. Ready-made ones, one tap to switch on (only the ones not set yet).
                 let ideas = AutomationGroups.ideas.filter { !Set(rows.map(\.group.key)).contains($0.key) }
                 if !ideas.isEmpty {
                     SectionLabel(text: L("Switch one on"), icon: "plus.circle.fill")
                     ForEach(ideas, id: \.key) { i in ideaRow(i) }
                 }
-                SectionLabel(text: L("Your own"), icon: "wand.and.stars")
-                Button { open("builder") } label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Label(L("Build a custom automation"), systemImage: "sparkles").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                        Text(L("Make a tool in Build your own, then give it a time — it reminds you and opens ready to run."))
-                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-                    }.frame(maxWidth: .infinity, alignment: .leading)
-                }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s12).accessibilityIdentifier("auto-own")
+                // 3. What's already set, with Test run and Open on each.
+                SectionLabel(text: L("Set and running"), icon: "checkmark.seal.fill")
+                if !loaded {
+                    HStack { BusySpinner(); Text(L("Looking at what's set…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                } else if rows.isEmpty && rules.filter(\.on).isEmpty {
+                    Text(L("Nothing is set yet. Switch one on above — each takes a minute and has a Test run."))
+                        .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).cardStyle()
+                }
+                ForEach(rows) { r in running(r) }
+                ForEach(rules.filter(\.on)) { r in ruleRow(r) }
                 Text(L("Reminders come from iPhone itself, so they arrive even when Tenzy is closed. Turn one off inside its tool."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }

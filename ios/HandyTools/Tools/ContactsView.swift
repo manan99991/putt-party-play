@@ -19,6 +19,7 @@ struct ContactsView: View {
     @StateObject private var autoBackup = ContactsBackup()
     @State private var backupNote: String?
     @State private var showMail = false
+    @State private var savingToCloud = false
     @State private var showTransfer = false
     @State private var notifOff = false
 
@@ -215,13 +216,28 @@ struct ContactsView: View {
             Button { runBackupNow() } label: {
                 HStack { if busy { BusySpinner() }; Label("\(L("Back up all")) \(report?.total ?? 0) \(L("contacts now"))", systemImage: "arrow.down.doc.fill") }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(busy).accessibilityIdentifier("backup-now")
-            HStack(spacing: HandySpacing.s8) {
-                if autoBackup.lastBackupURL != nil {
+            if autoBackup.lastBackupURL != nil {
+                // A cloud drive of your choice — Google Drive, Dropbox, OneDrive, iCloud Drive: Apple's own Save to
+                // Files lists every drive app on the phone; no sign-in or permission inside Tenzy.
+                Button { savingToCloud = true } label: {
+                    Label(L("Save to a cloud drive"), systemImage: "icloud.and.arrow.up").frame(maxWidth: .infinity)
+                }.secondaryButton().accessibilityIdentifier("backup-cloud")
+                Text(L("Google Drive, Dropbox, OneDrive or iCloud Drive — any drive app on your phone shows up. Pick a folder once; the file is copied there."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                HStack(spacing: HandySpacing.s8) {
                     if MailComposer.canSend { Button { showMail = true } label: { Label(L("Email a copy"), systemImage: "envelope") }.compactButton() }
                     if let u = autoBackup.lastBackupURL { ShareLink(item: u) { Label(L("Share the backup"), systemImage: "square.and.arrow.up") }.compactButton() }
                 }
             }
         }.cardStyle(padding: HandySpacing.s12)
+        .sheet(isPresented: $savingToCloud) {
+            if let u = autoBackup.lastBackupURL {
+                FilesExporter(urls: [u]) { ok in
+                    savingToCloud = false
+                    if ok { backupNote = L("Saved to your drive."); HandyHaptics.success() }
+                }
+            }
+        }
     }
 
     private func runBackupNow() {
