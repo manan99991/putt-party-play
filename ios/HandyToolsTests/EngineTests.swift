@@ -2109,125 +2109,55 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Animate.Style.cube.minPhotos, 2)
     }
 
-    /// Halfway through a crossfade the picture is half of each photo. Reports every step on its own (the timing,
-    /// each frame's brightness, and the same two photos mixed by hand), so a weak dissolve says where it goes wrong.
+    /// A picture's colours on a small even grid (red, green, blue for each point), so checks compare colour and not
+    /// just brightness. 23 Nov: a dissolve from the graded red photo to the blue one passes through purple that is
+    /// exactly as bright as the red, so a brightness-only check read a correct 50/50 mix as "still the first photo".
+    static func rgb(_ cg: CGImage, side: Int = 32) -> [UInt8] {
+        guard let c = CGContext(data: nil, width: side, height: side, bitsPerComponent: 8, bytesPerRow: side * 4,
+                                space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return [] }
+        c.interpolationQuality = .medium
+        c.draw(cg, in: CGRect(x: 0, y: 0, width: side, height: side))
+        guard let d = c.data?.assumingMemoryBound(to: UInt8.self) else { return [] }
+        return (0..<(side * side)).flatMap { i in [d[i * 4], d[i * 4 + 1], d[i * 4 + 2]] }
+    }
+
+    /// How different two pictures look: the average gap per colour channel, 0-255.
+    static func colourGap(_ x: CGImage?, _ y: CGImage?) -> Double {
+        guard let x, let y else { return 0 }
+        let a = rgb(x), b = rgb(y)
+        guard a.count == b.count, !a.isEmpty else { return 0 }
+        return Double(zip(a, b).reduce(0) { $0 + abs(Int($1.0) - Int($1.1)) }) / Double(a.count)
+    }
+
+    /// Halfway through a crossfade the picture is a real mix: clearly away from both photos, and the drawing step on its
+    /// own (one photo, then the other at half strength) lands halfway between them, channel by channel.
     func testCrossfadeHalfwayIsAMixOfBothPhotos() throws {
         let a = Self.solid(UIColor(red: 0.9, green: 0.15, blue: 0.15, alpha: 1), mark: "A")
         let b = Self.solid(UIColor(red: 0.45, green: 0.75, blue: 1.0, alpha: 1), mark: "B")
-        func mean(_ img: CGImage?) -> Double {
-            guard let img else { return -1 }
-            let g = VideoJoin.gray(img)
-            return g.isEmpty ? -1 : Double(g.reduce(0) { $0 + Int($1) }) / Double(g.count)
-        }
         var s = Animate.Settings(); s.style = .crossfade; s.format = try XCTUnwrap(VideoFormat.preset("square"))
         let tl = Animate.timeline(count: 2, settings: s)
         let midT = tl.hold + tl.trans * 0.5
-        let idx = Int(Double(tl.frameCount) * (midT / tl.seconds))
-        let phase = Animate.phase(frame: idx, in: tl)
-        let first = mean(Animate.still([a, b], settings: s, at: tl.hold * 0.5 / tl.seconds, scale: 0.1)?.cgImage)
-        let mid = mean(Animate.still([a, b], settings: s, at: midT / tl.seconds, scale: 0.1)?.cgImage)
-        let second = mean(Animate.still([a, b], settings: s, at: (tl.hold * 1.5 + tl.trans) / tl.seconds, scale: 0.1)?.cgImage)
-        let size = Animate.evenSize(CGSize(width: s.format.size.width * 0.1, height: s.format.size.height * 0.1))
-        let painter = Animate.Painter(images: [a, b], size: size, framing: s.framing)
-        let ca = painter.canvas(0), cb = painter.canvas(1)
-        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
-        let hand = UIGraphicsImageRenderer(size: size, format: fmt).image { c in
-            if let ca { c.cgContext.draw(ca, in: CGRect(origin: .zero, size: size)) }
-            c.cgContext.setAlpha(0.5)
-            if let cb { c.cgContext.draw(cb, in: CGRect(origin: .zero, size: size)) }
-        }.cgImage
-        let report = "phase \(phase) at frame \(idx) of \(tl.frameCount); grey first \(Int(first)) mid \(Int(mid)) second \(Int(second)); "
-            + "canvases \(Int(mean(ca))) \(Int(mean(cb))), mixed by hand \(Int(mean(hand)))"
-        print("CROSSFADE \(report)")
-        guard case .move(_, let v) = phase else { return XCTFail("halfway isn't in the move: \(report)") }
-        XCTAssertEqual(v, 0.5, accuracy: 0.1, report)
-        XCTAssertEqual(mean(hand), (mean(ca) + mean(cb)) / 2, accuracy: abs(mean(cb) - mean(ca)) * 0.2, "a plain half-and-half mix: \(report)")
-        XCTAssertEqual(mid, (first + second) / 2, accuracy: abs(second - first) * 0.25, "halfway is half of each photo: \(report)")
-    }
-
-    /// Which way of laying one picture half see-through over another actually mixes them here. The crossfade's own way
-    /// (a context's alpha, then draw) came out as the first picture alone on 23 Nov; this finds a way that works before
-    /// the crossfade is changed.
-    func testWhichWayOfMixingTwoPicturesWorks() throws {
-        let a = Self.solid(UIColor(red: 0.9, green: 0.15, blue: 0.15, alpha: 1), mark: "A")
-        let b = Self.solid(UIColor(red: 0.45, green: 0.75, blue: 1.0, alpha: 1), mark: "B")
-        func mean(_ img: CGImage?) -> Double {
-            guard let img else { return -1 }
-            let g = VideoJoin.gray(img)
-            return g.isEmpty ? -1 : Double(g.reduce(0) { $0 + Int($1) }) / Double(g.count)
-        }
-        let size = CGSize(width: 108, height: 108), rect = CGRect(origin: .zero, size: size)
+        guard case .move(_, let v) = Animate.phase(frame: Int(Double(tl.frameCount) * (midT / tl.seconds)), in: tl) else { return XCTFail("halfway isn't in the move") }
+        XCTAssertEqual(v, 0.5, accuracy: 0.1)
+        let first = Animate.still([a, b], settings: s, at: tl.hold * 0.5 / tl.seconds, scale: 0.1)?.cgImage
+        let mid = Animate.still([a, b], settings: s, at: midT / tl.seconds, scale: 0.1)?.cgImage
+        let second = Animate.still([a, b], settings: s, at: (tl.hold * 1.5 + tl.trans) / tl.seconds, scale: 0.1)?.cgImage
+        let ends = Self.colourGap(first, second), toFirst = Self.colourGap(mid, first), toSecond = Self.colourGap(mid, second)
+        let report = "first to second \(Int(ends)), mid to first \(Int(toFirst)), mid to second \(Int(toSecond))"
+        XCTAssertGreaterThan(ends, 40, "the two photos look different: \(report)")
+        XCTAssertGreaterThan(toFirst, ends * 0.25, "halfway has moved off the first photo: \(report)")
+        XCTAssertGreaterThan(toSecond, ends * 0.25, "halfway hasn't jumped to the second photo: \(report)")
+        // The drawing step itself, without the moving camera: exactly half of each, channel by channel.
+        let size = CGSize(width: 64, height: 64), rect = CGRect(origin: .zero, size: size)
         let painter = Animate.Painter(images: [a, b], size: size, framing: .fill)
         let ca = try XCTUnwrap(painter.canvas(0)), cb = try XCTUnwrap(painter.canvas(1))
         let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
-        func render(_ body: (CGContext) -> Void) -> CGImage? { UIGraphicsImageRenderer(size: size, format: fmt).image { body($0.cgContext) }.cgImage }
-        let plainA = render { $0.setFillColor(UIColor(red: 0.9, green: 0.15, blue: 0.15, alpha: 1).cgColor); $0.fill(rect) }
-        let plainB = render { $0.setFillColor(UIColor(red: 0.45, green: 0.75, blue: 1.0, alpha: 1).cgColor); $0.fill(rect) }
-        var ways: [(String, CGImage?)] = []
-        ways.append(("context alpha, graded photos", render { c in c.draw(ca, in: rect); c.setAlpha(0.5); c.draw(cb, in: rect) }))
-        if let pa = plainA, let pb = plainB { ways.append(("context alpha, plain pictures", render { c in c.draw(pa, in: rect); c.setAlpha(0.5); c.draw(pb, in: rect) })) }
-        ways.append(("transparency layer", render { c in c.draw(ca, in: rect); c.setAlpha(0.5); c.beginTransparencyLayer(auxiliaryInfo: nil); c.draw(cb, in: rect); c.endTransparencyLayer() }))
-        ways.append(("UIImage draw with alpha", render { c in c.draw(ca, in: rect); UIImage(cgImage: cb).draw(in: rect, blendMode: .normal, alpha: 0.5) }))
-        if let space = CGColorSpace(name: CGColorSpace.sRGB), let bm = CGContext(data: nil, width: 108, height: 108, bitsPerComponent: 8, bytesPerRow: 0, space: space, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) {
-            bm.draw(ca, in: rect); bm.setAlpha(0.5); bm.draw(cb, in: rect); ways.append(("plain bitmap context", bm.makeImage()))
-        }
-        let ci = CIContext()
-        let dissolve = CIFilter(name: "CIDissolveTransition", parameters: [kCIInputImageKey: CIImage(cgImage: ca), kCIInputTargetImageKey: CIImage(cgImage: cb), kCIInputTimeKey: 0.5])
-        ways.append(("Core Image dissolve", dissolve?.outputImage.flatMap { ci.createCGImage($0, from: CGRect(origin: .zero, size: size)) }))
-        let ma = mean(ca), mb = mean(cb), want = (ma + mb) / 2, tol = abs(mb - ma) * 0.2
-        let report = "A \(Int(ma)) B \(Int(mb)) want ~\(Int(want)): " + ways.map { "\($0.0) \(Int(mean($0.1)))" }.joined(separator: "; ")
-        print("MIXING \(report)")
-        XCTAssertTrue(ways.contains { abs(mean($0.1) - want) < tol }, "no way mixed the two pictures: \(report)")
-        XCTAssertEqual(mean(ways[0].1), want, accuracy: tol, "the crossfade's way: \(report)")
-    }
-
-    /// Where the colour-graded photo loses its mix. 23 Nov rounds 2–3: plain pictures mix half-and-half, graded photo
-    /// canvases stay on the first photo by every drawing method, even after the canvas lost its alpha channel. This takes
-    /// the blend apart step by step (each picture alone on black, ungraded vs graded, re-encoded) and prints the result.
-    func testWhereTheGradedPhotoLosesItsMix() throws {
-        let a = Self.solid(UIColor(red: 0.9, green: 0.15, blue: 0.15, alpha: 1), mark: "A")
-        let b = Self.solid(UIColor(red: 0.45, green: 0.75, blue: 1.0, alpha: 1), mark: "B")
-        func mean(_ img: CGImage?) -> Int {
-            guard let img else { return -1 }
-            let g = VideoJoin.gray(img)
-            return g.isEmpty ? -1 : g.reduce(0) { $0 + Int($1) } / g.count
-        }
-        func centre(_ img: CGImage?) -> String {
-            guard let img, let c = CGContext(data: nil, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4, space: CGColorSpaceCreateDeviceRGB(),
-                                             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return "?" }
-            c.interpolationQuality = .none
-            c.draw(img, in: CGRect(x: -CGFloat(img.width) / 2 + 0.5, y: -CGFloat(img.height) / 3, width: CGFloat(img.width), height: CGFloat(img.height)))
-            guard let d = c.data?.assumingMemoryBound(to: UInt8.self) else { return "?" }
-            return "\(d[0]),\(d[1]),\(d[2]),\(d[3])"
-        }
-        func desc(_ i: CGImage) -> String {
-            "\(i.width)x\(i.height) bpp\(i.bitsPerPixel) bpc\(i.bitsPerComponent) alpha\(i.alphaInfo.rawValue) info\(i.bitmapInfo.rawValue) \((i.colorSpace?.name as String?) ?? "no space")"
-        }
-        let size = CGSize(width: 108, height: 108), rect = CGRect(origin: .zero, size: size)
-        let painter = Animate.Painter(images: [a, b], size: size, framing: .fill)
-        let ca = try XCTUnwrap(painter.canvas(0)), cb = try XCTUnwrap(painter.canvas(1))
-        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
-        func render(_ body: (CGContext) -> Void) -> CGImage? { UIGraphicsImageRenderer(size: size, format: fmt).image { body($0.cgContext) }.cgImage }
-        let rawA = try XCTUnwrap(render { _ in a.draw(in: rect) }), rawB = try XCTUnwrap(render { _ in b.draw(in: rect) })
-        let pngB = try XCTUnwrap(UIImage(cgImage: cb).pngData().flatMap { UIImage(data: $0)?.cgImage })
-        let black = { (c: CGContext) in c.setFillColor(UIColor.black.cgColor); c.fill(rect) }
-        let rows: [(String, CGImage?)] = [
-            ("graded B alone", cb), ("graded A alone", ca), ("ungraded B alone", rawB),
-            ("graded B on black at 1", render { c in black(c); c.draw(cb, in: rect) }),
-            ("graded B on black at 0.5", render { c in black(c); c.setAlpha(0.5); c.draw(cb, in: rect) }),
-            ("ungraded B on black at 0.5", render { c in black(c); c.setAlpha(0.5); c.draw(rawB, in: rect) }),
-            ("graded A then graded B at 1", render { c in c.draw(ca, in: rect); c.draw(cb, in: rect) }),
-            ("graded A then graded B at 0.5", render { c in c.draw(ca, in: rect); c.setAlpha(0.5); c.draw(cb, in: rect) }),
-            ("ungraded A then ungraded B at 0.5", render { c in c.draw(rawA, in: rect); c.setAlpha(0.5); c.draw(rawB, in: rect) }),
-            ("ungraded A then graded B at 0.5", render { c in c.draw(rawA, in: rect); c.setAlpha(0.5); c.draw(cb, in: rect) }),
-            ("graded A then ungraded B at 0.5", render { c in c.draw(ca, in: rect); c.setAlpha(0.5); c.draw(rawB, in: rect) }),
-            ("graded A then PNG-copied B at 0.5", render { c in c.draw(ca, in: rect); c.setAlpha(0.5); c.draw(pngB, in: rect) }),
-        ]
-        let report = "canvas A [\(desc(ca))] canvas B [\(desc(cb))] raw B [\(desc(rawB))] PNG B [\(desc(pngB))] || "
-            + rows.map { "\($0.0): grey \(mean($0.1)) centre \(centre($0.1))" }.joined(separator: " | ")
-        print("GRADEDMIX \(report)")
-        let mixed = mean(rows[7].1), want = (mean(ca) + mean(cb)) / 2
-        XCTAssertEqual(mixed, want, accuracy: abs(mean(cb) - mean(ca)) / 5, "graded photos mixed half-and-half: \(report)")
+        let mixed = try XCTUnwrap(UIGraphicsImageRenderer(size: size, format: fmt).image { c in
+            c.cgContext.draw(ca, in: rect); c.cgContext.setAlpha(0.5); c.cgContext.draw(cb, in: rect)
+        }.cgImage)
+        let pa = Self.rgb(ca), pb = Self.rgb(cb), pm = Self.rgb(mixed)
+        let off = zip(pm.indices, pm).map { i, m in abs(Double(m) - (Double(pa[i]) + Double(pb[i])) / 2) }.reduce(0, +) / Double(max(1, pm.count))
+        XCTAssertLessThan(off, 6, "half of each photo, channel by channel (average miss \(off))")
     }
 
     /// Every transition really moves: halfway through it the frame is neither photo — no hard cuts dressed up as styles.
@@ -2236,10 +2166,8 @@ final class EngineTests: XCTestCase {
         let a = Self.solid(UIColor(red: 0.9, green: 0.15, blue: 0.15, alpha: 1), mark: "A")
         let b = Self.solid(UIColor(red: 0.45, green: 0.75, blue: 1.0, alpha: 1), mark: "B")   // much brighter than A, so a blend shows
         func diff(_ x: UIImage, _ y: UIImage) -> Double {
-            guard let p = x.cgImage, let q = y.cgImage else { return 0 }
-            let gx = VideoJoin.gray(p), gy = VideoJoin.gray(q)
-            guard gx.count == gy.count, !gx.isEmpty else { return 0 }
-            return Double(zip(gx, gy).reduce(0) { $0 + abs(Int($1.0) - Int($1.1)) }) / Double(gx.count)
+            // Colour, not just brightness: a correct dissolve can pass through a colour as bright as the first photo.
+            Self.colourGap(x.cgImage, y.cgImage)
         }
         let transitions = Animate.Style.allCases.filter { ![.boomerang, .kenBurns, .polaroid, .filmStrip, .carousel].contains($0) }
         for style in transitions {
