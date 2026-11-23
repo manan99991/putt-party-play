@@ -124,6 +124,40 @@ enum VideoFX {
         case "sepia":
             let s = (l * 1.07 + 0.05, l * 0.95 + 0.03, l * 0.76)
             return (s.0 * 0.85 + c.r * 0.15, s.1 * 0.85 + c.g * 0.15, s.2 * 0.85 + c.b * 0.15)
+        // Celebration grades — each tells its festival's story.
+        case "diwali":   // lamplight: rich gold, warm shadows, colours that glow
+            var o = add((c.r * 1.08 + 0.03, c.g * 1.0 + 0.015, c.b * 0.8), (0.05, 0.02, -0.01), (1 - l) * (1 - l))
+            o = sat(curve(o, 0.32), 1.22)
+            return o
+        case "xmas":     // a warm room on a winter night: deep reds and greens, glowing highlights, cool shadows
+            var o = add(c, (-0.02, 0.01, 0.05), (1 - l) * (1 - l))
+            o = add(o, (0.08, 0.04, -0.03), l * l)
+            return sat(curve(o, 0.35), 1.22)
+        case "harvest":  // golden hour in the fall: amber light, soft warm blacks
+            var o = (c.r * 1.05 + 0.05, c.g * 0.98 + 0.03, c.b * 0.78 + 0.01)
+            o = add(o, (0.03, 0.015, 0.0), 1 - l)
+            return sat(curve(o, 0.25), 1.1)
+        case "spooky":   // teal shadows, orange highlights, a darker night
+            var o = (c.r * 0.92, c.g * 0.92, c.b * 0.95)
+            o = add(o, (-0.06, 0.03, 0.08), (1 - l) * (1 - l))
+            o = add(o, (0.11, 0.03, -0.08), l * l)
+            return sat(curve(o, 0.5), 0.92)
+        case "frost":    // silver and blue: a clean, glittering winter
+            let o = (c.r * 0.93 + 0.01, c.g * 0.98 + 0.02, c.b * 1.07 + 0.05)
+            return sat(curve(o, 0.25), 0.92)
+        case "festive":  // a party: vivid, warm, punchy
+            let o = add(sat(c, 1.35), (0.03, 0.01, -0.02), 1)
+            return curve(o, 0.35)
+        case "romance":  // soft pink light, gentle contrast
+            let o = sat((c.r * 0.9 + 0.08, c.g * 0.88 + 0.06, c.b * 0.9 + 0.07), 0.95)
+            return add(o, (0.06, 0.0, 0.03), l)
+        case "spring":   // fresh and bright, petal pinks and new greens
+            let o = sat((c.r * 0.96 + 0.04, c.g * 0.97 + 0.035, c.b * 0.95 + 0.04), 1.15)
+            return curve(o, 0.15)
+        case "lunar":    // red and gold, lantern-lit
+            var o = add(c, (0.09, 0.03, -0.05), l * l)
+            o = add(o, (0.04, -0.01, -0.02), (1 - l) * (1 - l))
+            return sat(curve(o, 0.35), 1.25)
         default: return c
         }
     }
@@ -360,6 +394,15 @@ enum VideoFX {
             }
         default: break
         }
+        // Cinema bars slide in over the first half second — under the decorations, so nothing is ever hidden behind them.
+        if r.texture == "bars" {
+            let tall = H > W
+            let full = tall ? H * 0.09 : max(0, (H - W / 2.39) / 2)
+            let bar = full * CGFloat(min(1, t / 0.5)) * CGFloat(0.7 + 0.3 * a)
+            let black = CIImage(color: .black)
+            img = black.cropped(to: CGRect(x: 0, y: H - bar, width: W, height: bar)).composited(over: img)
+            img = black.cropped(to: CGRect(x: 0, y: 0, width: W, height: bar)).composited(over: img)
+        }
         // Sparkle.
         kit.lock.lock()
         if kit.painter == nil, let th = sparkleTheme(r.sparkle) {
@@ -371,19 +414,7 @@ enum VideoFX {
         }
         let painter = kit.painter, words = kit.words
         kit.lock.unlock()
-        if let p = painter, let deco = p.image(at: t) {
-            let k = W / p.size.width
-            img = CIImage(cgImage: deco).transformed(by: CGAffineTransform(scaleX: k, y: k)).composited(over: img)
-        }
-        // Cinema bars slide in over the first half second.
-        if r.texture == "bars" {
-            let tall = H > W
-            let full = tall ? H * 0.09 : max(0, (H - W / 2.39) / 2)
-            let bar = full * CGFloat(min(1, t / 0.5)) * CGFloat(0.7 + 0.3 * a)
-            let black = CIImage(color: .black)
-            img = black.cropped(to: CGRect(x: 0, y: H - bar, width: W, height: bar)).composited(over: img)
-            img = black.cropped(to: CGRect(x: 0, y: 0, width: W, height: bar)).composited(over: img)
-        }
+        if let p = painter { img = Celebrate.decorate(img, painter: p, t: t, size: size) }
         // Words, arriving in their style.
         if let w = words, let c = caption {
             let wimg = w.image, sz = w.size

@@ -445,7 +445,12 @@ struct CelebrateView: View {
         let oldGreeting = theme.greeting
         theme = t
         recipe.sparkle = "fest:" + t.id
-        if recipe.look == "none" || recipe.look == "noir" { recipe.look = "golden" }
+        // A celebration is a whole scene: its own colour grade and light, a slow cinematic push, and nothing (like
+        // cinema bars) covering its decorations. Every part can still be changed in its tab.
+        if let l = t.look { recipe.look = l } else if recipe.look == "none" || recipe.look == "noir" { recipe.look = "golden" }
+        if let l = t.light { recipe.light = l }
+        if recipe.texture == "bars" { recipe.texture = "none" }
+        if recipe.motion == "none" { recipe.motion = "zoom" }
         // Swap the words too, unless the person wrote their own.
         if caption.text.isEmpty || caption.text == oldGreeting || caption.text == L(oldGreeting) { caption.text = L(t.greeting) }
         showWords = true

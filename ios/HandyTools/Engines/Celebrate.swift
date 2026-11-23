@@ -30,24 +30,40 @@ enum Celebrate {
         case bubbles
         case stars                     // a twinkling night sky across the top
         case glow(UInt32)              // a soft coloured glow around the edges
+        case bokeh([UInt32])           // big soft out-of-focus lights drifting, like a lens at a party
+        case embers(UInt32)            // glowing sparks rising and flickering (diyas, bonfires, fireplaces)
+        case rays(UInt32)              // slow beams of warm light falling from the top corner
+        case sleigh                    // Santa's sleigh and reindeer crossing the sky with a trail of gold
+
+        /// Light adds onto the video (it brightens what's under it, like real light); the rest sits on top.
+        var isLight: Bool {
+            switch self {
+            case .glow, .rays, .stars, .bokeh, .fireworks, .sparkles, .embers: return true
+            default: return false
+            }
+        }
 
         /// Back to front.
         var depth: Int {
             switch self {
             case .glow: return 0
-            case .stars: return 1
-            case .powder: return 2
-            case .fireworks: return 3
-            case .sparkles: return 4
-            case .lights: return 5
-            case .fly: return 6
-            case .rise: return 7
-            case .fall: return 8
-            case .bubbles: return 9
-            case .snow: return 10
-            case .confetti: return 11
-            case .diyas: return 12
-            case .corners: return 13
+            case .rays: return 1
+            case .stars: return 2
+            case .bokeh: return 3
+            case .powder: return 4
+            case .fireworks: return 5
+            case .sparkles: return 6
+            case .lights: return 7
+            case .sleigh: return 8
+            case .fly: return 9
+            case .rise: return 10
+            case .fall: return 11
+            case .bubbles: return 12
+            case .snow: return 13
+            case .embers: return 14
+            case .confetti: return 15
+            case .diyas: return 16
+            case .corners: return 17
             }
         }
     }
@@ -65,6 +81,9 @@ enum Celebrate {
         let layers: [Layer]
         /// Made from the person's own words rather than picked from the list.
         var custom = false
+        /// The colour grade that tells this celebration's story (a VideoFX look id), and its light.
+        var look: String? = nil
+        var light: String? = nil
     }
 
     static let gold: UInt32 = 0xFFD54A, red: UInt32 = 0xE53935, green: UInt32 = 0x2E7D32, white: UInt32 = 0xFFFFFF
@@ -76,28 +95,28 @@ enum Celebrate {
     static let themes: [Theme] = [
         Theme(id: "christmas", name: "Christmas", emoji: "🎄", greeting: "Merry Christmas", months: [12],
               keywords: ["christmas", "xmas", "x-mas", "navidad", "feliz navidad", "noel", "joyeux noel", "weihnachten", "natale", "natal", "kerstmis", "jul", "god jul", "рождество", "クリスマス", "圣诞", "聖誕", "크리스마스", "क्रिसमस", "santa"],
-              palette: [red, green, gold], layers: [.snow, .lights([red, green, gold, blue]), .corners(["🎄", "🎁", "⭐", "🔔"])]),
+              palette: [red, green, gold], layers: [.glow(0xC62828), .bokeh([gold, red, 0x66BB6A, 0xFFF3D6]), .lights([red, green, gold, blue]), .sleigh, .snow, .sparkles([gold, white]), .corners(["🎄", "🎁", "⭐", "🔔"])], look: "xmas", light: "glow"),
         Theme(id: "newyear", name: "New Year", emoji: "🎆", greeting: "Happy New Year", months: [12, 1],
               keywords: ["new year", "new years", "nye", "ano nuevo", "feliz ano nuevo", "ano novo", "nouvel an", "bonne annee", "neujahr", "silvester", "capodanno", "hogmanay", "countdown", "新年", "신년", "새해", "नया साल", "नव वर्ष", "с новым годом"],
-              palette: [gold, silver, white], layers: [.fireworks([gold, white, pink, teal]), .confetti([gold, silver, white]), .sparkles([gold])]),
+              palette: [gold, silver, white], layers: [.bokeh([gold, silver, 0xFFF3D6]), .fireworks([gold, white, pink, teal]), .sparkles([gold, white]), .confetti([gold, silver, white])], look: "festive", light: "glow"),
         Theme(id: "hanukkah", name: "Hanukkah", emoji: "🕎", greeting: "Happy Hanukkah", months: [11, 12],
               keywords: ["hanukkah", "chanukah", "hanukah", "chanukkah", "חנוכה", "menorah", "dreidel"],
-              palette: [blue, silver, white], layers: [.glow(0x1565C0), .sparkles([blue, silver, white]), .snow, .corners(["🕎", "✡️"])]),
+              palette: [blue, silver, white], layers: [.glow(0x1565C0), .bokeh([blue, silver, white]), .sparkles([blue, silver, white]), .snow, .corners(["🕎", "✡️"])], look: "frost", light: "glow"),
         Theme(id: "kwanzaa", name: "Kwanzaa", emoji: "🕯️", greeting: "Happy Kwanzaa", months: [12, 1],
               keywords: ["kwanzaa", "habari gani"],
-              palette: [red, 0x212121, green], layers: [.lights([red, 0x424242, leaf]), .sparkles([red, leaf, gold]), .corners(["🕯️"])]),
+              palette: [red, 0x212121, green], layers: [.rays(gold), .bokeh([red, leaf, gold]), .lights([red, 0x424242, leaf]), .embers(gold), .corners(["🕯️"])], look: "harvest", light: "glow"),
         Theme(id: "diwali", name: "Diwali", emoji: "🪔", greeting: "Happy Diwali", months: [10, 11],
               keywords: ["diwali", "deepavali", "dipawali", "divali", "दिवाली", "दीपावली", "தீபாவளி", "దీపావళి", "ದೀಪಾವಳಿ", "দীপাবলি", "દિવાળી", "deepotsav", "lakshmi puja", "laxmi puja", "dhanteras", "festival of lights"],
-              palette: [gold, orange, pink], layers: [.glow(orange), .fireworks([gold, orange, pink]), .sparkles([gold, orange]), .diyas]),
+              palette: [gold, orange, pink], layers: [.glow(orange), .bokeh([gold, orange, 0xFFE082]), .fireworks([gold, orange, pink, white]), .sparkles([gold, orange]), .embers(0xFFB74D), .diyas], look: "diwali", light: "glow"),
         Theme(id: "holi", name: "Holi", emoji: "🎨", greeting: "Happy Holi", months: [3],
               keywords: ["holi", "होली", "હોળી", "festival of colours", "festival of colors", "rangwali", "dhuleti", "dhulandi", "phagwah", "rang"],
-              palette: [pink, yellow, leaf, blue, purple, orange], layers: [.powder([pink, yellow, leaf, blue, purple, orange]), .confetti([pink, yellow, leaf, blue])]),
+              palette: [pink, yellow, leaf, blue, purple, orange], layers: [.powder([pink, yellow, leaf, blue, purple, orange]), .confetti([pink, yellow, leaf, blue])], look: "vivid"),
         Theme(id: "navratri", name: "Navratri", emoji: "💃", greeting: "Happy Navratri", months: [9, 10],
               keywords: ["navratri", "navaratri", "नवरात्रि", "નવરાત્રી", "garba", "dandiya", "dussehra", "dasara", "vijayadashami", "दशहरा"],
-              palette: [orange, pink, gold, leaf], layers: [.sparkles([orange, pink, gold, leaf]), .confetti([orange, pink, gold, leaf, purple]), .corners(["🪔", "🌺"])]),
+              palette: [orange, pink, gold, leaf], layers: [.bokeh([orange, pink, gold]), .sparkles([orange, pink, gold, leaf]), .confetti([orange, pink, gold, leaf, purple]), .corners(["🪔", "🌺"])], look: "festive", light: "glow"),
         Theme(id: "durgapuja", name: "Durga Puja", emoji: "🌺", greeting: "Shubho Durga Puja", months: [9, 10],
               keywords: ["durga puja", "pujo", "durgotsav", "দুর্গাপূজা", "শারদীয়া"],
-              palette: [red, gold], layers: [.glow(red), .fall(["🌺"]), .sparkles([red, gold]), .diyas]),
+              palette: [red, gold], layers: [.glow(red), .bokeh([red, gold]), .fall(["🌺"]), .sparkles([red, gold]), .embers(gold), .diyas], look: "diwali", light: "glow"),
         Theme(id: "ganesh", name: "Ganesh Chaturthi", emoji: "🐘", greeting: "Ganpati Bappa Morya", months: [8, 9],
               keywords: ["ganesh", "ganpati", "ganesha", "ganapati", "गणेश", "गणपति", "chaturthi", "vinayaka", "bappa"],
               palette: [orange, gold, red], layers: [.glow(orange), .fall(["🌺", "🌼"]), .sparkles([gold, orange])]),
@@ -118,25 +137,25 @@ enum Celebrate {
               palette: [orange, gold, leaf], layers: [.fall(["🌾"]), .confetti([orange, gold, leaf]), .sparkles([gold])]),
         Theme(id: "gurpurab", name: "Gurpurab", emoji: "🪔", greeting: "Happy Gurpurab", months: [11],
               keywords: ["gurpurab", "guru nanak jayanti", "prakash purab", "ਗੁਰਪੁਰਬ"],
-              palette: [gold, orange], layers: [.glow(orange), .sparkles([gold, orange]), .diyas]),
+              palette: [gold, orange], layers: [.glow(orange), .bokeh([gold, orange]), .sparkles([gold, orange]), .embers(0xFFB74D), .diyas], look: "diwali", light: "glow"),
         Theme(id: "eid", name: "Eid", emoji: "🌙", greeting: "Eid Mubarak", months: [3, 4, 5, 6],
               keywords: ["eid", "eid mubarak", "eid al fitr", "eid ul fitr", "eid al adha", "eid ul adha", "bakrid", "bakra eid", "عيد", "عيد مبارك", "bayram", "hari raya", "lebaran", "عید"],
-              palette: [gold, white, 0x00897B], layers: [.glow(0x00695C), .stars, .sparkles([gold, white]), .corners(["🌙", "⭐"])]),
+              palette: [gold, white, 0x00897B], layers: [.glow(0x00695C), .stars, .bokeh([gold, white]), .sparkles([gold, white]), .corners(["🌙", "⭐"])], look: "lunar", light: "glow"),
         Theme(id: "ramadan", name: "Ramadan", emoji: "🕌", greeting: "Ramadan Kareem", months: [2, 3],
               keywords: ["ramadan", "ramzan", "ramazan", "رمضان", "iftar", "ramadan kareem", "ramadan mubarak", "suhoor"],
-              palette: [gold, 0x3949AB], layers: [.glow(0x283593), .stars, .sparkles([gold]), .corners(["🌙", "🕌"])]),
+              palette: [gold, 0x3949AB], layers: [.glow(0x283593), .stars, .bokeh([gold]), .sparkles([gold]), .corners(["🌙", "🕌"])], look: "frost", light: "glow"),
         Theme(id: "lunarnewyear", name: "Lunar New Year", emoji: "🧧", greeting: "Happy Lunar New Year", months: [1, 2],
               keywords: ["lunar new year", "chinese new year", "spring festival", "春节", "春節", "新年快乐", "新年快樂", "过年", "tet", "tết", "seollal", "설날", "cny", "gong xi fa cai", "kung hei fat choi"],
-              palette: [red, gold], layers: [.rise(["🏮"]), .fireworks([red, gold]), .confetti([red, gold]), .corners(["🧧", "🐉"])]),
+              palette: [red, gold], layers: [.bokeh([red, gold]), .rise(["🏮"]), .fireworks([red, gold]), .confetti([red, gold]), .corners(["🧧", "🐉"])], look: "lunar", light: "glow"),
         Theme(id: "midautumn", name: "Mid-Autumn Festival", emoji: "🥮", greeting: "Happy Mid-Autumn Festival", months: [9, 10],
               keywords: ["mid autumn", "mid-autumn", "moon festival", "mooncake", "中秋", "中秋节", "中秋節", "trung thu"],
-              palette: [gold, orange], layers: [.glow(gold), .stars, .rise(["🏮"]), .corners(["🥮", "🌕"])]),
+              palette: [gold, orange], layers: [.glow(gold), .stars, .bokeh([gold, orange]), .rise(["🏮"]), .corners(["🥮", "🌕"])], look: "harvest", light: "glow"),
         Theme(id: "chuseok", name: "Chuseok", emoji: "🌕", greeting: "Happy Chuseok", months: [9, 10],
               keywords: ["chuseok", "추석", "hangawi", "한가위"],
               palette: [gold, orange], layers: [.stars, .fall(["🍂"]), .corners(["🌕"])]),
         Theme(id: "hanami", name: "Cherry blossom", emoji: "🌸", greeting: "Spring is here", months: [3, 4],
               keywords: ["hanami", "sakura", "cherry blossom", "花見", "桜", "spring"],
-              palette: [pink, 0xF8BBD0], layers: [.glow(0xF48FB1), .fall(["🌸", "🌸", "💮"])]),
+              palette: [pink, 0xF8BBD0], layers: [.glow(0xF48FB1), .bokeh([0xF8BBD0, white]), .fall(["🌸", "🌸", "💮"])], look: "spring", light: "glow"),
         Theme(id: "nowruz", name: "Nowruz", emoji: "🌷", greeting: "Happy Nowruz", months: [3],
               keywords: ["nowruz", "norooz", "navroz", "nauryz", "persian new year", "نوروز"],
               palette: [leaf, gold], layers: [.fall(["🌸", "🌷"]), .sparkles([leaf, gold]), .corners(["🌱"])]),
@@ -145,7 +164,7 @@ enum Celebrate {
               palette: [teal, blue], layers: [.bubbles, .fall(["💦"]), .sparkles([teal, blue])]),
         Theme(id: "loikrathong", name: "Loi Krathong", emoji: "🪷", greeting: "Happy Loi Krathong", months: [11],
               keywords: ["loi krathong", "yi peng", "ลอยกระทง", "lantern festival"],
-              palette: [gold, orange], layers: [.glow(orange), .stars, .rise(["🏮"]), .corners(["🪷"])]),
+              palette: [gold, orange], layers: [.glow(orange), .stars, .bokeh([gold, orange]), .rise(["🏮"]), .embers(gold), .corners(["🪷"])], look: "diwali", light: "glow"),
         Theme(id: "vesak", name: "Vesak", emoji: "🪷", greeting: "Happy Vesak", months: [5],
               keywords: ["vesak", "wesak", "buddha purnima", "buddha day", "buddha jayanti"],
               palette: [gold, pink], layers: [.glow(gold), .rise(["🏮"]), .fall(["🪷"])]),
@@ -157,10 +176,10 @@ enum Celebrate {
               palette: [blue, silver, gold], layers: [.sparkles([blue, silver, gold]), .corners(["🍷", "✡️"])]),
         Theme(id: "easter", name: "Easter", emoji: "🐣", greeting: "Happy Easter", months: [3, 4],
               keywords: ["easter", "pascua", "paques", "ostern", "pasqua", "pascoa", "pasen", "resurrection"],
-              palette: pastels, layers: [.fall(["🌸", "🌼"]), .confetti(pastels), .corners(["🐣", "🥚", "🐰", "🌷"])]),
+              palette: pastels, layers: [.bokeh(pastels), .fall(["🌸", "🌼"]), .confetti(pastels), .corners(["🐣", "🥚", "🐰", "🌷"])], look: "spring", light: "glow"),
         Theme(id: "valentines", name: "Valentine's Day", emoji: "❤️", greeting: "Happy Valentine's Day", months: [2],
               keywords: ["valentine", "valentines", "san valentin", "saint valentin", "情人节", "발렌타인", "be mine", "i love you"],
-              palette: [pink, red], layers: [.rise(["❤️", "💕", "💖"]), .sparkles([pink, red])]),
+              palette: [pink, red], layers: [.bokeh([pink, red, 0xF8BBD0]), .rise(["❤️", "💕", "💖"]), .sparkles([pink, red])], look: "romance", light: "leak"),
         Theme(id: "stpatricks", name: "St Patrick's Day", emoji: "☘️", greeting: "Happy St. Patrick's Day", months: [3],
               keywords: ["st patrick", "st patricks", "saint patrick", "paddys day", "shamrock", "irish", "lá fhéile pádraig"],
               palette: [green, gold], layers: [.fall(["☘️", "🍀"]), .confetti([green, gold, 0x81C784]), .corners(["🍀"])]),
@@ -169,22 +188,22 @@ enum Celebrate {
               palette: [purple, leaf, gold], layers: [.confetti([purple, leaf, gold]), .sparkles([gold, purple]), .corners(["🎭", "🎉"])]),
         Theme(id: "halloween", name: "Halloween", emoji: "🎃", greeting: "Happy Halloween", months: [10],
               keywords: ["halloween", "spooky", "trick or treat", "samhain", "all hallows"],
-              palette: [orange, purple], layers: [.glow(0xFF6F00), .stars, .fly(["🦇", "🦇"]), .corners(["🎃", "👻", "🕸️"])]),
+              palette: [orange, purple], layers: [.glow(0xFF6F00), .stars, .bokeh([orange, purple]), .fly(["🦇", "🦇"]), .corners(["🎃", "👻", "🕸️"])], look: "spooky", light: "vignette"),
         Theme(id: "dayofthedead", name: "Day of the Dead", emoji: "💀", greeting: "Feliz Día de Muertos", months: [10, 11],
               keywords: ["dia de muertos", "dia de los muertos", "day of the dead", "calavera", "ofrenda"],
-              palette: [pink, purple, orange, teal], layers: [.fall(["🌼"]), .confetti([pink, purple, orange, teal, gold]), .corners(["💀", "🕯️"])]),
+              palette: [pink, purple, orange, teal], layers: [.bokeh([orange, pink, gold]), .fall(["🌼"]), .confetti([pink, purple, orange, teal, gold]), .embers(gold), .corners(["💀", "🕯️"])], look: "festive", light: "glow"),
         Theme(id: "thanksgiving", name: "Thanksgiving", emoji: "🦃", greeting: "Happy Thanksgiving", months: [10, 11],
               keywords: ["thanksgiving", "turkey day", "friendsgiving", "action de grace", "grateful", "gratitude"],
-              palette: [orange, 0x8D6E63, gold], layers: [.glow(orange), .fall(["🍂", "🍁", "🍂"]), .corners(["🦃", "🥧", "🌽"])]),
+              palette: [orange, 0x8D6E63, gold], layers: [.rays(0xFFB74D), .bokeh([orange, gold]), .fall(["🍂", "🍁", "🍂"]), .embers(0xFFCC80), .corners(["🦃", "🥧", "🌽"])], look: "harvest", light: "sun"),
         Theme(id: "july4", name: "4th of July", emoji: "🇺🇸", greeting: "Happy 4th of July", months: [7],
               keywords: ["4th of july", "fourth of july", "july 4", "independence day usa", "usa", "america"],
-              palette: [red, white, blue], layers: [.stars, .fireworks([red, white, blue]), .confetti([red, white, blue])]),
+              palette: [red, white, blue], layers: [.stars, .bokeh([red, white, blue]), .fireworks([red, white, blue]), .confetti([red, white, blue])], look: "festive", light: "glow"),
         Theme(id: "india", name: "Independence · Republic Day", emoji: "🇮🇳", greeting: "Happy Independence Day", months: [8, 1],
               keywords: ["independence day india", "republic day", "15 august", "26 january", "स्वतंत्रता दिवस", "गणतंत्र दिवस", "jai hind", "tiranga"],
-              palette: [0xFF9933, white, 0x138808], layers: [.fireworks([0xFF9933, white, 0x138808]), .confetti([0xFF9933, white, 0x138808]), .corners(["🇮🇳"])]),
+              palette: [0xFF9933, white, 0x138808], layers: [.bokeh([0xFF9933, white, 0x138808]), .fireworks([0xFF9933, white, 0x138808]), .confetti([0xFF9933, white, 0x138808]), .corners(["🇮🇳"])], look: "festive", light: "glow"),
         Theme(id: "canada", name: "Canada Day", emoji: "🇨🇦", greeting: "Happy Canada Day", months: [7],
               keywords: ["canada day", "fete du canada"],
-              palette: [red, white], layers: [.fall(["🍁"]), .fireworks([red, white])]),
+              palette: [red, white], layers: [.fall(["🍁"]), .bokeh([red, white]), .fireworks([red, white])], look: "festive", light: "glow"),
         Theme(id: "oktoberfest", name: "Oktoberfest", emoji: "🍺", greeting: "Prost!", months: [9, 10],
               keywords: ["oktoberfest", "wiesn", "beer festival"],
               palette: [0x1565C0, white], layers: [.bubbles, .confetti([0x1565C0, white]), .corners(["🍺", "🥨"])]),
@@ -193,19 +212,19 @@ enum Celebrate {
               palette: rainbow, layers: [.confetti(rainbow), .sparkles(rainbow), .rise(["🏳️‍🌈"])]),
         Theme(id: "mothersday", name: "Mother's Day", emoji: "💐", greeting: "Happy Mother's Day", months: [5],
               keywords: ["mothers day", "mother's day", "mom", "mum", "mama", "dia de la madre", "fete des meres", "muttertag", "festa della mamma"],
-              palette: [pink, 0xF8BBD0], layers: [.fall(["🌷", "🌸"]), .sparkles([pink]), .corners(["💐"])]),
+              palette: [pink, 0xF8BBD0], layers: [.bokeh([pink, 0xF8BBD0]), .fall(["🌷", "🌸"]), .sparkles([pink]), .corners(["💐"])], look: "spring", light: "glow"),
         Theme(id: "fathersday", name: "Father's Day", emoji: "👔", greeting: "Happy Father's Day", months: [6],
               keywords: ["fathers day", "father's day", "dad", "papa", "dia del padre", "fete des peres", "vatertag"],
               palette: [blue, teal, gold], layers: [.confetti([blue, teal, gold]), .sparkles([gold]), .corners(["👔", "🏆"])]),
         Theme(id: "birthday", name: "Birthday", emoji: "🎂", greeting: "Happy Birthday", months: [],
               keywords: ["birthday", "bday", "b-day", "cumpleanos", "feliz cumpleanos", "anniversaire", "geburtstag", "compleanno", "aniversario", "生日", "誕生日", "생일", "जन्मदिन", "happy bday"],
-              palette: rainbow, layers: [.rise(["🎈", "🎈", "🎈"]), .confetti(rainbow), .corners(["🎂", "🎁"])]),
+              palette: rainbow, layers: [.bokeh(pastels), .rise(["🎈", "🎈", "🎈"]), .confetti(rainbow), .sparkles([gold, white]), .corners(["🎂", "🎁"])], look: "festive", light: "glow"),
         Theme(id: "wedding", name: "Wedding", emoji: "💍", greeting: "Just Married", months: [],
               keywords: ["wedding", "married", "marriage", "shaadi", "शादी", "boda", "mariage", "hochzeit", "matrimonio", "casamento", "结婚", "engagement", "engaged", "nikah"],
-              palette: [gold, white], layers: [.fall(["🌸", "🤍"]), .sparkles([gold, white]), .corners(["💍"])]),
+              palette: [gold, white], layers: [.bokeh([gold, 0xFFF3D6, 0xF8BBD0]), .fall(["🌸", "🤍"]), .sparkles([gold, white]), .corners(["💍"])], look: "romance", light: "glow"),
         Theme(id: "anniversary", name: "Anniversary", emoji: "💞", greeting: "Happy Anniversary", months: [],
               keywords: ["anniversary", "years together"],
-              palette: [gold, pink], layers: [.rise(["💞", "❤️"]), .sparkles([gold, pink])]),
+              palette: [gold, pink], layers: [.bokeh([gold, pink]), .rise(["💞", "❤️"]), .sparkles([gold, pink])], look: "romance", light: "glow"),
         Theme(id: "graduation", name: "Graduation", emoji: "🎓", greeting: "Congratulations, Graduate!", months: [5, 6],
               keywords: ["graduation", "graduate", "grad", "convocation", "commencement", "class of"],
               palette: [gold, 0x1A237E, white], layers: [.confetti([gold, 0x1A237E, white]), .rise(["🎓"]), .corners(["🎓", "📜"])]),
@@ -217,13 +236,13 @@ enum Celebrate {
               palette: [gold, teal], layers: [.confetti([gold, teal]), .rise(["🎈"]), .corners(["🏖️", "🎉"])]),
         Theme(id: "congrats", name: "Congratulations", emoji: "🎉", greeting: "Congratulations!", months: [],
               keywords: ["congrats", "congratulations", "well done", "promotion", "new job", "achievement", "winner", "champion", "celebration", "party", "felicidades", "felicitations", "glückwunsch", "badhai", "बधाई"],
-              palette: rainbow, layers: [.fireworks(rainbow), .confetti(rainbow), .corners(["🎉", "🏆"])]),
+              palette: rainbow, layers: [.bokeh([gold, white]), .fireworks(rainbow), .confetti(rainbow), .corners(["🎉", "🏆"])], look: "festive", light: "glow"),
         Theme(id: "holidays", name: "Happy Holidays", emoji: "❄️", greeting: "Happy Holidays", months: [12, 1],
               keywords: ["holidays", "happy holidays", "holiday season", "seasons greetings", "season's greetings", "winter", "snow"],
-              palette: [white, silver, 0x90CAF9], layers: [.glow(0x90CAF9), .snow, .fall(["❄️"]), .sparkles([white, silver, 0x90CAF9])]),
+              palette: [white, silver, 0x90CAF9], layers: [.glow(0x90CAF9), .bokeh([white, silver, 0x90CAF9, gold]), .snow, .fall(["❄️"]), .sparkles([white, silver, 0x90CAF9])], look: "frost", light: "glow"),
         Theme(id: "autumn", name: "Autumn", emoji: "🍁", greeting: "Hello, Autumn", months: [9, 10, 11],
               keywords: ["autumn", "fall season", "fall leaves"],
-              palette: [orange, 0x8D6E63], layers: [.glow(orange), .fall(["🍁", "🍂"])]),
+              palette: [orange, 0x8D6E63], layers: [.rays(0xFFB74D), .bokeh([orange, 0xFFCC80]), .fall(["🍁", "🍂"])], look: "harvest", light: "sun"),
         Theme(id: "summer", name: "Summer", emoji: "☀️", greeting: "Hello, Summer", months: [6, 7, 8],
               keywords: ["summer", "beach", "vacation", "summer holiday"],
               palette: [gold, teal], layers: [.bubbles, .sparkles([gold, teal]), .corners(["☀️", "🌴", "🏖️"])]),
@@ -442,15 +461,20 @@ enum Celebrate {
         var u: CGFloat { min(size.width, size.height) }
 
         /// The decorations at `t` seconds, transparent everywhere else.
-        func image(at t: Double) -> CGImage? {
+        func image(at t: Double) -> CGImage? { image(at: t, only: nil) }
+
+        /// Light (fireworks, glows, bokeh, embers, rays, sparkles) is added onto the video so it lights it up; the
+        /// rest (leaves, confetti, snow, lamps) sits on top. `light` picks which half; nil draws everything.
+        func image(at t: Double, only light: Bool?) -> CGImage? {
             lock.lock(); defer { lock.unlock() }
             guard let ctx else { return nil }
             ctx.saveGState()
             ctx.clear(CGRect(origin: .zero, size: size))
-            for l in layers { draw(l, t, ctx) }
+            for l in layers where light == nil || l.isLight == light { draw(l, t, ctx) }
             ctx.restoreGState()
             return ctx.makeImage()
         }
+        var hasLight: Bool { layers.contains { $0.isLight } }
 
         // Deterministic noise: the same particle always gets the same numbers.
         private func r(_ i: Int, _ salt: Int) -> CGFloat {
@@ -483,6 +507,10 @@ enum Celebrate {
             case .bubbles: bubbles(t, c)
             case .stars: stars(t, c)
             case .glow(let col): glow(t, col, c)
+            case .bokeh(let p): bokeh(t, p, c)
+            case .embers(let col): embers(t, col, c)
+            case .rays(let col): rays(t, col, c)
+            case .sleigh: sleigh(t, c)
             }
         }
 
@@ -499,6 +527,22 @@ enum Celebrate {
                 }
             }.cgImage
             sprites["dot"] = img
+            return img
+        }
+
+        /// A lens's out-of-focus light: a soft disc with a slightly brighter rim.
+        private func disc() -> CGImage? {
+            if let s = sprites["disc"] { return s }
+            let d = 96
+            let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = false
+            let img = UIGraphicsImageRenderer(size: CGSize(width: d, height: d), format: fmt).image { r in
+                let cols = [UIColor(white: 1, alpha: 0.5).cgColor, UIColor(white: 1, alpha: 0.62).cgColor, UIColor(white: 1, alpha: 0.85).cgColor,
+                            UIColor(white: 1, alpha: 0).cgColor] as CFArray
+                if let g = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: cols, locations: [0, 0.7, 0.88, 1]) {
+                    r.cgContext.drawRadialGradient(g, startCenter: CGPoint(x: d / 2, y: d / 2), startRadius: 0, endCenter: CGPoint(x: d / 2, y: d / 2), endRadius: CGFloat(d) / 2, options: [])
+                }
+            }.cgImage
+            sprites["disc"] = img
             return img
         }
 
@@ -534,14 +578,17 @@ enum Celebrate {
 
         // Layers
 
+        /// Snow with depth: tiny slow flakes far away, a few big soft out-of-focus ones right in front of the lens.
         private func snow(_ t: Double, _ c: CGContext) {
-            let n = count(80)
+            let n = count(110)
             for i in 0..<n {
-                let z = r(i, 1)                                  // nearer flakes are bigger and faster
-                let s = u * (0.008 + 0.026 * z * z)
-                let y = loop(r(i, 2), (0.04 + 0.09 * z) * H / H, t, span: 1.15) * H - H * 0.07
-                let x = r(i, 3) * W + sin(CGFloat(t) * (0.6 + r(i, 4)) + r(i, 5) * 6) * u * 0.035
-                put(dot(), c, at: CGPoint(x: x, y: y), size: s, alpha: 0.55 + 0.4 * r(i, 6))
+                let z = r(i, 1)
+                let near = z > 0.9
+                let s = near ? u * (0.045 + 0.05 * r(i, 7)) : u * (0.006 + 0.024 * z * z)
+                let y = loop(r(i, 2), 0.035 + 0.12 * z, t, span: 1.15) * H - H * 0.07
+                let x = loop(r(i, 3), 0.008 + 0.012 * z, t, span: 1.1) * W - W * 0.05
+                    + sin(CGFloat(t) * (0.5 + r(i, 4)) + r(i, 5) * 6) * u * (0.02 + 0.05 * z)
+                put(dot(), c, at: CGPoint(x: x, y: y), size: s, alpha: near ? 0.32 : 0.4 + 0.55 * z)
             }
         }
 
@@ -614,41 +661,88 @@ enum Celebrate {
             }
         }
 
+        /// Real fireworks: a rocket climbs with a sparking tail, bursts with a flash that lights the sky, and its stars
+        /// fly out, slow in the air, fall and fade — white-hot first, then their colour, crackling as they die. Three
+        /// kinds: a full peony, a golden willow that weeps long trails, and a ring.
         private func fireworks(_ t: Double, _ p: [UInt32], _ c: CGContext) {
-            let cycle = 1.9
-            let slots = amount >= 1.3 ? 4 : (amount >= 0.9 ? 3 : 2)
+            let cycle = 2.7
+            let slots = amount >= 1.3 ? 5 : (amount >= 0.9 ? 4 : 3)
+            let gold = UIColor(red: 1, green: 0.78, blue: 0.35, alpha: 1)
+            c.saveGState()
+            c.setBlendMode(.plusLighter)
+            c.setLineCap(.round)
             for k in 0..<slots {
                 let off = cycle * Double(k) / Double(slots)
                 let b = Int(floor((t + off) / cycle))
                 let tau = CGFloat(t + off - Double(b) * cycle)
                 let key = b &* 13 &+ k
-                let center = CGPoint(x: W * (0.14 + 0.72 * r(key, 31)), y: H * (0.1 + 0.32 * r(key, 32)))
+                let apex = CGPoint(x: W * (0.15 + 0.7 * r(key, 31)), y: H * (0.1 + 0.3 * r(key, 32)))
+                let launchX = apex.x + (r(key, 35) - 0.5) * W * 0.18
                 let col = Celebrate.color(p[Int(r(key, 33) * CGFloat(p.count)) % max(1, p.count)])
-                let fade = max(0, 1 - tau / CGFloat(cycle))
-                if tau < 0.15 { put(dot(), c, at: center, size: u * 0.22 * (1 - tau / 0.15), alpha: 0.9, tint: .white) }
-                let sparks = 34
-                let reach = u * (0.16 + 0.12 * r(key, 34))
-                let spread = 1 - pow(1 - min(1, tau / 1.1), 3)
-                for j in 0..<sparks {
-                    let a = CGFloat(j) / CGFloat(sparks) * 2 * .pi + r(j, key) * 0.2
-                    for trail in 0..<3 {
-                        let tt = max(0, spread - CGFloat(trail) * 0.06)
-                        let pt = CGPoint(x: center.x + cos(a) * reach * tt, y: center.y + sin(a) * reach * tt + 0.5 * u * 0.18 * tau * tau)
-                        put(dot(), c, at: pt, size: u * (0.03 - CGFloat(trail) * 0.008), alpha: fade * (1 - CGFloat(trail) * 0.3), tint: trail == 0 ? .white : col)
+                let kind = Int(r(key, 36) * 3)            // 0 peony · 1 willow · 2 ring
+                let climb: CGFloat = 0.6
+                if tau < climb {
+                    // The rocket: a bright head and a tail of sparks, slowing as it nears the top.
+                    let q = tau / climb, e = 1 - (1 - q) * (1 - q)
+                    let head = CGPoint(x: launchX + (apex.x - launchX) * e, y: H * 1.02 + (apex.y - H * 1.02) * e)
+                    for i in 0..<7 {
+                        let back = CGFloat(i) * u * 0.02 * (1.2 - q)
+                        put(dot(), c, at: CGPoint(x: head.x + (r(i, key) - 0.5) * u * 0.01, y: head.y + back), size: u * (0.03 - CGFloat(i) * 0.003),
+                            alpha: (1 - CGFloat(i) / 7) * 0.9, tint: i == 0 ? .white : gold)
                     }
+                    continue
+                }
+                let s = tau - climb
+                let life: CGFloat = kind == 1 ? 1.95 : 1.45
+                guard s < life else { continue }
+                let fade = 1 - s / life
+                // The flash lights the sky around it.
+                put(dot(), c, at: apex, size: u * 1.2, alpha: 0.22 * fade * fade, tint: col)
+                if s < 0.22 { put(dot(), c, at: apex, size: u * 0.16, alpha: 1 - s / 0.22, tint: .white) }
+                let n = kind == 2 ? 44 : 70
+                let speed = u * (0.5 + 0.2 * r(key, 34))
+                let drag: CGFloat = kind == 1 ? 1.1 : 2.3
+                let g = u * (kind == 1 ? 0.26 : 0.17)
+                func at(_ a: CGFloat, _ v: CGFloat, _ tt: CGFloat) -> CGPoint {
+                    let d = v * (1 - exp(-drag * tt)) / drag
+                    return CGPoint(x: apex.x + cos(a) * d, y: apex.y + sin(a) * d + 0.5 * g * tt * tt)
+                }
+                let trail: CGFloat = kind == 1 ? 0.55 : 0.2
+                let path = CGMutablePath()
+                var heads: [CGPoint] = []
+                for j in 0..<n {
+                    let a = CGFloat(j) / CGFloat(n) * 2 * .pi + r(j, key) * 0.14
+                    let v = speed * (kind == 2 ? 1 : 0.55 + 0.45 * r(j, key &+ 1))
+                    let head = at(a, v, s)
+                    path.move(to: at(a, v, max(0, s - trail))); path.addLine(to: head)
+                    heads.append(head)
+                }
+                c.setLineWidth(u * (kind == 1 ? 0.007 : 0.009))
+                c.setStrokeColor((kind == 1 ? gold : col).withAlphaComponent(0.7 * fade).cgColor)
+                c.addPath(path); c.strokePath()
+                let hot = s < 0.25
+                for (j, h) in heads.enumerated() {
+                    var a = fade
+                    if s > life * 0.55, r(j, key &+ Int(s * 18)) < 0.45 { a *= 0.2 }   // crackle as the stars die
+                    put(dot(), c, at: h, size: u * (hot ? 0.036 : 0.028), alpha: a, tint: hot ? .white : (kind == 1 ? gold : col))
                 }
             }
+            c.restoreGState()
         }
 
+        /// Leaves, petals, flowers drifting down with depth: small and faint far away, big and close in front, each
+        /// one tumbling in 3D as it falls.
         private func fall(_ t: Double, _ e: [String], _ c: CGContext) {
             guard !e.isEmpty else { return }
-            let n = count(20)
+            let n = count(22)
             for i in 0..<n {
-                let s = u * (0.05 + 0.05 * r(i, 41))
-                let y = loop(r(i, 42), 0.07 + 0.08 * r(i, 43), t, span: 1.2) * H - H * 0.1
-                let x = r(i, 44) * W + sin(CGFloat(t) * (0.7 + r(i, 45)) + r(i, 46) * 6) * u * 0.07
-                let ang = sin(CGFloat(t) * 1.1 + r(i, 47) * 6) * 0.7 + CGFloat(t) * 0.4 * (r(i, 48) - 0.5)
-                put(glyph(e[i % e.count]), c, at: CGPoint(x: x, y: y), size: s, angle: ang, alpha: 0.95)
+                let z = r(i, 49)
+                let s = u * (0.035 + 0.1 * z)
+                let y = loop(r(i, 42), 0.05 + 0.1 * z, t, span: 1.25) * H - H * 0.12
+                let x = r(i, 44) * W + sin(CGFloat(t) * (0.6 + r(i, 45)) + r(i, 46) * 6) * u * (0.04 + 0.06 * z)
+                let ang = sin(CGFloat(t) * 1.1 + r(i, 47) * 6) * 0.8 + CGFloat(t) * 0.5 * (r(i, 48) - 0.5)
+                let tumble = cos(CGFloat(t) * (1.2 + 2 * r(i, 50)) + r(i, 51) * 6)
+                put(glyph(e[i % e.count]), c, at: CGPoint(x: x, y: y), size: s, angle: ang, sx: max(0.2, abs(tumble)), alpha: 0.55 + 0.45 * z)
             }
         }
 
@@ -656,10 +750,11 @@ enum Celebrate {
             guard !e.isEmpty else { return }
             let n = count(12)
             for i in 0..<n {
-                let s = u * (0.075 + 0.06 * r(i, 51))
-                let y = H * 1.1 - loop(r(i, 52), 0.06 + 0.06 * r(i, 53), t, span: 1.3) * H
+                let z = r(i, 57)
+                let s = u * (0.05 + 0.09 * z)
+                let y = H * 1.1 - loop(r(i, 52), 0.05 + 0.07 * z, t, span: 1.3) * H
                 let x = r(i, 54) * W + sin(CGFloat(t) * (0.8 + r(i, 55)) + r(i, 56) * 6) * u * 0.04
-                put(glyph(e[i % e.count]), c, at: CGPoint(x: x, y: y), size: s, angle: sin(CGFloat(t) * 1.3 + CGFloat(i)) * 0.12)
+                put(glyph(e[i % e.count]), c, at: CGPoint(x: x, y: y), size: s, angle: sin(CGFloat(t) * 1.3 + CGFloat(i)) * 0.12, alpha: 0.6 + 0.4 * z)
             }
         }
 
@@ -679,23 +774,49 @@ enum Celebrate {
 
         private func corners(_ t: Double, _ e: [String], _ c: CGContext) {
             guard !e.isEmpty else { return }
-            let s = u * 0.13, inset = u * 0.09
-            let spots = [CGPoint(x: inset, y: H - inset), CGPoint(x: W - inset, y: H - inset), CGPoint(x: W - inset, y: inset * 1.7), CGPoint(x: inset, y: inset * 1.7)]
+            let s = u * 0.12, inset = u * 0.1
+            let spots = [CGPoint(x: inset, y: H - inset * 1.1), CGPoint(x: W - inset, y: H - inset * 1.1),
+                         CGPoint(x: W - inset, y: inset * 1.7), CGPoint(x: inset, y: inset * 1.7)]
             let used = amount < 0.9 ? 2 : 4
+            c.saveGState()
+            c.setShadow(offset: CGSize(width: 0, height: u * 0.008), blur: u * 0.025, color: UIColor(white: 0, alpha: 0.45).cgColor)
             for i in 0..<used {
                 let bob = 1 + 0.07 * sin(CGFloat(t) * 2.2 + CGFloat(i) * 1.3)
                 put(glyph(e[i % e.count]), c, at: spots[i], size: s * bob, angle: sin(CGFloat(t) * 1.4 + CGFloat(i)) * 0.09)
             }
+            c.restoreGState()
         }
 
+        /// A row of oil lamps along the bottom: a warm pool of light on the floor, and real flames that flicker.
         private func diyas(_ t: Double, _ c: CGContext) {
             let n = W > H ? 9 : 6
+            let warm = UIColor(red: 1, green: 0.6, blue: 0.15, alpha: 1)
+            if let g = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                                  colors: [warm.withAlphaComponent(0.4).cgColor, warm.withAlphaComponent(0).cgColor] as CFArray, locations: [0, 1]) {
+                c.drawLinearGradient(g, start: CGPoint(x: 0, y: H), end: CGPoint(x: 0, y: H - u * 0.35), options: [])
+            }
             for i in 0..<n {
-                let x = W * (CGFloat(i) + 0.5) / CGFloat(n), y = H - u * 0.07
+                let x = W * (CGFloat(i) + 0.5) / CGFloat(n), y = H - u * 0.06
                 let flick = 0.82 + 0.18 * sin(CGFloat(t) * 11 + CGFloat(i) * 2.3) * sin(CGFloat(t) * 7.3 + CGFloat(i))
-                put(dot(), c, at: CGPoint(x: x, y: y - u * 0.035), size: u * 0.2 * flick, alpha: 0.7, tint: UIColor(red: 1, green: 0.62, blue: 0.15, alpha: 1))
+                let sway = sin(CGFloat(t) * 5.1 + CGFloat(i) * 1.7) * u * 0.004
+                put(dot(), c, at: CGPoint(x: x, y: y - u * 0.04), size: u * 0.24 * flick, alpha: 0.6, tint: warm)
                 put(glyph("🪔"), c, at: CGPoint(x: x, y: y), size: u * 0.1)
-                put(dot(), c, at: CGPoint(x: x + u * 0.004, y: y - u * 0.03), size: u * 0.035 * flick, alpha: 0.95, tint: UIColor(red: 1, green: 0.9, blue: 0.5, alpha: 1))
+                // The flame: a teardrop, white-gold at its heart.
+                let fh = u * 0.05 * flick, fw = u * 0.018
+                let base = CGPoint(x: x + u * 0.004, y: y - u * 0.028)
+                let tip = CGPoint(x: base.x + sway, y: base.y - fh)
+                let flame = CGMutablePath()
+                flame.move(to: tip)
+                flame.addQuadCurve(to: CGPoint(x: base.x, y: base.y + fw * 0.4), control: CGPoint(x: base.x + fw * 1.3, y: base.y - fh * 0.2))
+                flame.addQuadCurve(to: tip, control: CGPoint(x: base.x - fw * 1.3, y: base.y - fh * 0.2))
+                c.saveGState()
+                c.addPath(flame); c.clip()
+                if let g = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                                      colors: [UIColor(red: 1, green: 0.98, blue: 0.85, alpha: 1).cgColor, UIColor(red: 1, green: 0.75, blue: 0.2, alpha: 1).cgColor,
+                                               UIColor(red: 1, green: 0.35, blue: 0.05, alpha: 0.9).cgColor] as CFArray, locations: [0, 0.45, 1]) {
+                    c.drawLinearGradient(g, start: base, end: tip, options: [])
+                }
+                c.restoreGState()
             }
         }
 
@@ -741,6 +862,88 @@ enum Celebrate {
                 let pt = CGPoint(x: r(i, 93) * W, y: r(i, 94) * H * 0.42)
                 put(dot(), c, at: pt, size: u * (0.008 + 0.014 * r(i, 95)) * (0.6 + 0.6 * tw), alpha: 0.35 + 0.65 * tw)
             }
+        }
+
+        /// Big soft out-of-focus lights drifting slowly, twinkling — the look of a lens at a party.
+        private func bokeh(_ t: Double, _ p: [UInt32], _ c: CGContext) {
+            guard !p.isEmpty else { return }
+            let n = count(16)
+            c.saveGState(); c.setBlendMode(.plusLighter)
+            for i in 0..<n {
+                let z = r(i, 101)
+                let s = u * (0.08 + 0.24 * z)
+                let x = loop(r(i, 102), 0.01 + 0.02 * (1 - z), t, span: 1.3) * W * 1.3 - W * 0.15
+                let y = r(i, 103) * H + sin(CGFloat(t) * 0.5 + r(i, 104) * 6) * u * 0.03
+                let tw = 0.6 + 0.4 * sin(CGFloat(t) * (0.8 + r(i, 105)) + r(i, 106) * 6)
+                put(disc(), c, at: CGPoint(x: x, y: y), size: s, alpha: (0.14 + 0.2 * (1 - z)) * tw, tint: Celebrate.color(p[i % p.count]))
+            }
+            c.restoreGState()
+        }
+
+        /// Glowing sparks rising and flickering out, like over a lamp or a bonfire.
+        private func embers(_ t: Double, _ hex: UInt32, _ c: CGContext) {
+            let n = count(40)
+            let col = Celebrate.color(hex)
+            c.saveGState(); c.setBlendMode(.plusLighter)
+            for i in 0..<n {
+                let z = r(i, 111)
+                let y = H * 1.05 - loop(r(i, 112), 0.05 + 0.08 * z, t, span: 1.25) * H
+                let x = r(i, 113) * W + sin(CGFloat(t) * (1.2 + r(i, 114) * 1.5) + r(i, 115) * 6) * u * 0.05
+                let flick = 0.5 + 0.5 * sin(CGFloat(t) * (7 + r(i, 116) * 6) + r(i, 117) * 6)
+                let life = max(0, min(1, y / H * 1.5))
+                put(dot(), c, at: CGPoint(x: x, y: y), size: u * (0.012 + 0.02 * z) * (0.7 + 0.3 * flick), alpha: (0.45 + 0.55 * flick) * life, tint: col)
+            }
+            c.restoreGState()
+        }
+
+        /// Slow beams of warm light falling from the top corner, gently shifting — late-afternoon light through a window.
+        private func rays(_ t: Double, _ hex: UInt32, _ c: CGContext) {
+            let col = Celebrate.color(hex)
+            let origin = CGPoint(x: W * 0.12, y: -H * 0.06)
+            let len = hypot(W, H) * 1.3
+            c.saveGState(); c.setBlendMode(.screen)
+            for i in 0..<6 {
+                let mid = 0.3 + CGFloat(i) * 0.13 + sin(CGFloat(t) * 0.25 + CGFloat(i) * 1.7) * 0.03
+                let half = 0.03 + 0.03 * r(i, 121)
+                let beam = CGMutablePath()
+                beam.move(to: origin)
+                beam.addLine(to: CGPoint(x: origin.x + len * sin(mid - half), y: origin.y + len * cos(mid - half)))
+                beam.addLine(to: CGPoint(x: origin.x + len * sin(mid + half), y: origin.y + len * cos(mid + half)))
+                beam.closeSubpath()
+                let pulse = 0.75 + 0.25 * sin(CGFloat(t) * (0.6 + r(i, 122)) + CGFloat(i))
+                c.saveGState(); c.addPath(beam); c.clip()
+                if let g = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                                      colors: [col.withAlphaComponent(0.3 * pulse).cgColor, col.withAlphaComponent(0).cgColor] as CFArray, locations: [0, 1]) {
+                    c.drawLinearGradient(g, start: origin, end: CGPoint(x: origin.x + len * 0.6 * sin(mid), y: origin.y + len * 0.6 * cos(mid)), options: [])
+                }
+                c.restoreGState()
+            }
+            put(dot(), c, at: CGPoint(x: W * 0.12, y: 0), size: u * 1.1, alpha: 0.4, tint: col)
+            c.restoreGState()
+        }
+
+        /// Santa's sleigh and two reindeer sweep across the sky every few seconds, trailing gold sparkle.
+        private func sleigh(_ t: Double, _ c: CGContext) {
+            let cycle = 9.0, cross = 4.6
+            let ph = CGFloat(t.truncatingRemainder(dividingBy: cycle) / cross)
+            guard ph < 1 else { return }
+            let s = u * 0.1
+            let x = W * 1.2 - (W * 1.4 + s * 3) * ph
+            let y = H * 0.2 - sin(ph * .pi) * u * 0.07
+            let gold = UIColor(red: 1, green: 0.84, blue: 0.45, alpha: 1)
+            c.saveGState(); c.setBlendMode(.plusLighter)
+            for i in 0..<18 {
+                let back = CGFloat(i) * u * 0.028
+                let k = 1 - CGFloat(i) / 18
+                put(dot(), c, at: CGPoint(x: x + s * 1.1 + back, y: y + s * 0.2 + sin(CGFloat(t) * 6 + CGFloat(i)) * u * 0.008),
+                    size: u * 0.026 * k + u * 0.006, alpha: 0.9 * k, tint: i % 3 == 0 ? .white : gold)
+            }
+            c.restoreGState()
+            let bob = sin(CGFloat(t) * 7) * u * 0.006
+            put(glyph("🦌"), c, at: CGPoint(x: x - s * 1.9, y: y - bob), size: s)
+            put(glyph("🦌"), c, at: CGPoint(x: x - s * 0.95, y: y + bob), size: s)
+            put(glyph("🛷"), c, at: CGPoint(x: x + s * 0.3, y: y + s * 0.2), size: s * 1.05)
+            put(glyph("🎅"), c, at: CGPoint(x: x + s * 0.3, y: y - s * 0.25), size: s * 0.75)
         }
 
         private func glow(_ t: Double, _ hex: UInt32, _ c: CGContext) {
@@ -794,10 +997,7 @@ enum Celebrate {
             state.lock.unlock()
             let secs = request.compositionTime.seconds
             var out = src
-            if let p = painter, let deco = p.image(at: secs) {
-                let k = render.width / p.size.width
-                out = CIImage(cgImage: deco).transformed(by: CGAffineTransform(scaleX: k, y: k)).composited(over: out)
-            }
+            if let p = painter { out = decorate(out, painter: p, t: secs, size: render) }
             if let capT = cap, let c = caption {
                 let (img, sz) = capT
                 // Fades in over the first moment, then stays.
@@ -809,6 +1009,25 @@ enum Celebrate {
             }
             request.finish(with: out.cropped(to: CGRect(origin: .zero, size: render)), context: nil)
         }
+    }
+
+    /// A frame with a celebration on it. The light (fireworks, glows, bokeh, embers, sparkle) is added onto the
+    /// picture with a soft halo, so it lights the video the way real light would; leaves, confetti, snow and lamps
+    /// sit on top.
+    static func decorate(_ frame: CIImage, painter p: Painter, t: Double, size: CGSize) -> CIImage {
+        let rect = CGRect(origin: .zero, size: size)
+        let k = size.width / p.size.width
+        var out = frame
+        if p.hasLight, let lightCG = p.image(at: t, only: true) {
+            let light = CIImage(cgImage: lightCG).transformed(by: CGAffineTransform(scaleX: k, y: k))
+            let halo = light.clampedToExtent().applyingGaussianBlur(sigma: Double(min(size.width, size.height)) * 0.012).cropped(to: rect)
+            out = halo.applyingFilter("CIScreenBlendMode", parameters: [kCIInputBackgroundImageKey: out]).cropped(to: rect)
+            out = light.applyingFilter("CIScreenBlendMode", parameters: [kCIInputBackgroundImageKey: out]).cropped(to: rect)
+        }
+        if let solidCG = p.image(at: t, only: false) {
+            out = CIImage(cgImage: solidCG).transformed(by: CGAffineTransform(scaleX: k, y: k)).composited(over: out)
+        }
+        return out.cropped(to: rect)
     }
 
     /// Saves the decorated video (sound kept), with live progress. nil if the phone couldn't make it.
