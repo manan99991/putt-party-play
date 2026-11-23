@@ -4,6 +4,7 @@ import CoreImage.CIFilterBuiltins
 import CoreGraphics
 import Vision
 import CoreMotion
+import CoreLocation
 import AVFoundation
 
 /// The camera that thinks: reads what the lens sees (Vision on-device classification + faces, the
@@ -29,6 +30,8 @@ enum SceneSense {
         var tilt: Double = 0                  // degrees off level (+ = clockwise)
         var hour = 12
         var textBoxes = 0                     // lines of text Vision sees — a page has many; a door has none
+        var sunHeight: Double?                // the sun's height above the horizon where you are, in degrees (nil: location off)
+        var pointing: Double = 0              // −1 = camera straight down, +1 = straight up, 0 = level
     }
 
     enum Scene: String, CaseIterable {
@@ -92,17 +95,18 @@ enum SceneSense {
             case .everyday: return "The camera's own best automatic settings."
             }
         }
-        /// After the shot: the looks worth offering for this scene (the first is "as shot").
+        /// After the shot: the looks worth offering for this scene. The Pro finish comes first and is chosen for you;
+        /// "As shot" is always there.
         var looks: [Look] {
             switch self {
-            case .sunset: return [.natural, .golden, .dramatic, .silhouette]
-            case .portrait, .group: return [.natural, .soft, .warm, .mono]
-            case .food: return [.natural, .warm, .vivid]
-            case .landscape, .snowBeach: return [.natural, .vivid, .dramatic, .mono]
-            case .night, .stars: return [.natural, .cool, .dramatic]
-            case .document: return [.natural, .crisp]
-            case .pet, .closeup: return [.natural, .vivid, .warm, .mono]
-            default: return [.natural, .vivid, .warm, .mono]
+            case .sunset: return [.pro, .natural, .golden, .dramatic, .silhouette]
+            case .portrait, .group: return [.pro, .natural, .soft, .warm, .mono]
+            case .food: return [.pro, .natural, .warm, .vivid]
+            case .landscape, .snowBeach: return [.pro, .natural, .vivid, .dramatic, .mono]
+            case .night, .stars: return [.pro, .natural, .cool, .dramatic]
+            case .document: return [.pro, .natural, .crisp]
+            case .pet, .closeup: return [.pro, .natural, .vivid, .warm, .mono]
+            default: return [.pro, .natural, .vivid, .warm, .mono]
             }
         }
     }
@@ -119,7 +123,9 @@ enum SceneSense {
         if s.faces == 1, s.faceArea >= 0.02 { return .portrait }
         if lab(["dog", "cat", "puppy", "kitten", "pet", "animal"], 0.35) { return .pet }
         if lab(["food", "meal", "dish", "dessert", "cake", "pizza", "salad", "sushi", "burger", "fruit", "bread"], 0.35) { return .food }
-        let goldenHour = (16...20).contains(s.hour) || (5...8).contains(s.hour)
+        // Golden hour from the sun's real height where you're standing (low in the sky, just above or below the horizon);
+        // the clock is the fallback when location is off.
+        let goldenHour = s.sunHeight.map { (-4.0...10.0).contains($0) } ?? ((16...20).contains(s.hour) || (5...8).contains(s.hour))
         if lab(["sunset", "sunrise"], 0.25) || (goldenHour && s.warmth > 0.12 && (0.15...0.75).contains(s.meanLuma) && lab(["sky", "cloud", "outdoor", "sea", "ocean", "horizon"], 0.2)) {
             return .sunset
         }
@@ -156,17 +162,47 @@ enum SceneSense {
         case .stars: return "Rest the phone on something still — this one takes a few seconds."
         case .night: return "Hold still for a moment after you tap."
         case .pet: return "Get down to their eye level for the best shot."
-        case .food: return "Try straight from above, or a 45° angle near a window."
+        case .food:
+            if s.pointing < -0.8 { return "Straight from above — keep the phone flat so the plate stays round." }
+            return "Try straight from above, or a 45° angle near a window."
         case .document: return "Hold the phone flat above the page, filling the frame."
         case .action: return "Follow the movement and tap — the shutter is set to freeze it."
         case .snowBeach: return "Bright scene — I've lifted the exposure so white stays white."
         case .backlit: return "Strong light behind — I've lifted the exposure. Moving so the light is beside you helps too."
-        case .landscape: return "Put the horizon on a line, not across the middle."
+        case .landscape:
+            if s.pointing > 0.35 { return "Looking up — keep the phone upright so buildings don't lean." }
+            if let h = s.sunHeight, h > 0, h < 12 { return "The sun is low — the best light of the day. Shoot now." }
+            return "Put the horizon on a line, not across the middle."
         case .closeup: return "Get close and tap the detail you want sharp."
         case .indoor: return "Near a window is the best light indoors."
         case .everyday: return nil
         }
     }
+
+    // MARK: - The sun where you are (pure)
+
+    /// The sun's height above the horizon, in degrees, at a place and moment (the standard NOAA approximation, good
+    /// to a fraction of a degree) — so "golden hour" means the real thing wherever you are, worked out on the phone.
+    static func sunHeight(latitude: Double, longitude: Double, at date: Date) -> Double {
+        let rad = Double.pi / 180
+        let jd = date.timeIntervalSince1970 / 86400 + 2440587.5
+        let n = jd - 2451545.0
+        let L = (280.46 + 0.9856474 * n).truncatingRemainder(dividingBy: 360)
+        let g = ((357.528 + 0.9856003 * n).truncatingRemainder(dividingBy: 360)) * rad
+        let lambda = (L + 1.915 * sin(g) + 0.02 * sin(2 * g)) * rad
+        let eps = (23.439 - 0.0000004 * n) * rad
+        let dec = asin(sin(eps) * sin(lambda))
+        let ra = atan2(cos(eps) * sin(lambda), cos(lambda))
+        let gmst = (18.697374558 + 24.06570982441908 * n).truncatingRemainder(dividingBy: 24)
+        let lst = gmst * 15 * rad + longitude * rad
+        let ha = lst - ra
+        let lat = latitude * rad
+        let alt = asin(sin(lat) * sin(dec) + cos(lat) * cos(dec) * cos(ha))
+        return alt / rad
+    }
+
+    /// Which way the camera points, from gravity: −1 straight down, +1 straight up, 0 level.
+    static func pointing(gravityZ z: Double) -> Double { max(-1, min(1, z)) }
 
     // MARK: - Reading a frame (pure where it can be)
 
@@ -206,9 +242,10 @@ enum SceneSense {
     // MARK: - Looks after the shot
 
     enum Look: String, CaseIterable {
-        case natural, golden, warm, cool, vivid, dramatic, soft, mono, silhouette, crisp
+        case pro, natural, golden, warm, cool, vivid, dramatic, soft, mono, silhouette, crisp
         var title: String {
             switch self {
+            case .pro: return "Pro"
             case .natural: return "As shot"; case .golden: return "Golden"; case .warm: return "Warm"; case .cool: return "Cool"
             case .vivid: return "Vivid"; case .dramatic: return "Dramatic"; case .soft: return "Soft glow"; case .mono: return "Black & white"
             case .silhouette: return "Silhouette"; case .crisp: return "Crisp"
@@ -216,7 +253,71 @@ enum SceneSense {
         }
     }
 
-    static func apply(_ look: Look, to img: CIImage) -> CIImage {
+    // MARK: - The Pro finish
+
+    /// How much to enlarge a picture turned by `degrees` so its corners never show. Pure.
+    static func coverScale(degrees: Double, size: CGSize) -> CGFloat {
+        let t = abs(degrees) * .pi / 180
+        guard size.width > 0, size.height > 0 else { return 1 }
+        let w = size.width, h = size.height
+        return CGFloat(max(cos(t) + (h / w) * sin(t), cos(t) + (w / h) * sin(t)))
+    }
+
+    /// Whether a horizon this far off level is worth straightening: a small tilt is a mistake to fix, a big one is a
+    /// choice (a dutch angle) to keep. Pure.
+    static func shouldStraighten(degrees: Double) -> Bool { (0.4...8).contains(abs(degrees)) }
+
+    /// The crooked horizon, in degrees (+ = turn clockwise to fix), from Vision; nil when there's no clear one.
+    static func horizon(_ img: CIImage) -> Double? {
+        let k = 768 / max(img.extent.width, img.extent.height)
+        let small = img.transformed(by: CGAffineTransform(scaleX: min(1, k), y: min(1, k)))
+        let req = VNDetectHorizonRequest()
+        try? VNImageRequestHandler(ciImage: small, options: [:]).perform([req])
+        guard let h = req.results?.first else { return nil }
+        return Double(h.angle) * 180 / .pi
+    }
+
+    /// What a pro would do to this shot, on the phone, in one go: straighten a slightly crooked horizon, Apple's own
+    /// automatic adjustments for this picture (faces, light, shadows, colour), then the touch the scene calls for —
+    /// a sunset kept warm, a landscape given clarity, a night shot cleaned of noise, a page made crisp.
+    static func pro(_ img: CIImage, scene: Scene) -> CIImage {
+        let e = img.extent
+        var out = img
+        if let deg = horizon(img), shouldStraighten(degrees: deg) {
+            let s = coverScale(degrees: deg, size: e.size)
+            let c = CGPoint(x: e.midX, y: e.midY)
+            out = out.clampedToExtent().transformed(by: CGAffineTransform(translationX: -c.x, y: -c.y)
+                .concatenating(CGAffineTransform(rotationAngle: CGFloat(-deg * .pi / 180)))
+                .concatenating(CGAffineTransform(scaleX: s, y: s))
+                .concatenating(CGAffineTransform(translationX: c.x, y: c.y))).cropped(to: e)
+        }
+        for f in out.autoAdjustmentFilters(options: [.redEye: false]) {
+            f.setValue(out, forKey: kCIInputImageKey)
+            if let o = f.outputImage { out = o.cropped(to: e) }
+        }
+        switch scene {
+        case .sunset:
+            let t = CIFilter.temperatureAndTint(); t.inputImage = out; t.neutral = CIVector(x: 6500, y: 0); t.targetNeutral = CIVector(x: 6000, y: 0)
+            out = t.outputImage ?? out
+            let v = CIFilter.vibrance(); v.inputImage = out; v.amount = 0.35; out = v.outputImage ?? out
+        case .landscape, .snowBeach, .backlit:
+            let u = CIFilter.unsharpMask(); u.inputImage = out; u.radius = Float(max(e.width, e.height) / 120); u.intensity = 0.35
+            out = u.outputImage ?? out
+            let v = CIFilter.vibrance(); v.inputImage = out; v.amount = 0.25; out = v.outputImage ?? out
+        case .night, .stars, .indoor:
+            let n = CIFilter.noiseReduction(); n.inputImage = out; n.noiseLevel = scene == .indoor ? 0.01 : 0.025; n.sharpness = 0.5
+            out = n.outputImage ?? out
+        case .food:
+            let v = CIFilter.vibrance(); v.inputImage = out; v.amount = 0.3; out = v.outputImage ?? out
+        case .document:
+            let sh = CIFilter.sharpenLuminance(); sh.inputImage = out; sh.sharpness = 0.5; out = sh.outputImage ?? out
+        default:
+            let v = CIFilter.vibrance(); v.inputImage = out; v.amount = 0.15; out = v.outputImage ?? out
+        }
+        return out.cropped(to: e)
+    }
+
+    static func apply(_ look: Look, to img: CIImage, scene: Scene = .everyday) -> CIImage {
         func temp(_ t: CGFloat) -> CIImage {
             let f = CIFilter.temperatureAndTint(); f.inputImage = img; f.neutral = CIVector(x: 6500, y: 0); f.targetNeutral = CIVector(x: t, y: 0)
             return f.outputImage ?? img
@@ -232,6 +333,7 @@ enum SceneSense {
         let e = img.extent
         let out: CIImage
         switch look {
+        case .pro: out = pro(img, scene: scene)
         case .natural: out = img
         case .golden: out = vignette(color(temp(5200), sat: 1.15, con: 1.05), 0.5)
         case .warm: out = color(temp(5800), sat: 1.05, con: 1.0)
@@ -262,6 +364,8 @@ enum SceneSense {
     @Published var signals = SceneSense.Signals()
 
     private let motion = CMMotionManager()
+    /// Where you are, if Tenzy already has location access (it never asks just for the camera).
+    private let where_ = CLLocationManager()
     private var busy = false
     private var lastGray: [UInt8] = []
     private var history: [SceneSense.Scene] = []
@@ -277,6 +381,7 @@ enum SceneSense {
             let r = m.rotationRate
             self.signals.shake = self.signals.shake * 0.7 + sqrt(r.x * r.x + r.y * r.y + r.z * r.z) * 0.3
             self.signals.tilt = self.tilt
+            self.signals.pointing = self.signals.pointing * 0.7 + SceneSense.pointing(gravityZ: m.gravity.z) * 0.3
         }
     }
     func stop() { motion.stopDeviceMotionUpdates() }
@@ -326,6 +431,10 @@ enum SceneSense {
                 s.warmth = tones.warmth; s.centerVsEdge = tones.centerVsEdge
                 s.iso = iso; s.shutter = shutter.isFinite && shutter > 0 ? shutter : 1.0 / 60
                 s.motion = mot; s.hour = hour; s.textBoxes = lines
+                let st = self.where_.authorizationStatus
+                if st == .authorizedWhenInUse || st == .authorizedAlways, let loc = self.where_.location {
+                    s.sunHeight = SceneSense.sunHeight(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude, at: Date())
+                }
                 self.signals = s
                 self.lastGray = gray
                 // Steady the label: switch scene only when two readings in a row agree.

@@ -539,7 +539,7 @@ private struct ShotReview: View {
     let scene: SceneSense.Scene
     let keep: (Data) async -> Void
     @Environment(\.dismiss) private var dismiss
-    @State private var look: SceneSense.Look = .natural
+    @State private var look: SceneSense.Look = .pro
     @State private var thumbs: [SceneSense.Look: UIImage] = [:]
     @State private var shown: UIImage?
     @State private var saving = false
@@ -572,7 +572,7 @@ private struct ShotReview: View {
         }
         .padding(HandySpacing.gutter)
         .presentationDetents([.large])
-        .task { makeThumbs() }
+        .task { makeThumbs(); render() }
     }
 
     private var base: CIImage? { CIImage(data: shot.data, options: [.applyOrientationProperty: true]) }
@@ -582,7 +582,7 @@ private struct ShotReview: View {
         let k = 160 / max(b.extent.width, b.extent.height)
         let small = b.transformed(by: CGAffineTransform(scaleX: k, y: k))
         for l in scene.looks {
-            let out = SceneSense.apply(l, to: small)
+            let out = SceneSense.apply(l, to: small, scene: scene)
             if let cg = ctx.createCGImage(out, from: out.extent) { thumbs[l] = UIImage(cgImage: cg) }
         }
     }
@@ -590,7 +590,7 @@ private struct ShotReview: View {
     private func render() {
         guard look != .natural, let b = base else { shown = nil; return }
         let k = 1400 / max(b.extent.width, b.extent.height)
-        let out = SceneSense.apply(look, to: b.transformed(by: CGAffineTransform(scaleX: min(1, k), y: min(1, k))))
+        let out = SceneSense.apply(look, to: b.transformed(by: CGAffineTransform(scaleX: min(1, k), y: min(1, k))), scene: scene)
         if let cg = ctx.createCGImage(out, from: out.extent) { shown = UIImage(cgImage: cg) }
     }
 
@@ -600,7 +600,7 @@ private struct ShotReview: View {
         Task {
             var data = shot.data
             if chosen != .natural, let b = base {
-                let out = SceneSense.apply(chosen, to: b)
+                let out = SceneSense.apply(chosen, to: b, scene: scene)
                 if let d = ctx.jpegRepresentation(of: out, colorSpace: CGColorSpace(name: CGColorSpace.sRGB)!, options: [:]) { data = d }
             }
             await keep(data)

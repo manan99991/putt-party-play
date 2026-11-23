@@ -42228,5 +42228,35 @@
   "ja": "画像の文字を読み取っています…",
   "pt": "A ler as palavras da sua imagem…",
   "zh": "正在读取图片中的文字…"
+ },
+ "Straight from above — keep the phone flat so the plate stays round.": {
+  "de": "Direkt von oben – halte das Telefon flach, damit der Teller rund bleibt.",
+  "es": "Desde arriba: mantén el teléfono plano para que el plato salga redondo.",
+  "fr": "Juste au-dessus — gardez le téléphone à plat pour que l’assiette reste ronde.",
+  "hi": "सीधे ऊपर से — फ़ोन सपाट रखें ताकि प्लेट गोल दिखे।",
+  "it": "Dall’alto — tieni il telefono piatto così il piatto resta rotondo.",
+  "ja": "真上から — 端末を水平に保つとお皿が丸く写ります。",
+  "pt": "Mesmo de cima — mantenha o telemóvel plano para o prato ficar redondo.",
+  "zh": "正上方拍——手机保持水平，盘子才是圆的。"
+ },
+ "Looking up — keep the phone upright so buildings don't lean.": {
+  "de": "Nach oben – halte das Telefon aufrecht, damit Gebäude nicht kippen.",
+  "es": "Mirando hacia arriba: mantén el teléfono recto para que los edificios no se inclinen.",
+  "fr": "Vers le haut — gardez le téléphone droit pour que les bâtiments ne penchent pas.",
+  "hi": "ऊपर की ओर — फ़ोन सीधा रखें ताकि इमारतें झुकी न दिखें।",
+  "it": "Verso l’alto — tieni il telefono dritto così gli edifici non pendono.",
+  "ja": "見上げています — 建物が傾かないよう端末をまっすぐに。",
+  "pt": "A olhar para cima — mantenha o telemóvel direito para os edifícios não inclinarem.",
+  "zh": "向上拍——手机保持竖直，建筑才不会倾斜。"
+ },
+ "The sun is low — the best light of the day. Shoot now.": {
+  "de": "Die Sonne steht tief – das schönste Licht des Tages. Jetzt fotografieren.",
+  "es": "El sol está bajo: la mejor luz del día. Dispara ahora.",
+  "fr": "Le soleil est bas — la plus belle lumière de la journée. Prenez la photo maintenant.",
+  "hi": "सूरज नीचे है — दिन की सबसे अच्छी रोशनी। अभी फ़ोटो लें।",
+  "it": "Il sole è basso — la luce migliore della giornata. Scatta ora.",
+  "ja": "太陽が低い — 一日でいちばんきれいな光です。今撮りましょう。",
+  "pt": "O sol está baixo — a melhor luz do dia. Fotografe agora.",
+  "zh": "太阳很低——一天中最好的光线，现在就拍。"
  }
 }

@@ -2570,6 +2570,16 @@ final class EngineTests: XCTestCase {
         var g = S.Signals(); g.labels = ["sea": 0.5]; g.hour = 19; g.warmth = 0.18; g.meanLuma = 0.35
         XCTAssertEqual(S.scene(g), .sunset)
         g.hour = 13; XCTAssertNotEqual(S.scene(g), .sunset, "not at midday")
+        // Where you are decides golden hour when location is on: the sun 3° up at 1 pm (a winter far north) is a sunset;
+        // the sun 40° up at 6 pm (a summer far north) isn't.
+        g.sunHeight = 3; XCTAssertEqual(S.scene(g), .sunset)
+        g.hour = 18; g.sunHeight = 40; XCTAssertNotEqual(S.scene(g), .sunset)
+        // The sun's real height: Chicago, 23 Nov 2026 — just set at 4:25 pm, mid-height at noon, far below at midnight.
+        let iso = ISO8601DateFormatter()
+        XCTAssertEqual(S.sunHeight(latitude: 41.88, longitude: -87.63, at: iso.date(from: "2026-11-23T22:25:00Z")!), -1, accuracy: 1.5)
+        XCTAssertEqual(S.sunHeight(latitude: 41.88, longitude: -87.63, at: iso.date(from: "2026-11-23T18:00:00Z")!), 27.4, accuracy: 1.5)
+        XCTAssertLessThan(S.sunHeight(latitude: 41.88, longitude: -87.63, at: iso.date(from: "2026-11-23T06:00:00Z")!), -50)
+        XCTAssertEqual(S.pointing(gravityZ: -1), -1); XCTAssertEqual(S.pointing(gravityZ: 0.2), 0.2, accuracy: 0.001)
         var p = S.Signals(); p.faces = 1; p.faceArea = 0.08; p.faceCenter = CGPoint(x: 0.5, y: 0.4)
         XCTAssertEqual(S.scene(p), .portrait)
         p.faceArea = 0.5; XCTAssertTrue(S.coach(p, scene: .portrait)!.contains("Step back"))
@@ -2600,9 +2610,17 @@ final class EngineTests: XCTestCase {
         // Every scene has a button, a reason and looks that start with "As shot"; every look renders.
         let img = CIImage(color: CIColor(red: 0.8, green: 0.5, blue: 0.3)).cropped(to: CGRect(x: 0, y: 0, width: 64, height: 64))
         for sc in S.Scene.allCases {
-            XCTAssertFalse(sc.button.isEmpty); XCTAssertFalse(sc.why.isEmpty); XCTAssertEqual(sc.looks.first, .natural)
+            XCTAssertFalse(sc.button.isEmpty); XCTAssertFalse(sc.why.isEmpty); XCTAssertEqual(sc.looks.first, .pro); XCTAssertTrue(sc.looks.contains(.natural))
         }
         for l in S.Look.allCases { XCTAssertEqual(S.apply(l, to: img).extent, img.extent, l.rawValue) }
+        // Pro finish: a slightly crooked horizon is straightened (a big tilt is a choice and kept), and the turned picture
+        // is enlarged just enough that no corner shows.
+        XCTAssertTrue(S.shouldStraighten(degrees: 3)); XCTAssertTrue(S.shouldStraighten(degrees: -1.5))
+        XCTAssertFalse(S.shouldStraighten(degrees: 0.1)); XCTAssertFalse(S.shouldStraighten(degrees: 20))
+        XCTAssertEqual(S.coverScale(degrees: 0, size: CGSize(width: 4000, height: 3000)), 1, accuracy: 0.0001)
+        let k = S.coverScale(degrees: 3, size: CGSize(width: 4000, height: 3000))
+        XCTAssertGreaterThan(k, 1.05); XCTAssertLessThan(k, 1.1)
+        for sc in S.Scene.allCases { XCTAssertEqual(S.apply(.pro, to: img, scene: sc).extent, img.extent, "Pro on \(sc)") }
     }
 
     func testMyDayDiaryLogsLocksAndRemembers() throws {
