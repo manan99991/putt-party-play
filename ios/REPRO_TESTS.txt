@@ -1,5 +1,5 @@
-# Everything changed since the last full run, proven on its own before tonight's TestFlight (Nov 23, round 5).
-HandyToolsTests/EngineTests/testCrossfadeHalfwayIsAMixOfBothPhotos
-HandyToolsTests/EngineTests/testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook
-HandyToolsTests/VideoProTests
-HandyToolsUITests/PromiseTests/testSwipeAcrossPhotosPicksSeveral
+# 23 Nov: tonight's full run failed only on the iPad smoke tests, with simulator errors ("Failed to terminate",
+# "has not loaded accessibility"), while the identical tests passed on iPhone. Same error on 21 Nov cleared on the
+# next run. Proving it on a fresh iPad simulator with the same code before any re-send (rulebook section 8).
+#device: iPad
+HandyToolsUITests/ToolSmokeTests

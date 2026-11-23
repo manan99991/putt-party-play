@@ -33,13 +33,16 @@ jobs:
         timeout-minutes: 135
         run: |
           set -o pipefail
+          # A "#device: iPad" line in REPRO_TESTS.txt runs the tests on an iPad simulator (iPhone otherwise).
+          DEV=$(grep -m1 '^#device:' REPRO_TESTS.txt | cut -d: -f2 | tr -d ' '); DEV=${DEV:-iPhone}
           UDID=$(xcrun simctl list devices available -j | python3 -c '
           import json,sys
           d=json.load(sys.stdin)["devices"]
-          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
-          c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
+          dev=sys.argv[1]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith(dev)]
+          c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])' "$DEV")
           ONLY=$(grep -v '^#' REPRO_TESTS.txt | sed '/^$/d' | sed 's/^/-only-testing:/' | tr '\n' ' ')
-          echo "simulator=$UDID tests=$ONLY"
+          echo "simulator=$DEV $UDID tests=$ONLY"
           # Boot and settle the simulator first: a cold one makes the UI test runner stall before any test starts.
           xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
           for p in camera microphone photos location; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
@@ -47,7 +50,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation 2>&1 | tail -3
           xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
-            $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD|REALINPUT|TOOLINPUT" || true
+            $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD|REALINPUT|TOOLINPUT|SMOKE|Failed to|accessibility" || true
           # Any crash the simulator recorded for the app, newest first.
           ls -t ~/Library/Logs/DiagnosticReports/HandyTools-* 2>/dev/null | head -2 | xargs python3 ../tools/ips_summary.py > crashes.txt 2>&1 || true
           grep -qE "TEST (EXECUTE )?SUCCEEDED" repro.log
@@ -56,5 +59,5 @@ jobs:
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
-          { grep -E "error:|Test Case|Executed|TEST (SUCCEEDED|FAILED)|crashed|failed -|XCTAssert|BISECT|REALINPUT|TOOLINPUT" ios/repro.log | head -300; echo "== crash reports"; cat ios/crashes.txt 2>/dev/null; } > ios-repro.log
+          { grep -E "error:|Test Case|Executed|TEST (SUCCEEDED|FAILED)|crashed|failed -|XCTAssert|BISECT|REALINPUT|TOOLINPUT|SMOKE|Failed to|accessibility|Elapsed" ios/repro.log | head -300; echo "== crash reports"; cat ios/crashes.txt 2>/dev/null; } > ios-repro.log
           bash .github/publish-log.sh ios-repro ios-repro.log || true

@@ -24,8 +24,9 @@ final class ToolSmokeTests: XCTestCase {
     override func setUp() { continueAfterFailure = true }
 
     func testEveryToolOpensWithoutCrashing() {
-        for id in Self.toolIDs {
-            print("SMOKE \(id)")   // so a failure that names no tool (the simulator not closing the app) still says where
+        for id in Self.toolIDs { XCTContext.runActivity(named: "SMOKE \(id)") { _ in
+            // The activity name lands in the test log's step lines, so a failure XCTest raises itself (23 Nov on iPad:
+            // "Failed to terminate", which names no tool) still says which tool was open. print() never reached the log.
             let app = XCUIApplication()
             app.launchArguments = ["-route", id, "-uitest"]
             app.launch()
@@ -38,7 +39,7 @@ final class ToolSmokeTests: XCTestCase {
             _ = app.debugDescription
             XCTAssertEqual(app.state, .runningForeground, "\(id): crashed when scrolled")
             app.terminate()
-        }
+        } }
     }
 
     func testHomePagesAndSearchRender() {
