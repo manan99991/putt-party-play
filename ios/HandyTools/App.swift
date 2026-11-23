@@ -414,6 +414,7 @@ struct ToolDestination: View {
         case "sticker": StickerMakerView()
         case "medreminder": MedRemindersView()
         case "daydiary": DayDiaryView()
+        case "daydiary-record": DayDiaryView(recordNow: true)
         case "planner": PlannerView()
         case "brief": DailyBriefView()
         case "pricewatch": PriceWatchView()

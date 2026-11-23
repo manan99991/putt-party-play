@@ -82,7 +82,7 @@ final class ToolNotifications: NSObject, UNUserNotificationCenterDelegate {
 
     func install() {
         UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().setNotificationCategories([MedSchedule.registerCategory(), DayDiary.registerCategory(), ContactPlans.registerCategory()])
+        UNUserNotificationCenter.current().setNotificationCategories([MedSchedule.registerCategory(), DayDiary.registerCategory(), DayDiary.savedCategoryDef(), ContactPlans.registerCategory()])
         // Top up dated medication alerts (they're scheduled two weeks ahead) every launch.
         Task { @MainActor in MedStore.shared.reschedule() }
     }
@@ -109,8 +109,11 @@ final class ToolNotifications: NSObject, UNUserNotificationCenterDelegate {
             }
             completionHandler(); return
         }
-        if content.categoryIdentifier == DayDiary.category {
+        if content.categoryIdentifier == DayDiary.category || content.categoryIdentifier == DayDiary.savedCategory {
             switch response.actionIdentifier {
+            case DayDiary.talkAction:
+                // Straight to recording — the day's answer (if given) is kept, the message is added to it.
+                DispatchQueue.main.async { NotificationCenter.default.post(name: .openTool, object: "daydiary-record") }
             case DayDiary.goodAction:
                 DiaryStore.shared.log(.good); DayDiary.confirm(.good)
             case DayDiary.badAction:

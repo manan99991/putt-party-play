@@ -105,19 +105,30 @@ enum DayDiary {
     static let goodAction = "DAYDIARY_GOOD"
     static let badAction = "DAYDIARY_BAD"
     static let reminderID = "daydiary-evening"
+    static let talkAction = "DAYDIARY_TALK"
+    /// The "Saved" note after answering from the notification, with its own "add a short message" button.
+    static let savedCategory = "DAYDIARY_SAVED"
+
+    static func savedCategoryDef() -> UNNotificationCategory {
+        UNNotificationCategory(identifier: savedCategory,
+                               actions: [UNNotificationAction(identifier: talkAction, title: "🎙 Add a short message", options: [.foreground])],
+                               intentIdentifiers: [], options: [])
+    }
 
     static func registerCategory() -> UNNotificationCategory {
         UNNotificationCategory(identifier: category,
                                actions: [UNNotificationAction(identifier: goodAction, title: "🟢 Good day", options: []),
                                          UNNotificationAction(identifier: badAction, title: "🔴 Bad day", options: []),
-                                         UNNotificationAction(identifier: "DAYDIARY_TALK", title: "🎙 Tell me about it", options: [.foreground])],
+                                         UNNotificationAction(identifier: talkAction, title: "🎙 Tell me about it", options: [.foreground])],
                                intentIdentifiers: [], options: [])
     }
 
     static func scheduleReminder(hour: Int, minute: Int) {
         let c = UNMutableNotificationContent()
         c.title = "How was your day?"
-        c.body = "Tap Good or Bad — or tell Tenzy about it. Only you can read it back."
+        // iOS only shows a notification's buttons when it's pressed and held (or pulled down) — so say so plainly
+        // (Manan, 22 Nov: "I thought you were going to build happy/sad into the notification itself?").
+        c.body = "Press and hold for 🟢 Good day or 🔴 Bad day — no need to open the app. Only you can read it back."
         c.sound = .default
         c.categoryIdentifier = category
         c.userInfo = ["open": "daydiary"]
@@ -130,8 +141,10 @@ enum DayDiary {
     /// Answered from the notification without opening the app: a quiet "saved" note back.
     static func confirm(_ mood: Mood) {
         let c = UNMutableNotificationContent()
-        c.title = "Saved to My Day"
-        c.body = message(for: mood)
+        c.title = mood == .good ? "Saved — a good day 🟢" : "Saved — a hard day 🔴"
+        c.body = message(for: mood) + " Press and hold to add a short message about it — or leave it there."
+        c.categoryIdentifier = savedCategory
+        c.userInfo = ["open": "daydiary"]
         UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "daydiary-saved-\(UUID().uuidString)", content: c, trigger: nil))
     }
 

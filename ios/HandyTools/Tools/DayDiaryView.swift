@@ -8,6 +8,8 @@ import UserNotifications
 /// else we save the information for the day and be done with it"). The day is saved on the first tap either way.
 /// Review opens a colour calendar of every day you've logged, behind your diary PIN (or Face ID).
 struct DayDiaryView: View {
+    /// Opened from the notification's "Tell me about it" / "Add a short message": go straight to recording.
+    var recordNow = false
     @StateObject private var rec = QuickRecorder()
     @State private var today: DayDiary.Day?
     @State private var recordingMood: DayDiary.Mood?
@@ -53,7 +55,11 @@ struct DayDiaryView: View {
             .padding(.horizontal, HandySpacing.gutter)
             .padding(.vertical, HandySpacing.s12)
         }
-        .onAppear { today = DiaryStore.shared.day(DayDiary.key(Date())) }
+        .onAppear {
+            today = DiaryStore.shared.day(DayDiary.key(Date()))
+            // From the notification: if the day's answer is in, start recording for it; otherwise ask Good or Bad first.
+            if recordNow, recordingMood == nil, let m = today?.mood { startRecording(m) }
+        }
         .onChange(of: rec.interrupted) { _, cut in
             // A call came in mid-recording: keep what was said before it, and say so.
             guard cut, let m = recordingMood else { return }
