@@ -23,7 +23,7 @@ yes: standard output: Broken pipe
 + for try in 1 2 3
 + /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --install platform-tools emulator 'system-images;android-34;google_apis;x86_64'
 + tail -3
-Loading package information...                                                  Loading local repository...                                                     [                                       ] 3% Loading local repository...        [                                       ] 3% Fetch remote repository...         [=                                      ] 3% Fetch remote repository...         [=                                      ] 4% Fetch remote repository...         [=                                      ] 5% Fetch remote repository...         [==                                     ] 5% Fetch remote repository...         [==                                     ] 6% Fetch remote repository...         [==                                     ] 7% Fetch remote repository...         [==                                     ] 7% Computing updates...               [===                                    ] 8% Computing updates...               [===                                    ] 10% Computing updates...              [===                                    ] 10% Installing Android Emulator       [===                                    ] 10% Downloading emulator-linux_x64-167[====                                   ] 10% Downloading emulator-linux_x64-167[====                                   ] 11% Downloading emulator-linux_x64-167[====                                   ] 12% Downloading emulator-linux_x64-167[=====                                  ] 13% Downloading emulator-linux_x64-167[=====                                  ] 14% Downloading emulator-linux_x64-167[=====                                  ] 15% Downloading emulator-linux_x64-167[======                                 ] 15% Downloading emulator-linux_x64-167[======                                 ] 16% Downloading emulator-linux_x64-167[======                                 ] 17% Downloading emulator-linux_x64-167[=======                                ] 18% Downloading emulator-linux_x64-167[=======                                ] 19% Downloading emulator-linux_x64-167[=======                                ] 20% Downloading emulator-linux_x64-167[========                               ] 20% Downloading emulator-linux_x64-167[========                               ] 21% Downloading emulator-linux_x64-167[========                               ] 21% Unzipping...                      [========                               ] 21% Unzipping... emulator/            [========                               ] 21% Unzipping... emulator/resources/  [========                               ] 21% Unzipping... emulator/qsn         [========                               ] 21% Unzipping... emulator/emulator    [========                               ] 21% Unzipping... emulator/netsimd     [========                               ] 22% Unzipping... emulator/netsimd     [========                               ] 22% Unzipping... emulator/bin64/      [========                               ] 22% Unzipping... emulator/qemu/       [========                               ] 22% Unzipping... emulator/NOTICE.txt  [========                               ] 22% Unzipping... emulator/crashpad_han[========                               ] 22% Unzipping... emulator/source.prope[========                               ] 22% Unzipping... emulator/nimble_bridg[========                               ] 22% Unzipping... emulator/LICENSE     [========                               ] 22% Unzipping... emulator/lib/        [========                               ] 22% Unzipping... emulator/qemu-img    [========                               ] 22% Unzipping... emulator/include/    [========                               ] 22% Unzipping... emulator/NOTICE.csv  [========                               ] 22% Unzipping... emulator/lib64/      [========                               ] 22% Unzipping... emulator/emulator-che[========                               ] 22% Unzipping... emulator/crashreport [========                               ] 22% Unzipping... emulator/mksdcard    [========                               ] 22% Unzipping... emulator/resources/To[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/To[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/To[========                               ] 22% Unzipping... emulator/resources/ma[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/sk[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/ma[========                               ] 22% Unzipping... emulator/resources/po[========                               ] 22% Unzipping... emulator/resources/ma[=========                              ] 23% Unzipping... emulator/resources/ma[=========                              ] 23% Unzipping... emulator/resources/sk[=========                              ] 23% Unzipping... emulator/resources/ma[=========                              ] 23% Unzipping... emulator/bin64/e2fsck[=========                              ] 23% Unzipping... emulator/bin64/fsck.e[=========                              ] 23% Unzipping... emulator/bin64/tune2f[=========                              ] 23% Unzipping... emulator/bin64/resize[=========                              ] 23% Unzipping... emulator/bin64/mkfs.e[=========                              ] 23% Unzipping... emulator/qemu/linux-x[=========                              ] 24% Unzipping... emulator/qemu/linux-x[=========                              ] 25% Unzipping... emulator/qemu/linux-x[==========                             ] 25% Unzipping... emulator/qemu/linux-x[==========                             ] 25% Unzipping... emulator/lib/emulator[==========                             ] 25% Unzipping... emulator/lib/rtc_serv[==========                             ] 25% Unzipping... emulator/lib/advanced[==========                             ] 25% Unzipping... emulator/lib/cmake/  [==========                             ] 25% Unzipping... emulator/lib/emulator[==========                             ] 25% Unzipping... emulator/lib/control_[==========                             ] 25% Unzipping... emulator/lib/emulated[==========                             ] 25% Unzipping... emulator/lib/rtc_serv[==========                             ] 25% Unzipping... emulator/lib/emu-orig[==========                             ] 25% Unzipping... emulator/lib/hardware[==========                             ] 25% Unzipping... emulator/lib/pkgconfi[==========                             ] 25% Unzipping... emulator/lib/pc-bios/[==========                             ] 25% Unzipping... emulator/lib/snapshot[==========                             ] 25% Unzipping... emulator/lib/adb_serv[==========                             ] 25% Unzipping... emulator/lib/hostapd.[==========                             ] 25% Unzipping... emulator/lib/grpc_end[==========                             ] 25% Unzipping... emulator/lib/ca-bundl[==========                             ] 25% Unzipping... emulator/lib/ui_contr[==========                             ] 25% Unzipping... emulator/lib/snapshot[==========                             ] 25% Unzipping... emulator/lib/ice_conf[==========                             ] 25% Unzipping... emulator/lib/libflatb[==========                             ] 26% Unzipping... emulator/lib/libflatb[==========                             ] 26% Unzipping... emulator/lib/emulator[==========                             ] 26% Unzipping... emulator/lib/waterfal[==========                             ] 26% Unzipping... emulator/lib/emulated[==========                             ] 26% Unzipping... emulator/lib/cmake/fl[==========                             ] 26% Unzipping... emulator/lib/pkgconfi[==========                             ] 26% Unzipping... emulator/lib/pc-bios/[==========                             ] 26% Unzipping... emulator/include/flat[==========                             ] 26% Unzipping... emulator/lib64/libgli[==========                             ] 26% Unzipping... emulator/lib64/libpro[==========                             ] 26% Unzipping... emulator/lib64/qt/   [==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/libgfx[==========                             ] 26% Unzipping... emulator/lib64/gles_l[==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/vulkan[==========                             ] 26% Unzipping... emulator/lib64/gles_s[==========                             ] 26% Unzipping... emulator/lib64/libemu[==========                             ] 26% Unzipping... emulator/lib64/libpro[==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/libtcm[==========                             ] 26% Unzipping... emulator/lib64/libima[==========                             ] 26% Unzipping... emulator/lib64/libc++[==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/libabs[==========                             ] 26% Unzipping... emulator/lib64/gles_a[==========                             ] 26% Unzipping... emulator/lib64/libsha[==========                             ] 26% Unzipping... emulator/lib64/libc++[==========                             ] 26% Unzipping... emulator/lib64/qt/res[==========                             ] 26% Unzipping... emulator/lib64/qt/lib[==========                             ] 26% Unzipping... emulator/lib64/qt/tra[==========                             ] 26% Unzipping... emulator/lib64/qt/plu[==========                             ] 26% Unzipping... emulator/lib64/qt/res[==========                             ] 27% Unzipping... emulator/lib64/qt/res[==========                             ] 27% Unzipping... emulator/lib64/qt/lib[===========                            ] 28% Unzipping... emulator/lib64/qt/lib[===========                            ] 29% Unzipping... emulator/lib64/qt/lib[===========                            ] 30% Unzipping... emulator/lib64/qt/lib[============                           ] 30% Unzipping... emulator/lib64/qt/lib[============                           ] 30% Unzipping... emulator/lib64/qt/tra[============                           ] 30% Unzipping... emulator/lib64/qt/plu[============                           ] 30% Unzipping... emulator/lib64/gles_l[============                           ] 31% Unzipping... emulator/lib64/gles_l[============                           ] 31% Unzipping... emulator/lib64/vulkan[============                           ] 32% Unzipping... emulator/lib64/vulkan[============                           ] 32% Unzipping... emulator/lib64/gles_s[============                           ] 32% Unzipping... emulator/lib64/gles_a[=============                          ] 33% Unzipping... emulator/lib64/gles_a[=====================                  ] 55% Unzipping... emulator/lib64/gles_a[=====================                  ] 55% Installing Google APIs Intel x86_6[=====================                  ] 55% Downloading x86_64-34_r14.zip... e[======================                 ] 55% Downloading x86_64-34_r14.zip... e[======================                 ] 56% Downloading x86_64-34_r14.zip... e[======================                 ] 57% Downloading x86_64-34_r14.zip... e[=======================                ] 58% Downloading x86_64-34_r14.zip... e[=======================                ] 59% Downloading x86_64-34_r14.zip... e[=======================                ] 60% Downloading x86_64-34_r14.zip... e[========================               ] 60% Downloading x86_64-34_r14.zip... e[========================               ] 61% Downloading x86_64-34_r14.zip... e[========================               ] 62% Downloading x86_64-34_r14.zip... e[=========================              ] 63% Downloading x86_64-34_r14.zip... e[=========================              ] 64% Downloading x86_64-34_r14.zip... e[=========================              ] 65% Downloading x86_64-34_r14.zip... e[==========================             ] 65% Downloading x86_64-34_r14.zip... e[==========================             ] 66% Downloading x86_64-34_r14.zip... e[==========================             ] 66% Unzipping... emulator/lib64/gles_a[==========================             ] 66% Unzipping... x86_64/NOTICE.txt    [==========================             ] 66% Unzipping... x86_64/VerifiedBootPa[==========================             ] 66% Unzipping... x86_64/advancedFeatur[==========================             ] 66% Unzipping... x86_64/build.prop    [==========================             ] 66% Unzipping... x86_64/encryptionkey.[==========================             ] 66% Unzipping... x86_64/kernel-ranchu [==========================             ] 66% Unzipping... x86_64/ramdisk.img   [==========================             ] 66% Unzipping... x86_64/source.propert[==========================             ] 66% Unzipping... x86_64/system.img    [==========================             ] 67% Unzipping... x86_64/system.img    [===========================            ] 68% Unzipping... x86_64/system.img    [===========================            ] 69% Unzipping... x86_64/system.img    [===========================            ] 70% Unzipping... x86_64/system.img    [============================           ] 70% Unzipping... x86_64/system.img    [============================           ] 71% Unzipping... x86_64/system.img    [============================           ] 72% Unzipping... x86_64/system.img    [=============================          ] 73% Unzipping... x86_64/system.img    [=============================          ] 74% Unzipping... x86_64/system.img    [=============================          ] 75% Unzipping... x86_64/system.img    [==============================         ] 75% Unzipping... x86_64/system.img    [==============================         ] 76% Unzipping... x86_64/system.img    [==============================         ] 77% Unzipping... x86_64/system.img    [==============================         ] 77% Unzipping... x86_64/userdata.img  [==============================         ] 77% Unzipping... x86_64/vendor.img    [==============================         ] 77% Unzipping... x86_64/data/local.pro[==============================         ] 77% Unzipping... x86_64/data/misc/Gold[==============================         ] 77% Unzipping... x86_64/data/misc/apns[==============================         ] 77% Unzipping... x86_64/data/misc/emul[==============================         ] 77% Unzipping... x86_64/data/misc/gcec[==============================         ] 77% Unzipping... x86_64/data/misc/mode[==============================         ] 77% Unzipping... x86_64/data/misc/pixe[==============================         ] 78% Unzipping... x86_64/data/misc/pixe[=======================================] 100% Unzipping... x86_64/data/misc/pix
+Loading package information...                                                  Loading local repository...                                                     [                                       ] 3% Loading local repository...        [                                       ] 3% Fetch remote repository...         [=                                      ] 3% Fetch remote repository...         [=                                      ] 4% Fetch remote repository...         [=                                      ] 5% Fetch remote repository...         [==                                     ] 5% Fetch remote repository...         [==                                     ] 6% Fetch remote repository...         [==                                     ] 7% Fetch remote repository...         [==                                     ] 7% Computing updates...               [===                                    ] 8% Computing updates...               [===                                    ] 10% Computing updates...              [===                                    ] 10% Installing Android Emulator       [===                                    ] 10% Downloading emulator-linux_x64-169[====                                   ] 10% Downloading emulator-linux_x64-169[====                                   ] 11% Downloading emulator-linux_x64-169[====                                   ] 12% Downloading emulator-linux_x64-169[=====                                  ] 13% Downloading emulator-linux_x64-169[=====                                  ] 14% Downloading emulator-linux_x64-169[=====                                  ] 15% Downloading emulator-linux_x64-169[======                                 ] 15% Downloading emulator-linux_x64-169[======                                 ] 16% Downloading emulator-linux_x64-169[======                                 ] 17% Downloading emulator-linux_x64-169[=======                                ] 18% Downloading emulator-linux_x64-169[=======                                ] 18% Unzipping...                      [=======                                ] 18% Unzipping... emulator/            [=======                                ] 18% Unzipping... emulator/resources/  [=======                                ] 18% Unzipping... emulator/qsn         [=======                                ] 18% Unzipping... emulator/emulator    [=======                                ] 18% Unzipping... emulator/netsimd     [=======                                ] 18% Unzipping... emulator/bin64/      [=======                                ] 18% Unzipping... emulator/qemu/       [=======                                ] 18% Unzipping... emulator/NOTICE.txt  [=======                                ] 18% Unzipping... emulator/crashpad_han[=======                                ] 18% Unzipping... emulator/source.prope[=======                                ] 18% Unzipping... emulator/nimble_bridg[=======                                ] 18% Unzipping... emulator/LICENSE     [=======                                ] 18% Unzipping... emulator/lib/        [=======                                ] 18% Unzipping... emulator/qemu-img    [=======                                ] 18% Unzipping... emulator/include/    [=======                                ] 18% Unzipping... emulator/NOTICE.csv  [=======                                ] 18% Unzipping... emulator/lib64/      [=======                                ] 18% Unzipping... emulator/emulator-che[=======                                ] 18% Unzipping... emulator/crashreport [=======                                ] 18% Unzipping... emulator/mksdcard    [=======                                ] 18% Unzipping... emulator/resources/To[=======                                ] 18% Unzipping... emulator/resources/de[=======                                ] 18% Unzipping... emulator/resources/To[=======                                ] 18% Unzipping... emulator/resources/de[=======                                ] 18% Unzipping... emulator/resources/To[=======                                ] 18% Unzipping... emulator/resources/ma[=======                                ] 18% Unzipping... emulator/resources/de[=======                                ] 18% Unzipping... emulator/resources/sk[=======                                ] 18% Unzipping... emulator/resources/de[=======                                ] 18% Unzipping... emulator/resources/ma[=======                                ] 18% Unzipping... emulator/resources/po[=======                                ] 18% Unzipping... emulator/resources/ma[=======                                ] 18% Unzipping... emulator/resources/sk[=======                                ] 18% Unzipping... emulator/resources/ma[=======                                ] 18% Unzipping... emulator/bin64/e2fsck[=======                                ] 18% Unzipping... emulator/bin64/fsck.e[=======                                ] 18% Unzipping... emulator/bin64/tune2f[=======                                ] 18% Unzipping... emulator/bin64/resize[=======                                ] 18% Unzipping... emulator/bin64/mkfs.e[=======                                ] 18% Unzipping... emulator/qemu/linux-x[=======                                ] 19% Unzipping... emulator/qemu/linux-x[=======                                ] 20% Unzipping... emulator/qemu/linux-x[========                               ] 20% Unzipping... emulator/qemu/linux-x[========                               ] 20% Unzipping... emulator/lib/emulator[========                               ] 20% Unzipping... emulator/lib/rtc_serv[========                               ] 20% Unzipping... emulator/lib/advanced[========                               ] 20% Unzipping... emulator/lib/cmake/  [========                               ] 20% Unzipping... emulator/lib/emulator[========                               ] 20% Unzipping... emulator/lib/control_[========                               ] 20% Unzipping... emulator/lib/emulated[========                               ] 20% Unzipping... emulator/lib/rtc_serv[========                               ] 20% Unzipping... emulator/lib/emu-orig[========                               ] 20% Unzipping... emulator/lib/hardware[========                               ] 20% Unzipping... emulator/lib/pkgconfi[========                               ] 20% Unzipping... emulator/lib/pc-bios/[========                               ] 20% Unzipping... emulator/lib/snapshot[========                               ] 20% Unzipping... emulator/lib/adb_serv[========                               ] 20% Unzipping... emulator/lib/hostapd.[========                               ] 20% Unzipping... emulator/lib/grpc_end[========                               ] 20% Unzipping... emulator/lib/ca-bundl[========                               ] 20% Unzipping... emulator/lib/ui_contr[========                               ] 20% Unzipping... emulator/lib/snapshot[========                               ] 20% Unzipping... emulator/lib/ice_conf[========                               ] 20% Unzipping... emulator/lib/libflatb[========                               ] 20% Unzipping... emulator/lib/emulator[========                               ] 20% Unzipping... emulator/lib/waterfal[========                               ] 20% Unzipping... emulator/lib/emulated[========                               ] 20% Unzipping... emulator/lib/cmake/fl[========                               ] 20% Unzipping... emulator/lib/pkgconfi[========                               ] 20% Unzipping... emulator/lib/pc-bios/[========                               ] 20% Unzipping... emulator/include/flat[========                               ] 20% Unzipping... emulator/lib64/libgli[========                               ] 20% Unzipping... emulator/lib64/libpro[========                               ] 20% Unzipping... emulator/lib64/qt/   [========                               ] 20% Unzipping... emulator/lib64/liband[========                               ] 21% Unzipping... emulator/lib64/liband[========                               ] 21% Unzipping... emulator/lib64/libgfx[========                               ] 21% Unzipping... emulator/lib64/gles_l[========                               ] 21% Unzipping... emulator/lib64/liband[========                               ] 21% Unzipping... emulator/lib64/vulkan[========                               ] 21% Unzipping... emulator/lib64/gles_s[========                               ] 21% Unzipping... emulator/lib64/libemu[========                               ] 21% Unzipping... emulator/lib64/libpro[========                               ] 21% Unzipping... emulator/lib64/liband[========                               ] 21% Unzipping... emulator/lib64/libtcm[========                               ] 21% Unzipping... emulator/lib64/libima[========                               ] 21% Unzipping... emulator/lib64/libc++[========                               ] 21% Unzipping... emulator/lib64/liband[========                               ] 21% Unzipping... emulator/lib64/libabs[========                               ] 21% Unzipping... emulator/lib64/gles_a[========                               ] 21% Unzipping... emulator/lib64/libsha[========                               ] 21% Unzipping... emulator/lib64/libc++[========                               ] 21% Unzipping... emulator/lib64/qt/res[========                               ] 21% Unzipping... emulator/lib64/qt/lib[========                               ] 21% Unzipping... emulator/lib64/qt/tra[========                               ] 21% Unzipping... emulator/lib64/qt/plu[========                               ] 21% Unzipping... emulator/lib64/qt/res[========                               ] 21% Unzipping... emulator/lib64/qt/lib[========                               ] 22% Unzipping... emulator/lib64/qt/lib[=========                              ] 23% Unzipping... emulator/lib64/qt/lib[=========                              ] 23% Unzipping... emulator/lib64/qt/tra[=========                              ] 24% Unzipping... emulator/lib64/qt/tra[=========                              ] 24% Unzipping... emulator/lib64/qt/plu[=========                              ] 24% Unzipping... emulator/lib64/gles_l[=========                              ] 24% Unzipping... emulator/lib64/vulkan[=========                              ] 25% Unzipping... emulator/lib64/vulkan[=========                              ] 25% Unzipping... emulator/lib64/gles_s[=========                              ] 25% Unzipping... emulator/lib64/gles_a[===============                        ] 40% Unzipping... emulator/lib64/gles_a[===============                        ] 40% Installing Google APIs Intel x86_6[===============                        ] 40% Downloading x86_64-34_r14.zip... e[================                       ] 40% Downloading x86_64-34_r14.zip... e[================                       ] 41% Downloading x86_64-34_r14.zip... e[================                       ] 42% Downloading x86_64-34_r14.zip... e[=================                      ] 43% Downloading x86_64-34_r14.zip... e[=================                      ] 44% Downloading x86_64-34_r14.zip... e[=================                      ] 45% Downloading x86_64-34_r14.zip... e[==================                     ] 45% Downloading x86_64-34_r14.zip... e[==================                     ] 46% Downloading x86_64-34_r14.zip... e[==================                     ] 47% Downloading x86_64-34_r14.zip... e[==================                     ] 48% Downloading x86_64-34_r14.zip... e[==================                     ] 48% Unzipping... emulator/lib64/gles_a[==================                     ] 48% Unzipping... x86_64/NOTICE.txt    [===================                    ] 48% Unzipping... x86_64/NOTICE.txt    [===================                    ] 48% Unzipping... x86_64/VerifiedBootPa[===================                    ] 48% Unzipping... x86_64/advancedFeatur[===================                    ] 48% Unzipping... x86_64/build.prop    [===================                    ] 48% Unzipping... x86_64/encryptionkey.[===================                    ] 48% Unzipping... x86_64/kernel-ranchu [===================                    ] 48% Unzipping... x86_64/ramdisk.img   [===================                    ] 48% Unzipping... x86_64/source.propert[===================                    ] 48% Unzipping... x86_64/system.img    [===================                    ] 49% Unzipping... x86_64/system.img    [===================                    ] 50% Unzipping... x86_64/system.img    [====================                   ] 50% Unzipping... x86_64/system.img    [====================                   ] 51% Unzipping... x86_64/system.img    [====================                   ] 52% Unzipping... x86_64/system.img    [=====================                  ] 53% Unzipping... x86_64/system.img    [=====================                  ] 54% Unzipping... x86_64/system.img    [=====================                  ] 55% Unzipping... x86_64/system.img    [=====================                  ] 55% Unzipping... x86_64/userdata.img  [=====================                  ] 55% Unzipping... x86_64/vendor.img    [=====================                  ] 55% Unzipping... x86_64/data/local.pro[=====================                  ] 55% Unzipping... x86_64/data/misc/Gold[=====================                  ] 55% Unzipping... x86_64/data/misc/apns[=====================                  ] 55% Unzipping... x86_64/data/misc/emul[=====================                  ] 55% Unzipping... x86_64/data/misc/gcec[=====================                  ] 55% Unzipping... x86_64/data/misc/mode[=====================                  ] 55% Unzipping... x86_64/data/misc/pixe[===========================            ] 70% Unzipping... x86_64/data/misc/pixe[===========================            ] 70% Installing Android SDK Platform-To[===========================            ] 70% Downloading platform-tools_r37.0.3[============================           ] 70% Downloading platform-tools_r37.0.3[============================           ] 71% Downloading platform-tools_r37.0.3[============================           ] 72% Downloading platform-tools_r37.0.3[=============================          ] 73% Downloading platform-tools_r37.0.3[=============================          ] 74% Downloading platform-tools_r37.0.3[=============================          ] 75% Downloading platform-tools_r37.0.3[==============================         ] 75% Downloading platform-tools_r37.0.3[==============================         ] 76% Downloading platform-tools_r37.0.3[==============================         ] 77% Downloading platform-tools_r37.0.3[==============================         ] 77% Unzipping... x86_64/data/misc/pixe[==============================         ] 77% Unzipping... platform-tools/NOTICE[===============================        ] 78% Unzipping... platform-tools/NOTICE[===============================        ] 78% Unzipping... platform-tools/adb   [===============================        ] 79% Unzipping... platform-tools/adb   [===============================        ] 80% Unzipping... platform-tools/adb   [================================       ] 80% Unzipping... platform-tools/adb   [================================       ] 81% Unzipping... platform-tools/adb   [================================       ] 81% Unzipping... platform-tools/etc1to[================================       ] 82% Unzipping... platform-tools/etc1to[================================       ] 82% Unzipping... platform-tools/fastbo[=================================      ] 83% Unzipping... platform-tools/fastbo[=================================      ] 83% Unzipping... platform-tools/hprof-[=================================      ] 83% Unzipping... platform-tools/lib64/[=================================      ] 83% Unzipping... platform-tools/make_f[=================================      ] 83% Unzipping... platform-tools/mke2fs[=================================      ] 84% Unzipping... platform-tools/mke2fs[=================================      ] 84% Unzipping... platform-tools/source[=================================      ] 84% Unzipping... platform-tools/sqlite[=================================      ] 85% Unzipping... platform-tools/sqlite[=======================================] 100% Unzipping... platform-tools/sqlit
 
 + '[' -x /usr/local/lib/android/sdk/emulator/emulator ']'
 + '[' -f /usr/local/lib/android/sdk/system-images/android-34/google_apis/x86_64/system.img ']'
@@ -35,19 +35,18 @@ Loading package information...                                                  
 + mkdir -p /home/runner/.android/avd
 + echo no
 + /usr/local/lib/android/sdk/cmdline-tools/latest/bin/avdmanager create avd -n shot -k 'system-images;android-34;google_apis;x86_64' -d pixel_7 --force
-Loading local repository...                                                     [=========                              ] 25% Loading local repository...       [=========                              ] 25% Fetch remote repository...        [=======================================] 100% Fetch remote repository...       
-Auto-selecting single ABI x86_64
+Loading local repository...                                                     [=========                              ] 25% Loading local repository...       Auto-selecting single ABI x86_64
 + ls -la /home/runner/.android/avd
 total 16
-drwxr-xr-x 3 runner runner 4096 Nov 14 14:36 .
-drwxr-xr-x 3 runner runner 4096 Nov 14 14:36 ..
-drwxr-xr-x 2 runner runner 4096 Nov 14 14:36 shot.avd
--rw-r--r-- 1 runner runner   81 Nov 14 14:36 shot.ini
+drwxr-xr-x 3 runner runner 4096 Nov 23 20:54 .
+drwxr-xr-x 3 runner runner 4096 Nov 23 20:54 ..
+drwxr-xr-x 2 runner runner 4096 Nov 23 20:54 shot.avd
+-rw-r--r-- 1 runner runner   81 Nov 23 20:54 shot.ini
 + /usr/local/lib/android/sdk/emulator/emulator -list-avds
 shot
 + export PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 + PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-+ EMU=2512
++ EMU=2705
 + nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -accel on
 ++ seq 1 90
 + for i in $(seq 1 90)
@@ -55,7 +54,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2512
++ kill -0 2705
 + '[' 1 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -63,7 +62,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2512
++ kill -0 2705
 + '[' 2 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -71,7 +70,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2512
++ kill -0 2705
 + '[' 3 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -79,12 +78,12 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2512
++ kill -0 2705
 + '[' 4 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
-++ tr -d '\r'
 ++ adb shell getprop sys.boot_completed
+++ tr -d '\r'
 + b=1
 + '[' 1 = 1 ']'
 + break
@@ -98,28 +97,28 @@ INFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647
 INFO         |   androidboot.qemu.skin=1080x2400
 INFO         |   androidboot.qemu.virtiowifi=1
 INFO         |   androidboot.qemu.vsync=60
-INFO         |   androidboot.serialno=EMULATOR37X2X13X0
+INFO         |   androidboot.serialno=EMULATOR37X3X10X0
 INFO         |   androidboot.vbmeta.digest=451e57ed688ff746d2c636d52169ade253e2bc5bb30a5c3ff23679ca15d3bcd3
 INFO         |   androidboot.vbmeta.hash_alg=sha256
 INFO         |   androidboot.vbmeta.size=6656
 INFO         |   androidboot.veritymode=enforcing
-WARNING: cannnot unmap ptr 0x7f8629801000 as it is in the protected range from 0x7f8589800000 to 0x7f8629a00000
+WARNING: cannnot unmap ptr 0x788dfde01000 as it is in the protected range from 0x788d5de00000 to 0x788dfe000000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2512/jwks/f11e4810-f90b-4aae-bfe5-59b5935b42bb/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2512/jwks/f11e4810-f90b-4aae-bfe5-59b5935b42bb for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2705/jwks/c22d2a18-eef4-4eef-a2f5-878c0099c306/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2705/jwks/c22d2a18-eef4-4eef-a2f5-878c0099c306 for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2512.ini
-INFO         | Successfully initialized netsim WiFi
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2705.ini
 INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Successfully initialized netsim WiFi
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 33377 ms
+INFO         | Boot completed in 32469 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
 + adb shell settings put global hide_error_dialogs 1
 + adb shell settings put global window_animation_scale 0
@@ -137,255 +136,267 @@ Success
 + adb shell cmd uimode night no
 Night mode: no
 + sleep 2
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route home
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 7082
-WaitTime: 7115
+TotalTime: 5233
+WaitTime: 5449
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route settings
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 6262
-WaitTime: 6285
+TotalTime: 3523
+WaitTime: 3678
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route privacy
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3150
-WaitTime: 3196
+TotalTime: 2778
+WaitTime: 2781
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route onboarding
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3577
-WaitTime: 3580
+TotalTime: 2322
+WaitTime: 2324
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route invoice
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2422
+WaitTime: 2425
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route fileviewer
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 5698
-WaitTime: 5717
+TotalTime: 2332
+WaitTime: 2336
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route docs
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 4635
-WaitTime: 4654
+TotalTime: 3102
+WaitTime: 3106
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route media
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3365
-WaitTime: 3377
+TotalTime: 1791
+WaitTime: 1808
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route cleanup
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3380
-WaitTime: 3385
+TotalTime: 1666
+WaitTime: 1693
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route converter
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2483
-WaitTime: 2488
+TotalTime: 1872
+WaitTime: 1874
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route instruments
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3001
-WaitTime: 3047
+TotalTime: 2131
+WaitTime: 2133
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route safety
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2368
-WaitTime: 2387
+TotalTime: 2417
+WaitTime: 2453
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route share
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2763
-WaitTime: 2768
+TotalTime: 2288
+WaitTime: 2294
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route network
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2198
-WaitTime: 2204
+TotalTime: 2196
+WaitTime: 2202
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route codes
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2458
-WaitTime: 2468
+TotalTime: 1694
+WaitTime: 1712
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route scrubber
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2513
-WaitTime: 2519
+TotalTime: 1649
+WaitTime: 1651
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route voice
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2382
-WaitTime: 2445
+TotalTime: 1611
+WaitTime: 1613
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route translate
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2280
-WaitTime: 2285
+TotalTime: 2111
+WaitTime: 2140
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route memory
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2216
-WaitTime: 2239
+TotalTime: 1721
+WaitTime: 1733
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route sorted
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2195
-WaitTime: 2198
+TotalTime: 1966
+WaitTime: 1986
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route receipts
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2518
-WaitTime: 2520
+TotalTime: 1740
+WaitTime: 1766
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route flashlight
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2864
-WaitTime: 2873
+TotalTime: 2325
+WaitTime: 2328
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -394,305 +405,319 @@ Complete
 + adb shell cmd uimode night yes
 Night mode: yes
 + sleep 2
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route home
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2803
-WaitTime: 2837
+TotalTime: 2362
+WaitTime: 2368
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route settings
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2498
-WaitTime: 2525
+TotalTime: 1901
+WaitTime: 1934
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route privacy
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2271
-WaitTime: 2273
+TotalTime: 1404
+WaitTime: 1408
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route onboarding
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2188
-WaitTime: 2199
+TotalTime: 1798
+WaitTime: 1799
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route invoice
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 1955
+WaitTime: 1961
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route fileviewer
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2413
-WaitTime: 2420
+TotalTime: 1584
+WaitTime: 1617
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route docs
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2650
-WaitTime: 2677
+TotalTime: 2048
+WaitTime: 2081
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route media
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2317
-WaitTime: 2320
+TotalTime: 1955
+WaitTime: 1957
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route cleanup
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2115
-WaitTime: 2132
+TotalTime: 1929
+WaitTime: 1932
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route converter
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2072
-WaitTime: 2080
+TotalTime: 1898
+WaitTime: 1900
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route instruments
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2322
-WaitTime: 2330
+TotalTime: 2110
+WaitTime: 2124
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route safety
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2519
-WaitTime: 2554
+TotalTime: 2046
+WaitTime: 2066
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route share
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2524
-WaitTime: 2536
+TotalTime: 1787
+WaitTime: 1789
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route network
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2521
-WaitTime: 2604
+TotalTime: 1680
+WaitTime: 1699
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route codes
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2227
-WaitTime: 2234
+TotalTime: 1705
+WaitTime: 1708
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route scrubber
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2367
-WaitTime: 2371
+TotalTime: 2231
+WaitTime: 2248
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route voice
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2375
-WaitTime: 2406
+TotalTime: 1673
+WaitTime: 1675
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route translate
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2937
-WaitTime: 2939
+TotalTime: 1854
+WaitTime: 1858
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route memory
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2515
-WaitTime: 2534
+TotalTime: 1954
+WaitTime: 1964
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route sorted
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2437
-WaitTime: 2454
+TotalTime: 2037
+WaitTime: 2041
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route receipts
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2339
-WaitTime: 2370
+TotalTime: 1600
+WaitTime: 1605
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
++ for r in home settings privacy onboarding invoice fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight
 + adb shell am force-stop com.tenzy.toolkit
 + adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route flashlight
 Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2603
-WaitTime: 2628
+TotalTime: 2163
+WaitTime: 2175
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + ls -la shots
-total 13052
-drwxr-xr-x 2 runner runner   4096 Nov 14 14:43 .
-drwxr-xr-x 6 runner runner   4096 Nov 14 14:36 ..
--rw-r--r-- 1 runner runner  46647 Nov 14 14:43 _run.log
--rw-r--r-- 1 runner runner 367597 Nov 14 14:41 android-dark-cleanup.png
--rw-r--r-- 1 runner runner 328049 Nov 14 14:42 android-dark-codes.png
--rw-r--r-- 1 runner runner 344291 Nov 14 14:41 android-dark-converter.png
--rw-r--r-- 1 runner runner 382673 Nov 14 14:41 android-dark-docs.png
--rw-r--r-- 1 runner runner 336912 Nov 14 14:41 android-dark-fileviewer.png
--rw-r--r-- 1 runner runner 345672 Nov 14 14:43 android-dark-flashlight.png
--rw-r--r-- 1 runner runner 215107 Nov 14 14:40 android-dark-home.png
--rw-r--r-- 1 runner runner 359845 Nov 14 14:42 android-dark-instruments.png
--rw-r--r-- 1 runner runner 360985 Nov 14 14:41 android-dark-media.png
--rw-r--r-- 1 runner runner 298966 Nov 14 14:43 android-dark-memory.png
--rw-r--r-- 1 runner runner 367148 Nov 14 14:42 android-dark-network.png
--rw-r--r-- 1 runner runner  91317 Nov 14 14:41 android-dark-onboarding.png
--rw-r--r-- 1 runner runner 248533 Nov 14 14:41 android-dark-privacy.png
--rw-r--r-- 1 runner runner 271974 Nov 14 14:43 android-dark-receipts.png
--rw-r--r-- 1 runner runner 384125 Nov 14 14:42 android-dark-safety.png
--rw-r--r-- 1 runner runner 365664 Nov 14 14:42 android-dark-scrubber.png
--rw-r--r-- 1 runner runner 329838 Nov 14 14:40 android-dark-settings.png
--rw-r--r-- 1 runner runner 361095 Nov 14 14:42 android-dark-share.png
--rw-r--r-- 1 runner runner 266031 Nov 14 14:43 android-dark-sorted.png
--rw-r--r-- 1 runner runner 370917 Nov 14 14:43 android-dark-translate.png
--rw-r--r-- 1 runner runner 273717 Nov 14 14:43 android-dark-voice.png
--rw-r--r-- 1 runner runner 361126 Nov 14 14:38 android-light-cleanup.png
--rw-r--r-- 1 runner runner 326988 Nov 14 14:39 android-light-codes.png
--rw-r--r-- 1 runner runner 309035 Nov 14 14:38 android-light-converter.png
--rw-r--r-- 1 runner runner 385156 Nov 14 14:38 android-light-docs.png
--rw-r--r-- 1 runner runner 293355 Nov 14 14:38 android-light-fileviewer.png
--rw-r--r-- 1 runner runner 369199 Nov 14 14:40 android-light-flashlight.png
--rw-r--r-- 1 runner runner 168533 Nov 14 14:37 android-light-home.png
--rw-r--r-- 1 runner runner 362284 Nov 14 14:38 android-light-instruments.png
--rw-r--r-- 1 runner runner 364008 Nov 14 14:38 android-light-media.png
--rw-r--r-- 1 runner runner 294931 Nov 14 14:40 android-light-memory.png
--rw-r--r-- 1 runner runner 370006 Nov 14 14:39 android-light-network.png
--rw-r--r-- 1 runner runner  92597 Nov 14 14:37 android-light-onboarding.png
--rw-r--r-- 1 runner runner 246379 Nov 14 14:37 android-light-privacy.png
--rw-r--r-- 1 runner runner 269349 Nov 14 14:40 android-light-receipts.png
--rw-r--r-- 1 runner runner 381117 Nov 14 14:39 android-light-safety.png
--rw-r--r-- 1 runner runner 363591 Nov 14 14:39 android-light-scrubber.png
--rw-r--r-- 1 runner runner 325972 Nov 14 14:37 android-light-settings.png
--rw-r--r-- 1 runner runner 356941 Nov 14 14:39 android-light-share.png
--rw-r--r-- 1 runner runner 263807 Nov 14 14:40 android-light-sorted.png
--rw-r--r-- 1 runner runner 367511 Nov 14 14:40 android-light-translate.png
--rw-r--r-- 1 runner runner 267010 Nov 14 14:39 android-light-voice.png
+total 11924
+drwxr-xr-x 2 runner runner   4096 Nov 23 21:01 .
+drwxr-xr-x 6 runner runner   4096 Nov 23 20:55 ..
+-rw-r--r-- 1 runner runner  49043 Nov 23 21:01 _run.log
+-rw-r--r-- 1 runner runner 312121 Nov 23 21:00 android-dark-cleanup.png
+-rw-r--r-- 1 runner runner 269835 Nov 23 21:00 android-dark-codes.png
+-rw-r--r-- 1 runner runner 257573 Nov 23 21:00 android-dark-converter.png
+-rw-r--r-- 1 runner runner 332249 Nov 23 20:59 android-dark-docs.png
+-rw-r--r-- 1 runner runner 282080 Nov 23 20:59 android-dark-fileviewer.png
+-rw-r--r-- 1 runner runner 306401 Nov 23 21:01 android-dark-flashlight.png
+-rw-r--r-- 1 runner runner 194640 Nov 23 20:58 android-dark-home.png
+-rw-r--r-- 1 runner runner 307112 Nov 23 21:00 android-dark-instruments.png
+-rw-r--r-- 1 runner runner 374768 Nov 23 20:59 android-dark-invoice.png
+-rw-r--r-- 1 runner runner 309772 Nov 23 20:59 android-dark-media.png
+-rw-r--r-- 1 runner runner 240726 Nov 23 21:01 android-dark-memory.png
+-rw-r--r-- 1 runner runner 314948 Nov 23 21:00 android-dark-network.png
+-rw-r--r-- 1 runner runner 121130 Nov 23 20:59 android-dark-onboarding.png
+-rw-r--r-- 1 runner runner 248989 Nov 23 20:59 android-dark-privacy.png
+-rw-r--r-- 1 runner runner 218209 Nov 23 21:01 android-dark-receipts.png
+-rw-r--r-- 1 runner runner 324689 Nov 23 21:00 android-dark-safety.png
+-rw-r--r-- 1 runner runner 313833 Nov 23 21:01 android-dark-scrubber.png
+-rw-r--r-- 1 runner runner 299970 Nov 23 20:59 android-dark-settings.png
+-rw-r--r-- 1 runner runner 287191 Nov 23 21:00 android-dark-share.png
+-rw-r--r-- 1 runner runner 213927 Nov 23 21:01 android-dark-sorted.png
+-rw-r--r-- 1 runner runner 319013 Nov 23 21:01 android-dark-translate.png
+-rw-r--r-- 1 runner runner 219222 Nov 23 21:01 android-dark-voice.png
+-rw-r--r-- 1 runner runner 309099 Nov 23 20:56 android-light-cleanup.png
+-rw-r--r-- 1 runner runner 268091 Nov 23 20:57 android-light-codes.png
+-rw-r--r-- 1 runner runner 254272 Nov 23 20:57 android-light-converter.png
+-rw-r--r-- 1 runner runner 328229 Nov 23 20:56 android-light-docs.png
+-rw-r--r-- 1 runner runner 277563 Nov 23 20:56 android-light-fileviewer.png
+-rw-r--r-- 1 runner runner 303024 Nov 23 20:58 android-light-flashlight.png
+-rw-r--r-- 1 runner runner 193302 Nov 23 20:55 android-light-home.png
+-rw-r--r-- 1 runner runner 303888 Nov 23 20:57 android-light-instruments.png
+-rw-r--r-- 1 runner runner 370940 Nov 23 20:56 android-light-invoice.png
+-rw-r--r-- 1 runner runner 306735 Nov 23 20:56 android-light-media.png
+-rw-r--r-- 1 runner runner 237121 Nov 23 20:58 android-light-memory.png
+-rw-r--r-- 1 runner runner 312622 Nov 23 20:57 android-light-network.png
+-rw-r--r-- 1 runner runner 122140 Nov 23 20:56 android-light-onboarding.png
+-rw-r--r-- 1 runner runner 245721 Nov 23 20:56 android-light-privacy.png
+-rw-r--r-- 1 runner runner 215826 Nov 23 20:58 android-light-receipts.png
+-rw-r--r-- 1 runner runner 322100 Nov 23 20:57 android-light-safety.png
+-rw-r--r-- 1 runner runner 310589 Nov 23 20:57 android-light-scrubber.png
+-rw-r--r-- 1 runner runner 297090 Nov 23 20:55 android-light-settings.png
+-rw-r--r-- 1 runner runner 284023 Nov 23 20:57 android-light-share.png
+-rw-r--r-- 1 runner runner 211612 Nov 23 20:58 android-light-sorted.png
+-rw-r--r-- 1 runner runner 315339 Nov 23 20:58 android-light-translate.png
+-rw-r--r-- 1 runner runner 215996 Nov 23 20:58 android-light-voice.png
 + adb logcat -d -s AndroidRuntime:E
 + adb logcat -d
 + grep -iE handytools
@@ -700,21 +725,21 @@ drwxr-xr-x 6 runner runner   4096 Nov 14 14:36 ..
 + tail -20 emulator.log
 INFO         |   androidboot.vbmeta.size=6656
 INFO         |   androidboot.veritymode=enforcing
-WARNING: cannnot unmap ptr 0x7f8629801000 as it is in the protected range from 0x7f8589800000 to 0x7f8629a00000
+WARNING: cannnot unmap ptr 0x788dfde01000 as it is in the protected range from 0x788d5de00000 to 0x788dfe000000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2512/jwks/f11e4810-f90b-4aae-bfe5-59b5935b42bb/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2512/jwks/f11e4810-f90b-4aae-bfe5-59b5935b42bb for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2705/jwks/c22d2a18-eef4-4eef-a2f5-878c0099c306/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2705/jwks/c22d2a18-eef4-4eef-a2f5-878c0099c306 for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2512.ini
-INFO         | Successfully initialized netsim WiFi
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2705.ini
 INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Successfully initialized netsim WiFi
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 33377 ms
+INFO         | Boot completed in 32469 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
