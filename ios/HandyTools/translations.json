@@ -43948,5 +43948,115 @@
   "ja": "連絡先より",
   "pt": "Dos seus contatos",
   "zh": "来自你的联系人"
+ },
+ "Everyday jobs, done on your phone": {
+  "de": "Alltagsaufgaben, erledigt auf deinem Handy",
+  "es": "Tareas del día a día, hechas en tu teléfono",
+  "fr": "Les petites tâches du quotidien, sur votre téléphone",
+  "hi": "रोज़ के काम, आपके फ़ोन पर",
+  "it": "Le cose di ogni giorno, fatte sul telefono",
+  "ja": "毎日の用事を、スマホで",
+  "pt": "Tarefas do dia a dia, no seu celular",
+  "zh": "日常小事，手机搞定"
+ },
+ "Sign a PDF, shrink a video, find your car, remember your pills. Nothing is uploaded.": {
+  "de": "PDF unterschreiben, Video verkleinern, Auto finden, an Tabletten denken. Nichts wird hochgeladen.",
+  "es": "Firma un PDF, reduce un vídeo, encuentra tu coche, recuerda tus pastillas. Nada se sube.",
+  "fr": "Signez un PDF, réduisez une vidéo, retrouvez votre voiture, n'oubliez pas vos médicaments. Rien n'est envoyé.",
+  "hi": "PDF पर साइन करें, वीडियो छोटा करें, कार ढूँढें, दवा याद रखें। कुछ भी अपलोड नहीं होता।",
+  "it": "Firma un PDF, riduci un video, ritrova l'auto, ricorda le medicine. Nulla viene caricato.",
+  "ja": "PDFに署名、動画を縮小、車を探す、薬を忘れない。何もアップロードしません。",
+  "pt": "Assine um PDF, reduza um vídeo, ache seu carro, lembre dos remédios. Nada é enviado.",
+  "zh": "签 PDF、压缩视频、找车、按时吃药。什么都不上传。"
+ },
+ "What do you want help with? (optional)": {
+  "de": "Wobei möchtest du Hilfe? (optional)",
+  "es": "¿Con qué quieres ayuda? (opcional)",
+  "fr": "Pour quoi voulez-vous de l'aide ? (facultatif)",
+  "hi": "आपको किसमें मदद चाहिए? (वैकल्पिक)",
+  "it": "In cosa vuoi aiuto? (facoltativo)",
+  "ja": "何を手伝ってほしいですか？（任意）",
+  "pt": "Com o que quer ajuda? (opcional)",
+  "zh": "你需要哪方面的帮助？（可选）"
+ },
+ "Photos and space": {
+  "de": "Fotos und Speicher",
+  "es": "Fotos y espacio",
+  "fr": "Photos et espace",
+  "hi": "फ़ोटो और जगह",
+  "it": "Foto e spazio",
+  "ja": "写真と容量",
+  "pt": "Fotos e espaço",
+  "zh": "照片与空间"
+ },
+ "Documents and PDFs": {
+  "de": "Dokumente und PDFs",
+  "es": "Documentos y PDF",
+  "fr": "Documents et PDF",
+  "hi": "दस्तावेज़ और PDF",
+  "it": "Documenti e PDF",
+  "ja": "書類とPDF",
+  "pt": "Documentos e PDFs",
+  "zh": "文档与 PDF"
+ },
+ "Daily life and health": {
+  "de": "Alltag und Gesundheit",
+  "es": "Día a día y salud",
+  "fr": "Quotidien et santé",
+  "hi": "रोज़मर्रा और सेहत",
+  "it": "Vita quotidiana e salute",
+  "ja": "毎日と健康",
+  "pt": "Dia a dia e saúde",
+  "zh": "日常与健康"
+ },
+ "Car and travel": {
+  "de": "Auto und Reisen",
+  "es": "Coche y viajes",
+  "fr": "Voiture et voyages",
+  "hi": "कार और यात्रा",
+  "it": "Auto e viaggi",
+  "ja": "車と旅行",
+  "pt": "Carro e viagens",
+  "zh": "汽车与出行"
+ },
+ "Contacts and phone": {
+  "de": "Kontakte und Handy",
+  "es": "Contactos y teléfono",
+  "fr": "Contacts et téléphone",
+  "hi": "संपर्क और फ़ोन",
+  "it": "Contatti e telefono",
+  "ja": "連絡先とスマホ",
+  "pt": "Contatos e celular",
+  "zh": "联系人与手机"
+ },
+ "Words and messages": {
+  "de": "Texte und Nachrichten",
+  "es": "Textos y mensajes",
+  "fr": "Textes et messages",
+  "hi": "शब्द और मैसेज",
+  "it": "Testi e messaggi",
+  "ja": "文章とメッセージ",
+  "pt": "Textos e mensagens",
+  "zh": "文字与消息"
+ },
+ "Clean and bright": {
+  "de": "Klar und hell",
+  "es": "Limpio y luminoso",
+  "fr": "Net et lumineux",
+  "hi": "साफ़ और चमकीला",
+  "it": "Pulito e luminoso",
+  "ja": "すっきり明るい",
+  "pt": "Limpo e claro",
+  "zh": "简洁明亮"
+ },
+ "Bold gradients on dark — the default": {
+  "de": "Kräftige Verläufe auf Dunkel – der Standard",
+  "es": "Degradados intensos sobre oscuro: el predeterminado",
+  "fr": "Dégradés vifs sur fond sombre — par défaut",
+  "hi": "गहरे रंग पर गाढ़े ग्रेडिएंट — डिफ़ॉल्ट",
+  "it": "Sfumature vivaci sul nero — predefinito",
+  "ja": "ダークに鮮やかなグラデーション（標準）",
+  "pt": "Degradês fortes no escuro — o padrão",
+  "zh": "深色上的鲜艳渐变（默认）"
  }
 }

@@ -67,4 +67,12 @@ final class HomeShelvesTests: XCTestCase {
             XCTAssertLessThanOrEqual(lines(n, size: 12, width: 93), 2, "\"\(n)\" needs more than two lines in a compact tile")
         }
     }
+
+    /// Audit decision 4: the welcome's optional choice only picks the first Home tab, and every choice names a real tab.
+    func testWelcomeChoicesOpenARealTab() {
+        let tabs = Set(HomeShelves.all.map(\.id))
+        for c in WelcomeChoice.allCases { XCTAssertTrue(tabs.contains(c.homeTab), "\(c) opens a tab Home doesn't have") }
+        XCTAssertNil(WelcomeChoice.homeTab(for: []))
+        XCTAssertEqual(WelcomeChoice.homeTab(for: [.words, .documents]), "pdf", "the first one in the order shown wins")
+    }
 }

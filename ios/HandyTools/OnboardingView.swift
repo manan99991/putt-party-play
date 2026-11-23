@@ -7,55 +7,121 @@ enum OnboardingFlag {
     }
 }
 
-/// Three pages, shown once. Skip on every page. Page 1 is the brand-blue hero with the illustration set cycling.
+/// The help someone said they want on the welcome screen. Picks the Home tab Tenzy opens on first, and nothing more:
+/// no tool is ever hidden (UX audit decision 4, 23 Nov).
+enum WelcomeChoice: String, CaseIterable, Identifiable {
+    case photos, documents, daily, car, contacts, words
+    var id: String { rawValue }
+    var title: String {
+        switch self {
+        case .photos: return "Photos and space"
+        case .documents: return "Documents and PDFs"
+        case .daily: return "Daily life and health"
+        case .car: return "Car and travel"
+        case .contacts: return "Contacts and phone"
+        case .words: return "Words and messages"
+        }
+    }
+    var icon: String {
+        switch self {
+        case .photos: return "photo.on.rectangle.angled"
+        case .documents: return "doc.richtext.fill"
+        case .daily: return "calendar"
+        case .car: return "car.fill"
+        case .contacts: return "person.2.fill"
+        case .words: return "text.bubble.fill"
+        }
+    }
+    /// The Home tab it opens.
+    var homeTab: String {
+        switch self {
+        case .photos: return "photos"
+        case .documents: return "pdf"
+        case .daily: return "day"
+        case .car, .contacts: return "phone"
+        case .words: return "words"
+        }
+    }
+    /// The first choice (in the order shown) decides the tab; none chosen keeps Camera.
+    static func homeTab(for picked: Set<WelcomeChoice>) -> String? { allCases.first(where: picked.contains)?.homeTab }
+}
+
+/// One welcome screen, shown once (UX audit decision 4: slideshows don't help people; a real result does). What
+/// Tenzy is in one line, an optional "What do you want help with?", then Home with "See it work in 10 seconds".
+/// No permission prompts here: each tool asks when it's first used.
 struct OnboardingView: View {
-    var startPage = 0
+    var startPage = 0          // kept for the screenshot routes; there is one page now
     let onDone: () -> Void
     let onSeePro: () -> Void
-    @State private var page = 0
+    @State private var picked: Set<WelcomeChoice> = []
+    @State private var idx = 0
+    @AppStorage("tenzy.homeTab") private var homeTab = "camera"
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        let onBlue = page == 0
         ZStack {
-            (onBlue ? HandyColor.accent : HandyColor.bg).ignoresSafeArea()
-                .animation(.easeOut(duration: HandyMotion.slow), value: onBlue)
-            TabView(selection: $page) {
-                HeroPage().tag(0)
-                GuidePage().tag(1)
-                GridPage().tag(2)
-                ProPage(onSeePro: onSeePro).tag(3)
-            }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            VStack {
+            HandyColor.accent.ignoresSafeArea()
+            VStack(spacing: HandySpacing.s12) {
                 HStack {
                     // Choose the language before reading anything: the welcome redraws in it at once.
                     LanguageMenu {
                         Label(Localizer.chosenName, systemImage: "globe").font(HandyFont.caption.weight(.semibold))
-                            .foregroundStyle(onBlue ? HandyColor.onAccent : HandyColor.accent)
+                            .foregroundStyle(HandyColor.onAccent)
                             .padding(.horizontal, 12).padding(.vertical, 8)
-                            .background((onBlue ? HandyColor.onAccent.opacity(0.18) : HandyColor.accentSoft), in: Capsule())
+                            .background(HandyColor.onAccent.opacity(0.18), in: Capsule())
                     }
-                    .padding(.leading, HandySpacing.s16)
                     .accessibilityIdentifier("welcome-language")
-                    Spacer(); Button(L("Skip")) { onDone() }.font(HandyFont.bodyStrong).foregroundStyle(onBlue ? HandyColor.onAccent : HandyColor.accent).padding(HandySpacing.s16) }
-                Spacer()
-                HStack(spacing: 8) {
-                    ForEach(0..<4, id: \.self) { i in
-                        Circle().fill(onBlue ? HandyColor.onAccent.opacity(i == page ? 1 : 0.4) : (i == page ? HandyColor.accent : HandyColor.border))
-                            .frame(width: i == page ? 10 : 8, height: i == page ? 10 : 8)
+                    Spacer()
+                    Button(L("Skip")) { finish() }.font(HandyFont.bodyStrong).foregroundStyle(HandyColor.onAccent)
+                        .frame(minHeight: 44).accessibilityIdentifier("welcome-skip")
+                }
+                Image(ILLOS[idx]).resizable().renderingMode(.template).foregroundStyle(HandyColor.onAccent).scaledToFit()
+                    .frame(width: 150, height: 150).id(idx).transition(.opacity).accessibilityHidden(true)
+                Text(L("Everyday jobs, done on your phone")).font(HandyFont.display).foregroundStyle(HandyColor.onAccent)
+                    .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                Text(L("Sign a PDF, shrink a video, find your car, remember your pills. Nothing is uploaded."))
+                    .font(HandyFont.body).foregroundStyle(HandyColor.onAccent.opacity(0.85)).multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: HandySpacing.s8)
+                Text(L("What do you want help with? (optional)")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.onAccent)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)], spacing: 8) {
+                    ForEach(WelcomeChoice.allCases) { c in
+                        let on = picked.contains(c)
+                        Button { if on { picked.remove(c) } else { picked.insert(c) } } label: {
+                            HStack(spacing: 8) {
+                                Image(systemName: on ? "checkmark.circle.fill" : c.icon).font(.system(size: 15, weight: .semibold)).accessibilityHidden(true)
+                                Text(L(c.title)).font(.system(size: 14, weight: .semibold)).lineLimit(2).minimumScaleFactor(0.85)
+                                    .multilineTextAlignment(.leading)
+                                Spacer(minLength: 0)
+                            }
+                            .foregroundStyle(on ? HandyColor.accent : HandyColor.onAccent)
+                            .padding(.horizontal, 12).frame(maxWidth: .infinity, minHeight: 52)
+                            .background(on ? HandyColor.onAccent : HandyColor.onAccent.opacity(0.10), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(HandyColor.onAccent.opacity(on ? 0 : 0.35), lineWidth: 1))
+                            .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("welcome-\(c.rawValue)")
+                        .accessibilityAddTraits(on ? .isSelected : [])
                     }
                 }
-                .padding(.bottom, HandySpacing.s16)
-                Button(L(page == 0 ? "Show me" : page < 3 ? "Next" : "Start using Tenzy")) {
-                    if page < 3 { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.24)) { page += 1 } } else { onDone() }
-                }
-                .buttonStyle(OnboardingButtonStyle(onBlue: onBlue))
-                .padding(.horizontal, HandySpacing.s24)
-                .padding(.bottom, HandySpacing.s24)
+                Button(L("Start")) { finish() }
+                    .buttonStyle(OnboardingButtonStyle(onBlue: true))
+                    .accessibilityIdentifier("welcome-start")
             }
+            .padding(.horizontal, HandySpacing.s24)
+            .padding(.vertical, HandySpacing.s16)
         }
-        .onAppear { page = startPage }
+        .task {
+            guard !reduceMotion else { return }
+            while !Task.isCancelled { try? await Task.sleep(for: .seconds(2.2)); withAnimation(.easeInOut(duration: 0.4)) { idx = (idx + 1) % ILLOS.count } }
+        }
+    }
+
+    private func finish() {
+        if let t = WelcomeChoice.homeTab(for: picked) { homeTab = t }
+        onDone()
     }
 }
 
@@ -71,103 +137,3 @@ private struct OnboardingButtonStyle: ButtonStyle {
 }
 
 private let ILLOS = ["illo_clipboard", "illo_alarm", "illo_screenshot", "illo_flashlight", "illo_sticky", "illo_qr"]
-
-private struct HeroPage: View {
-    @State private var idx = 0
-    var body: some View {
-        VStack(spacing: HandySpacing.s12) {
-            Spacer()
-            Image(ILLOS[idx]).resizable().renderingMode(.template).foregroundStyle(HandyColor.onAccent).scaledToFit().frame(width: 240, height: 240)
-                .id(idx).transition(.opacity)
-            Spacer()
-            Text(L("Set it once. It's handled.")).font(HandyFont.display).foregroundStyle(HandyColor.onAccent).multilineTextAlignment(.center)
-            Text(L("Your personal assistant for the things that matter — on your phone, never uploaded.")).font(HandyFont.body).foregroundStyle(HandyColor.onAccent.opacity(0.85)).multilineTextAlignment(.center)
-            Spacer().frame(height: 140)
-        }
-        .padding(.horizontal, HandySpacing.s24)
-        .task { while !Task.isCancelled { try? await Task.sleep(for: .seconds(2.2)); withAnimation(.easeInOut(duration: 0.4)) { idx = (idx + 1) % ILLOS.count } } }
-    }
-}
-
-/// How Tenzy works, once, at the start: say it or start with what you have, then stack steps and choose the
-/// ending (BuilderIntro, the same three ideas Settings › How Tenzy works shows again later).
-private struct GuidePage: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s16) {
-            Spacer()
-            Text(L("Make a tool that does the whole job")).font(HandyFont.display).fixedSize(horizontal: false, vertical: true)
-            ForEach(BuilderIntro.pages, id: \.title) { p in
-                HStack(alignment: .top, spacing: HandySpacing.s12) {
-                    Image(systemName: p.icon).font(.system(size: 17, weight: .semibold)).foregroundStyle(HandyColor.accent)
-                        .frame(width: 38, height: 38).background(HandyColor.accentSoft, in: Circle()).accessibilityHidden(true)
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(L(p.title)).font(HandyFont.bodyStrong)
-                        Text(L(p.body)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-            }
-            Text(L("Or just tell Tenzy what you need, in your own words.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
-            Spacer().frame(height: 140)
-        }
-        .padding(.horizontal, HandySpacing.s24)
-    }
-}
-
-private struct GridPage: View {
-    @State private var hi = 0
-    private let highlight = [0, 1, 3] // Fit It, Scan, Video (in TOOLS order)
-    var body: some View {
-        VStack(spacing: HandySpacing.s12) {
-            Spacer()
-            LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)], spacing: 8) {
-                ForEach(Array(TOOLS.prefix(6).enumerated()), id: \.element.id) { i, t in
-                    VStack(alignment: .leading) {
-                        Image(systemName: t.icon).font(.system(size: 16, weight: .medium)).foregroundStyle(HandyColor.accent)
-                        Spacer()
-                        Text(t.name).font(.system(size: 12, weight: .medium)).lineLimit(1)
-                    }
-                    .padding(12).frame(maxWidth: .infinity, minHeight: 84, alignment: .leading)
-                    .background(highlight[hi] == i ? HandyColor.accentSoft : HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
-                    .animation(.easeInOut(duration: 0.3), value: hi)
-                }
-            }
-            .frame(maxWidth: 300)
-            Spacer()
-            Text(L("Pick a tool. It explains itself.")).font(HandyFont.display).multilineTextAlignment(.center)
-            Text(L("Each one asks for only the permission it needs, when you turn it on.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-            Spacer().frame(height: 140)
-        }
-        .padding(.horizontal, HandySpacing.s24)
-        .task { while !Task.isCancelled { try? await Task.sleep(for: .seconds(0.9)); hi = (hi + 1) % highlight.count } }
-    }
-}
-
-private struct ProPage: View {
-    let onSeePro: () -> Void
-    private let rows: [(String, String, String)] = [("Tools", "A few", "All of them"), ("Fits, scans, exports", "Daily limits", "Unlimited"), ("AI, video, voice jobs", "Daily limits", "Unlimited"), ("Price", "Free", "$19.99 a year")]
-    var body: some View {
-        VStack(spacing: HandySpacing.s12) {
-            Spacer()
-            VStack(spacing: 0) {
-                HStack { Spacer(); Text(L("Free")).frame(width: 80); Text(L("Pro")).frame(width: 90).foregroundStyle(HandyColor.accent) }
-                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).padding(.bottom, HandySpacing.s8)
-                ForEach(rows, id: \.0) { r in
-                    Divider().overlay(HandyColor.border)
-                    HStack {
-                        Text(r.0).font(HandyFont.body); Spacer()
-                        Text(r.1).font(.system(size: 15)).frame(width: 80)
-                        Text(r.2).font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.accent).frame(width: 90)
-                    }
-                    .padding(.vertical, HandySpacing.s12)
-                }
-            }
-            .cardStyle()
-            Spacer()
-            Text(L("Free stays free.")).font(HandyFont.display).multilineTextAlignment(.center)
-            Text(L("Pro unlocks every tool, with no daily limits.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
-            Button(L("See Pro"), action: onSeePro).textButton()
-            Spacer().frame(height: 140)
-        }
-        .padding(.horizontal, HandySpacing.s24)
-    }
-}

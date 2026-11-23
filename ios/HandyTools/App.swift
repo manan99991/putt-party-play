@@ -10,7 +10,8 @@ struct TenzyApp: App {
     // .task on the root view below so cold-start work stays off the first-frame path.
     @State private var didWarmup = false
 
-    @State private var showOnboarding = !OnboardingFlag.seen && Launch.route == nil
+    /// UI tests: -resetwelcome shows the welcome again on a simulator that has seen it.
+    @State private var showOnboarding = (!OnboardingFlag.seen || (Launch.uitest && Launch.args.contains("-resetwelcome"))) && Launch.route == nil
     @State private var onboardingPage = 0
     @State private var crashReport: String?
     /// The language picked in Settings: a change redraws everything in it at once.
@@ -31,7 +32,7 @@ struct TenzyApp: App {
                 HomeView().environmentObject(store).tint(HandyColor.accent).id("home-" + language)
                 if showOnboarding {
                     OnboardingView(startPage: onboardingPage,
-                                   onDone: { OnboardingFlag.seen = true; withAnimation(.easeOut(duration: HandyMotion.slow)) { showOnboarding = false }; NotificationCenter.default.post(name: .showSetup, object: nil) },
+                                   onDone: { OnboardingFlag.seen = true; withAnimation(.easeOut(duration: HandyMotion.slow)) { showOnboarding = false } },   // straight to Home: no permission page at launch (audit decision 4); each tool asks when first used
                                    onSeePro: { OnboardingFlag.seen = true; showOnboarding = false; NotificationCenter.default.post(name: .showPaywall, object: nil) })
                         .environmentObject(store)
                         .id("welcome-" + language)
@@ -568,7 +569,7 @@ struct HomeView: View {
                 case "builderdemo": BuilderView(showDemo: true).toolbarRole(.editor)   // Settings › How Tenzy works › Show me one
                 case "mytools": BuilderView(openMine: true).toolbarRole(.editor)   // My stuff › My tools
                 case "readymade": BuilderView(openReadyMade: true).toolbarRole(.editor)   // My stuff › Ready-made tools
-                case "explore": ExploreView().toolbarRole(.editor)                 // Home › All tools
+                case "explore": AllToolsView().toolbarRole(.editor)   // retired list: the same page as Settings › All tools
                 case "automations": AutomationsView().toolbarRole(.editor)   // the personal-assistant hub
                 case "results": HistoryView().toolbarRole(.editor)   // a finished-job notification lands here
                 default: ToolDestination(id: id).toolbarRole(.editor).disablesSwipeBack()
@@ -749,9 +750,7 @@ struct AllToolsView: View {
     @EnvironmentObject var store: StoreManager
     @ObservedObject private var theme = ThemeManager.shared
     private let cols = [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)]
-    private let groups: [(title: String, page: Int)] = [
-        ("Photo, video & sharing", 1), ("Help me think", 9), ("Reminders", 8), ("Animate & create", 7), ("Scan, read & organize", 2), ("Tools, sensors & accessibility", 3), ("Documents & PDF", 4), ("Audio & voice", 5), ("People, food & travel", 6)
-    ]
+    // The same eight groups, in the same order, as Home's tabs — one map of Tenzy, not two (23 Nov audit).
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s24) {
@@ -759,12 +758,12 @@ struct AllToolsView: View {
                     .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, HandySpacing.gutter)
-                ForEach(groups, id: \.page) { group in
+                ForEach(HomeShelves.all) { group in
                     VStack(alignment: .leading, spacing: HandySpacing.s12) {
                         Text(L(group.title).uppercased()).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                             .padding(.horizontal, HandySpacing.gutter)
                         LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
-                            ForEach(tools(onPage: group.page)) { t in
+                            ForEach(group.tools.compactMap { id in TOOLS.first { $0.id == id } }) { t in
                                 NavigationLink(value: t.id) { ToolCard(tool: t, height: 128) }.buttonStyle(ToolCardPress())
                             }
                         }

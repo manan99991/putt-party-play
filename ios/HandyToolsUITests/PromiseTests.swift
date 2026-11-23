@@ -106,6 +106,24 @@ final class PromiseTests: XCTestCase {
         XCTAssertFalse(card.exists, "Not now didn't put the card away")
     }
 
+    /// Audit decision 4 (23 Nov): one welcome screen; picking "Documents and PDFs" and Start lands on Home with the
+    /// PDF tab open and its tools on screen, with no permission page in between.
+    func testWelcomeIsOneScreenAndOpensTheChosenTab() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-uitest", "-resetwelcome"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let docs = any["welcome-documents"].firstMatch
+        XCTAssertTrue(docs.waitForExistence(timeout: 20), "the welcome didn't show")
+        XCTAssertTrue(any["welcome-start"].firstMatch.isHittable, "Start isn't on the same screen")
+        docs.tap()
+        any["welcome-start"].firstMatch.tap()
+        let sign = any["home-tool-pdfsign"].firstMatch
+        XCTAssertTrue(sign.waitForExistence(timeout: 15), "Home didn't open on the PDF tab")
+        XCTAssertTrue(sign.isHittable)
+        XCTAssertFalse(app.staticTexts["Set up once"].exists, "the permission page still follows the welcome")
+    }
+
     /// Audit decision 3 (23 Nov): Templates moved off Home into My stuff as "Ready-made tools". It opens the list, and
     /// Done lands back on My stuff, never a blank page.
     func testReadyMadeToolsOpenFromMyStuffAndComeBack() {

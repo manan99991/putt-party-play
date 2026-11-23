@@ -989,10 +989,12 @@ struct BuilderView: View {
     /// can never be refused — a custom button reading UIPasteboard asked every time, and dead-ended on "Don't Allow".
     private var pasteTile: some View {
         VStack(spacing: 4) {
+            // Apple's paste control (no "allow paste" prompt) can't be restyled freely; tinted the tile's own teal it
+            // reads as part of the tile instead of a white box inside it (23 Nov audit).
             PasteButton(supportedContentTypes: [.image, .url, .plainText]) { providers in pasteHome(providers) }
                 .labelStyle(.iconOnly)
-                .buttonBorderShape(.roundedRectangle(radius: 9))
-                .tint(.white)
+                .buttonBorderShape(.circle)
+                .tint(Color(hex: 0x0F9F8F))
                 .accessibilityIdentifier("have-paste")
             Text(L("Paste")).font(.system(size: 11, weight: .bold)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.8)
         }

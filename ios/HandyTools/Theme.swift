@@ -44,12 +44,12 @@ enum TenzyTheme: String, CaseIterable, Identifiable {
     }
     var blurb: String {
         switch self {
-        case .daylight: return "Clean, bright — the default"
+        case .daylight: return "Clean and bright"
         case .midnight: return "Dark glass, neon glow"
         case .warmPaper: return "Editorial, warm, matte"
         case .neoPop: return "Bold, playful, punchy"
         case .mono: return "Minimal, stealth"
-        case .aurora: return "Bold gradients on dark"
+        case .aurora: return "Bold gradients on dark — the default"
         }
     }
     /// A small swatch gradient for the picker — the theme's tile gradient.
