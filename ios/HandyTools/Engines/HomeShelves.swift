@@ -51,6 +51,36 @@ enum HomeShelves {
     /// The shelf a tool sits on, if any.
     static func shelf(of tool: String) -> Shelf? { all.first { $0.tools.contains(tool) } }
 
+    /// "I run a small business" (Manan, 23 Nov: the Business tab shows only when the person says they're a business,
+    /// in Settings or on the welcome screen, and Home adjusts). Off by default.
+    static let businessKey = "tenzy.business"
+    static var businessOn: Bool { UserDefaults.standard.bool(forKey: businessKey) }
+
+    /// The Business tab. Its tiles are jobs (`businessJobs`), not general tools, so nothing repeats another tab.
+    static let business = Shelf(id: "business", title: "Business", line: "Expenses, product photos, customers, contracts and QR codes",
+                                icon: "briefcase.fill", hex: 0x0D9488, tools: [])
+
+    /// Home's tabs: the eight for everyone, plus Business for people who run one (then the grid is 3 x 3).
+    static func tabs(business: Bool) -> [Shelf] { business ? all + [business] : all }
+
+    /// One Business job: a ready-made chain run straight away, or a tool. Every one has a job name that fits a tile.
+    struct BusinessJob: Equatable, Identifiable {
+        let id: String
+        let title: String
+        let icon: String
+        let chain: String?     // a ready-made chain id (ChainTemplates)
+        let tool: String?      // or a tool id
+    }
+    static let businessJobs: [BusinessJob] = [
+        BusinessJob(id: "expense", title: "Log an expense", icon: "receipt.fill", chain: "receipt-run", tool: nil),
+        BusinessJob(id: "product", title: "Product photo to sell", icon: "bag.fill", chain: "photo-sell", tool: nil),
+        BusinessJob(id: "customer", title: "Save a customer", icon: "person.crop.rectangle.fill", chain: "card-to-contact", tool: nil),
+        BusinessJob(id: "contract", title: "Sign and send back", icon: "signature", chain: "sign-and-send", tool: nil),
+        BusinessJob(id: "reviewqr", title: "Review or menu QR code", icon: "qrcode", chain: "text-to-qr", tool: nil),
+        BusinessJob(id: "mycard", title: "Share my contact", icon: "person.text.rectangle.fill", chain: "contact-qr", tool: nil),
+        BusinessJob(id: "promo", title: "Post a promo video", icon: "megaphone.fill", chain: "video-post", tool: nil),
+    ]
+
     /// What each Home tile says: the job, in the words people search with (Manan, 23 Nov, UX audit decision 1:
     /// "Scan a document", not "Scan"; "Copy a receipt or table", not "Data Grabber"). The tool keeps its own name on
     /// its own screen. Every name fits two lines on the narrowest iPhone (a unit test measures it).

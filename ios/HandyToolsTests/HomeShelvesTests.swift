@@ -70,9 +70,31 @@ final class HomeShelvesTests: XCTestCase {
 
     /// Audit decision 4: the welcome's optional choice only picks the first Home tab, and every choice names a real tab.
     func testWelcomeChoicesOpenARealTab() {
-        let tabs = Set(HomeShelves.all.map(\.id))
+        let tabs = Set(HomeShelves.tabs(business: true).map(\.id))
         for c in WelcomeChoice.allCases { XCTAssertTrue(tabs.contains(c.homeTab), "\(c) opens a tab Home doesn't have") }
         XCTAssertNil(WelcomeChoice.homeTab(for: []))
         XCTAssertEqual(WelcomeChoice.homeTab(for: [.words, .documents]), "pdf", "the first one in the order shown wins")
+    }
+
+    /// Business (Manan, 23 Nov): the tab exists only when switched on; every job runs a ready-made tool that really
+    /// exists (or a real tool), says a job no other tile says, and fits two lines like every tile.
+    func testBusinessTabOnlyWhenOnAndEveryJobIsReal() {
+        XCTAssertEqual(HomeShelves.tabs(business: false).count, 8)
+        XCTAssertEqual(HomeShelves.tabs(business: true).count, 9)
+        XCTAssertFalse(HomeShelves.tabs(business: false).contains { $0.id == "business" })
+        XCTAssertEqual(WelcomeChoice.homeTab(for: [.photos, .business]), "business")
+        let general = Set(HomeShelves.all.flatMap(\.tools).compactMap { HomeShelves.jobName($0) })
+        var seen = Set<String>()
+        for j in HomeShelves.businessJobs {
+            XCTAssertTrue(j.chain != nil || j.tool != nil, "\(j.id) does nothing")
+            if let c = j.chain { XCTAssertNotNil(ChainTemplates.all.first { $0.id == c }, "\(j.id): no ready-made tool \(c)") }
+            if let t = j.tool { XCTAssertNotNil(TOOLS.first { $0.id == t }, "\(j.id): no tool \(t)") }
+            XCTAssertFalse(general.contains(j.title), "\(j.title) repeats a tile from another tab")
+            XCTAssertTrue(seen.insert(j.title).inserted, "\(j.title) is on the Business tab twice")
+            let font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+            let h = (j.title as NSString).boundingRect(with: CGSize(width: 89, height: 1000), options: [.usesLineFragmentOrigin], attributes: [.font: font], context: nil).height
+            XCTAssertLessThanOrEqual(Int((h / font.lineHeight).rounded()), 2, "\(j.title) needs more than two lines")
+        }
+        XCTAssertLessThanOrEqual(HomeShelves.businessJobs.count + 1, HomeShelves.maxPerTab, "the Business tab must fit (jobs + the 'what else' tile)")
     }
 }

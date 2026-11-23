@@ -199,6 +199,9 @@ struct SettingsView: View {
                         Button(L("Restore purchases")) { Task { await store.restore() } }.textButton()
                     }
 
+                    // Business tab on Home only for people who run one (Manan, 23 Nov).
+                    BusinessSwitch()
+
                     Section(L("Theme")) {
                         VStack(spacing: HandySpacing.s8) {
                             ForEach(TenzyTheme.allCases) { th in
@@ -481,5 +484,23 @@ struct PrivacyView: View {
             }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
         }
+    }
+}
+
+/// Settings › "I run a small business": adds the Business tab to Home (expenses, product photos, customers, contracts,
+/// QR codes) and business suggestions. Off by default; the welcome screen's "Running a small business" turns it on too.
+struct BusinessSwitch: View {
+    @AppStorage(HomeShelves.businessKey) private var on = false
+    var body: some View {
+        Toggle(isOn: $on) {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(L("I run a small business")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                Text(L("Adds a Business tab to Home: expenses, product photos, customers, contracts and QR codes."))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .tint(HandyColor.accent)
+        .cardStyle()
+        .accessibilityIdentifier("settings-business")
     }
 }

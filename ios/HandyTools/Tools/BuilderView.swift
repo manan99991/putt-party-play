@@ -500,13 +500,20 @@ struct BuilderView: View {
     @State private var showTemplates = false
     /// The Home category tab last picked, remembered between visits.
     @AppStorage("tenzy.homeTab") private var homeTab = "camera"
-    private var currentTab: HomeShelves.Shelf { HomeShelves.all.first { $0.id == homeTab } ?? HomeShelves.all[0] }
+    @AppStorage(HomeShelves.businessKey) private var businessOn = false
+    private var homeTabs: [HomeShelves.Shelf] { HomeShelves.tabs(business: businessOn) }
+    private var currentTab: HomeShelves.Shelf { homeTabs.first { $0.id == homeTab } ?? homeTabs[0] }
     /// A short screen (an iPhone SE, a folded phone: under 760 points tall) gets the compact Home so a full tab of
     /// tools still fits without scrolling (23 Nov: on a 678-point screen the third row sat under the tab bar).
     private var shortScreen: Bool { UIScreen.main.bounds.height < 760 }
+    /// A Business job: its ready-made chain runs straight away (the same runner as My tools), or its tool opens.
+    private func openBusinessJob(_ j: HomeShelves.BusinessJob) {
+        if let id = j.chain, let c = ChainTemplates.all.first(where: { $0.id == id }) { running = c }
+        else if let t = j.tool { NotificationCenter.default.post(name: .openTool, object: t, userInfo: ["from": "builder"]) }
+    }
     /// "For you now" cards; a short screen shows only the most pressing one so a full tab still fits.
     @State private var forYou: [ForYou.Card] = []
-    private var shownCards: [ForYou.Card] { (Launch.screenshots || builtIn != nil) ? [] : Array(forYou.prefix(shortScreen ? 1 : ForYou.maxCards)) }
+    private var shownCards: [ForYou.Card] { (Launch.screenshots || builtIn != nil) ? [] : Array(forYou.prefix((shortScreen || businessOn) ? 1 : ForYou.maxCards)) }   // a third row of tabs takes the second card's room
     private func loadForYou() async {
         let f = await ForYou.gather()
         let c = ForYou.cards(f, hidden: ForYou.hidden, off: ForYou.off)
@@ -935,8 +942,9 @@ struct BuilderView: View {
                     .buttonStyle(.plain).accessibilityIdentifier("have-file")
                 pasteTile
             }
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 4), spacing: 6) {
-                ForEach(HomeShelves.all) { sh in
+            // Eight tabs four across; with Business on, nine tabs three across.
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: homeTabs.count == 9 ? 3 : 4), spacing: 6) {
+                ForEach(homeTabs) { sh in
                     let on = sh.id == currentTab.id
                     Button { withAnimation(.easeOut(duration: HandyMotion.fast)) { homeTab = sh.id } } label: {
                         HStack(spacing: 4) {
@@ -946,7 +954,7 @@ struct BuilderView: View {
                         }
                         .foregroundStyle(on ? Color.white : HandyColor.textPrimary)
                         .padding(.horizontal, 4)
-                        .frame(maxWidth: .infinity, minHeight: shortScreen ? 32 : 36)
+                        .frame(maxWidth: .infinity, minHeight: shortScreen ? (homeTabs.count == 9 ? 28 : 32) : 36)
                         .background(on ? AnyShapeStyle(Color(hex: sh.hex).gradient) : AnyShapeStyle(.ultraThinMaterial),
                                     in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(on ? Color.clear : HandyColor.border, lineWidth: 1))
@@ -960,11 +968,27 @@ struct BuilderView: View {
             Text(L(currentTab.line)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                 .lineLimit(1).minimumScaleFactor(0.8).frame(maxWidth: .infinity, alignment: .leading)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
-                ForEach(currentTab.tools.compactMap { id in TOOLS.first { $0.id == id } }) { t in
-                    Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
-                        HomeToolTile(tool: t, hex: currentTab.hex, compact: shortScreen)
+                if currentTab.id == HomeShelves.business.id {
+                    ForEach(HomeShelves.businessJobs) { j in
+                        Button { openBusinessJob(j) } label: {
+                            HomeJobTile(title: j.title, icon: j.icon, hex: currentTab.hex, compact: shortScreen)
+                        }
+                        .buttonStyle(.plain).accessibilityIdentifier("home-job-\(j.id)")
                     }
-                    .buttonStyle(.plain).accessibilityIdentifier("home-tool-\(t.id)")
+                    // "What else would help your business?" — their answers decide the next business tools.
+                    Button {
+                        if let u = URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20business%20idea&body=What%20would%20help%20your%20business%3F%20") { UIApplication.shared.open(u) }
+                    } label: {
+                        HomeJobTile(title: "What else would help?", icon: "envelope.fill", hex: currentTab.hex, compact: shortScreen)
+                    }
+                    .buttonStyle(.plain).accessibilityIdentifier("home-job-ask")
+                } else {
+                    ForEach(currentTab.tools.compactMap { id in TOOLS.first { $0.id == id } }) { t in
+                        Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
+                            HomeToolTile(tool: t, hex: currentTab.hex, compact: shortScreen)
+                        }
+                        .buttonStyle(.plain).accessibilityIdentifier("home-tool-\(t.id)")
+                    }
                 }
             }
             .id(currentTab.id)

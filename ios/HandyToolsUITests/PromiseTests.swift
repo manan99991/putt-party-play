@@ -124,6 +124,31 @@ final class PromiseTests: XCTestCase {
         XCTAssertFalse(app.staticTexts["Set up once"].exists, "the permission page still follows the welcome")
     }
 
+    /// Business (Manan, 23 Nov): no Business tab until the person says they run a business; with it on, the tab is
+    /// there, every job is on screen without scrolling, and a job opens its ready-made tool.
+    func testBusinessTabShowsOnlyWhenOnAndItsJobsOpen() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "home", "-uitest"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        XCTAssertTrue(any["have-photo"].firstMatch.waitForExistence(timeout: 20))
+        XCTAssertFalse(any["tab-business"].firstMatch.exists, "Business shows for someone who never said they run one")
+        app.terminate()
+        app.launchArguments = ["-route", "home", "-uitest", "-tenzy.business", "YES"]
+        app.launch()
+        let tab = any["tab-business"].firstMatch
+        XCTAssertTrue(tab.waitForExistence(timeout: 20), "Business is switched on but there's no tab")
+        tab.tap()
+        let jobs = any.matching(NSPredicate(format: "identifier BEGINSWITH 'home-job-'"))
+        let off = (0..<jobs.count).map { jobs.element(boundBy: $0) }.filter { !$0.isHittable }.map(\.identifier)
+        XCTAssertGreaterThanOrEqual(jobs.count, 7)
+        XCTAssertEqual(off, [], "these Business jobs need scrolling: \(off)")
+        any["home-job-expense"].firstMatch.tap()
+        sleep(2)
+        XCTAssertFalse(any["home-job-expense"].firstMatch.isHittable, "Log an expense didn't open its tool")
+        XCTAssertEqual(app.state, .runningForeground)
+    }
+
     /// Audit decision 3 (23 Nov): Templates moved off Home into My stuff as "Ready-made tools". It opens the list, and
     /// Done lands back on My stuff, never a blank page.
     func testReadyMadeToolsOpenFromMyStuffAndComeBack() {

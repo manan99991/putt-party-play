@@ -641,6 +641,41 @@ struct HomeToolTile: View {
     }
 }
 
+/// A Business job tile: the same shape as a tool tile, for jobs that run a ready-made chain.
+struct HomeJobTile: View {
+    let title: String
+    let icon: String
+    let hex: UInt32
+    var compact = false
+    var body: some View {
+        Group {
+            if compact {
+                Text(L(title)).font(.system(size: 12, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
+                    .lineLimit(2).multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 8)
+                    .frame(maxWidth: .infinity, minHeight: 48, maxHeight: 48, alignment: .leading)
+            } else {
+                VStack(alignment: .leading, spacing: 4) {
+                    Image(systemName: icon).font(.system(size: 14, weight: .bold)).foregroundStyle(.white)
+                        .frame(width: 28, height: 28)
+                        .background(Color(hex: hex), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        .accessibilityHidden(true)
+                    Spacer(minLength: 0)
+                    Text(L(title)).font(.system(size: 13, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
+                        .lineLimit(2).multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(10)
+                .frame(maxWidth: .infinity, minHeight: 74, maxHeight: 74, alignment: .leading)
+            }
+        }
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Color(hex: hex).opacity(0.45), lineWidth: 1))
+        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(L(title))
+    }
+}
+
 /// One uniform tile — every tile on Home and My stuff is this one shape, so the grid lines up like a profile's posts.
 struct PostTile: View {
     let title: String

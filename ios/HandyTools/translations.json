@@ -44058,5 +44058,135 @@
   "ja": "ダークに鮮やかなグラデーション（標準）",
   "pt": "Degradês fortes no escuro — o padrão",
   "zh": "深色上的鲜艳渐变（默认）"
+ },
+ "Business": {
+  "de": "Geschäft",
+  "es": "Negocio",
+  "fr": "Entreprise",
+  "hi": "बिज़नेस",
+  "it": "Attività",
+  "ja": "ビジネス",
+  "pt": "Negócio",
+  "zh": "商务"
+ },
+ "Expenses, product photos, customers, contracts and QR codes": {
+  "de": "Ausgaben, Produktfotos, Kunden, Verträge und QR-Codes",
+  "es": "Gastos, fotos de producto, clientes, contratos y códigos QR",
+  "fr": "Dépenses, photos produit, clients, contrats et QR codes",
+  "hi": "खर्च, प्रोडक्ट फ़ोटो, ग्राहक, कॉन्ट्रैक्ट और QR कोड",
+  "it": "Spese, foto prodotto, clienti, contratti e codici QR",
+  "ja": "経費、商品写真、顧客、契約、QRコード",
+  "pt": "Despesas, fotos de produto, clientes, contratos e QR codes",
+  "zh": "开支、商品照片、客户、合同和二维码"
+ },
+ "Log an expense": {
+  "de": "Ausgabe erfassen",
+  "es": "Registrar un gasto",
+  "fr": "Noter une dépense",
+  "hi": "खर्च दर्ज करें",
+  "it": "Registra una spesa",
+  "ja": "経費を記録",
+  "pt": "Registrar despesa",
+  "zh": "记一笔开支"
+ },
+ "Product photo to sell": {
+  "de": "Produktfoto zum Verkaufen",
+  "es": "Foto de producto para vender",
+  "fr": "Photo produit à vendre",
+  "hi": "बेचने के लिए प्रोडक्ट फ़ोटो",
+  "it": "Foto prodotto da vendere",
+  "ja": "販売用の商品写真",
+  "pt": "Foto de produto para vender",
+  "zh": "商品图"
+ },
+ "Save a customer": {
+  "de": "Kunden speichern",
+  "es": "Guardar un cliente",
+  "fr": "Enregistrer un client",
+  "hi": "ग्राहक सहेजें",
+  "it": "Salva un cliente",
+  "ja": "顧客を保存",
+  "pt": "Salvar cliente",
+  "zh": "保存客户"
+ },
+ "Sign and send back": {
+  "de": "Unterschreiben und zurücksenden",
+  "es": "Firmar y devolver",
+  "fr": "Signer et renvoyer",
+  "hi": "साइन करके वापस भेजें",
+  "it": "Firma e rimanda",
+  "ja": "署名して返送",
+  "pt": "Assinar e devolver",
+  "zh": "签好发回"
+ },
+ "Review or menu QR code": {
+  "de": "QR-Code für Bewertung oder Menü",
+  "es": "QR de reseñas o menú",
+  "fr": "QR code avis ou menu",
+  "hi": "रिव्यू या मेन्यू QR कोड",
+  "it": "QR per recensioni o menù",
+  "ja": "レビュー・メニュー用QR",
+  "pt": "QR de avaliação ou cardápio",
+  "zh": "评价或菜单二维码"
+ },
+ "Share my contact": {
+  "de": "Meinen Kontakt teilen",
+  "es": "Compartir mi contacto",
+  "fr": "Partager mon contact",
+  "hi": "मेरा संपर्क शेयर करें",
+  "it": "Condividi il mio contatto",
+  "ja": "連絡先を共有",
+  "pt": "Compartilhar meu contato",
+  "zh": "分享我的联系方式"
+ },
+ "Post a promo video": {
+  "de": "Werbevideo posten",
+  "es": "Publicar un vídeo promocional",
+  "fr": "Publier une vidéo promo",
+  "hi": "प्रोमो वीडियो पोस्ट करें",
+  "it": "Pubblica un video promo",
+  "ja": "宣伝動画を投稿",
+  "pt": "Postar vídeo promocional",
+  "zh": "发布宣传视频"
+ },
+ "What else would help?": {
+  "de": "Was würde noch helfen?",
+  "es": "¿Qué más te ayudaría?",
+  "fr": "Quoi d'autre vous aiderait ?",
+  "hi": "और क्या मदद करेगा?",
+  "it": "Cos'altro ti aiuterebbe?",
+  "ja": "他に何があると便利？",
+  "pt": "O que mais ajudaria?",
+  "zh": "还需要什么？"
+ },
+ "I run a small business": {
+  "de": "Ich habe ein kleines Unternehmen",
+  "es": "Tengo un pequeño negocio",
+  "fr": "J'ai une petite entreprise",
+  "hi": "मेरा छोटा बिज़नेस है",
+  "it": "Ho una piccola attività",
+  "ja": "小さな商売をしている",
+  "pt": "Tenho um pequeno negócio",
+  "zh": "我经营小生意"
+ },
+ "Adds a Business tab to Home: expenses, product photos, customers, contracts and QR codes.": {
+  "de": "Fügt der Startseite einen Geschäft-Tab hinzu: Ausgaben, Produktfotos, Kunden, Verträge und QR-Codes.",
+  "es": "Añade una pestaña Negocio al inicio: gastos, fotos de producto, clientes, contratos y códigos QR.",
+  "fr": "Ajoute un onglet Entreprise à l'accueil : dépenses, photos produit, clients, contrats et QR codes.",
+  "hi": "होम पर बिज़नेस टैब जोड़ता है: खर्च, प्रोडक्ट फ़ोटो, ग्राहक, कॉन्ट्रैक्ट और QR कोड।",
+  "it": "Aggiunge una scheda Attività alla Home: spese, foto prodotto, clienti, contratti e codici QR.",
+  "ja": "ホームにビジネスタブを追加：経費、商品写真、顧客、契約、QRコード。",
+  "pt": "Adiciona uma aba Negócio ao início: despesas, fotos de produto, clientes, contratos e QR codes.",
+  "zh": "在首页添加商务标签：开支、商品照片、客户、合同和二维码。"
+ },
+ "Running a small business": {
+  "de": "Ein kleines Unternehmen führen",
+  "es": "Llevar un pequeño negocio",
+  "fr": "Gérer une petite entreprise",
+  "hi": "छोटा बिज़नेस चलाना",
+  "it": "Gestire una piccola attività",
+  "ja": "小さな商売の運営",
+  "pt": "Administrar um pequeno negócio",
+  "zh": "经营小生意"
  }
 }

@@ -10,7 +10,7 @@ enum OnboardingFlag {
 /// The help someone said they want on the welcome screen. Picks the Home tab Tenzy opens on first, and nothing more:
 /// no tool is ever hidden (UX audit decision 4, 23 Nov).
 enum WelcomeChoice: String, CaseIterable, Identifiable {
-    case photos, documents, daily, car, contacts, words
+    case photos, documents, daily, car, contacts, words, business
     var id: String { rawValue }
     var title: String {
         switch self {
@@ -20,6 +20,7 @@ enum WelcomeChoice: String, CaseIterable, Identifiable {
         case .car: return "Car and travel"
         case .contacts: return "Contacts and phone"
         case .words: return "Words and messages"
+        case .business: return "Running a small business"
         }
     }
     var icon: String {
@@ -30,6 +31,7 @@ enum WelcomeChoice: String, CaseIterable, Identifiable {
         case .car: return "car.fill"
         case .contacts: return "person.2.fill"
         case .words: return "text.bubble.fill"
+        case .business: return "briefcase.fill"
         }
     }
     /// The Home tab it opens.
@@ -40,10 +42,13 @@ enum WelcomeChoice: String, CaseIterable, Identifiable {
         case .daily: return "day"
         case .car, .contacts: return "phone"
         case .words: return "words"
+        case .business: return "business"
         }
     }
-    /// The first choice (in the order shown) decides the tab; none chosen keeps Camera.
-    static func homeTab(for picked: Set<WelcomeChoice>) -> String? { allCases.first(where: picked.contains)?.homeTab }
+    /// Running a small business opens the Business tab first; otherwise the first choice in the order shown decides.
+    static func homeTab(for picked: Set<WelcomeChoice>) -> String? {
+        picked.contains(.business) ? "business" : allCases.first(where: picked.contains)?.homeTab
+    }
 }
 
 /// One welcome screen, shown once (UX audit decision 4: slideshows don't help people; a real result does). What
@@ -75,8 +80,11 @@ struct OnboardingView: View {
                     Button(L("Skip")) { finish() }.font(HandyFont.bodyStrong).foregroundStyle(HandyColor.onAccent)
                         .frame(minHeight: 44).accessibilityIdentifier("welcome-skip")
                 }
-                Image(ILLOS[idx]).resizable().renderingMode(.template).foregroundStyle(HandyColor.onAccent).scaledToFit()
-                    .frame(width: 150, height: 150).id(idx).transition(.opacity).accessibilityHidden(true)
+                // Short phones (an SE, a folded phone) leave the drawing out so the seven choices and Start still fit.
+                if UIScreen.main.bounds.height >= 760 {
+                    Image(ILLOS[idx]).resizable().renderingMode(.template).foregroundStyle(HandyColor.onAccent).scaledToFit()
+                        .frame(width: 130, height: 130).id(idx).transition(.opacity).accessibilityHidden(true)
+                }
                 Text(L("Everyday jobs, done on your phone")).font(HandyFont.display).foregroundStyle(HandyColor.onAccent)
                     .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
                 Text(L("Sign a PDF, shrink a video, find your car, remember your pills. Nothing is uploaded."))
@@ -120,6 +128,7 @@ struct OnboardingView: View {
     }
 
     private func finish() {
+        if picked.contains(.business) { UserDefaults.standard.set(true, forKey: HomeShelves.businessKey) }
         if let t = WelcomeChoice.homeTab(for: picked) { homeTab = t }
         onDone()
     }
