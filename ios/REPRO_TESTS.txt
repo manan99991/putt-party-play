@@ -1,5 +1,4 @@
-# 23 Nov: tonight's full run failed only on the iPad smoke tests, with simulator errors ("Failed to terminate",
-# "has not loaded accessibility"), while the identical tests passed on iPhone. Same error on 21 Nov cleared on the
-# next run. Proving it on a fresh iPad simulator with the same code before any re-send (rulebook section 8).
-#device: iPad
-HandyToolsUITests/ToolSmokeTests
+# 23 Nov: the iPad smoke tests passed on a fresh iPad (3 of 3). The other blocker: the real-files tool pass timed out
+# at 105 minutes right after soundboard. Is that one tool stalling (translate is next) or a slow runner? Each tool's
+# time is now in its TOOLINPUT line; run the tool pass alone on iPhone, as the full run does (rulebook section 8).
+HandyToolsUITests/ToolRealInputTests

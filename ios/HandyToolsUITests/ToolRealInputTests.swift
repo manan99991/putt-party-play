@@ -21,6 +21,7 @@ final class ToolRealInputTests: XCTestCase {
         continueAfterFailure = true
         var crashed: [String] = []
         for id in Self.tools {
+            let began = Date()   // 23 Nov: the run timed out after soundboard; each line now says how long its tool took
             let app = XCUIApplication()
             app.launchArguments = ["-route", id, "-uitest", "-sample"]
             app.launch()
@@ -32,7 +33,7 @@ final class ToolRealInputTests: XCTestCase {
                 _ = app.debugDescription
             }
             if alive { app.swipeUp(); app.swipeUp(); _ = app.debugDescription; alive = app.state == .runningForeground }
-            print("TOOLINPUT \(id): \(alive ? "ok" : "CRASHED")")
+            print("TOOLINPUT \(id): \(alive ? "ok" : "CRASHED") \(Int(Date().timeIntervalSince(began)))s")
             if !alive { crashed.append(id) }
             app.terminate()
         }
