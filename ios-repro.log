@@ -1,301 +1,33 @@
-Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' started.
-    t =    39.96s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    41.08s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    44.23s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    44.61s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    47.81s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    48.11s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    51.42s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    51.64s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    54.78s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    55.05s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    58.11s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    58.40s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    62.11s Requesting snapshot of accessibility hierarchy for app with pid 33457
-    t =    62.50s Requesting snapshot of accessibility hierarchy for app with pid 33457
-TOOLINPUT studio: ok 61s
-    t =    81.43s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =    81.88s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =    84.98s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =    85.26s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =    88.33s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =    88.90s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =    92.34s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =    92.60s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =    95.65s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =    95.88s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =    98.98s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =    99.35s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =   103.05s Requesting snapshot of accessibility hierarchy for app with pid 34528
-    t =   103.29s Requesting snapshot of accessibility hierarchy for app with pid 34528
-TOOLINPUT procam: ok 39s
-    t =   120.56s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   121.36s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   124.47s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   124.78s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   127.86s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   128.22s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   131.31s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   131.79s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   134.91s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   135.42s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   138.50s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   138.88s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   141.83s Requesting snapshot of accessibility hierarchy for app with pid 36031
-    t =   142.22s Requesting snapshot of accessibility hierarchy for app with pid 36031
-TOOLINPUT video: ok 37s
-    t =   159.30s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   159.85s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   162.96s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   163.20s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   166.27s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   166.49s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   169.55s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   169.82s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   172.90s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   173.13s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   176.24s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   176.52s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   178.91s Requesting snapshot of accessibility hierarchy for app with pid 37926
-    t =   179.13s Requesting snapshot of accessibility hierarchy for app with pid 37926
-TOOLINPUT formatfix: ok 35s
-    t =   194.37s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   194.89s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   197.96s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   198.25s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   201.34s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   201.72s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   204.86s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   205.16s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   208.25s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   208.96s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   212.09s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   212.47s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   215.51s Requesting snapshot of accessibility hierarchy for app with pid 39791
-    t =   215.80s Requesting snapshot of accessibility hierarchy for app with pid 39791
-TOOLINPUT fitit: ok 35s
-    t =   236.67s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   236.97s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   240.04s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   240.33s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   243.41s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   243.72s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   246.82s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   247.19s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   250.27s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   250.46s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   253.50s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   253.70s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   255.15s Requesting snapshot of accessibility hierarchy for app with pid 41697
-    t =   255.37s Requesting snapshot of accessibility hierarchy for app with pid 41697
-TOOLINPUT scrub: ok 38s
-    t =   272.17s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   273.11s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   276.45s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   276.84s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   280.06s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   280.29s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   283.37s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   283.57s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   286.63s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   287.00s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   290.07s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   290.33s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   292.83s Requesting snapshot of accessibility hierarchy for app with pid 43518
-    t =   293.09s Requesting snapshot of accessibility hierarchy for app with pid 43518
-TOOLINPUT identify: ok 36s
-    t =   309.01s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   309.38s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   312.44s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   312.69s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   315.78s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   316.04s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   319.11s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   319.30s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   322.36s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   322.58s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   325.63s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   325.88s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   328.49s Requesting snapshot of accessibility hierarchy for app with pid 45253
-    t =   328.85s Requesting snapshot of accessibility hierarchy for app with pid 45253
-TOOLINPUT stitch: ok 34s
-    t =   342.79s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   343.07s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   346.14s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   346.29s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   349.35s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   349.61s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   352.68s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   352.89s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   355.99s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   356.25s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   359.33s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   359.55s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   362.01s Requesting snapshot of accessibility hierarchy for app with pid 46950
-    t =   362.22s Requesting snapshot of accessibility hierarchy for app with pid 46950
-TOOLINPUT qrwifi: ok 32s
-    t =   380.87s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   381.37s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   384.45s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   384.65s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   387.72s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   388.08s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   391.16s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   391.37s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   394.45s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   394.68s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   397.80s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   398.08s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   400.67s Requesting snapshot of accessibility hierarchy for app with pid 48487
-    t =   400.97s Requesting snapshot of accessibility hierarchy for app with pid 48487
-TOOLINPUT cleaner: ok 37s
-    t =   418.77s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   419.58s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   422.72s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   423.15s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   426.22s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   426.56s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   429.66s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   430.15s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   433.26s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   433.58s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   436.66s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   436.96s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   440.03s Requesting snapshot of accessibility hierarchy for app with pid 49991
-    t =   440.29s Requesting snapshot of accessibility hierarchy for app with pid 49991
-TOOLINPUT scan: ok 38s
-    t =   458.22s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   458.85s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   461.94s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   462.25s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   465.33s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   465.69s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   468.78s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   469.26s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   472.37s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   472.86s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   476.03s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   476.46s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   479.31s Requesting snapshot of accessibility hierarchy for app with pid 51844
-    t =   479.73s Requesting snapshot of accessibility hierarchy for app with pid 51844
-TOOLINPUT datagrab: ok 38s
-    t =   497.64s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   497.95s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   501.01s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   501.14s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   504.19s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   504.37s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   507.43s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   507.63s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   510.68s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   510.89s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   513.94s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   514.16s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   515.67s Requesting snapshot of accessibility hierarchy for app with pid 53217
-    t =   515.92s Requesting snapshot of accessibility hierarchy for app with pid 53217
-TOOLINPUT pdfredact: ok 35s
-    t =   534.32s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   534.79s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   537.87s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   538.12s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   541.19s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   541.46s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   544.55s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   544.91s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   548.00s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   548.50s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   551.56s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   551.93s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   554.53s Requesting snapshot of accessibility hierarchy for app with pid 54945
-    t =   554.78s Requesting snapshot of accessibility hierarchy for app with pid 54945
-TOOLINPUT sorted: ok 37s
-    t =   572.92s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   573.40s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   576.47s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   576.67s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   579.72s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   580.02s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   583.34s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   583.57s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   586.64s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   586.86s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   589.92s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   590.07s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   592.42s Requesting snapshot of accessibility hierarchy for app with pid 56537
-    t =   592.65s Requesting snapshot of accessibility hierarchy for app with pid 56537
-TOOLINPUT memory: ok 36s
-    t =   610.34s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   611.98s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   615.13s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   615.51s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   618.65s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   619.18s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   622.30s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   622.94s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   626.09s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   626.56s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   629.70s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   630.24s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   633.13s Requesting snapshot of accessibility hierarchy for app with pid 58494
-    t =   633.47s Requesting snapshot of accessibility hierarchy for app with pid 58494
-TOOLINPUT warranty: ok 39s
-    t =   649.83s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   650.12s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   653.19s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   653.40s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   656.49s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   656.69s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   659.74s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   660.05s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   663.15s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   663.41s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   666.48s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   666.83s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   669.48s Requesting snapshot of accessibility hierarchy for app with pid 60142
-    t =   669.71s Requesting snapshot of accessibility hierarchy for app with pid 60142
-TOOLINPUT textstudio: ok 35s
-    t =   686.34s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   687.35s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   690.48s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   690.99s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   694.12s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   694.62s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   697.73s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   698.06s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   701.15s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   701.84s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   705.02s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   705.70s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   712.41s Requesting snapshot of accessibility hierarchy for app with pid 61638
-    t =   712.87s Requesting snapshot of accessibility hierarchy for app with pid 61638
-TOOLINPUT thinking: ok 42s
-    t =   731.83s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   732.36s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   735.47s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   735.69s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   738.75s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   739.06s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   742.16s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   742.40s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   745.47s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   745.76s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   748.86s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   749.19s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   751.70s Requesting snapshot of accessibility hierarchy for app with pid 63345
-    t =   751.96s Requesting snapshot of accessibility hierarchy for app with pid 63345
-TOOLINPUT medreminder: ok 37s
-    t =   767.24s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   767.70s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   770.82s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   771.10s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   774.18s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   774.48s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   777.60s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   777.94s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   781.04s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   781.35s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   784.44s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   784.84s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   787.55s Requesting snapshot of accessibility hierarchy for app with pid 65115
-    t =   787.82s Requesting snapshot of accessibility hierarchy for app with pid 65115
+2026-11-23 15:22:14.822282+0000 HandyTools[24423:69556] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-23 15:22:16.530059+0000 HandyTools[24423:69586] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-11-23 15:22:17.062211+0000 HandyTools[24423:69550] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+2026-11-23 15:22:18.729612+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 15:22:18.742060+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 15:22:18.742965+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 15:22:18.743660+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 15:22:18.802549+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 15:22:18.802956+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' passed (0.021 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' passed (0.007 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' passed (0.003 seconds).
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.035 (0.172) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.035 (0.176) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.035 (0.179) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools]' started.
+    t =    13.07s         Wait for accessibility to load
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:48: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("9") - tab camera shows 6 tools
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:48: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("9") - tab day shows 6 tools
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:48: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("9") - tab pdf shows 6 tools
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:48: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("8") - tab photos shows 6 tools
+Test Case '-[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools]' failed (76.344 seconds).
+	 Executed 1 test, with 4 failures (0 unexpected) in 76.344 (76.366) seconds
+	 Executed 1 test, with 4 failures (0 unexpected) in 76.344 (76.368) seconds
+	 Executed 1 test, with 4 failures (0 unexpected) in 76.344 (76.370) seconds
 == crash reports
