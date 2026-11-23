@@ -72,7 +72,7 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: node tools/pack-app.mjs site www
       - run: npx cap sync android
-      - run: cd android && ./gradlew --no-daemon assembleDebug
+      - run: cd android && chmod +x gradlew && ./gradlew --no-daemon assembleDebug
       - name: Publish the APK (open this release on an Android phone to install)
         env: { GH_TOKEN: "${{ github.token }}" }
         run: |
