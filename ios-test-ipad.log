@@ -1,1 +1,8 @@
 == ipad (results)
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1230.468 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (21.360 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (29.565 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1281.394 (1281.408) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1281.394 (1281.410) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1281.394 (1281.421) seconds
+** TEST SUCCEEDED **
