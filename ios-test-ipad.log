@@ -1,1 +1,10 @@
 == ipad (results)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolSmokeTests.swift:40: error: -[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing] : Failed to terminate com.tenzy.toolkit:31056: Failed to terminate com.tenzy.toolkit:0
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' failed (445.384 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (96.164 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolSmokeTests.swift:62: error: -[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender] : Application 'com.tenzy.toolkit' has not loaded accessibility
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' failed (158.828 seconds).
+	 Executed 3 tests, with 2 failures (0 unexpected) in 700.376 (700.418) seconds
+	 Executed 3 tests, with 2 failures (0 unexpected) in 700.376 (700.421) seconds
+	 Executed 3 tests, with 2 failures (0 unexpected) in 700.376 (700.423) seconds
+** TEST FAILED **
