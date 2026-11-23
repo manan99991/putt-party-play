@@ -49,6 +49,8 @@ struct CelebrateView: View {
     @State private var showWords = false
     @State private var typed = ""
     @State private var player = AVPlayer()
+    /// The preview's sound: on, and it stays the way you set it when you try another effect.
+    @State private var soundOn = true
     @State private var poster: CGImage?
     /// False until the preview's first frame is on screen — till then the still frame shows, never a black box.
     @State private var rolling = false
@@ -369,6 +371,17 @@ struct CelebrateView: View {
                 if !rolling, let p = poster {
                     Image(decorative: p, scale: 1).resizable().scaledToFit().allowsHitTesting(false)
                 }
+                Button {
+                    soundOn.toggle(); player.isMuted = !soundOn
+                } label: {
+                    Image(systemName: soundOn ? "speaker.wave.2.fill" : "speaker.slash.fill")
+                        .font(.system(size: 15, weight: .bold)).foregroundStyle(.white)
+                        .frame(width: 40, height: 40).background(.black.opacity(0.5), in: Circle())
+                }
+                .buttonStyle(.plain)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing).padding(8)
+                .accessibilityLabel(L(soundOn ? "Sound off" : "Sound on"))
+                .accessibilityIdentifier("celebrate-sound")
                 if showWords, let img = Celebrate.captionImage(caption, frame: g.size) {
                     Image(uiImage: img)
                         .position(x: caption.center.x * g.size.width, y: caption.center.y * g.size.height)
@@ -554,7 +567,7 @@ struct CelebrateView: View {
                 let item = AVPlayerItem(asset: asset)
                 item.videoComposition = comp
                 player.replaceCurrentItem(with: item)
-                player.isMuted = true
+                player.isMuted = !soundOn
                 if at.isValid, at.seconds > 0 { player.seek(to: at, toleranceBefore: .zero, toleranceAfter: .zero) }
                 player.play()
             }

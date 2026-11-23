@@ -101,6 +101,10 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   not cloud items) and reads them on-device to put under a video; streamed Apple Music songs are never offered or copied.
   Files picked with "Browse all files" are copied into Tenzy's own Music folder. Nothing is uploaded, so App Privacy is
   unchanged. Never ship songs or loops in the app that Tenzy doesn't own the rights to.
+- The photo index (Search My Photos) builds on-device only, and only once photo access is already granted: quietly in
+  the foreground (stops on Low Power Mode or a warm phone, pauses between photos), for the ~30 s iOS gives on leaving,
+  and as a `BGProcessingTask` (`com.tenzy.toolkit.photoindex`, `requiresExternalPower = true`) to finish while charging.
+  `UIBackgroundModes` includes `processing` for this alone; the reviewer note says so. Nothing is uploaded.
 - Shortcuts action titles, descriptions and phrases must never contain "iPhone", "iPad", "Apple" or "Siri": App Store Connect rejects the upload (ITMS-90626) after the build has already passed. Say "your device".
 - Build your own, steps that can be missing on a phone: `speechText` and `videoCaptions` need on-device speech recognition, `rewrite` needs an
   on-device writing model (never on Android today), `videoCaptions` is iPhone only. The app greys these out and says why. **Never list one

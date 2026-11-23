@@ -20,6 +20,7 @@ struct TenzyApp: App {
         Diagnostics.shared.start()
         ToolNotifications.shared.install()   // so a tapped tool reminder opens that tool
         SmartAlerts.registerBackground()      // "tell me when…" checks, when iPhone grants a background refresh
+        MemoryIndex.registerBackground()      // the photo index finishes overnight while the phone charges
         ScreenshotDemo.seed()                 // store screenshots only (-screenshots -demo)
     }
     @Environment(\.scenePhase) private var phase
@@ -44,6 +45,12 @@ struct TenzyApp: App {
             .onChange(of: phase) { _, p in
                 // Every time Tenzy comes to the front: check the "tell me when…" alerts, and book the next background check.
                 if p == .active, !Launch.uitest { Task { await SmartAlerts.checkAll(); await DailyBrief.refresh(); await PageWatcher.checkAll() }; SmartAlerts.scheduleBackground() }
+                // The photo index (Search My Photos, the smart photo picker) builds quietly: a little after Tenzy
+                // opens, gently, and only the photos it hasn't read yet. Leaving the app saves where it got to.
+                if p == .active, !Launch.uitest, !Launch.sample {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 8) { MemoryIndex.shared.startQuietly() }
+                }
+                if p == .background { MemoryIndex.shared.enteredBackground() }
                 // "Open Translate in Tenzy" said while Tenzy was closed: open that tool now it's on screen.
                 if p == .active, let id = AppToolLaunch.takePending() {
                     showOnboarding = false

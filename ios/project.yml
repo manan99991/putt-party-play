@@ -81,8 +81,8 @@ targets:
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         UIRequiresFullScreen: true
         ITSAppUsesNonExemptEncryption: false
-        UIBackgroundModes: [audio, fetch]   # audio: Rest keeps playing with the screen off · fetch: smart alert checks
-        BGTaskSchedulerPermittedIdentifiers: [com.tenzy.toolkit.smartalerts]
+        UIBackgroundModes: [audio, fetch, processing]   # audio: Rest keeps playing with the screen off · fetch: smart alert checks · processing: the photo index finishes while charging
+        BGTaskSchedulerPermittedIdentifiers: [com.tenzy.toolkit.smartalerts, com.tenzy.toolkit.photoindex]
         CFBundleURLTypes:
           - CFBundleURLName: com.tenzy.toolkit
             CFBundleURLSchemes: [tenzy]

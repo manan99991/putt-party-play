@@ -1,4 +1,5 @@
 import Photos
+import BackgroundTasks
 import UIKit
 import SwiftUI
 import Vision
@@ -187,7 +188,7 @@ enum MemoryEngine {
     /// cache for photos already read so only new/changed ones are analysed. The index is saved after
     /// every batch, so it's resumable and searchable *as it builds*: `onBatch` hands back the sorted
     /// index so far, `onProgress` reports (done, total). Returns the final sorted index.
-    static func index(onBatch: @escaping ([Entry]) -> Void,
+    static func index(quiet: Bool = false, onBatch: @escaping ([Entry]) -> Void,
                       onProgress: @escaping (_ done: Int, _ total: Int) -> Void) async -> [Entry] {
         var cache = Dictionary(uniqueKeysWithValues: loadCache().map { ($0.id, $0) })
         let assets = PHAsset.fetchAssets(with: mediaFetch())   // whole library, photos + videos, no cap
@@ -228,6 +229,11 @@ enum MemoryEngine {
         let total = todo.count
         var done = 0, sinceSave = 0
         for a in todo {
+            // Stop cleanly when told to (leaving, background time up) — what's read so far is saved below.
+            if Task.isCancelled { break }
+            // In the background of the app, go gently: pause on Low Power Mode or a hot phone, and breathe
+            // between photos so the phone stays cool and every other tool stays quick.
+            if quiet, !(await PhotoIndexPacer.mayContinue()) { break }
             let mod = a.modificationDate ?? a.creationDate ?? .distantPast
             let shot = a.mediaSubtypes.contains(.photoScreenshot)
             let vid = a.mediaType == .video
@@ -247,7 +253,9 @@ enum MemoryEngine {
                 sinceSave = 0
             }
         }
-        return cache.values.sorted { $0.date > $1.date }
+        let final = cache.values.sorted { $0.date > $1.date }
+        if sinceSave > 0 { saveCache(final); onBatch(final) }
+        return final
     }
 
     // MARK: search — text + visual labels + colour, each result carrying why it matched.
@@ -379,33 +387,138 @@ enum MemoryEngine {
     }
 }
 
-/// Observable index for the Memory view: tracks progress and holds the entries.
+/// The photo index, one for the whole app: it builds quietly from the moment Tenzy has photo access — at launch,
+/// while you use any other tool, and overnight while the phone charges — so Search My Photos is ready the first time
+/// it's opened, and every later open only reads the photos taken since. Opening the tool while it's still building
+/// switches it to full speed.
 @MainActor final class MemoryIndex: ObservableObject {
+    static let shared = MemoryIndex()
+
     @Published private(set) var entries: [MemoryEngine.Entry] = MemoryEngine.loadCache()
     @Published private(set) var indexing = false
     @Published private(set) var progress: Double = 0
     @Published private(set) var done = 0
     @Published private(set) var total = 0
     @Published private(set) var indexedAt: Date? = nil
+    private var work: Task<Void, Never>?
+    private var bgToken: BackgroundToken?
 
+    static let backgroundTaskID = "com.tenzy.toolkit.photoindex"
+
+    /// Build (or catch up) at full speed — someone is waiting in Search My Photos.
     func refresh() {
-        guard !indexing else { return }
-        indexing = true; progress = 0; done = 0; total = 0
-        Task {
-            let result = await MemoryEngine.index(
-                onBatch: { snap in Task { @MainActor in self.entries = snap } },
-                onProgress: { d, t in Task { @MainActor in self.done = d; self.total = t; self.progress = t > 0 ? Double(d) / Double(t) : 0 } }
-            )
-            await MainActor.run { self.entries = result; self.indexedAt = Date(); self.indexing = false }
+        PhotoIndexPacer.setUrgent(true)
+        run(quiet: false)
+    }
+
+    /// Build or catch up gently, without anyone waiting: on launch, and whenever the app comes back.
+    func startQuietly() {
+        guard !indexing, Self.hasAccess else { return }
+        Task.detached(priority: .background) {
+            let needed = MemoryEngine.hasUnindexed()
+            await MainActor.run { if needed { self.run(quiet: true) } else { self.scheduleOvernight(false) } }
         }
     }
 
-    /// After an index already exists, quietly pick up photos taken since last time so later opens are
-    /// instant and self-maintaining. No-op while already building or if nothing is new.
+    /// The tool is open: whatever's building goes full speed; otherwise catch up on new photos.
     func catchUpIfNeeded() {
-        guard !indexing, !entries.isEmpty else { return }
+        PhotoIndexPacer.setUrgent(true)
+        guard !indexing else { return }
         Task.detached {
             if MemoryEngine.hasUnindexed() { await MainActor.run { self.refresh() } }
         }
+    }
+
+    /// The tool was closed: anything still building carries on gently.
+    func leftTheTool() { PhotoIndexPacer.setUrgent(false) }
+
+    static var hasAccess: Bool {
+        let s = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+        return s == .authorized || s == .limited
+    }
+
+    private func run(quiet: Bool) {
+        guard !indexing else { return }
+        indexing = true; progress = 0; done = 0; total = 0
+        work = Task(priority: quiet ? .background : .userInitiated) {
+            let result = await MemoryEngine.index(
+                quiet: quiet,
+                onBatch: { snap in Task { @MainActor in self.entries = snap } },
+                onProgress: { d, t in Task { @MainActor in self.done = d; self.total = t; self.progress = t > 0 ? Double(d) / Double(t) : 0 } }
+            )
+            await MainActor.run {
+                self.entries = result; self.indexedAt = Date(); self.indexing = false
+                self.bgToken?.end(); self.bgToken = nil
+                // Not finished (paused for battery, heat or background)? Finish overnight on the charger.
+                self.scheduleOvernight(self.total > 0 && self.done < self.total)
+            }
+        }
+    }
+
+    /// Going to the background: keep reading for the half-minute iOS allows, saving as it goes.
+    func enteredBackground() {
+        guard indexing else { return }
+        let token = BackgroundToken()
+        let job = work
+        token.id = UIApplication.shared.beginBackgroundTask(withName: "photo-index") { job?.cancel(); token.end() }
+        bgToken = token
+        scheduleOvernight(true)
+    }
+
+    @MainActor private final class BackgroundToken {
+        var id: UIBackgroundTaskIdentifier = .invalid
+        func end() { if id != .invalid { UIApplication.shared.endBackgroundTask(id); id = .invalid } }
+    }
+
+    /// Ask iOS for time to finish while the phone is charging and idle (usually overnight). Never on battery.
+    func scheduleOvernight(_ needed: Bool) {
+        guard needed else { BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Self.backgroundTaskID); return }
+        let r = BGProcessingTaskRequest(identifier: Self.backgroundTaskID)
+        r.requiresExternalPower = true
+        r.requiresNetworkConnectivity = false
+        try? BGTaskScheduler.shared.submit(r)
+    }
+
+    /// Register the overnight job (call once at launch).
+    nonisolated static func registerBackground() {
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundTaskID, using: nil) { task in
+            let job = Task {
+                let result = await MemoryEngine.index(quiet: false, onBatch: { _ in }, onProgress: { _, _ in })
+                await MainActor.run {
+                    MemoryIndex.shared.entries = result
+                    MemoryIndex.shared.scheduleOvernight(MemoryEngine.hasUnindexed())
+                }
+                task.setTaskCompleted(success: true)
+            }
+            task.expirationHandler = { job.cancel() }
+        }
+    }
+}
+
+/// How hard the photo index may work right now. Full speed while someone waits in the tool; otherwise gentle:
+/// stops on Low Power Mode or when the phone is warm, and pauses between photos (shorter on the charger).
+enum PhotoIndexPacer {
+    private static let lock = NSLock()
+    private static var urgent = false
+    static func setUrgent(_ on: Bool) { lock.lock(); urgent = on; lock.unlock() }
+    static var isUrgent: Bool { lock.lock(); defer { lock.unlock() }; return urgent }
+
+    /// Pure: whether to keep going, and how long to rest before the next photo.
+    static func plan(urgent: Bool, lowPower: Bool, thermal: ProcessInfo.ThermalState, charging: Bool) -> (go: Bool, restMs: Int) {
+        if urgent { return (thermal != .critical, 0) }
+        if lowPower || thermal == .serious || thermal == .critical { return (false, 0) }
+        if thermal == .fair { return (true, charging ? 150 : 400) }
+        return (true, charging ? 20 : 120)
+    }
+
+    static func mayContinue() async -> Bool {
+        let charging = await MainActor.run { () -> Bool in
+            UIDevice.current.isBatteryMonitoringEnabled = true
+            return UIDevice.current.batteryState == .charging || UIDevice.current.batteryState == .full
+        }
+        let pi = ProcessInfo.processInfo
+        let p = plan(urgent: isUrgent, lowPower: pi.isLowPowerModeEnabled, thermal: pi.thermalState, charging: charging)
+        if p.go, p.restMs > 0 { try? await Task.sleep(nanoseconds: UInt64(p.restMs) * 1_000_000) }
+        return p.go && !Task.isCancelled
     }
 }

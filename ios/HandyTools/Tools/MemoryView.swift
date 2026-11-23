@@ -8,7 +8,7 @@ struct MemoryView: View {
     static let collections = ["Wi-Fi password", "Confirmation number", "Where I parked", "Flight", "Tracking number", "Receipt", "Address", "Gift card code", "Recipe", "Ticket"]
     @State private var counts: [String: Int] = [:]
     @EnvironmentObject var store: StoreManager
-    @StateObject private var index = MemoryIndex()
+    @ObservedObject private var index = MemoryIndex.shared
     @State private var query = ""
     @State private var authorized = false
     @State private var checkedAuth = false
@@ -72,6 +72,7 @@ struct MemoryView: View {
             Text(L("Reads the text and recognises what's in your photos — objects and colours — on device. For a one-line answer in plain language, Apple Intelligence (iPhone 15 Pro or newer) extracts it; otherwise you get the best-matching photos, each with why it matched.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .task { await checkAuth() }
+        .onDisappear { index.leftTheTool() }
         .sheet(item: $viewing) { e in MemoryImageViewer(entry: e) }
     }
 
@@ -104,7 +105,7 @@ struct MemoryView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack { BusySpinner(); Text(index.total > 0 ? "Building your photo index — \(index.done) of \(index.total)" : "Building your photo index…").font(HandyFont.body) }
             ProgressView(value: index.progress).tint(HandyColor.accent)
-            Text(L("One-time, on your phone. You can search what's ready now — next time it's instant.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("One time only, on your phone. Search what's ready now. Leave whenever you like — it carries on quietly, and finishes while your phone charges. After that, only new photos are read.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle()
     }
 
@@ -166,7 +167,7 @@ struct MemoryView: View {
         checkedAuth = true
         // First time: wait for the explicit "Build index" tap (consent). If an index already exists,
         // quietly catch up any photos taken since last time so this open is instant and self-maintaining.
-        if authorized, !index.entries.isEmpty, Launch.sample == false { index.catchUpIfNeeded() }
+        if authorized, !index.entries.isEmpty || index.indexing, Launch.sample == false { index.catchUpIfNeeded() }
     }
 
     private func requestAccess() async {

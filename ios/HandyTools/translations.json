@@ -42148,5 +42148,35 @@
   "ja": "Facebook 投稿",
   "pt": "Publicação do Facebook",
   "zh": "Facebook 帖子"
+ },
+ "One time only, on your phone. Search what's ready now. Leave whenever you like — it carries on quietly, and finishes while your phone charges. After that, only new photos are read.": {
+  "de": "Nur einmal, auf deinem Telefon. Durchsuche schon, was fertig ist. Geh, wann du willst – es läuft leise weiter und wird fertig, während dein Telefon lädt. Danach werden nur neue Fotos gelesen.",
+  "es": "Solo una vez, en tu teléfono. Busca ya en lo que esté listo. Sal cuando quieras: sigue en silencio y termina mientras el teléfono carga. Después solo se leen las fotos nuevas.",
+  "fr": "Une seule fois, sur votre téléphone. Cherchez déjà dans ce qui est prêt. Partez quand vous voulez — ça continue discrètement et se termine pendant la recharge. Ensuite, seules les nouvelles photos sont lues.",
+  "hi": "सिर्फ़ एक बार, आपके फ़ोन पर। जो तैयार है उसमें अभी खोजें। जब चाहें निकल जाएँ — यह चुपचाप चलता रहेगा और फ़ोन चार्ज होते समय पूरा हो जाएगा। उसके बाद सिर्फ़ नई फ़ोटो पढ़ी जाएँगी।",
+  "it": "Una volta sola, sul tuo telefono. Cerca già in ciò che è pronto. Esci quando vuoi: continua in silenzio e finisce mentre il telefono si ricarica. Dopo, vengono lette solo le foto nuove.",
+  "ja": "最初の1回だけ、端末内で行います。準備できた分はもう検索できます。いつ閉じても大丈夫 — 静かに続き、充電中に完了します。その後は新しい写真だけを読み取ります。",
+  "pt": "Só uma vez, no seu telemóvel. Pesquise já no que estiver pronto. Saia quando quiser — continua em silêncio e termina enquanto o telemóvel carrega. Depois, só as fotos novas são lidas.",
+  "zh": "只需一次，在你的手机上完成。现在就能搜索已准备好的部分。随时可以离开——它会安静地继续，并在手机充电时完成。之后只读取新照片。"
+ },
+ "Sound off": {
+  "de": "Ton aus",
+  "es": "Sin sonido",
+  "fr": "Son coupé",
+  "hi": "आवाज़ बंद",
+  "it": "Audio disattivato",
+  "ja": "消音",
+  "pt": "Som desligado",
+  "zh": "关闭声音"
+ },
+ "Sound on": {
+  "de": "Ton an",
+  "es": "Con sonido",
+  "fr": "Son activé",
+  "hi": "आवाज़ चालू",
+  "it": "Audio attivo",
+  "ja": "音を出す",
+  "pt": "Som ligado",
+  "zh": "打开声音"
  }
 }

@@ -21,7 +21,7 @@ PERMISSIONS (all processed on-device; nothing is uploaded)
 - Background audio: Rest keeps playing sleep sounds (or listening for snoring when the user starts it) with the screen off. It runs only after the user taps start.
 - Face ID: unlocks the private Vault.
 - Notifications: only reminders the user turns on (medicines, birthdays, Morning Summary, parking meter, bedtime, contact backup, Price Watch, bills, warranties, tool reminders). Every one has a "Test run" button that sends a sample within seconds.
-- Background App Refresh: used only for the user's own "tell me when" alerts (screenshot count, free space) and Price Watch, which downloads the web pages the user added (at most 10) a few times a day when iOS allows. Nothing else runs in the background.
+- Background: Refresh runs the user's own alerts and Price Watch (pages they added, at most 10) a few times a day. Processing, only while charging, finishes the on-device photo index for Search My Photos. Nothing else.
 - Network: See & Read and the "Read the page at a link" step fetch only the page the user gives; Price Watch fetches the pages the user added. No data about the user is sent.
 - Calendar: plans open the system's own event editor (EKEventEditViewController); nothing is read.
 
