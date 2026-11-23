@@ -64,7 +64,7 @@ enum HomeShelves {
     static var businessTools: Set<String> { Set(businessJobs.compactMap(\.tool)) }
 
     /// Home's tabs: the eight for everyone, plus Business for people who run one (then the grid is 3 x 3).
-    static func tabs(business: Bool) -> [Shelf] { business ? all + [business] : all }
+    static func tabs(business: Bool) -> [Shelf] { business ? all + [Self.business] : all }
 
     /// One Business job: a ready-made chain run straight away, or a tool. Every one has a job name that fits a tile.
     struct BusinessJob: Equatable, Identifiable {
