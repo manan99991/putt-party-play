@@ -43038,5 +43038,145 @@
   "ja": "雨、波、焚き火、鳥の声を自由にミックス",
   "pt": "Chuva, ondas, fogo, pássaros — faça a sua mistura",
   "zh": "雨声、海浪、篝火、鸟鸣——自己混合"
+ },
+ "Say it, or start with what you have.": {
+  "de": "Sag es – oder fang mit dem an, was du hast.",
+  "es": "Dilo, o empieza con lo que tienes.",
+  "fr": "Dites-le, ou partez de ce que vous avez.",
+  "hi": "बोलिए, या जो आपके पास है उससे शुरू करें।",
+  "it": "Dillo, o parti da quello che hai.",
+  "ja": "話しかけるか、手元のものから始めましょう。",
+  "pt": "Diga, ou comece com o que tem.",
+  "zh": "说出来，或从你手头的东西开始。"
+ },
+ "Start with what you have — or open a tool": {
+  "de": "Fang mit dem an, was du hast – oder öffne ein Werkzeug",
+  "es": "Empieza con lo que tienes, o abre una herramienta",
+  "fr": "Partez de ce que vous avez, ou ouvrez un outil",
+  "hi": "जो आपके पास है उससे शुरू करें — या कोई टूल खोलें",
+  "it": "Parti da quello che hai, o apri uno strumento",
+  "ja": "手元のものから始めるか、ツールを開く",
+  "pt": "Comece com o que tem — ou abra uma ferramenta",
+  "zh": "从手头的东西开始——或打开一个工具"
+ },
+ "Your tools, reminders and results, all in one place.": {
+  "de": "Deine Werkzeuge, Erinnerungen und Ergebnisse an einem Ort.",
+  "es": "Tus herramientas, recordatorios y resultados, todo en un lugar.",
+  "fr": "Vos outils, rappels et résultats, au même endroit.",
+  "hi": "आपके टूल, रिमाइंडर और नतीजे, सब एक जगह।",
+  "it": "I tuoi strumenti, promemoria e risultati, tutto in un posto.",
+  "ja": "あなたのツール、リマインダー、結果をひとまとめに。",
+  "pt": "As suas ferramentas, lembretes e resultados, tudo num só lugar.",
+  "zh": "你的工具、提醒和结果，尽在一处。"
+ },
+ "tool": {
+  "de": "Werkzeug",
+  "es": "herramienta",
+  "fr": "outil",
+  "hi": "टूल",
+  "it": "strumento",
+  "ja": "ツール",
+  "pt": "ferramenta",
+  "zh": "个工具"
+ },
+ "reminder on": {
+  "de": "Erinnerung aktiv",
+  "es": "recordatorio activo",
+  "fr": "rappel actif",
+  "hi": "रिमाइंडर चालू",
+  "it": "promemoria attivo",
+  "ja": "件のリマインダー",
+  "pt": "lembrete ativo",
+  "zh": "个提醒已开"
+ },
+ "reminders on": {
+  "de": "Erinnerungen aktiv",
+  "es": "recordatorios activos",
+  "fr": "rappels actifs",
+  "hi": "रिमाइंडर चालू",
+  "it": "promemoria attivi",
+  "ja": "件のリマインダー",
+  "pt": "lembretes ativos",
+  "zh": "个提醒已开"
+ },
+ "result kept": {
+  "de": "Ergebnis gespeichert",
+  "es": "resultado guardado",
+  "fr": "résultat gardé",
+  "hi": "नतीजा रखा",
+  "it": "risultato salvato",
+  "ja": "件の結果",
+  "pt": "resultado guardado",
+  "zh": "个结果"
+ },
+ "results kept": {
+  "de": "Ergebnisse gespeichert",
+  "es": "resultados guardados",
+  "fr": "résultats gardés",
+  "hi": "नतीजे रखे",
+  "it": "risultati salvati",
+  "ja": "件の結果",
+  "pt": "resultados guardados",
+  "zh": "个结果"
+ },
+ "Build one": {
+  "de": "Eins bauen",
+  "es": "Crea una",
+  "fr": "Créez-en un",
+  "hi": "एक बनाएँ",
+  "it": "Creane uno",
+  "ja": "作ってみる",
+  "pt": "Crie uma",
+  "zh": "创建一个"
+ },
+ "saved": {
+  "de": "gespeichert",
+  "es": "guardadas",
+  "fr": "enregistrés",
+  "hi": "सहेजे",
+  "it": "salvati",
+  "ja": "件保存",
+  "pt": "guardadas",
+  "zh": "个已保存"
+ },
+ "Every result": {
+  "de": "Alle Ergebnisse",
+  "es": "Todos los resultados",
+  "fr": "Tous les résultats",
+  "hi": "हर नतीजा",
+  "it": "Tutti i risultati",
+  "ja": "すべての結果",
+  "pt": "Todos os resultados",
+  "zh": "所有结果"
+ },
+ "Theme, language": {
+  "de": "Design, Sprache",
+  "es": "Tema, idioma",
+  "fr": "Thème, langue",
+  "hi": "थीम, भाषा",
+  "it": "Tema, lingua",
+  "ja": "テーマ・言語",
+  "pt": "Tema, idioma",
+  "zh": "主题、语言"
+ },
+ "Switch on": {
+  "de": "Einschalten",
+  "es": "Activar",
+  "fr": "Activer",
+  "hi": "चालू करें",
+  "it": "Attiva",
+  "ja": "オンにする",
+  "pt": "Ativar",
+  "zh": "开启"
+ },
+ "Medicine, plans, contacts, moods, bills, prices and receipts": {
+  "de": "Medizin, Pläne, Kontakte, Stimmung, Rechnungen, Preise und Quittungen",
+  "es": "Medicinas, planes, contactos, ánimo, facturas, precios y recibos",
+  "fr": "Médicaments, plans, contacts, humeur, factures, prix et reçus",
+  "hi": "दवा, योजनाएँ, संपर्क, मूड, बिल, दाम और रसीदें",
+  "it": "Medicine, piani, contatti, umore, bollette, prezzi e scontrini",
+  "ja": "薬・予定・連絡先・気分・請求・値段・レシート",
+  "pt": "Medicação, planos, contactos, humor, contas, preços e recibos",
+  "zh": "用药、计划、联系人、心情、账单、价格和收据"
  }
 }

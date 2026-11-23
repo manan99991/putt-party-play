@@ -511,3 +511,97 @@ extension Color {
         })
     }
 }
+
+// MARK: - Home, My stuff and Settings: the Tenzy ground, the mark, and the tiles
+
+/// The Tenzy ground for Home, My stuff and Settings: the theme's own two colours washing through a soft mesh — deep
+/// enough to feel like a place of its own, quiet enough that every word on it stays crisp. Drawn once, never animated.
+struct TenzyBackdrop: View {
+    @ObservedObject private var theme = ThemeManager.shared
+    @Environment(\.colorScheme) private var scheme
+    var body: some View {
+        let sw = theme.current.swatch
+        let a = sw.first ?? HandyColor.accent, b = sw.last ?? HandyColor.accent
+        let dark = theme.current.isDark || (theme.current == .daylight && scheme == .dark)
+        let k: Double = dark ? 0.40 : 0.18
+        ZStack {
+            HandyColor.bg
+            MeshGradient(width: 3, height: 3, points: [
+                [0, 0], [0.5, 0], [1, 0],
+                [0, 0.5], [0.62, 0.40], [1, 0.5],
+                [0, 1], [0.5, 1], [1, 1],
+            ], colors: [
+                a.opacity(k), b.opacity(k * 0.85), a.opacity(k * 0.55),
+                b.opacity(k * 0.45), a.opacity(0), b.opacity(k * 0.35),
+                a.opacity(0), b.opacity(k * 0.22), a.opacity(0),
+            ])
+            // Settle toward the bottom so the tab bar and the last row sit on calm ground.
+            LinearGradient(colors: [HandyColor.bg.opacity(0), HandyColor.bg.opacity(0.55)], startPoint: .center, endPoint: .bottom)
+        }
+        .ignoresSafeArea()
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+}
+
+/// The Tenzy mark, worn like a profile picture: a glowing disc in the theme's colours inside a ring.
+struct TenzyMark: View {
+    var size: CGFloat = 58
+    var symbol: String = "sparkles"
+    @ObservedObject private var theme = ThemeManager.shared
+    var body: some View {
+        let sw = theme.current.swatch
+        ZStack {
+            Circle().fill(LinearGradient(colors: sw, startPoint: .topLeading, endPoint: .bottomTrailing))
+            Image(systemName: symbol).font(.system(size: size * 0.42, weight: .bold)).foregroundStyle(.white)
+        }
+        .frame(width: size, height: size)
+        .padding(3)
+        .overlay(Circle().stroke(AngularGradient(colors: sw + [sw.first ?? .white], center: .center), lineWidth: 2.5))
+        .shadow(color: (sw.first ?? .black).opacity(0.35), radius: 10, y: 4)
+        .accessibilityHidden(true)
+    }
+}
+
+/// The face of a gradient tile: the colour, deepened toward the bottom so white words read, with the tile's own mark
+/// large and faint in the corner — like the art on a post.
+struct PostTileGround: View {
+    let hex: UInt32
+    var icon: String? = nil
+    var body: some View {
+        let tint = Color(hex: hex)
+        ZStack(alignment: .topTrailing) {
+            LinearGradient(colors: [tint.mix(with: .black, by: 0.12), tint.mix(with: .black, by: 0.38)], startPoint: .topLeading, endPoint: .bottomTrailing)
+            if let icon {
+                Image(systemName: icon).font(.system(size: 50, weight: .bold)).foregroundStyle(.white.opacity(0.13))
+                    .rotationEffect(.degrees(-12)).offset(x: 12, y: -6)
+            }
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(.white.opacity(0.14), lineWidth: 1))
+        .shadow(color: tint.opacity(0.28), radius: 8, y: 4)
+        .accessibilityHidden(true)
+    }
+}
+
+/// One uniform tile — every tile on Home and My stuff is this one shape, so the grid lines up like a profile's posts.
+struct PostTile: View {
+    let title: String
+    let icon: String
+    let hex: UInt32
+    var sub: String? = nil
+    var height: CGFloat = 76
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Image(systemName: icon).font(.system(size: 18, weight: .bold)).foregroundStyle(.white).accessibilityHidden(true)
+            Spacer(minLength: 0)
+            Text(L(title)).font(.system(size: 14, weight: .bold)).foregroundStyle(.white)
+                .lineLimit(2).minimumScaleFactor(0.75).multilineTextAlignment(.leading)
+            if let sub { Text(L(sub)).font(.system(size: 10, weight: .semibold)).foregroundStyle(.white.opacity(0.85)).lineLimit(1) }
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, minHeight: height, maxHeight: height, alignment: .leading)
+        .background(PostTileGround(hex: hex, icon: icon))
+        .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+}

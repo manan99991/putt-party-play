@@ -508,20 +508,14 @@ struct BuilderView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             // Problem first: the person says what they need; Tenzy finds the tool, or builds one. Kept short so
             // the whole front door — say it, start with what you have, or open any tool — fits one screen.
-            Text(L("Let's make today easier")).font(.system(size: 28, weight: .bold)).lineLimit(1).minimumScaleFactor(0.8).frame(maxWidth: .infinity, alignment: .leading)
-                .accessibilityAddTraits(.isHeader)
+            // Laid out like a profile: who (the Tenzy mark and its promise), three actions, the say-it line, then one even
+            // grid of tiles — three across, every tile the same shape — with everything Tenzy does one or two taps away.
+            profileHeader
             hero
             if let b = builtIn { builtInCard(b) }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             if !triedFirst, !Launch.screenshots, builtIn == nil, ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { firstTry }
             anythingTiles
-            shelfTiles
-            HStack(spacing: HandySpacing.s8) {
-                // Every tool in one list, the ready-made ones, and the ones you built.
-                footBtn("All tools") { NotificationCenter.default.post(name: .openTool, object: "explore", userInfo: ["from": "builder"]) }
-                footBtn("Templates") { showTemplates = true }
-                footBtn("My tools") { showMine = true }.accessibilityIdentifier("home-mytools")
-            }
         }
         .frame(maxWidth: .infinity, alignment: .top)
         .padding(.horizontal, HandySpacing.gutter)
@@ -885,41 +879,81 @@ struct BuilderView: View {
         NotificationCenter.default.post(name: .showPaywall, object: nil)
     }
 
-    /// "Start with what you have": nine starting points on one page, nothing to scroll — pick the thing and
-    /// Tenzy lists the tools that fit it.
+    /// Home's top, laid out like a profile: the Tenzy mark and its promise, then three actions — your own tools, the
+    /// ready-made ones, and what's set to remind you.
+    private var profileHeader: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            HStack(spacing: HandySpacing.s12) {
+                TenzyMark(size: 48)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(L("Let's make today easier")).font(.system(size: 24, weight: .bold)).foregroundStyle(HandyColor.textPrimary)
+                        .lineLimit(1).minimumScaleFactor(0.7).accessibilityAddTraits(.isHeader)
+                    Text(L("Say it, or start with what you have.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        .lineLimit(1).minimumScaleFactor(0.8)
+                }
+                Spacer(minLength: 0)
+            }
+            HStack(spacing: HandySpacing.s8) {
+                profileAction("My tools", icon: "square.stack.3d.up.fill", count: mine.count) { showMine = true }
+                    .accessibilityIdentifier("home-mytools")
+                profileAction("Templates", icon: "square.grid.2x2.fill", count: nil) { showTemplates = true }
+                    .accessibilityIdentifier("home-templates")
+                profileAction("Reminders", icon: "bell.badge.fill", count: nil) { NotificationCenter.default.post(name: .showMyStuff, object: nil) }
+                    .accessibilityIdentifier("have-reminders")
+            }
+        }
+    }
+
+    private func profileAction(_ title: String, icon: String, count: Int?, _ action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 6) {
+                Image(systemName: icon).font(.system(size: 13, weight: .semibold)).foregroundStyle(HandyColor.accent).accessibilityHidden(true)
+                Text(L(title)).font(.system(size: 14, weight: .semibold)).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.75)
+                if let count, count > 0 {
+                    Text("\(count)").font(.system(size: 11, weight: .bold)).foregroundStyle(HandyColor.onAccent)
+                        .padding(.horizontal, 6).padding(.vertical, 1).background(HandyColor.accent, in: Capsule())
+                }
+            }
+            .padding(.horizontal, 6)
+            .frame(maxWidth: .infinity, minHeight: 44)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+            .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        }
+        .buttonStyle(.plain)
+    }
+
+    /// One even grid, three across: the six things you might have (a photo, a video, a recording, a PDF, a file,
+    /// something copied), the five shelves that hold every other tool, and Think. Twelve tiles, one shape, no scrolling.
     private var anythingTiles: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text(L("…or start with what you have")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Start with what you have — or open a tool")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            HStack(spacing: HandySpacing.s8) {
+            let cols = Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3)
+            LazyVGrid(columns: cols, spacing: HandySpacing.s8) {
                 // Our own photo grid: big tiles, tap or swipe a finger across to pick several (Manan, 22 Nov), originals kept.
                 SmartPhotoFilesButton(kind: .any, max: 20, picked: { files in
                     guard !files.isEmpty else { return }
                     gettingReady = true; note = nil
                     Task { await takePhotos(files, asked: files.count) }
-                }) { objTile("Photo") }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
-                PhotosPicker(selection: $anyPick, matching: .videos) { objTile("Video") }.accessibilityIdentifier("have-video")
-                Button { pickTypes = audioImportTypes; pickingAny = true } label: { objTile("Audio") }.accessibilityIdentifier("have-audio")
-            }
-            HStack(spacing: HandySpacing.s8) {
-                Button { pickTypes = [.pdf]; pickingAny = true } label: { objTile("PDF") }.accessibilityIdentifier("have-pdf")
-                Button { pickTypes = [.item]; pickingAny = true } label: { objTile("File") }.accessibilityIdentifier("have-file")
-                // The system paste control reads the clipboard with no "Allow Paste?" prompt and can never be
-                // refused — a custom button reading UIPasteboard asked every time, and dead-ended on "Don't Allow".
-                // Laid out like its neighbours: the paste mark where their icon is, then the word, then what's copied.
-                VStack(spacing: 4) {
-                    PasteButton(supportedContentTypes: [.image, .url, .plainText]) { providers in pasteHome(providers) }
-                        .labelStyle(.iconOnly)
-                        .buttonBorderShape(.roundedRectangle(radius: 10))
-                        .tint(Color(hex: 0x14B8A6))
-                        .accessibilityIdentifier("have-paste")
-                    Text(L("Paste")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                    Text(L(clipKind.map { "\($0) copied" } ?? "Nothing copied")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
+                }) { PostTile(title: "Photo", icon: "photo.on.rectangle.angled", hex: 0xEC4899) }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
+                PhotosPicker(selection: $anyPick, matching: .videos) { PostTile(title: "Video", icon: "film", hex: 0x8B5CF6) }
+                    .buttonStyle(.plain).accessibilityIdentifier("have-video")
+                Button { pickTypes = audioImportTypes; pickingAny = true } label: { PostTile(title: "Audio", icon: "waveform", hex: 0xF59E0B) }
+                    .buttonStyle(.plain).accessibilityIdentifier("have-audio")
+                Button { pickTypes = [.pdf]; pickingAny = true } label: { PostTile(title: "PDF", icon: "doc.richtext", hex: 0xEF4444) }
+                    .buttonStyle(.plain).accessibilityIdentifier("have-pdf")
+                Button { pickTypes = [.item]; pickingAny = true } label: { PostTile(title: "File", icon: "folder", hex: 0x3B82F6) }
+                    .buttonStyle(.plain).accessibilityIdentifier("have-file")
+                pasteTile
+                ForEach(HomeShelves.all) { sh in
+                    Button { shelf = sh } label: { PostTile(title: sh.title, icon: sh.icon, hex: sh.hex) }
+                        .buttonStyle(.plain).accessibilityIdentifier("shelf-\(sh.id)")
                 }
-                .frame(maxWidth: .infinity, minHeight: 64, maxHeight: .infinity)
-                .cardStyle(padding: HandySpacing.s8)
+                Button { NotificationCenter.default.post(name: .openTool, object: "thinking", userInfo: ["from": "builder"]) } label: {
+                    PostTile(title: "Think", icon: "lightbulb.max.fill", hex: 0x22C55E)
+                }.buttonStyle(.plain).accessibilityIdentifier("have-think")
             }
-            .fixedSize(horizontal: false, vertical: true)   // Paste has a second line; PDF and File grow to match it
             if gettingReady {
                 HStack(spacing: HandySpacing.s8) {
                     BusySpinner()
@@ -933,6 +967,24 @@ struct BuilderView: View {
         .onAppear { refreshClipKind() }
         .onChange(of: scenePhase) { _, p in if p == .active { refreshClipKind() } }
         .onReceive(NotificationCenter.default.publisher(for: UIPasteboard.changedNotification)) { _ in refreshClipKind() }
+    }
+
+    /// Paste, shaped like its neighbours. The system paste control reads the clipboard with no "Allow Paste?" prompt and
+    /// can never be refused — a custom button reading UIPasteboard asked every time, and dead-ended on "Don't Allow".
+    private var pasteTile: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            PasteButton(supportedContentTypes: [.image, .url, .plainText]) { providers in pasteHome(providers) }
+                .labelStyle(.iconOnly)
+                .buttonBorderShape(.roundedRectangle(radius: 9))
+                .tint(.white)
+                .accessibilityIdentifier("have-paste")
+            Spacer(minLength: 0)
+            Text(L("Paste")).font(.system(size: 14, weight: .bold)).foregroundStyle(.white)
+            Text(L(clipKind.map { "\($0) copied" } ?? "Nothing copied")).font(.system(size: 10, weight: .semibold)).foregroundStyle(.white.opacity(0.85)).lineLimit(1)
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, minHeight: 76, maxHeight: 76, alignment: .leading)
+        .background(PostTileGround(hex: 0x14B8A6, icon: "doc.on.clipboard"))
     }
     /// What the paste control handed over: a picture, a link or text, each starting the matching tools.
     private func pasteHome(_ providers: [NSItemProvider]) {
@@ -957,51 +1009,6 @@ struct BuilderView: View {
         let pb = UIPasteboard.general
         clipKind = pb.hasImages ? "Image" : pb.hasURLs ? "Link" : pb.hasStrings ? "Text" : nil
     }
-    private func objTile(_ title: String, sub: String? = nil) -> some View {
-        // Each kind of thing gets its own mark and colour, so the six read at a glance.
-        let look: [String: (String, UInt32)] = ["Photo": ("photo.on.rectangle.angled", 0xEC4899), "Video": ("film", 0x8B5CF6),
-            "Audio": ("waveform", 0xF59E0B), "PDF": ("doc.richtext", 0xEF4444), "File": ("folder", 0x3B82F6), "Paste": ("doc.on.clipboard", 0x14B8A6),
-            "Contacts": ("person.2.fill", 0x0EA5E9), "Think": ("lightbulb.max.fill", 0x22C55E), "Reminders": ("bell.badge.fill", 0xF97316)]
-        let (icon, hex) = look[title] ?? ("square", 0x64748B)
-        let tint = Color(hex: hex)
-        return VStack(spacing: 6) {
-            Image(systemName: icon).font(.system(size: 18, weight: .semibold)).foregroundStyle(.white)
-                .frame(width: 36, height: 36)
-                .background(LinearGradient(colors: [tint, tint.opacity(0.75)], startPoint: .topLeading, endPoint: .bottomTrailing),
-                            in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .accessibilityHidden(true)
-            Text(L(title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-            if let sub { Text(L(sub)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1) }
-        }
-        .frame(maxWidth: .infinity, minHeight: 64, maxHeight: .infinity)
-        .cardStyle(padding: HandySpacing.s8)
-    }
-
-    /// "…or open a tool": everything that doesn't start from a file — the flashlight, the camera helpers, your day,
-    /// your contacts — four across, two rows, so every tool Tenzy has is one or two taps from Home (HomeShelves).
-    private var shelfTiles: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text(L("…or open a tool")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            let cols = Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 4)
-            LazyVGrid(columns: cols, spacing: HandySpacing.s8) {
-                ForEach(HomeShelves.all) { sh in
-                    Button { shelf = sh } label: { smallTile(sh.title, icon: sh.icon, hex: sh.hex) }
-                        .buttonStyle(.plain).accessibilityIdentifier("shelf-\(sh.id)")
-                }
-                Button { NotificationCenter.default.post(name: .openTool, object: "contacts", userInfo: ["from": "builder"]) } label: {
-                    smallTile("Contacts", icon: "person.2.fill", hex: 0x0EA5E9)
-                }.buttonStyle(.plain).accessibilityIdentifier("have-contacts")
-                Button { NotificationCenter.default.post(name: .openTool, object: "thinking", userInfo: ["from": "builder"]) } label: {
-                    smallTile("Think", icon: "lightbulb.max.fill", hex: 0x22C55E)
-                }.buttonStyle(.plain).accessibilityIdentifier("have-think")
-                Button { NotificationCenter.default.post(name: .showMyStuff, object: nil) } label: {
-                    smallTile("Reminders", icon: "bell.badge.fill", hex: 0xF97316)
-                }.buttonStyle(.plain).accessibilityIdentifier("have-reminders")
-            }
-        }
-    }
-
     /// "See it work in 10 seconds": one real job on a sample photo — the phone number hidden, where it was taken
     /// removed, made small enough to send — so a new person sees Tenzy work before doing anything themselves.
     private var firstTry: some View {
@@ -1026,24 +1033,6 @@ struct BuilderView: View {
         }
         .padding(.horizontal, HandySpacing.s12).padding(.vertical, 4)
         .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-    }
-
-    private func smallTile(_ title: String, icon: String, hex: UInt32) -> some View {
-        let tint = Color(hex: hex)
-        return VStack(spacing: 5) {
-            Image(systemName: icon).font(.system(size: 16, weight: .semibold)).foregroundStyle(.white)
-                .frame(width: 32, height: 32)
-                .background(LinearGradient(colors: [tint, tint.opacity(0.75)], startPoint: .topLeading, endPoint: .bottomTrailing),
-                            in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-                .accessibilityHidden(true)
-            Text(L(title)).font(.system(size: 12, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
-                .multilineTextAlignment(.center).lineLimit(2).minimumScaleFactor(0.85)
-        }
-        .frame(maxWidth: .infinity, minHeight: 68)
-        .padding(.horizontal, 4).padding(.vertical, 5)
-        .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-        .contentShape(Rectangle())
     }
 
     /// While the person types: the tools and ready-made tools that already do it, one tap away — before anything is built.
@@ -1102,11 +1091,6 @@ struct BuilderView: View {
         }
         let need = max(1, (words.count + 1) / 2)
         return scored.filter { $0.1 >= need * 10 }.sorted { $0.1 > $1.1 }.map(\.0)
-    }
-    private func footBtn(_ label: String, _ action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Text(label).font(HandyFont.caption).lineLimit(1).frame(maxWidth: .infinity, minHeight: 44)
-        }.buttonStyle(.bordered).tint(HandyColor.accent)
     }
     private func subLinkRow(_ title: String, _ sub: String, _ icon: String) -> some View {
         HStack(spacing: HandySpacing.s12) {

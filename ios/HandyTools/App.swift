@@ -557,7 +557,7 @@ struct HomeView: View {
                 TenzyTabBar(selection: $tab)
             }
             .id(theme.current)   // force a full re-skin of the grid when the theme changes
-            .background(Ground())
+            .background(TenzyBackdrop())
             .navigationDestination(for: String.self) { id in
                 switch id {
                 case "settings": SettingsView().toolbarRole(.editor)

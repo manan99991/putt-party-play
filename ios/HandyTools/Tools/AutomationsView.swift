@@ -77,22 +77,28 @@ struct AutomationsView: View {
                     HStack(spacing: HandySpacing.s12) {
                         Image(systemName: "wand.and.stars").font(.system(size: 22, weight: .bold)).foregroundStyle(.white)
                             .frame(width: 48, height: 48)
-                            .background(LinearGradient(colors: [HandyColor.accent, Color(hex: 0x8B5CF6)], startPoint: .topLeading, endPoint: .bottomTrailing),
-                                        in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .background(.white.opacity(0.18), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 3) {
-                            Text(L("Build your own reminder")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                            Text(L("Build your own reminder")).font(HandyFont.bodyStrong).foregroundStyle(.white)
                             Text(L("Say what you want and when — it reminds you and opens ready to run."))
-                                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                                .font(HandyFont.caption).foregroundStyle(.white.opacity(0.85)).fixedSize(horizontal: false, vertical: true)
                         }
                         Spacer(minLength: 0)
-                        Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(HandyColor.textSecondary)
-                    }.frame(maxWidth: .infinity, alignment: .leading)
-                }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s12).accessibilityIdentifier("auto-own")
+                        Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(.white.opacity(0.85))
+                    }
+                    .padding(HandySpacing.s16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(PostTileGround(hex: 0x7B5CFF, icon: "bell.badge.fill"))
+                    .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                }.buttonStyle(.plain).accessibilityIdentifier("auto-own")
                 // 2. Ready-made ones, one tap to switch on (only the ones not set yet).
                 let ideas = AutomationGroups.ideas.filter { !Set(rows.map(\.group.key)).contains($0.key) }
                 if !ideas.isEmpty {
                     SectionLabel(text: L("Switch one on"), icon: "plus.circle.fill")
-                    ForEach(ideas, id: \.key) { i in ideaRow(i) }
+                    LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8)], spacing: HandySpacing.s8) {
+                        ForEach(ideas, id: \.key) { i in ideaRow(i) }
+                    }
                 }
                 // 3. What's already set, with Test run and Open on each.
                 SectionLabel(text: L("Set and running"), icon: "checkmark.seal.fill")
@@ -109,7 +115,7 @@ struct AutomationsView: View {
             }
             .padding(HandySpacing.gutter)
         }
-        .background(Ground())
+        .background { if tab { TenzyBackdrop() } else { Ground() } }
         .accessibilityIdentifier("automations")
         .task { await load() }
         .sheet(isPresented: $adding, onDismiss: { Task { await load() } }) {
@@ -117,42 +123,77 @@ struct AutomationsView: View {
         }
     }
 
+    /// My stuff, laid out like a profile: the mark and a line, what you have at a glance, then three tiles — your
+    /// tools, everything they made, and Settings.
     private var tabHeader: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            HStack {
-                Text(L("My stuff")).font(HandyFont.display)
-                Spacer()
-                NavigationLink(value: "settings") {
-                    Image(systemName: "gearshape").font(.system(size: 18)).foregroundStyle(HandyColor.textSecondary).frame(width: 44, height: 44)
-                }.accessibilityLabel(L("Settings")).accessibilityIdentifier("settings-tab")
+        let toolCount = ChainStore.load().count
+        let onCount = rows.count + rules.filter(\.on).count
+        let made = RunHistory.all().count
+        return VStack(alignment: .leading, spacing: HandySpacing.s16) {
+            HStack(spacing: HandySpacing.s12) {
+                TenzyMark(size: 54, symbol: "tray.full.fill")
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(L("My stuff")).font(.system(size: 28, weight: .bold)).foregroundStyle(HandyColor.textPrimary).accessibilityAddTraits(.isHeader)
+                    Text(L("Your tools, reminders and results, all in one place.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        .lineLimit(2).fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
             }
+            HStack(spacing: 0) {
+                stat(toolCount, toolCount == 1 ? "tool" : "tools")
+                Rectangle().fill(HandyColor.border).frame(width: 1, height: 28)
+                stat(onCount, onCount == 1 ? "reminder on" : "reminders on")
+                Rectangle().fill(HandyColor.border).frame(width: 1, height: 28)
+                stat(made, made == 1 ? "result kept" : "results kept")
+            }
+            .padding(.vertical, HandySpacing.s12)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
             HStack(spacing: HandySpacing.s8) {
-                shortcut(ChainStore.load().isEmpty ? "My tools" : "My tools · \(ChainStore.load().count)", "square.stack.3d.up.fill", "mytools")
-                shortcut("History", "clock.arrow.circlepath", "results")
+                shortcut("My tools", "square.stack.3d.up.fill", 0x7B5CFF, sub: toolCount == 0 ? L("Build one") : "\(toolCount) \(L("saved"))", "mytools")
+                shortcut("History", "clock.arrow.circlepath", 0x0EA5E9, sub: "Every result", "results")
+                shortcut("Settings", "gearshape.fill", 0x64748B, sub: "Theme, language", "settings")
             }
         }
     }
 
-    private func shortcut(_ title: String, _ icon: String, _ route: String) -> some View {
+    private func stat(_ n: Int, _ label: String) -> some View {
+        VStack(spacing: 1) {
+            Text("\(n)").font(.system(size: 20, weight: .bold)).monospacedDigit().foregroundStyle(HandyColor.textPrimary)
+            Text(L(label)).font(.system(size: 11, weight: .medium)).foregroundStyle(HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.7)
+        }
+        .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
+    }
+
+    private func shortcut(_ title: String, _ icon: String, _ hex: UInt32, sub: String, _ route: String) -> some View {
         NavigationLink(value: route) {
-            Label(L(title), systemImage: icon).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                .frame(maxWidth: .infinity, minHeight: 52)
-        }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s8).accessibilityIdentifier("mine-\(route)")
+            PostTile(title: title, icon: icon, hex: hex, sub: sub)
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier(route == "settings" ? "settings-tab" : "mine-\(route)")
     }
 
     /// A ready-made reminder not set yet: phone alerts and the contacts backup are set right here; the rest open their tool.
     private func ideaRow(_ i: (key: String, title: String, detail: String, icon: String, tool: String)) -> some View {
         Button { if i.key == "smart" || i.key == "backup" { adding = true } else { open(i.tool) } } label: {
-            HStack(spacing: HandySpacing.s12) {
-                Image(systemName: i.icon).foregroundStyle(HandyColor.accent).frame(width: 28)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(L(i.title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                    Text(L(i.detail)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-                }
+            VStack(alignment: .leading, spacing: 6) {
+                Image(systemName: i.icon).font(.system(size: 15, weight: .bold)).foregroundStyle(HandyColor.accent)
+                    .frame(width: 34, height: 34)
+                    .background(HandyColor.accent.opacity(0.14), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .accessibilityHidden(true)
+                Text(L(i.title)).font(.system(size: 14, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
+                    .lineLimit(2).fixedSize(horizontal: false, vertical: true)
+                Text(L(i.detail)).font(.system(size: 11)).foregroundStyle(HandyColor.textSecondary).lineLimit(3)
                 Spacer(minLength: 0)
-                Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            }.contentShape(Rectangle())
-        }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s12).accessibilityIdentifier("auto-idea-\(i.key)")
+                Label(L("Switch on"), systemImage: "plus.circle.fill").font(.system(size: 12, weight: .semibold)).foregroundStyle(HandyColor.accent)
+            }
+            .padding(HandySpacing.s12)
+            .frame(maxWidth: .infinity, minHeight: 156, alignment: .topLeading)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+            .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        }.buttonStyle(.plain).accessibilityIdentifier("auto-idea-\(i.key)")
     }
 
     private var notificationsOff: some View {

@@ -31,8 +31,10 @@ final class HomeShelvesTests: XCTestCase {
         XCTAssertEqual(HomeShelves.shelf(of: "light")?.id, "phone")
     }
 
-    /// Four across, two rows: the shelves plus Contacts, Think and Reminders fill the grid exactly.
-    func testShelfGridFitsTwoRows() {
-        XCTAssertEqual(HomeShelves.all.count + 3, 8)
+    /// One even grid, three across, four rows (Manan, 23 Nov: "3 grids on top and then 4 at the bottom" looked wrong):
+    /// the six "start with what you have" tiles, the shelves and Think fill it exactly — no half-empty row.
+    func testHomeGridIsWholeRowsOfThree() {
+        XCTAssertEqual(6 + HomeShelves.all.count + HomeShelves.ownTiles.count, 12)
+        XCTAssertEqual(HomeShelves.shelf(of: "contacts")?.id, "day", "Contacts lives on Daily life now")
     }
 }

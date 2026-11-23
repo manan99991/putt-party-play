@@ -33,10 +33,11 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(mine.waitForExistence(timeout: 20), "no My tools on Home")
         let screen = app.windows.firstMatch.frame
         XCTAssertTrue(mine.isHittable, "Home doesn't fit: My tools at \(mine.frame), screen \(screen), tab bar top \(app.buttons["Home"].firstMatch.frame.minY)")
-        for id in ["have-photo", "have-paste", "shelf-camera", "shelf-phone", "have-reminders"] {
+        for id in ["have-photo", "have-paste", "shelf-camera", "shelf-phone", "have-think", "have-reminders", "home-templates"] {
             XCTAssertTrue(app.descendants(matching: .any)[id].firstMatch.isHittable, "\(id) isn't on screen without scrolling")
         }
         XCTAssertFalse(app.buttons["Guide"].exists, "Guide is still on Home (it lives in Settings now)")
+        XCTAssertFalse(app.buttons["All tools"].exists, "All tools is back on Home (My tools, Templates and Reminders replaced it)")
         app.buttons["shelf-phone"].tap()
         let light = app.buttons["shelf-tool-light"]
         XCTAssertTrue(light.waitForExistence(timeout: 5), "Flashlight & phone shelf has no Flashlight")
