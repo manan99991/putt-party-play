@@ -1,33 +1,10 @@
-2026-11-23 15:22:14.822282+0000 HandyTools[24423:69556] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-23 15:22:16.530059+0000 HandyTools[24423:69586] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
-2026-11-23 15:22:17.062211+0000 HandyTools[24423:69550] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
-2026-11-23 15:22:18.729612+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 15:22:18.742060+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 15:22:18.742965+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 15:22:18.743660+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 15:22:18.802549+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 15:22:18.802956+0000 HandyTools[24423:69549] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' passed (0.021 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' passed (0.003 seconds).
-	 Executed 5 tests, with 0 failures (0 unexpected) in 0.035 (0.172) seconds
-	 Executed 5 tests, with 0 failures (0 unexpected) in 0.035 (0.176) seconds
-	 Executed 5 tests, with 0 failures (0 unexpected) in 0.035 (0.179) seconds
 Test Case '-[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools]' started.
-    t =    13.07s         Wait for accessibility to load
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:48: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("9") - tab camera shows 6 tools
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:48: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("9") - tab day shows 6 tools
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:48: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("9") - tab pdf shows 6 tools
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:48: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("8") - tab photos shows 6 tools
-Test Case '-[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools]' failed (76.344 seconds).
-	 Executed 1 test, with 4 failures (0 unexpected) in 76.344 (76.366) seconds
-	 Executed 1 test, with 4 failures (0 unexpected) in 76.344 (76.368) seconds
-	 Executed 1 test, with 4 failures (0 unexpected) in 76.344 (76.370) seconds
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:54: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("9") - tab camera shows 6 tools; screen 466x678, last tile ends at 617, tab bar at 602, first-try card true
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:54: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("9") - tab day shows 6 tools; screen 466x678, last tile ends at 617, tab bar at 602, first-try card true
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:54: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("9") - tab pdf shows 6 tools; screen 466x678, last tile ends at 617, tab bar at 602, first-try card true
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:54: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools] : XCTAssertEqual failed: ("6") is not equal to ("8") - tab photos shows 6 tools; screen 466x678, last tile ends at 617, tab bar at 602, first-try card true
+Test Case '-[HandyToolsUITests.PromiseTests testHomeFitsOneScreenAndShelvesOpenTools]' failed (100.289 seconds).
+	 Executed 1 test, with 4 failures (0 unexpected) in 100.289 (100.316) seconds
+	 Executed 1 test, with 4 failures (0 unexpected) in 100.289 (100.323) seconds
+	 Executed 1 test, with 4 failures (0 unexpected) in 100.289 (100.329) seconds
 == crash reports
