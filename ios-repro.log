@@ -1,23 +1,25 @@
-2026-11-23 09:32:24.627929+0000 HandyTools[19625:60013] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-23 09:32:27.664686+0000 HandyTools[19625:60019] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 09:32:27.678176+0000 HandyTools[19625:60019] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 09:32:27.679118+0000 HandyTools[19625:60019] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 09:32:27.679924+0000 HandyTools[19625:60019] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 09:32:27.808593+0000 HandyTools[19625:60019] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-23 09:32:27.808936+0000 HandyTools[19625:60019] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 09:56:39.592247+0000 HandyTools[28930:82162] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 09:56:39.612888+0000 HandyTools[28930:82162] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 09:56:39.613624+0000 HandyTools[28930:82162] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 09:56:39.614200+0000 HandyTools[28930:82162] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 09:56:39.614362+0000 HandyTools[28930:82162] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-23 09:56:39.783409+0000 HandyTools[28930:82162] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
 Test Case '-[HandyToolsTests.EngineTests testCrossfadeHalfwayIsAMixOfBothPhotos]' started.
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:2144: error: -[HandyToolsTests.EngineTests testCrossfadeHalfwayIsAMixOfBothPhotos] : XCTAssertEqualWithAccuracy failed: ("122.91486625514403") is not equal to ("152.66722393689986") +/- ("12.450771604938268") - a plain half-and-half mix: phase move(k: 0, v: 0.4761904761904758) at frame 88 of 177; grey first 108 mid 110 second 165; canvases 121 183, mixed by hand 122
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:2145: error: -[HandyToolsTests.EngineTests testCrossfadeHalfwayIsAMixOfBothPhotos] : XCTAssertEqualWithAccuracy failed: ("110.23576817558299") is not equal to ("136.84962277091907") +/- ("14.191057956104249") - halfway is half of each photo: phase move(k: 0, v: 0.4761904761904758) at frame 88 of 177; grey first 108 mid 110 second 165; canvases 121 183, mixed by hand 122
-Test Case '-[HandyToolsTests.EngineTests testCrossfadeHalfwayIsAMixOfBothPhotos]' failed (0.948 seconds).
+Test Case '-[HandyToolsTests.EngineTests testCrossfadeHalfwayIsAMixOfBothPhotos]' failed (2.568 seconds).
+Test Case '-[HandyToolsTests.EngineTests testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook]' started.
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:2207: error: -[HandyToolsTests.EngineTests testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook] : XCTAssertGreaterThan failed: ("2.920181755829904") is not greater than ("4.0") - Crossfade: halfway is not still the first photo (first→second 57.780006858710564, mid→second 55.60090877914952)
+Test Case '-[HandyToolsTests.EngineTests testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook]' failed (7.152 seconds).
 Test Case '-[HandyToolsTests.EngineTests testWhichWayOfMixingTwoPicturesWorks]' started.
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:2181: error: -[HandyToolsTests.EngineTests testWhichWayOfMixingTwoPicturesWorks] : XCTAssertEqualWithAccuracy failed: ("122.91486625514403") is not equal to ("152.66722393689986") +/- ("12.450771604938268") - the crossfade's way: A 121 B 183 want ~152: context alpha, graded photos 122; context alpha, plain pictures 133; transparency layer 122; UIImage draw with alpha 122; plain bitmap context 122; Core Image dissolve 157
-Test Case '-[HandyToolsTests.EngineTests testWhichWayOfMixingTwoPicturesWorks]' failed (0.084 seconds).
-	 Executed 2 tests, with 3 failures (0 unexpected) in 1.031 (1.370) seconds
-	 Executed 2 tests, with 3 failures (0 unexpected) in 1.031 (1.371) seconds
-	 Executed 2 tests, with 3 failures (0 unexpected) in 1.031 (1.371) seconds
+Test Case '-[HandyToolsTests.EngineTests testWhichWayOfMixingTwoPicturesWorks]' failed (0.116 seconds).
+	 Executed 3 tests, with 4 failures (0 unexpected) in 9.836 (9.842) seconds
+	 Executed 3 tests, with 4 failures (0 unexpected) in 9.836 (9.844) seconds
+	 Executed 3 tests, with 4 failures (0 unexpected) in 9.836 (9.845) seconds
 Test Case '-[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral]' passed (26.057 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 26.057 (26.060) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 26.057 (26.061) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 26.057 (26.062) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral]' passed (35.283 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 35.283 (35.305) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 35.283 (35.307) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 35.283 (35.310) seconds
 == crash reports
