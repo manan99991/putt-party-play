@@ -1,5 +1,7 @@
 import UIKit
 import AVFoundation
+import ImageIO
+import UniformTypeIdentifiers
 
 /// Deterministic sample inputs for UI tests and screenshots (`-sample` launch flag): a photo with a
 /// face-like subject and text, a pair of overlapping screenshots, a receipt, a short movie.
@@ -120,8 +122,36 @@ enum SampleAssets {
         }
     }
 
-    /// A 3-second silent H.264 movie with moving colour so compression tests mean something.
-    static func movie(seconds: Double = 2.5, size: CGSize = CGSize(width: 640, height: 360)) async -> URL? {
+    /// A 3-second H.264 movie with moving colour so compression tests mean something. Silent by default (unit tests
+    /// rely on that); `withSound` adds a real AAC tone track, so a "remove the sound" check has something to remove.
+    static func movie(seconds: Double = 2.5, size: CGSize = CGSize(width: 640, height: 360), withSound: Bool = false) async -> URL? {
+        guard let silent = await silentMovie(seconds: seconds, size: size) else { return nil }
+        guard withSound else { return silent }
+        return await addTone(to: silent, seconds: seconds) ?? silent
+    }
+
+    /// The silent movie plus the sample tone as its sound track (named "sample-…" like every sample input).
+    private static func addTone(to video: URL, seconds: Double) async -> URL? {
+        let tmp = FileManager.default.temporaryDirectory
+        let wav = tmp.appendingPathComponent("sample-tone-\(UUID().uuidString.prefix(6)).wav")
+        guard (try? tone(seconds: seconds).write(to: wav)) != nil else { return nil }
+        let v = AVURLAsset(url: video), a = AVURLAsset(url: wav)
+        guard let vt = try? await v.loadTracks(withMediaType: .video).first,
+              let at = try? await a.loadTracks(withMediaType: .audio).first,
+              let vd = try? await v.load(.duration), let ad = try? await a.load(.duration) else { return nil }
+        let comp = AVMutableComposition()
+        guard let cv = comp.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid),
+              let ca = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid),
+              (try? cv.insertTimeRange(CMTimeRange(start: .zero, duration: vd), of: vt, at: .zero)) != nil,
+              (try? ca.insertTimeRange(CMTimeRange(start: .zero, duration: CMTimeMinimum(vd, ad)), of: at, at: .zero)) != nil,
+              let s = AVAssetExportSession(asset: comp, presetName: AVAssetExportPresetHighestQuality) else { return nil }
+        let out = tmp.appendingPathComponent("sample-\(UUID().uuidString.prefix(6)).mov")
+        do { try await s.export(to: out, as: .mov) } catch { return nil }
+        try? FileManager.default.removeItem(at: wav)
+        return FileManager.default.fileExists(atPath: out.path) ? out : nil
+    }
+
+    private static func silentMovie(seconds: Double, size: CGSize) async -> URL? {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("sample-\(UUID().uuidString.prefix(6)).mov")
         guard let writer = try? AVAssetWriter(outputURL: url, fileType: .mov) else { return nil }
         let input = AVAssetWriterInput(mediaType: .video, outputSettings: [AVVideoCodecKey: AVVideoCodecType.h264, AVVideoWidthKey: Int(size.width), AVVideoHeightKey: Int(size.height), AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: 6_000_000]])
@@ -151,6 +181,26 @@ enum SampleAssets {
         input.markAsFinished()
         await writer.finishWriting()
         return writer.status == .completed ? url : nil
+    }
+
+    /// The photo as a phone camera saves it: JPEG with where (near Chicago) and when it was taken in its EXIF —
+    /// so a "remove the location" step is tested on a photo that really has one.
+    static func jpegWithLocation(_ img: UIImage, quality: CGFloat = 0.9) -> Data? {
+        guard let cg = img.cgImage else { return img.jpegData(compressionQuality: quality) }
+        let out = NSMutableData()
+        guard let dest = CGImageDestinationCreateWithData(out, UTType.jpeg.identifier as CFString, 1, nil) else { return nil }
+        let when = "2026:11:10 10:21:00"
+        let props: [CFString: Any] = [
+            kCGImageDestinationLossyCompressionQuality: quality,
+            kCGImagePropertyTIFFDictionary: [kCGImagePropertyTIFFMake: "Apple", kCGImagePropertyTIFFModel: "iPhone", kCGImagePropertyTIFFDateTime: when],
+            kCGImagePropertyExifDictionary: [kCGImagePropertyExifDateTimeOriginal: when],
+            kCGImagePropertyGPSDictionary: [kCGImagePropertyGPSLatitude: 41.8781, kCGImagePropertyGPSLatitudeRef: "N",
+                                            kCGImagePropertyGPSLongitude: 87.6298, kCGImagePropertyGPSLongitudeRef: "W",
+                                            kCGImagePropertyGPSAltitude: 181.0],
+        ]
+        CGImageDestinationAddImage(dest, cg, props as CFDictionary)
+        guard CGImageDestinationFinalize(dest) else { return nil }
+        return out as Data
     }
 
     static func jpegURL(_ img: UIImage, name: String) -> URL? {

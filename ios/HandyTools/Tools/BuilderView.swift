@@ -2354,7 +2354,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
             if Launch.uitest, Launch.sample, initial == nil, !started, ResultScreens.screen(for: chain) == "Video finish", start == .video {
                 started = true
-                Task { if let u = await SampleAssets.movie() { await MainActor.run { go(.video(u)) } } }
+                Task { if let u = await SampleAssets.movie(withSound: true) { await MainActor.run { go(.video(u)) } } }
             }
             if Launch.uitest, Launch.sample, initial == nil, !started, chain.id == "photo-sketch" {
                 started = true
@@ -2366,7 +2366,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 Task { @MainActor in
                     try? await Task.sleep(for: .seconds(1))   // let the watermark card load its words first
                     if chain.combine == true { runBatch(count: 2) { _ in doc ? SampleAssets.receipt() : SampleAssets.photo() } }
-                    else if let d = (doc ? SampleAssets.receipt() : SampleAssets.photo()).jpegData(compressionQuality: 0.9) { go(.file(d, ext: "jpg")) }
+                    else if let d = doc ? SampleAssets.receipt().jpegData(compressionQuality: 0.9) : SampleAssets.jpegWithLocation(SampleAssets.photo()) { go(.file(d, ext: "jpg")) }
                 }
             }
             // Every other ready-made flow gets a real file of the kind it starts with, through the same path a pick
@@ -3055,7 +3055,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             text = t
             go(.text(t))
         case .video:
-            if let u = await SampleAssets.movie() { go(.video(u)) } else { message = "Sample video couldn't be made." }
+            if let u = await SampleAssets.movie(withSound: true) { go(.video(u)) } else { message = "Sample video couldn't be made." }
         case .audio:
             go(.file(SampleAssets.tone(seconds: 3), ext: "wav"))
         case .pdf:
@@ -3071,7 +3071,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             if hasMeme { memePhotos = [pic(0)]; memeTop = memeTop.isEmpty ? "WHEN THE TEST" : memeTop; memeBottom = memeBottom.isEmpty ? "PASSES" : memeBottom; makeMeme() }
             else if chain.versus == true { runBatch(count: 2) { i in pic(i) } }
             else if chain.gif == true || chain.collage == true || chain.flipbook == true || chain.combine == true { runBatch(count: 3) { i in pic(i) } }
-            else if let d = pic(0).jpegData(compressionQuality: 0.9) { go(.file(d, ext: "jpg")) }
+            else if let d = doc || signs ? pic(0).jpegData(compressionQuality: 0.9) : SampleAssets.jpegWithLocation(pic(0)) { go(.file(d, ext: "jpg")) }
         }
     }
 
