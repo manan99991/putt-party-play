@@ -909,22 +909,31 @@ enum Animate {
             return s
         }
 
-        /// The finish on top of every frame.
+        /// The finish on top of every frame: vignette and moving grain, made once as four ready overlays and cycled, so
+        /// the finish costs one plain draw per frame however long the video.
         private func finish(_ i: Int, _ tl: Timeline, _ ctx: CGContext) {
-            if let v = vignette { ctx.draw(v, in: full) }
-            if let g = grain {
-                var rng = SeededRandom(seed: UInt64(i + 7) &* 2654435761)
-                let gw = CGFloat(g.width), gh = CGFloat(g.height)
-                ctx.saveGState()
-                ctx.setBlendMode(.overlay); ctx.setAlpha(0.55)
-                ctx.clip(to: full)
-                ctx.draw(g, in: CGRect(x: -CGFloat(rng.next()) * gw, y: -CGFloat(rng.next()) * gh, width: gw, height: gh), byTiling: true)
-                ctx.restoreGState()
-            }
+            if !finishes.isEmpty { ctx.draw(finishes[(i / 2) % finishes.count], in: full) }
             let fadeIn = max(0, 1 - now / 0.35), fadeOut = max(0, 1 - (tl.seconds - now) / 0.3)
             let black = CGFloat(min(1, max(fadeIn, fadeOut)))
             if black > 0.004 { ctx.setFillColor(UIColor(white: 0, alpha: black).cgColor); ctx.fill(full) }
         }
+
+        private lazy var finishes: [CGImage] = {
+            guard let v = vignette else { return [] }
+            let sz = self.size
+            let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = false
+            return (0..<4).compactMap { k in
+                UIGraphicsImageRenderer(size: sz, format: fmt).image { c in
+                    c.cgContext.draw(v, in: CGRect(origin: .zero, size: sz))
+                    if let g = self.grain {
+                        var rng = SeededRandom(seed: UInt64(k + 3) &* 2654435761)
+                        let gw = CGFloat(g.width), gh = CGFloat(g.height)
+                        c.cgContext.setAlpha(0.06)
+                        c.cgContext.draw(g, in: CGRect(x: -CGFloat(rng.next()) * gw, y: -CGFloat(rng.next()) * gh, width: gw, height: gh), byTiling: true)
+                    }
+                }.cgImage
+            }
+        }()
 
         /// Darker corners that draw the eye in, like a lens does.
         private lazy var vignette: CGImage? = {
@@ -1103,6 +1112,9 @@ enum Animate {
     /// The photo's subject cut out (people, pets, things), worked out once per photo and kept while the photo is in
     /// use, so the live preview doesn't redo it on every change. nil for photos with no clear subject.
     static func subjectCut(_ image: UIImage) -> UIImage? {
+        #if targetEnvironment(simulator)
+        return nil     // the subject model runs on the phone's Neural Engine; the simulator can't load it and waits a minute
+        #else
         cutLock.lock()
         if let hit = cuts.object(forKey: image) { cutLock.unlock(); return hit as? UIImage }
         cutLock.unlock()
@@ -1120,6 +1132,7 @@ enum Animate {
         }
         cutLock.lock(); cuts.setObject(made ?? NSNull(), forKey: image); cutLock.unlock()
         return made
+        #endif
     }
 
     /// The centre of what's opaque in a picture (0–1, from the top-left) and how much of it is opaque.

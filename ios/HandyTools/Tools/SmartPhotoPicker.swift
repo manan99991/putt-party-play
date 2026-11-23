@@ -20,6 +20,10 @@ struct SmartPhotoPicker: View {
     @State private var frames: [String: CGRect] = [:]
     @State private var swipeAdds: Bool?
     @State private var lastSwipe: CGPoint?
+    /// Where a swipe started (a photo's place in the grid) and what was picked before it, so a swipe picks every photo
+    /// from where it started to where the finger is — like Photos — even if a quick swipe skipped some touch reports.
+    @State private var swipeFrom: Int?
+    @State private var swipeBase: [String] = []
     @Environment(\.dismiss) private var dismiss
 
     private let cols = Array(repeating: GridItem(.flexible(), spacing: 6), count: 3)
@@ -43,7 +47,7 @@ struct SmartPhotoPicker: View {
                             .coordinateSpace(name: "finder-grid")
                             .onPreferenceChange(CellFrames.self) { frames = $0 }
                             .gesture(SwipeSelect(enabled: maxCount > 1, began: { swipe(at: $0, first: true) }, moved: { swipe(at: $0, first: false) },
-                                                 ended: { swipeAdds = nil; lastSwipe = nil }))
+                                                 ended: { swipeAdds = nil; lastSwipe = nil; swipeFrom = nil }))
                         }
                         status
                     }
@@ -116,18 +120,38 @@ struct SmartPhotoPicker: View {
     /// Swipe sideways across photos to pick them all, the way Photos does: the first photo touched decides whether the
     /// swipe ticks or unticks every photo it passes over.
     private func swipe(at p: CGPoint, first: Bool) {
-        // A quick swipe skips over photos between two touch reports — walk the line between them so none is missed.
-        let from = first ? p : (lastSwipe ?? p)
-        lastSwipe = p
-        let steps = max(1, Int((hypot(p.x - from.x, p.y - from.y) / 8).rounded(.up)))
-        for i in 0...steps {
-            let t = CGFloat(i) / CGFloat(steps)
-            let q = CGPoint(x: from.x + (p.x - from.x) * t, y: from.y + (p.y - from.y) * t)
-            guard let id = frames.first(where: { $0.value.contains(q) })?.key else { continue }
-            if swipeAdds == nil || (first && i == 0) { swipeAdds = !picked.contains(id) }
-            if swipeAdds == true, !picked.contains(id), picked.count < maxCount { picked.append(id); HandyHaptics.light() }
-            if swipeAdds == false, picked.contains(id) { picked.removeAll { $0 == id }; HandyHaptics.light() }
+        let ids = finder.matches.map(\.localIdentifier)
+        guard let here = nearest(p, ids) else { return }
+        if first || swipeFrom == nil {
+            swipeFrom = here
+            swipeBase = picked
+            swipeAdds = !picked.contains(ids[here])
         }
+        guard let from = swipeFrom else { return }
+        let span = ids[min(from, here)...max(from, here)]
+        let before = picked.count
+        if swipeAdds == true {
+            var next = swipeBase
+            for id in span where !next.contains(id) && next.count < maxCount { next.append(id) }
+            picked = next
+        } else {
+            picked = swipeBase.filter { !span.contains($0) }
+        }
+        if picked.count != before { HandyHaptics.light() }
+    }
+
+    /// The photo under the finger — or the closest one when it's in the gap between two.
+    private func nearest(_ p: CGPoint, _ ids: [String]) -> Int? {
+        var best: (i: Int, d: CGFloat)?
+        for (i, id) in ids.enumerated() {
+            guard let f = frames[id] else { continue }
+            let dx = max(f.minX - p.x, 0, p.x - f.maxX), dy = max(f.minY - p.y, 0, p.y - f.maxY)
+            let d = dx * dx + dy * dy
+            if d == 0 { return i }
+            if best == nil || d < best!.d { best = (i, d) }
+        }
+        guard let best, best.d < 40 * 40 else { return nil }
+        return best.i
     }
 
     private func cell(_ a: PHAsset) -> some View {

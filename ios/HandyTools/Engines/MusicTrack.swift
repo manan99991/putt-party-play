@@ -167,38 +167,41 @@ enum MusicTrack {
     /// 180 beats a minute and leans toward ~120, so a song isn't read at half or double its speed.
     static func tempo(onset raw: [Float], rate: Double = hopRate) -> (period: Double, phase: Double)? {
         guard raw.count > Int(rate * 4) else { return nil }
-        let mean = raw.reduce(0, +) / Float(raw.count)
-        let o = raw.map { $0 - mean }
-        let minLag = Int(rate * 60 / 180), maxLag = Int(rate * 60 / 70)
-        var best = 0.0, bestLag = 0
+        // Soften each onset over a few looks, so a beat that falls between two looks still lines up with the next.
+        let kernel: [Float] = [0.25, 0.6, 1, 0.6, 0.25]
+        var sm = [Float](repeating: 0, count: raw.count)
+        for i in raw.indices { for (j, w) in kernel.enumerated() { let k = i + j - 2; if k >= 0, k < raw.count { sm[i] += raw[k] * w } } }
+        let mean = sm.reduce(0, +) / Float(sm.count)
+        let o = sm.map { $0 - mean }
+        let minLag = Int(rate * 60 / 180), maxLag = Int(rate * 60 / 70) + 1
         var scores: [Int: Double] = [:]
         for lag in minLag...maxLag {
             var s = 0.0
             for i in lag..<o.count { s += Double(o[i] * o[i - lag]) }
-            s /= Double(o.count - lag)
-            let bpm = rate * 60 / Double(lag)
-            let lean = exp(-0.5 * pow(log2(bpm / 120) / 0.9, 2))      // a gentle preference for ~120
-            scores[lag] = s
-            if s * lean > best { best = s * lean; bestLag = lag }
+            scores[lag] = s / Double(o.count - lag)
         }
-        guard bestLag > 0, best > 0 else { return nil }
-        // Refine between whole looks.
-        var lag = Double(bestLag)
-        if let a = scores[bestLag - 1], let b = scores[bestLag], let c = scores[bestLag + 1] {
-            let d = a - 2 * b + c
-            if d < 0 { lag += max(-0.5, min(0.5, 0.5 * (a - c) / d)) }
-        }
+        func lean(_ lag: Int) -> Double { exp(-0.5 * pow(log2(rate * 60 / Double(lag) / 120) / 0.9, 2)) }
+        guard var bestLag = scores.max(by: { $0.value * lean($0.key) < $1.value * lean($1.key) })?.key, (scores[bestLag] ?? 0) > 0 else { return nil }
+        // Half the beat length also fits nearly as well? Then the song is twice as fast (a steady pulse also repeats
+        // every two beats, which would read a 150 bpm song as 75).
+        let half = Int((Double(bestLag) / 2).rounded())
+        if rate * 60 / Double(half) <= 170, let h = scores[half] ?? scores[half + 1], let b = scores[bestLag], h >= 0.6 * b { bestLag = half }
         // Is it really steady? The beat must stand out from the average lag.
         let all = scores.values.reduce(0, +) / Double(max(1, scores.count))
-        guard let peak = scores[bestLag], peak > all * 1.15 else { return nil }
-        // Phase: where along one beat the onsets line up best.
-        var bestPhase = 0, bestSum = -Double.infinity
-        for p in 0..<bestLag {
-            var s = 0.0, t = Double(p)
-            while Int(t) < raw.count { s += Double(raw[Int(t)]); t += lag }
-            if s > bestSum { bestSum = s; bestPhase = p }
+        guard let peak = scores[bestLag], peak > max(0, all) * 1.15 else { return nil }
+        // Fine-tune the beat length and where the first beat falls together, over the whole song, so they don't drift.
+        var best = (lag: Double(bestLag), phase: 0.0, sum: -Double.infinity)
+        var lag = Double(bestLag) - 1
+        while lag <= Double(bestLag) + 1 {
+            for p in 0..<Int(lag.rounded(.up)) {
+                var sum = 0.0, t = Double(p)
+                while Int(t.rounded()) < sm.count { sum += Double(sm[Int(t.rounded())]); t += lag }
+                sum /= Double(max(1, Int(Double(sm.count - p) / lag)))
+                if sum > best.sum { best = (lag, Double(p), sum) }
+            }
+            lag += 0.05
         }
-        return (lag / rate, Double(bestPhase) / rate)
+        return (best.lag / rate, best.phase / rate)
     }
 
     /// Where a `length`-second stretch of the song is loudest (its chorus, usually), in seconds from the start.
