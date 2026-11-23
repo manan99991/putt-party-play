@@ -1,6 +1,9 @@
-# 23 Nov: measured on the test iPhone (a folded phone, 466x678): with the first-visit card the 2nd row of tools ended
-# at 617, under the tab bar at 602. Fix: the card moves into the greeting line, and screens under 760 points get the
-# compact Home (shorter tiles, icon beside the name). Prove it alone, on a fresh install, before it ships.
+# 23 Nov, UX audit phase 1 (Manan: yes to all six): job-named tiles, the buttons moved to My stuff, and the
+# "For you now" cards. Proven on their own, on a fresh install of the test phone, before the full run.
 HandyToolsTests/HomeShelvesTests
+HandyToolsTests/ForYouTests
+HandyToolsUITests/PromiseTests/testForYouCardShowsTheCarAndNotNowPutsItAway
 HandyToolsUITests/PromiseTests/testHomeFitsOneScreenAndShelvesOpenTools
+HandyToolsUITests/PromiseTests/testReadyMadeToolsOpenFromMyStuffAndComeBack
+HandyToolsUITests/PromiseTests/testRunFromMyToolsStaysOpenAndComesBack
 HandyToolsUITests/PromiseTests/testFirstMinuteDemoFinishesWithAResult

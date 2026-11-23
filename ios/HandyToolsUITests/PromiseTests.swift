@@ -86,6 +86,26 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(run.waitForExistence(timeout: 10), "Done after a run didn't come back to My tools")
     }
 
+    /// Audit decision 2 (23 Nov): a parked car shows a "For you now" card on Home with Directions, the whole Camera tab
+    /// still fits under it, and Not now puts the card away.
+    func testForYouCardShowsTheCarAndNotNowPutsItAway() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "home", "-uitest", "-seedcar"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let card = any["foryou-car"].firstMatch
+        XCTAssertTrue(card.waitForExistence(timeout: 20), "no card for the parked car")
+        XCTAssertTrue(any["foryou-action-car"].firstMatch.isHittable, "the card has no Directions button")
+        any["tab-camera"].firstMatch.tap()
+        let tiles = any.matching(NSPredicate(format: "identifier BEGINSWITH 'home-tool-'"))
+        let off = (0..<tiles.count).map { tiles.element(boundBy: $0) }.filter { !$0.isHittable }.map(\.identifier)
+        XCTAssertEqual(tiles.count, 9, "the Camera tab lost tools under the card")
+        XCTAssertEqual(off, [], "with the card on Home, these tools need scrolling: \(off)")
+        any["foryou-notnow-car"].firstMatch.tap()
+        sleep(1)
+        XCTAssertFalse(card.exists, "Not now didn't put the card away")
+    }
+
     /// Audit decision 3 (23 Nov): Templates moved off Home into My stuff as "Ready-made tools". It opens the list, and
     /// Done lands back on My stuff, never a blank page.
     func testReadyMadeToolsOpenFromMyStuffAndComeBack() {

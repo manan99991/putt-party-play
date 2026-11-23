@@ -504,6 +504,14 @@ struct BuilderView: View {
     /// A short screen (an iPhone SE, a folded phone: under 760 points tall) gets the compact Home so a full tab of
     /// tools still fits without scrolling (23 Nov: on a 678-point screen the third row sat under the tab bar).
     private var shortScreen: Bool { UIScreen.main.bounds.height < 760 }
+    /// "For you now" cards; a short screen shows only the most pressing one so a full tab still fits.
+    @State private var forYou: [ForYou.Card] = []
+    private var shownCards: [ForYou.Card] { (Launch.screenshots || builtIn != nil) ? [] : Array(forYou.prefix(shortScreen ? 1 : ForYou.maxCards)) }
+    private func loadForYou() async {
+        let f = await ForYou.gather()
+        let c = ForYou.cards(f, hidden: ForYou.hidden, off: ForYou.off)
+        withAnimation(.easeOut(duration: HandyMotion.fast)) { forYou = c }
+    }
     /// The first-minute demo: until it's tried or dismissed, Home offers to show a real job on a sample.
     @AppStorage("tenzy.firstTry") private var triedFirst = false
     @State private var demoRun: Chain?
@@ -518,6 +526,8 @@ struct BuilderView: View {
             // Laid out like a profile: who (the Tenzy mark and its promise), three actions, the say-it line, then one even
             // grid of tiles — three across, every tile the same shape — with everything Tenzy does one or two taps away.
             profileHeader
+            // For you now (audit decision 2): what today needs from Tenzy, from what the person already set up.
+            if !shownCards.isEmpty { ForYouCards(cards: shownCards) { Task { await loadForYou() } } }
             hero
             if let b = builtIn { builtInCard(b) }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
@@ -970,7 +980,8 @@ struct BuilderView: View {
             }
         }
         .onAppear { refreshClipKind() }
-        .onChange(of: scenePhase) { _, p in if p == .active { refreshClipKind() } }
+        .onChange(of: scenePhase) { _, p in if p == .active { refreshClipKind(); Task { await loadForYou() } } }
+        .task { await loadForYou() }
         .onReceive(NotificationCenter.default.publisher(for: UIPasteboard.changedNotification)) { _ in refreshClipKind() }
     }
 

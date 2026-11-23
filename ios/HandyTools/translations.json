@@ -43868,5 +43868,85 @@
   "ja": "ここから始める",
   "pt": "Comece por uma",
   "zh": "从一个开始"
+ },
+ "Mark taken": {
+  "de": "Als genommen markieren",
+  "es": "Marcar tomada",
+  "fr": "Marquer comme pris",
+  "hi": "ली गई मार्क करें",
+  "it": "Segna come presa",
+  "ja": "飲んだ",
+  "pt": "Marcar tomado",
+  "zh": "标记已服"
+ },
+ "Send wishes": {
+  "de": "Glückwünsche senden",
+  "es": "Felicitar",
+  "fr": "Souhaiter",
+  "hi": "शुभकामनाएँ भेजें",
+  "it": "Fai gli auguri",
+  "ja": "お祝いを送る",
+  "pt": "Dar parabéns",
+  "zh": "送祝福"
+ },
+ "Don't suggest this": {
+  "de": "Nicht mehr vorschlagen",
+  "es": "No sugerir esto",
+  "fr": "Ne plus suggérer",
+  "hi": "यह सुझाव न दें",
+  "it": "Non suggerire",
+  "ja": "今後表示しない",
+  "pt": "Não sugerir isto",
+  "zh": "不再建议"
+ },
+ "Your car is saved": {
+  "de": "Dein Auto ist gespeichert",
+  "es": "Tu coche está guardado",
+  "fr": "Votre voiture est enregistrée",
+  "hi": "आपकी कार सेव है",
+  "it": "La tua auto è salvata",
+  "ja": "車の位置を保存済み",
+  "pt": "Seu carro está salvo",
+  "zh": "已记住停车位置"
+ },
+ "Parking ends soon": {
+  "de": "Parkzeit endet bald",
+  "es": "El parking termina pronto",
+  "fr": "Le stationnement se termine bientôt",
+  "hi": "पार्किंग जल्द ख़त्म",
+  "it": "Il parcheggio sta per scadere",
+  "ja": "駐車時間がもうすぐ終了",
+  "pt": "O estacionamento acaba logo",
+  "zh": "停车即将到时"
+ },
+ "Your phone is almost full": {
+  "de": "Dein Handy ist fast voll",
+  "es": "Tu teléfono está casi lleno",
+  "fr": "Votre téléphone est presque plein",
+  "hi": "फ़ोन लगभग भर गया है",
+  "it": "Il telefono è quasi pieno",
+  "ja": "空き容量がわずかです",
+  "pt": "Seu celular está quase cheio",
+  "zh": "手机快满了"
+ },
+ "Your next dose is coming up": {
+  "de": "Deine nächste Dosis steht an",
+  "es": "Se acerca tu próxima dosis",
+  "fr": "Votre prochaine prise approche",
+  "hi": "अगली खुराक का समय आ रहा है",
+  "it": "La prossima dose è in arrivo",
+  "ja": "次の服薬が近づいています",
+  "pt": "Sua próxima dose está chegando",
+  "zh": "下次服药时间快到了"
+ },
+ "From your contacts": {
+  "de": "Aus deinen Kontakten",
+  "es": "De tus contactos",
+  "fr": "D'après vos contacts",
+  "hi": "आपके संपर्कों से",
+  "it": "Dai tuoi contatti",
+  "ja": "連絡先より",
+  "pt": "Dos seus contatos",
+  "zh": "来自你的联系人"
  }
 }
