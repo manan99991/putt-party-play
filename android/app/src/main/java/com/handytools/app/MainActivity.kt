@@ -225,6 +225,7 @@ class MainActivity : ComponentActivity() {
                     composable("timer") { TimersScreen() }
                     composable("wallet") { WalletScreen() }
                     composable("medreminder") { com.handytools.app.tools.meds.MedRemindersScreen() }
+                    composable("brief") { com.handytools.app.tools.brief.MorningSummaryScreen(onOpen = openTool) }
                     composable("translate") { com.handytools.app.tools.power.TranslateToolScreen() }
                     composable("sorted") { SortedScreen() }
                     composable("memory") { MemoryScreen() }

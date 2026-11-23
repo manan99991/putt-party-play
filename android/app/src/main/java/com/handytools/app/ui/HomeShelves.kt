@@ -29,8 +29,8 @@ object HomeShelves {
             listOf("translate", "lens", "safety", "texttools", "thinking")),
         // No Alarm tile: that tool was cut on 2 Nov (Google reserves exact alarms for alarm apps), so its screen
         // can't ring. Timers runs only while open, so it isn't offered either.
-        Shelf("day", "My day", "Medicines, bills, receipts, prices and cards",
-            listOf("medreminder", "sorted", "receipts", "pricecheck", "wallet")),
+        Shelf("day", "My day", "Medicines, your morning, bills, receipts and cards",
+            listOf("medreminder", "brief", "sorted", "receipts", "pricecheck", "wallet")),
         Shelf("phone", "Phone", "Space, battery, network, light and your car",
             listOf("cleanup", "storage", "myphone", "network", "instruments", "flashlight", "quick", "parked", "gpsdash")),
     )
@@ -45,7 +45,7 @@ object HomeShelves {
         "voice" to "Record and transcribe", "rest" to "Sleep sounds", "hearing" to "Hear better",
         "translate" to "Translate anything", "lens" to "Read it aloud", "safety" to "Is this a scam?",
         "texttools" to "Fix up text", "thinking" to "Plan my day",
-        "medreminder" to "Medicine reminders", "sorted" to "Track a bill", "receipts" to "Keep receipts", "pricecheck" to "Compare prices",
+        "medreminder" to "Medicine reminders", "brief" to "Morning summary", "sorted" to "Track a bill", "receipts" to "Keep receipts", "pricecheck" to "Compare prices",
         "wallet" to "Keep my cards",
         "cleanup" to "Free up space", "storage" to "See what's using space", "myphone" to "About my phone",
         "network" to "Test my internet", "instruments" to "Level, compass, meters", "flashlight" to "Flashlight and SOS",

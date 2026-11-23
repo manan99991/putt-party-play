@@ -37,6 +37,7 @@ import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Hearing
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Medication
+import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.PieChart
@@ -177,6 +178,10 @@ val TOOLS = listOf(
         listOf("medicine","medication","pill","pills","tablet","dose","doses","reminder","remind","vitamin","refill","pharmacy","caregiver","parent","health","schedule"),
         about = "Add a medicine and when you take it — Tenzy reminds you, and you tap Taken right from the alert. Counts pills for a refill alert and can nudge someone who helps. Stays on this phone.",
         tint = Color(0xFF22C55E), vicon = Icons.Outlined.Medication),
+    HTool("brief", "Morning Summary", "One note each morning: doses, birthdays, what's due", 0, 0,
+        listOf("morning","summary","brief","daily","today","my day","agenda","digest","birthday","birthdays","doses","overview","wake"),
+        about = "One short note each morning with what matters today — your medicines, late invoices, birthdays, your parked car and a tidy-up nudge. Set it once and it just comes.",
+        tint = Color(0xFFF59E0B), vicon = Icons.Outlined.WbSunny),
 )
 
 /** The tools folded into the "Scan & Sort" tile — snap paper, get data/actions back. Off the main

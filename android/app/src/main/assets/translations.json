@@ -11368,5 +11368,145 @@
   "ja": "〜",
   "pt": "às",
   "zh": "至"
+ },
+ "Every morning at": {
+  "de": "Jeden Morgen um",
+  "es": "Cada mañana a las",
+  "fr": "Chaque matin à",
+  "hi": "हर सुबह",
+  "it": "Ogni mattina alle",
+  "ja": "毎朝",
+  "pt": "Todas as manhãs às",
+  "zh": "每天早上"
+ },
+ "Medicines": {
+  "de": "Medikamente",
+  "es": "Medicamentos",
+  "fr": "Médicaments",
+  "hi": "दवाइयाँ",
+  "it": "Medicine",
+  "ja": "お薬",
+  "pt": "Medicamentos",
+  "zh": "药物"
+ },
+ "Morning Summary": {
+  "de": "Morgenübersicht",
+  "es": "Resumen matinal",
+  "fr": "Résumé du matin",
+  "hi": "सुबह का सार",
+  "it": "Riepilogo del mattino",
+  "ja": "朝のまとめ",
+  "pt": "Resumo da manhã",
+  "zh": "早间摘要"
+ },
+ "Morning summary": {
+  "de": "Morgen-Überblick",
+  "es": "Resumen matutino",
+  "fr": "Résumé du matin",
+  "hi": "सुबह का सारांश",
+  "it": "Riepilogo del mattino",
+  "ja": "朝のまとめ",
+  "pt": "Resumo da manhã",
+  "zh": "早间摘要"
+ },
+ "Nothing pressing today. Enjoy it.": {
+  "de": "Heute nichts Dringendes. Genieß es.",
+  "es": "Nada urgente hoy. Disfrútalo.",
+  "fr": "Rien d'urgent aujourd'hui. Profitez-en.",
+  "hi": "आज कुछ ज़रूरी नहीं। मज़े करें।",
+  "it": "Niente di urgente oggi. Goditela.",
+  "ja": "今日は急ぎの用事はありません。",
+  "pt": "Nada urgente hoje. Aproveite.",
+  "zh": "今天没有急事，好好享受。"
+ },
+ "Where it comes from": {
+  "de": "Woher es kommt",
+  "es": "De dónde sale",
+  "fr": "D'où ça vient",
+  "hi": "यह कहाँ से आता है",
+  "it": "Da dove arriva",
+  "ja": "情報元",
+  "pt": "De onde vem",
+  "zh": "内容来源"
+ },
+ "Invoices": {
+  "de": "Rechnungen",
+  "es": "Facturas",
+  "fr": "Factures",
+  "hi": "इनवॉइस",
+  "it": "Fatture",
+  "ja": "請求書",
+  "pt": "Faturas",
+  "zh": "发票"
+ },
+ "It's built from what's already in Tenzy — Medicine Reminders, Invoices, your contacts' birthdays, your parked car and free space. Add things there and they show up here.": {
+  "de": "Sie entsteht aus dem, was schon in Tenzy ist – Medikamente, Rechnungen, Geburtstage deiner Kontakte, dein geparktes Auto und freier Speicher. Was du dort einträgst, erscheint hier.",
+  "es": "Se crea con lo que ya está en Tenzy: medicinas, facturas, cumpleaños de tus contactos, tu coche aparcado y el espacio libre. Lo que añadas allí aparece aquí.",
+  "fr": "Il se construit à partir de ce qui est déjà dans Tenzy – médicaments, factures, anniversaires de vos contacts, votre voiture garée et l'espace libre. Ajoutez-y des choses et elles apparaissent ici.",
+  "hi": "यह Tenzy में पहले से मौजूद चीज़ों से बनता है — दवाएँ, इनवॉइस, संपर्कों के जन्मदिन, पार्क की गई कार और खाली जगह। वहाँ जोड़ेंगे तो यहाँ दिखेगा।",
+  "it": "Si basa su ciò che è già in Tenzy: farmaci, fatture, compleanni dei contatti, l'auto parcheggiata e lo spazio libero. Ciò che aggiungi lì compare qui.",
+  "ja": "Tenzyにある情報から作られます — 薬、請求書、連絡先の誕生日、駐車位置、空き容量。そこに追加するとここに表示されます。",
+  "pt": "É feito com o que já está no Tenzy — remédios, faturas, aniversários dos contatos, seu carro estacionado e o espaço livre. O que você adicionar lá aparece aqui.",
+  "zh": "内容来自 Tenzy 里已有的信息——药品、发票、联系人生日、停车位置和剩余空间。在那里添加的内容会出现在这里。"
+ },
+ "Medicines, your morning, bills, receipts and cards": {
+  "de": "Medikamente, dein Morgen, Rechnungen, Belege und Karten",
+  "es": "Medicinas, tu mañana, facturas, recibos y tarjetas",
+  "fr": "Médicaments, votre matin, factures, reçus et cartes",
+  "hi": "दवाएँ, आपकी सुबह, बिल, रसीदें और कार्ड",
+  "it": "Farmaci, la tua mattina, bollette, scontrini e carte",
+  "ja": "薬、朝のまとめ、請求書、レシート、カード",
+  "pt": "Remédios, sua manhã, contas, recibos e cartões",
+  "zh": "药品、早间摘要、账单、收据和卡片"
+ },
+ "Notifications are off for Tenzy, so the summary can't arrive. Turn them on in Settings › Apps › Tenzy.": {
+  "de": "Mitteilungen für Tenzy sind aus, daher kann die Übersicht nicht ankommen. Schalte sie unter Einstellungen › Apps › Tenzy ein.",
+  "es": "Las notificaciones de Tenzy están desactivadas, así que el resumen no llegará. Actívalas en Ajustes › Aplicaciones › Tenzy.",
+  "fr": "Les notifications de Tenzy sont désactivées, le résumé ne peut pas arriver. Activez-les dans Paramètres › Applis › Tenzy.",
+  "hi": "Tenzy की सूचनाएँ बंद हैं, इसलिए सारांश नहीं आएगा। सेटिंग्स › ऐप्स › Tenzy में चालू करें।",
+  "it": "Le notifiche di Tenzy sono disattivate, quindi il riepilogo non arriva. Attivale in Impostazioni › App › Tenzy.",
+  "ja": "Tenzyの通知がオフのため、まとめが届きません。設定 › アプリ › Tenzy でオンにしてください。",
+  "pt": "As notificações do Tenzy estão desligadas, então o resumo não chega. Ative em Configurações › Apps › Tenzy.",
+  "zh": "Tenzy 的通知已关闭，摘要无法送达。请在 设置 › 应用 › Tenzy 中打开。"
+ },
+ "One note each morning: doses, birthdays, what's due": {
+  "de": "Jeden Morgen eine Notiz: Medikamente, Geburtstage, Fälliges",
+  "es": "Una nota cada mañana: dosis, cumpleaños, lo pendiente",
+  "fr": "Une note chaque matin : prises, anniversaires, échéances",
+  "hi": "हर सुबह एक नोट: खुराक, जन्मदिन, क्या बाकी है",
+  "it": "Una nota ogni mattina: dosi, compleanni, scadenze",
+  "ja": "毎朝ひとこと：服薬、誕生日、期限",
+  "pt": "Uma nota toda manhã: doses, aniversários, o que vence",
+  "zh": "每天早上一条：服药、生日、待办"
+ },
+ "One short note each morning with what matters today — your medicines, late invoices, birthdays, your parked car and a tidy-up nudge. Set it once and it just comes.": {
+  "de": "Jeden Morgen eine kurze Notiz mit dem, was heute zählt – Medikamente, überfällige Rechnungen, Geburtstage, dein geparktes Auto und ein Aufräum-Hinweis. Einmal einrichten, dann kommt sie von selbst.",
+  "es": "Una nota corta cada mañana con lo importante de hoy: tus medicinas, facturas atrasadas, cumpleaños, tu coche aparcado y un aviso para ordenar. Configúralo una vez y llega solo.",
+  "fr": "Une courte note chaque matin avec l'essentiel du jour – médicaments, factures en retard, anniversaires, votre voiture garée et un rappel de rangement. Réglez-le une fois et il arrive tout seul.",
+  "hi": "हर सुबह आज की ज़रूरी बातों का छोटा नोट — दवाएँ, बकाया इनवॉइस, जन्मदिन, पार्क की गई कार और सफ़ाई का सुझाव। एक बार सेट करें, फिर अपने-आप आता है।",
+  "it": "Una breve nota ogni mattina con ciò che conta oggi: farmaci, fatture in ritardo, compleanni, l'auto parcheggiata e un invito a fare ordine. Impostalo una volta e arriva da solo.",
+  "ja": "毎朝、今日大事なことを短くお知らせ — 薬、未払いの請求書、誕生日、駐車位置、整理のヒント。一度設定すれば毎日届きます。",
+  "pt": "Uma nota curta toda manhã com o que importa hoje — remédios, faturas atrasadas, aniversários, seu carro estacionado e um lembrete de arrumação. Configure uma vez e chega sozinha.",
+  "zh": "每天早上一条简短提醒，告诉你今天要紧的事——服药、逾期发票、生日、停车位置和整理建议。设置一次，每天自动送达。"
+ },
+ "Send me a morning summary": {
+  "de": "Schick mir eine Morgen-Übersicht",
+  "es": "Envíame un resumen matutino",
+  "fr": "M'envoyer un résumé du matin",
+  "hi": "मुझे सुबह का सारांश भेजें",
+  "it": "Inviami un riepilogo mattutino",
+  "ja": "朝のまとめを受け取る",
+  "pt": "Me envie um resumo da manhã",
+  "zh": "每天早上给我发摘要"
+ },
+ "Test sent — check your notifications. That's what each morning looks like.": {
+  "de": "Test gesendet – schau in deine Mitteilungen. So sieht jeder Morgen aus.",
+  "es": "Prueba enviada: revisa tus notificaciones. Así será cada mañana.",
+  "fr": "Test envoyé – regardez vos notifications. Voilà à quoi ressemblera chaque matin.",
+  "hi": "टेस्ट भेजा गया — सूचनाएँ देखें। हर सुबह ऐसा ही आएगा।",
+  "it": "Test inviato: controlla le notifiche. Ecco come sarà ogni mattina.",
+  "ja": "テストを送信しました — 通知を確認してください。毎朝このように届きます。",
+  "pt": "Teste enviado — veja suas notificações. É assim que cada manhã vai chegar.",
+  "zh": "测试已发送——请查看通知。每天早上就是这样。"
  }
 }

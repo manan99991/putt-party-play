@@ -108,6 +108,15 @@
             android:name=".tools.meds.MedReceiver"
             android:exported="false" />
 
+        <!-- Morning Summary: writes and posts the day's note each morning; re-armed after a restart. -->
+        <receiver
+            android:name=".tools.brief.MorningSummaryReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
         <!-- Notices a new photo or screenshot so a tool can offer itself (only armed while a tool asks for it). -->
         <service
             android:name=".tools.builder.PhotoWatchJob"
