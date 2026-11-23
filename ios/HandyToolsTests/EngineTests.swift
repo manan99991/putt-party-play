@@ -2145,6 +2145,42 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(mid, (first + second) / 2, accuracy: abs(second - first) * 0.25, "halfway is half of each photo: \(report)")
     }
 
+    /// Which way of laying one picture half see-through over another actually mixes them here. The crossfade's own way
+    /// (a context's alpha, then draw) came out as the first picture alone on 23 Nov; this finds a way that works before
+    /// the crossfade is changed.
+    func testWhichWayOfMixingTwoPicturesWorks() throws {
+        let a = Self.solid(UIColor(red: 0.9, green: 0.15, blue: 0.15, alpha: 1), mark: "A")
+        let b = Self.solid(UIColor(red: 0.45, green: 0.75, blue: 1.0, alpha: 1), mark: "B")
+        func mean(_ img: CGImage?) -> Double {
+            guard let img else { return -1 }
+            let g = VideoJoin.gray(img)
+            return g.isEmpty ? -1 : Double(g.reduce(0) { $0 + Int($1) }) / Double(g.count)
+        }
+        let size = CGSize(width: 108, height: 108), rect = CGRect(origin: .zero, size: size)
+        let painter = Animate.Painter(images: [a, b], size: size, framing: .fill)
+        let ca = try XCTUnwrap(painter.canvas(0)), cb = try XCTUnwrap(painter.canvas(1))
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
+        func render(_ body: (CGContext) -> Void) -> CGImage? { UIGraphicsImageRenderer(size: size, format: fmt).image { body($0.cgContext) }.cgImage }
+        let plainA = render { $0.setFillColor(UIColor(red: 0.9, green: 0.15, blue: 0.15, alpha: 1).cgColor); $0.fill(rect) }
+        let plainB = render { $0.setFillColor(UIColor(red: 0.45, green: 0.75, blue: 1.0, alpha: 1).cgColor); $0.fill(rect) }
+        var ways: [(String, CGImage?)] = []
+        ways.append(("context alpha, graded photos", render { c in c.draw(ca, in: rect); c.setAlpha(0.5); c.draw(cb, in: rect) }))
+        if let pa = plainA, let pb = plainB { ways.append(("context alpha, plain pictures", render { c in c.draw(pa, in: rect); c.setAlpha(0.5); c.draw(pb, in: rect) })) }
+        ways.append(("transparency layer", render { c in c.draw(ca, in: rect); c.setAlpha(0.5); c.beginTransparencyLayer(auxiliaryInfo: nil); c.draw(cb, in: rect); c.endTransparencyLayer() }))
+        ways.append(("UIImage draw with alpha", render { c in c.draw(ca, in: rect); UIImage(cgImage: cb).draw(in: rect, blendMode: .normal, alpha: 0.5) }))
+        if let space = CGColorSpace(name: CGColorSpace.sRGB), let bm = CGContext(data: nil, width: 108, height: 108, bitsPerComponent: 8, bytesPerRow: 0, space: space, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) {
+            bm.draw(ca, in: rect); bm.setAlpha(0.5); bm.draw(cb, in: rect); ways.append(("plain bitmap context", bm.makeImage()))
+        }
+        let ci = CIContext()
+        let dissolve = CIFilter(name: "CIDissolveTransition", parameters: [kCIInputImageKey: CIImage(cgImage: ca), kCIInputTargetImageKey: CIImage(cgImage: cb), kCIInputTimeKey: 0.5])
+        ways.append(("Core Image dissolve", dissolve?.outputImage.flatMap { ci.createCGImage($0, from: CGRect(origin: .zero, size: size)) }))
+        let ma = mean(ca), mb = mean(cb), want = (ma + mb) / 2, tol = abs(mb - ma) * 0.2
+        let report = "A \(Int(ma)) B \(Int(mb)) want ~\(Int(want)): " + ways.map { "\($0.0) \(Int(mean($0.1)))" }.joined(separator: "; ")
+        print("MIXING \(report)")
+        XCTAssertTrue(ways.contains { abs(mean($0.1) - want) < tol }, "no way mixed the two pictures: \(report)")
+        XCTAssertEqual(mean(ways[0].1), want, accuracy: tol, "the crossfade's way: \(report)")
+    }
+
     /// Every transition really moves: halfway through it the frame is neither photo — no hard cuts dressed up as styles.
     /// And the page curl turns like a book (the right edge lifts first).
     func testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook() throws {

@@ -352,11 +352,16 @@ final class PromiseTests: XCTestCase {
         let cells = app.buttons.matching(identifier: "finder-photo")
         XCTAssertTrue(cells.firstMatch.waitForExistence(timeout: 20), "the photo grid didn't open")
         guard cells.count >= 3 else { return }   // a simulator with fewer photos can't show a swipe
-        let from = cells.element(boundBy: 0).coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.5))
-        let to = cells.element(boundBy: 2).coordinate(withNormalizedOffset: CGVector(dx: 0.7, dy: 0.5))
+        // Three photos side by side in the top row, chosen by where they are on screen: the order the phone lists them
+        // in isn't left to right (the 23 Nov run listed x = 308, 81, 195, so the old swipe crossed only two photos).
+        let shown = (0..<min(cells.count, 24)).map { cells.element(boundBy: $0) }.filter { $0.isHittable }
+        let rows = Dictionary(grouping: shown) { Int(($0.frame.midY / 10).rounded()) }
+        guard let row = rows.filter({ $0.value.count >= 3 }).min(by: { $0.key < $1.key })?.value.sorted(by: { $0.frame.minX < $1.frame.minX }) else { return }
+        let from = row[0].coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.5))
+        let to = row[2].coordinate(withNormalizedOffset: CGVector(dx: 0.7, dy: 0.5))
         from.press(forDuration: 0.05, thenDragTo: to)
         let use = app.buttons["finder-use"]
         XCTAssertTrue(use.waitForExistence(timeout: 5), "swiping across photos didn't pick any")
-        XCTAssertTrue(use.label.contains("3"), "a swipe across three photos picked: \(use.label) — \(use.value as? String ?? "") (cells 0–2: \((0...2).map { Int(cells.element(boundBy: $0).frame.midX) }))")
+        XCTAssertTrue(use.label.contains("3"), "a swipe across three photos picked: \(use.label) — \(use.value as? String ?? "") (row x: \(row.prefix(3).map { Int($0.frame.midX) }))")
     }
 }

@@ -1,4 +1,4 @@
 # Tonight's two TestFlight blockers, proven on their own before any re-send (Nov 23).
+HandyToolsTests/EngineTests/testWhichWayOfMixingTwoPicturesWorks
 HandyToolsTests/EngineTests/testCrossfadeHalfwayIsAMixOfBothPhotos
-HandyToolsTests/EngineTests/testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook
 HandyToolsUITests/PromiseTests/testSwipeAcrossPhotosPicksSeveral
