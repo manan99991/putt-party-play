@@ -45,8 +45,14 @@ final class PromiseTests: XCTestCase {
             let tiles = any.matching(NSPredicate(format: "identifier BEGINSWITH 'home-tool-'"))
             let shown = (0..<tiles.count).map { tiles.element(boundBy: $0) }
             let off = shown.filter { !$0.isHittable }.map(\.identifier)
-            XCTAssertEqual(shown.count, count, "tab \(tab) shows \(shown.count) tools")
-            XCTAssertEqual(off, [], "tab \(tab): these tools need scrolling to reach")
+            // Diagnostics (rulebook §8): the screen, where the last tile ends, where the tab bar starts, and whether the
+            // first-visit "See it work" card is pushing the grid down.
+            let win = app.windows.firstMatch.frame
+            let lastY = shown.map { Int($0.frame.maxY) }.max() ?? -1
+            let bar = Int(app.buttons["builder-entry"].firstMatch.frame.minY)
+            let why = "screen \(Int(win.width))x\(Int(win.height)), last tile ends at \(lastY), tab bar at \(bar), first-try card \(any["first-try"].firstMatch.exists)"
+            XCTAssertEqual(shown.count, count, "tab \(tab) shows \(shown.count) tools; \(why)")
+            XCTAssertEqual(off, [], "tab \(tab): these tools need scrolling to reach; \(why)")
         }
         XCTAssertFalse(app.buttons["Guide"].exists, "Guide is still on Home (it lives in Settings now)")
         any["tab-phone"].firstMatch.tap()

@@ -1,4 +1,4 @@
-# 23 Nov: the real-files tool pass, alone, passed every tool in 30-61 s each (no stall) — the full run's 105-minute
-# limit was simply too short. Now: the new Home tabs, proven on their own beside tonight's TestFlight run.
-HandyToolsTests/HomeShelvesTests
+# 23 Nov: the Home tabs test found 6 tiles in the 8- and 9-tool tabs on the test iPhone (the "iPhone Duo", a foldable),
+# while the iPhone 17 Pro screenshot fits all 9. Diagnose before changing anything (rulebook section 8): screen size,
+# where the last tile ends, the tab bar, and whether the first-visit card pushes the grid down.
 HandyToolsUITests/PromiseTests/testHomeFitsOneScreenAndShelvesOpenTools
