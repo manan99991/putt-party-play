@@ -95,7 +95,7 @@ final class PromiseTests: XCTestCase {
         let any = app.descendants(matching: .any)
         let card = any["foryou-car"].firstMatch
         XCTAssertTrue(card.waitForExistence(timeout: 20), "no card for the parked car")
-        XCTAssertTrue(any["foryou-action-car"].firstMatch.isHittable, "the card has no Directions button")
+        XCTAssertTrue(any["foryou-action-car"].firstMatch.isHittable, "the card has no Directions button. The card as XCTest sees it: \(card.debugDescription.prefix(1500))")
         any["tab-camera"].firstMatch.tap()
         let tiles = any.matching(NSPredicate(format: "identifier BEGINSWITH 'home-tool-'"))
         let off = (0..<tiles.count).map { tiles.element(boundBy: $0) }.filter { !$0.isHittable }.map(\.identifier)

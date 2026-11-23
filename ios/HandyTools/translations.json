@@ -43429,15 +43429,15 @@
   "pt": "Salvar cartão de visita",
   "zh": "保存名片"
  },
- "Copy a receipt or table": {
-  "de": "Beleg oder Tabelle kopieren",
-  "es": "Copiar recibo o tabla",
-  "fr": "Copier reçu ou tableau",
-  "hi": "रसीद या तालिका कॉपी करें",
-  "it": "Copia scontrino o tabella",
-  "ja": "レシートや表を写す",
-  "pt": "Copiar recibo ou tabela",
-  "zh": "复制收据或表格"
+ "Copy a table": {
+  "de": "Tabelle kopieren",
+  "es": "Copiar una tabla",
+  "fr": "Copier un tableau",
+  "hi": "तालिका कॉपी करें",
+  "it": "Copia una tabella",
+  "ja": "表を写す",
+  "pt": "Copiar uma tabela",
+  "zh": "复制表格"
  },
  "Tell colors apart": {
   "de": "Farben erkennen",

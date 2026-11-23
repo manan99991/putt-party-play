@@ -82,12 +82,12 @@ enum HomeShelves {
     ]
 
     /// What each Home tile says: the job, in the words people search with (Manan, 23 Nov, UX audit decision 1:
-    /// "Scan a document", not "Scan"; "Copy a receipt or table", not "Data Grabber"). The tool keeps its own name on
+    /// "Scan a document", not "Scan"; "Copy a table", not "Data Grabber"). The tool keeps its own name on
     /// its own screen. Every name fits two lines on the narrowest iPhone (a unit test measures it).
     static let jobNames: [String: String] = [
         "scan": "Scan a document", "identify": "What is this?", "procam": "Take better photos", "measure": "Measure a room",
         "qrwifi": "Scan a QR code", "menu": "Read a menu", "cards": "Save a business card",
-        "datagrab": "Copy a receipt or table", "colorvision": "Tell colors apart",
+        "datagrab": "Copy a table", "colorvision": "Tell colors apart",
         "studio": "Fix a photo", "sticker": "Make a sticker", "collage": "Make a collage", "comicstrip": "Make a comic",
         "scrub": "Hide faces and location", "stitch": "Join screenshots", "formatfix": "Fix files that won't open",
         "memory": "Find a photo",

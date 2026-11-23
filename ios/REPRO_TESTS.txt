@@ -1,9 +1,10 @@
-# 23 Nov, UX audit phase 1 (Manan: yes to all six): job-named tiles, the buttons moved to My stuff, and the
-# "For you now" cards. Proven on their own, on a fresh install of the test phone, before the full run.
+# 23 Nov, UX audit phase 1 (Manan: yes to all six) and the Business tab. Second try: the For you card's buttons were
+# hidden inside the card (it read as one element), and "Copy a receipt or table" needed three lines. Proven on their
+# own, on a fresh install of the test phone, before the full run.
 HandyToolsTests/HomeShelvesTests
 HandyToolsTests/ForYouTests
 HandyToolsUITests/PromiseTests/testForYouCardShowsTheCarAndNotNowPutsItAway
 HandyToolsUITests/PromiseTests/testHomeFitsOneScreenAndShelvesOpenTools
+HandyToolsUITests/PromiseTests/testWelcomeIsOneScreenAndOpensTheChosenTab
+HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen
 HandyToolsUITests/PromiseTests/testReadyMadeToolsOpenFromMyStuffAndComeBack
-HandyToolsUITests/PromiseTests/testRunFromMyToolsStaysOpenAndComesBack
-HandyToolsUITests/PromiseTests/testFirstMinuteDemoFinishesWithAResult

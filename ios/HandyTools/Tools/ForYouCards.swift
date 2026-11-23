@@ -51,6 +51,9 @@ struct ForYouCards: View {
         .contextMenu {
             Button(role: .destructive) { ForYou.turnOff(c.kind); changed() } label: { Label(L("Don't suggest this"), systemImage: "hand.raised") }
         }
+        // A card with a context menu reads as one element unless told otherwise, which hid its two buttons from
+        // VoiceOver (and from the 23 Nov UI test): keep the card a container so each button is reachable.
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("foryou-\(c.kind.rawValue)")
     }
 
