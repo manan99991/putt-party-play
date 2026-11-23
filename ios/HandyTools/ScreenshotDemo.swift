@@ -7,6 +7,7 @@ import Foundation
 enum ScreenshotDemo {
     /// Routes that open a home tab or sheet rather than pushing a tool page.
     static let homeRoutes: Set<String> = ["paywall", "home", "homepro", "explore", "search", "mystuff", "templates", "mytools", "describebuilt", "guidevideo"]
+        .union(HomeShelves.all.map { "hometab-\($0.id)" })
 
     static var on: Bool { Launch.screenshots && Launch.args.contains("-demo") }
 

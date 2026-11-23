@@ -763,6 +763,8 @@ struct BuilderView: View {
         .onAppear {
             openReminded()
             // Store screenshots: open the Templates or My tools sheet straight away.
+            // Screenshots of each Home tab: -route hometab-pdf opens Home on that tab.
+            if Launch.screenshots, let r = Launch.route, r.hasPrefix("hometab-") { homeTab = String(r.dropFirst("hometab-".count)) }
             if Launch.screenshots, Launch.route == "templates" { showTemplates = true }
             if Launch.screenshots, Launch.route == "mytools" { showMine = true }
             // Store video: the warm-up run tried the demo already; show the card again for the take.
