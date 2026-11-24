@@ -15,13 +15,13 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 # (capture route, headline, supporting line, glow colour)
 SLIDES = [
     ("home",                       "Say what you need.",        "Tenzy finds the way — or builds it.",            (210, 255, 58)),
+    ("tools",                      "Every tool, by the job.",   "Camera, photos, documents, audio and more.",      (123, 92, 255)),
     ("brief",                      "Your day, looked after.",   "Doses, bills, birthdays, weather — one note.",    (59, 130, 246)),
     ("medreminder",                "Medicines, remembered.",    "A Taken button, refills, a nudge if you miss one.", (34, 197, 94)),
     ("run-photo-to-pdf-b-done",    "Paper to PDF, properly.",   "Straightened, cleaned, searchable.",              (236, 72, 153)),
-    ("run-receipt-to-row-b-done",  "Receipts, sorted.",         "Items and total, straight into your expenses.",   (20, 184, 166)),
-    ("thinking",                   "Think it through.",         "Worries and choices, sorted into next steps.",    (34, 197, 94)),
-    ("fitit",                      "Fits any upload limit.",    "Photo, video or PDF — just under the size.",      (139, 92, 246)),
-    ("pdfsign",                    "Sign and send.",            "Signs right where the form asks.", (239, 68, 68)),
+    ("hometab-business",           "Run a small business?",     "Invoices, a mileage log and a price list.",       (13, 148, 136)),
+    ("build",                      "Build your own.",           "Say it once — Tenzy runs it for you.",            (210, 255, 58)),
+    ("pdfsign",                    "Sign and send.",            "Signs right where the form asks.",                (239, 68, 68)),
 ]
 
 SIZES = {"iphone": (1290, 2796), "ipad": (2064, 2752)}
