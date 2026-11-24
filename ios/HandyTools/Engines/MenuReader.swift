@@ -172,7 +172,20 @@ enum MenuReader {
     /// The camera's usual slips in a price at the end of a line: "S13.99" or "S 6.99" is $13.99 / $6.99, "S4" is 54,
     /// "5o" is 50, "1l" is 11 — only in a short last word that already has a real digit in it.
     static func fixPriceReads(_ line: String) -> String {
-        var t = line.replacingOccurrences(of: #"(^|\s)S\s?(?=\d{1,4}[.,]\d{2}(\s|$))"#, with: "$1\\$", options: .regularExpression)
+        // "S 15 99" (the point lost) is $15.99; "5 18.99" is a $ read as 5; "S13.99" is $13.99.
+        var t = line.replacingOccurrences(of: #"(?<=\s)[S$5]\s?(\d{1,3}) (\d{2})(?=\s|$)"#, with: "\\$$1.$2", options: .regularExpression)
+        t = t.replacingOccurrences(of: #"(?<=\s)5 (?=\d{1,3}[.,]\d{2}(\s|$))"#, with: "\\$", options: .regularExpression)
+        t = t.replacingOccurrences(of: #"(^|\s)S\s?(?=\d{1,4}[.,]\d{2}(\s|$))"#, with: "$1\\$", options: .regularExpression)
+        // A two-letter last word that's really a price: "SA" is 54, "Si" is 51, "t2" is 12 (only after a dish name).
+        if let r = t.range(of: #"(?<=\S\s)[0-9SsOoIiltA]{2}$"#, options: .regularExpression) {
+            let before = t[..<r.lowerBound]
+            let word = String(t[r])
+            if before.split(separator: " ").count >= 2, before.suffix(6).allSatisfy({ !$0.isNumber }),
+               word.contains(where: { $0.isNumber || $0 == "S" || $0 == "A" }) {
+                let map: [Character: Character] = ["S": "5", "s": "5", "O": "0", "o": "0", "I": "1", "i": "1", "l": "1", "t": "1", "A": "4"]
+                return String(before) + String(word.map { map[$0] ?? $0 })
+            }
+        }
         guard let r = t.range(of: #"(?<=\s)[0-9OoIlS]{1,4}([.,][0-9OoIlS]{2})?$"#, options: .regularExpression) else { return t }
         let word = String(t[r])
         guard word.contains(where: \.isNumber), word.contains(where: { "OoIlS".contains($0) }) else { return t }
@@ -245,7 +258,13 @@ enum MenuReader {
                 let name = parts[ni]
                 let gap = price.rect.minX - name.rect.maxX
                 guard gap > -0.02, gap < 0.3, sameRow(name, price) else { continue }
-                if best == nil || gap < best!.gap { best = (ni, gap) }
+                // A dish that already has its price only takes a second one right beside it (Single / Family).
+                if splitPrice(name.text) != nil, gap > 0.06 { continue }
+                // The row it lines up with best, then the nearest: on a tight board the rows are barely a line apart.
+                let slope = (name.slope + price.slope) / 2
+                let off = abs(name.rect.midY + slope * (price.rect.midX - name.rect.midX) - price.rect.midY) / max(lineHeight(name), lineHeight(price))
+                let key = off + gap * 2
+                if best == nil || key < best!.gap { best = (ni, key) }
             }
             guard let b = best else { continue }
             // Nothing else written between them on that row (a price never jumps into the next column's dish).
@@ -371,7 +390,11 @@ enum MenuReader {
         }
         /// A piece the camera read, placed on the whole page. `tile` is where the read happened, in page pixels.
         func box(_ obs: VNRecognizedTextObservation, tile: CGRect, page size: CGSize) -> Box? {
-            guard let top = obs.topCandidates(1).first else { return nil }
+            // Of the camera's three best guesses, the one made of the most known menu words ("King Cut", not "King Cot").
+            let options = obs.topCandidates(3)
+            func known(_ t: String) -> Int { t.lowercased().split { !$0.isLetter }.filter { allMenuWords.contains(String($0)) }.count }
+            guard var top = options.first else { return nil }
+            for o in options.dropFirst() where known(o.string) > known(top.string) && o.confidence > 0.3 { top = o }
             let r = obs.boundingBox
             let rect = CGRect(x: (tile.minX + r.minX * tile.width) / size.width,
                               y: (tile.minY + (1 - r.maxY) * tile.height) / size.height,
@@ -589,22 +612,65 @@ enum MenuReader {
         return out.filter { !$0.isEmpty }
     }
 
-    /// Fixes a menu word the camera misread by one letter ("Comboy" → "Cowboy", "Wagru" → "Wagyu") — only against the
-    /// menu words it was told to expect, only when exactly one of them is that close, and never a word it already knows.
+    /// Fixes menu words the camera misread ("Steskhouse Baked Potate" → "Steakhouse Baked Potato", "Comboy" → "Cowboy").
+    /// Only toward the menu words Tenzy knows, only when exactly one is that close, and never a word that is already
+    /// right: a word the phone's English dictionary knows is left alone. Off the main thread (no dictionary), only
+    /// one-letter slips to the menu vocabulary are fixed.
     static func fixWords(_ s: String) -> String {
         guard cjkShare(s) < 0.3 else { return s }
-        let known = Set(menuVocabulary + commonMenuWords)
+        let dictionary = Thread.isMainThread
+        let targets = dictionary ? allMenuWords : Set(menuVocabulary)
         return s.split(separator: " ", omittingEmptySubsequences: false).map { tok -> String in
             let w = String(tok)
             let core = w.trimmingCharacters(in: CharacterSet.letters.inverted)
             let low = core.lowercased()
-            guard low.count >= 5, core.allSatisfy(\.isLetter), !known.contains(low) else { return w }
-            let near = menuVocabulary.filter { k in k.first == low.first && abs(k.count - low.count) <= 1 && editDistance(k, low) == 1 }
-            guard near.count == 1, let fix = near.first else { return w }
+            guard low.count >= 4, core.allSatisfy(\.isLetter), !targets.contains(low), !allMenuWords.contains(low) else { return w }
+            if dictionary, isEnglishWord(low) { return w }
+            let limit = dictionary ? (low.count <= 4 ? 1 : 2) : 1
+            let plain = folded(low)
+            var best: (d: Int, word: String)?
+            var tie = false
+            for k in targets {
+                let kf = folded(k)
+                guard abs(kf.count - plain.count) <= limit else { continue }
+                let d = editDistance(kf, plain)
+                guard d <= limit, kf.first == plain.first || d == 1 else { continue }
+                if let b = best {
+                    if d < b.d { best = (d, k); tie = false } else if d == b.d, folded(b.word) != kf { tie = true }
+                } else { best = (d, k) }
+            }
+            guard let fix = best?.word, !tie else { return w }
             let cased = core.first?.isUppercase == true ? fix.prefix(1).uppercased() + fix.dropFirst() : fix
             return w.replacingOccurrences(of: core, with: cased)
         }.joined(separator: " ")
     }
+    static func folded(_ s: String) -> String { s.folding(options: .diacriticInsensitive, locale: nil) }
+    /// A real word in English or any of the menu languages Tenzy reads ("pollo", "queso" and "ajillo" are right as they
+    /// are). The phone's own dictionaries, main thread only, where UIKit's checker belongs.
+    static func isEnglishWord(_ w: String) -> Bool {
+        let checker = UITextChecker()
+        let wanted = ["en", "es", "fr", "it", "de", "pt"]
+        let langs = UITextChecker.availableLanguages.filter { l in wanted.contains { l.hasPrefix($0) } }
+        for lang in langs.isEmpty ? ["en"] : langs {
+            let r = checker.rangeOfMisspelledWord(in: w, range: NSRange(location: 0, length: (w as NSString).length), startingAt: 0, wrap: false, language: lang)
+            if r.location == NSNotFound { return true }
+        }
+        return false
+    }
+    static let allMenuWords: Set<String> = Set(menuVocabulary + commonMenuWords + extraMenuWords.split(separator: " ").map(String.init))
+    /// More words menus use, so a misread can be put right (steakhouse, Indian and everyday menus).
+    static let extraMenuWords = """
+    steakhouse potato potatoes whipped charred roasted poblano risotto cabernet mushrooms sautéed brussels sprouts grilled asparagus \
+    scallops duroc braised seared salmon alfredo marsala filet porterhouse kansas strip rack lamb horseradish hollandaise béarnaise \
+    crumbles cheese butter onions shrimp jumbo oscar bisque chorizo spinach bourbon barrel wedge caesar romaine croutons bacon cheddar \
+    gouda pasta meatballs bison cocktail brie crab cakes oysters rockefeller medley shallots gruyère broth salads pecans vinaigrette \
+    tomatoes entrées accompaniments saku block tomahawk center plate breast chop carrots mashed pineapple chutney corn ragout cowboy \
+    york tail tender juicy hearty classic favorite glaze linguine served topped baked steamed atlantic fresh warm shaved toasted \
+    iceberg heirloom pickled ranch dressing parmesan smoky garnished sherry fraîche half full kulcha rumali chapati seekh afghani \
+    achari jeera curd sambar rice idly fried noodles kheema goat chicken fish curry gravies vegetable kofta mushroom shakes juice \
+    soda water coffee pastries scoop scoops custard sweets desserts beverages specials special family single breads street ragda \
+    papdi tikki sandwich grill bombay snack mirchi punugulu puff appetizers burnt garlic egg
+    """
     /// Ordinary menu words, so a fix never turns one real word into another.
     static let commonMenuWords = ["salad", "sauce", "steak", "cheese", "chicken", "garlic", "butter", "onion", "onions", "potato",
         "potatoes", "maine", "cream", "creamy", "shrimp", "lobster", "salmon", "spinach", "mushroom", "mushrooms", "grilled", "baked", "fried",
@@ -616,7 +682,9 @@ enum MenuReader {
         "kitchen", "family", "single", "large", "small", "regular", "medium", "market", "price", "sides", "soups", "soup", "starters",
         "mains", "entrees", "appetizers", "beverages", "drinks", "cocktail", "cocktails", "wines", "beers", "spring", "corn", "carrots",
         "mashed", "sautéed", "sauteed", "signature", "premium", "center", "accompaniments", "dragon", "baby", "pepper", "coriander",
-        "cashew", "jalapeno", "jalapeño", "crispy", "street", "sandwich", "sandwiches", "grill", "bombay", "burnt", "indian", "chinese"]
+        "cashew", "jalapeno", "jalapeño", "crispy", "street", "sandwich", "sandwiches", "grill", "bombay", "burnt", "indian", "chinese",
+        "pollo", "ajillo", "queso", "tarta", "gambas", "patatas", "jamón", "croquetas", "paella", "pulpo", "pescado", "poulet",
+        "fromage", "frites", "moules", "canard", "pesce", "funghi", "formaggio", "vitello", "würstel", "schnitzel"]
     static func editDistance(_ a: String, _ b: String) -> Int {
         let a = Array(a), b = Array(b)
         var prev = Array(0...b.count)

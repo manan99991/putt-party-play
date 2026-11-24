@@ -2,7 +2,8 @@
 # the steakhouse 11/38, while the built examples all passed. Same failure means the theory is wrong (rulebook §8):
 # the dump showed why: the page read kept only big text, the small print was garbled (guessed as Arabic), and two
 # screens ran together. Now: named languages, every text size, sections enlarged 1.6x before reading, and gutters
-# that a stray wide piece can't hide. Dumped again (encrypted) either way.
+# that a stray wide piece can't hide. Run 2: board 26/34, steakhouse 18/38. Run 3 adds: prices matched to the row they
+# line up with, misread words put right against a menu vocabulary (never a real word), the best of the camera's guesses.
 HandyToolsTests/MenuBoardTests
 # Also proven here: your own reminders and the one-line Home tabs.
 HandyToolsTests/OwnRemindersTests

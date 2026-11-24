@@ -105,6 +105,13 @@ final class MenuBoardTests: XCTestCase {
         XCTAssertEqual(MenuReader.splitPrice("Braised Short Rib 5o")?.value, 50)
         XCTAssertEqual(MenuReader.splitPrice("Water S 0.99")?.value, 0.99)
         XCTAssertNil(MenuReader.splitPrice("Since 1998"))
+        // From the real board and steakhouse: a lost point, a $ read as 5, letters read for digits.
+        XCTAssertEqual(MenuReader.splitPrice("Chicken Dum Biryani : S 15 99 $ 44.09")?.value, 15.99)
+        XCTAssertEqual(MenuReader.splitPrice("Avakai Goat Dum • 5 18.99 S 52.99")?.value, 18.99)
+        XCTAssertEqual(MenuReader.splitPrice("Diver Scallops SA")?.value, 54)
+        XCTAssertEqual(MenuReader.splitPrice("Cabernet Mushrooms t2")?.value, 12)
+        XCTAssertEqual(MenuReader.fixWords("Gorlie Whipped Potetoer"), "Garlic Whipped Potatoes")
+        XCTAssertEqual(MenuReader.fixWords("Pollo al ajillo"), "Pollo al ajillo")
     }
 
     /// Only one-letter misreads of real menu words are fixed, and never a word that's right already.
