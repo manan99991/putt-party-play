@@ -172,6 +172,12 @@ enum MenuReader {
     /// The camera's usual slips in a price at the end of a line: "S13.99" or "S 6.99" is $13.99 / $6.99, "S4" is 54,
     /// "5o" is 50, "1l" is 11 — only in a short last word that already has a real digit in it.
     static func fixPriceReads(_ line: String) -> String {
+        // "9o" is 90 anywhere on the line ("Full 9o / Half 50"); a lone "S" ending a dish line is a 5.
+        var line = line.replacingOccurrences(of: #"(?<=\s\d)[oO](?=\s|$)"#, with: "0", options: .regularExpression)
+        if let r = line.range(of: #"(?<=\S\s)[Ss]$"#, options: .regularExpression) {
+            let before = line[..<r.lowerBound]
+            if before.split(separator: " ").count >= 2, before.suffix(6).allSatisfy({ !$0.isNumber }) { line = String(before) + "5" }
+        }
         // "S 15 99" (the point lost) is $15.99; "5 18.99" is a $ read as 5; "S13.99" is $13.99.
         var t = line.replacingOccurrences(of: #"(?<=\s)[S$5]\s?(\d{1,3}) (\d{2})(?=\s|$)"#, with: "\\$$1.$2", options: .regularExpression)
         t = t.replacingOccurrences(of: #"(?<=\s)5 (?=\d{1,3}[.,]\d{2}(\s|$))"#, with: "\\$", options: .regularExpression)
@@ -439,7 +445,7 @@ enum MenuReader {
         DispatchQueue.concurrentPerform(iterations: tiles.count) { i in
             let t = tiles[i]
             guard let crop = full.cropping(to: t) else { return }
-            let scale = min(2.5, max(1, 2000 / max(t.width, t.height)))
+            let scale = min(3, max(1, 2400 / max(t.width, t.height)))
             let input = scale > 1.05 ? (enlarge(crop, by: scale) ?? crop) : crop
             let got: [(Box, Bool)] = pass(input, languages, minHeight: 0.004).compactMap { obs in
                 guard let b = box(obs, tile: t, page: fullSize) else { return nil }

@@ -34,7 +34,7 @@ final class MenuBoardTests: XCTestCase {
                                 ("■ Onion Uttapam [New]", [": $ 11.99"]), ("■ Chicken 65 Dosa", [": $ 12.99"]), "Chaat Section",
                                 ("■ Pani Puri (7 Pcs)", [": $ 7.99"]), ("■ Samosa Ragda", [": $ 7.99"])])
         let right = panel(0.24, ["Appetizers NonVeg", ("■ Chicken 65", [": $ 11.99"]), ("■ Chilli Chicken", [": $ 11.99"]), "Dum Biryani",
-                                 ("■ Veg Biryani", ["$ 13.99", "$ 39.99"]), ("■ Goat Dum", ["$ 17.99", "$ 50.99"]), ("■ Kaju Biriyani", ["$ 14.99", "$ 42.99"])])
+                                 ("■ Veg Biryani", ["$ 13.99", "$ 39.99"]), ("■ Goat Dum", ["$ 17.99", "$ 50.99"]), ("■ Kaju Biryani", ["$ 14.99", "$ 42.99"])])
         let items = MenuReader.parse(MenuReader.lines(from: left + right)).filter { !$0.note }
         XCTAssertEqual(items.map(\.name), ["Idly (3 PCS)", "Plain Dosa", "Onion Uttapam", "Chicken 65 Dosa", "Pani Puri (7 Pcs)", "Samosa Ragda",
                                            "Chicken 65", "Chilli Chicken", "Veg Biryani", "Goat Dum", "Kaju Biryani"])
@@ -110,6 +110,8 @@ final class MenuBoardTests: XCTestCase {
         XCTAssertEqual(MenuReader.splitPrice("Avakai Goat Dum • 5 18.99 S 52.99")?.value, 18.99)
         XCTAssertEqual(MenuReader.splitPrice("Diver Scallops SA")?.value, 54)
         XCTAssertEqual(MenuReader.splitPrice("Cabernet Mushrooms t2")?.value, 12)
+        XCTAssertEqual(MenuReader.splitPrice("Rack of Lamb Full 9o / Half So")?.priceText, "Full 90 / Half 50")
+        XCTAssertEqual(MenuReader.splitDishes(MenuReader.fixPriceReads("Sauteed Onions 6 Maytag Blue Cheese Crumbles s"), strict: false).count, 2)
         XCTAssertEqual(MenuReader.fixWords("Gorlie Whipped Potetoer"), "Garlic Whipped Potatoes")
         XCTAssertEqual(MenuReader.fixWords("Pollo al ajillo"), "Pollo al ajillo")
     }

@@ -4,6 +4,7 @@
 # screens ran together. Now: named languages, every text size, sections enlarged 1.6x before reading, and gutters
 # that a stray wide piece can't hide. Run 2: board 26/34, steakhouse 18/38. Run 3 adds: prices matched to the row they
 # line up with, misread words put right against a menu vocabulary (never a real word), the best of the camera's guesses.
+# Run 3: board 30/34 (passes), steakhouse 29/38. Run 4: "9o" anywhere, a lone S ending a line, small print enlarged more.
 HandyToolsTests/MenuBoardTests
 # Also proven here: your own reminders and the one-line Home tabs.
 HandyToolsTests/OwnRemindersTests
