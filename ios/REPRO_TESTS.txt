@@ -1,5 +1,4 @@
-# 24 Nov, run 5. Category pages: the system bar is hidden (it showed a second back button next to "‹ Tools") and the
-# page sits on Tenzy's ground. Re-prove every category opens, shows all its tools and goes back.
+# 24 Nov, run 6. Home's "Every tool" card showed eight bare coloured icons (Manan: users would never understand them).
+# Each category is now a named button that opens its page. Re-prove Home and Tools.
 HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
-HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen
-HandyToolsUITests/PromiseTests/testWelcomeIsOneScreenAndOpensTheChosenTab
+HandyToolsUITests/PromiseTests/testForYouCardShowsTheCarAndNotNowPutsItAway

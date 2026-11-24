@@ -1025,30 +1025,45 @@ struct BuilderView: View {
         }
     }
 
-    /// Every tool, by what it works on: a strip of the category colours that opens the Tools tab.
+    /// Every tool, by what it works on: each category as a named button — its icon in its colour over a one-word name —
+    /// that opens straight into that category, four across (Manan, 24 Nov: a row of bare coloured icons meant nothing
+    /// to anyone). "See all" opens the Tools tab.
     private var browseCard: some View {
-        Button { NotificationCenter.default.post(name: .showTab, object: "tools") } label: {
-            HStack(spacing: HandySpacing.s12) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(L("Every tool, by what it works on")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                    HStack(spacing: 5) {
-                        ForEach(homeTabs) { sh in
-                            Image(systemName: sh.icon).font(.system(size: 11, weight: .bold)).foregroundStyle(.white)
-                                .frame(width: 24, height: 24)
-                                .background(Color(hex: sh.hex).gradient, in: RoundedRectangle(cornerRadius: 7, style: .continuous))
-                        }
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack {
+                SectionLabel(text: "All tools", icon: "square.grid.2x2.fill")
+                Spacer()
+                Button { NotificationCenter.default.post(name: .showTab, object: "tools") } label: {
+                    HStack(spacing: 3) {
+                        Text(L("See all")).font(.system(size: 13, weight: .semibold))
+                        Image(systemName: "chevron.right").font(.system(size: 11, weight: .bold))
                     }
-                    .accessibilityHidden(true)
+                    .foregroundStyle(HandyColor.accent).frame(minHeight: 32).contentShape(Rectangle())
                 }
-                Spacer(minLength: 0)
-                Image(systemName: "chevron.right").font(.system(size: 14, weight: .bold)).foregroundStyle(HandyColor.textSecondary)
+                .buttonStyle(.plain).accessibilityIdentifier("home-browse")
             }
-            .padding(HandySpacing.s12)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-            .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 4), spacing: 6) {
+                ForEach(homeTabs) { sh in
+                    NavigationLink(value: "category-\(sh.id)") {
+                        VStack(spacing: 4) {
+                            Image(systemName: sh.icon).font(.system(size: 15, weight: .bold)).foregroundStyle(.white)
+                                .frame(width: 32, height: 32)
+                                .background(Color(hex: sh.hex).gradient, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                .accessibilityHidden(true)
+                            Text(L(sh.title)).font(.system(size: 11.5, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
+                                .lineLimit(1).minimumScaleFactor(0.7)
+                        }
+                        .frame(maxWidth: .infinity, minHeight: shortScreen ? 58 : 64)
+                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Color(hex: sh.hex).opacity(0.35), lineWidth: 1))
+                        .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("home-cat-\(sh.id)")
+                    .accessibilityHint(L(sh.line))
+                }
+            }
         }
-        .buttonStyle(.plain).accessibilityIdentifier("home-browse")
     }
 
     // MARK: - Tools: every tool, by what it works on

@@ -36,7 +36,19 @@ final class PromiseTests: XCTestCase {
         for id in ["have-photo", "have-paste"] {
             XCTAssertTrue(any[id].firstMatch.isHittable, "\(id) isn't on screen without scrolling")
         }
-        XCTAssertFalse(any["tab-camera"].firstMatch.exists, "the category grid is still on Home")
+        XCTAssertFalse(any["tab-camera"].firstMatch.exists, "the Tools page's grid is on Home")
+        // Home names every category (24 Nov: bare coloured icons meant nothing), and each opens its page.
+        for id in ["camera", "photos", "video", "pdf", "audio", "words", "day", "phone"] {
+            XCTAssertTrue(any["home-cat-\(id)"].firstMatch.exists, "Home has no named \(id) button")
+        }
+        let docs = any["home-cat-pdf"].firstMatch
+        if !docs.isHittable { app.swipeUp() }
+        XCTAssertTrue(docs.label.contains("Documents"), "the Documents button reads \(docs.label)")
+        docs.tap()
+        XCTAssertTrue(any["category-page-pdf"].firstMatch.waitForExistence(timeout: 10), "Home's Documents didn't open Documents")
+        any["category-back"].firstMatch.tap()
+        sleep(1)
+        if !app.buttons["tools-tab"].firstMatch.isHittable { app.swipeDown() }
         for id in ["builder-entry", "tools-tab", "build-tab", "mystuff-tab", "settings-tab"] {
             XCTAssertTrue(app.buttons[id].firstMatch.isHittable, "the tab bar has no \(id)")
         }
