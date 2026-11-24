@@ -38,8 +38,10 @@ final class PreviewTourTests: XCTestCase {
         app.buttons["tools-tab"].firstMatch.tap()  // every tool by what it works on, one tab away
         sleep(1)
         let tab = any["tab-phone"]
-        if tab.waitForExistence(timeout: 5) { tab.tap() }
+        if tab.waitForExistence(timeout: 5) { tab.tap() }   // a category's own page, every tool on one screen
         sleep(2)
+        if any["category-back"].firstMatch.waitForExistence(timeout: 3) { any["category-back"].firstMatch.tap() }
+        sleep(1)
         app.buttons["builder-entry"].firstMatch.tap()
         sleep(1)
 
