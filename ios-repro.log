@@ -1,6 +1,12 @@
 Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (54.152 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 54.152 (54.173) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 54.152 (54.176) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 54.152 (54.178) seconds
+    t =    61.40s     Requesting snapshot of accessibility hierarchy for app with pid 30933
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:268: error: -[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox] : XCTAssertTrue failed - no preview
+    t =    65.62s         Requesting snapshot of accessibility hierarchy for app with pid 30933
+    t =    65.66s     Requesting snapshot of accessibility hierarchy for app with pid 30933
+    t =    65.69s     Requesting snapshot of accessibility hierarchy for app with pid 30933
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:272: error: -[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox] : Failed to get matching snapshot: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"celebrate-preview" IN identifiers'`, given input App element pid: 30933
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' failed (67.235 seconds).
+	 Executed 1 test, with 2 failures (0 unexpected) in 67.235 (67.254) seconds
+	 Executed 1 test, with 2 failures (0 unexpected) in 67.235 (67.260) seconds
+	 Executed 1 test, with 2 failures (0 unexpected) in 67.235 (67.263) seconds
 == crash reports
