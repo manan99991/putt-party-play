@@ -1,34 +1,21 @@
-2026-11-24 06:34:40.034468+0000 HandyTools[52145:135518] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-24 06:34:43.642118+0000 HandyTools[52145:135518] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 06:34:43.657689+0000 HandyTools[52145:135518] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 06:34:43.658092+0000 HandyTools[52145:135518] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 06:34:43.867125+0000 HandyTools[52145:135518] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 06:34:43.868310+0000 HandyTools[52145:135518] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 06:34:43.869027+0000 HandyTools[52145:135518] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-Test Case '-[HandyToolsTests.HomeShelvesTests testBusinessTabOnlyWhenOnAndEveryJobIsReal]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testBusinessTabOnlyWhenOnAndEveryJobIsReal]' passed (0.071 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' passed (0.000 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabNameFitsOneLine]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabNameFitsOneLine]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTileHasAJobNameThatFitsTwoLines]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTileHasAJobNameThatFitsTwoLines]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testWelcomeChoicesOpenARealTab]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testWelcomeChoicesOpenARealTab]' passed (0.001 seconds).
-	 Executed 9 tests, with 0 failures (0 unexpected) in 0.090 (0.387) seconds
+2026-11-24 07:05:32.279496+0000 HandyTools[67422:169035] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-24 07:05:35.115460+0000 HandyTools[67422:169346] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 07:05:35.127087+0000 HandyTools[67422:169346] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 07:05:35.127599+0000 HandyTools[67422:169346] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 07:05:35.127918+0000 HandyTools[67422:169346] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 07:05:35.139059+0000 HandyTools[67422:169346] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 07:05:35.139867+0000 HandyTools[67422:169346] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
 Test Case '-[HandyToolsTests.IdentifyRealTests testALivingRoomWithABigTVIsCalledATV]' started.
-2026-11-24 06:34:52.814994+0000 HandyTools[52145:135521] [Context] [PREFLIGHTING] context 0x11a0970c0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-IDENTIFY| living room: Night Sky 56% | Celestial Body 20% | Moon 20%; subject object; category object
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/IdentifyRealTests.swift:64: error: -[HandyToolsTests.IdentifyRealTests testALivingRoomWithABigTVIsCalledATV] : XCTAssertTrue failed - led with ["Night Sky 56%", "Celestial Body 20%", "Moon 20%"]
-Test Case '-[HandyToolsTests.IdentifyRealTests testALivingRoomWithABigTVIsCalledATV]' failed (14.908 seconds).
+IDENTIFY| living room: Television 95%; subject object; category object
+Test Case '-[HandyToolsTests.IdentifyRealTests testALivingRoomWithABigTVIsCalledATV]' passed (10.543 seconds).
+Test Case '-[HandyToolsTests.IdentifyRealTests testDoesTheClassifierWorkOnThisMachine]' started.
+IDENTIFY| control red square: outdoor 49, night_sky 49, sky 49, celestial_body 17, moon 17
+IDENTIFY| control menu: outdoor 49, night_sky 49, sky 49, celestial_body 17, moon 17
+IDENTIFY| classifier works on this machine: false
+Test Case '-[HandyToolsTests.IdentifyRealTests testDoesTheClassifierWorkOnThisMachine]' passed (0.385 seconds).
+Test Case '-[HandyToolsTests.IdentifyRealTests testTheTVIsFoundByItsShape]' started.
+IDENTIFY| shape: Television 95% at (104.0, 217.0, 276.0, 170.0)
+Test Case '-[HandyToolsTests.IdentifyRealTests testTheTVIsFoundByItsShape]' passed (0.102 seconds).
 Test Case '-[HandyToolsTests.IdentifyRealTests testWhatEachViewOfTheLivingRoomIsCalled]' started.
 IDENTIFY| rectangle: x 19 y 30 w 51 h 23 conf 100
 IDENTIFY| view whole 533x710: outdoor 49, night_sky 49, sky 49, celestial_body 17, moon 17, people 3 || television=0.00 computer_monitor=0.00 living_room=0.00 sofa=0.00 interior_room=0.00 night_sky=0.49 moon=0.18 celestial_body=0.18 screenshot=0.01 container=0.00 vase=0.00
@@ -66,60 +53,41 @@ IDENTIFY| view 33% at 16,66: outdoor 49, night_sky 49, sky 49, celestial_body 17
 IDENTIFY| view 33% at 33,66: outdoor 49, night_sky 49, sky 49, celestial_body 17, moon 17, people 3 || television=0.00 computer_monitor=0.00 living_room=0.00 sofa=0.00 interior_room=0.00 night_sky=0.49 moon=0.18 celestial_body=0.18 screenshot=0.01 container=0.00 vase=0.00
 IDENTIFY| view 33% at 49,66: outdoor 49, night_sky 49, sky 49, celestial_body 17, moon 17, people 3 || television=0.00 computer_monitor=0.00 living_room=0.00 sofa=0.00 interior_room=0.00 night_sky=0.49 moon=0.18 celestial_body=0.18 screenshot=0.01 container=0.00 vase=0.00
 IDENTIFY| view 33% at 66,66: outdoor 49, night_sky 49, sky 49, celestial_body 17, moon 17, people 3 || television=0.00 computer_monitor=0.00 living_room=0.00 sofa=0.00 interior_room=0.00 night_sky=0.49 moon=0.18 celestial_body=0.18 screenshot=0.01 container=0.00 vase=0.00
-Test Case '-[HandyToolsTests.IdentifyRealTests testWhatEachViewOfTheLivingRoomIsCalled]' passed (7.620 seconds).
+Test Case '-[HandyToolsTests.IdentifyRealTests testWhatEachViewOfTheLivingRoomIsCalled]' passed (4.928 seconds).
 Test Case '-[HandyToolsTests.IdentifyRealTests testWhatTheClassifierCanNameForATV]' started.
 IDENTIFY| classifier knows 1303 labels; TV and room ones: atv, bathroom, bathroom_faucet, bathroom_room, bedroom, broom, classroom, computer_monitor, dining_room, groom, interior_room, kitchen_room, living_room, monitor_lizard, mushroom, screenshot, sofa, television
-Test Case '-[HandyToolsTests.IdentifyRealTests testWhatTheClassifierCanNameForATV]' passed (0.018 seconds).
-	 Executed 3 tests, with 1 failure (0 unexpected) in 22.546 (22.549) seconds
-Test Case '-[HandyToolsTests.OwnRemindersTests testNeverMoreThanTheLimit]' started.
-Test Case '-[HandyToolsTests.OwnRemindersTests testNeverMoreThanTheLimit]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.OwnRemindersTests testOnceIsLaterTodayOrTomorrow]' started.
-Test Case '-[HandyToolsTests.OwnRemindersTests testOnceIsLaterTodayOrTomorrow]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.OwnRemindersTests testThePhoneHoldsOneReminderPerTime]' started.
-Test Case '-[HandyToolsTests.OwnRemindersTests testThePhoneHoldsOneReminderPerTime]' passed (0.014 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.027 (0.030) seconds
+Test Case '-[HandyToolsTests.IdentifyRealTests testWhatTheClassifierCanNameForATV]' passed (0.011 seconds).
+	 Executed 5 tests, with 0 failures (0 unexpected) in 15.969 (15.975) seconds
+Test Case '-[HandyToolsTests.ScreenShapeTests testAPaintingIsNotATV]' started.
+Test Case '-[HandyToolsTests.ScreenShapeTests testAPaintingIsNotATV]' passed (0.301 seconds).
+Test Case '-[HandyToolsTests.ScreenShapeTests testAPhotoThatIsAllScreenIsNotCalledATVInARoom]' started.
+Test Case '-[HandyToolsTests.ScreenShapeTests testAPhotoThatIsAllScreenIsNotCalledATVInARoom]' passed (0.029 seconds).
+Test Case '-[HandyToolsTests.ScreenShapeTests testATVOnTheWallIsATVWhateverItShows]' started.
+Test Case '-[HandyToolsTests.ScreenShapeTests testATVOnTheWallIsATVWhateverItShows]' passed (0.355 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.685 (0.687) seconds
 Test Case '-[HandyToolsTests.StickerMotionTests testEveryMoveLoopsWithNoSeam]' started.
-Test Case '-[HandyToolsTests.StickerMotionTests testEveryMoveLoopsWithNoSeam]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.StickerMotionTests testEveryMoveLoopsWithNoSeam]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.StickerMotionTests testEveryMoveMovesStaysInsideAndKeepsCornersClear]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/StickerMotionTests.swift:64: error: -[HandyToolsTests.StickerMotionTests testEveryMoveMovesStaysInsideAndKeepsCornersClear] : XCTAssertEqual failed: ("175") is not equal to ("0") - Party: the top-left corner isn't see-through
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/StickerMotionTests.swift:64: error: -[HandyToolsTests.StickerMotionTests testEveryMoveMovesStaysInsideAndKeepsCornersClear] : XCTAssertEqual failed: ("175") is not equal to ("0") - Party: the top-left corner isn't see-through
-Test Case '-[HandyToolsTests.StickerMotionTests testEveryMoveMovesStaysInsideAndKeepsCornersClear]' failed (8.894 seconds).
+2026-11-24 07:05:52.432547+0000 HandyTools[67422:169052] [Context] [PREFLIGHTING] context 0x11a090b40: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+Test Case '-[HandyToolsTests.StickerMotionTests testEveryMoveMovesStaysInsideAndKeepsCornersClear]' passed (6.031 seconds).
 Test Case '-[HandyToolsTests.StickerMotionTests testFilesPlayAsLoops]' started.
-Test Case '-[HandyToolsTests.StickerMotionTests testFilesPlayAsLoops]' passed (0.383 seconds).
-	 Executed 3 tests, with 2 failures (0 unexpected) in 9.280 (9.283) seconds
-	 Executed 18 tests, with 3 failures (0 unexpected) in 31.944 (33.630) seconds
-	 Executed 18 tests, with 3 failures (0 unexpected) in 31.944 (33.633) seconds
+Test Case '-[HandyToolsTests.StickerMotionTests testFilesPlayAsLoops]' passed (0.245 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 6.279 (6.281) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 22.933 (22.947) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 22.933 (22.948) seconds
 Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (28.256 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (26.724 seconds).
 Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:151: error: -[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen] : XCTAssertGreaterThanOrEqual failed: ("0") is less than ("7")
-    t =    44.04s Requesting snapshot of accessibility hierarchy for app with pid 56113
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:153: error: -[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen] : Failed to tap "home-job-expense" Any: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"home-job-expense" IN identifiers'`, given input App element pid: 56113
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' failed (44.638 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' passed (21.400 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (56.971 seconds).
 Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:60: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertEqual failed: ("0") is not equal to ("6") - audio shows 0 tools; screen 466x678, section at 1574, last tile ends at -1, tab bar at 597
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:60: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertEqual failed: ("6") is not equal to ("9") - camera shows 6 tools; screen 466x678, section at 394, last tile ends at 611, tab bar at 597
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:60: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertEqual failed: ("0") is not equal to ("9") - day shows 0 tools; screen 466x678, section at 2056, last tile ends at -1, tab bar at 597
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:60: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertEqual failed: ("0") is not equal to ("9") - pdf shows 0 tools; screen 466x678, section at 1266, last tile ends at -1, tab bar at 597
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:60: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertEqual failed: ("0") is not equal to ("5") - phone shows 0 tools; screen 466x678, section at 2364, last tile ends at -1, tab bar at 597
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:60: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertEqual failed: ("0") is not equal to ("8") - photos shows 0 tools; screen 466x678, section at 717, last tile ends at -1, tab bar at 597
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:60: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertEqual failed: ("0") is not equal to ("5") - video shows 0 tools; screen 466x678, section at 1025, last tile ends at -1, tab bar at 597
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:60: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertEqual failed: ("0") is not equal to ("6") - words shows 0 tools; screen 466x678, section at 1815, last tile ends at -1, tab bar at 597
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:67: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertTrue failed - Contacts has no tile
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:69: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertTrue failed - the Phone category has no Flashlight
-    t =    91.13s Requesting snapshot of accessibility hierarchy for app with pid 57283
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:70: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : Failed to tap "home-tool-light" Any: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"home-tool-light" IN identifiers'`, given input App element pid: 57283
-Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' failed (91.629 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testRunFromMyToolsStaysOpenAndComesBack]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testRunFromMyToolsStaysOpenAndComesBack]' passed (27.103 seconds).
+    t =    23.35s Requesting snapshot of accessibility hierarchy for app with pid 71740
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:59: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : Failed to tap Button (Element at index 0): No matches found for Descendants matching type NavigationBar from input {(
+Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' failed (23.988 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid]' started.
+Test Case '-[HandyToolsUITests.PromiseTests testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid]' passed (24.614 seconds).
 Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' started.
-    t =    35.49s     Requesting snapshot of accessibility hierarchy for app with pid 61944
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:125: error: -[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab] : XCTAssertTrue failed - Tools didn't open at Documents
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:127: error: -[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab] : XCTAssertTrue failed
-Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' failed (41.408 seconds).
-	 Executed 6 tests, with 15 failures (0 unexpected) in 254.433 (254.452) seconds
-	 Executed 6 tests, with 15 failures (0 unexpected) in 254.433 (254.453) seconds
-	 Executed 6 tests, with 15 failures (0 unexpected) in 254.433 (254.455) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' passed (26.009 seconds).
+	 Executed 5 tests, with 1 failure (0 unexpected) in 158.306 (158.342) seconds
+	 Executed 5 tests, with 1 failure (0 unexpected) in 158.306 (158.343) seconds
+	 Executed 5 tests, with 1 failure (0 unexpected) in 158.306 (158.344) seconds
 == crash reports
