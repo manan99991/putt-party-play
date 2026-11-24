@@ -1,4 +1,2 @@
-# 24 Nov, run 9. Gold Book review: Video Effects' preview showed a black box. Diagnostics first (rulebook §8): what
-# the box shows over the first ten seconds. Plus Business Miles after its layout fix.
+# 24 Nov, run 10. The VIDEOFX lines were filtered out of the log last run; the filter now keeps them.
 HandyToolsUITests/PromiseTests/testVideoEffectsPreviewIsNeverABlackBox
-HandyToolsUITests/PromiseTests/testBusinessMilesAndPriceListWork

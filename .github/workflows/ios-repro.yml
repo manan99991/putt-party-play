@@ -59,7 +59,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation 2>&1 | tail -3
           TEST_RUNNER_MENU_DUMP="$RUNNER_TEMP/menu-dump.json" TEST_RUNNER_REAL_PHOTOS="$RUNNER_TEMP/real" TEST_RUNNER_GOLDEN="$PWD/RealPhotos/golden.json" xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
-            $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD|REALINPUT|TOOLINPUT|SMOKE|MENU\||IDENTIFY\||Failed to|accessibility" || true
+            $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD|REALINPUT|TOOLINPUT|SMOKE|MENU\||IDENTIFY\|VIDEOFX\|STICKER\||Failed to|accessibility" || true
           # Any crash the simulator recorded for the app, newest first.
           ls -t ~/Library/Logs/DiagnosticReports/HandyTools-* 2>/dev/null | head -2 | xargs python3 ../tools/ips_summary.py > crashes.txt 2>&1 || true
           grep -qE "TEST (EXECUTE )?SUCCEEDED" repro.log
@@ -68,7 +68,7 @@ jobs:
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
-          { grep -E "error:|Test Case|Executed|TEST (SUCCEEDED|FAILED)|crashed|failed -|XCTAssert|BISECT|REALINPUT|TOOLINPUT|SMOKE|MENU\||IDENTIFY\||Failed to|accessibility|Elapsed" ios/repro.log | grep -v "MENUREAD" | head -300; echo "== crash reports"; cat ios/crashes.txt 2>/dev/null; } > ios-repro.log
+          { grep -E "error:|Test Case|Executed|TEST (SUCCEEDED|FAILED)|crashed|failed -|XCTAssert|BISECT|REALINPUT|TOOLINPUT|SMOKE|MENU\||IDENTIFY\|VIDEOFX\|STICKER\||Failed to|accessibility|Elapsed" ios/repro.log | grep -v "MENUREAD" | head -300; echo "== crash reports"; cat ios/crashes.txt 2>/dev/null; } > ios-repro.log
           bash .github/publish-log.sh ios-repro ios-repro.log || true
       - name: Publish what the camera read on the private menus (encrypted)
         if: always()
