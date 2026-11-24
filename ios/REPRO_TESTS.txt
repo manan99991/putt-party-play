@@ -1,6 +1,8 @@
 # 24 Nov — Menu Assistant on Manan's two real menu photos. First run: the board 0/34 dishes with the right price,
 # the steakhouse 11/38, while the built examples all passed. Same failure means the theory is wrong (rulebook §8):
-# this run dumps exactly what the camera read (encrypted) so the reading can be worked out off the build machine.
+# the dump showed why: the page read kept only big text, the small print was garbled (guessed as Arabic), and two
+# screens ran together. Now: named languages, every text size, sections enlarged 1.6x before reading, and gutters
+# that a stray wide piece can't hide. Dumped again (encrypted) either way.
 HandyToolsTests/MenuBoardTests
 # Also proven here: your own reminders and the one-line Home tabs.
 HandyToolsTests/OwnRemindersTests

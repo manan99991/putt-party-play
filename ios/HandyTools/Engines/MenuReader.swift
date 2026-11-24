@@ -133,6 +133,7 @@ enum MenuReader {
         var line = raw.contains(where: { "元円원块".contains($0) || isCJK($0) })
             ? spacedDigits.stringByReplacingMatches(in: raw, range: NSRange(location: 0, length: (raw as NSString).length), withTemplate: "") : raw
         line = trailingMarks.stringByReplacingMatches(in: line, range: NSRange(location: 0, length: (line as NSString).length), withTemplate: "")
+        line = fixPriceReads(line)
         var shownParts: [String] = []
         var value: Double?
         var rest = line
@@ -168,6 +169,20 @@ enum MenuReader {
         return (name, shownParts.joined(separator: " / "), v)
     }
 
+    /// The camera's usual slips in a price at the end of a line: "S13.99" or "S 6.99" is $13.99 / $6.99, "S4" is 54,
+    /// "5o" is 50, "1l" is 11 — only in a short last word that already has a real digit in it.
+    static func fixPriceReads(_ line: String) -> String {
+        var t = line.replacingOccurrences(of: #"(^|\s)S\s?(?=\d{1,4}[.,]\d{2}(\s|$))"#, with: "$1\\$", options: .regularExpression)
+        guard let r = t.range(of: #"(?<=\s)[0-9OoIlS]{1,4}([.,][0-9OoIlS]{2})?$"#, options: .regularExpression) else { return t }
+        let word = String(t[r])
+        guard word.contains(where: \.isNumber), word.contains(where: { "OoIlS".contains($0) }) else { return t }
+        let fixed = String(word.map { c -> Character in
+            switch c { case "O", "o": return "0"; case "I", "l": return "1"; case "S": return "5"; default: return c }
+        })
+        t.replaceSubrange(r, with: fixed)
+        return t
+    }
+
     /// True when nearly every price on the menu has a currency mark or cents — then a bare number is never a price.
     static func strictPrices(_ lines: [String]) -> Bool {
         let priced = lines.compactMap { splitPrice($0) }
@@ -192,6 +207,16 @@ enum MenuReader {
     static func isPriceOnly(_ t: String) -> Bool {
         guard let p = splitPrice(t) else { return false }
         return p.name.filter(\.isLetter).count < 2
+    }
+
+    /// A section of the photo drawn larger, smoothly, so small print reads like a close-up.
+    static func enlarge(_ cg: CGImage, by scale: CGFloat) -> CGImage? {
+        let w = Int(CGFloat(cg.width) * scale), h = Int(CGFloat(cg.height) * scale)
+        guard let ctx = CGContext(data: nil, width: w, height: h, bitsPerComponent: 8, bytesPerRow: 0,
+                                  space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue) else { return nil }
+        ctx.interpolationQuality = .high
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+        return ctx.makeImage()
     }
 
     /// The height of the writing itself: a sloped line's box is taller than its letters.
@@ -242,7 +267,9 @@ enum MenuReader {
     private static func rows(_ block: [Box]) -> [String] {
         var out: [[Box]] = []
         for b in block.sorted(by: { $0.rect.midY < $1.rect.midY }) {
-            if let i = out.indices.last(where: { i in out[i].contains { sameRow($0, b) } }), out.count - i <= 2 { out[i].append(b) }
+            // Same row AND near something already in it: pieces far apart on one row are two columns, not one line.
+            if let i = out.indices.last(where: { i in out[i].contains { sameRow($0, b) && b.rect.minX - $0.rect.maxX < 0.12 && $0.rect.minX - b.rect.maxX < 0.12 } }),
+               out.count - i <= 2 { out[i].append(b) }
             else { out.append([b]) }
         }
         return out.map { $0.sorted { $0.rect.minX < $1.rect.minX }.map { $0.text.trimmingCharacters(in: .whitespaces) }.joined(separator: " ") }
@@ -262,7 +289,11 @@ enum MenuReader {
             let parts = (0..<(cuts.count - 1)).map { i in bs.filter { $0.rect.midY >= cuts[i] && $0.rect.midY < cuts[i + 1] } }.filter { !$0.isEmpty }
             if parts.count > 1 { return parts.flatMap { xyCut($0, depth: depth + 1) } }
         }
-        let xs = gaps(bs.map { ($0.rect.minX, $0.rect.maxX) }, minGap: max(0.006, h * 0.6))
+        // A few wide pieces (a banner, a garbled read across two screens) mustn't hide the gutter between columns.
+        let extent = (bs.map(\.rect.maxX).max() ?? 1) - (bs.map(\.rect.minX).min() ?? 0)
+        let widths = bs.map(\.rect.width).sorted()
+        let narrow = bs.filter { $0.rect.width <= max(3 * widths[widths.count / 2], 0.2 * extent) }
+        let xs = gaps((narrow.isEmpty ? bs : narrow).map { ($0.rect.minX, $0.rect.maxX) }, minGap: max(0.006, h * 0.6))
         if !xs.isEmpty {
             var parts: [[Box]] = []
             var cuts = [-CGFloat.infinity] + xs + [CGFloat.infinity]
@@ -325,13 +356,16 @@ enum MenuReader {
     static func read(_ image: UIImage, tiles useTiles: Bool = true) -> [Box] {
         let up = image.normalizedUp()
         guard let full = up.resized(maxDimension: 4800).cgImage, let page = up.resized(maxDimension: 2400).cgImage else { return [] }
-        func pass(_ cg: CGImage, _ languages: [String]?, minHeight: Float? = nil) -> [VNRecognizedTextObservation] {
+        // Languages are named, never guessed, once the page's script is known: guessing read a small English menu
+        // board as Arabic (24 Nov, Manan's photo). Every text size counts: Vision's default skips anything under
+        // about 1/32 of the page, which was every dish on a menu board.
+        let latin = ["en-US", "fr-FR", "it-IT", "de-DE", "es-ES", "pt-BR"]
+        func pass(_ cg: CGImage, _ languages: [String]?, minHeight: Float = 0) -> [VNRecognizedTextObservation] {
             let req = VNRecognizeTextRequest()
             req.recognitionLevel = .accurate
             req.usesLanguageCorrection = true
-            if let languages { req.recognitionLanguages = languages } else { req.automaticallyDetectsLanguage = true }
-            req.customWords = menuVocabulary
-            if let minHeight { req.minimumTextHeight = minHeight }
+            if let languages { req.recognitionLanguages = languages; req.customWords = menuVocabulary } else { req.automaticallyDetectsLanguage = true }
+            req.minimumTextHeight = minHeight
             try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
             return req.results ?? []
         }
@@ -347,31 +381,34 @@ enum MenuReader {
             return Box(text: top.string, rect: rect, confidence: top.confidence, slope: abs(dx) > 0.0001 ? dy / dx : 0)
         }
         func score(_ b: [Box]) -> Double { b.reduce(0) { $0 + Double($1.confidence) * Double($1.text.filter { $0.isLetter || $0.isNumber }.count) } }
-        func meanConfidence(_ b: [Box]) -> Double { b.isEmpty ? 0 : b.reduce(0) { $0 + Double($1.confidence) } / Double(b.count) }
         let pageSize = CGSize(width: page.width, height: page.height)
         let whole = CGRect(origin: .zero, size: pageSize)
-        var languages: [String]? = nil
-        var best = pass(page, nil).compactMap { box($0, tile: whole, page: pageSize) }
-        if meanConfidence(best) < 0.6 || score(best) < 40 || cjkShare(best.map(\.text).joined()) > 0.2 {
+        // Which script: a quick guess on the whole page, then the page read properly in the languages that fit.
+        let guess = pass(page, nil).compactMap { box($0, tile: whole, page: pageSize) }
+        var languages: [String]? = latin
+        var best = pass(page, latin).compactMap { box($0, tile: whole, page: pageSize) }
+        if cjkShare(guess.map(\.text).joined()) > 0.2 || score(best) < score(guess) * 0.8 {
             for langs in [["zh-Hans", "zh-Hant", "en-US"], ["ja-JP", "en-US"], ["ko-KR", "en-US"]] {
                 let next = pass(page, langs).compactMap { box($0, tile: whole, page: pageSize) }
                 if score(next) > score(best) * 1.15 { best = next; languages = langs }
             }
+            // Another script altogether (Thai, Cyrillic, Arabic…): Vision's own pick reads it best.
+            if score(guess) > score(best) * 1.15 { best = guess; languages = nil }
         }
-        // Small print (many lines, or short ones): read it again, tile by tile, at full resolution.
+        // Small print (many lines, or short ones): read it again in overlapping sections, each enlarged so its
+        // letters are as big as a close-up's.
         let heights = best.map(lineHeight).sorted()
         let median = heights.isEmpty ? 1 : heights[heights.count / 2]
         let W = CGFloat(full.width), H = CGFloat(full.height)
-        guard useTiles, best.count >= 30 || median < 0.02 || best.isEmpty, max(W, H) > 1800 else { return best }
-        let side: CGFloat = 1500, overlap: CGFloat = 0.14
+        guard useTiles, best.count >= 30 || median < 0.02 || best.isEmpty, max(W, H) > 1200 else { return best }
+        let side = min(max(max(W, H) / 3, 700), 1400)
         let cols = max(1, Int(ceil(W / side))), rowsN = max(1, Int(ceil(H / side)))
-        guard cols * rowsN > 1 else { return best }
-        let tw = min(W, W / CGFloat(cols) * (1 + overlap)), th = min(H, H / CGFloat(rowsN) * (1 + overlap))
+        let pad = side * 0.22      // so a line cut at one section's edge is whole in the next
         var tiles: [CGRect] = []
         for r in 0..<rowsN { for c in 0..<cols {
-            let x = cols == 1 ? 0 : (W - tw) * CGFloat(c) / CGFloat(cols - 1)
-            let y = rowsN == 1 ? 0 : (H - th) * CGFloat(r) / CGFloat(rowsN - 1)
-            tiles.append(CGRect(x: x.rounded(), y: y.rounded(), width: tw.rounded(.down), height: th.rounded(.down)))
+            let x0 = max(0, W * CGFloat(c) / CGFloat(cols) - pad), x1 = min(W, W * CGFloat(c + 1) / CGFloat(cols) + pad)
+            let y0 = max(0, H * CGFloat(r) / CGFloat(rowsN) - pad), y1 = min(H, H * CGFloat(r + 1) / CGFloat(rowsN) + pad)
+            tiles.append(CGRect(x: x0.rounded(), y: y0.rounded(), width: (x1 - x0).rounded(.down), height: (y1 - y0).rounded(.down)))
         } }
         let fullSize = CGSize(width: W, height: H)
         let lock = NSLock()
@@ -379,9 +416,11 @@ enum MenuReader {
         DispatchQueue.concurrentPerform(iterations: tiles.count) { i in
             let t = tiles[i]
             guard let crop = full.cropping(to: t) else { return }
-            let got: [(Box, Bool)] = pass(crop, languages, minHeight: 0.006).compactMap { obs in
+            let scale = min(2.5, max(1, 2000 / max(t.width, t.height)))
+            let input = scale > 1.05 ? (enlarge(crop, by: scale) ?? crop) : crop
+            let got: [(Box, Bool)] = pass(input, languages, minHeight: 0.004).compactMap { obs in
                 guard let b = box(obs, tile: t, page: fullSize) else { return nil }
-                // A piece touching an inner edge of its tile was cut off there; another tile (or the page) has it whole.
+                // A piece touching an inner edge of its section was cut off there; another section has it whole.
                 let r = obs.boundingBox
                 let cut = (r.minX < 0.01 && t.minX > 0) || (r.maxX > 0.99 && t.maxX < W - 1) || (r.maxY > 0.99 && t.minY > 0) || (r.minY < 0.01 && t.maxY < H - 1)
                 return (b, cut)

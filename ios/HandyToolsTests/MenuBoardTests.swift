@@ -98,6 +98,15 @@ final class MenuBoardTests: XCTestCase {
         XCTAssertEqual(items[6].section, "Center Of The Plate")
     }
 
+    /// The camera's usual slips in a price (24 Nov, on Manan's real photos): "S13.99" is $13.99, "S4" is 54, "5o" is 50.
+    func testCommonPriceMisreadsAreFixed() {
+        XCTAssertEqual(MenuReader.splitPrice("Veg Biryanl S13.99 $ 39.99")?.value, 13.99)
+        XCTAssertEqual(MenuReader.splitPrice("Diver Seallops S4")?.value, 54)
+        XCTAssertEqual(MenuReader.splitPrice("Braised Short Rib 5o")?.value, 50)
+        XCTAssertEqual(MenuReader.splitPrice("Water S 0.99")?.value, 0.99)
+        XCTAssertNil(MenuReader.splitPrice("Since 1998"))
+    }
+
     /// Only one-letter misreads of real menu words are fixed, and never a word that's right already.
     func testMisreadMenuWordsAreFixedAndRealWordsLeftAlone() {
         XCTAssertEqual(MenuReader.fixWords("Comboy Ribeye"), "Cowboy Ribeye")
