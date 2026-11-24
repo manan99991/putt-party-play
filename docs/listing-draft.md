@@ -190,3 +190,23 @@ Play copy stays.
   - drop "Shortcuts", "widget", "Face ID" (say "a locked vault"), "Apple Weather"/"Apple Maps" wording, and the
     Apple subscription paragraph; use "Cancel any time in Google Play → Subscriptions."
   - drop anything the Android build still lacks at push time (check each line against the build).
+
+## 24 Nov — additions for the next submit (waiting for Manan's yes; then translated into the 8 languages)
+
+Description, MONEY & PAPERWORK (after "Export a year of paperwork…"):
+• Run a small business? Invoices and quotes, a mileage log with a rough deduction for your accountant, and a price list
+
+Description, YOUR DAY, LOOKED AFTER (replace the parking line):
+• A bedtime nudge, and your parking meter counting down on the Lock Screen; save where you parked from Control Center, or automatically when you leave the car
+
+Description, AND EVERYTHING ELSE (replace "stickers and collages"):
+… a voice changer, stickers (still or animated) and collages, …
+
+Release notes (top lines):
+• A new look: Home, Tools, Build, My stuff and Settings, each one tap away
+• Animated stickers: nine moves, ready for Messages
+• Business: a mileage log and a price list next to invoices
+• Save where you parked from Control Center, or automatically when your phone leaves the car; the meter counts down on the Lock Screen
+• Identify names the big thing in the photo (a TV, not the vase beside it)
+
+Checked against rulebook §3: no tool counts, no "best/#1", no price in subtitle or screenshots, medicine line unchanged.
