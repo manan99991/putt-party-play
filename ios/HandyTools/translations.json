@@ -46388,5 +46388,205 @@
   "ja": "往復",
   "pt": "ida e volta",
   "zh": "往返"
+ },
+ "%@ at %@": {
+  "de": "%@ um %@",
+  "es": "%@ a las %@",
+  "fr": "%@ à %@",
+  "hi": "%@ — %@ बजे",
+  "it": "%@ alle %@",
+  "ja": "%@（%@）",
+  "pt": "%@ às %@",
+  "zh": "%@ · %@"
+ },
+ "%@ hasn't paid yet": {
+  "de": "%@ hat noch nicht bezahlt",
+  "es": "%@ aún no ha pagado",
+  "fr": "%@ n'a pas encore payé",
+  "hi": "%@ ने अभी भुगतान नहीं किया",
+  "it": "%@ non ha ancora pagato",
+  "ja": "%@ からまだ入金がありません",
+  "pt": "%@ ainda não pagou",
+  "zh": "%@ 尚未付款"
+ },
+ "%@ isn't paid yet": {
+  "de": "%@ ist noch nicht bezahlt",
+  "es": "%@ aún no está pagada",
+  "fr": "%@ n'est pas encore payée",
+  "hi": "%@ का भुगतान अभी नहीं हुआ",
+  "it": "%@ non è ancora pagata",
+  "ja": "%@ はまだ未払いです",
+  "pt": "%@ ainda não foi paga",
+  "zh": "%@ 尚未付款"
+ },
+ "%@ · stays on your phone": {
+  "de": "%@ · bleibt auf deinem Handy",
+  "es": "%@ · se queda en tu teléfono",
+  "fr": "%@ · reste sur votre téléphone",
+  "hi": "%@ · आपके फ़ोन पर ही रहता है",
+  "it": "%@ · resta sul tuo telefono",
+  "ja": "%@・スマホの中だけに保存",
+  "pt": "%@ · fica no seu celular",
+  "zh": "%@ · 只保存在你的手机上"
+ },
+ "%@ · was due %@": {
+  "de": "%@ · war fällig am %@",
+  "es": "%@ · vencía el %@",
+  "fr": "%@ · était dû le %@",
+  "hi": "%@ · %@ को देय था",
+  "it": "%@ · scadeva il %@",
+  "ja": "%@・期限は %@ でした",
+  "pt": "%@ · venceu em %@",
+  "zh": "%@ · 应于 %@ 付款"
+ },
+ "%@'s birthday is today": {
+  "de": "%@ hat heute Geburtstag",
+  "es": "Hoy es el cumpleaños de %@",
+  "fr": "C'est l'anniversaire de %@ aujourd'hui",
+  "hi": "आज %@ का जन्मदिन है",
+  "it": "Oggi è il compleanno di %@",
+  "ja": "今日は %@ の誕生日です",
+  "pt": "Hoje é aniversário de %@",
+  "zh": "今天是 %@ 的生日"
+ },
+ "%@: did you take it?": {
+  "de": "%@: hast du sie genommen?",
+  "es": "%@: ¿la tomaste?",
+  "fr": "%@ : l'avez-vous pris ?",
+  "hi": "%@: क्या आपने ली?",
+  "it": "%@: l'hai presa?",
+  "ja": "%@：飲みましたか？",
+  "pt": "%@: você tomou?",
+  "zh": "%@：吃了吗？"
+ },
+ "%d screenshots": {
+  "de": "%d Bildschirmfotos",
+  "es": "%d capturas de pantalla",
+  "fr": "%d captures d'écran",
+  "hi": "%d स्क्रीनशॉट",
+  "it": "%d screenshot",
+  "ja": "スクリーンショット %d 枚",
+  "pt": "%d capturas de tela",
+  "zh": "%d 张截图"
+ },
+ "Back up %@ contacts": {
+  "de": "%@ Kontakte sichern",
+  "es": "Haz una copia de %@ contactos",
+  "fr": "Sauvegarder %@ contacts",
+  "hi": "%@ संपर्कों का बैकअप लें",
+  "it": "Fai il backup di %@ contatti",
+  "ja": "%@ 件の連絡先をバックアップ",
+  "pt": "Fazer backup de %@ contatos",
+  "zh": "备份 %@ 位联系人"
+ },
+ "It is due in %d days": {
+  "de": "Fällig in %d Tagen",
+  "es": "Vence en %d días",
+  "fr": "À payer dans %d jours",
+  "hi": "%d दिन में देय है",
+  "it": "Scade tra %d giorni",
+  "ja": "%d 日後が期限です",
+  "pt": "Vence em %d dias",
+  "zh": "%d 天后到期"
+ },
+ "It is due today": {
+  "de": "Heute fällig",
+  "es": "Vence hoy",
+  "fr": "À payer aujourd'hui",
+  "hi": "आज देय है",
+  "it": "Scade oggi",
+  "ja": "今日が期限です",
+  "pt": "Vence hoje",
+  "zh": "今天到期"
+ },
+ "It is due tomorrow": {
+  "de": "Morgen fällig",
+  "es": "Vence mañana",
+  "fr": "À payer demain",
+  "hi": "कल देय है",
+  "it": "Scade domani",
+  "ja": "明日が期限です",
+  "pt": "Vence amanhã",
+  "zh": "明天到期"
+ },
+ "It was due %@": {
+  "de": "War fällig am %@",
+  "es": "Vencía el %@",
+  "fr": "Était à payer le %@",
+  "hi": "%@ को देय था",
+  "it": "Scadeva il %@",
+  "ja": "期限は %@ でした",
+  "pt": "Venceu em %@",
+  "zh": "%@ 已到期"
+ },
+ "It was due at %@ and isn't marked taken": {
+  "de": "Sie war um %@ fällig und ist nicht als genommen markiert",
+  "es": "Tocaba a las %@ y no está marcada como tomada",
+  "fr": "Elle était prévue à %@ et n'est pas marquée comme prise",
+  "hi": "यह %@ बजे लेनी थी और ली गई के रूप में नहीं दर्ज है",
+  "it": "Era prevista alle %@ e non risulta presa",
+  "ja": "%@ の予定で、まだ「飲んだ」になっていません",
+  "pt": "Era às %@ e não está marcada como tomada",
+  "zh": "原定 %@ 服用，尚未标记为已服"
+ },
+ "Last backup: %@": {
+  "de": "Letzte Sicherung: %@",
+  "es": "Última copia: %@",
+  "fr": "Dernière sauvegarde : %@",
+  "hi": "पिछला बैकअप: %@",
+  "it": "Ultimo backup: %@",
+  "ja": "前回のバックアップ：%@",
+  "pt": "Último backup: %@",
+  "zh": "上次备份：%@"
+ },
+ "Meter ends at %@": {
+  "de": "Parkuhr läuft um %@ ab",
+  "es": "El parquímetro termina a las %@",
+  "fr": "Le parcmètre expire à %@",
+  "hi": "मीटर %@ बजे खत्म होगा",
+  "it": "Il parchimetro scade alle %@",
+  "ja": "パーキングメーターは %@ に終了",
+  "pt": "O parquímetro acaba às %@",
+  "zh": "停车计时 %@ 结束"
+ },
+ "More than the %d you said to tell you about": {
+  "de": "Mehr als die %d, ab denen du Bescheid wolltest",
+  "es": "Más de las %d con las que pediste aviso",
+  "fr": "Plus que les %d au-delà desquelles vous vouliez être prévenu",
+  "hi": "आपने जिन %d पर बताने को कहा था, उससे ज़्यादा",
+  "it": "Più delle %d oltre cui volevi un avviso",
+  "ja": "知らせてほしいと設定した %d 枚を超えました",
+  "pt": "Mais que as %d com que você pediu aviso",
+  "zh": "超过了你设定提醒的 %d 张"
+ },
+ "Never backed up": {
+  "de": "Noch nie gesichert",
+  "es": "Nunca se ha hecho copia",
+  "fr": "Jamais sauvegardé",
+  "hi": "कभी बैकअप नहीं लिया",
+  "it": "Mai salvati",
+  "ja": "まだバックアップしていません",
+  "pt": "Nunca teve backup",
+  "zh": "从未备份"
+ },
+ "Only %@ GB left": {
+  "de": "Nur noch %@ GB frei",
+  "es": "Solo quedan %@ GB",
+  "fr": "Plus que %@ Go",
+  "hi": "सिर्फ़ %@ GB बचा है",
+  "it": "Restano solo %@ GB",
+  "ja": "残り %@ GB です",
+  "pt": "Só restam %@ GB",
+  "zh": "仅剩 %@ GB"
+ },
+ "Parked %@": {
+  "de": "Geparkt %@",
+  "es": "Aparcado %@",
+  "fr": "Garé %@",
+  "hi": "%@ पार्क किया",
+  "it": "Parcheggiata %@",
+  "ja": "%@ に駐車",
+  "pt": "Estacionado %@",
+  "zh": "%@ 停的车"
  }
 }

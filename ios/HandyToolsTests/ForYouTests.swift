@@ -23,6 +23,24 @@ final class ForYouTests: XCTestCase {
         XCTAssertTrue(c.first?.title.contains("did you take it") ?? false)
     }
 
+    /// 24 Nov: lines built from the person's own data ("Vitamin D at 8:00 PM") stayed English in other languages. In
+    /// German the card says it in German, with the medicine's own name kept as it was typed.
+    func testCardLinesFollowTheAppLanguage() {
+        let before = Localizer.chosen
+        Localizer.shared.use("de")
+        defer { Localizer.shared.use(before) }
+        var f = ForYou.Facts(now: now)
+        f.doses = [(UUID(), "Vitamin D", now.addingTimeInterval(-1800), false)]
+        f.invoices = []
+        let c = ForYou.cards(f, cal: cal)
+        XCTAssertEqual(c.first?.title, "Vitamin D: hast du sie genommen?")
+        XCTAssertTrue(c.first?.why.hasPrefix("Sie war um ") ?? false, "why: \(c.first?.why ?? "-")")
+        XCTAssertEqual(c.first?.button, "Mark taken", "the button is translated where it's shown")
+        f.doses = []
+        f.screenshots = 812; f.screenshotLimit = 500
+        XCTAssertEqual(ForYou.cards(f, cal: cal).first?.title, "812 Bildschirmfotos")
+    }
+
     func testATakenOrFarOffDoseShowsNothing() {
         var f = ForYou.Facts(now: now)
         f.doses = [(UUID(), "A", now.addingTimeInterval(-1800), true),        // already taken

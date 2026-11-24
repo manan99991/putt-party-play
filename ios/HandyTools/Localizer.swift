@@ -57,6 +57,15 @@ final class Localizer {
         UserDefaults.standard.set(c, forKey: Self.key)
     }
 
+    /// Dates, times and numbers in the language the app is showing, with the phone's region (so "8:00 PM" becomes
+    /// "20:00" in German and dates read in that language too).
+    var locale: Locale {
+        let lang = language
+        let base = Locale.current
+        if base.language.languageCode?.identifier == lang { return base }
+        return Locale(identifier: base.region.map { "\(lang)_\($0.identifier)" } ?? lang)
+    }
+
     /// The chosen language's own name, for Settings and the welcome screen.
     static var chosenName: String {
         let c = chosen
