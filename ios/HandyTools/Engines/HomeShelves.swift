@@ -32,7 +32,7 @@ enum HomeShelves {
         Shelf(id: "video", title: "Video", line: "Shrink, trim, add effects, post, or make one from photos",
               icon: "film.fill", hex: 0x8B5CF6,
               tools: ["video", "celebrate", "post", "animate", "fitit"]),
-        Shelf(id: "pdf", title: "Files", line: "Sign, black out, fill, organize, lock and open files",
+        Shelf(id: "pdf", title: "Documents", line: "Sign, black out, fill, organize, lock and open files",
               icon: "doc.richtext.fill", hex: 0xEF4444,
               tools: ["pdfsign", "pdfredact", "pdfform", "pdfannotate", "pdfpages", "pdfconvert", "pdfprotect", "zipmaker", "fileviewer"]),
         Shelf(id: "audio", title: "Audio", line: "Edit recordings, ringtones, song info, sounds to sleep to",
@@ -41,11 +41,11 @@ enum HomeShelves {
         Shelf(id: "words", title: "Words", line: "Write, translate, notes from speech, read aloud, spot scams, think",
               icon: "text.bubble.fill", hex: 0x22C55E,
               tools: ["textstudio", "translate", "speechnotes", "seeread", "shield", "thinking"]),
-        Shelf(id: "day", title: "Daily life", line: "Medicine, plans, bills, moods, prices and receipts",
-              icon: "calendar", hex: 0xF97316,
+        Shelf(id: "day", title: "Everyday", line: "Medicine, plans, bills, moods, prices and receipts",
+              icon: "sun.max.fill", hex: 0xF97316,
               tools: ["medreminder", "untangle", "planner", "brief", "daydiary", "sorted", "warranty", "pricewatch", "pricecheck"]),
         Shelf(id: "phone", title: "Phone", line: "Your contacts, flashlight, speed, space and a private vault",
-              icon: "person.2.fill", hex: 0x14B8A6,
+              icon: "iphone", hex: 0x14B8A6,
               tools: ["contacts", "light", "cleaner", "gpsdash", "vault"]),
     ]
 

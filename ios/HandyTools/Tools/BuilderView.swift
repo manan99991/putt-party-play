@@ -444,6 +444,10 @@ struct BuilderView: View {
     var openReadyMade = false
     /// Opened from Settings › How Tenzy works › Show me one: a ready-made tool in the editor, steps working on a sample.
     var showDemo = false
+    /// Which bottom tab this page is (Manan, 24 Nov: five tabs, each with its own soul). Home is the front door — say
+    /// it, or start with what you have; Tools is every tool, by what it works on; Build is making your own.
+    enum Face { case home, tools, build }
+    var face: Face = .home
     @Environment(\.dismiss) private var dismissPage
     @State private var mine: [Chain] = ChainStore.load()
     @State private var editing: Chain?
@@ -513,7 +517,12 @@ struct BuilderView: View {
     }
     /// "For you now" cards; a short screen shows only the most pressing one so a full tab still fits.
     @State private var forYou: [ForYou.Card] = []
-    private var shownCards: [ForYou.Card] { (Launch.screenshots || builtIn != nil) ? [] : Array(forYou.prefix((shortScreen || businessOn) ? 1 : ForYou.maxCards)) }   // a third row of tabs takes the second card's room
+    private var shownCards: [ForYou.Card] { (Launch.screenshots || builtIn != nil) ? [] : Array(forYou.prefix(shortScreen ? 1 : ForYou.maxCards)) }
+    /// Tools tab: the category a tile above was tapped for (the page scrolls to it), and the find-a-tool box.
+    @State private var jumpTo: String?
+    @State private var findTool = ""
+    /// The category the welcome screen picked, for the Tools tab to glide to the first time it opens.
+    static let jumpKey = "tenzy.jumpTo"
     private func loadForYou() async {
         let f = await ForYou.gather()
         let c = ForYou.cards(f, hidden: ForYou.hidden, off: ForYou.off)
@@ -526,23 +535,29 @@ struct BuilderView: View {
     var body: some View {
         // Scrolls when the page is taller than the phone (small phones, big text), so nothing ever sits under the
         // clock or behind another button.
+        ScrollViewReader { proxy in
         ScrollView {
-        VStack(alignment: .leading, spacing: shortScreen ? 10 : HandySpacing.s12) {
-            // Problem first: the person says what they need; Tenzy finds the tool, or builds one. Kept short so
-            // the whole front door — say it, start with what you have, or open any tool — fits one screen.
-            // Laid out like a profile: who (the Tenzy mark and its promise), three actions, the say-it line, then one even
-            // grid of tiles — three across, every tile the same shape — with everything Tenzy does one or two taps away.
-            profileHeader
-            // For you now (audit decision 2): what today needs from Tenzy, from what the person already set up.
-            if !shownCards.isEmpty { ForYouCards(cards: shownCards) { Task { await loadForYou() } } }
-            hero
-            if let b = builtIn { builtInCard(b) }
-            if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-            anythingTiles
+        VStack(alignment: .leading, spacing: shortScreen ? 10 : HandySpacing.s16) {
+            switch face {
+            case .home: homeFace
+            case .tools: toolsFace
+            case .build: buildFace
+            }
         }
         .frame(maxWidth: .infinity, alignment: .top)
         .padding(.horizontal, HandySpacing.gutter)
         .padding(.vertical, HandySpacing.s8)
+        .id("page-top")
+        }
+        // Tapping the tab you're already on goes back to the top, as everywhere on iPhone.
+        .onReceive(NotificationCenter.default.publisher(for: .tabReselected)) { _ in
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) { proxy.scrollTo("page-top", anchor: .top) }
+        }
+        .onChange(of: jumpTo) { _, id in
+            guard let id else { return }
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) { proxy.scrollTo("section-\(id)", anchor: .top) }
+            jumpTo = nil
+        }
         }
         .scrollDismissesKeyboard(.interactively)
         .sheet(item: $editing, onDismiss: returnToMine) { c in
@@ -920,122 +935,322 @@ struct BuilderView: View {
         NotificationCenter.default.post(name: .showPaywall, object: nil)
     }
 
-    /// Home's top, laid out like a profile: the Tenzy mark and its promise, then three actions — your own tools, the
-    /// ready-made ones, and what's set to remind you.
-    private var profileHeader: some View {
+    // MARK: - Home: the front door
+
+    /// Home (Manan, 24 Nov: "this page is our face — wow and a powerful platform"): Tenzy's own hero with the say-it line
+    /// inside it, then start with what you have, what today needs, the tools people reach for most, and the way to every
+    /// tool. The category grid moved to its own Tools tab, which ends the doubles (Photo and Photos, PDF and Files).
+    private var homeFace: some View {
+        VStack(alignment: .leading, spacing: shortScreen ? 10 : HandySpacing.s16) {
+            brandHero
+            readyNow
+            if let b = builtIn { builtInCard(b) }
+            if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            haveRow
+            gettingReadyRow
+            // For you now (audit decision 2): what today needs from Tenzy, from what the person already set up.
+            if !shownCards.isEmpty { ForYouCards(cards: shownCards) { Task { await loadForYou() } } }
+            popularRow
+            browseCard
+        }
+        .onAppear { refreshClipKind() }
+        .onChange(of: scenePhase) { _, p in if p == .active { refreshClipKind(); Task { await loadForYou() } } }
+        .task { await loadForYou() }
+        .onReceive(NotificationCenter.default.publisher(for: UIPasteboard.changedNotification)) { _ in refreshClipKind() }
+    }
+
+    /// The hero: the Tenzy mark and its promise on Tenzy's own gradient, and the say-it line right inside it.
+    private var brandHero: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             HStack(spacing: HandySpacing.s12) {
-                TenzyMark(size: shortScreen ? 40 : 48)
+                TenzyMark(size: shortScreen ? 40 : 46)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(L("Let's make today easier")).font(.system(size: 24, weight: .bold)).foregroundStyle(HandyColor.textPrimary)
+                    Text(L("Let's make today easier")).font(.system(size: shortScreen ? 22 : 25, weight: .heavy)).foregroundStyle(.white)
                         .lineLimit(1).minimumScaleFactor(0.7).accessibilityAddTraits(.isHeader)
-                    if offerFirstTry { firstTry } else {
-                        Text(L("Say it, or start with what you have.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                            .lineLimit(1).minimumScaleFactor(0.8)
-                    }
+                    Text(L("Say it, or start with what you have.")).font(.system(size: 13, weight: .medium)).foregroundStyle(.white.opacity(0.88))
+                        .lineLimit(1).minimumScaleFactor(0.8)
                 }
                 Spacer(minLength: 0)
             }
-            // My tools, Ready-made tools and Reminders live in the My stuff tab (23 Nov audit decision 3: they repeated it
-            // here and took the room the "For you now" cards need).
+            sayField(onBrand: true)
+            if offerFirstTry { firstTry }
         }
+        .padding(HandySpacing.s16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background { BrandGround(symbol: "sparkles") }
     }
 
-    /// Start with what you have (six small tiles, one row), then the category tabs — all eight on screen, no sideways
-    /// scrolling — and every tool in the picked tab as its own tile (Manan, 23 Nov: "Contacts and other tabs are
-    /// missing — make sure nothing is missing from the home page"). A tab holds at most nine tools, so it all fits.
-    private var anythingTiles: some View {
+    /// Start with what you have: six tiles, one row — the thing you hold decides the tools offered.
+    private var haveRow: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text(L("Start with what you have")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            SectionLabel(text: "Start with what you have", icon: "tray.and.arrow.down.fill")
             HStack(spacing: 6) {
                 // Our own photo grid: big tiles, tap or swipe a finger across to pick several (Manan, 22 Nov), originals kept.
                 SmartPhotoFilesButton(kind: .any, max: 20, picked: { files in
                     guard !files.isEmpty else { return }
                     gettingReady = true; note = nil
                     Task { await takePhotos(files, asked: files.count) }
-                }) { HaveChip(title: "Photo", icon: "photo.on.rectangle.angled", hex: 0xEC4899, height: shortScreen ? 48 : 58) }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
-                PhotosPicker(selection: $anyPick, matching: .videos) { HaveChip(title: "Video", icon: "film", hex: 0x8B5CF6, height: shortScreen ? 48 : 58) }
+                }) { HaveChip(title: "Photo", icon: "photo.on.rectangle.angled", hex: 0xEC4899, height: shortScreen ? 52 : 62) }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
+                PhotosPicker(selection: $anyPick, matching: .videos) { HaveChip(title: "Video", icon: "film", hex: 0x8B5CF6, height: shortScreen ? 52 : 62) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-video")
-                Button { pickTypes = audioImportTypes; pickingAny = true } label: { HaveChip(title: "Audio", icon: "waveform", hex: 0xF59E0B, height: shortScreen ? 48 : 58) }
+                Button { pickTypes = audioImportTypes; pickingAny = true } label: { HaveChip(title: "Audio", icon: "waveform", hex: 0xF59E0B, height: shortScreen ? 52 : 62) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-audio")
-                Button { pickTypes = [.pdf]; pickingAny = true } label: { HaveChip(title: "PDF", icon: "doc.richtext", hex: 0xEF4444, height: shortScreen ? 48 : 58) }
+                Button { pickTypes = [.pdf]; pickingAny = true } label: { HaveChip(title: "PDF", icon: "doc.richtext", hex: 0xEF4444, height: shortScreen ? 52 : 62) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-pdf")
-                Button { pickTypes = [.item]; pickingAny = true } label: { HaveChip(title: "File", icon: "folder", hex: 0x3B82F6, height: shortScreen ? 48 : 58) }
+                Button { pickTypes = [.item]; pickingAny = true } label: { HaveChip(title: "File", icon: "folder", hex: 0x3B82F6, height: shortScreen ? 52 : 62) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-file")
                 pasteTile
             }
-            // Every tab on screen at once, two even rows: four across (five with Business). Each is its icon in its own
-            // colour above a one-word name, so nothing squeezes onto two lines (Manan, 23 Nov: "Contacts & phone" looked
-            // crammed). The picked tab fills with its colour; the tab's one-line description is read out as its hint.
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: homeTabs.count > 8 ? 5 : 4), spacing: 6) {
-                ForEach(homeTabs) { sh in
-                    let on = sh.id == currentTab.id
-                    Button { withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { homeTab = sh.id } } label: {
-                        VStack(spacing: shortScreen ? 2 : 4) {
-                            Image(systemName: sh.icon).font(.system(size: shortScreen ? 13 : 15, weight: .bold))
-                                .foregroundStyle(on ? Color.white : Color(hex: sh.hex))
-                                .frame(width: shortScreen ? 26 : 30, height: shortScreen ? 26 : 30)
-                                .background(on ? Color.white.opacity(0.22) : Color(hex: sh.hex).opacity(0.16),
-                                            in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-                                .accessibilityHidden(true)
-                            Text(L(sh.title)).font(.system(size: 11.5, weight: .semibold)).lineLimit(1).minimumScaleFactor(0.7)
-                        }
-                        .foregroundStyle(on ? Color.white : HandyColor.textPrimary)
-                        .frame(maxWidth: .infinity, minHeight: shortScreen ? 50 : 58)
-                        .background(on ? AnyShapeStyle(Color(hex: sh.hex).gradient) : AnyShapeStyle(.ultraThinMaterial),
-                                    in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(on ? Color.white.opacity(0.25) : HandyColor.border, lineWidth: 1))
-                        .shadow(color: on ? Color(hex: sh.hex).opacity(0.45) : .clear, radius: 8, y: 3)
-                        .scaleEffect(on ? 1.0 : 0.97)
-                        .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        }
+    }
+
+    @ViewBuilder private var gettingReadyRow: some View {
+        if gettingReady {
+            HStack(spacing: HandySpacing.s8) {
+                BusySpinner()
+                Text(L("Got it — getting your file ready. A large or iCloud video can take a moment.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(HandySpacing.s12)
+            .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        }
+    }
+
+    /// The tools people reach for most, one tap from Home.
+    static let popular = ["scan", "identify", "translate", "menu", "pdfsign", "sticker"]
+    private var popularRow: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            SectionLabel(text: "Most loved", icon: "heart.fill")
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
+                ForEach(Self.popular.compactMap { id in TOOLS.first { $0.id == id } }) { t in
+                    Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
+                        HomeToolTile(tool: t, hex: HomeShelves.shelf(of: t.id)?.hex ?? 0x7B5CFF, compact: false)
                     }
-                    .buttonStyle(.plain)
-                    .accessibilityIdentifier("tab-\(sh.id)")
-                    .accessibilityHint(L(sh.line))
-                    .accessibilityAddTraits(on ? .isSelected : [])
+                    .buttonStyle(.plain).accessibilityIdentifier("popular-\(t.id)")
                 }
             }
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
-                if currentTab.id == HomeShelves.business.id {
-                    ForEach(HomeShelves.businessJobs) { j in
-                        Button { openBusinessJob(j) } label: {
-                            HomeJobTile(title: j.title, icon: j.icon, hex: currentTab.hex, compact: shortScreen)
+        }
+    }
+
+    /// Every tool, by what it works on: a strip of the category colours that opens the Tools tab.
+    private var browseCard: some View {
+        Button { NotificationCenter.default.post(name: .showTab, object: "tools") } label: {
+            HStack(spacing: HandySpacing.s12) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(L("Every tool, by what it works on")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                    HStack(spacing: 5) {
+                        ForEach(homeTabs) { sh in
+                            Image(systemName: sh.icon).font(.system(size: 11, weight: .bold)).foregroundStyle(.white)
+                                .frame(width: 24, height: 24)
+                                .background(Color(hex: sh.hex).gradient, in: RoundedRectangle(cornerRadius: 7, style: .continuous))
                         }
-                        .buttonStyle(.plain).accessibilityIdentifier("home-job-\(j.id)")
+                    }
+                    .accessibilityHidden(true)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").font(.system(size: 14, weight: .bold)).foregroundStyle(HandyColor.textSecondary)
+            }
+            .padding(HandySpacing.s12)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+            .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        }
+        .buttonStyle(.plain).accessibilityIdentifier("home-browse")
+    }
+
+    // MARK: - Tools: every tool, by what it works on
+
+    /// Tools (Manan, 24 Nov: "a Tools tab… this way we cover all the tools"): one tile per category on top — tap one and
+    /// the page glides to it — then every category with every one of its tools, nothing behind a tab, nothing sideways.
+    /// A find box filters all of them as you type.
+    private var toolsFace: some View {
+        let q = findTool.trimmingCharacters(in: .whitespacesAndNewlines)
+        return VStack(alignment: .leading, spacing: HandySpacing.s16) {
+            TabHero(title: "Tools", line: "Every tool, by what it works on. All on your phone.", symbol: "square.grid.2x2.fill") {
+                HStack(spacing: 8) {
+                    Image(systemName: "magnifyingglass").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.textSecondary).accessibilityHidden(true)
+                    TextField(L("Find a tool — e.g. sign, shrink, translate"), text: $findTool)
+                        .font(HandyFont.body).autocorrectionDisabled().accessibilityIdentifier("tools-find")
+                    if !findTool.isEmpty {
+                        Button { findTool = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(HandyColor.textSecondary) }
+                            .buttonStyle(.plain).accessibilityLabel(L("Clear"))
+                    }
+                }
+                .padding(.horizontal, 14).frame(minHeight: 46)
+                .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            }
+            if q.isEmpty {
+                categoryGrid
+                ForEach(homeTabs) { sh in toolSection(sh) }
+            } else {
+                let found = searchTools(q)
+                SectionLabel(text: found.count == 1 ? "1 tool" : "\(found.count) tools", icon: "magnifyingglass")
+                if found.isEmpty {
+                    Text(L("No tool by that name. Try a word for what you want done — shrink, sign, scan, translate — or build your own in Build."))
+                        .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).cardStyle()
+                }
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
+                    ForEach(found) { t in
+                        Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
+                            HomeToolTile(tool: t, hex: HomeShelves.shelf(of: t.id)?.hex ?? 0x7B5CFF)
+                        }
+                        .buttonStyle(.plain).accessibilityIdentifier("found-tool-\(t.id)")
+                    }
+                }
+            }
+        }
+        .onAppear {
+            // Store screenshots of one category: -route hometab-pdf opens Tools at Documents. The welcome's pick does
+            // the same, once.
+            var id: String?
+            if Launch.screenshots, let r = Launch.route, r.hasPrefix("hometab-") { id = String(r.dropFirst("hometab-".count)) }
+            if let j = UserDefaults.standard.string(forKey: Self.jumpKey) { id = j; UserDefaults.standard.removeObject(forKey: Self.jumpKey) }
+            if let id { DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { jumpTo = id } }
+        }
+    }
+
+    /// One tile per category — its icon in its own colour, a one-word name, how many tools — three or four across, all
+    /// on screen at once. Tapping one glides the page to that category.
+    private var categoryGrid: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: homeTabs.count > 8 ? 3 : 4), spacing: HandySpacing.s8) {
+            ForEach(homeTabs) { sh in
+                Button { jumpTo = sh.id } label: {
+                    VStack(spacing: 5) {
+                        Image(systemName: sh.icon).font(.system(size: 17, weight: .bold)).foregroundStyle(.white)
+                            .frame(width: 38, height: 38)
+                            .background(Color(hex: sh.hex).gradient, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                            .shadow(color: Color(hex: sh.hex).opacity(0.4), radius: 6, y: 3)
+                            .accessibilityHidden(true)
+                        Text(L(sh.title)).font(.system(size: 12, weight: .bold)).foregroundStyle(HandyColor.textPrimary)
+                            .lineLimit(1).minimumScaleFactor(0.7)
+                        Text("\(sh.id == HomeShelves.business.id ? HomeShelves.businessJobs.count : sh.tools.count)")
+                            .font(.system(size: 10, weight: .semibold)).monospacedDigit().foregroundStyle(HandyColor.textSecondary)
+                            .accessibilityHidden(true)
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 92)
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Color(hex: sh.hex).opacity(0.35), lineWidth: 1))
+                    .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("tab-\(sh.id)")
+                .accessibilityHint(L(sh.line))
+            }
+        }
+    }
+
+    /// A category: a header in its colour with its one line, then every one of its tools as a tile.
+    private func toolSection(_ sh: HomeShelves.Shelf) -> some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack(spacing: 10) {
+                Image(systemName: sh.icon).font(.system(size: 14, weight: .bold)).foregroundStyle(.white)
+                    .frame(width: 30, height: 30)
+                    .background(Color(hex: sh.hex).gradient, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(L(sh.title)).font(.system(size: 19, weight: .heavy)).foregroundStyle(HandyColor.textPrimary).accessibilityAddTraits(.isHeader)
+                    Text(L(sh.line)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(2).fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+            }
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
+                if sh.id == HomeShelves.business.id {
+                    ForEach(HomeShelves.businessJobs) { j in
+                        Button { openBusinessJob(j) } label: { HomeJobTile(title: j.title, icon: j.icon, hex: sh.hex, compact: false) }
+                            .buttonStyle(.plain).accessibilityIdentifier("home-job-\(j.id)")
                     }
                     // "What else would help your business?" — their answers decide the next business tools.
                     Button {
                         if let u = URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20business%20idea&body=What%20would%20help%20your%20business%3F%20") { UIApplication.shared.open(u) }
-                    } label: {
-                        HomeJobTile(title: "What else would help?", icon: "envelope.fill", hex: currentTab.hex, compact: shortScreen)
-                    }
-                    .buttonStyle(.plain).accessibilityIdentifier("home-job-ask")
+                    } label: { HomeJobTile(title: "What else would help?", icon: "envelope.fill", hex: sh.hex, compact: false) }
+                        .buttonStyle(.plain).accessibilityIdentifier("home-job-ask")
                 } else {
-                    ForEach(currentTab.tools.compactMap { id in TOOLS.first { $0.id == id } }) { t in
+                    ForEach(sh.tools.compactMap { id in TOOLS.first { $0.id == id } }) { t in
                         Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
-                            HomeToolTile(tool: t, hex: currentTab.hex, compact: shortScreen)
+                            HomeToolTile(tool: t, hex: sh.hex)
                         }
                         .buttonStyle(.plain).accessibilityIdentifier("home-tool-\(t.id)")
                     }
                 }
             }
-            .id(currentTab.id)
-            .transition(.opacity)
-            if gettingReady {
-                HStack(spacing: HandySpacing.s8) {
-                    BusySpinner()
-                    Text(L("Got it — getting your file ready. A large or iCloud video can take a moment.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        }
+        .padding(.top, HandySpacing.s8)
+        .id("section-\(sh.id)")
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("section-\(sh.id)")
+    }
+
+    // MARK: - Build: make your own
+
+    /// Build (Manan, 24 Nov: "creating a tool means we are doing something right"): the four ways to make something —
+    /// a new tool, a new reminder, a ready-made one to start from, the ones you made — then say it and Tenzy builds it,
+    /// and how a tool works in three steps.
+    private var buildFace: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s16) {
+            TabHero(title: "Build", line: "Make your own tool or reminder. Tenzy runs it for you, any time.", symbol: "wand.and.stars")
+            LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8)], spacing: HandySpacing.s8) {
+                Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []) } label: {
+                    buildTile("New tool", "Start from a photo, PDF, video, sound or text", "plus.square.fill", 0x7B5CFF)
+                }.buttonStyle(.plain).accessibilityIdentifier("build-new-tool")
+                NavigationLink(value: "myreminders") {
+                    buildTile("New reminder", "What and when — it can open a tool", "bell.badge.fill", 0xF97316)
+                }.buttonStyle(.plain).accessibilityIdentifier("build-new-reminder")
+                Button { showTemplates = true } label: {
+                    buildTile("Ready-made", "Start from one and change it", "square.stack.3d.up.fill", 0xEC4899)
+                }.buttonStyle(.plain).accessibilityIdentifier("build-readymade")
+                Button { showMine = true } label: {
+                    buildTile("My tools", mine.isEmpty ? "The ones you make land here" : "\(mine.count) \(L("saved"))", "tray.full.fill", 0x0EA5E9)
+                }.buttonStyle(.plain).accessibilityIdentifier("build-mine")
+            }
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                SectionLabel(text: "Or just say it", icon: "sparkles")
+                hero
+                if let b = builtIn { builtInCard(b) }
+                if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            }
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                SectionLabel(text: "How a tool works", icon: "lightbulb.fill")
+                HStack(alignment: .top, spacing: HandySpacing.s8) {
+                    howStep(1, "Start with something", "A photo, a PDF, a video, a recording, text — or a time.", "tray.and.arrow.down.fill")
+                    howStep(2, "Add the steps", "Shrink, hide details, translate, sign, send…", "list.number")
+                    howStep(3, "Run it any time", "From here, a widget, Siri — or on a schedule.", "play.fill")
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(HandySpacing.s12)
-                .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             }
         }
-        .onAppear { refreshClipKind() }
-        .onChange(of: scenePhase) { _, p in if p == .active { refreshClipKind(); Task { await loadForYou() } } }
-        .task { await loadForYou() }
-        .onReceive(NotificationCenter.default.publisher(for: UIPasteboard.changedNotification)) { _ in refreshClipKind() }
+    }
+
+    private func buildTile(_ title: String, _ sub: String, _ icon: String, _ hex: UInt32) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Image(systemName: icon).font(.system(size: 22, weight: .bold)).foregroundStyle(.white).accessibilityHidden(true)
+            Spacer(minLength: 0)
+            Text(L(title)).font(.system(size: 16, weight: .heavy)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.8)
+            Text(L(sub)).font(.system(size: 11, weight: .semibold)).foregroundStyle(.white.opacity(0.88))
+                .lineLimit(2).fixedSize(horizontal: false, vertical: true).multilineTextAlignment(.leading)
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, minHeight: 118, maxHeight: 118, alignment: .leading)
+        .background(PostTileGround(hex: hex, icon: icon))
+        .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .accessibilityElement(children: .combine)
+    }
+
+    private func howStep(_ n: Int, _ title: String, _ line: String, _ icon: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 5) {
+                Text("\(n)").font(.system(size: 12, weight: .heavy)).foregroundStyle(.white)
+                    .frame(width: 20, height: 20).background(HandyColor.accent, in: Circle())
+                Image(systemName: icon).font(.system(size: 12, weight: .bold)).foregroundStyle(HandyColor.accent)
+            }
+            .accessibilityHidden(true)
+            Text(L(title)).font(.system(size: 13, weight: .bold)).foregroundStyle(HandyColor.textPrimary).fixedSize(horizontal: false, vertical: true)
+            Text(L(line)).font(.system(size: 11)).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .frame(maxHeight: .infinity, alignment: .top)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+        .accessibilityElement(children: .combine)
     }
 
     /// Paste, shaped like its neighbours. The system paste control reads the clipboard with no "Allow Paste?" prompt and
@@ -1095,14 +1310,17 @@ struct BuilderView: View {
                     Image(systemName: "play.circle.fill").font(.system(size: 14, weight: .semibold)).accessibilityHidden(true)
                     Text(L("See it work in 10 seconds")).font(.system(size: 13, weight: .semibold)).lineLimit(1).minimumScaleFactor(0.75)
                 }
-                .foregroundStyle(HandyColor.accent)
-                .frame(minHeight: 32)
-                .contentShape(Rectangle())
+                .foregroundStyle(.white)
+                .padding(.horizontal, 12)
+                .frame(minHeight: 34)
+                .background(.white.opacity(0.18), in: Capsule())
+                .overlay(Capsule().stroke(.white.opacity(0.3), lineWidth: 1))
+                .contentShape(Capsule())
             }
             .buttonStyle(.plain).accessibilityIdentifier("first-try")
             .accessibilityHint(L("Hide private details, remove location, shrink — on a sample"))
             Button { withAnimation { triedFirst = true } } label: {
-                Image(systemName: "xmark").font(.system(size: 10, weight: .bold)).foregroundStyle(HandyColor.textSecondary).frame(width: 28, height: 32)
+                Image(systemName: "xmark").font(.system(size: 10, weight: .bold)).foregroundStyle(.white.opacity(0.8)).frame(width: 32, height: 34)
             }
             .buttonStyle(.plain).accessibilityLabel(L("Not now"))
         }
@@ -1200,9 +1418,16 @@ struct BuilderView: View {
 
     /// One line to say it in, with the build button beside it — the same power in a third of the height.
     private var hero: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            sayField(onBrand: false)
+            readyNow
+        }
+    }
+
+    /// The say-it line. On the Home hero's gradient the build button is white, so it stands out from the colours behind it.
+    private func sayField(onBrand: Bool) -> some View {
         let empty = ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            HStack(alignment: .bottom, spacing: HandySpacing.s8) {
+        return HStack(alignment: .bottom, spacing: HandySpacing.s8) {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Image(systemName: "sparkles").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.accent).accessibilityHidden(true)
                     TextField(L("Say it — e.g. shrink a photo under 1 MB"), text: $ask, axis: .vertical)
@@ -1211,21 +1436,20 @@ struct BuilderView: View {
                 .padding(.horizontal, 14).padding(.vertical, 13)
                 .frame(minHeight: 50)
                 .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(empty ? HandyColor.border : HandyColor.accent, lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(empty ? (onBrand ? Color.clear : HandyColor.border) : HandyColor.accent, lineWidth: 1))
                 Button { buildFromAsk() } label: {
                     Group {
-                        if planning { ProgressView().tint(HandyColor.onAccent) }
+                        if planning { ProgressView().tint(onBrand ? HandyColor.accent : HandyColor.onAccent) }
                         else { Image(systemName: "wand.and.stars").font(.system(size: 19, weight: .semibold)) }
                     }
-                    .foregroundStyle(HandyColor.onAccent)
+                    .foregroundStyle(onBrand ? HandyColor.accent : HandyColor.onAccent)
                     .frame(width: 50, height: 50)
-                    .background(HandyColor.accent.opacity(empty ? 0.45 : 1), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .background(onBrand ? Color.white.opacity(empty ? 0.7 : 1) : HandyColor.accent.opacity(empty ? 0.45 : 1),
+                                in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }
                 .buttonStyle(.plain)
                 .disabled(planning || empty)
                 .accessibilityLabel(L("Build it for me")).accessibilityIdentifier("describe-build")
-            }
-            readyNow
         }
     }
 

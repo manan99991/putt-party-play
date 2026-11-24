@@ -584,6 +584,73 @@ struct PostTileGround: View {
     }
 }
 
+/// Tenzy's own colours as a deep, lit gradient: the ground of each tab's hero card (Manan, 24 Nov: "a better background
+/// and a gradient design — Tenzy's own branding — it has to pop out"). Follows the theme, so every theme gets its own.
+/// The left side, where the words sit, stays the darkest so white text reads on every theme.
+struct BrandGround: View {
+    var radius: CGFloat = 24
+    /// The faint mark in the top corner: the tab's own symbol.
+    var symbol: String = "sparkles"
+    @ObservedObject private var theme = ThemeManager.shared
+    var body: some View {
+        let sw = theme.current.swatch
+        let a = sw.first ?? HandyColor.accent, b = (sw.last ?? HandyColor.accent).mix(with: .black, by: 0.22)
+        ZStack(alignment: .topTrailing) {
+            MeshGradient(width: 3, height: 3, points: [
+                [0, 0], [0.5, 0], [1, 0],
+                [0, 0.5], [0.58, 0.42], [1, 0.5],
+                [0, 1], [0.5, 1], [1, 1],
+            ], colors: [
+                a.mix(with: .black, by: 0.08), a.mix(with: b, by: 0.55), b,
+                a.mix(with: .black, by: 0.22), a.mix(with: b, by: 0.4), b.mix(with: .black, by: 0.12),
+                a.mix(with: .black, by: 0.38), a.mix(with: b, by: 0.3).mix(with: .black, by: 0.3), b.mix(with: .black, by: 0.32),
+            ])
+            // Light catching the top edge, like glass.
+            LinearGradient(colors: [.white.opacity(0.16), .clear], startPoint: .top, endPoint: .center)
+            Image(systemName: symbol).font(.system(size: 118, weight: .bold)).foregroundStyle(.white.opacity(0.10))
+                .rotationEffect(.degrees(-14)).offset(x: 30, y: -24)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: radius, style: .continuous).stroke(.white.opacity(0.18), lineWidth: 1))
+        .shadow(color: a.opacity(0.35), radius: 16, y: 8)
+        .accessibilityHidden(true)
+    }
+}
+
+/// The head of a tab: its hero card in Tenzy's colours — the tab's symbol, its name and what it's for.
+struct TabHero<Extra: View>: View {
+    let title: String
+    let line: String
+    let symbol: String
+    @ViewBuilder var extra: () -> Extra
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            HStack(spacing: HandySpacing.s12) {
+                Image(systemName: symbol).font(.system(size: 22, weight: .bold)).foregroundStyle(.white)
+                    .frame(width: 48, height: 48)
+                    .background(.white.opacity(0.18), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(.white.opacity(0.25), lineWidth: 1))
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(L(title)).font(.system(size: 26, weight: .heavy)).foregroundStyle(.white)
+                        .lineLimit(1).minimumScaleFactor(0.7).accessibilityAddTraits(.isHeader)
+                    Text(L(line)).font(.system(size: 13, weight: .medium)).foregroundStyle(.white.opacity(0.88))
+                        .lineLimit(2).fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+            }
+            extra()
+        }
+        .padding(HandySpacing.s16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background { BrandGround(symbol: symbol) }
+    }
+}
+
+extension TabHero where Extra == EmptyView {
+    init(title: String, line: String, symbol: String) { self.init(title: title, line: line, symbol: symbol) { EmptyView() } }
+}
+
 /// A small "start with what you have" tile on Home: six fit in one row.
 struct HaveChip: View {
     let title: String

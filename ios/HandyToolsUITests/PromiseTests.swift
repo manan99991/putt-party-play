@@ -24,42 +24,49 @@ final class PromiseTests: XCTestCase {
         XCTAssertEqual(app.state, .runningForeground, "the demo closed the app")
     }
 
-    /// "The home page fits with no scrolling, and every tool — the flashlight too — is there" (user, Nov 22), and
-    /// "Contacts and other tabs are missing — make sure nothing is missing" (Nov 23): every tab, tapped, shows every
-    /// one of its tools on screen without scrolling, and a tool opens from its tile.
-    func testHomeFitsOneScreenAndShelvesOpenTools() {
+    /// Five tabs (Manan, 24 Nov): Home keeps start-with-what-you-have on screen and no category grid (it made doubles:
+    /// Photo and Photos, PDF and Files); the Tools tab shows every category, and tapping one glides to it with every one
+    /// of its tools on screen — the flashlight and Contacts too — and a tool opens from its tile.
+    func testHomeAndToolsTabsReachEveryTool() {
         let app = XCUIApplication()
         app.launchArguments = ["-route", "home", "-uitest"]
         app.launch()
         let any = app.descendants(matching: .any)
         XCTAssertTrue(any["have-photo"].firstMatch.waitForExistence(timeout: 20), "Home didn't open")
-        // My tools, Ready-made tools and Reminders moved to the My stuff tab (23 Nov audit decision 3).
-        XCTAssertFalse(any["home-templates"].firstMatch.exists, "Templates is still on Home")
         for id in ["have-photo", "have-paste"] {
             XCTAssertTrue(any[id].firstMatch.isHittable, "\(id) isn't on screen without scrolling")
         }
+        XCTAssertFalse(any["tab-camera"].firstMatch.exists, "the category grid is still on Home")
+        for id in ["builder-entry", "tools-tab", "build-tab", "mystuff-tab", "settings-tab"] {
+            XCTAssertTrue(app.buttons[id].firstMatch.isHittable, "the tab bar has no \(id)")
+        }
+        app.buttons["tools-tab"].firstMatch.tap()
         let tabs = ["camera": 9, "photos": 8, "video": 5, "pdf": 9, "audio": 6, "words": 6, "day": 9, "phone": 5]
         for (tab, count) in tabs.sorted(by: { $0.key < $1.key }) {
+            app.buttons["tools-tab"].firstMatch.tap()   // tapping the tab again goes back to the top
+            sleep(1)
             let t = any["tab-\(tab)"].firstMatch
-            XCTAssertTrue(t.isHittable, "tab \(tab) isn't on screen")
+            XCTAssertTrue(t.waitForExistence(timeout: 10) && t.isHittable, "category \(tab) isn't on screen")
             t.tap()
-            let tiles = any.matching(NSPredicate(format: "identifier BEGINSWITH 'home-tool-'"))
+            sleep(1)
+            let section = any["section-\(tab)"].firstMatch
+            let tiles = section.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'home-tool-'"))
             let shown = (0..<tiles.count).map { tiles.element(boundBy: $0) }
             let off = shown.filter { !$0.isHittable }.map(\.identifier)
-            // Diagnostics (rulebook §8): the screen, where the last tile ends, where the tab bar starts, and whether the
-            // first-visit "See it work" card is pushing the grid down.
             let win = app.windows.firstMatch.frame
             let lastY = shown.map { Int($0.frame.maxY) }.max() ?? -1
             let bar = Int(app.buttons["builder-entry"].firstMatch.frame.minY)
-            let why = "screen \(Int(win.width))x\(Int(win.height)), last tile ends at \(lastY), tab bar at \(bar), first-try card \(any["first-try"].firstMatch.exists)"
-            XCTAssertEqual(shown.count, count, "tab \(tab) shows \(shown.count) tools; \(why)")
-            XCTAssertEqual(off, [], "tab \(tab): these tools need scrolling to reach; \(why)")
+            let why = "screen \(Int(win.width))x\(Int(win.height)), section at \(Int(section.frame.minY)), last tile ends at \(lastY), tab bar at \(bar)"
+            XCTAssertEqual(shown.count, count, "\(tab) shows \(shown.count) tools; \(why)")
+            XCTAssertEqual(off, [], "\(tab): after tapping it, these tools are still off screen; \(why)")
         }
-        XCTAssertFalse(app.buttons["Guide"].exists, "Guide is still on Home (it lives in Settings now)")
+        app.buttons["tools-tab"].firstMatch.tap()
+        sleep(1)
         any["tab-phone"].firstMatch.tap()
+        sleep(1)
         XCTAssertTrue(any["home-tool-contacts"].firstMatch.isHittable, "Contacts has no tile")
         let light = any["home-tool-light"].firstMatch
-        XCTAssertTrue(light.isHittable, "the Phone tab has no Flashlight")
+        XCTAssertTrue(light.isHittable, "the Phone category has no Flashlight")
         light.tap()
         sleep(2)
         XCTAssertFalse(light.isHittable, "tapping Flashlight didn't open it")
@@ -86,8 +93,8 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(run.waitForExistence(timeout: 10), "Done after a run didn't come back to My tools")
     }
 
-    /// Audit decision 2 (23 Nov): a parked car shows a "For you now" card on Home with Directions, the whole Camera tab
-    /// still fits under it, and Not now puts the card away.
+    /// Audit decision 2 (23 Nov): a parked car shows a "For you now" card on Home with Directions, start with what you
+    /// have stays on screen with it, and Not now puts the card away.
     func testForYouCardShowsTheCarAndNotNowPutsItAway() {
         let app = XCUIApplication()
         app.launchArguments = ["-route", "home", "-uitest", "-seedcar"]
@@ -96,18 +103,14 @@ final class PromiseTests: XCTestCase {
         let card = any["foryou-car"].firstMatch
         XCTAssertTrue(card.waitForExistence(timeout: 20), "no card for the parked car")
         XCTAssertTrue(any["foryou-action-car"].firstMatch.isHittable, "the card has no Directions button. The card as XCTest sees it: \(card.debugDescription.prefix(1500))")
-        any["tab-camera"].firstMatch.tap()
-        let tiles = any.matching(NSPredicate(format: "identifier BEGINSWITH 'home-tool-'"))
-        let off = (0..<tiles.count).map { tiles.element(boundBy: $0) }.filter { !$0.isHittable }.map(\.identifier)
-        XCTAssertEqual(tiles.count, 9, "the Camera tab lost tools under the card")
-        XCTAssertEqual(off, [], "with the card on Home, these tools need scrolling: \(off)")
+        XCTAssertTrue(any["have-photo"].firstMatch.isHittable, "the card pushed start-with-what-you-have off screen")
         any["foryou-notnow-car"].firstMatch.tap()
         sleep(1)
         XCTAssertFalse(card.exists, "Not now didn't put the card away")
     }
 
-    /// Audit decision 4 (23 Nov): one welcome screen; picking "Documents and PDFs" and Start lands on Home with the
-    /// PDF tab open and its tools on screen, with no permission page in between.
+    /// Audit decision 4 (23 Nov): one welcome screen; picking "Documents and PDFs" and Start lands on the Tools tab at
+    /// Documents with its tools on screen, with no permission page in between.
     func testWelcomeIsOneScreenAndOpensTheChosenTab() {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest", "-resetwelcome"]
@@ -119,7 +122,8 @@ final class PromiseTests: XCTestCase {
         docs.tap()
         any["welcome-start"].firstMatch.tap()
         let sign = any["home-tool-pdfsign"].firstMatch
-        XCTAssertTrue(sign.waitForExistence(timeout: 15), "Home didn't open on the PDF tab")
+        XCTAssertTrue(sign.waitForExistence(timeout: 15), "Tools didn't open at Documents")
+        sleep(1)
         XCTAssertTrue(sign.isHittable)
         XCTAssertFalse(app.staticTexts["Set up once"].exists, "the permission page still follows the welcome")
     }
@@ -132,13 +136,16 @@ final class PromiseTests: XCTestCase {
         app.launch()
         let any = app.descendants(matching: .any)
         XCTAssertTrue(any["have-photo"].firstMatch.waitForExistence(timeout: 20))
+        app.buttons["tools-tab"].firstMatch.tap()
+        XCTAssertTrue(any["tab-camera"].firstMatch.waitForExistence(timeout: 10), "Tools didn't open")
         XCTAssertFalse(any["tab-business"].firstMatch.exists, "Business shows for someone who never said they run one")
         app.terminate()
-        app.launchArguments = ["-route", "home", "-uitest", "-tenzy.business", "YES"]
+        app.launchArguments = ["-route", "tools", "-uitest", "-tenzy.business", "YES"]
         app.launch()
         let tab = any["tab-business"].firstMatch
         XCTAssertTrue(tab.waitForExistence(timeout: 20), "Business is switched on but there's no tab")
         tab.tap()
+        sleep(1)
         let jobs = any.matching(NSPredicate(format: "identifier BEGINSWITH 'home-job-'"))
         let off = (0..<jobs.count).map { jobs.element(boundBy: $0) }.filter { !$0.isHittable }.map(\.identifier)
         XCTAssertGreaterThanOrEqual(jobs.count, 7)
@@ -153,12 +160,13 @@ final class PromiseTests: XCTestCase {
     /// with a Send button, then waits in the unpaid list until Paid takes it off.
     func testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid() {
         let app = XCUIApplication()
-        app.launchArguments = ["-route", "home", "-uitest", "-sample", "-tenzy.business", "YES"]
+        app.launchArguments = ["-route", "tools", "-uitest", "-sample", "-tenzy.business", "YES"]
         app.launch()
         let any = app.descendants(matching: .any)
         let tab = any["tab-business"].firstMatch
         XCTAssertTrue(tab.waitForExistence(timeout: 20), "no Business tab")
         tab.tap()
+        sleep(1)
         let job = any["home-job-invoice"].firstMatch
         XCTAssertTrue(job.waitForExistence(timeout: 5), "the Business tab has no Send an invoice")
         job.tap()
@@ -178,19 +186,24 @@ final class PromiseTests: XCTestCase {
         XCTAssertEqual(app.state, .runningForeground)
     }
 
-    /// Audit decision 3 (23 Nov): Templates moved off Home into My stuff as "Ready-made tools". It opens the list, and
-    /// Done lands back on My stuff, never a blank page.
-    func testReadyMadeToolsOpenFromMyStuffAndComeBack() {
+    /// Build tab (24 Nov): New tool, New reminder, Ready-made and My tools are all there. Ready-made opens the list, and
+    /// Done lands back on Build, never a blank page; New reminder opens the reminder maker.
+    func testBuildTabMakesToolsAndReminders() {
         let app = XCUIApplication()
-        app.launchArguments = ["-route", "mystuff", "-uitest"]
+        app.launchArguments = ["-route", "build", "-uitest"]
         app.launch()
-        let entry = app.descendants(matching: .any)["mine-readymade"].firstMatch
-        XCTAssertTrue(entry.waitForExistence(timeout: 20), "My stuff has no Ready-made tools")
+        let any = app.descendants(matching: .any)
+        let entry = any["build-readymade"].firstMatch
+        XCTAssertTrue(entry.waitForExistence(timeout: 20), "Build has no Ready-made")
+        for id in ["build-new-tool", "build-new-reminder", "build-mine"] {
+            XCTAssertTrue(any[id].firstMatch.isHittable, "Build has no \(id) on screen")
+        }
         entry.tap()
         XCTAssertTrue(app.navigationBars["Ready-made tools"].waitForExistence(timeout: 15), "Ready-made tools didn't open")
         app.buttons["Done"].firstMatch.tap()
-        XCTAssertTrue(app.descendants(matching: .any)["mine-readymade"].firstMatch.waitForExistence(timeout: 10),
-                      "Done didn't come back to My stuff")
+        XCTAssertTrue(entry.waitForExistence(timeout: 10), "Done didn't come back to Build")
+        any["build-new-reminder"].firstMatch.tap()
+        XCTAssertTrue(any["reminder-text"].firstMatch.waitForExistence(timeout: 10), "New reminder didn't open the reminder maker")
     }
 
     /// "Editable watermark text — type the words instead of a fixed message" (said done; was only in Edit tool).

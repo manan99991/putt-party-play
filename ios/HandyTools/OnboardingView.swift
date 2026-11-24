@@ -129,7 +129,12 @@ struct OnboardingView: View {
 
     private func finish() {
         if picked.contains(.business) { UserDefaults.standard.set(true, forKey: HomeShelves.businessKey) }
-        if let t = WelcomeChoice.homeTab(for: picked) { homeTab = t }
+        // What they picked opens the Tools tab at that category (24 Nov: the categories live in Tools now).
+        if let t = WelcomeChoice.homeTab(for: picked) {
+            homeTab = t
+            UserDefaults.standard.set(t, forKey: BuilderView.jumpKey)
+            NotificationCenter.default.post(name: .showTab, object: "tools")
+        }
         onDone()
     }
 }

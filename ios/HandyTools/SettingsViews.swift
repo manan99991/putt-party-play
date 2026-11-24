@@ -147,7 +147,8 @@ struct SettingsView: View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    Text(L("Settings")).font(HandyFont.display).padding(.bottom, HandySpacing.s8)
+                    TabHero(title: "Settings", line: "Language, theme, Pro, privacy — and how Tenzy works.", symbol: "gearshape.fill")
+                        .padding(.bottom, HandySpacing.s8)
                         .onTapGesture {
                             guard !devUnlocked else { return }
                             devTaps += 1

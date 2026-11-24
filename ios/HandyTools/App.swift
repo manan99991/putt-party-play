@@ -479,35 +479,82 @@ enum Launch {
     static var sample: Bool { args.contains("-sample") }
 }
 
-/// Two places, nothing more: Home (say what you need, or start with what you have — every tool is reached from
-/// there) and My stuff (what Tenzy looks after for you: reminders and automations, your tools, history, settings).
-enum RootTab { case home, mine }
+/// Five tabs, each with its own job (Manan, 24 Nov): Home, the front door — say it, or start with what you have; Tools,
+/// every tool by what it works on; Build, making your own tools and reminders; My stuff, what Tenzy keeps for you; and
+/// Settings.
+enum RootTab: String, CaseIterable { case home, tools, build, mine, settings
+    /// The tab a launch route opens on (store screenshots, UI tests, a notification).
+    static func from(route: String?) -> RootTab {
+        guard let r = route else { return .home }
+        if r == "mystuff" { return .mine }
+        if r == "tools" || r.hasPrefix("hometab-") { return .tools }
+        if r == "build" { return .build }
+        if r == "settingstab" { return .settings }
+        return .home
+    }
+    var icon: String {
+        switch self {
+        case .home: return "house.fill"
+        case .tools: return "square.grid.2x2.fill"
+        case .build: return "wand.and.stars"
+        case .mine: return "tray.full.fill"
+        case .settings: return "gearshape.fill"
+        }
+    }
+    var label: String {
+        switch self {
+        case .home: return "Home"
+        case .tools: return "Tools"
+        case .build: return "Build"
+        case .mine: return "My stuff"
+        case .settings: return "Settings"
+        }
+    }
+    /// Kept from the two-tab bar so the UI tests' names still find Home and My stuff.
+    var testID: String {
+        switch self {
+        case .home: return "builder-entry"
+        case .mine: return "mystuff-tab"
+        case .settings: return "settings-tab"
+        default: return "\(rawValue)-tab"
+        }
+    }
+}
 
-/// The bottom tab bar for the three home destinations.
+/// The bottom tab bar: five even places, the picked one lifted on a soft pill of the theme's colour.
 private struct TenzyTabBar: View {
     @Binding var selection: RootTab
     var body: some View {
         HStack(spacing: 0) {
-            item(.home, "house.fill", "Home")
-            item(.mine, "tray.full.fill", "My stuff")
+            ForEach(RootTab.allCases, id: \.self) { item($0) }
         }
-        .padding(.top, 8)
-        .padding(.bottom, 4)
-        .background(HandyColor.surface)
+        .padding(.horizontal, 6)
+        .padding(.top, 6)
+        .padding(.bottom, 2)
+        .background(.ultraThinMaterial)
         .overlay(Rectangle().frame(height: 0.5).foregroundStyle(HandyColor.border), alignment: .top)
     }
-    @ViewBuilder private func item(_ t: RootTab, _ icon: String, _ label: String) -> some View {
-        Button { selection = t } label: {
+    @ViewBuilder private func item(_ t: RootTab) -> some View {
+        let on = selection == t
+        Button {
+            if selection == t { NotificationCenter.default.post(name: .tabReselected, object: t.rawValue); return }
+            HandyHaptics.light()
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { selection = t }
+        } label: {
             VStack(spacing: 3) {
-                Image(systemName: icon).font(.system(size: 18, weight: .semibold))
-                Text(L(label)).font(.system(size: 10, weight: .semibold))
+                Image(systemName: t.icon).font(.system(size: 18, weight: .semibold))
+                    .frame(width: 52, height: 30)
+                    .background(on ? HandyColor.accent.opacity(0.16) : .clear, in: Capsule())
+                Text(L(t.label)).font(.system(size: 10, weight: on ? .bold : .semibold)).lineLimit(1).minimumScaleFactor(0.8)
             }
             .frame(maxWidth: .infinity)
-            .foregroundStyle(selection == t ? HandyColor.accent : HandyColor.textSecondary)
+            .foregroundStyle(on ? HandyColor.accent : HandyColor.textSecondary)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityIdentifier(t == .home ? "builder-entry" : "mystuff-tab")
+        .accessibilityIdentifier(t.testID)
+        .accessibilityLabel(L(t.label))
+        .accessibilityAddTraits(on ? .isSelected : [])
     }
 }
 
@@ -530,7 +577,7 @@ struct HomeView: View {
     @ObservedObject private var theme = ThemeManager.shared   // re-skin the home grid live on a theme change
     @State private var showPaywall = false
     @State private var page = 1
-    @State private var tab: RootTab = Launch.route == "mystuff" ? .mine : .home
+    @State private var tab: RootTab = RootTab.from(route: Launch.route)
     @State private var search = ""
     @FocusState private var searching: Bool
     @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || ScreenshotDemo.homeRoutes.contains($0) ? nil : [$0] } ?? []
@@ -551,12 +598,19 @@ struct HomeView: View {
                 Group {
                     switch tab {
                     case .home:
-                        // The front door: say it, or start with what you have. Typing shows the tools that
-                        // already do it (search), and All tools opens the full list (explore).
-                        BuilderView()
+                        // The front door: say it, or start with what you have.
+                        BuilderView(face: .home)
+                    case .tools:
+                        // Every tool, by what it works on — nothing behind a tab.
+                        BuilderView(face: .tools)
+                    case .build:
+                        // Make your own: a tool, a reminder, a ready-made one to start from.
+                        BuilderView(face: .build)
                     case .mine:
-                        // Everything that's yours: reminders and automations first, then your tools, history, settings.
+                        // Everything that's yours: your tools, reminders, history and sheets.
                         AutomationsView(tab: true)
+                    case .settings:
+                        SettingsView()
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -579,6 +633,7 @@ struct HomeView: View {
                 case "automations": AutomationsView().toolbarRole(.editor)   // the personal-assistant hub
                 case "myreminders": ReminderMakerView().toolbarRole(.editor)   // Build a reminder (Build a tool, My stuff)
                 case "results": HistoryView().toolbarRole(.editor)   // a finished-job notification lands here
+                case "sheets": SheetsView().toolbarRole(.editor)   // My stuff › Sheets
                 default: ToolDestination(id: id).toolbarRole(.editor).disablesSwipeBack()
                 }
             }
@@ -591,10 +646,16 @@ struct HomeView: View {
             }
             .onReceive(NotificationCenter.default.publisher(for: .showPaywall)) { _ in showPaywall = true }
             .onReceive(NotificationCenter.default.publisher(for: .showMyStuff)) { _ in path = []; tab = .mine }
+            .onReceive(NotificationCenter.default.publisher(for: .showTab)) { n in
+                guard let raw = n.object as? String, let t = RootTab(rawValue: raw) else { return }
+                path = []; withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { tab = t }
+            }
             .onReceive(NotificationCenter.default.publisher(for: .openTool)) { n in
                 // Opened from inside the app (a helper, a list): go one step deeper so Back returns there.
                 // Opened from outside (a notification, a widget, a cold start): start fresh at that tool.
                 guard let id = n.object as? String else { return }
+                // Settings is a tab now: going there (after a language change, say) lands on the tab, not a copy of it.
+                if id == "settings" { path = []; tab = .settings; return }
                 if path.last == id { return }
                 if let from = n.userInfo?["from"] as? String, path.last == from { path.append(id) } else { path = [id] }
             }
@@ -1070,6 +1131,10 @@ struct ToolPage<Content: View>: View {
 extension Notification.Name {
     static let openTool = Notification.Name("handytools.openTool")
     static let showMyStuff = Notification.Name("handytools.showMyStuff")
+    /// Switch the bottom tab: object is a RootTab raw value ("tools", "build", …).
+    static let showTab = Notification.Name("handytools.showTab")
+    /// The tab already showing was tapped again: its page goes back to the top.
+    static let tabReselected = Notification.Name("handytools.tabReselected")
     static let showPaywall = Notification.Name("handytools.showPaywall")
     static let showSetup = Notification.Name("handytools.showSetup")
 }

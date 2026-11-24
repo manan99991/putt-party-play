@@ -45388,5 +45388,265 @@
   "ja": "星を付ける",
   "pt": "Marcar",
   "zh": "加星标"
+ },
+ "Every tool, by what it works on": {
+  "de": "Jedes Werkzeug, nach dem, womit es arbeitet",
+  "es": "Todas las herramientas, según con qué trabajan",
+  "fr": "Tous les outils, selon ce sur quoi ils travaillent",
+  "hi": "हर टूल, इस हिसाब से कि वह किस पर काम करता है",
+  "it": "Ogni strumento, in base a ciò su cui lavora",
+  "ja": "すべてのツールを、扱うもの別に",
+  "pt": "Todas as ferramentas, pelo que elas trabalham",
+  "zh": "所有工具，按处理对象分类"
+ },
+ "Most loved": {
+  "de": "Am beliebtesten",
+  "es": "Los favoritos",
+  "fr": "Les plus aimés",
+  "hi": "सबसे पसंदीदा",
+  "it": "I più amati",
+  "ja": "人気のツール",
+  "pt": "Os mais amados",
+  "zh": "最受欢迎"
+ },
+ "Every tool, by what it works on. All on your phone.": {
+  "de": "Jedes Werkzeug, nach dem, womit es arbeitet. Alles auf deinem Handy.",
+  "es": "Todas las herramientas, según con qué trabajan. Todo en tu teléfono.",
+  "fr": "Tous les outils, selon ce sur quoi ils travaillent. Tout sur votre téléphone.",
+  "hi": "हर टूल, इस हिसाब से कि वह किस पर काम करता है। सब आपके फ़ोन पर।",
+  "it": "Ogni strumento, in base a ciò su cui lavora. Tutto sul tuo telefono.",
+  "ja": "すべてのツールを、扱うもの別に。すべてスマホの中で。",
+  "pt": "Todas as ferramentas, pelo que elas trabalham. Tudo no seu celular.",
+  "zh": "所有工具，按处理对象分类。全部在你的手机上完成。"
+ },
+ "Find a tool — e.g. sign, shrink, translate": {
+  "de": "Werkzeug finden – z. B. unterschreiben, verkleinern, übersetzen",
+  "es": "Busca una herramienta: p. ej., firmar, reducir, traducir",
+  "fr": "Trouver un outil — ex. signer, réduire, traduire",
+  "hi": "टूल खोजें — जैसे साइन, छोटा करें, अनुवाद",
+  "it": "Trova uno strumento — es. firma, riduci, traduci",
+  "ja": "ツールを探す — 例：署名、縮小、翻訳",
+  "pt": "Encontre uma ferramenta — ex.: assinar, reduzir, traduzir",
+  "zh": "查找工具——例如：签名、压缩、翻译"
+ },
+ "No tool by that name. Try a word for what you want done — shrink, sign, scan, translate — or build your own in Build.": {
+  "de": "Kein Werkzeug mit diesem Namen. Versuche ein Wort für das, was du tun willst – verkleinern, unterschreiben, scannen, übersetzen – oder baue dein eigenes unter Bauen.",
+  "es": "No hay ninguna herramienta con ese nombre. Prueba con una palabra de lo que quieres hacer (reducir, firmar, escanear, traducir) o crea la tuya en Crear.",
+  "fr": "Aucun outil de ce nom. Essayez un mot pour ce que vous voulez faire — réduire, signer, scanner, traduire — ou créez le vôtre dans Créer.",
+  "hi": "इस नाम का कोई टूल नहीं है। जो करना चाहते हैं उसका शब्द लिखें — छोटा करें, साइन, स्कैन, अनुवाद — या बनाएँ में अपना टूल बनाएँ।",
+  "it": "Nessuno strumento con questo nome. Prova una parola per ciò che vuoi fare — riduci, firma, scansiona, traduci — o creane uno tuo in Crea.",
+  "ja": "その名前のツールはありません。したいことを表す言葉（縮小、署名、スキャン、翻訳など）で探すか、「作る」で自分だけのツールを作りましょう。",
+  "pt": "Nenhuma ferramenta com esse nome. Tente uma palavra para o que você quer fazer — reduzir, assinar, digitalizar, traduzir — ou crie a sua em Criar.",
+  "zh": "没有这个名字的工具。试试描述你想做的事——压缩、签名、扫描、翻译——或在“创建”中自己做一个。"
+ },
+ "Make your own tool or reminder. Tenzy runs it for you, any time.": {
+  "de": "Bau dein eigenes Werkzeug oder deine eigene Erinnerung. Tenzy führt sie jederzeit für dich aus.",
+  "es": "Crea tu propia herramienta o recordatorio. Tenzy lo ejecuta por ti cuando quieras.",
+  "fr": "Créez votre propre outil ou rappel. Tenzy l'exécute pour vous, à tout moment.",
+  "hi": "अपना टूल या रिमाइंडर बनाएँ। Tenzy उसे आपके लिए कभी भी चलाता है।",
+  "it": "Crea il tuo strumento o promemoria. Tenzy lo esegue per te, quando vuoi.",
+  "ja": "自分だけのツールやリマインダーを作りましょう。Tenzyがいつでも実行します。",
+  "pt": "Crie sua própria ferramenta ou lembrete. O Tenzy executa para você, a qualquer hora.",
+  "zh": "制作你自己的工具或提醒。Tenzy 随时为你运行。"
+ },
+ "New tool": {
+  "de": "Neues Werkzeug",
+  "es": "Nueva herramienta",
+  "fr": "Nouvel outil",
+  "hi": "नया टूल",
+  "it": "Nuovo strumento",
+  "ja": "新しいツール",
+  "pt": "Nova ferramenta",
+  "zh": "新工具"
+ },
+ "Start from a photo, PDF, video, sound or text": {
+  "de": "Starte mit einem Foto, PDF, Video, Ton oder Text",
+  "es": "Empieza con una foto, un PDF, un vídeo, un sonido o un texto",
+  "fr": "Partez d'une photo, d'un PDF, d'une vidéo, d'un son ou d'un texte",
+  "hi": "फ़ोटो, PDF, वीडियो, आवाज़ या टेक्स्ट से शुरू करें",
+  "it": "Parti da una foto, un PDF, un video, un suono o un testo",
+  "ja": "写真、PDF、動画、音声、テキストから始める",
+  "pt": "Comece com uma foto, PDF, vídeo, som ou texto",
+  "zh": "从照片、PDF、视频、声音或文字开始"
+ },
+ "New reminder": {
+  "de": "Neue Erinnerung",
+  "es": "Nuevo recordatorio",
+  "fr": "Nouveau rappel",
+  "hi": "नया रिमाइंडर",
+  "it": "Nuovo promemoria",
+  "ja": "新しいリマインダー",
+  "pt": "Novo lembrete",
+  "zh": "新提醒"
+ },
+ "What and when — it can open a tool": {
+  "de": "Was und wann – sie kann ein Werkzeug öffnen",
+  "es": "Qué y cuándo; puede abrir una herramienta",
+  "fr": "Quoi et quand — il peut ouvrir un outil",
+  "hi": "क्या और कब — यह कोई टूल भी खोल सकता है",
+  "it": "Cosa e quando — può aprire uno strumento",
+  "ja": "何をいつ — ツールを開くこともできます",
+  "pt": "O quê e quando — pode abrir uma ferramenta",
+  "zh": "内容和时间——还能打开一个工具"
+ },
+ "Ready-made": {
+  "de": "Fertige",
+  "es": "Ya hechas",
+  "fr": "Prêts à l'emploi",
+  "hi": "तैयार",
+  "it": "Già pronti",
+  "ja": "既製ツール",
+  "pt": "Prontas",
+  "zh": "现成工具"
+ },
+ "Start from one and change it": {
+  "de": "Nimm eines und passe es an",
+  "es": "Empieza con una y cámbiala",
+  "fr": "Partez de l'un d'eux et modifiez-le",
+  "hi": "किसी एक से शुरू करें और बदलें",
+  "it": "Parti da uno e modificalo",
+  "ja": "どれかから始めて自由に変更",
+  "pt": "Comece com uma e altere",
+  "zh": "选一个，再按需修改"
+ },
+ "The ones you make land here": {
+  "de": "Was du baust, landet hier",
+  "es": "Las que creas aparecen aquí",
+  "fr": "Ceux que vous créez arrivent ici",
+  "hi": "आप जो बनाते हैं, वे यहाँ आते हैं",
+  "it": "Quelli che crei finiscono qui",
+  "ja": "作ったツールはここに入ります",
+  "pt": "As que você cria aparecem aqui",
+  "zh": "你做的工具都会放在这里"
+ },
+ "Or just say it": {
+  "de": "Oder sag es einfach",
+  "es": "O simplemente dilo",
+  "fr": "Ou dites-le simplement",
+  "hi": "या बस बोल दें",
+  "it": "Oppure dillo e basta",
+  "ja": "または、言うだけ",
+  "pt": "Ou é só dizer",
+  "zh": "或者直接说出来"
+ },
+ "How a tool works": {
+  "de": "So funktioniert ein Werkzeug",
+  "es": "Cómo funciona una herramienta",
+  "fr": "Comment fonctionne un outil",
+  "hi": "टूल कैसे काम करता है",
+  "it": "Come funziona uno strumento",
+  "ja": "ツールのしくみ",
+  "pt": "Como uma ferramenta funciona",
+  "zh": "工具如何运作"
+ },
+ "Start with something": {
+  "de": "Mit etwas beginnen",
+  "es": "Empieza con algo",
+  "fr": "Partez de quelque chose",
+  "hi": "किसी चीज़ से शुरू करें",
+  "it": "Parti da qualcosa",
+  "ja": "何かから始める",
+  "pt": "Comece com algo",
+  "zh": "从某样东西开始"
+ },
+ "A photo, a PDF, a video, a recording, text — or a time.": {
+  "de": "Ein Foto, ein PDF, ein Video, eine Aufnahme, Text – oder eine Uhrzeit.",
+  "es": "Una foto, un PDF, un vídeo, una grabación, un texto… o una hora.",
+  "fr": "Une photo, un PDF, une vidéo, un enregistrement, du texte — ou une heure.",
+  "hi": "फ़ोटो, PDF, वीडियो, रिकॉर्डिंग, टेक्स्ट — या कोई समय।",
+  "it": "Una foto, un PDF, un video, una registrazione, un testo — o un orario.",
+  "ja": "写真、PDF、動画、録音、テキスト — または時刻。",
+  "pt": "Uma foto, um PDF, um vídeo, uma gravação, texto — ou um horário.",
+  "zh": "一张照片、一个 PDF、一段视频、一段录音、文字——或一个时间。"
+ },
+ "Add the steps": {
+  "de": "Schritte hinzufügen",
+  "es": "Añade los pasos",
+  "fr": "Ajoutez les étapes",
+  "hi": "कदम जोड़ें",
+  "it": "Aggiungi i passaggi",
+  "ja": "ステップを追加",
+  "pt": "Adicione as etapas",
+  "zh": "添加步骤"
+ },
+ "Shrink, hide details, translate, sign, send…": {
+  "de": "Verkleinern, Details verbergen, übersetzen, unterschreiben, senden …",
+  "es": "Reducir, ocultar datos, traducir, firmar, enviar…",
+  "fr": "Réduire, masquer des détails, traduire, signer, envoyer…",
+  "hi": "छोटा करें, जानकारी छिपाएँ, अनुवाद, साइन, भेजें…",
+  "it": "Riduci, nascondi dettagli, traduci, firma, invia…",
+  "ja": "縮小、情報を隠す、翻訳、署名、送信…",
+  "pt": "Reduzir, ocultar detalhes, traduzir, assinar, enviar…",
+  "zh": "压缩、隐藏信息、翻译、签名、发送……"
+ },
+ "Run it any time": {
+  "de": "Jederzeit ausführen",
+  "es": "Ejecútala cuando quieras",
+  "fr": "Lancez-le à tout moment",
+  "hi": "कभी भी चलाएँ",
+  "it": "Avvialo quando vuoi",
+  "ja": "いつでも実行",
+  "pt": "Execute quando quiser",
+  "zh": "随时运行"
+ },
+ "From here, a widget, Siri — or on a schedule.": {
+  "de": "Von hier, mit einem Widget, mit Siri – oder nach Zeitplan.",
+  "es": "Desde aquí, un widget, Siri… o con horario.",
+  "fr": "D'ici, un widget, Siri — ou selon un horaire.",
+  "hi": "यहाँ से, विजेट से, Siri से — या तय समय पर।",
+  "it": "Da qui, da un widget, con Siri — o a orari fissi.",
+  "ja": "ここから、ウィジェット、Siri — またはスケジュールで。",
+  "pt": "Daqui, de um widget, pela Siri — ou em um horário.",
+  "zh": "从这里、小组件、Siri——或按计划运行。"
+ },
+ "Documents": {
+  "de": "Dokumente",
+  "es": "Documentos",
+  "fr": "Documents",
+  "hi": "दस्तावेज़",
+  "it": "Documenti",
+  "ja": "書類",
+  "pt": "Documentos",
+  "zh": "文档"
+ },
+ "Sheets": {
+  "de": "Tabellen",
+  "es": "Hojas",
+  "fr": "Tableaux",
+  "hi": "शीट",
+  "it": "Fogli",
+  "ja": "シート",
+  "pt": "Planilhas",
+  "zh": "表格"
+ },
+ "sheets": {
+  "de": "Tabellen",
+  "es": "hojas",
+  "fr": "tableaux",
+  "hi": "शीट",
+  "it": "fogli",
+  "ja": "シート",
+  "pt": "planilhas",
+  "zh": "个表格"
+ },
+ "Tools add rows": {
+  "de": "Werkzeuge fügen Zeilen hinzu",
+  "es": "Las herramientas añaden filas",
+  "fr": "Les outils ajoutent des lignes",
+  "hi": "टूल पंक्तियाँ जोड़ते हैं",
+  "it": "Gli strumenti aggiungono righe",
+  "ja": "ツールが行を追加",
+  "pt": "Ferramentas adicionam linhas",
+  "zh": "工具会添加行"
+ },
+ "Language, theme, Pro, privacy — and how Tenzy works.": {
+  "de": "Sprache, Design, Pro, Datenschutz – und wie Tenzy funktioniert.",
+  "es": "Idioma, tema, Pro, privacidad… y cómo funciona Tenzy.",
+  "fr": "Langue, thème, Pro, confidentialité — et comment fonctionne Tenzy.",
+  "hi": "भाषा, थीम, Pro, गोपनीयता — और Tenzy कैसे काम करता है।",
+  "it": "Lingua, tema, Pro, privacy — e come funziona Tenzy.",
+  "ja": "言語、テーマ、Pro、プライバシー — Tenzyのしくみも。",
+  "pt": "Idioma, tema, Pro, privacidade — e como o Tenzy funciona.",
+  "zh": "语言、主题、Pro、隐私——以及 Tenzy 的工作方式。"
  }
 }

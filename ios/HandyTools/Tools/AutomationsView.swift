@@ -125,49 +125,44 @@ struct AutomationsView: View {
         }
     }
 
-    /// My stuff, laid out like a profile: the mark and a line, what you have at a glance, then three tiles — your
-    /// tools, everything they made, and Settings.
+    /// My stuff: the tab's hero with what you have at a glance, then three tiles — your tools, everything they made, and
+    /// the sheets they add to.
     private var tabHeader: some View {
         let toolCount = ChainStore.load().count
         let onCount = rows.count + rules.filter(\.on).count
         let made = RunHistory.all().count
         return VStack(alignment: .leading, spacing: HandySpacing.s16) {
-            HStack(spacing: HandySpacing.s12) {
-                TenzyMark(size: 54, symbol: "tray.full.fill")
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(L("My stuff")).font(.system(size: 28, weight: .bold)).foregroundStyle(HandyColor.textPrimary).accessibilityAddTraits(.isHeader)
-                    Text(L("Your tools, reminders and results, all in one place.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                        .lineLimit(2).fixedSize(horizontal: false, vertical: true)
+            // The tab's hero, in Tenzy's colours, with what you have at a glance inside it. A row of zeros greets a new
+            // person with emptiness (23 Nov audit): the counts show once there's something to count.
+            TabHero(title: "My stuff", line: "Your tools, reminders and results, all in one place.", symbol: "tray.full.fill") {
+                if toolCount + onCount + made > 0 {
+                    HStack(spacing: 0) {
+                        stat(toolCount, toolCount == 1 ? "tool" : "tools")
+                        Rectangle().fill(.white.opacity(0.3)).frame(width: 1, height: 28)
+                        stat(onCount, onCount == 1 ? "reminder on" : "reminders on")
+                        Rectangle().fill(.white.opacity(0.3)).frame(width: 1, height: 28)
+                        stat(made, made == 1 ? "result kept" : "results kept")
+                    }
+                    .padding(.vertical, HandySpacing.s12)
+                    .background(.white.opacity(0.14), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(.white.opacity(0.22), lineWidth: 1))
                 }
-                Spacer(minLength: 0)
             }
-            // A row of zeros greets a new person with emptiness (23 Nov audit): the counts show once there's something to count.
-            if toolCount + onCount + made > 0 {
-            HStack(spacing: 0) {
-                stat(toolCount, toolCount == 1 ? "tool" : "tools")
-                Rectangle().fill(HandyColor.border).frame(width: 1, height: 28)
-                stat(onCount, onCount == 1 ? "reminder on" : "reminders on")
-                Rectangle().fill(HandyColor.border).frame(width: 1, height: 28)
-                stat(made, made == 1 ? "result kept" : "results kept")
-            }
-            .padding(.vertical, HandySpacing.s12)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-            }
-            // Two even rows: what you made and what's ready-made, then everything it made and Settings.
-            LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8)], spacing: HandySpacing.s8) {
+            // What's yours, one row: the tools you made, everything they made, and the sheets they add to. Ready-made
+            // tools live in Build and Settings has its own tab (24 Nov), so neither repeats here.
+            let sheetCount = RunningList.all().count
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
                 shortcut("My tools", "square.stack.3d.up.fill", 0x7B5CFF, sub: toolCount == 0 ? L("Build one") : "\(toolCount) \(L("saved"))", "mytools")
-                shortcut("Ready-made tools", "square.grid.2x2.fill", 0xEC4899, sub: "Start from one", "readymade")
-                shortcut("History", "clock.arrow.circlepath", 0x0EA5E9, sub: "Every result", "results")
-                shortcut("Settings", "gearshape.fill", 0x64748B, sub: "Theme, language", "settings")
+                shortcut("History", "clock.arrow.circlepath", 0x0EA5E9, sub: made == 0 ? "Every result" : "\(made) \(L("kept"))", "results")
+                shortcut("Sheets", "tablecells.fill", 0x22C55E, sub: sheetCount == 0 ? "Tools add rows" : "\(sheetCount) \(L("sheets"))", "sheets")
             }
         }
     }
 
     private func stat(_ n: Int, _ label: String) -> some View {
         VStack(spacing: 1) {
-            Text("\(n)").font(.system(size: 20, weight: .bold)).monospacedDigit().foregroundStyle(HandyColor.textPrimary)
-            Text(L(label)).font(.system(size: 11, weight: .medium)).foregroundStyle(HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.7)
+            Text("\(n)").font(.system(size: 20, weight: .bold)).monospacedDigit().foregroundStyle(.white)
+            Text(L(label)).font(.system(size: 11, weight: .medium)).foregroundStyle(.white.opacity(0.85)).lineLimit(1).minimumScaleFactor(0.7)
         }
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)

@@ -29,7 +29,7 @@ object HomeShelves {
             listOf("docs", "identify", "procam", "codes", "scancsv", "colorvision")),
         Shelf("photos", "Photos", "Fix, shrink and share photos and videos",
             listOf("media", "scrubber", "stitch", "gifmaker", "memory")),
-        Shelf("pdf", "Files", "Organize, lock, convert, zip and open files",
+        Shelf("pdf", "Documents", "Organize, lock, convert, zip and open files",
             listOf("pdfpages", "pdfconvert", "pdfprotect", "zipmaker", "fileviewer", "converter", "share")),
         Shelf("audio", "Audio", "Record, listen and sleep",
             listOf("voice", "rest", "hearing")),
@@ -37,7 +37,7 @@ object HomeShelves {
             listOf("translate", "lens", "safety", "texttools", "thinking")),
         // No Alarm tile: that tool was cut on 2 Nov (Google reserves exact alarms for alarm apps), so its screen
         // can't ring. Timers runs only while open, so it isn't offered either.
-        Shelf("day", "Daily life", "Medicines, your morning, bills, receipts and cards",
+        Shelf("day", "Everyday", "Medicines, your morning, bills, receipts and cards",
             listOf("medreminder", "brief", "sorted", "receipts", "pricecheck", "wallet")),
         Shelf("phone", "Phone", "Space, battery, network, light and your car",
             listOf("cleanup", "storage", "myphone", "network", "instruments", "flashlight", "quick", "parked", "gpsdash")),
