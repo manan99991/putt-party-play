@@ -116,19 +116,21 @@ struct VoiceNotesView: View {
         let t = speech.transcript
         Task { @MainActor in
             defer { working = false }
-            if AIEngine.isAvailable, Usage.hasRoom("ai", limit: Limits.freeAiPerDay), let out = try? await AIEngine.run(instructions: "Read a spoken transcript. Return two sections exactly: 'SUMMARY:' with 3–5 short bullet lines, then 'TODOS:' with every task, commitment or follow-up as one bullet each (or 'none'). No other text.", prompt: t) {
-                _ = Usage.use("ai", limit: Limits.freeAiPerDay)
-                let parts = out.components(separatedBy: "TODOS:")
-                summary = Self.bullets(parts.first?.replacingOccurrences(of: "SUMMARY:", with: "") ?? "")
-                todos = Self.bullets(parts.count > 1 ? parts[1] : "").filter { $0.lowercased() != "none" }
-                if summary.isEmpty && todos.isEmpty { fallback(t) }
-            } else { fallback(t) }
+            // Same engine as Meeting Notes (one job, one way of doing it): Apple Intelligence reads the whole note part
+            // by part; otherwise the strict built-in engine — no filler as a summary, only real commitments as to-dos.
+            var r: MeetingDigest.Result?
+            if AIEngine.isAvailable, Usage.hasRoom("ai", limit: Limits.freeAiPerDay) {
+                r = await MeetingDigest.onDevice(t) { _, _ in }
+                if r != nil { _ = Usage.use("ai", limit: Limits.freeAiPerDay) }
+            }
+            if let r { summary = r.points; todos = r.actions.map(\.line); note = nil } else { fallback(t) }
             HandyHaptics.success()
         }
     }
     private func fallback(_ t: String) {
-        summary = TextTools.summarize(t, sentences: 3); todos = TextTools.actionItems(t)
-        note = AIEngine.isAvailable ? nil : "Key sentences and task-like lines, picked by the built-in engine (Apple Intelligence would write a proper summary)."
+        let r = MeetingDigest.builtIn(t)
+        summary = r.points; todos = r.actions.map(\.line)
+        note = AIEngine.isAvailable ? nil : "Written by Tenzy's built-in engine. On iPhone 15 Pro or newer with Apple Intelligence on, Tenzy writes fuller notes."
     }
     private static func bullets(_ s: String) -> [String] {
         s.components(separatedBy: .newlines).map { $0.trimmingCharacters(in: CharacterSet(charactersIn: " •-*☐0123456789.)")) }.filter { $0.count > 2 }

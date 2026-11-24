@@ -44608,5 +44608,85 @@
   "ja": "今月は3件作成済みです",
   "pt": "Você já criou 3 este mês",
   "zh": "本月已制作 3 份"
+ },
+ "No to-dos were agreed in this meeting.": {
+  "de": "In diesem Meeting wurden keine Aufgaben vereinbart.",
+  "es": "En esta reunión no se acordaron tareas.",
+  "fr": "Aucune tâche n'a été convenue pendant cette réunion.",
+  "hi": "इस मीटिंग में कोई काम तय नहीं हुआ।",
+  "it": "In questa riunione non sono state concordate attività.",
+  "ja": "この会議で決まったToDoはありません。",
+  "pt": "Nenhuma tarefa foi combinada nesta reunião.",
+  "zh": "这次会议没有约定待办事项。"
+ },
+ "Decisions": {
+  "de": "Entscheidungen",
+  "es": "Decisiones",
+  "fr": "Décisions",
+  "hi": "फ़ैसले",
+  "it": "Decisioni",
+  "ja": "決定事項",
+  "pt": "Decisões",
+  "zh": "决定"
+ },
+ "Subject:": {
+  "de": "Betreff:",
+  "es": "Asunto:",
+  "fr": "Objet :",
+  "hi": "विषय:",
+  "it": "Oggetto:",
+  "ja": "件名：",
+  "pt": "Assunto:",
+  "zh": "主题："
+ },
+ "Open in Mail": {
+  "de": "In Mail öffnen",
+  "es": "Abrir en Mail",
+  "fr": "Ouvrir dans Mail",
+  "hi": "Mail में खोलें",
+  "it": "Apri in Mail",
+  "ja": "メールで開く",
+  "pt": "Abrir no Mail",
+  "zh": "在邮件中打开"
+ },
+ "Copied": {
+  "de": "Kopiert",
+  "es": "Copiado",
+  "fr": "Copié",
+  "hi": "कॉपी हो गया",
+  "it": "Copiato",
+  "ja": "コピーしました",
+  "pt": "Copiado",
+  "zh": "已复制"
+ },
+ "Written by Apple Intelligence, on your phone.": {
+  "de": "Geschrieben von Apple Intelligence, auf deinem Telefon.",
+  "es": "Escrito por Apple Intelligence, en tu teléfono.",
+  "fr": "Rédigé par Apple Intelligence, sur votre téléphone.",
+  "hi": "Apple Intelligence ने आपके फ़ोन पर लिखा।",
+  "it": "Scritto da Apple Intelligence, sul tuo telefono.",
+  "ja": "Apple Intelligenceが端末上で作成しました。",
+  "pt": "Escrito pela Apple Intelligence, no seu telefone.",
+  "zh": "由 Apple 智能在你的手机上撰写。"
+ },
+ "Written by Tenzy's built-in engine (today's free Apple Intelligence notes are used up).": {
+  "de": "Geschrieben von Tenzys eingebauter Engine (die kostenlosen Apple-Intelligence-Notizen für heute sind aufgebraucht).",
+  "es": "Escrito por el motor integrado de Tenzy (se acabaron las notas gratis de Apple Intelligence de hoy).",
+  "fr": "Rédigé par le moteur intégré de Tenzy (les notes Apple Intelligence gratuites du jour sont épuisées).",
+  "hi": "Tenzy के अपने इंजन ने लिखा (आज के मुफ़्त Apple Intelligence नोट्स ख़त्म हो गए)।",
+  "it": "Scritto dal motore integrato di Tenzy (le note gratuite di Apple Intelligence di oggi sono finite).",
+  "ja": "Tenzy内蔵エンジンが作成しました（本日の無料Apple Intelligenceメモは使い切りました）。",
+  "pt": "Escrito pelo motor do Tenzy (as notas grátis da Apple Intelligence de hoje acabaram).",
+  "zh": "由 Tenzy 内置引擎撰写（今天的免费 Apple 智能笔记已用完）。"
+ },
+ "Written by Tenzy's built-in engine. On iPhone 15 Pro or newer with Apple Intelligence on, Tenzy writes fuller notes.": {
+  "de": "Geschrieben von Tenzys eingebauter Engine. Auf einem iPhone 15 Pro oder neuer mit Apple Intelligence schreibt Tenzy ausführlichere Notizen.",
+  "es": "Escrito por el motor integrado de Tenzy. En un iPhone 15 Pro o posterior con Apple Intelligence, Tenzy escribe notas más completas.",
+  "fr": "Rédigé par le moteur intégré de Tenzy. Sur iPhone 15 Pro ou plus récent avec Apple Intelligence, Tenzy rédige des notes plus complètes.",
+  "hi": "Tenzy के अपने इंजन ने लिखा। Apple Intelligence चालू वाले iPhone 15 Pro या नए फ़ोन पर Tenzy और पूरे नोट्स लिखता है।",
+  "it": "Scritto dal motore integrato di Tenzy. Su iPhone 15 Pro o successivi con Apple Intelligence, Tenzy scrive note più complete.",
+  "ja": "Tenzy内蔵エンジンが作成しました。Apple Intelligenceをオンにした iPhone 15 Pro 以降では、より充実したメモを作成します。",
+  "pt": "Escrito pelo motor do Tenzy. Em um iPhone 15 Pro ou mais novo com a Apple Intelligence ativada, o Tenzy escreve notas mais completas.",
+  "zh": "由 Tenzy 内置引擎撰写。在开启 Apple 智能的 iPhone 15 Pro 或更新机型上，Tenzy 会写出更完整的笔记。"
  }
 }

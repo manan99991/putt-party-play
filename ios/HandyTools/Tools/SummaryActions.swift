@@ -7,13 +7,15 @@ import SwiftUI
 struct SummaryActions: View {
     let title: String
     let text: String
+    /// What the narrator reads, when it differs from what's copied (no bullets or boxes read out as symbols).
+    var spoken: String? = nil
     var compact = false
     @StateObject private var speaker = Speaker()
 
     var body: some View {
         HStack(spacing: compact ? HandySpacing.s4 : HandySpacing.s8) {
             Button {
-                if speaker.speaking { speaker.stop() } else { speaker.say(text) }
+                if speaker.speaking { speaker.stop() } else { speaker.say(spoken ?? text) }
             } label: {
                 if compact {
                     Image(systemName: speaker.speaking ? "stop.circle" : "speaker.wave.2").frame(width: 36, height: 36)

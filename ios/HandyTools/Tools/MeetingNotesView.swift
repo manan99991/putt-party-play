@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import AVFoundation
 import UniformTypeIdentifiers
 
@@ -15,6 +16,10 @@ struct MeetingNotesView: View {
     @State private var transcript = ""
     @State private var summary: [String] = []
     @State private var todos: [String] = []
+    @State private var digest: MeetingDigest.Result?
+    @State private var emailSubject = ""
+    @State private var phase = "Transcribing on your phone…"
+    @State private var copied: String?
     @State private var remindersNote: String?
     @State private var turns: [MeetingNotes.Turn] = []
     @State private var people: [String] = []
@@ -85,7 +90,7 @@ struct MeetingNotesView: View {
             .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
 
             if working {
-                ToolProgressBar(value: progress, label: "Transcribing on your phone…")
+                ToolProgressBar(value: progress, label: phase)
             }
 
             if let e = errorText {
@@ -94,11 +99,29 @@ struct MeetingNotesView: View {
             }
 
             if hasResult {
-                if !summary.isEmpty { section(title: "Summary", systemImage: "list.bullet.clipboard", lines: summary.map { "• " + $0 }, shareText: "Summary\n" + summary.map { "• " + $0 }.joined(separator: "\n")) }
-                if !todos.isEmpty { section(title: "To-dos", systemImage: "checklist", lines: todos.map { "☐ " + $0 }, shareText: "To-dos\n" + todos.map { "☐ " + $0 }.joined(separator: "\n")) }
+                if let d = digest {
+                    section(title: "Summary", systemImage: "list.bullet.clipboard", headline: d.headline, lines: summary.map { "• " + $0 },
+                            shareText: d.headline + "\n" + summary.map { "• " + $0 }.joined(separator: "\n"),
+                            spoken: d.headline + ". " + MeetingDigest.speakable(summary))
+                    if !d.decisions.isEmpty {
+                        section(title: "Decisions", systemImage: "checkmark.seal", headline: nil, lines: d.decisions.map { "• " + $0 },
+                                shareText: "Decisions\n" + d.decisions.map { "• " + $0 }.joined(separator: "\n"), spoken: MeetingDigest.speakable(d.decisions))
+                    }
+                    if todos.isEmpty {
+                        Text(L("No to-dos were agreed in this meeting.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    } else {
+                        section(title: "To-dos", systemImage: "checklist", headline: nil, lines: todos.map { "☐ " + $0 },
+                                shareText: "To-dos\n" + todos.map { "☐ " + $0 }.joined(separator: "\n"), spoken: MeetingDigest.speakable(todos))
+                    }
+                }
                 if !todos.isEmpty {
                     Button {
-                        let entries = MeetingNotes.reminders(todos, list: "Meeting \(Date().formatted(date: .abbreviated, time: .omitted))")
+                        let list = "Meeting \(Date().formatted(date: .abbreviated, time: .omitted))"
+                        let entries = (digest?.actions ?? []).map { a in
+                            PlannerStore.Entry(text: a.task, list: list, due: a.due.flatMap { Understand.due(in: "by " + $0, now: Date()) },
+                                               person: a.owner == "Me" || a.owner == "Us" ? nil : a.owner, source: "Meeting notes")
+                        }
                         Task {
                             let n = (try? await PlannerStore.toReminders(entries)) ?? -1
                             remindersNote = n < 0 ? "Allow Reminders for Tenzy in Settings, then tap again." : "\(n) to-do\(n == 1 ? "" : "s") added to Reminders, with who and when where it was said."
@@ -123,36 +146,56 @@ struct MeetingNotesView: View {
         }
     }
 
-    private func section(title: String, systemImage: String, lines: [String], shareText: String) -> some View {
+    private func section(title: String, systemImage: String, headline: String?, lines: [String], shareText: String, spoken: String) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack {
                 Label(L(title), systemImage: systemImage).font(HandyFont.bodyStrong)
                 Spacer()
-                SummaryActions(title: L(title), text: shareText, compact: true)
-                Button { Copier.copy(shareText) } label: { Image(systemName: "doc.on.doc").accessibilityLabel(L("Copy")).frame(width: 36, height: 36) }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+                SummaryActions(title: L(title), text: shareText, spoken: spoken, compact: true)
+                copyButton(shareText, id: title)
             }
-            ScrollView {
-                VStack(alignment: .leading, spacing: 4) {
-                    ForEach(lines, id: \.self) { Text($0).font(HandyFont.body).frame(maxWidth: .infinity, alignment: .leading).textSelection(.enabled) }
-                }
+            if let headline { Text(headline).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).fixedSize(horizontal: false, vertical: true) }
+            // Short on purpose — every line shows; nothing hidden in a tiny scroll box.
+            VStack(alignment: .leading, spacing: 6) {
+                ForEach(lines, id: \.self) { Text($0).font(HandyFont.body).frame(maxWidth: .infinity, alignment: .leading).fixedSize(horizontal: false, vertical: true).textSelection(.enabled) }
             }
-            .frame(maxHeight: 160)
         }
         .cardStyle(padding: HandySpacing.s12)
     }
 
+    /// Copy, with a tick so you know it worked.
+    private func copyButton(_ text: String, id: String) -> some View {
+        Button {
+            Copier.copy(text); HandyHaptics.success()
+            withAnimation { copied = id }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { if copied == id { withAnimation { copied = nil } } }
+        } label: {
+            Image(systemName: copied == id ? "checkmark" : "doc.on.doc").frame(width: 36, height: 36).contentShape(Rectangle())
+        }
+        .buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+        .accessibilityLabel(L(copied == id ? "Copied" : "Copy"))
+        .accessibilityIdentifier("copy-\(id)")
+    }
+
     private var turnsSection: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Label(L("Turns"), systemImage: "person.wave.2").font(HandyFont.bodyStrong)
+            HStack {
+                Label(L("Turns"), systemImage: "person.wave.2").font(HandyFont.bodyStrong)
+                Spacer()
+                copyButton(turns.map { "\(L("Turn")) \($0.index) · \(MeetingNotes.clock($0.start))\n\($0.text)" }.joined(separator: "\n\n"), id: "turns")
+            }
             Text(L("Split where the talking pauses. On-device transcription can't tell voices apart, so turns are timed, not named."))
                 .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             ScrollView {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     ForEach(turns) { t in
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("\(L("Turn")) \(t.index) · \(MeetingNotes.clock(t.start))")
-                                .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).monospacedDigit()
-                            Text(t.text).font(HandyFont.body).frame(maxWidth: .infinity, alignment: .leading).textSelection(.enabled)
+                        HStack(alignment: .top, spacing: HandySpacing.s4) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("\(L("Turn")) \(t.index) · \(MeetingNotes.clock(t.start))")
+                                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).monospacedDigit()
+                                Text(MeetingDigest.clean(t.text)).font(HandyFont.body).frame(maxWidth: .infinity, alignment: .leading).textSelection(.enabled)
+                            }
+                            copyButton(MeetingDigest.clean(t.text), id: "turn-\(t.index)")
                         }
                     }
                 }
@@ -167,17 +210,23 @@ struct MeetingNotesView: View {
             HStack {
                 Label(L("Follow-up email"), systemImage: "envelope").font(HandyFont.bodyStrong)
                 Spacer()
-                Button { Copier.copy(emailDraft) } label: { Image(systemName: "doc.on.doc").accessibilityLabel(L("Copy")) }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+                copyButton("Subject: \(emailSubject)\n\n\(emailDraft)", id: "email")
+            }
+            if !emailSubject.isEmpty {
+                Text("\(L("Subject:")) \(emailSubject)").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).textSelection(.enabled)
             }
             if !people.isEmpty {
                 Text("\(L("Addressed to:")) \(people.prefix(4).joined(separator: ", "))")
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
-            ScrollView {
-                Text(emailDraft).font(HandyFont.body).frame(maxWidth: .infinity, alignment: .leading).textSelection(.enabled)
+            Text(emailDraft).font(HandyFont.body).frame(maxWidth: .infinity, alignment: .leading).fixedSize(horizontal: false, vertical: true).textSelection(.enabled)
+            HStack(spacing: HandySpacing.s8) {
+                if let mail = mailURL {
+                    Button { UIApplication.shared.open(mail) } label: { Label(L("Open in Mail"), systemImage: "envelope.open").frame(maxWidth: .infinity) }.primaryButton()
+                        .accessibilityIdentifier("meeting-mail")
+                }
+                ShareLink(item: emailDraft, subject: Text(emailSubject)) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             }
-            .frame(maxHeight: 200)
-            ShareLink(item: emailDraft) { Label(L("Share email"), systemImage: "square.and.arrow.up") }.textButton().font(HandyFont.caption)
         }
         .cardStyle(padding: HandySpacing.s12)
     }
@@ -197,11 +246,19 @@ struct MeetingNotesView: View {
         .cardStyle(padding: HandySpacing.s12)
     }
 
+    private var mailURL: URL? {
+        var c = URLComponents(string: "mailto:")
+        c?.queryItems = [URLQueryItem(name: "subject", value: emailSubject), URLQueryItem(name: "body", value: emailDraft)]
+        return c?.url
+    }
+
     private var fullExport: String {
         var s = "\(fileName) — meeting notes\n"
+        if let d = digest { s += "\n" + d.headline + "\n" }
         if !summary.isEmpty { s += "\nSummary:\n" + summary.map { "• " + $0 }.joined(separator: "\n") + "\n" }
+        if let d = digest, !d.decisions.isEmpty { s += "\nDecisions:\n" + d.decisions.map { "• " + $0 }.joined(separator: "\n") + "\n" }
         if !todos.isEmpty { s += "\nTo-dos:\n" + todos.map { "☐ " + $0 }.joined(separator: "\n") + "\n" }
-        if !emailDraft.isEmpty { s += "\nFollow-up email:\n" + emailDraft + "\n" }
+        if !emailDraft.isEmpty { s += "\nFollow-up email:\nSubject: \(emailSubject)\n\n" + emailDraft + "\n" }
         s += "\nTranscript:\n" + transcript
         return s
     }
@@ -238,27 +295,28 @@ struct MeetingNotesView: View {
         transcript = text
         turns = MeetingNotes.turns(from: words)
         people = MeetingNotes.people(in: text)
-        // Summary + to-dos: the on-device model when it's available and in quota, else the built-in text engine.
-        if AIEngine.isAvailable, Usage.hasRoom("ai", limit: Limits.freeAiPerDay),
-           let out = try? await AIEngine.run(instructions: "Read a meeting transcript. Return two sections exactly: 'SUMMARY:' with 3–5 short bullet lines, then 'TODOS:' with every task, decision or follow-up as one bullet each (or 'none'). No other text.", prompt: text) {
-            _ = Usage.use("ai", limit: Limits.freeAiPerDay)
-            let parts = out.components(separatedBy: "TODOS:")
-            summary = Self.bullets(parts.first?.replacingOccurrences(of: "SUMMARY:", with: "") ?? "")
-            todos = Self.bullets(parts.count > 1 ? parts[1] : "").filter { $0.lowercased() != "none" }
-            aiNote = nil
-            if summary.isEmpty && todos.isEmpty { fallbackDigest(text) }
-        } else {
-            fallbackDigest(text)
+        // The best writer this phone has: Apple Intelligence reads the whole meeting part by part and merges it;
+        // without it (or over the free daily limit), the stricter built-in engine.
+        var result: MeetingDigest.Result?
+        if AIEngine.isAvailable, Usage.hasRoom("ai", limit: Limits.freeAiPerDay) {
+            progress = 0
+            result = await MeetingDigest.onDevice(text) { i, n in
+                Task { @MainActor in phase = "Writing the notes · part \(i) of \(n)…"; progress = Double(i - 1) / Double(max(1, n)) }
+            }
+            if result != nil { _ = Usage.use("ai", limit: Limits.freeAiPerDay) }
         }
-        emailDraft = MeetingNotes.followUpEmail(people: people, summary: summary, todos: todos)
+        let d = result ?? MeetingDigest.builtIn(text)
+        digest = d
+        summary = d.points
+        todos = d.actions.map(\.line)
+        aiNote = d.engine == .onDevice ? "Written by Apple Intelligence, on your phone."
+            : (AIEngine.isAvailable ? "Written by Tenzy's built-in engine (today's free Apple Intelligence notes are used up)."
+                                    : "Written by Tenzy's built-in engine. On iPhone 15 Pro or newer with Apple Intelligence on, Tenzy writes fuller notes.")
+        let mail = MeetingDigest.email(d, people: people, meeting: fileName)
+        emailSubject = mail.subject
+        emailDraft = mail.body
         working = false
         HandyHaptics.success()
-    }
-
-    private func fallbackDigest(_ text: String) {
-        summary = TextTools.summarize(text, sentences: 3)
-        todos = TextTools.actionItems(text)
-        aiNote = AIEngine.isAvailable ? nil : "Summary and to-dos were picked out by the built-in engine (Apple Intelligence would write a fuller summary)."
     }
 
     private static func bullets(_ s: String) -> [String] {
@@ -281,7 +339,8 @@ struct MeetingNotesView: View {
     }
 
     private func clearOutputs() {
-        transcript = ""; summary = []; todos = []; turns = []; people = []
+        transcript = ""; summary = []; todos = []; turns = []; people = []; digest = nil; emailSubject = ""
+        phase = "Transcribing on your phone…"
         emailDraft = ""; errorText = nil; aiNote = nil; progress = 0
     }
 }

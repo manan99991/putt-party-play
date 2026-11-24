@@ -1,5 +1,7 @@
-# 23 Nov, fifth try. The fourth run passed everything (For you, Home fit, welcome, Business tab, invoices with
-# their PDF and unpaid list, Ready-made tools) except one Business tile name that needed three lines:
-# "Review or menu QR code" is now "Make a QR code" (both phones, 8 languages). Proving the tile test on its own.
-HandyToolsTests/HomeShelvesTests
-HandyToolsTests/InvoiceTests
+# 24 Nov — Meeting Notes rewrite (Manan: summary was "Okay. Okay. Okay.", to-dos were chat, the email a dump).
+# The written part now comes from Apple Intelligence reading the meeting part by part, or a strict built-in engine.
+# Proven on its own before it rides a TestFlight, with the catalog check that stopped the last ship.
+HandyToolsTests/MeetingDigestTests
+HandyToolsTests/EngineTests/testCatalogIsConsistent
+HandyToolsTests/EngineTests/testMeetingTurnsSplitAtPauses
+HandyToolsTests/TuneGuideTests
