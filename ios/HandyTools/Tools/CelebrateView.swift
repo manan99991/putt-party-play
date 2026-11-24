@@ -56,6 +56,11 @@ struct CelebrateView: View {
     @State private var rolling = false
     /// What the preview box is showing, for the build machine's check (refreshed while the page is open in a test).
     @State private var probe = ""
+    /// This phone's player couldn't run the effects live (any video composition failed, -11800/-12784, on the build
+    /// machine while the saved video played). Then the preview is a quick rendered copy with the effects on.
+    @State private var liveFails = false
+    /// The rendered copy now playing, removed when the next one replaces it.
+    @State private var renderedClip: URL?
     @State private var duration: Double = 4
     @State private var beats: [Double] = []
     @State private var thumbs: [String: UIImage] = [:]
@@ -93,12 +98,13 @@ struct CelebrateView: View {
         // first picture, and the box showed black — Gold Book review, 24 Nov). Checked until it moves, not once: a
         // single check 0.6 s after "playing" could miss, and the box then kept the plain still for good.
         .onReceive(Timer.publish(every: 0.3, on: .main, in: .common).autoconnect()) { _ in
-            guard source != nil, resultURL == nil, !rolling || Launch.uitest else { return }
+            guard source != nil, resultURL == nil else { return }
             let item = player.currentItem
+            if item?.status == .failed, !liveFails { liveFails = true; schedulePreview() }
             if !rolling, player.timeControlStatus == .playing, player.currentTime().seconds > 0.25,
                (item?.presentationSize.width ?? 0) > 0 { rolling = true }
             if Launch.uitest {
-                probe = "poster \(poster != nil) rolling \(rolling) playing \(player.timeControlStatus == .playing) item \(item != nil) status \(item?.status.rawValue ?? -1) wait \(player.reasonForWaitingToPlay?.rawValue ?? "-") err \((item?.error as NSError?).map { e in "\(e.domain) \(e.code) \((e.userInfo[NSUnderlyingErrorKey] as? NSError).map { "\($0.domain) \($0.code)" } ?? "-")" } ?? "-") log \(item?.errorLog()?.events.last.map { "\($0.errorDomain) \($0.errorStatusCode)" } ?? "-") size \(Int(item?.presentationSize.width ?? 0)) t \(String(format: "%.1f", player.currentTime().seconds))"
+                probe = "poster \(poster != nil) rendered \(liveFails) rolling \(rolling) playing \(player.timeControlStatus == .playing) item \(item != nil) status \(item?.status.rawValue ?? -1) wait \(player.reasonForWaitingToPlay?.rawValue ?? "-") err \((item?.error as NSError?).map { e in "\(e.domain) \(e.code) \((e.userInfo[NSUnderlyingErrorKey] as? NSError).map { "\($0.domain) \($0.code)" } ?? "-")" } ?? "-") log \(item?.errorLog()?.events.last.map { "\($0.errorDomain) \($0.errorStatusCode)" } ?? "-") size \(Int(item?.presentationSize.width ?? 0)) t \(String(format: "%.1f", player.currentTime().seconds))"
             }
         }
         .onDisappear { player.pause(); previewTask?.cancel(); thumbTask?.cancel() }
@@ -582,6 +588,19 @@ struct CelebrateView: View {
             try? await Task.sleep(nanoseconds: 200_000_000)
             if Task.isCancelled { return }
             let asset = AVURLAsset(url: url)
+            if liveFails {
+                // The old clip keeps playing while the new one is made, so the box never goes blank.
+                guard let clip = await VideoFX.previewClip(url, recipe: r, beats: b), !Task.isCancelled else { return }
+                await MainActor.run {
+                    guard !Task.isCancelled else { try? FileManager.default.removeItem(at: clip); return }
+                    if let old = renderedClip { try? FileManager.default.removeItem(at: old) }
+                    renderedClip = clip
+                    player.replaceCurrentItem(with: AVPlayerItem(url: clip))
+                    player.isMuted = !soundOn
+                    player.play()
+                }
+                return
+            }
             let comp = await VideoFX.composition(for: asset, recipe: r, caption: nil, beats: b)
             await MainActor.run {
                 guard !Task.isCancelled else { return }
@@ -619,5 +638,7 @@ struct CelebrateView: View {
     private func reset() {
         previewTask?.cancel(); runTask?.cancel(); thumbTask?.cancel(); player.pause(); player.replaceCurrentItem(with: nil)
         source = nil; resultURL = nil; errorText = nil; caption.text = ""; poster = nil; thumbs = [:]
+        if let old = renderedClip { try? FileManager.default.removeItem(at: old) }
+        renderedClip = nil
     }
 }

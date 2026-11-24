@@ -271,12 +271,14 @@ final class PromiseTests: XCTestCase {
             XCTFail("no preview"); return
         }
         var last = ""
-        for s in [1, 3, 6, 10] {
-            sleep(s == 1 ? 1 : 3)
+        for s in 1...30 {
+            sleep(1)
             last = (box.value as? String) ?? "-"
-            print("VIDEOFX| \(s)s: \(last)")
+            if [1, 3, 6, 10, 20, 30].contains(s) { print("VIDEOFX| \(s)s: \(last)") }
+            XCTAssertTrue(last.contains("poster true") || last.contains("rolling true"), "\(s)s: the box has neither a still nor a moving video: \(last)")
+            if last.contains("rolling true") { print("VIDEOFX| moving at \(s)s: \(last)"); break }
         }
-        XCTAssertTrue(last.contains("poster true") || last.contains("rolling true"), "the preview has neither a still nor a moving video: \(last)")
+        XCTAssertTrue(last.contains("rolling true"), "the preview never showed the effects moving: \(last)")
     }
 
     /// "Editable watermark text — type the words instead of a fixed message" (said done; was only in Edit tool).

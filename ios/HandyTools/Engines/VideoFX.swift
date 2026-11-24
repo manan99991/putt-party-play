@@ -488,6 +488,21 @@ enum VideoFX {
         return await VideoEngine.run(s, seconds: secs) ? out : nil
     }
 
+    /// A quick, smaller copy of the first seconds with the recipe on, for a player that can't run the effects live (the
+    /// build machine's simulator fails any video composition in playback; export works). Plays in the preview box.
+    static func previewClip(_ source: URL, recipe: Recipe, beats: [Double], seconds: Double = 8) async -> URL? {
+        let asset = AVURLAsset(url: source)
+        guard let comp = await composition(for: asset, recipe: recipe, caption: nil, beats: beats),
+              let s = AVAssetExportSession(asset: asset, presetName: AVAssetExportPreset1280x720) else { return nil }
+        let length = (try? await asset.load(.duration)) ?? .zero
+        s.videoComposition = comp
+        s.metadata = []
+        s.timeRange = CMTimeRange(start: .zero, duration: CMTimeMinimum(length, CMTime(seconds: seconds, preferredTimescale: 600)))
+        let out = VideoEngine.tempURL("mp4")
+        do { try await s.export(to: out, as: .mp4) } catch { return nil }
+        return FileManager.default.fileExists(atPath: out.path) ? out : nil
+    }
+
     /// A small picture of the recipe on one frame, for the choices (the moment `t` of a `duration` clip).
     static let context = CIContext(options: [.cacheIntermediates: false])
     static func still(_ poster: CGImage, recipe: Recipe, t: Double = 1.4, duration: Double = 4, beats: [Double] = []) -> UIImage? {

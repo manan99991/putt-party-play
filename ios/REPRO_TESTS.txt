@@ -1,3 +1,7 @@
-# 24 Nov, run 16. Run 15 reproduced it: effects playback fails -11800/-12784 with no frames, plain plays. Variants:
-# identity, cropped, effects cropped, with a context, standard composition, and the exported file.
+# 24 Nov, run 17. Run 16: every video composition fails in playback on the build machine (even one that changes
+# nothing); the saved video plays. Fix: when live fails, the preview plays a quick rendered copy with the effects on.
+# Proof: the rendered copy plays frames, and the app's box reaches "rolling true". Also the Home-tab word, Celebrate.
 HandyToolsTests/VideoFXPlaybackTests
+HandyToolsTests/LanguageTests
+HandyToolsUITests/PromiseTests/testVideoEffectsPreviewIsNeverABlackBox
+HandyToolsUITests/PromiseTests/testCelebrateOffersEveryFestivalAndTypedOnes
