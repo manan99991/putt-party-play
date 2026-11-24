@@ -9,3 +9,4 @@ HandyToolsTests/MenuBoardTests
 # Also proven here: your own reminders and the one-line Home tabs.
 HandyToolsTests/OwnRemindersTests
 HandyToolsTests/HomeShelvesTests
+# (run 4 did not compile: a test typo; rerun)
