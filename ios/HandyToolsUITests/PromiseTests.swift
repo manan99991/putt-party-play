@@ -265,7 +265,11 @@ final class PromiseTests: XCTestCase {
         app.launchArguments = ["-route", "celebrate", "-uitest", "-sample"]
         app.launch()
         let box = app.descendants(matching: .any)["celebrate-preview"].firstMatch
-        XCTAssertTrue(box.waitForExistence(timeout: 30), "no preview")
+        // Making the sample photo into a video takes a while on the build machine (the Celebrate test waits 90 s too).
+        guard box.waitForExistence(timeout: 90) else {
+            print("VIDEOFX| never appeared; on screen: \(app.debugDescription.prefix(3000))")
+            XCTFail("no preview"); return
+        }
         var last = ""
         for s in [1, 3, 6, 10] {
             sleep(s == 1 ? 1 : 3)

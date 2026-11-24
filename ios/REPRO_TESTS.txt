@@ -1,2 +1,2 @@
-# 24 Nov, run 11. The filter joined three markers into one; each is its own match now.
+# 24 Nov, run 12. Run 11 gave up at 30 s before the sample became a video (the Celebrate test waits 90 s); same wait now.
 HandyToolsUITests/PromiseTests/testVideoEffectsPreviewIsNeverABlackBox
