@@ -13,141 +13,144 @@ Command line invocation:
     /Applications/Xcode_27.2.app/Contents/Developer/usr/bin/xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
 
 Resolve Package Graph
+2026-11-24 02:23:49.364 xcodebuild[10050:30683] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x761c647000>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x103058dc0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-24 02:23:49.364 xcodebuild[10050:30683] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x761c647200>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x103058dc0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-24 02:23:49.372 xcodebuild[10050:30683] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x761c647000>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x103058dc0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-24 02:23:49.372 xcodebuild[10050:30683] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x761c647000>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x103058dc0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-24 02:23:49.372 xcodebuild[10050:30683] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x761c647200>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x103058dc0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-24 02:23:49.372 xcodebuild[10050:30683] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x761c647200>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x103058dc0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-24 02:23:49.411 xcodebuild[10050:30683] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x761c647000>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x103058dc0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-24 02:23:49.412 xcodebuild[10050:30683] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x761c647000>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x103058dc0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-24 02:23:49.413 xcodebuild[10050:30683] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x761c647200>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x103058dc0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-24 02:23:49.413 xcodebuild[10050:30683] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x761c647200>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x103058dc0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
 
 Fetching from https://github.com/element-hq/swift-ogg
 
-Fetching from https://github.com/tsolomko/SWCompression
-
 Fetching from https://github.com/tsolomko/BitByteData
 
-Fetching from https://github.com/vector-im/opus-swift
-2026-11-24 01:52:18.381 xcodebuild[25224:64171] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x77c813be00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x104458de0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-24 01:52:18.383 xcodebuild[25224:64171] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x77c7a4b200>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x104458de0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-24 01:52:18.395 xcodebuild[25224:64171] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x77c813be00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x104458de0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-24 01:52:18.396 xcodebuild[25224:64171] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x77c813be00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x104458de0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-24 01:52:18.396 xcodebuild[25224:64171] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x77c7a4b200>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x104458de0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-24 01:52:18.396 xcodebuild[25224:64171] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x77c7a4b200>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x104458de0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-24 01:52:18.687 xcodebuild[25224:64171] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x77c813be00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x104458de0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-24 01:52:18.687 xcodebuild[25224:64171] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x77c813be00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x104458de0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-24 01:52:18.689 xcodebuild[25224:64171] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x77c7a4b200>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x104458de0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-24 01:52:18.689 xcodebuild[25224:64171] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x77c7a4b200>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x104458de0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+Fetching from https://github.com/tsolomko/SWCompression
 
 Fetching from https://github.com/vector-im/ogg-swift.git
 
-Creating working copy of package ‘ogg-swift’
-
-Checking out 0.8.3 of package ‘ogg-swift’
-
-Creating working copy of package ‘BitByteData’
-
-Checking out 2.0.4 of package ‘BitByteData’
-
-Creating working copy of package ‘SWCompression’
-
-Checking out 4.8.6 of package ‘SWCompression’
-
-Creating working copy of package ‘swift-ogg’
-
-Checking out main (a00a22b) of package ‘swift-ogg’
+Fetching from https://github.com/vector-im/opus-swift
 
 Creating working copy of package ‘opus-swift’
 
 Checking out 0.8.4 of package ‘opus-swift’
 
+Creating working copy of package ‘BitByteData’
+
+Checking out 2.0.4 of package ‘BitByteData’
+
+Creating working copy of package ‘swift-ogg’
+
+Checking out main (a00a22b) of package ‘swift-ogg’
+
+Creating working copy of package ‘SWCompression’
+
+Checking out 4.8.6 of package ‘SWCompression’
+
+Creating working copy of package ‘ogg-swift’
+
+Checking out 0.8.3 of package ‘ogg-swift’
+
 
 Resolved source packages:
   SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
-  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
+  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
   BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
   Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
   YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
+  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
   YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
-  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
 
-resolved source packages: SwiftOGG, SWCompression, BitByteData, Unrar, YbridOpus, YbridOgg, StbVorbis
+resolved source packages: SwiftOGG, StbVorbis, BitByteData, Unrar, YbridOpus, SWCompression, YbridOgg
 == build.log (errors)
-2026-11-24 02:00:29.888033+0000 HandyTools[36757:96908] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
-2026-11-24 02:03:08.070420+0000 HandyTools[36757:105042] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1073cdc20> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1073cdc20> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-24 02:03:08.092878+0000 HandyTools[36757:105735] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1073ccb40> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1073ccb40> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-24 02:03:50.458493+0000 HandyTools[36757:107056] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
-2026-11-24 02:03:50.671206+0000 HandyTools[36757:103894] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-24 02:04:34.594421+0000 HandyTools[36757:111013] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1070e69e0> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1070e69e0> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-24 02:04:37.056456+0000 HandyTools[36757:111013] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1075d7340> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1075d7340> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-24 02:05:27.380497+0000 HandyTools[36757:112867] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x103d438e0> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x103d438e0> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-24 02:06:09.738578+0000 HandyTools[36757:119962] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1073cc6e0> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1073cc6e0> connection from pid 36757 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-24 02:06:15.243334+0000 HandyTools[36757:121812] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-24 02:06:15.764629+0000 HandyTools[36757:121812] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-24 02:06:16.201030+0000 HandyTools[36757:119962] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-24 02:06:16.476054+0000 HandyTools[36757:119962] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-24 02:06:16.894427+0000 HandyTools[36757:116188] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-24 02:06:17.256901+0000 HandyTools[36757:115946] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-24 02:06:19.391997+0000 HandyTools[36757:120777] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-Test Case '-[HandyToolsTests.EngineTests testThinkBoxDecidesJudge2026-11-24 02:06:19.416752+0000 HandyTools[36757:115946] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-24 02:06:19.694424+0000 HandyTools[36757:120777] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-24 02:07:09.604517+0000 HandyTools[36757:119962] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-24 02:07:09.604649+0000 HandyTools[36757:121812] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-24 02:07:38.874952+0000 HandyTools[36757:109312] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-24 02:08:06.129337+0000 HandyTools[36757:133088] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-24 02:09:34.977366+0000 HandyTools[36757:138363] [Context] [PREFLIGHTING] context 0x12b2b2ac0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:393: error: -[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses] : XCTAssertTrue failed - Contacts finder didn't show (is contacts access granted?)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:394: error: -[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses] : Failed to tap "find-hasPhone" Button: No matches found for Elements matching predicate '"find-hasPhone" IN identifiers' from input {(
+2026-11-24 02:35:17.608647+0000 HandyTools[21430:66013] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
+2026-11-24 02:40:27.507866+0000 HandyTools[21430:78371] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10693b660> connection from pid 21430 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10693b660> connection from pid 21430 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-24 02:40:28.092922+0000 HandyTools[21430:78421] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10693b8e0> connection from pid 21430 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10693b8e0> connection from pid 21430 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-24 02:41:24.328469+0000 HandyTools[21430:79179] [Context] [PREFLIGHTING] context 0x12b9eebe0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
+2026-11-24 02:41:24.940474+0000 HandyTools[21430:78371] [Context] [PREFLIGHTING] context 0x12b9eebe0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+*** If you believe this error represents a bug, please attach the result bundle at /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Logs/Test/Test-HandyTools-2026.11.24_02-24-19-+0000.xcresult
+2026-11-24 02:43:20.683735+0000 HandyTools[29674:87710] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10a132800> connection from pid 29674 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10a132800> connection from pid 29674 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-24 02:43:28.203946+0000 HandyTools[29674:87729] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10a1330c0> connection from pid 29674 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10a1330c0> connection from pid 29674 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-24 02:43:29.689582+0000 HandyTools[29674:87709] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10a131720> connection from pid 29674 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10a131720> connection from pid 29674 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific messageTest Case '-[HandyToolsTests.EngineTests testMeetingPeopleIsCleanAndSafe]' passed (0.046 seconds).
+2026-11-24 02:43:29.850293+0000 HandyTools[29674:87710] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10a130fa0> connection from pid 29674 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10a130fa0> connection from pid 29674 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-24 02:43:30.727741+0000 HandyTools[29674:87710] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10a1dfb60> connection from pid 29674 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10a1dfb60> connection from pid 29674 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-24 02:43:30.782930+0000 HandyTools[29674:87710] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-24 02:43:30.861816+0000 HandyTools[29674:88347] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-24 02:43:30.864151+0000 HandyTools[29674:87053] Lexicon creation for es_MX failed: Error Domain=com.apple.Lexicon.ErrorDomain Code=0 "Could not determine the location of the base unig2026-11-24 02:43:30.864724+0000 HandyTools[29674:87895] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-24 02:43:30.943767+0000 HandyTools[29674:87709] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestTest Case '-[HandyToolsTests.EngineTests testMenuReaderFindsDishesPricesAndWhatsInThem]' passed (1.223 seconds).
+2026-11-24 02:43:31.079088+0000 HandyTools[29674:88347] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-24 02:45:09.988081+0000 HandyTools[29674:92383] [Context] [PREFLIGHTING] context 0x13080f360: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
+2026-11-24 02:45:10.151105+0000 HandyTools[29674:90549] [Context] [PREFLIGHTING] context 0x13080f360: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-24 02:45:10.479717+0000 HandyTools[29674:92390] [Context] [PREFLIGHTING] context 0x13080f360: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-24 02:45:10.901726+0000 HandyTools[29674:92498] [Context] [PREFLIGHTING] context 0x13080f360: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-24 02:45:11.443062+0000 HandyTools[29674:92498] [Context] [PREFLIGHTING] context 0x13080f360: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-24 02:45:11.750717+0000 HandyTools[29674:92496] [Context] [PREFLIGHTING] context 0x13080f360: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/MenuBoardTests.swift:39: error: -[HandyToolsTests.MenuBoardTests testASlopedMenuBoardReadsEveryDishAndItsPrice] : XCTAssertEqual failed: ("["Idly (3 PCS)", "Plain Dosa", "Onion Uttapam", "Chicken 65 Dosa", "Pani Puri (7 Pcs)", "Samosa Ragda", "Chicken 65", "Chilli Chicken", "Veg Biryani", "Goat Dum", "Kaju Biriyani"]") is not equal to ("["Idly (3 PCS)", "Plain Dosa", "Onion Uttapam", "Chicken 65 Dosa", "Pani Puri (7 Pcs)", "Samosa Ragda", "Chicken 65", "Chilli Chicken", "Veg Biryani", "Goat Dum", "Kaju Biryani"]")
+2026-11-24 02:45:55.072881+0000 HandyTools[29674:92498] [Context] [PREFLIGHTING] context 0x13080f360: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-24 02:45:55.310509+0000 HandyTools[29674:99431] [Context] [PREFLIGHTING] context 0x13080f360: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-24 02:46:23.175268+0000 HandyTools[29674:103420] [Context] [PREFLIGHTING] context 0x13080f360: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-24 02:46:44.666897+0000 HandyTools[29674:107297] [Context] [PREFLIGHTING] context 0x13080f360: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-24 02:47:46.247977+0000 HandyTools[29674:107298] [Context] [PREFLIGHTING] context 0x13080f360: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
