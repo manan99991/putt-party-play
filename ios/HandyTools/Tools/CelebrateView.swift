@@ -98,7 +98,7 @@ struct CelebrateView: View {
             if !rolling, player.timeControlStatus == .playing, player.currentTime().seconds > 0.25,
                (item?.presentationSize.width ?? 0) > 0 { rolling = true }
             if Launch.uitest {
-                probe = "poster \(poster != nil) rolling \(rolling) playing \(player.timeControlStatus == .playing) item \(item != nil) status \(item?.status.rawValue ?? -1) wait \(player.reasonForWaitingToPlay?.rawValue ?? "-") err \(item?.error?.localizedDescription ?? "-") size \(Int(item?.presentationSize.width ?? 0)) t \(String(format: "%.1f", player.currentTime().seconds))"
+                probe = "poster \(poster != nil) rolling \(rolling) playing \(player.timeControlStatus == .playing) item \(item != nil) status \(item?.status.rawValue ?? -1) wait \(player.reasonForWaitingToPlay?.rawValue ?? "-") err \((item?.error as NSError?).map { e in "\(e.domain) \(e.code) \((e.userInfo[NSUnderlyingErrorKey] as? NSError).map { "\($0.domain) \($0.code)" } ?? "-")" } ?? "-") log \(item?.errorLog()?.events.last.map { "\($0.errorDomain) \($0.errorStatusCode)" } ?? "-") size \(Int(item?.presentationSize.width ?? 0)) t \(String(format: "%.1f", player.currentTime().seconds))"
             }
         }
         .onDisappear { player.pause(); previewTask?.cancel(); thumbTask?.cancel() }
