@@ -59,7 +59,7 @@ final class PromiseTests: XCTestCase {
         any["tab-phone"].firstMatch.tap()
         XCTAssertTrue(any["home-tool-contacts"].firstMatch.isHittable, "Contacts has no tile")
         let light = any["home-tool-light"].firstMatch
-        XCTAssertTrue(light.isHittable, "Contacts & phone has no Flashlight")
+        XCTAssertTrue(light.isHittable, "the Phone tab has no Flashlight")
         light.tap()
         sleep(2)
         XCTAssertFalse(light.isHittable, "tapping Flashlight didn't open it")

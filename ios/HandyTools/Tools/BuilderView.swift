@@ -646,8 +646,31 @@ struct BuilderView: View {
                             Label(L(note), systemImage: "checkmark.circle").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
+                        // Build my own, first and obvious (Manan, 23 Nov: "My tools page should have a button that says build my own").
+                        if !selectingTools {
+                            Button { fromMine { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []) } } label: {
+                                HStack(spacing: HandySpacing.s12) {
+                                    Image(systemName: "wand.and.stars").font(.system(size: 22, weight: .bold)).foregroundStyle(.white)
+                                        .frame(width: 48, height: 48)
+                                        .background(.white.opacity(0.18), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                        .accessibilityHidden(true)
+                                    VStack(alignment: .leading, spacing: 3) {
+                                        Text(L("Build my own tool")).font(HandyFont.bodyStrong).foregroundStyle(.white)
+                                        Text(L("Start from a photo, a PDF, a video, a recording, text — or a reminder."))
+                                            .font(HandyFont.caption).foregroundStyle(.white.opacity(0.85)).fixedSize(horizontal: false, vertical: true)
+                                    }
+                                    Spacer(minLength: 0)
+                                    Image(systemName: "plus.circle.fill").font(.system(size: 22, weight: .semibold)).foregroundStyle(.white)
+                                }
+                                .padding(HandySpacing.s16)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(PostTileGround(hex: 0x7B5CFF, icon: "wand.and.stars"))
+                                .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                            }
+                            .buttonStyle(.plain).accessibilityIdentifier("mine-build-own")
+                        }
                         if mine.isEmpty {
-                            Text(L("Nothing saved yet. Build one from the start screen and it lands here."))
+                            Text(L("Nothing saved yet — the tools you build land here."))
                                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         }
                         ForEach(mine) { c in
@@ -942,31 +965,37 @@ struct BuilderView: View {
                     .buttonStyle(.plain).accessibilityIdentifier("have-file")
                 pasteTile
             }
-            // Eight tabs four across; with Business on, nine tabs three across.
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: homeTabs.count == 9 ? 3 : 4), spacing: 6) {
+            // Every tab on screen at once, two even rows: four across (five with Business). Each is its icon in its own
+            // colour above a one-word name, so nothing squeezes onto two lines (Manan, 23 Nov: "Contacts & phone" looked
+            // crammed). The picked tab fills with its colour; the tab's one-line description is read out as its hint.
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: homeTabs.count > 8 ? 5 : 4), spacing: 6) {
                 ForEach(homeTabs) { sh in
                     let on = sh.id == currentTab.id
-                    Button { withAnimation(.easeOut(duration: HandyMotion.fast)) { homeTab = sh.id } } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: sh.icon).font(.system(size: 11, weight: .bold)).accessibilityHidden(true)
-                            Text(L(sh.title)).font(.system(size: 12, weight: .semibold)).lineLimit(2).minimumScaleFactor(0.7)
-                                .multilineTextAlignment(.center)
+                    Button { withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { homeTab = sh.id } } label: {
+                        VStack(spacing: shortScreen ? 2 : 4) {
+                            Image(systemName: sh.icon).font(.system(size: shortScreen ? 13 : 15, weight: .bold))
+                                .foregroundStyle(on ? Color.white : Color(hex: sh.hex))
+                                .frame(width: shortScreen ? 26 : 30, height: shortScreen ? 26 : 30)
+                                .background(on ? Color.white.opacity(0.22) : Color(hex: sh.hex).opacity(0.16),
+                                            in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                                .accessibilityHidden(true)
+                            Text(L(sh.title)).font(.system(size: 11.5, weight: .semibold)).lineLimit(1).minimumScaleFactor(0.7)
                         }
                         .foregroundStyle(on ? Color.white : HandyColor.textPrimary)
-                        .padding(.horizontal, 4)
-                        .frame(maxWidth: .infinity, minHeight: shortScreen ? (homeTabs.count == 9 ? 28 : 32) : 36)
+                        .frame(maxWidth: .infinity, minHeight: shortScreen ? 50 : 58)
                         .background(on ? AnyShapeStyle(Color(hex: sh.hex).gradient) : AnyShapeStyle(.ultraThinMaterial),
-                                    in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(on ? Color.clear : HandyColor.border, lineWidth: 1))
-                        .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                    in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(on ? Color.white.opacity(0.25) : HandyColor.border, lineWidth: 1))
+                        .shadow(color: on ? Color(hex: sh.hex).opacity(0.45) : .clear, radius: 8, y: 3)
+                        .scaleEffect(on ? 1.0 : 0.97)
+                        .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                     }
                     .buttonStyle(.plain)
                     .accessibilityIdentifier("tab-\(sh.id)")
+                    .accessibilityHint(L(sh.line))
                     .accessibilityAddTraits(on ? .isSelected : [])
                 }
             }
-            Text(L(currentTab.line)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
-                .lineLimit(1).minimumScaleFactor(0.8).frame(maxWidth: .infinity, alignment: .leading)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
                 if currentTab.id == HomeShelves.business.id {
                     ForEach(HomeShelves.businessJobs) { j in
@@ -1367,6 +1396,8 @@ private struct ChainEditor: View {
     private var endKind: ChainKind? { chain.steps.last?.block.gives }
     /// What the person said they start with, before there is a first step to tell us.
     @State private var startChoice: ChainKind?
+    @State private var makingReminder = false
+    @State private var phoneAlerts = false
     private var fitting: [Block] {
         guard let end = endKind else { return startChoice.map(Block.starting(with:)) ?? [] }
         return Block.allCases.filter { end.feeds($0.takes) }
@@ -1444,6 +1475,18 @@ private struct ChainEditor: View {
         }
         .task(id: chain.steps) { await refreshPreviews() }
         .sheet(isPresented: $showPro) { PaywallView().environmentObject(StoreManager.shared) }
+        .sheet(isPresented: $makingReminder) {
+            NavigationStack {
+                ReminderMakerView().toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { makingReminder = false } } }
+            }
+        }
+        .sheet(isPresented: $phoneAlerts) {
+            NewAutomationSheet(already: []) { tool in
+                phoneAlerts = false
+                dismiss()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { NotificationCenter.default.post(name: .openTool, object: tool) }
+            }
+        }
     }
 
     /// "Then": where the result goes. Email and Message open already filled in, so sending is one tap.
@@ -1576,31 +1619,81 @@ private struct ChainEditor: View {
         return c.url
     }
 
+    /// The start of a new tool (Manan, 23 Nov: "the page is very bland… missing file types… what if they want a reminder
+    /// tool?"). A bright card says what building does; then what you start with, each in its own colour with the files
+    /// it takes; then the two ways a tool can come to you — at a time, or when something on the phone builds up; then
+    /// every kind of file Tenzy opens, so nothing has to be guessed.
     private var startPicker: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Text(L("What do you start with?")).font(HandyFont.cardTitle)
-            HStack(spacing: HandySpacing.s12) {
-                startButton(.image, "A photo", "photo")
-                startButton(.text, "Text, link or file", "text.alignleft")
-                startButton(.video, "A video", "film")
+        VStack(alignment: .leading, spacing: HandySpacing.s16) {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack(spacing: 6) {
+                    flowDot("photo.fill"); flowArrow; flowDot("wand.and.stars"); flowArrow; flowDot("paperplane.fill")
+                }.accessibilityHidden(true)
+                Text(L("Your own tool, in three taps")).font(.system(size: 22, weight: .bold)).foregroundStyle(.white)
+                    .accessibilityAddTraits(.isHeader)
+                Text(L("Pick what you start with. You only see steps that fit, and each one shows its result on a sample before you save."))
+                    .font(HandyFont.caption).foregroundStyle(.white.opacity(0.88)).fixedSize(horizontal: false, vertical: true)
             }
-            HStack(spacing: HandySpacing.s12) {
-                startButton(.audio, "A recording", "waveform")
-                startButton(.pdf, "A PDF", "doc.richtext")
+            .padding(HandySpacing.s16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(PostTileGround(hex: 0x7B5CFF, icon: "wand.and.stars"))
+
+            SectionLabel(text: L("What do you start with?"), icon: "tray.and.arrow.down.fill")
+            LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8)], spacing: HandySpacing.s8) {
+                startTile("A photo or scan", "JPG, HEIC, PNG, screenshots", "photo.fill", 0xEC4899, id: "start-photo") { startChoice = .image }
+                startTile("A PDF", "Forms, contracts, statements", "doc.richtext.fill", 0xEF4444, id: "start-pdf") { startChoice = .pdf }
+                startTile("A video", "MOV and MP4, from Photos or Files", "film.fill", 0x8B5CF6, id: "start-video") { startChoice = .video }
+                startTile("A recording", "Voice memos, M4A, MP3, WAV", "waveform", 0xF59E0B, id: "start-audio") { startChoice = .audio }
+                startTile("Text or a link", "Typed, pasted, a web page, or a PDF's words", "text.alignleft", 0x22C55E, id: "start-text") { startChoice = .text }
             }
-            Text(L("“Text, link or file” also reads a file for its words — a CSV, a contact card (.vcf), a calendar file (.ics), .txt, .json or a web page. Photos and scans start with “A photo”; documents with “A PDF”; a recording writes out what was said. Tenzy handles each file as what it really is.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-        }.frame(maxWidth: .infinity, alignment: .leading)
-    }
-    private func startButton(_ kind: ChainKind, _ title: String, _ icon: String) -> some View {
-        Button { startChoice = kind } label: {
-            VStack(spacing: HandySpacing.s8) {
-                Image(systemName: icon).font(.title2)
-                Text(title).font(HandyFont.bodyStrong).multilineTextAlignment(.center)
+            SectionLabel(text: L("Or have it come to you"), icon: "bell.badge.fill")
+            LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8)], spacing: HandySpacing.s8) {
+                startTile("A reminder", "At a time — once, daily or on chosen days", "bell.fill", 0x7B5CFF, id: "start-reminder") { makingReminder = true }
+                startTile("When my phone…", "Space runs low, screenshots or big videos pile up", "iphone.gen3", 0x14B8A6, id: "start-phone") { phoneAlerts = true }
             }
-            .frame(maxWidth: .infinity, minHeight: 84)
-            .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+            Text(L("A tool you build can remind you too: once it has a step, switch on “Remind me to run this”."))
+                .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                Label(L("Every kind of file Tenzy opens"), systemImage: "doc.on.doc.fill").font(HandyFont.bodyStrong)
+                HandyFlow(spacing: 6) {
+                    ForEach(["JPG", "HEIC", "PNG", "GIF", "WebP", "PDF", "MOV", "MP4", "M4A", "MP3", "WAV", "AAC", "Word", "Excel", "RTF",
+                             "TXT", "CSV", "HTML", "JSON", "VCF", "ICS", "ZIP"], id: \.self) { t in
+                        Text(t).font(.system(size: 11, weight: .semibold)).padding(.horizontal, 8).padding(.vertical, 4)
+                            .background(HandyColor.accent.opacity(0.12), in: Capsule()).foregroundStyle(HandyColor.accent)
+                    }
+                }
+                Text(L("Open any of them from Home's File button: Word, Excel, CSV, contact cards (.vcf) and calendar files (.ics) are read for their words, and a zip opens so you can pick what's inside."))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            }
+            .cardStyle(padding: HandySpacing.s12)
         }
-        .accessibilityIdentifier(kind == .text ? "start-text" : kind == .video ? "start-video" : kind == .audio ? "start-audio" : kind == .pdf ? "start-pdf" : "start-photo")
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    private func flowDot(_ icon: String) -> some View {
+        Image(systemName: icon).font(.system(size: 15, weight: .bold)).foregroundStyle(.white)
+            .frame(width: 36, height: 36).background(.white.opacity(0.2), in: Circle())
+    }
+    private var flowArrow: some View {
+        Image(systemName: "arrow.right").font(.system(size: 11, weight: .heavy)).foregroundStyle(.white.opacity(0.7))
+    }
+    private func startTile(_ title: String, _ sub: String, _ icon: String, _ hex: UInt32, id: String, _ act: @escaping () -> Void) -> some View {
+        Button(action: act) {
+            VStack(alignment: .leading, spacing: 6) {
+                Image(systemName: icon).font(.system(size: 18, weight: .bold)).foregroundStyle(.white)
+                    .frame(width: 40, height: 40).background(.white.opacity(0.2), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .accessibilityHidden(true)
+                Spacer(minLength: 0)
+                Text(L(title)).font(.system(size: 16, weight: .bold)).foregroundStyle(.white).lineLimit(2).minimumScaleFactor(0.85)
+                Text(L(sub)).font(.system(size: 11.5, weight: .medium)).foregroundStyle(.white.opacity(0.85)).lineLimit(2).fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(HandySpacing.s12)
+            .frame(maxWidth: .infinity, minHeight: 124, alignment: .topLeading)
+            .background(PostTileGround(hex: hex, icon: icon))
+            .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier(id)
+        .accessibilityElement(children: .combine)
     }
 
     private func stepCard(_ i: Int, _ s: ChainStep) -> some View {

@@ -45,7 +45,8 @@ final class HomeShelvesTests: XCTestCase {
     /// The flashlight — the one the user couldn't find — and Contacts each have a tile, in a tab that says so.
     func testFlashlightAndContactsHaveTiles() {
         XCTAssertEqual(HomeShelves.shelf(of: "light")?.id, "phone")
-        XCTAssertEqual(HomeShelves.shelf(of: "contacts")?.title, "Contacts & phone")
+        XCTAssertEqual(HomeShelves.shelf(of: "contacts")?.title, "Phone")
+        XCTAssertEqual(HomeShelves.shelf(of: "contacts").map { $0.tools.first }, "contacts", "Contacts leads the Phone tab")
         XCTAssertEqual(HomeShelves.shelf(of: "pdfsign")?.id, "pdf")
     }
 
@@ -97,5 +98,14 @@ final class HomeShelvesTests: XCTestCase {
             XCTAssertLessThanOrEqual(Int((h / font.lineHeight).rounded()), 2, "\(j.title) needs more than two lines")
         }
         XCTAssertLessThanOrEqual(HomeShelves.businessJobs.count + 1, HomeShelves.maxPerTab, "the Business tab must fit (jobs + the 'what else' tile)")
+    }
+
+    /// Manan, 23 Nov: "Contacts & phone" squeezed onto two lines looked crammed. Every tab name is short enough for
+    /// one line under its icon, Business included.
+    func testEveryTabNameFitsOneLine() {
+        for s in HomeShelves.tabs(business: true) {
+            XCTAssertLessThanOrEqual(s.title.count, HomeShelves.maxTitleLength, "\(s.title) is too long for one line")
+            XCTAssertFalse(s.title.contains("&"), "\(s.title) joins two names")
+        }
     }
 }

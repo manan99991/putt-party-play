@@ -26,6 +26,7 @@ enum AutomationGroups {
             (["planner."], Group(key: "planner", title: "Morning plan", icon: "list.bullet.clipboard", tool: "planner")),
             (["daydiary-"], Group(key: "diary", title: "Mood Diary", icon: "book.closed.fill", tool: "daydiary")),
             (["smart-"], Group(key: "smart", title: "Phone alerts", icon: "iphone.gen3", tool: "cleaner")),
+            (["own-"], Group(key: "own", title: "My reminders", icon: "bell.fill", tool: "myreminders")),
         ]
         for row in table where row.prefixes.contains(where: { id.hasPrefix($0) }) { return row.g }
         if let open, let row = table.first(where: { $0.g.tool == open }) { return row.g }
@@ -72,8 +73,9 @@ struct AutomationsView: View {
                     }
                 }
                 if denied { notificationsOff }
-                // 1. Your own first: the most powerful way in, made obvious.
-                Button { open("builder") } label: {
+                // 1. Your own first: the most powerful way in, made obvious. It opens the reminder maker itself (it used to
+                // land on a copy of Home, which read as a wrong turn).
+                Button { open("myreminders") } label: {
                     HStack(spacing: HandySpacing.s12) {
                         Image(systemName: "wand.and.stars").font(.system(size: 22, weight: .bold)).foregroundStyle(.white)
                             .frame(width: 48, height: 48)
@@ -81,7 +83,7 @@ struct AutomationsView: View {
                             .accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 3) {
                             Text(L("Build your own reminder")).font(HandyFont.bodyStrong).foregroundStyle(.white)
-                            Text(L("Say what you want and when — it reminds you and opens ready to run."))
+                            Text(L("Say what and when — it reminds you, and can open the tool you need."))
                                 .font(HandyFont.caption).foregroundStyle(.white.opacity(0.85)).fixedSize(horizontal: false, vertical: true)
                         }
                         Spacer(minLength: 0)

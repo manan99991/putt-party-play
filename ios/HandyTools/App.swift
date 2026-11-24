@@ -577,6 +577,7 @@ struct HomeView: View {
                 case "readymade": BuilderView(openReadyMade: true).toolbarRole(.editor)   // My stuff › Ready-made tools
                 case "explore": AllToolsView().toolbarRole(.editor)   // retired list: the same page as Settings › All tools
                 case "automations": AutomationsView().toolbarRole(.editor)   // the personal-assistant hub
+                case "myreminders": ReminderMakerView().toolbarRole(.editor)   // Build a reminder (Build a tool, My stuff)
                 case "results": HistoryView().toolbarRole(.editor)   // a finished-job notification lands here
                 default: ToolDestination(id: id).toolbarRole(.editor).disablesSwipeBack()
                 }
