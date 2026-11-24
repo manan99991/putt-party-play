@@ -110,7 +110,7 @@ final class MenuBoardTests: XCTestCase {
         XCTAssertEqual(MenuReader.splitPrice("Avakai Goat Dum • 5 18.99 S 52.99")?.value, 18.99)
         XCTAssertEqual(MenuReader.splitPrice("Diver Scallops SA")?.value, 54)
         XCTAssertEqual(MenuReader.splitPrice("Cabernet Mushrooms t2")?.value, 12)
-        XCTAssertEqual(MenuReader.splitPrice("Rack of Lamb Full 9o / Half So")?.priceText, "Full 90 / Half 50")
+        XCTAssertEqual(MenuReader.splitPrice("Rack of Lamb Full 9o / Half So")?.shown, "Full 90 / Half 50")
         XCTAssertEqual(MenuReader.splitDishes(MenuReader.fixPriceReads("Sauteed Onions 6 Maytag Blue Cheese Crumbles s"), strict: false).count, 2)
         XCTAssertEqual(MenuReader.fixWords("Gorlie Whipped Potetoer"), "Garlic Whipped Potatoes")
         XCTAssertEqual(MenuReader.fixWords("Pollo al ajillo"), "Pollo al ajillo")
