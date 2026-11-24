@@ -1,10 +1,75 @@
+2026-11-24 10:20:46.324975+0000 HandyTools[31432:88543] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 10:20:46.342498+0000 HandyTools[31432:88543] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 10:20:46.343237+0000 HandyTools[31432:88543] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 10:20:46.343697+0000 HandyTools[31432:88543] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 10:20:46.365036+0000 HandyTools[31432:88543] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 10:20:46.365332+0000 HandyTools[31432:88543] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+Test Case '-[HandyToolsTests.BusinessBooksTests testIRSRates]' started.
+Test Case '-[HandyToolsTests.BusinessBooksTests testIRSRates]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.BusinessBooksTests testPriceListPDFHoldsEveryItem]' started.
+Test Case '-[HandyToolsTests.BusinessBooksTests testPriceListPDFHoldsEveryItem]' passed (0.225 seconds).
+Test Case '-[HandyToolsTests.BusinessBooksTests testSpreadsheetOpensCleanly]' started.
+Test Case '-[HandyToolsTests.BusinessBooksTests testSpreadsheetOpensCleanly]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.BusinessBooksTests testTotalsByMonthYearAndPurpose]' started.
+Test Case '-[HandyToolsTests.BusinessBooksTests testTotalsByMonthYearAndPurpose]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.BusinessBooksTests testUsualTripsComeFirst]' started.
+Test Case '-[HandyToolsTests.BusinessBooksTests testUsualTripsComeFirst]' passed (0.001 seconds).
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.242 (0.249) seconds
+Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' started.
+Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' passed (0.135 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.135 (0.195) seconds
+Test Case '-[HandyToolsTests.HomeShelvesTests testBusinessTabOnlyWhenOnAndEveryJobIsReal]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testBusinessTabOnlyWhenOnAndEveryJobIsReal]' passed (0.070 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' passed (0.987 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabNameFitsOneLine]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabNameFitsOneLine]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTileHasAJobNameThatFitsTwoLines]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTileHasAJobNameThatFitsTwoLines]' passed (0.014 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.HomeShelvesTests testWelcomeChoicesOpenARealTab]' started.
+Test Case '-[HandyToolsTests.HomeShelvesTests testWelcomeChoicesOpenARealTab]' passed (0.001 seconds).
+	 Executed 9 tests, with 0 failures (0 unexpected) in 1.084 (1.144) seconds
+Test Case '-[HandyToolsTests.InvoiceTests testHomeSaysWhenACustomerHasntPaid]' started.
+Test Case '-[HandyToolsTests.InvoiceTests testHomeSaysWhenACustomerHasntPaid]' passed (0.015 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testNumbersCountUpPerKind]' started.
+Test Case '-[HandyToolsTests.InvoiceTests testNumbersCountUpPerKind]' passed (1.610 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testOverdueOnlyForUnpaidInvoicesPastTheirDay]' started.
+Test Case '-[HandyToolsTests.InvoiceTests testOverdueOnlyForUnpaidInvoicesPastTheirDay]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testPaperFollowsTheRegion]' started.
+Test Case '-[HandyToolsTests.InvoiceTests testPaperFollowsTheRegion]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testThePDFHoldsWhatWasTyped]' started.
+Test Case '-[HandyToolsTests.InvoiceTests testThePDFHoldsWhatWasTyped]' passed (0.042 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testTheUnpaidListIsKeptAndMarkedPaid]' started.
+Test Case '-[HandyToolsTests.InvoiceTests testTheUnpaidListIsKeptAndMarkedPaid]' passed (0.024 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testThreeFreeAMonthAndProHasNoLimit]' started.
+Test Case '-[HandyToolsTests.InvoiceTests testThreeFreeAMonthAndProHasNoLimit]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.InvoiceTests testTotalsAreRightToTheCent]' started.
+Test Case '-[HandyToolsTests.InvoiceTests testTotalsAreRightToTheCent]' passed (0.001 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 1.696 (1.709) seconds
+Test Case '-[HandyToolsTests.ToolCatalogCoverageTests testSmokeTestOpensEveryTool]' started.
+Test Case '-[HandyToolsTests.ToolCatalogCoverageTests testSmokeTestOpensEveryTool]' passed (0.008 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.008 (0.009) seconds
+	 Executed 24 tests, with 0 failures (0 unexpected) in 3.166 (3.707) seconds
+	 Executed 24 tests, with 0 failures (0 unexpected) in 3.166 (3.708) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' started.
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' passed (90.414 seconds).
 Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (71.529 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (46.337 seconds).
 Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' passed (129.246 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' passed (23.457 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 224.232 (224.274) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 224.232 (224.276) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 224.232 (224.280) seconds
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:42: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertTrue failed - Home has no named audio button
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:42: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertTrue failed - Home has no named words button
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:42: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertTrue failed - Home has no named day button
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:42: error: -[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool] : XCTAssertTrue failed - Home has no named phone button
+Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' failed (111.090 seconds).
+	 Executed 3 tests, with 4 failures (0 unexpected) in 247.841 (247.881) seconds
+	 Executed 3 tests, with 4 failures (0 unexpected) in 247.841 (247.882) seconds
+	 Executed 3 tests, with 4 failures (0 unexpected) in 247.841 (247.884) seconds
 == crash reports
