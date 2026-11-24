@@ -6,7 +6,7 @@ YOUR DAY, LOOKED AFTER
 • Daily Brief: one note each morning with today's doses, bills due, birthdays and the weather
 • Medicine Reminders: a Taken button, a refill countdown, and a follow-up if a dose is missed, with one tap to text a caregiver
 • Birthdays from your contacts, a day early
-• A bedtime nudge, and a parking meter alert that tells you how far away your car is
+• A bedtime nudge, and your parking meter counting down on the Lock Screen; save where you parked from Control Center, or automatically when you leave the car
 
 MONEY & PAPERWORK
 • Snap a bill or letter: it's filed, with a reminder before it's due
@@ -14,6 +14,7 @@ MONEY & PAPERWORK
 • Scan to PDF, sign, fill in forms, black out private details
 • Price Watch: get told when a price on a web page drops
 • Export a year of paperwork in one zip for your accountant
+• Run a small business? Invoices and quotes, a mileage log with a rough deduction for your accountant, and a price list
 
 PEOPLE
 • Your contacts, organized: search, groups, favorites and emergency contacts, edit many at once, export to Excel, merge duplicates
@@ -29,7 +30,7 @@ BUILD YOUR OWN HELPER
 Say what you need ("read this letter out loud in English", "shrink a photo, remove the location and email it") and Tenzy puts the steps together for you, or pick a ready-made one. Run it from the share sheet, a widget or Shortcuts, and set "tell me when" alerts on its result.
 
 AND EVERYTHING ELSE YOU REACH FOR
-A camera that films with scene settings, a voice changer, stickers and collages, a flashlight with SOS, an AR tape measure that works out the paint and flooring for a room, Translate, white noise, Color Vision, a GPS dashboard and a Face ID vault.
+A camera that films with scene settings, a voice changer, stickers (still or animated) and collages, a flashlight with SOS, an AR tape measure that works out the paint and flooring for a room, Translate, white noise, Color Vision, a GPS dashboard and a Face ID vault.
 
 On supported iPhones the thinking and writing tools use the model built into your phone. Available in English, German, Spanish, French, Hindi, Italian, Japanese, Portuguese and Chinese.
 

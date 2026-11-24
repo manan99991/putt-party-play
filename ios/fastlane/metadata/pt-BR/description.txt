@@ -6,7 +6,7 @@ SEU DIA, EM DIA
 • Resumo diário: uma nota toda manhã com as doses de hoje, contas a vencer, aniversários e o tempo
 • Lembretes de remédios: um botão Tomei, uma contagem para repor e um aviso se uma dose for esquecida, com um toque para avisar quem cuida de você
 • Aniversários dos seus contatos, um dia antes
-• Um lembrete para dormir e um alerta de parquímetro que diz a que distância está o seu carro
+• Um lembrete para dormir e o seu parquímetro em contagem regressiva na Tela Bloqueada; salve onde estacionou pela Central de Controle, ou automaticamente ao sair do carro
 
 DINHEIRO E PAPELADA
 • Fotografe uma conta ou carta: fica guardada, com um lembrete antes do vencimento
@@ -14,6 +14,7 @@ DINHEIRO E PAPELADA
 • Digitalize em PDF, assine, preencha formulários, oculte dados pessoais
 • Alerta de preço: receba um aviso quando o preço de uma página cair
 • Exporte um ano de papelada em um só zip para o seu contador
+• Tem um pequeno negócio? Notas e orçamentos, um registro de quilometragem para o seu contador e uma lista de preços
 
 PESSOAS
 • Seus contatos organizados: busca, grupos, favoritos e contatos de emergência, edite vários de uma vez, exporte para Excel, junte duplicados
@@ -29,7 +30,7 @@ SEU PRÓPRIO AJUDANTE
 Diga o que você precisa ("leia esta carta em inglês", "reduza uma foto, tire a localização e mande por e-mail") e o Tenzy monta os passos para você, ou escolha um pronto. Use pelo menu Compartilhar, um widget ou Atalhos, e receba avisos conforme o resultado.
 
 E TUDO O MAIS QUE VOCÊ USA
-Uma câmera que grava com ajustes de cena, um modificador de voz, figurinhas e colagens, uma lanterna com SOS, uma trena em realidade aumentada que calcula tinta e piso de um cômodo, Traduzir, ruído branco, Visão de cor, um painel GPS e um cofre com Face ID.
+Uma câmera que grava com ajustes de cena, um modificador de voz, figurinhas (paradas ou animadas) e colagens, uma lanterna com SOS, uma trena em realidade aumentada que calcula tinta e piso de um cômodo, Traduzir, ruído branco, Visão de cor, um painel GPS e um cofre com Face ID.
 
 Nos iPhones compatíveis, as ferramentas de pensar e escrever usam o modelo do próprio celular. Disponível em português, inglês, alemão, espanhol, francês, hindi, italiano, japonês e chinês.
 

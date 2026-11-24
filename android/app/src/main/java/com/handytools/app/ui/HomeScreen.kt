@@ -424,9 +424,12 @@ private fun TenzyTabBar(selected: Int, onSelect: (Int) -> Unit) {
                     .padding(vertical = HandyTokens.Space8),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(icon, label, tint = tint)
+                // "Home" alone is also an address label (Contacts) and translates as a place; the tab has its own word.
+                val shown = if (label == "Home") com.handytools.app.I18n.t("Home (tab)").let { if (it == "Home (tab)") "Home" else it }
+                            else com.handytools.app.I18n.t(label)
+                Icon(icon, shown, tint = tint)
                 Spacer(Modifier.height(2.dp))
-                Text(com.handytools.app.I18n.t(label), style = MaterialTheme.typography.labelSmall, color = tint)
+                Text(shown, style = MaterialTheme.typography.labelSmall, color = tint)
             }
         }
     }

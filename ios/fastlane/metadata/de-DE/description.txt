@@ -6,7 +6,7 @@ DEIN TAG, IM GRIFF
 • Tägliche Übersicht: jeden Morgen eine Notiz mit den heutigen Einnahmen, fälligen Rechnungen, Geburtstagen und dem Wetter
 • Medikamenten-Erinnerungen: eine Genommen-Taste, ein Nachfüll-Countdown und eine Nachfrage, wenn eine Einnahme fehlt – mit einem Tipp schreibst du einer Betreuungsperson
 • Geburtstage aus deinen Kontakten, einen Tag vorher
-• Ein Hinweis zur Schlafenszeit und eine Parkuhr-Erinnerung, die dir sagt, wie weit dein Auto entfernt ist
+• Ein Hinweis zur Schlafenszeit und deine Parkuhr, die auf dem Sperrbildschirm herunterzählt; speichere deinen Parkplatz im Kontrollzentrum oder automatisch, wenn du aus dem Auto steigst
 
 GELD & PAPIERKRAM
 • Rechnung oder Brief fotografieren: abgelegt, mit Erinnerung vor der Fälligkeit
@@ -14,6 +14,7 @@ GELD & PAPIERKRAM
 • Als PDF scannen, unterschreiben, Formulare ausfüllen, private Angaben schwärzen
 • Preiswächter: Bescheid bekommen, wenn ein Preis auf einer Webseite fällt
 • Ein Jahr Papierkram als ein Zip für deine Steuerberatung
+• Ein kleines Geschäft? Rechnungen und Angebote, ein Fahrtenbuch für deine Steuerberatung und eine Preisliste
 
 MENSCHEN
 • Deine Kontakte geordnet: Suche, Gruppen, Favoriten und Notfallkontakte, viele auf einmal bearbeiten, nach Excel exportieren, Duplikate zusammenführen
@@ -29,7 +30,7 @@ DEIN EIGENER HELFER
 Sag, was du brauchst („lies diesen Brief auf Englisch vor“, „verkleinere ein Foto, entferne den Ort und maile es“), und Tenzy stellt die Schritte für dich zusammen – oder nimm einen fertigen. Starte ihn über das Teilen-Menü, ein Widget oder Kurzbefehle, und lass dich bei bestimmten Ergebnissen benachrichtigen.
 
 UND ALLES ANDERE, WAS DU BRAUCHST
-Eine Kamera mit Szene-Einstellungen, ein Stimmverzerrer, Sticker und Collagen, eine Taschenlampe mit SOS, ein AR-Maßband, das Farbe und Boden für einen Raum berechnet, Übersetzen, weißes Rauschen, Farbsehen, ein GPS-Tacho und ein Tresor mit Face ID.
+Eine Kamera mit Szene-Einstellungen, ein Stimmverzerrer, Sticker (still oder animiert) und Collagen, eine Taschenlampe mit SOS, ein AR-Maßband, das Farbe und Boden für einen Raum berechnet, Übersetzen, weißes Rauschen, Farbsehen, ein GPS-Tacho und ein Tresor mit Face ID.
 
 Auf unterstützten iPhones nutzen die Denk- und Schreibwerkzeuge das Modell in deinem Handy. Verfügbar auf Deutsch, Englisch, Spanisch, Französisch, Hindi, Italienisch, Japanisch, Portugiesisch und Chinesisch.
 

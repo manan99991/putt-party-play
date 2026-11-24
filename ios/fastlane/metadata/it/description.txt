@@ -6,7 +6,7 @@ LA TUA GIORNATA, IN ORDINE
 • Riepilogo giornaliero: ogni mattina una nota con le dosi di oggi, le bollette in scadenza, i compleanni e il meteo
 • Promemoria farmaci: un tasto Presa, un conto alla rovescia per la ricarica e un avviso se salti una dose, con un tocco per scrivere a chi ti assiste
 • I compleanni dei tuoi contatti, il giorno prima
-• Un promemoria per andare a dormire e un avviso del parchimetro che ti dice quanto è lontana l'auto
+• Un promemoria per andare a dormire e il parchimetro con il conto alla rovescia sulla schermata di blocco; salva dove hai parcheggiato dal Centro di Controllo, o in automatico quando scendi dall'auto
 
 SOLDI E DOCUMENTI
 • Fotografa una bolletta o una lettera: viene archiviata, con un promemoria prima della scadenza
@@ -14,6 +14,7 @@ SOLDI E DOCUMENTI
 • Scansiona in PDF, firma, compila moduli, oscura i dati privati
 • Controllo prezzi: ti avvisa quando un prezzo su una pagina web scende
 • Esporta un anno di documenti in un solo zip per il commercialista
+• Hai una piccola attività? Fatture e preventivi, un registro dei chilometri per il commercialista e un listino prezzi
 
 PERSONE
 • I tuoi contatti in ordine: ricerca, gruppi, preferiti e contatti di emergenza, modificane molti insieme, esporta in Excel, unisci i doppioni
@@ -29,7 +30,7 @@ IL TUO ASSISTENTE SU MISURA
 Di' cosa ti serve («leggimi questa lettera in inglese», «riduci una foto, togli la posizione e mandala via email») e Tenzy mette insieme i passaggi per te, oppure scegline uno pronto. Avvialo dal menu Condividi, da un widget o da Comandi rapidi, e ricevi un avviso in base al risultato.
 
 E TUTTO IL RESTO
-Una fotocamera che registra con impostazioni di scena, un modificatore di voce, sticker e collage, una torcia con SOS, un metro in realtà aumentata che calcola vernice e pavimento di una stanza, Traduci, rumore bianco, Visione colori, un cruscotto GPS e una cassaforte con Face ID.
+Una fotocamera che registra con impostazioni di scena, un modificatore di voce, sticker (fissi o animati) e collage, una torcia con SOS, un metro in realtà aumentata che calcola vernice e pavimento di una stanza, Traduci, rumore bianco, Visione colori, un cruscotto GPS e una cassaforte con Face ID.
 
 Sugli iPhone compatibili, gli strumenti per pensare e scrivere usano il modello integrato nel telefono. Disponibile in italiano, inglese, tedesco, spagnolo, francese, hindi, giapponese, portoghese e cinese.
 

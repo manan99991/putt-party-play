@@ -1,4 +1,9 @@
 O maior Tenzy até agora.
+• Um visual novo: Início, Ferramentas, Criar, As minhas coisas e Definições, a um toque
+• Figurinhas animadas: nove movimentos, prontas para o Mensagens
+• Negócio: um registro de quilometragem e uma lista de preços ao lado das notas
+• Salve onde estacionou pela Central de Controle, ou automaticamente quando o celular sai do carro; o parquímetro conta na Tela Bloqueada
+• Identificar diz o que é o principal na foto (a TV, não o vaso ao lado)
 • Configure uma vez e funciona: lembretes de remédios com contagem para repor e aviso a quem cuida, aniversários, um resumo diário, alertas de parquímetro e um lembrete para dormir, cada um com seu teste
 • Novas ferramentas: Alerta de preço, Contatos, Meu dia, Criar um Zip, Toque, Criador de figurinhas e mais
 • A câmera agora grava vídeo, com ajustes de cena e dicas enquanto você filma

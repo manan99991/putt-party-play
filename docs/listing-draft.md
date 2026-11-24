@@ -191,7 +191,8 @@ Play copy stays.
     Apple subscription paragraph; use "Cancel any time in Google Play → Subscriptions."
   - drop anything the Android build still lacks at push time (check each line against the build).
 
-## 24 Nov — additions for the next submit (waiting for Manan's yes; then translated into the 8 languages)
+## 24 Nov — additions for the next submit (APPLIED 24 Nov on Manan's yes, in all 9 languages; outside the US the mileage line
+## says "a mileage log for your accountant" without the deduction, since the rates are the US IRS ones)
 
 Description, MONEY & PAPERWORK (after "Export a year of paperwork…"):
 • Run a small business? Invoices and quotes, a mileage log with a rough deduction for your accountant, and a price list

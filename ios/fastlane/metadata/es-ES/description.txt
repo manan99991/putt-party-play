@@ -6,7 +6,7 @@ TU DÍA, BAJO CONTROL
 • Resumen diario: una nota cada mañana con las tomas de hoy, las facturas que vencen, los cumpleaños y el tiempo
 • Recordatorios de medicinas: un botón de Tomada, una cuenta atrás para reponer y un aviso si se salta una toma, con un toque para escribir a quien te cuida
 • Los cumpleaños de tus contactos, un día antes
-• Un aviso para irte a dormir y una alerta de parquímetro que te dice a qué distancia está tu coche
+• Un aviso para irte a dormir y tu parquímetro con la cuenta atrás en la pantalla de bloqueo; guarda dónde aparcaste desde el Centro de control, o automáticamente al bajarte del coche
 
 DINERO Y PAPELEO
 • Haz una foto a una factura o carta: queda archivada, con un recordatorio antes del vencimiento
@@ -14,6 +14,7 @@ DINERO Y PAPELEO
 • Escanea a PDF, firma, rellena formularios, tapa datos privados
 • Vigilante de precios: te avisa cuando baja un precio en una página web
 • Exporta un año de papeles en un solo zip para tu gestor
+• ¿Tienes un pequeño negocio? Facturas y presupuestos, un registro de kilometraje para tu gestor y una lista de precios
 
 PERSONAS
 • Tus contactos ordenados: búsqueda, grupos, favoritos y contactos de emergencia, edita muchos a la vez, exporta a Excel, fusiona duplicados
@@ -29,7 +30,7 @@ CREA TU PROPIO AYUDANTE
 Di lo que necesitas («léeme esta carta en inglés», «reduce una foto, quítale la ubicación y envíala por email») y Tenzy monta los pasos por ti, o elige uno ya hecho. Úsalo desde el menú Compartir, un widget o Atajos, y pon avisos según su resultado.
 
 Y TODO LO DEMÁS QUE USAS
-Una cámara que graba con ajustes de escena, un cambiador de voz, stickers y collages, una linterna con SOS, una cinta métrica AR que calcula la pintura y el suelo de una habitación, Traducir, ruido blanco, Visión de color, un panel GPS y una caja fuerte con Face ID.
+Una cámara que graba con ajustes de escena, un cambiador de voz, stickers (fijos o animados) y collages, una linterna con SOS, una cinta métrica AR que calcula la pintura y el suelo de una habitación, Traducir, ruido blanco, Visión de color, un panel GPS y una caja fuerte con Face ID.
 
 En los iPhone compatibles, las herramientas para pensar y escribir usan el modelo integrado en tu teléfono. Disponible en español, inglés, alemán, francés, hindi, italiano, japonés, portugués y chino.
 

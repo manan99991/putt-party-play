@@ -507,6 +507,14 @@ enum RootTab: String, CaseIterable { case home, tools, build, mine, settings
         case .settings: return "gearshape.fill"
         }
     }
+    /// The label in the person's language. "Home" alone is also an address label (Contacts), translated as a place
+    /// ("Privat", "Casa", "自宅"), so the tab looks up its own word.
+    var shown: String {
+        guard self == .home else { return L(label) }
+        let t = L("Home (tab)")
+        return t == "Home (tab)" ? "Home" : t
+    }
+
     var label: String {
         switch self {
         case .home: return "Home"
@@ -551,7 +559,7 @@ private struct TenzyTabBar: View {
                 Image(systemName: t.icon).font(.system(size: 18, weight: .semibold))
                     .frame(width: 52, height: 30)
                     .background(on ? HandyColor.accent.opacity(0.16) : .clear, in: Capsule())
-                Text(L(t.label)).font(.system(size: 10, weight: on ? .bold : .semibold)).lineLimit(1).minimumScaleFactor(0.8)
+                Text(t.shown).font(.system(size: 10, weight: on ? .bold : .semibold)).lineLimit(1).minimumScaleFactor(0.8)
             }
             .frame(maxWidth: .infinity)
             .foregroundStyle(on ? HandyColor.accent : HandyColor.textSecondary)
@@ -559,7 +567,7 @@ private struct TenzyTabBar: View {
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier(t.testID)
-        .accessibilityLabel(L(t.label))
+        .accessibilityLabel(t.shown)
         .accessibilityAddTraits(on ? .isSelected : [])
     }
 }

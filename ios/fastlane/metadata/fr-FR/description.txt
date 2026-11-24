@@ -6,7 +6,7 @@ VOTRE JOURNÉE, BIEN TENUE
 • Point quotidien : une note chaque matin avec les prises du jour, les factures à payer, les anniversaires et la météo
 • Rappels de médicaments : un bouton Pris, un compte à rebours avant le renouvellement et une relance si une prise est oubliée, avec un toucher pour prévenir un aidant
 • Les anniversaires de vos contacts, la veille
-• Un rappel pour aller dormir et une alerte de parcmètre qui indique à quelle distance est votre voiture
+• Un rappel pour aller dormir, et votre parcmètre qui décompte sur l'écran verrouillé ; enregistrez où vous êtes garé depuis le centre de contrôle, ou automatiquement en quittant la voiture
 
 ARGENT ET PAPIERS
 • Photographiez une facture ou un courrier : c'est classé, avec un rappel avant l'échéance
@@ -14,6 +14,7 @@ ARGENT ET PAPIERS
 • Scanner en PDF, signer, remplir des formulaires, masquer les infos privées
 • Veille prix : soyez prévenu quand un prix baisse sur une page web
 • Exportez une année de papiers en un seul zip pour votre comptable
+• Une petite entreprise ? Factures et devis, un carnet de kilométrage pour votre comptable et une liste de prix
 
 VOS PROCHES
 • Vos contacts bien rangés : recherche, groupes, favoris et contacts d'urgence, modifiez-en plusieurs à la fois, exportez vers Excel, fusionnez les doublons
@@ -29,7 +30,7 @@ VOTRE PROPRE ASSISTANT
 Dites ce qu'il vous faut (« lis-moi ce courrier en anglais », « réduis une photo, retire le lieu et envoie-la par e-mail ») et Tenzy assemble les étapes pour vous, ou choisissez-en un tout prêt. Lancez-le depuis le menu Partager, un widget ou Raccourcis, et recevez une alerte selon son résultat.
 
 ET TOUT LE RESTE
-Un appareil photo qui filme avec des réglages de scène, un changeur de voix, des stickers et des collages, une lampe avec SOS, un mètre en réalité augmentée qui calcule la peinture et le sol d'une pièce, Traduire, du bruit blanc, Vision des couleurs, un tableau de bord GPS et un coffre-fort Face ID.
+Un appareil photo qui filme avec des réglages de scène, un changeur de voix, des stickers (fixes ou animés) et des collages, une lampe avec SOS, un mètre en réalité augmentée qui calcule la peinture et le sol d'une pièce, Traduire, du bruit blanc, Vision des couleurs, un tableau de bord GPS et un coffre-fort Face ID.
 
 Sur les iPhone compatibles, les outils pour réfléchir et écrire utilisent le modèle intégré à votre téléphone. Disponible en français, anglais, allemand, espagnol, hindi, italien, japonais, portugais et chinois.
 

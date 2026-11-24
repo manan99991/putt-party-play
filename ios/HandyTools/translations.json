@@ -46728,5 +46728,15 @@
   "ja": "車を降りたとき — 自動で",
   "pt": "Quando você sai do carro — automaticamente",
   "zh": "下车时——自动保存"
+ },
+ "Home (tab)": {
+  "de": "Start",
+  "es": "Inicio",
+  "fr": "Accueil",
+  "hi": "होम",
+  "it": "Home",
+  "ja": "ホーム",
+  "pt": "Início",
+  "zh": "首页"
  }
 }
