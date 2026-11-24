@@ -1,6 +1,14 @@
-# 24 Nov — Identify on Manan's living-room photo (a big TV came back "Container 88%, Vase 88%"): views now count by
-# how much of the photo they show; filler labels go down. The first test prints what the classifier can name.
+# 24 Nov, run 2 — Identify on Manan's living-room photo led with "Night Sky 56%" (run 1). Theory "weight the views by
+# size" was wrong for this photo: the TV's own picture names it. Diagnostics: what each view, the salient boxes and the
+# big rectangles are called, with the TV and room words' confidence in each.
 HandyToolsTests/IdentifyRealTests
-HandyToolsTests/EngineTests/testIdentifierCleansLabels
-# The menu proof stays in the list (it passed on run 5).
-HandyToolsTests/MenuBoardTests
+# Five tabs (Home, Tools, Build, My stuff, Settings) and animated stickers.
+HandyToolsTests/StickerMotionTests
+HandyToolsTests/HomeShelvesTests
+HandyToolsTests/OwnRemindersTests
+HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
+HandyToolsUITests/PromiseTests/testBuildTabMakesToolsAndReminders
+HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen
+HandyToolsUITests/PromiseTests/testWelcomeIsOneScreenAndOpensTheChosenTab
+HandyToolsUITests/PromiseTests/testForYouCardShowsTheCarAndNotNowPutsItAway
+HandyToolsUITests/PromiseTests/testRunFromMyToolsStaysOpenAndComesBack
