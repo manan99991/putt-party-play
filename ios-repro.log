@@ -1,10 +1,12 @@
+Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' started.
+Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (155.890 seconds).
 Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' started.
-VIDEOFX| 1s: poster true rolling false playing false item true size 1,080 t 0.0
-VIDEOFX| 3s: poster true rolling false playing false item true size 1,080 t 0.0
-VIDEOFX| 6s: poster true rolling false playing false item true size 1,080 t 0.0
-VIDEOFX| 10s: poster true rolling false playing false item true size 1,080 t 0.0
-Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (77.960 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 77.960 (77.982) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 77.960 (77.988) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 77.960 (77.991) seconds
+VIDEOFX| 1s: poster true rolling false playing false item false status -1 wait - err - size 0 t nan
+VIDEOFX| 3s: poster true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err The operation could not be completed size 1080 t 0.0
+VIDEOFX| 6s: poster true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err The operation could not be completed size 1080 t 0.0
+VIDEOFX| 10s: poster true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err The operation could not be completed size 1080 t 0.0
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (57.401 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 213.291 (213.365) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 213.291 (213.368) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 213.291 (213.371) seconds
 == crash reports
