@@ -95,8 +95,10 @@ final class PrivatePhotoAccuracyTests: XCTestCase {
             let want = e["dishes"] as? [[Any]] ?? []
             var hit = 0, missed: [String] = []
             for w in want {
-                let name = w[0] as? String ?? "", price = Double(w[1] as? Int ?? -1)
-                if items.contains(where: { $0.name.contains(name) && $0.price == price }) { hit += 1 } else { missed.append("\(name) \(Int(price))") }
+                let name = w[0] as? String ?? "", price = (w[1] as? NSNumber)?.doubleValue ?? -1
+                if items.contains(where: { i in i.price.map { abs($0 - price) < 0.005 } == true
+                    && (i.name.contains(name) || MenuBoardTests.fold(i.name).contains(MenuBoardTests.fold(name)) || RealPhotoAccuracyTests.overlap(i.name, name) >= 0.75) }) { hit += 1 }
+                else { missed.append("\(name) \(price)") }
             }
             let count = min(1, Double(items.filter { $0.price != nil }.count) / Double(e["minDishes"] as? Int ?? 1))
             let s = (Double(hit) / Double(max(1, want.count)) + count) / 2

@@ -44688,5 +44688,45 @@
   "ja": "Tenzy内蔵エンジンが作成しました。Apple Intelligenceをオンにした iPhone 15 Pro 以降では、より充実したメモを作成します。",
   "pt": "Escrito pelo motor do Tenzy. Em um iPhone 15 Pro ou mais novo com a Apple Intelligence ativada, o Tenzy escreve notas mais completas.",
   "zh": "由 Tenzy 内置引擎撰写。在开启 Apple 智能的 iPhone 15 Pro 或更新机型上，Tenzy 会写出更完整的笔记。"
+ },
+ "Reading every line of the menu — small print takes a few seconds…": {
+  "de": "Jede Zeile der Speisekarte wird gelesen – Kleingedrucktes dauert ein paar Sekunden…",
+  "es": "Leyendo cada línea de la carta: la letra pequeña tarda unos segundos…",
+  "fr": "Lecture de chaque ligne du menu — les petits caractères prennent quelques secondes…",
+  "hi": "मेन्यू की हर पंक्ति पढ़ी जा रही है — छोटे अक्षरों में कुछ सेकंड लगते हैं…",
+  "it": "Lettura di ogni riga del menu: i caratteri piccoli richiedono qualche secondo…",
+  "ja": "メニューを1行ずつ読み取り中 — 小さな文字は数秒かかります…",
+  "pt": "Lendo cada linha do cardápio — letras pequenas levam alguns segundos…",
+  "zh": "正在逐行读取菜单——小字需要几秒钟…"
+ },
+ "Showing quick English names. For full translations, iOS downloads the language the first time — tap Translate dishes again.": {
+  "de": "Es werden kurze englische Namen angezeigt. Für vollständige Übersetzungen lädt iOS die Sprache beim ersten Mal – tippe erneut auf „Gerichte übersetzen“.",
+  "es": "Se muestran nombres rápidos en inglés. Para traducciones completas, iOS descarga el idioma la primera vez: vuelve a tocar Traducir platos.",
+  "fr": "Noms anglais rapides affichés. Pour des traductions complètes, iOS télécharge la langue la première fois — touchez à nouveau Traduire les plats.",
+  "hi": "झटपट अंग्रेज़ी नाम दिखाए जा रहे हैं। पूरे अनुवाद के लिए iOS पहली बार भाषा डाउनलोड करता है — फिर से व्यंजनों का अनुवाद करें पर टैप करें।",
+  "it": "Mostro nomi rapidi in inglese. Per le traduzioni complete, iOS scarica la lingua la prima volta: tocca di nuovo Traduci piatti.",
+  "ja": "簡易的な英語名を表示しています。完全な翻訳には、初回にiOSが言語をダウンロードします — もう一度「料理を翻訳」をタップしてください。",
+  "pt": "Mostrando nomes rápidos em inglês. Para traduções completas, o iOS baixa o idioma na primeira vez — toque em Traduzir pratos de novo.",
+  "zh": "正在显示简短的英文名称。如需完整翻译，iOS 首次会下载该语言——请再次轻点“翻译菜品”。"
+ },
+ "Market price": {
+  "de": "Tagespreis",
+  "es": "Precio de mercado",
+  "fr": "Prix du marché",
+  "hi": "बाज़ार भाव",
+  "it": "Prezzo di mercato",
+  "ja": "時価",
+  "pt": "Preço de mercado",
+  "zh": "时价"
+ },
+ "Preview": {
+  "de": "Vorschau",
+  "es": "Vista previa",
+  "fr": "Aperçu",
+  "hi": "पूर्वावलोकन",
+  "it": "Anteprima",
+  "ja": "プレビュー",
+  "pt": "Pré-visualização",
+  "zh": "预览"
  }
 }

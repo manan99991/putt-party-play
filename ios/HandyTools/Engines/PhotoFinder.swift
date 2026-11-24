@@ -92,7 +92,12 @@ enum PhotoFinder {
                             "breakfast", "lunch", "dinner", "combo", "platter", "sides", "kids menu", "vegetarian", "vegan", "gluten",
                             "postre", "bebidas", "plato", "boissons", "plats", "getränke", "vorspeise", "bevande", "primi", "secondi",
                             "元", "饭", "面", "汤", "鸡", "鱼", "肉", "菜", "粥", "虾", "牛", "豆腐", "炒", "套餐",
-                            "ラーメン", "定食", "円", "寿司", "메뉴", "밥", "₹", "€", "£", "¥"]
+                            "ラーメン", "定食", "円", "寿司", "메뉴", "밥", "₹", "€", "£", "¥",
+                            // 23 Nov: a steakhouse menu and an Indian menu board were missed
+                            "steak", "ribeye", "filet", "sirloin", "lobster", "scallop", "salmon", "bisque", "entrées", "sides",
+                            "appetizers", "soups", "salads", "sauce", "tikka", "masala", "tandoor", "kebab", "samosa", "idly", "vada",
+                            "dosas", "uttapam", "gravies", "chaat", "pulao", "manchurian", "gobi", "roti", "kulcha", "chai", "pastries",
+                            "wings", "fries", "nachos", "quesadilla", "noodles", "fried rice", "special", "specials"]
     /// Words that mean money apps and statements, not a menu or a shop receipt.
     static let financeWords = ["shares", "portfolio", "market value", "total return", "today's return", "position", "p&l", "dividend",
                                "balance", "available", "account", "transfer", "deposit", "withdraw", "stock", "equity", "options",
@@ -152,7 +157,7 @@ enum PhotoFinder {
     private static var cacheURL: URL {
         let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        return dir.appendingPathComponent("photo-finder-v2.json")   // v2: careful reading in any language
+        return dir.appendingPathComponent("photo-finder-v3.json")   // v3: dense pages (menu boards) read at 1,600 px
     }
     static func loadCache() -> [String: Seen] {
         (try? Data(contentsOf: cacheURL)).flatMap { try? JSONDecoder().decode([String: Seen].self, from: $0) } ?? [:]
@@ -202,7 +207,7 @@ enum PhotoFinder {
     static func read(_ a: PHAsset) async -> Seen? {
         guard let img = await image(a, side: 720), let cg = img.cgImage else { return nil }
         let shot = a.mediaSubtypes.contains(.photoScreenshot)
-        return await Task.detached(priority: .utility) { () -> Seen in
+        let quick = await Task.detached(priority: .utility) { () -> (labels: [String], text: String, faces: Int, codes: Int, dense: Bool) in
             let cls = VNClassifyImageRequest()
             let lines = VNDetectTextRectanglesRequest()      // where writing is, in any script — cheap
             let face = VNDetectFaceRectanglesRequest()
@@ -213,15 +218,29 @@ enum PhotoFinder {
             // Only photos with real writing on them are read word by word — carefully, in whatever language it's in
             // (a Chinese menu read by the quick English-only pass came back empty).
             var text = ""
-            if (lines.results?.count ?? 0) >= 3 {
+            let found = lines.results?.count ?? 0
+            if found >= 3 {
                 let txt = VNRecognizeTextRequest()
                 txt.recognitionLevel = .accurate; txt.usesLanguageCorrection = false; txt.automaticallyDetectsLanguage = true
                 try? handler.perform([txt])
                 text = (txt.results ?? []).compactMap { $0.topCandidates(1).first?.string }.joined(separator: "\n")
             }
-            return Seen(modified: a.modificationDate?.timeIntervalSince1970 ?? 0, labels: Array(labels), text: String(text.prefix(1200)),
-                        faces: face.results?.count ?? 0, codes: code.results?.count ?? 0, screenshot: shot)
+            return (labels: Array(labels), text: text, faces: face.results?.count ?? 0, codes: code.results?.count ?? 0, dense: found >= 25)
         }.value
+        // A page packed with small writing (a menu board, a full menu, a statement) is unreadable at 720 px: read it
+        // again sharper, so what's on it is actually known (23 Nov: menu boards weren't found).
+        var text = quick.text
+        if quick.dense, text.count < 900, let big = await image(a, side: 1800), let bcg = big.cgImage {
+            text = await Task.detached(priority: .utility) { () -> String in
+                let txt = VNRecognizeTextRequest()
+                txt.recognitionLevel = .accurate; txt.usesLanguageCorrection = false; txt.automaticallyDetectsLanguage = true
+                txt.minimumTextHeight = 0.008
+                try? VNImageRequestHandler(cgImage: bcg, options: [:]).perform([txt])
+                return (txt.results ?? []).compactMap { $0.topCandidates(1).first?.string }.joined(separator: "\n")
+            }.value
+        }
+        return Seen(modified: a.modificationDate?.timeIntervalSince1970 ?? 0, labels: quick.labels, text: String(text.prefix(2000)),
+                    faces: quick.faces, codes: quick.codes, screenshot: shot)
     }
 }
 

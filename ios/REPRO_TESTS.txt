@@ -1,6 +1,11 @@
-# 24 Nov — Meeting Notes rewrite (Manan: summary was "Okay. Okay. Okay.", to-dos were chat, the email a dump).
-# The written part now comes from Apple Intelligence reading the meeting part by part, or a strict built-in engine.
-# Proven on its own before it rides a TestFlight, with the catalog check that stopped the last ship.
+# 24 Nov — Menu Assistant on Manan's own photos (a five-screen Indian menu board came back as 8 "dishes"; a steakhouse
+# menu misread "Cowboy" and ran descriptions together; some Chinese dishes stayed in characters). The reader now reads
+# small print tile by tile at full resolution and cuts the page into its panels and columns. Proven on the two real
+# photos (decrypted here from the encrypted test set) and the earlier menu tests.
+HandyToolsTests/MenuBoardTests
+HandyToolsTests/GuideMenuReceiptTests
+HandyToolsTests/EngineTests/testMenuReaderFindsDishesPricesAndWhatsInThem
+# Still waiting on its own proof: the Meeting Notes rewrite.
 HandyToolsTests/MeetingDigestTests
 HandyToolsTests/EngineTests/testCatalogIsConsistent
 HandyToolsTests/EngineTests/testMeetingTurnsSplitAtPauses

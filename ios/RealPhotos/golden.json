@@ -1,38 +1,879 @@
 {
  "note": "Right answers for the real photos Manan tested with. The photos are in private.zip.enc (encrypted: some are stock or web images we may not republish); CI decrypts them with the TEST_PHOTOS_KEY secret. Each entry: the photo, the tool, and what a person would expect the tool to get.",
  "receipts": [
-  {"file": "receipt-east-repair-plain.png", "merchant": "East Repair Inc.", "date": ["2019-02-11"], "total": 154.06, "subtotal": 145.00, "tax": 9.06,
-   "items": [["Front and rear brake cables", 100.00], ["New set of pedal arms", 30.00], ["Labor 3hrs", 15.00]]},
-  {"file": "receipt-east-repair-vintage.png", "merchant": "East Repair Inc.", "date": ["2019-02-11"], "total": 154.06, "subtotal": 145.00, "tax": 9.06,
-   "items": [["Front and rear brake cables", 100.00], ["New set of pedal arms", 30.00], ["Labor 3hrs", 15.00]]},
-  {"file": "receipt-xero.png", "merchant": "Yeehaw Posters and Stickers", "date": ["2022-02-28"], "total": 482.63,
-   "items": [["Cartoon mouse poster - framed", 214.50], ["President poster - framed", 160.88], ["Dancing sheriff poster - framed", 107.25]]},
-  {"file": "receipt-quickbooks.png", "merchant": "East Repair Inc.", "date": ["2022-11-08", "2022-08-11"], "total": 145.00,
-   "items": [["Front and rear brake cables", 100.00], ["New set of pedal arms", 30.00], ["Labor 3hrs", 15.00]]}
+  {
+   "file": "receipt-east-repair-plain.png",
+   "merchant": "East Repair Inc.",
+   "date": [
+    "2019-02-11"
+   ],
+   "total": 154.06,
+   "subtotal": 145.0,
+   "tax": 9.06,
+   "items": [
+    [
+     "Front and rear brake cables",
+     100.0
+    ],
+    [
+     "New set of pedal arms",
+     30.0
+    ],
+    [
+     "Labor 3hrs",
+     15.0
+    ]
+   ]
+  },
+  {
+   "file": "receipt-east-repair-vintage.png",
+   "merchant": "East Repair Inc.",
+   "date": [
+    "2019-02-11"
+   ],
+   "total": 154.06,
+   "subtotal": 145.0,
+   "tax": 9.06,
+   "items": [
+    [
+     "Front and rear brake cables",
+     100.0
+    ],
+    [
+     "New set of pedal arms",
+     30.0
+    ],
+    [
+     "Labor 3hrs",
+     15.0
+    ]
+   ]
+  },
+  {
+   "file": "receipt-xero.png",
+   "merchant": "Yeehaw Posters and Stickers",
+   "date": [
+    "2022-02-28"
+   ],
+   "total": 482.63,
+   "items": [
+    [
+     "Cartoon mouse poster - framed",
+     214.5
+    ],
+    [
+     "President poster - framed",
+     160.88
+    ],
+    [
+     "Dancing sheriff poster - framed",
+     107.25
+    ]
+   ]
+  },
+  {
+   "file": "receipt-quickbooks.png",
+   "merchant": "East Repair Inc.",
+   "date": [
+    "2022-11-08",
+    "2022-08-11"
+   ],
+   "total": 145.0,
+   "items": [
+    [
+     "Front and rear brake cables",
+     100.0
+    ],
+    [
+     "New set of pedal arms",
+     30.0
+    ],
+    [
+     "Labor 3hrs",
+     15.0
+    ]
+   ]
+  }
  ],
  "posters": [
-  {"file": "poster-upcoming-events.jpg", "title": "Upcoming Events", "month": 3, "day": 12, "start": "21:00", "location": "Lorem Ipsum Auditorium", "url": "www.loremipsum.com", "notTitle": ["shutterstock", "Orange Vectors", "VECTOR EPS 10"]},
-  {"file": "poster-speed-dating.jpg", "title": "Speed Dating Dinner", "month": 10, "day": 20, "start": "18:00", "end": "20:00", "location": "Downtown Ballroom 1234 Broadway Ave", "url": "www.speeddating.com", "notes": ["$80", "$100", "555-1234", "susan@speeddating.com"]}
+  {
+   "file": "poster-upcoming-events.jpg",
+   "title": "Upcoming Events",
+   "month": 3,
+   "day": 12,
+   "start": "21:00",
+   "location": "Lorem Ipsum Auditorium",
+   "url": "www.loremipsum.com",
+   "notTitle": [
+    "shutterstock",
+    "Orange Vectors",
+    "VECTOR EPS 10"
+   ]
+  },
+  {
+   "file": "poster-speed-dating.jpg",
+   "title": "Speed Dating Dinner",
+   "month": 10,
+   "day": 20,
+   "start": "18:00",
+   "end": "20:00",
+   "location": "Downtown Ballroom 1234 Broadway Ave",
+   "url": "www.speeddating.com",
+   "notes": [
+    "$80",
+    "$100",
+    "555-1234",
+    "susan@speeddating.com"
+   ]
+  }
  ],
  "menus": [
-  {"file": "menu-chinese-red.jpg", "minDishes": 50, "dishes": [["黑椒牛肉烩饭", 18], ["鸡腿饭套餐", 18], ["糖醋排骨饭", 15], ["台式三杯鸡饭", 13], ["法式猪扒饭", 8], ["鱼香肉丝套餐", 8], ["铁板田鸡", 18], ["铁板鱿鱼", 15], ["皮蛋瘦肉粥", 6], ["香滑田鸡粥", 8], ["鸡汁汤面", 5], ["扬州炒饭", 8], ["青椒牛肉炒饭", 9], ["咖喱炒饭", 10], ["牛柳炒乌冬面", 12], ["海鲜炒米粉", 10], ["川味回锅肉", 10], ["芗城荔枝肉", 10], ["鱼香肉丝", 10], ["青椒炒肉丝", 10], ["剁椒鱼头", 20], ["花蛤豆腐汤", 8], ["鱼头豆腐汤", 12], ["七彩干贝羹", 15]],
-   "traps": {"铁板田鸡": "frog", "香滑田鸡粥": "frog", "鱼香肉丝": "pork"}, "notDishes": ["www.nipic.com", "BY", "NO"]},
-  {"file": "menu-chinese-orange.jpg", "minDishes": 95, "dishes": [["香辣鱼", 50], ["烤虾", 68], ["烤牛蛙", 58], ["烤翅", 55], ["酸菜鱼", 45], ["红烧全鱼", 50], ["重庆辣子鸡", 35], ["盆盆虾", 40], ["馋嘴牛蛙", 48], ["香辣鸡翅", 40], ["川北凉粉", 8], ["口水鸡", 20], ["夫妻肺片", 20], ["拌萝卜皮", 10], ["拍黄瓜", 8], ["皮蛋豆腐", 8], ["泡椒凤爪", 20], ["蒜泥白肉", 20], ["干煸牛肉丝", 38], ["红烧排骨", 32], ["糖醋排骨", 32], ["孜然羊肉", 38], ["锅包肉", 30], ["香辣小河虾", 22], ["鱼香肝尖", 18], ["水煮肉", 24], ["水煮牛肉", 28], ["鱼香肉丝", 18], ["回锅肉", 22], ["家常豆腐", 18], ["香干腊肉", 28]],
-   "traps": {"烤牛蛙": "frog", "馋嘴牛蛙": "frog", "夫妻肺片": "offal", "泡椒凤爪": "chicken feet", "鱼香肉丝": "pork"}}
+  {
+   "file": "menu-chinese-red.jpg",
+   "minDishes": 50,
+   "dishes": [
+    [
+     "黑椒牛肉烩饭",
+     18
+    ],
+    [
+     "鸡腿饭套餐",
+     18
+    ],
+    [
+     "糖醋排骨饭",
+     15
+    ],
+    [
+     "台式三杯鸡饭",
+     13
+    ],
+    [
+     "法式猪扒饭",
+     8
+    ],
+    [
+     "鱼香肉丝套餐",
+     8
+    ],
+    [
+     "铁板田鸡",
+     18
+    ],
+    [
+     "铁板鱿鱼",
+     15
+    ],
+    [
+     "皮蛋瘦肉粥",
+     6
+    ],
+    [
+     "香滑田鸡粥",
+     8
+    ],
+    [
+     "鸡汁汤面",
+     5
+    ],
+    [
+     "扬州炒饭",
+     8
+    ],
+    [
+     "青椒牛肉炒饭",
+     9
+    ],
+    [
+     "咖喱炒饭",
+     10
+    ],
+    [
+     "牛柳炒乌冬面",
+     12
+    ],
+    [
+     "海鲜炒米粉",
+     10
+    ],
+    [
+     "川味回锅肉",
+     10
+    ],
+    [
+     "芗城荔枝肉",
+     10
+    ],
+    [
+     "鱼香肉丝",
+     10
+    ],
+    [
+     "青椒炒肉丝",
+     10
+    ],
+    [
+     "剁椒鱼头",
+     20
+    ],
+    [
+     "花蛤豆腐汤",
+     8
+    ],
+    [
+     "鱼头豆腐汤",
+     12
+    ],
+    [
+     "七彩干贝羹",
+     15
+    ]
+   ],
+   "traps": {
+    "铁板田鸡": "frog",
+    "香滑田鸡粥": "frog",
+    "鱼香肉丝": "pork"
+   },
+   "notDishes": [
+    "www.nipic.com",
+    "BY",
+    "NO"
+   ]
+  },
+  {
+   "file": "menu-chinese-orange.jpg",
+   "minDishes": 95,
+   "dishes": [
+    [
+     "香辣鱼",
+     50
+    ],
+    [
+     "烤虾",
+     68
+    ],
+    [
+     "烤牛蛙",
+     58
+    ],
+    [
+     "烤翅",
+     55
+    ],
+    [
+     "酸菜鱼",
+     45
+    ],
+    [
+     "红烧全鱼",
+     50
+    ],
+    [
+     "重庆辣子鸡",
+     35
+    ],
+    [
+     "盆盆虾",
+     40
+    ],
+    [
+     "馋嘴牛蛙",
+     48
+    ],
+    [
+     "香辣鸡翅",
+     40
+    ],
+    [
+     "川北凉粉",
+     8
+    ],
+    [
+     "口水鸡",
+     20
+    ],
+    [
+     "夫妻肺片",
+     20
+    ],
+    [
+     "拌萝卜皮",
+     10
+    ],
+    [
+     "拍黄瓜",
+     8
+    ],
+    [
+     "皮蛋豆腐",
+     8
+    ],
+    [
+     "泡椒凤爪",
+     20
+    ],
+    [
+     "蒜泥白肉",
+     20
+    ],
+    [
+     "干煸牛肉丝",
+     38
+    ],
+    [
+     "红烧排骨",
+     32
+    ],
+    [
+     "糖醋排骨",
+     32
+    ],
+    [
+     "孜然羊肉",
+     38
+    ],
+    [
+     "锅包肉",
+     30
+    ],
+    [
+     "香辣小河虾",
+     22
+    ],
+    [
+     "鱼香肝尖",
+     18
+    ],
+    [
+     "水煮肉",
+     24
+    ],
+    [
+     "水煮牛肉",
+     28
+    ],
+    [
+     "鱼香肉丝",
+     18
+    ],
+    [
+     "回锅肉",
+     22
+    ],
+    [
+     "家常豆腐",
+     18
+    ],
+    [
+     "香干腊肉",
+     28
+    ]
+   ],
+   "traps": {
+    "烤牛蛙": "frog",
+    "馋嘴牛蛙": "frog",
+    "夫妻肺片": "offal",
+    "泡椒凤爪": "chicken feet",
+    "鱼香肉丝": "pork"
+   }
+  },
+  {
+   "file": "menu-indian-board.jpg",
+   "minDishes": 150,
+   "note": "Five menu screens; the dishes listed are the fourth screen (Breads, Tandoor, Dum Biryani, Rice Specials), each with its Single price.",
+   "dishes": [
+    [
+     "Plain Naan",
+     2.99
+    ],
+    [
+     "Butter Naan",
+     3.49
+    ],
+    [
+     "Garlic Naan",
+     3.49
+    ],
+    [
+     "Tandoori Roti",
+     3.49
+    ],
+    [
+     "Bullet Naan",
+     3.99
+    ],
+    [
+     "Chapati (2 PCS)",
+     3.49
+    ],
+    [
+     "Onion Kulcha",
+     3.49
+    ],
+    [
+     "Rumali Roti",
+     3.99
+    ],
+    [
+     "Paneer Tikka Kebab(8 PCS)",
+     12.99
+    ],
+    [
+     "Malali Tikka (7 PCS)",
+     12.99
+    ],
+    [
+     "Haryali Tikka Kebab(7 PCS)",
+     13.99
+    ],
+    [
+     "Achari Tikka Kebab(7 PCS)",
+     13.99
+    ],
+    [
+     "Chicken Tandoori (2 PCS)",
+     8.99
+    ],
+    [
+     "Chicken Tandoori (4 PCS)",
+     13.99
+    ],
+    [
+     "Chicken Tikka (7 PCS)",
+     13.99
+    ],
+    [
+     "Afghani Paneer Tikka",
+     12.99
+    ],
+    [
+     "Afghani Chicken Tandoori",
+     13.99
+    ],
+    [
+     "Chicken Seekh Kebab",
+     13.99
+    ],
+    [
+     "Veg Biryani",
+     13.99
+    ],
+    [
+     "Gongura Veg Biryani",
+     14.99
+    ],
+    [
+     "Ulvacharu Veg Biryani",
+     14.99
+    ],
+    [
+     "Avakai Veg Biryani",
+     14.99
+    ],
+    [
+     "Chicken Dum Biryani",
+     15.99
+    ],
+    [
+     "Gongura Chicken Dum",
+     16.99
+    ],
+    [
+     "Ulvacharu Chicken Dum",
+     16.99
+    ],
+    [
+     "Avakai Chicken Dum",
+     16.99
+    ],
+    [
+     "Goat Dum",
+     17.99
+    ],
+    [
+     "Gongura Goat Dum",
+     18.99
+    ],
+    [
+     "Ulvacharu Goat Dum",
+     18.99
+    ],
+    [
+     "Avakai Goat Dum",
+     18.99
+    ],
+    [
+     "Jeera Rice",
+     9.99
+    ],
+    [
+     "Curd Rice",
+     9.99
+    ],
+    [
+     "Sambar Rice",
+     9.99
+    ],
+    [
+     "Pulao Rice",
+     9.99
+    ]
+   ]
+  },
+  {
+   "file": "menu-steakhouse.jpg",
+   "minDishes": 38,
+   "note": "Four pages behind glass; the appetizers are hidden by glare, so only the other pages are listed.",
+   "dishes": [
+    [
+     "Diver Scallops",
+     54
+    ],
+    [
+     "Duroc Pork Chop",
+     51
+    ],
+    [
+     "Braised Short Rib",
+     50
+    ],
+    [
+     "Pan-Seared Salmon",
+     46
+    ],
+    [
+     "Lobster & Corn Alfredo",
+     42
+    ],
+    [
+     "Chicken Marsala",
+     39
+    ],
+    [
+     "Baked Mac & Cheese",
+     18
+    ],
+    [
+     "Steakhouse Baked Potato",
+     13
+    ],
+    [
+     "Charred Corn and Roasted Poblano Risotto",
+     13
+    ],
+    [
+     "Indiana Sweet Corn Ragout",
+     13
+    ],
+    [
+     "Garlic Whipped Potatoes",
+     12
+    ],
+    [
+     "Creamy Spinach",
+     12
+    ],
+    [
+     "Cabernet Mushrooms",
+     12
+    ],
+    [
+     "Sautéed Brussels Sprouts",
+     12
+    ],
+    [
+     "Grilled Asparagus",
+     11
+    ],
+    [
+     "A5 Snow-Aged Wagyu Saku Block",
+     158
+    ],
+    [
+     "Wagyu Tomahawk",
+     180
+    ],
+    [
+     "King Cut Filet",
+     78
+    ],
+    [
+     "Queen Cut Filet",
+     68
+    ],
+    [
+     "Cowboy Ribeye",
+     95
+    ],
+    [
+     "Porterhouse",
+     95
+    ],
+    [
+     "Kansas City Strip",
+     92
+    ],
+    [
+     "New York Strip",
+     72
+    ],
+    [
+     "Ribeye",
+     65
+    ],
+    [
+     "Rack of Lamb",
+     90
+    ],
+    [
+     "Surf & Turf",
+     30
+    ],
+    [
+     "Oscar Style",
+     20
+    ],
+    [
+     "Jumbo Grilled Shrimp",
+     10
+    ],
+    [
+     "Diver Scallop",
+     10
+    ],
+    [
+     "Sautéed Mushrooms",
+     7
+    ],
+    [
+     "Sautéed Onions",
+     6
+    ],
+    [
+     "Maître d'Hôtel Butter",
+     7
+    ],
+    [
+     "Sage Blue Cheese Butter",
+     7
+    ],
+    [
+     "Hollandaise Sauce",
+     7
+    ],
+    [
+     "Béarnaise Sauce",
+     6
+    ],
+    [
+     "Creamy Horseradish",
+     6
+    ],
+    [
+     "Raw Horseradish",
+     6
+    ],
+    [
+     "Maytag Blue Cheese Crumbles",
+     6
+    ]
+   ]
+  }
  ],
  "boards": [
-  {"file": "board-farm-todo.png", "kind": "lists",
-   "sections": ["BUILD-FIX", "MUST DO FIRST ALWAYS!"],
-   "items": ["outhouse", "ext. lights", "gutter", "install road sign", "plant chickes", "seed grain amaranth", "mulch brassicas", "update seed tracking", "screen door", "set up irr. pump", "mow grass mulch", "seed corn", "seed oats in fall brassica section", "final harvest spinach", "drip bombs", "weed peas", "weed beets", "weed green onion", "weed potatoes", "clean GH lettuce", "seed bok choy", "weed onions", "email CSA", "fix market bins", "compost tea", "set up washing station", "fence battery check", "update farm site", "clear fence", "turn compost", "canopy weights", "seed radish", "test soaker hoses", "market stand", "field stand", "trailer", "soil test", "packing station", "tent", "drip irrigation", "signage", "untreated twine", "wheel hoe", "tom cage", "enlarge pond", "CHECK", "WATER", "WEED", "CLEAN UP"],
-   "done": ["untreated twine", "wheel hoe", "clean GH lettuce"]},
-  {"file": "board-sticky-calendar.jpg", "kind": "calendar",
-   "events": [["Dinner w/ Dad", 3, "19:30"], ["Skype w/ Adam", 4, "10:00"], ["Skype w/ Aaron (CM)", 5, "09:00"], ["MTC w/ Tyson", 13, "20:30"]],
-   "items": ["visualizing tasks", "before & after work", "preparing for productivity", "schedule your week", "Sweden's 6hr workdays", "The List issue 2", "where post ideas came from", "30 ways to work smarter", "what we call our writing", "Physical products I love", "keep employees happy", "editing", "time wasters", "short posts", "what I wish I'd known about startups"],
-   "sections": ["SUBMITTED", "TO PUBLISH", "TO INVOICE"]},
-  {"file": "board-people-week.jpg", "kind": "people",
-   "rows": [["Angie Alston", "Mon", "Job 208-1"], ["Angie Alston", "Fri", "Job 208-1"], ["Al Cantor", "Tue", "Job 216"], ["Al Cantor", "Wed", "Catch-up"], ["Al Cantor", "Fri", "Job 410"], ["Adam Carraway", "Mon", "Vacation"], ["Ken Darlington", "Wed", "Job 439-1"], ["Kim Farthington", "Wed", "Job 618"], ["Kim Farthington", "Fri", "Job 620"], ["Carri Smithington", "Mon", "Float - Unassigned"]]},
-  {"file": "board-in-out.jpg", "kind": "people",
-   "out": ["Brownly", "Bell", "Haworth", "Davidson", "Thompson", "Seiger"],
-   "comments": [["Bell", "Vacation"], ["Davidson", "Sales Mtg."], ["Seiger", "Back Mon."]]}
+  {
+   "file": "board-farm-todo.png",
+   "kind": "lists",
+   "sections": [
+    "BUILD-FIX",
+    "MUST DO FIRST ALWAYS!"
+   ],
+   "items": [
+    "outhouse",
+    "ext. lights",
+    "gutter",
+    "install road sign",
+    "plant chickes",
+    "seed grain amaranth",
+    "mulch brassicas",
+    "update seed tracking",
+    "screen door",
+    "set up irr. pump",
+    "mow grass mulch",
+    "seed corn",
+    "seed oats in fall brassica section",
+    "final harvest spinach",
+    "drip bombs",
+    "weed peas",
+    "weed beets",
+    "weed green onion",
+    "weed potatoes",
+    "clean GH lettuce",
+    "seed bok choy",
+    "weed onions",
+    "email CSA",
+    "fix market bins",
+    "compost tea",
+    "set up washing station",
+    "fence battery check",
+    "update farm site",
+    "clear fence",
+    "turn compost",
+    "canopy weights",
+    "seed radish",
+    "test soaker hoses",
+    "market stand",
+    "field stand",
+    "trailer",
+    "soil test",
+    "packing station",
+    "tent",
+    "drip irrigation",
+    "signage",
+    "untreated twine",
+    "wheel hoe",
+    "tom cage",
+    "enlarge pond",
+    "CHECK",
+    "WATER",
+    "WEED",
+    "CLEAN UP"
+   ],
+   "done": [
+    "untreated twine",
+    "wheel hoe",
+    "clean GH lettuce"
+   ]
+  },
+  {
+   "file": "board-sticky-calendar.jpg",
+   "kind": "calendar",
+   "events": [
+    [
+     "Dinner w/ Dad",
+     3,
+     "19:30"
+    ],
+    [
+     "Skype w/ Adam",
+     4,
+     "10:00"
+    ],
+    [
+     "Skype w/ Aaron (CM)",
+     5,
+     "09:00"
+    ],
+    [
+     "MTC w/ Tyson",
+     13,
+     "20:30"
+    ]
+   ],
+   "items": [
+    "visualizing tasks",
+    "before & after work",
+    "preparing for productivity",
+    "schedule your week",
+    "Sweden's 6hr workdays",
+    "The List issue 2",
+    "where post ideas came from",
+    "30 ways to work smarter",
+    "what we call our writing",
+    "Physical products I love",
+    "keep employees happy",
+    "editing",
+    "time wasters",
+    "short posts",
+    "what I wish I'd known about startups"
+   ],
+   "sections": [
+    "SUBMITTED",
+    "TO PUBLISH",
+    "TO INVOICE"
+   ]
+  },
+  {
+   "file": "board-people-week.jpg",
+   "kind": "people",
+   "rows": [
+    [
+     "Angie Alston",
+     "Mon",
+     "Job 208-1"
+    ],
+    [
+     "Angie Alston",
+     "Fri",
+     "Job 208-1"
+    ],
+    [
+     "Al Cantor",
+     "Tue",
+     "Job 216"
+    ],
+    [
+     "Al Cantor",
+     "Wed",
+     "Catch-up"
+    ],
+    [
+     "Al Cantor",
+     "Fri",
+     "Job 410"
+    ],
+    [
+     "Adam Carraway",
+     "Mon",
+     "Vacation"
+    ],
+    [
+     "Ken Darlington",
+     "Wed",
+     "Job 439-1"
+    ],
+    [
+     "Kim Farthington",
+     "Wed",
+     "Job 618"
+    ],
+    [
+     "Kim Farthington",
+     "Fri",
+     "Job 620"
+    ],
+    [
+     "Carri Smithington",
+     "Mon",
+     "Float - Unassigned"
+    ]
+   ]
+  },
+  {
+   "file": "board-in-out.jpg",
+   "kind": "people",
+   "out": [
+    "Brownly",
+    "Bell",
+    "Haworth",
+    "Davidson",
+    "Thompson",
+    "Seiger"
+   ],
+   "comments": [
+    [
+     "Bell",
+     "Vacation"
+    ],
+    [
+     "Davidson",
+     "Sales Mtg."
+    ],
+    [
+     "Seiger",
+     "Back Mon."
+    ]
+   ]
+  }
  ]
 }

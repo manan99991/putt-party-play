@@ -213,7 +213,10 @@ struct SmartPhotoPicker: View {
                 finishFiles(files)
             } else {
                 var out: [UIImage] = []
-                for id in ids { if let a = byID[id], let im = await PhotoFinder.image(a, side: 2600) { out.append(im) } }
+                // A menu board's small print needs every pixel the camera took (23 Nov: a 5-screen board read at
+                // 2,600 px lost most of its dishes); everything else is plenty at 2,600.
+                let side: CGFloat = kind == .menu ? 6000 : 2600
+                for id in ids { if let a = byID[id], let im = await PhotoFinder.image(a, side: side) { out.append(im) } }
                 finish(out)
             }
         }

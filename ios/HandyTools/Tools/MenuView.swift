@@ -52,12 +52,18 @@ struct MenuView: View {
                     else if let c = r.clientIdentifier, c.hasPrefix("sec-"), let i = Int(c.dropFirst(4)), i < secs.count { names[secs[i]] = r.targetText }
                 }
                 await MainActor.run {
-                    translated = map; sectionNames = names; translating = false
+                    translated = map; sectionNames = names
                     // The translation names what's in a dish too ("…with shredded pork") — add what it says.
                     for i in items.indices where !items[i].note { if let t = map[items[i].id] { items[i].flags.formUnion(MenuReader.flags(t)) } }
                 }
+                await finishWithModel()
             } catch {
-                await MainActor.run { translating = false; errorText = "Couldn't translate — the first time, iOS downloads the language. Try again in a moment." }
+                // Apple's translation isn't ready (the language isn't downloaded, or the download was turned down):
+                // the phone's own model translates instead, so no dish is left in a script the person can't read.
+                await finishWithModel()
+                await MainActor.run {
+                    if translated.isEmpty { errorText = "Showing quick English names. For full translations, iOS downloads the language the first time — tap Translate dishes again." }
+                }
             }
         }
     }
@@ -86,7 +92,7 @@ struct MenuView: View {
             SmartPhotoButton(kind: .menu, picked: { if let i = $0.first { read(i) } }) {
                 Label(L("Choose menu photo"), systemImage: "photo").frame(maxWidth: .infinity)
             }.primaryButton()
-            if reading { ToolProgressBar(label: "Reading the menu…", showsTime: false) }
+            if reading { ToolProgressBar(label: "Reading every line of the menu — small print takes a few seconds…", showsTime: false) }
             if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         }
         .cardStyle(padding: HandySpacing.s16)
@@ -172,7 +178,7 @@ struct MenuView: View {
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
-                    if !item.priceText.isEmpty { Text(item.priceText).font(HandyFont.body).monospacedDigit() }
+                    if !item.priceText.isEmpty { Text(L(item.priceText)).font(HandyFont.body).monospacedDigit() }
                     if let p = item.price, let r = rate {
                         Text((p * r).formatted(.currency(code: homeCurrency))).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     }
@@ -191,6 +197,11 @@ struct MenuView: View {
                     case .ask:
                         Label(L("Ask first"), systemImage: "questionmark.circle.fill").font(HandyFont.micro).foregroundStyle(HandyColor.amber)
                     }
+                }
+                ForEach(item.tags, id: \.self) { t in
+                    Text(L(t)).font(HandyFont.micro).foregroundStyle(HandyColor.success)
+                        .padding(.horizontal, 6).padding(.vertical, 2)
+                        .background(HandyColor.success.opacity(0.12), in: Capsule())
                 }
                 ForEach(MenuReader.Flag.allCases.filter { item.flags.contains($0) && !clash.contains($0) }, id: \.self) { f in
                     Text(L(f.title)).font(HandyFont.micro)
@@ -241,6 +252,34 @@ struct MenuView: View {
                 // A menu in a script the person can't read is translated straight away.
                 if MenuReader.needsTranslation(lines) { startTranslation() }
             }
+        }
+    }
+
+    /// Every dish still without a translation goes to Apple's on-device model, 30 at a time (23 Nov: some dishes
+    /// stayed in Chinese). Without the model, the built-in menu glossary's names stand.
+    private func finishWithModel() async {
+        let missing = await MainActor.run { items.filter { !$0.note && translated[$0.id] == nil && MenuReader.needsTranslation([$0.name]) } }
+        guard !missing.isEmpty, AIEngine.isAvailable else { await MainActor.run { translating = false }; return }
+        let lang = Locale(identifier: "en").localizedString(forLanguageCode: String(Localizer.shared.language.prefix(2))) ?? "English"
+        var got: [UUID: String] = [:]
+        for start in stride(from: 0, to: missing.count, by: 30) {
+            let part = Array(missing[start..<min(start + 30, missing.count)])
+            let list = part.enumerated().map { "\($0.offset + 1). \($0.element.name)" }.joined(separator: "\n")
+            guard let reply = try? await AIEngine.run(
+                instructions: "You translate restaurant dish names into \(lang), the way a good waiter would say them: short and plain, naming what the dish is and its main ingredients. Keep each number. One line per dish. No notes, no prices.",
+                prompt: list, timeout: 45) else { continue }
+            for line in reply.split(whereSeparator: \.isNewline) {
+                let t = line.trimmingCharacters(in: .whitespaces)
+                guard let dot = t.firstIndex(where: { $0 == "." || $0 == ")" || $0 == "、" }), let n = Int(t[..<dot].trimmingCharacters(in: .whitespaces)),
+                      n >= 1, n <= part.count else { continue }
+                let name = t[t.index(after: dot)...].trimmingCharacters(in: .whitespaces)
+                if !name.isEmpty, !MenuReader.needsTranslation([name]) { got[part[n - 1].id] = name }
+            }
+        }
+        await MainActor.run {
+            for (k, v) in got where translated[k] == nil { translated[k] = v }
+            for i in items.indices where !items[i].note { if let t = got[items[i].id] { items[i].flags.formUnion(MenuReader.flags(t)) } }
+            translating = false
         }
     }
 

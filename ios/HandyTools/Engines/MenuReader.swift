@@ -71,6 +71,8 @@ enum MenuReader {
         var note = false
         /// When the name alone can't settle it: a dish that's usually cooked with something it doesn't name.
         var caution: String? = nil
+        /// What the menu marks next to the price: "Gluten-free", "Dairy-free", "Vegetarian", "New".
+        var tags: [String] = []
         static func == (a: Item, b: Item) -> Bool { a.name == b.name && a.detail == b.detail && a.priceText == b.priceText && a.section == b.section && a.note == b.note }
     }
 
@@ -109,20 +111,69 @@ enum MenuReader {
         options: [.caseInsensitive])
     private static let spacedDigits = try! NSRegularExpression(pattern: #"(?<=\d) (?=\d)"#)
 
-    /// A trailing price on a line: (text before it, the price as shown, its value).
-    static func splitPrice(_ raw: String) -> (name: String, shown: String, value: Double)? {
-        // "1 0 元" (letter-spaced menus) is 10元.
-        let line = spacedDigits.stringByReplacingMatches(in: raw, range: NSRange(location: 0, length: (raw as NSString).length), withTemplate: "")
-        let ns = line as NSString
-        guard let m = priceRE.firstMatch(in: line, range: NSRange(location: 0, length: ns.length)) else { return nil }
-        let num = ns.substring(with: m.range(at: 2))
-        let hasSymbol = m.range(at: 1).location != NSNotFound || m.range(at: 3).location != NSNotFound
-        let hasDecimals = num.contains(".") || num.contains(",")
-        // A bare integer is only a price with a currency mark or when it isn't a year/quantity-looking number.
-        guard hasSymbol || hasDecimals || (num.count <= 3 && (Int(num) ?? 0) > 0) else { return nil }
-        let name = ns.substring(to: m.range.location).trimmingCharacters(in: CharacterSet(charactersIn: " .·-–—_~:|\t"))
-        guard let v = Double(num.replacingOccurrences(of: ",", with: ".")) else { return nil }
-        return (name, ns.substring(with: m.range).trimmingCharacters(in: CharacterSet(charactersIn: " .")), v)
+    /// Marks printed after a price that aren't part of it: GF / DF (gluten- and dairy-free), V / VG, [New], a stray dash.
+    private static let trailingMarks = try! NSRegularExpression(
+        pattern: #"(?:\s*(?:\b(?:gf|df|v|vg|ve|gf\s*/\s*df|df\s*/\s*gf|new)\b|\[\s*new\s*\]|\(\s*new\s*\)|[*†‡\-–—]))+\s*$"#, options: [.caseInsensitive])
+    /// Size words between two prices ("Single $13.99 Family $39.99", "Full 90 / Half 50", "Small / Large").
+    private static let sizeWords = try! NSRegularExpression(
+        pattern: #"(?:\s*[/|]\s*|\s+)(?:full|half|single|family|small|medium|large|regular|reg|sm|lg|glass|bottle|cup|bowl|pint|1\s?scoop|2\s?scoops?)\s*[/|]?\s*$"#, options: [.caseInsensitive])
+
+    /// The marks after the price (GF, DF, V, New…), as written, upper-cased.
+    static func marks(_ raw: String) -> [String] {
+        let ns = raw as NSString
+        guard let m = trailingMarks.firstMatch(in: raw, range: NSRange(location: 0, length: ns.length)) else { return [] }
+        return ns.substring(with: m.range).uppercased().components(separatedBy: CharacterSet.alphanumerics.inverted).filter { ["GF", "DF", "V", "VG", "VE", "NEW"].contains($0) }
+    }
+
+    /// A trailing price on a line: (text before it, the price as shown, its value). `strict` is for menus whose
+    /// prices all carry a currency mark or cents ("$ 11.99"): there a bare number is part of the name — "Chicken 65",
+    /// "Gobi 65" are dishes, not prices. A second price on the line (Single / Family, Full / Half) is kept in `shown`.
+    static func splitPrice(_ raw: String, strict: Bool = false) -> (name: String, shown: String, value: Double)? {
+        // "1 0 元" (letter-spaced menus) is 10元 — only on menus written that way, so "Chicken 65 11.99" stays two numbers.
+        var line = raw.contains(where: { "元円원块".contains($0) || isCJK($0) })
+            ? spacedDigits.stringByReplacingMatches(in: raw, range: NSRange(location: 0, length: (raw as NSString).length), withTemplate: "") : raw
+        line = trailingMarks.stringByReplacingMatches(in: line, range: NSRange(location: 0, length: (line as NSString).length), withTemplate: "")
+        var shownParts: [String] = []
+        var value: Double?
+        var rest = line
+        var firstHasCents: Bool?
+        for _ in 0..<3 {
+            let ns = rest as NSString
+            guard let m = priceRE.firstMatch(in: rest, range: NSRange(location: 0, length: ns.length)) else { break }
+            let num = ns.substring(with: m.range(at: 2))
+            let hasSymbol = m.range(at: 1).location != NSNotFound || m.range(at: 3).location != NSNotFound
+            let hasDecimals = num.contains(".") || num.contains(",")
+            // A bare integer is only a price with a currency mark or when it isn't a year/quantity-looking number.
+            guard hasSymbol || hasDecimals || (!strict && num.count <= 3 && (Int(num) ?? 0) > 0) else { break }
+            // A second price is written like the first ("$ 13.99 $ 39.99", "Full 90 / Half 50"); "Chicken 65 11.99" isn't two.
+            if let f = firstHasCents, f != hasDecimals { break }
+            firstHasCents = hasDecimals
+            guard let v = Double(num.replacingOccurrences(of: ",", with: ".")) else { break }
+            shownParts.insert(ns.substring(with: m.range).trimmingCharacters(in: CharacterSet(charactersIn: " .-–—_~·")), at: 0)
+            value = v
+            rest = ns.substring(to: m.range.location)
+            // "… Full 90 / Half 50": the size word stays with its price; a bare "/" between two prices goes.
+            let rns = rest as NSString
+            if let s = sizeWords.firstMatch(in: rest, range: NSRange(location: 0, length: rns.length)) {
+                shownParts[0] = rns.substring(with: s.range).trimmingCharacters(in: CharacterSet(charactersIn: " /|")) + " " + shownParts[0]
+                rest = rns.substring(to: s.range.location)
+            }
+            rest = rest.trimmingCharacters(in: CharacterSet(charactersIn: " /|"))
+            // Only another price right before keeps the loop going ("$ 13.99 $ 39.99").
+            if priceRE.firstMatch(in: rest, range: NSRange(location: 0, length: (rest as NSString).length)) == nil { break }
+            if rest.filter(\.isLetter).isEmpty { break }
+        }
+        guard let v = value else { return nil }
+        let name = rest.trimmingCharacters(in: CharacterSet(charactersIn: " .·-–—_~:|\t"))
+        return (name, shownParts.joined(separator: " / "), v)
+    }
+
+    /// True when nearly every price on the menu has a currency mark or cents — then a bare number is never a price.
+    static func strictPrices(_ lines: [String]) -> Bool {
+        let priced = lines.compactMap { splitPrice($0) }
+        guard priced.count >= 8 else { return false }
+        let styled = priced.filter { p in p.shown.contains { "$€£¥￥₹₩₺฿元円원".contains($0) } || p.shown.range(of: #"\d[.,]\d{2}\b"#, options: .regularExpression) != nil }
+        return Double(styled.count) >= 0.9 * Double(priced.count)
     }
 
     // MARK: - Reading the photo
@@ -132,6 +183,9 @@ enum MenuReader {
         var text: String
         var rect: CGRect
         var confidence: Float = 1
+        /// How the line runs across the page (rise per unit of width, top-left origin): a menu photographed at an
+        /// angle has rows that slope, and a price is matched to its dish along that slope, not straight across.
+        var slope: CGFloat = 0
     }
 
     /// Text that is only a price ("50元", "-----18元", "12.50").
@@ -140,71 +194,217 @@ enum MenuReader {
         return p.name.filter(\.isLetter).count < 2
     }
 
-    /// The menu as lines in reading order: each price joined to the dish on its row (menus often print them far
-    /// apart, and the camera reads them as two pieces), then column by column, top to bottom.
-    static func lines(from boxes: [Box]) -> [String] {
-        var parts = boxes.filter { !$0.text.trimmingCharacters(in: .whitespaces).isEmpty }
-        var used = Set<Int>()
-        // 1. Join each lone price to the nearest text on its left that shares its row.
-        for (pi, price) in parts.enumerated() where isPriceOnly(price.text) {
-            var best: (i: Int, gap: CGFloat)?
-            for (ni, name) in parts.enumerated() where ni != pi && !used.contains(ni) && !isPriceOnly(name.text) {
-                let overlap = min(name.rect.maxY, price.rect.maxY) - max(name.rect.minY, price.rect.minY)
-                guard overlap > 0.5 * min(name.rect.height, price.rect.height) else { continue }
-                let gap = price.rect.minX - name.rect.maxX
-                guard gap > -0.02, gap < 0.3 else { continue }
-                if best == nil || gap < best!.gap { best = (ni, gap) }
-            }
-            if let b = best {
-                parts[b.i].text += " " + price.text.trimmingCharacters(in: .whitespaces)
-                parts[b.i].rect = parts[b.i].rect.union(price.rect)
-                used.insert(b.i); parts[pi].text = ""
-            }
-        }
-        parts = parts.filter { !$0.text.isEmpty }
-        // 2. Columns: pieces whose left-to-right spans overlap belong together; read each column top to bottom.
-        var columns: [(span: ClosedRange<CGFloat>, items: [Box])] = []
-        for b in parts.sorted(by: { $0.rect.minX < $1.rect.minX }) {
-            if let i = columns.firstIndex(where: { c in
-                let o = min(c.span.upperBound, b.rect.maxX) - max(c.span.lowerBound, b.rect.minX)
-                return o > 0.3 * b.rect.width
-            }) {
-                columns[i].items.append(b)
-                columns[i].span = min(columns[i].span.lowerBound, b.rect.minX)...max(columns[i].span.upperBound, b.rect.maxX)
-            } else {
-                columns.append((b.rect.minX...b.rect.maxX, [b]))
-            }
-        }
-        return columns.sorted { $0.span.lowerBound < $1.span.lowerBound }
-            .flatMap { $0.items.sorted { $0.rect.midY < $1.rect.midY }.map(\.text) }
+    /// The height of the writing itself: a sloped line's box is taller than its letters.
+    static func lineHeight(_ b: Box) -> CGFloat { max(b.rect.height - abs(b.slope) * b.rect.width, b.rect.height * 0.35) }
+
+    /// Whether two pieces sit on the same printed row, following the row's slope across the gap between them.
+    static func sameRow(_ a: Box, _ b: Box) -> Bool {
+        let slope = (a.slope + b.slope) / 2
+        let expected = a.rect.midY + slope * (b.rect.midX - a.rect.midX)
+        return abs(expected - b.rect.midY) < 0.5 * max(lineHeight(a), lineHeight(b))
     }
 
-    /// Read a menu photo on the phone. Vision picks the menu's language itself; when that read looks weak, it
-    /// tries again as Chinese, Japanese and Korean and keeps whichever read the page best.
+    /// The menu as lines in reading order (Manan, 23 Nov: a five-screen Indian board came back as 8 "dishes").
+    /// 1. Each lone price joins the dish on its row, following the row's slope, and never jumps over other writing
+    ///    (a second price on the row — Single / Family — joins too).
+    /// 2. The page is cut into its blocks the way a person reads it: at the empty gutters between columns and the
+    ///    gaps between sections (an XY cut), so panels, screens and columns are read one at a time.
+    /// 3. Inside a block, pieces on the same row become one line, left to right.
+    static func lines(from boxes: [Box]) -> [String] {
+        var parts = boxes.filter { !$0.text.trimmingCharacters(in: .whitespaces).isEmpty }
+        let prices = parts.indices.filter { isPriceOnly(parts[$0].text) }.sorted { parts[$0].rect.minX < parts[$1].rect.minX }
+        for pi in prices where !parts[pi].text.isEmpty {
+            let price = parts[pi]
+            var best: (i: Int, gap: CGFloat)?
+            for ni in parts.indices where ni != pi && !parts[ni].text.isEmpty && !isPriceOnly(parts[ni].text) {
+                let name = parts[ni]
+                let gap = price.rect.minX - name.rect.maxX
+                guard gap > -0.02, gap < 0.3, sameRow(name, price) else { continue }
+                if best == nil || gap < best!.gap { best = (ni, gap) }
+            }
+            guard let b = best else { continue }
+            // Nothing else written between them on that row (a price never jumps into the next column's dish).
+            let between = parts.indices.contains { k in
+                k != pi && k != b.i && !parts[k].text.isEmpty
+                    && parts[k].rect.minX > parts[b.i].rect.maxX - 0.002 && parts[k].rect.maxX < price.rect.minX + 0.002
+                    && sameRow(parts[b.i], parts[k])
+            }
+            if between { continue }
+            parts[b.i].text += " " + price.text.trimmingCharacters(in: .whitespaces)
+            parts[b.i].rect = parts[b.i].rect.union(price.rect)
+            parts[pi].text = ""
+        }
+        parts = parts.filter { !$0.text.isEmpty }
+        return xyCut(parts).flatMap(rows)
+    }
+
+    /// Pieces on the same row, joined left to right; rows top to bottom.
+    private static func rows(_ block: [Box]) -> [String] {
+        var out: [[Box]] = []
+        for b in block.sorted(by: { $0.rect.midY < $1.rect.midY }) {
+            if let i = out.indices.last(where: { i in out[i].contains { sameRow($0, b) } }), out.count - i <= 2 { out[i].append(b) }
+            else { out.append([b]) }
+        }
+        return out.map { $0.sorted { $0.rect.minX < $1.rect.minX }.map { $0.text.trimmingCharacters(in: .whitespaces) }.joined(separator: " ") }
+    }
+
+    /// Splits a block of the page at its empty gutters (columns) or, when there are none, at its gaps (sections),
+    /// and keeps going inside each part. A "column" that is nothing but prices stays with its dishes.
+    private static func xyCut(_ bs: [Box], depth: Int = 0) -> [[Box]] {
+        guard bs.count > 1, depth < 24 else { return [bs] }
+        let heights = bs.map(lineHeight).sorted()
+        let h = heights[heights.count / 2]
+        // Wide gaps first (the space between two panels, or above a footer), then columns, then the gaps between lines.
+        let big = gaps(bs.map { ($0.rect.minY, $0.rect.maxY) }, minGap: h * 2.5)
+        if !big.isEmpty {
+            var cuts = [-CGFloat.infinity] + big + [CGFloat.infinity]
+            cuts.sort()
+            let parts = (0..<(cuts.count - 1)).map { i in bs.filter { $0.rect.midY >= cuts[i] && $0.rect.midY < cuts[i + 1] } }.filter { !$0.isEmpty }
+            if parts.count > 1 { return parts.flatMap { xyCut($0, depth: depth + 1) } }
+        }
+        let xs = gaps(bs.map { ($0.rect.minX, $0.rect.maxX) }, minGap: max(0.006, h * 0.6))
+        if !xs.isEmpty {
+            var parts: [[Box]] = []
+            var cuts = [-CGFloat.infinity] + xs + [CGFloat.infinity]
+            cuts.sort()
+            for i in 0..<(cuts.count - 1) {
+                let p = bs.filter { $0.rect.midX >= cuts[i] && $0.rect.midX < cuts[i + 1] }
+                if p.isEmpty { continue }
+                // A part that's only prices (or a stray mark) belongs to the dishes on its left.
+                if let last = parts.indices.last, mostlyPrices(p) || p.allSatisfy({ $0.text.filter(\.isLetter).count < 3 && $0.text.count < 5 }) {
+                    parts[last] += p
+                } else { parts.append(p) }
+            }
+            if parts.count > 1 { return parts.flatMap { xyCut($0, depth: depth + 1) } }
+        }
+        let ys = gaps(bs.map { ($0.rect.minY, $0.rect.maxY) }, minGap: h * 0.9)
+        if !ys.isEmpty {
+            var cuts = [-CGFloat.infinity] + ys + [CGFloat.infinity]
+            cuts.sort()
+            let parts = (0..<(cuts.count - 1)).map { i in bs.filter { $0.rect.midY >= cuts[i] && $0.rect.midY < cuts[i + 1] } }.filter { !$0.isEmpty }
+            if parts.count > 1 { return parts.flatMap { xyCut($0, depth: depth + 1) } }
+        }
+        return [bs]
+    }
+
+    /// The middles of the empty stretches (at least `minGap` wide) between spans on one axis.
+    private static func gaps(_ spans: [(CGFloat, CGFloat)], minGap: CGFloat) -> [CGFloat] {
+        var out: [CGFloat] = []
+        var reach = -CGFloat.infinity
+        for (lo, hi) in spans.sorted(by: { $0.0 < $1.0 }) {
+            if reach > -CGFloat.infinity, lo - reach >= minGap { out.append((lo + reach) / 2) }
+            reach = max(reach, hi)
+        }
+        return out
+    }
+
+    private static func mostlyPrices(_ p: [Box]) -> Bool { Double(p.filter { isPriceOnly($0.text) }.count) >= 0.6 * Double(p.count) }
+
+    /// Menu words the camera is told to expect, so "Cowboy Ribeye" isn't read as "Comboy Ribeye".
+    static let menuVocabulary = [
+        "ribeye", "wagyu", "cowboy", "porterhouse", "tomahawk", "filet", "sirloin", "tenderloin", "brisket", "bisque", "chorizo",
+        "gruyère", "aioli", "béarnaise", "hollandaise", "remoulade", "rockefeller", "scallops", "scallop", "risotto", "poblano",
+        "sautéed", "marsala", "alfredo", "linguine", "chutney", "gochujang", "fusilli", "gouda", "crème", "fraîche", "vinaigrette",
+        "caesar", "brussels", "asparagus", "maître", "d'hôtel", "horseradish", "maytag", "duroc", "tartare", "carpaccio", "bruschetta",
+        "dosa", "dosas", "idly", "idli", "vada", "uttapam", "upma", "pongal", "sambar", "chutney", "biryani", "pulao", "paneer",
+        "tikka", "masala", "tandoori", "naan", "roti", "kulcha", "chapati", "paratha", "parotta", "poori", "bhatura", "chole",
+        "samosa", "samosas", "pakora", "pakoras", "bajji", "bonda", "tandoor", "kebabs", "tikkas", "idlis", "naans", "rotis", "manchurian", "manchuria", "gobi", "chaat", "bhel", "puri", "pani", "dahi", "pav",
+        "bhaji", "frankie", "kebab", "kabab", "korma", "vindaloo", "kadai", "kadhai", "makhani", "dal", "tadka", "palak", "aloo",
+        "chana", "bhindi", "mutter", "methi", "malai", "kofta", "navratan", "chettinad", "mughlai", "gongura", "avakai", "ulavacharu", "ulvacharu", "haryali", "malali",
+        "kheema", "keema", "lassi", "falooda", "jalebi", "rasmalai", "rasamalai", "gulab", "jamun", "kulfi", "chai", "bournvita",
+        "andhra", "hyderabadi", "dum", "tiffin", "tiffins", "thali", "raita", "papad", "schezwan", "hakka", "chilli", "apollo",
+        "pho", "banh", "bulgogi", "bibimbap", "ramen", "udon", "tempura", "teriyaki", "gyoza", "edamame", "katsu", "tonkotsu",
+        "quesadilla", "enchilada", "burrito", "taco", "tacos", "guacamole", "carnitas", "barbacoa", "al pastor", "churros",
+        "margherita", "carbonara", "bolognese", "arrabbiata", "gnocchi", "tiramisu", "panna", "cotta", "prosciutto", "burrata",
+    ]
+
+    /// Read a menu photo on the phone, the most careful way it can (23 Nov: a menu board read at 2,400 px lost most of
+    /// its dishes and misread the rest). First the whole page — it settles the menu's language and catches the big
+    /// headings. Then, when the print is small, the page again in overlapping tiles at full resolution, each tile read
+    /// as if it were its own photo, with the menu's words expected; the pieces are put back together on one page.
     static func read(_ image: UIImage) -> [Box] {
-        guard let cg = image.resized(maxDimension: 2400).normalizedUp().cgImage else { return [] }
-        func pass(_ languages: [String]?) -> [Box] {
+        let up = image.normalizedUp()
+        guard let full = up.resized(maxDimension: 4800).cgImage, let page = up.resized(maxDimension: 2400).cgImage else { return [] }
+        func pass(_ cg: CGImage, _ languages: [String]?, minHeight: Float? = nil) -> [VNRecognizedTextObservation] {
             let req = VNRecognizeTextRequest()
             req.recognitionLevel = .accurate
             req.usesLanguageCorrection = true
             if let languages { req.recognitionLanguages = languages } else { req.automaticallyDetectsLanguage = true }
+            req.customWords = menuVocabulary
+            if let minHeight { req.minimumTextHeight = minHeight }
             try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
-            return (req.results ?? []).compactMap { obs in
-                guard let top = obs.topCandidates(1).first else { return nil }
-                let r = obs.boundingBox
-                return Box(text: top.string, rect: CGRect(x: r.minX, y: 1 - r.maxY, width: r.width, height: r.height), confidence: top.confidence)
-            }
+            return req.results ?? []
+        }
+        /// A piece the camera read, placed on the whole page. `tile` is where the read happened, in page pixels.
+        func box(_ obs: VNRecognizedTextObservation, tile: CGRect, page size: CGSize) -> Box? {
+            guard let top = obs.topCandidates(1).first else { return nil }
+            let r = obs.boundingBox
+            let rect = CGRect(x: (tile.minX + r.minX * tile.width) / size.width,
+                              y: (tile.minY + (1 - r.maxY) * tile.height) / size.height,
+                              width: r.width * tile.width / size.width, height: r.height * tile.height / size.height)
+            let dx = (obs.bottomRight.x - obs.bottomLeft.x) * tile.width / size.width
+            let dy = -(obs.bottomRight.y - obs.bottomLeft.y) * tile.height / size.height
+            return Box(text: top.string, rect: rect, confidence: top.confidence, slope: abs(dx) > 0.0001 ? dy / dx : 0)
         }
         func score(_ b: [Box]) -> Double { b.reduce(0) { $0 + Double($1.confidence) * Double($1.text.filter { $0.isLetter || $0.isNumber }.count) } }
         func meanConfidence(_ b: [Box]) -> Double { b.isEmpty ? 0 : b.reduce(0) { $0 + Double($1.confidence) } / Double(b.count) }
-        var best = pass(nil)
-        if meanConfidence(best) < 0.6 || score(best) < 40 {
+        let pageSize = CGSize(width: page.width, height: page.height)
+        let whole = CGRect(origin: .zero, size: pageSize)
+        var languages: [String]? = nil
+        var best = pass(page, nil).compactMap { box($0, tile: whole, page: pageSize) }
+        if meanConfidence(best) < 0.6 || score(best) < 40 || cjkShare(best.map(\.text).joined()) > 0.2 {
             for langs in [["zh-Hans", "zh-Hant", "en-US"], ["ja-JP", "en-US"], ["ko-KR", "en-US"]] {
-                let next = pass(langs)
-                if score(next) > score(best) * 1.15 { best = next }
+                let next = pass(page, langs).compactMap { box($0, tile: whole, page: pageSize) }
+                if score(next) > score(best) * 1.15 { best = next; languages = langs }
             }
         }
-        return best
+        // Small print (many lines, or short ones): read it again, tile by tile, at full resolution.
+        let heights = best.map(lineHeight).sorted()
+        let median = heights.isEmpty ? 1 : heights[heights.count / 2]
+        let W = CGFloat(full.width), H = CGFloat(full.height)
+        guard best.count >= 30 || median < 0.02 || best.isEmpty, max(W, H) > 1800 else { return best }
+        let side: CGFloat = 1500, overlap: CGFloat = 0.14
+        let cols = max(1, Int(ceil(W / side))), rowsN = max(1, Int(ceil(H / side)))
+        guard cols * rowsN > 1 else { return best }
+        let tw = min(W, W / CGFloat(cols) * (1 + overlap)), th = min(H, H / CGFloat(rowsN) * (1 + overlap))
+        var tiles: [CGRect] = []
+        for r in 0..<rowsN { for c in 0..<cols {
+            let x = cols == 1 ? 0 : (W - tw) * CGFloat(c) / CGFloat(cols - 1)
+            let y = rowsN == 1 ? 0 : (H - th) * CGFloat(r) / CGFloat(rowsN - 1)
+            tiles.append(CGRect(x: x.rounded(), y: y.rounded(), width: tw.rounded(.down), height: th.rounded(.down)))
+        } }
+        let fullSize = CGSize(width: W, height: H)
+        let lock = NSLock()
+        var found: [(box: Box, cut: Bool)] = []
+        DispatchQueue.concurrentPerform(iterations: tiles.count) { i in
+            let t = tiles[i]
+            guard let crop = full.cropping(to: t) else { return }
+            let got: [(Box, Bool)] = pass(crop, languages, minHeight: 0.006).compactMap { obs in
+                guard let b = box(obs, tile: t, page: fullSize) else { return nil }
+                // A piece touching an inner edge of its tile was cut off there; another tile (or the page) has it whole.
+                let r = obs.boundingBox
+                let cut = (r.minX < 0.01 && t.minX > 0) || (r.maxX > 0.99 && t.maxX < W - 1) || (r.maxY > 0.99 && t.minY > 0) || (r.minY < 0.01 && t.maxY < H - 1)
+                return (b, cut)
+            }
+            lock.lock(); found += got; lock.unlock()
+        }
+        // Whole pieces from the tiles first (sharpest), then the page's own read, then pieces cut at a tile edge;
+        // each kept only if nothing kept already covers it.
+        func quality(_ b: Box) -> Double { Double(b.confidence) * Double(b.text.filter { $0.isLetter || $0.isNumber }.count) }
+        let ranked = found.filter { !$0.cut }.map(\.box).sorted { quality($0) > quality($1) }
+            + best.sorted { quality($0) > quality($1) }
+            + found.filter(\.cut).map(\.box).sorted { quality($0) > quality($1) }
+        var kept: [Box] = []
+        for b in ranked where !b.text.trimmingCharacters(in: .whitespaces).isEmpty {
+            let a = b.rect.width * b.rect.height
+            let covered = kept.contains { k in
+                let i = k.rect.intersection(b.rect)
+                guard !i.isNull else { return false }
+                return i.width * i.height > 0.5 * min(a, k.rect.width * k.rect.height)
+            }
+            if !covered { kept.append(b) }
+        }
+        return kept.count >= best.count / 2 ? kept : best
     }
 
     /// True when the menu is written in a script the person probably can't read (Chinese, Japanese, Korean,
@@ -266,6 +466,19 @@ enum MenuReader {
         "包子": "buns", "馒头": "steamed bun", "饼": "pancake", "粥": "congee", "汤": "soup", "锅": "pot", "全": "whole",
         "小": "small", "大": "large", "份": "portion", "例": "regular", "啤酒": "beer", "茶": "tea", "可乐": "cola", "饮料": "drinks",
         "凉菜": "cold dishes", "热菜": "hot dishes", "主食": "staples", "素菜": "vegetable dishes", "荤菜": "meat dishes",
+        // 23 Nov: the dishes that still showed only characters
+        "盆盆": "bowl of", "馋嘴": "mouth-watering", "土匪": "bandit-style", "湘西": "West Hunan", "魔芋": "konjac", "川北": "North Sichuan",
+        "凉粉": "jelly noodles", "萝卜皮": "radish skin", "萝卜": "radish", "拍": "smashed", "皮蛋": "century egg", "蒜泥": "mashed-garlic",
+        "白肉": "sliced pork", "肝尖": "pork liver", "肝": "liver", "香干": "smoked tofu", "河虾": "river shrimp", "小河虾": "small river shrimp",
+        "锅包肉": "crispy sweet-and-sour pork", "夫妻肺片": "beef and tripe in chili oil", "肺片": "sliced offal", "腊": "cured",
+        "干": "dried", "丝": "shreds", "片": "slices", "丁": "diced", "球": "balls", "丸": "balls", "块": "pieces", "条": "strips",
+        "烩饭": "rice with sauce", "套餐": "set meal", "盖饭": "rice bowl", "盖浇饭": "rice bowl", "拌面": "dressed noodles",
+        "汤面": "noodle soup", "米粉": "rice noodles", "乌冬面": "udon", "乌冬": "udon", "粉丝": "glass noodles", "豆芽": "bean sprouts",
+        "青椒": "green pepper", "辣椒": "chili pepper", "尖椒": "hot pepper", "杂": "mixed", "三鲜": "three delicacies", "什锦": "assorted",
+        "老醋": "aged-vinegar", "醋": "vinegar", "红油": "chili-oil", "油": "oil", "葱爆": "scallion-fried", "爆": "flash-fried",
+        "扬州": "Yangzhou", "台式": "Taiwanese", "法式": "French-style", "三杯": "three-cup", "猪扒": "pork chop",
+        "鸡汁": "chicken broth", "瘦肉": "lean pork", "香滑": "silky", "荔枝": "lychee", "芗城": "Xiangcheng",
+        "花蛤": "clams", "干贝": "dried scallops", "羹": "thick soup", "七彩": "seven-colour", "牛柳": "beef fillet",
     ]
 
     static func needsTranslation(_ lines: [String], reader: String = Localizer.shared.language) -> Bool {
@@ -305,16 +518,91 @@ enum MenuReader {
         return all == 0 || Double(useful) / Double(all) < 0.5
     }
 
-    static func parse(_ rawLines: [String]) -> [Item] {
+    /// A line that tells you about the section, not a dish ("Includes 16 oz Pulao Rice", "All selections are gluten-free").
+    private static let aboutLine = try! NSRegularExpression(
+        pattern: #"^(includes?|including|all (selections|entrees|entrées|items|dishes)|served with|items marked|consuming|for parties|choice of|comes with|add\b|substitute|please|ask your server|available)"#,
+        options: [.caseInsensitive])
+
+    /// Tidies a dish name: no leading bullets or veg/non-veg marks the camera read as symbols, no "[New]" tags.
+    static func cleanName(_ s: String) -> String {
+        var t = s.replacingOccurrences(of: #"\[\s*new\s*\]|\(\s*new\s*\)"#, with: " ", options: [.regularExpression, .caseInsensitive])
+        while let f = t.first, !(f.isLetter || f.isNumber || "(（【[$€£¥￥₹₩".contains(f)) { t.removeFirst() }
+        while let l = t.last, "•·*:|-–—_~.,".contains(l) || l.isWhitespace { t.removeLast() }
+        return t.replacingOccurrences(of: #"\s{2,}"#, with: " ", options: .regularExpression)
+    }
+
+    /// Two dishes the camera read as one line ("Surf & Turf 30 Maître d'Hôtel Butter 7"): split after a price that is
+    /// followed by a new capitalised name which ends in a price of its own.
+    static func splitDishes(_ line: String, strict: Bool) -> [String] {
+        let price = strict ? #"(?:[€£$¥₹]\s?\d{1,4}(?:[.,]\d{2})?|\d{1,4}[.,]\d{2})"# : #"(?:[€£$¥₹]\s?)?\d{1,4}(?:[.,]\d{2})?"#
+        guard let re = try? NSRegularExpression(pattern: #"(?<=[A-Za-z\)]\s)"# + price + #"(?=\s+\p{Lu}\p{Ll})"#) else { return [line] }
+        let ns = line as NSString
+        var out: [String] = [], start = 0
+        for m in re.matches(in: line, range: NSRange(location: 0, length: ns.length)) {
+            let end = m.range.location + m.range.length
+            let restOfLine = ns.substring(from: end)
+            // Only when what follows is a dish with its own price, not "Chicken 65 Biryani".
+            guard splitPrice(restOfLine, strict: strict) != nil, splitPrice(ns.substring(with: NSRange(location: start, length: end - start)), strict: strict) != nil else { continue }
+            out.append(ns.substring(with: NSRange(location: start, length: end - start)).trimmingCharacters(in: .whitespaces))
+            start = end
+        }
+        out.append(ns.substring(from: start).trimmingCharacters(in: .whitespaces))
+        return out.filter { !$0.isEmpty }
+    }
+
+    /// Fixes a menu word the camera misread by one letter ("Comboy" → "Cowboy", "Wagru" → "Wagyu") — only against the
+    /// menu words it was told to expect, only when exactly one of them is that close, and never a word it already knows.
+    static func fixWords(_ s: String) -> String {
+        guard cjkShare(s) < 0.3 else { return s }
+        let known = Set(menuVocabulary + commonMenuWords)
+        return s.split(separator: " ", omittingEmptySubsequences: false).map { tok -> String in
+            let w = String(tok)
+            let core = w.trimmingCharacters(in: CharacterSet.letters.inverted)
+            let low = core.lowercased()
+            guard low.count >= 5, core.allSatisfy(\.isLetter), !known.contains(low) else { return w }
+            let near = menuVocabulary.filter { k in k.first == low.first && abs(k.count - low.count) <= 1 && editDistance(k, low) == 1 }
+            guard near.count == 1, let fix = near.first else { return w }
+            let cased = core.first?.isUppercase == true ? fix.prefix(1).uppercased() + fix.dropFirst() : fix
+            return w.replacingOccurrences(of: core, with: cased)
+        }.joined(separator: " ")
+    }
+    /// Ordinary menu words, so a fix never turns one real word into another.
+    static let commonMenuWords = ["salad", "sauce", "steak", "cheese", "chicken", "garlic", "butter", "onion", "onions", "potato",
+        "potatoes", "maine", "cream", "creamy", "shrimp", "lobster", "salmon", "spinach", "mushroom", "mushrooms", "grilled", "baked", "fried",
+        "roasted", "smoked", "glazed", "braised", "seared", "house", "special", "indiana", "plate", "bread", "breads", "fresh", "juice",
+        "sweet", "spicy", "chili", "chilly", "chilli", "pepper", "peppers", "tomato", "tomatoes", "basil", "lemon", "mango", "honey",
+        "maple", "apple", "whiskey", "bourbon", "barrel", "wedge", "lettuce", "bacon", "short", "chops", "strip", "queen", "king",
+        "porter", "drawn", "tender", "rich", "juicy", "fruit", "shake", "shakes", "coffee", "water", "sweets", "dessert", "desserts",
+        "pastry", "pastries", "scoop", "scoops", "custard", "noodles", "fried", "style", "curry", "goat", "fish", "mutton", "veggie",
+        "kitchen", "family", "single", "large", "small", "regular", "medium", "market", "price", "sides", "soups", "soup", "starters",
+        "mains", "entrees", "appetizers", "beverages", "drinks", "cocktail", "cocktails", "wines", "beers", "spring", "corn", "carrots",
+        "mashed", "sautéed", "sauteed", "signature", "premium", "center", "accompaniments", "dragon", "baby", "pepper", "coriander",
+        "cashew", "jalapeno", "jalapeño", "crispy", "street", "sandwich", "sandwiches", "grill", "bombay", "burnt", "indian", "chinese"]
+    static func editDistance(_ a: String, _ b: String) -> Int {
+        let a = Array(a), b = Array(b)
+        var prev = Array(0...b.count)
+        for i in 1...max(1, a.count) where !a.isEmpty {
+            var cur = [i] + Array(repeating: 0, count: b.count)
+            for j in 1...max(1, b.count) where !b.isEmpty {
+                cur[j] = min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] == b[j - 1] ? 0 : 1))
+            }
+            prev = cur
+        }
+        return a.isEmpty ? b.count : (b.isEmpty ? a.count : prev[b.count])
+    }
+
+    static func parse(_ input: [String]) -> [Item] {
         var items: [Item] = []
         var section = ""
         var heading: (line: String, previous: String)?      // a short line just taken as a section heading
         var headingRun = false                              // the last line was a heading too ("特色篇" then "巫山烤全鱼")
+        let strict = strictPrices(input)
+        let rawLines = input.flatMap { splitDishes(fixWords($0.trimmingCharacters(in: .whitespacesAndNewlines)), strict: strict) }
         for raw in rawLines {
-            let line = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+            let line = cleanName(raw.trimmingCharacters(in: .whitespacesAndNewlines))
             guard line.count >= 2 || (line.count == 1 && line.first.map(isCJK) == true), !isJunk(line) else { continue }
             let cjk = cjkShare(line) > 0.5
-            if cjk, splitPrice(line) == nil {
+            if cjk, splitPrice(line, strict: strict) == nil {
                 let core = line.trimmingCharacters(in: CharacterSet(charactersIn: "()（）[]【】 "))
                 if line.first.map({ "(（【[".contains($0) }) == true || core.hasPrefix("以上") || core.count > 9 {
                     // "(泡椒、香辣、麻辣、豆鼓)" or "以上套餐配送汤…": about the section, not a dish.
@@ -327,9 +615,24 @@ enum MenuReader {
                 continue
             }
             headingRun = false
-            if let p = splitPrice(line) {
+            if aboutLine.firstMatch(in: line, range: NSRange(location: 0, length: (line as NSString).length)) != nil, splitPrice(line, strict: strict) == nil {
+                items.append(Item(section: section, name: line, detail: "", price: nil, priceText: "", flags: [], note: true))
+                heading = nil
+                continue
+            }
+            // "Maine Lobster Tail  Market Price": a dish whose price is asked at the table.
+            if let r = line.range(of: #"\s+(market price|mp|m\.p\.|seasonal price|ask your server)$"#, options: [.regularExpression, .caseInsensitive]),
+               line[..<r.lowerBound].filter(\.isLetter).count >= 3 {
+                items.append(Item(section: section, name: cleanName(String(line[..<r.lowerBound])), detail: "", price: nil, priceText: "Market price", flags: []))
+                heading = nil
+                continue
+            }
+            if let p = splitPrice(line, strict: strict) {
                 if p.name.filter(\.isLetter).count >= 2 {
-                    items.append(Item(section: section, name: p.name, detail: "", price: p.value, priceText: p.shown, flags: []))
+                    var dish = Item(section: section, name: cleanName(p.name), detail: "", price: p.value, priceText: p.shown, flags: [])
+                    dish.tags = marks(line).compactMap { ["GF": "Gluten-free", "DF": "Dairy-free", "V": "Vegetarian", "VG": "Vegan", "VE": "Vegan", "NEW": "New"][$0] }
+                        + (raw.range(of: #"\[\s*new\s*\]|\(\s*new\s*\)"#, options: [.regularExpression, .caseInsensitive]) != nil && !marks(line).contains("NEW") ? ["New"] : [])
+                    items.append(dish)
                 } else if let h = heading {
                     // "Grilled Salmon" then "14.50" on the next line: that heading was really a dish.
                     section = h.previous
@@ -345,10 +648,12 @@ enum MenuReader {
             let words = line.split(separator: " ").count
             let isCaps = line == line.uppercased() && letters >= 3
             let looksHeading = (isCaps || words <= 3) && !line.hasSuffix(",") && line.first?.isUppercase == true && words <= 4
-            if looksHeading && (items.last?.price != nil || items.isEmpty || isCaps) {
+            // A short capitalised line with no price is a section heading ("Tiffins / Dosas", "Tandoor"); if a lone price
+            // follows it, it was a dish after all (handled above).
+            if looksHeading {
                 heading = (line, section)
                 section = isCaps ? line.capitalized : line
-            } else if let last = items.indices.last, items[last].price != nil,
+            } else if let last = items.indices.last, items[last].price != nil, items[last].detail.count < 160,
                       line.first?.isLowercase == true || words >= 4 || items[last].detail.isEmpty {
                 items[last].detail += (items[last].detail.isEmpty ? "" : " ") + line
                 heading = nil
@@ -357,11 +662,17 @@ enum MenuReader {
                 heading = nil
             }
         }
+        // On a menu where every dish is priced, a line with no price and nothing under it isn't a dish.
+        if strict { items.removeAll { !$0.note && $0.price == nil && $0.detail.isEmpty && $0.priceText.isEmpty } }
         return items.map { i in
             var i = i
             guard !i.note else { return i }
             let words = i.name + " " + i.detail
             i.flags = flags(words)
+            // The menu's own marks: "GF" means no gluten whatever the words suggest; "V"/"VG" say meat-free.
+            if i.tags.contains("Gluten-free") { i.flags.remove(.gluten) }
+            if i.tags.contains("Dairy-free") { i.flags.remove(.dairy) }
+            if i.tags.contains("Vegan") { i.flags.formUnion([.vegan, .vegetarian]) } else if i.tags.contains("Vegetarian") { i.flags.insert(.vegetarian) }
             if cjkShare(words) > 0.3 { i.caution = cjkFlags(words).caution }
             return i
         }
