@@ -1,7 +1,4 @@
-# 24 Nov, run 8. Run 7 passed Business Miles, Price List and the Business page. Home's second row of category buttons
-# was below the edge of the small test phone (a lazy grid never made them): a plain grid now, with compact tiles on
-# short phones. Plus For you cards in other languages and the outside-the-app hand-over.
-HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
-HandyToolsUITests/PromiseTests/testForYouCardShowsTheCarAndNotNowPutsItAway
-HandyToolsTests/ForYouTests
-HandyToolsTests/OutsideAppTests
+# 24 Nov, run 9. Gold Book review: Video Effects' preview showed a black box. Diagnostics first (rulebook §8): what
+# the box shows over the first ten seconds. Plus Business Miles after its layout fix.
+HandyToolsUITests/PromiseTests/testVideoEffectsPreviewIsNeverABlackBox
+HandyToolsUITests/PromiseTests/testBusinessMilesAndPriceListWork

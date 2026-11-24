@@ -258,6 +258,23 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(filled.waitForExistence(timeout: 5), "picking Faucet repair didn't add it as a line")
     }
 
+    /// Gold Book review, 24 Nov: Video Effects' preview showed a black box on the build machine. Says what the box was
+    /// showing over the first seconds (still frame, video rolling, player state), so the fix is chosen from facts.
+    func testVideoEffectsPreviewIsNeverABlackBox() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "celebrate", "-uitest", "-sample"]
+        app.launch()
+        let box = app.descendants(matching: .any)["celebrate-preview"].firstMatch
+        XCTAssertTrue(box.waitForExistence(timeout: 30), "no preview")
+        var last = ""
+        for s in [1, 3, 6, 10] {
+            sleep(s == 1 ? 1 : 3)
+            last = (box.value as? String) ?? "-"
+            print("VIDEOFX| \(s)s: \(last)")
+        }
+        XCTAssertTrue(last.contains("poster true") || last.contains("rolling true"), "the preview has neither a still nor a moving video: \(last)")
+    }
+
     /// "Editable watermark text — type the words instead of a fixed message" (said done; was only in Edit tool).
     func testWatermarkToolsLetYouTypeYourOwnWords() {
         for id in ["id-copy-watermarked", "id-both-sides"] {

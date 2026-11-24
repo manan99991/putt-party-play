@@ -131,6 +131,10 @@ struct CelebrateView: View {
     private var editor: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             previewBox
+                // Diagnostics for the Gold Book review (the preview showed black on the build machine): what it's showing.
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier("celebrate-preview")
+                .accessibilityValue("poster \(poster != nil) rolling \(rolling) playing \(player.timeControlStatus == .playing) item \(player.currentItem != nil) size \(Int(player.currentItem?.presentationSize.width ?? 0)) t \(String(format: "%.1f", player.currentTime().seconds))")
             howMuch
             tabs
             Group {
