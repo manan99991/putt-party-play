@@ -209,7 +209,7 @@ fun HomeTabsScreen(onOpen: (String) -> Unit) {
             Spacer(Modifier.height(HandyTokens.Space12))
         }
 
-        // Every tab on screen at once: four across.
+        // Every tab on screen at once, four across: an icon in its own colour above a one-word name.
         val rows = tabs.chunked(4)
         rows.forEach { row ->
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
@@ -222,9 +222,8 @@ fun HomeTabsScreen(onOpen: (String) -> Unit) {
             }
             Spacer(Modifier.height(HandyTokens.Space8))
         }
+        // The tab's one-line description is read out with the tab (as on the iPhone), so its tools sit higher.
         val shelf = tabs.first { it.id == tabId }
-        Text(I18n.t(shelf.line), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
-        Spacer(Modifier.height(HandyTokens.Space8))
 
         // The tab's tools as tiles, three across, sized so the whole tab fits what's left of the screen.
         BoxWithConstraints(Modifier.weight(1f).fillMaxWidth()) {
@@ -262,22 +261,27 @@ private fun askForMore(ctx: Context) {
     }
 }
 
+/** One Home tab: its icon in its own colour above a one-word name, the same as the iPhone (Manan, 23 Nov: "Contacts &
+ *  phone" crammed onto two lines). The picked tab fills with its colour. */
 @Composable
 private fun TabChip(s: HomeShelves.Shelf, selected: Boolean, modifier: Modifier, onClick: () -> Unit) {
-    val accent = MaterialTheme.colorScheme.primary
-    Row(
-        modifier.heightIn(min = 40.dp).clip(RoundedCornerShape(12.dp))
-            .background(if (selected) accent.copy(alpha = 0.16f) else MaterialTheme.colorScheme.surface)
-            .border(1.dp, if (selected) accent else Handy.palette.border, RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick).testTag("tab-${s.id}").padding(horizontal = 6.dp, vertical = 6.dp),
-        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center,
+    val tint = Color(HomeShelves.colors[s.id] ?: 0xFF2563EB)
+    val shape = RoundedCornerShape(14.dp)
+    Column(
+        modifier.heightIn(min = 58.dp).clip(shape)
+            .background(if (selected) tint else MaterialTheme.colorScheme.surface)
+            .border(1.dp, if (selected) Color.White.copy(alpha = 0.25f) else Handy.palette.border, shape)
+            .clickable(onClick = onClick).testTag("tab-${s.id}").semantics { contentDescription = I18n.t(s.title) + ". " + I18n.t(s.line) }
+            .padding(horizontal = 4.dp, vertical = 6.dp),
+        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,
     ) {
-        Icon(tabIcon(s.id), null, tint = if (selected) accent else Handy.palette.textSecondary, modifier = Modifier.size(16.dp))
-        Spacer(Modifier.width(4.dp))
-        // Two lines when a name is long ("Contacts & phone"), never cut off.
-        Text(I18n.t(s.title), fontSize = 12.sp, lineHeight = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis,
-            textAlign = TextAlign.Center,
-            color = if (selected) accent else MaterialTheme.colorScheme.onSurface)
+        Box(Modifier.size(30.dp).background(if (selected) Color.White.copy(alpha = 0.22f) else tint.copy(alpha = 0.16f), RoundedCornerShape(9.dp)),
+            contentAlignment = Alignment.Center) {
+            Icon(tabIcon(s.id), null, tint = if (selected) Color.White else tint, modifier = Modifier.size(18.dp))
+        }
+        Spacer(Modifier.height(4.dp))
+        Text(I18n.t(s.title), fontSize = 12.sp, lineHeight = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center, color = if (selected) Color.White else MaterialTheme.colorScheme.onSurface)
     }
 }
 

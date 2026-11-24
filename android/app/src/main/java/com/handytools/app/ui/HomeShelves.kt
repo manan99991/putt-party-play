@@ -14,6 +14,14 @@ object HomeShelves {
 
     const val MAX_PER_TAB = 9
 
+    /** Tab names are one short word (two at most) so each fits one line under its icon (Manan, 23 Nov: "Contacts &
+     *  phone" squeezed onto two lines looked crammed). Same names and colours as the iPhone. */
+    const val MAX_TITLE = 10
+    val colors: Map<String, Long> = mapOf(
+        "camera" to 0xFF0EA5E9, "photos" to 0xFFEC4899, "video" to 0xFF8B5CF6, "pdf" to 0xFFEF4444, "audio" to 0xFFF59E0B,
+        "words" to 0xFF22C55E, "day" to 0xFFF97316, "phone" to 0xFF14B8A6, "business" to 0xFF0D9488,
+    )
+
     /** Android's tabs. Same ids and words as the iPhone where the tools match; Android has its own mix of tools,
      *  so Photos and video share a tab and Files holds the file tools. */
     val all: List<Shelf> = listOf(
@@ -21,7 +29,7 @@ object HomeShelves {
             listOf("docs", "identify", "procam", "codes", "scancsv", "colorvision")),
         Shelf("photos", "Photos", "Fix, shrink and share photos and videos",
             listOf("media", "scrubber", "stitch", "gifmaker", "memory")),
-        Shelf("pdf", "PDF & files", "Organize, lock, convert, zip and open files",
+        Shelf("pdf", "Files", "Organize, lock, convert, zip and open files",
             listOf("pdfpages", "pdfconvert", "pdfprotect", "zipmaker", "fileviewer", "converter", "share")),
         Shelf("audio", "Audio", "Record, listen and sleep",
             listOf("voice", "rest", "hearing")),
@@ -31,7 +39,7 @@ object HomeShelves {
         // can't ring. Timers runs only while open, so it isn't offered either.
         Shelf("day", "Daily life", "Medicines, your morning, bills, receipts and cards",
             listOf("medreminder", "brief", "sorted", "receipts", "pricecheck", "wallet")),
-        Shelf("phone", "Contacts & phone", "Space, battery, network, light and your car",
+        Shelf("phone", "Phone", "Space, battery, network, light and your car",
             listOf("cleanup", "storage", "myphone", "network", "instruments", "flashlight", "quick", "parked", "gpsdash")),
     )
 

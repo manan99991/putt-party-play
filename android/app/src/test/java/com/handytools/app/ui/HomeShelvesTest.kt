@@ -60,4 +60,12 @@ class HomeShelvesTest {
         assertEquals(emptyList<ForYouAndroid.Card>(), ForYouAndroid.cards(now - 49 * 3600_000L, now, emptyMap()))
         assertEquals(emptyList<ForYouAndroid.Card>(), ForYouAndroid.cards(now - 60_000L, now, mapOf("car-${now - 60_000L}" to now + 1)))
     }
+
+    @Test fun everyTabNameFitsOneLineAndHasItsColour() {
+        HomeShelves.tabs(true).forEach {
+            assertTrue("${it.title} is too long", it.title.length <= HomeShelves.MAX_TITLE)
+            assertTrue("${it.title} joins two names", !it.title.contains("&"))
+            assertTrue("${it.id} has no colour", HomeShelves.colors.containsKey(it.id))
+        }
+    }
 }

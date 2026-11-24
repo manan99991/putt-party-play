@@ -12148,5 +12148,485 @@
   "ja": "枚の写真（1ページ1枚）",
   "pt": "fotos, uma por página",
   "zh": "张照片，每页一张"
+ },
+ "Build my own tool": {
+  "de": "Eigenes Tool bauen",
+  "es": "Crear mi propia herramienta",
+  "fr": "Créer mon propre outil",
+  "hi": "अपना टूल बनाएँ",
+  "it": "Crea il mio strumento",
+  "ja": "自分のツールを作る",
+  "pt": "Criar minha ferramenta",
+  "zh": "创建我的工具"
+ },
+ "Start from a photo, a PDF, a video, a recording, text — or a reminder.": {
+  "de": "Starte mit einem Foto, PDF, Video, einer Aufnahme, Text – oder einer Erinnerung.",
+  "es": "Empieza con una foto, un PDF, un vídeo, una grabación, texto… o un recordatorio.",
+  "fr": "Partez d'une photo, d'un PDF, d'une vidéo, d'un enregistrement, d'un texte — ou d'un rappel.",
+  "hi": "फ़ोटो, PDF, वीडियो, रिकॉर्डिंग, टेक्स्ट — या रिमाइंडर से शुरू करें।",
+  "it": "Parti da una foto, un PDF, un video, una registrazione, un testo… o un promemoria.",
+  "ja": "写真、PDF、動画、録音、テキスト、またはリマインダーから始めます。",
+  "pt": "Comece com uma foto, um PDF, um vídeo, uma gravação, texto — ou um lembrete.",
+  "zh": "从照片、PDF、视频、录音、文字开始——或一个提醒。"
+ },
+ "Nothing saved yet — the tools you build land here.": {
+  "de": "Noch nichts gespeichert – deine selbst gebauten Tools landen hier.",
+  "es": "Aún no hay nada guardado: las herramientas que crees aparecerán aquí.",
+  "fr": "Rien d'enregistré pour l'instant — les outils que vous créez arrivent ici.",
+  "hi": "अभी कुछ सहेजा नहीं गया — आपके बनाए टूल यहाँ आएँगे।",
+  "it": "Ancora niente di salvato: gli strumenti che crei arrivano qui.",
+  "ja": "まだ保存されたものはありません。作ったツールはここに表示されます。",
+  "pt": "Nada salvo ainda — as ferramentas que você criar aparecem aqui.",
+  "zh": "还没有保存任何内容——你创建的工具会出现在这里。"
+ },
+ "Your own tool, in three taps": {
+  "de": "Dein eigenes Tool in drei Schritten",
+  "es": "Tu propia herramienta en tres toques",
+  "fr": "Votre propre outil en trois touches",
+  "hi": "तीन टैप में आपका अपना टूल",
+  "it": "Il tuo strumento in tre tocchi",
+  "ja": "3タップで自分だけのツール",
+  "pt": "Sua própria ferramenta em três toques",
+  "zh": "三步打造你的专属工具"
+ },
+ "Pick what you start with. You only see steps that fit, and each one shows its result on a sample before you save.": {
+  "de": "Wähle, womit du anfängst. Du siehst nur passende Schritte, und jeder zeigt sein Ergebnis an einem Beispiel, bevor du speicherst.",
+  "es": "Elige con qué empiezas. Solo verás los pasos que encajan, y cada uno muestra su resultado en un ejemplo antes de guardar.",
+  "fr": "Choisissez votre point de départ. Vous ne voyez que les étapes adaptées, et chacune montre son résultat sur un exemple avant l'enregistrement.",
+  "hi": "चुनें कि किससे शुरू करना है। आपको सिर्फ़ उपयुक्त चरण दिखेंगे, और हर चरण सहेजने से पहले एक नमूने पर अपना नतीजा दिखाता है।",
+  "it": "Scegli da cosa partire. Vedi solo i passaggi adatti, e ognuno mostra il risultato su un esempio prima di salvare.",
+  "ja": "何から始めるかを選びます。合うステップだけが表示され、保存前にそれぞれの結果をサンプルで確認できます。",
+  "pt": "Escolha com o que começar. Você só vê etapas que combinam, e cada uma mostra o resultado em um exemplo antes de salvar.",
+  "zh": "选择从什么开始。你只会看到适用的步骤，每一步在保存前都会用示例显示结果。"
+ },
+ "A photo or scan": {
+  "de": "Ein Foto oder Scan",
+  "es": "Una foto o un escaneo",
+  "fr": "Une photo ou un scan",
+  "hi": "फ़ोटो या स्कैन",
+  "it": "Una foto o una scansione",
+  "ja": "写真またはスキャン",
+  "pt": "Uma foto ou digitalização",
+  "zh": "照片或扫描件"
+ },
+ "JPG, HEIC, PNG, screenshots": {
+  "de": "JPG, HEIC, PNG, Bildschirmfotos",
+  "es": "JPG, HEIC, PNG, capturas",
+  "fr": "JPG, HEIC, PNG, captures d'écran",
+  "hi": "JPG, HEIC, PNG, स्क्रीनशॉट",
+  "it": "JPG, HEIC, PNG, screenshot",
+  "ja": "JPG、HEIC、PNG、スクリーンショット",
+  "pt": "JPG, HEIC, PNG, capturas de tela",
+  "zh": "JPG、HEIC、PNG、截图"
+ },
+ "Forms, contracts, statements": {
+  "de": "Formulare, Verträge, Auszüge",
+  "es": "Formularios, contratos, extractos",
+  "fr": "Formulaires, contrats, relevés",
+  "hi": "फ़ॉर्म, अनुबंध, स्टेटमेंट",
+  "it": "Moduli, contratti, estratti conto",
+  "ja": "フォーム、契約書、明細書",
+  "pt": "Formulários, contratos, extratos",
+  "zh": "表格、合同、对账单"
+ },
+ "MOV and MP4, from Photos or Files": {
+  "de": "MOV und MP4, aus Fotos oder Dateien",
+  "es": "MOV y MP4, de Fotos o Archivos",
+  "fr": "MOV et MP4, depuis Photos ou Fichiers",
+  "hi": "MOV और MP4, Photos या Files से",
+  "it": "MOV e MP4, da Foto o File",
+  "ja": "写真またはファイルからMOVとMP4",
+  "pt": "MOV e MP4, de Fotos ou Arquivos",
+  "zh": "来自照片或文件的 MOV 和 MP4"
+ },
+ "Voice memos, M4A, MP3, WAV": {
+  "de": "Sprachmemos, M4A, MP3, WAV",
+  "es": "Notas de voz, M4A, MP3, WAV",
+  "fr": "Mémos vocaux, M4A, MP3, WAV",
+  "hi": "वॉइस मेमो, M4A, MP3, WAV",
+  "it": "Memo vocali, M4A, MP3, WAV",
+  "ja": "ボイスメモ、M4A、MP3、WAV",
+  "pt": "Memorandos de voz, M4A, MP3, WAV",
+  "zh": "语音备忘录、M4A、MP3、WAV"
+ },
+ "Text or a link": {
+  "de": "Text oder ein Link",
+  "es": "Texto o un enlace",
+  "fr": "Texte ou lien",
+  "hi": "टेक्स्ट या लिंक",
+  "it": "Testo o un link",
+  "ja": "テキストまたはリンク",
+  "pt": "Texto ou um link",
+  "zh": "文字或链接"
+ },
+ "Typed, pasted, a web page, or a PDF's words": {
+  "de": "Getippt, eingefügt, eine Webseite oder der Text eines PDFs",
+  "es": "Escrito, pegado, una página web o el texto de un PDF",
+  "fr": "Tapé, collé, une page web ou le texte d'un PDF",
+  "hi": "टाइप किया, पेस्ट किया, वेब पेज, या PDF के शब्द",
+  "it": "Scritto, incollato, una pagina web o il testo di un PDF",
+  "ja": "入力・貼り付け、Webページ、PDFの文字",
+  "pt": "Digitado, colado, uma página da web ou o texto de um PDF",
+  "zh": "输入、粘贴、网页或 PDF 中的文字"
+ },
+ "Or have it come to you": {
+  "de": "Oder lass es zu dir kommen",
+  "es": "O que llegue a ti",
+  "fr": "Ou qu'il vienne à vous",
+  "hi": "या इसे अपने पास आने दें",
+  "it": "Oppure fallo arrivare a te",
+  "ja": "または向こうから知らせる",
+  "pt": "Ou deixe que venha até você",
+  "zh": "或让它主动来找你"
+ },
+ "A reminder": {
+  "de": "Eine Erinnerung",
+  "es": "Un recordatorio",
+  "fr": "Un rappel",
+  "hi": "एक रिमाइंडर",
+  "it": "Un promemoria",
+  "ja": "リマインダー",
+  "pt": "Um lembrete",
+  "zh": "一个提醒"
+ },
+ "At a time — once, daily or on chosen days": {
+  "de": "Zu einer Uhrzeit – einmal, täglich oder an gewählten Tagen",
+  "es": "A una hora: una vez, a diario o los días que elijas",
+  "fr": "À une heure — une fois, chaque jour ou certains jours",
+  "hi": "किसी समय — एक बार, रोज़ या चुने हुए दिनों पर",
+  "it": "A un orario: una volta, ogni giorno o nei giorni scelti",
+  "ja": "指定した時刻に — 1回、毎日、または選んだ曜日",
+  "pt": "Em um horário — uma vez, todo dia ou nos dias escolhidos",
+  "zh": "在某个时间——一次、每天或选定的日子"
+ },
+ "When my phone…": {
+  "de": "Wenn mein Telefon …",
+  "es": "Cuando mi teléfono…",
+  "fr": "Quand mon téléphone…",
+  "hi": "जब मेरा फ़ोन…",
+  "it": "Quando il mio telefono…",
+  "ja": "スマホが…したとき",
+  "pt": "Quando meu celular…",
+  "zh": "当我的手机……"
+ },
+ "Space runs low, screenshots or big videos pile up": {
+  "de": "Speicher wird knapp, Bildschirmfotos oder große Videos häufen sich",
+  "es": "Queda poco espacio, se acumulan capturas o vídeos grandes",
+  "fr": "L'espace manque, captures ou grosses vidéos s'accumulent",
+  "hi": "जगह कम हो, स्क्रीनशॉट या बड़े वीडियो जमा हों",
+  "it": "Lo spazio si esaurisce, si accumulano screenshot o video grandi",
+  "ja": "空き容量が減る、スクショや大きな動画がたまる",
+  "pt": "Pouco espaço, capturas ou vídeos grandes se acumulam",
+  "zh": "空间不足、截图或大视频堆积"
+ },
+ "A tool you build can remind you too: once it has a step, switch on “Remind me to run this”.": {
+  "de": "Ein selbst gebautes Tool kann dich auch erinnern: Sobald es einen Schritt hat, schalte „Erinnere mich, das auszuführen“ ein.",
+  "es": "Una herramienta que crees también puede recordártelo: cuando tenga un paso, activa «Recordarme ejecutarla».",
+  "fr": "Un outil que vous créez peut aussi vous le rappeler : dès qu'il a une étape, activez « Me rappeler de l'exécuter ».",
+  "hi": "आपका बनाया टूल भी याद दिला सकता है: एक चरण जुड़ते ही “इसे चलाने की याद दिलाएँ” चालू करें।",
+  "it": "Anche uno strumento che crei può ricordartelo: appena ha un passaggio, attiva «Ricordami di eseguirlo».",
+  "ja": "作ったツールでも通知できます。ステップを追加したら「実行をリマインド」をオンにしてください。",
+  "pt": "Uma ferramenta que você criar também pode lembrar você: quando tiver uma etapa, ative “Lembrar de executar”.",
+  "zh": "你创建的工具也能提醒你：添加一个步骤后，打开“提醒我运行”。"
+ },
+ "Every kind of file Tenzy opens": {
+  "de": "Alle Dateiarten, die Tenzy öffnet",
+  "es": "Todos los tipos de archivo que abre Tenzy",
+  "fr": "Tous les types de fichiers que Tenzy ouvre",
+  "hi": "Tenzy जो भी फ़ाइलें खोलता है",
+  "it": "Tutti i tipi di file che Tenzy apre",
+  "ja": "Tenzyで開けるファイルの種類",
+  "pt": "Todos os tipos de arquivo que o Tenzy abre",
+  "zh": "Tenzy 能打开的所有文件类型"
+ },
+ "Open any of them from Home's File button: Word, Excel, CSV, contact cards (.vcf) and calendar files (.ics) are read for their words, and a zip opens so you can pick what's inside.": {
+  "de": "Öffne sie über die Schaltfläche „Datei“ auf der Startseite: Word, Excel, CSV, Kontaktkarten (.vcf) und Kalenderdateien (.ics) werden als Text gelesen, und ein Zip öffnet sich, damit du den Inhalt wählen kannst.",
+  "es": "Ábrelos desde el botón Archivo de Inicio: Word, Excel, CSV, tarjetas de contacto (.vcf) y archivos de calendario (.ics) se leen como texto, y un zip se abre para que elijas qué hay dentro.",
+  "fr": "Ouvrez-les avec le bouton Fichier de l'accueil : Word, Excel, CSV, fiches contact (.vcf) et fichiers de calendrier (.ics) sont lus comme du texte, et un zip s'ouvre pour choisir son contenu.",
+  "hi": "इन्हें होम के File बटन से खोलें: Word, Excel, CSV, कॉन्टैक्ट कार्ड (.vcf) और कैलेंडर फ़ाइलें (.ics) टेक्स्ट के रूप में पढ़ी जाती हैं, और zip खुलकर अंदर की चीज़ें चुनने देता है।",
+  "it": "Aprili dal pulsante File della Home: Word, Excel, CSV, schede contatto (.vcf) e file di calendario (.ics) vengono letti come testo, e uno zip si apre per scegliere cosa c'è dentro.",
+  "ja": "ホームの「ファイル」ボタンから開けます。Word、Excel、CSV、連絡先カード（.vcf）、カレンダーファイル（.ics）は文字として読み取られ、zipは中身を選べるように開きます。",
+  "pt": "Abra qualquer um pelo botão Arquivo da tela inicial: Word, Excel, CSV, cartões de contato (.vcf) e arquivos de calendário (.ics) são lidos como texto, e um zip abre para você escolher o que está dentro.",
+  "zh": "从主页的“文件”按钮打开：Word、Excel、CSV、联系人卡片（.vcf）和日历文件（.ics）会读取其中的文字，zip 文件会打开供你选择里面的内容。"
+ },
+ "Tap to open": {
+  "de": "Tippen zum Öffnen:",
+  "es": "Toca para abrir",
+  "fr": "Touchez pour ouvrir",
+  "hi": "खोलने के लिए टैप करें",
+  "it": "Tocca per aprire",
+  "ja": "タップして開く：",
+  "pt": "Toque para abrir",
+  "zh": "轻点打开"
+ },
+ "Your reminder from Tenzy.": {
+  "de": "Deine Erinnerung von Tenzy.",
+  "es": "Tu recordatorio de Tenzy.",
+  "fr": "Votre rappel de Tenzy.",
+  "hi": "Tenzy की ओर से आपका रिमाइंडर।",
+  "it": "Il tuo promemoria da Tenzy.",
+  "ja": "Tenzyからのリマインダーです。",
+  "pt": "Seu lembrete do Tenzy.",
+  "zh": "来自 Tenzy 的提醒。"
+ },
+ "Remind me to": {
+  "de": "Erinnere mich an",
+  "es": "Recuérdame",
+  "fr": "Rappelle-moi de",
+  "hi": "मुझे याद दिलाएँ",
+  "it": "Ricordami di",
+  "ja": "リマインドする内容",
+  "pt": "Lembre-me de",
+  "zh": "提醒我"
+ },
+ "e.g. Water the plants": {
+  "de": "z. B. Pflanzen gießen",
+  "es": "p. ej., regar las plantas",
+  "fr": "ex. : arroser les plantes",
+  "hi": "जैसे, पौधों में पानी डालना",
+  "it": "es. Innaffiare le piante",
+  "ja": "例：植物に水をやる",
+  "pt": "ex.: regar as plantas",
+  "zh": "例如：给植物浇水"
+ },
+ "Take out the bins": {
+  "de": "Mülltonnen rausstellen",
+  "es": "Sacar la basura",
+  "fr": "Sortir les poubelles",
+  "hi": "कूड़ा बाहर रखना",
+  "it": "Portare fuori la spazzatura",
+  "ja": "ゴミを出す",
+  "pt": "Levar o lixo para fora",
+  "zh": "倒垃圾"
+ },
+ "Water the plants": {
+  "de": "Pflanzen gießen",
+  "es": "Regar las plantas",
+  "fr": "Arroser les plantes",
+  "hi": "पौधों में पानी डालना",
+  "it": "Innaffiare le piante",
+  "ja": "植物に水をやる",
+  "pt": "Regar as plantas",
+  "zh": "给植物浇水"
+ },
+ "Call Mum": {
+  "de": "Mama anrufen",
+  "es": "Llamar a mamá",
+  "fr": "Appeler maman",
+  "hi": "मम्मी को फ़ोन करना",
+  "it": "Chiamare la mamma",
+  "ja": "母に電話する",
+  "pt": "Ligar para a mãe",
+  "zh": "给妈妈打电话"
+ },
+ "Pay the rent": {
+  "de": "Miete zahlen",
+  "es": "Pagar el alquiler",
+  "fr": "Payer le loyer",
+  "hi": "किराया चुकाना",
+  "it": "Pagare l'affitto",
+  "ja": "家賃を払う",
+  "pt": "Pagar o aluguel",
+  "zh": "交房租"
+ },
+ "Take my vitamins": {
+  "de": "Vitamine nehmen",
+  "es": "Tomar mis vitaminas",
+  "fr": "Prendre mes vitamines",
+  "hi": "विटामिन लेना",
+  "it": "Prendere le vitamine",
+  "ja": "ビタミンを飲む",
+  "pt": "Tomar minhas vitaminas",
+  "zh": "吃维生素"
+ },
+ "Back up my photos": {
+  "de": "Fotos sichern",
+  "es": "Hacer copia de mis fotos",
+  "fr": "Sauvegarder mes photos",
+  "hi": "अपनी फ़ोटो का बैकअप लेना",
+  "it": "Fare il backup delle foto",
+  "ja": "写真をバックアップする",
+  "pt": "Fazer backup das fotos",
+  "zh": "备份照片"
+ },
+ "Once": {
+  "de": "Einmal",
+  "es": "Una vez",
+  "fr": "Une fois",
+  "hi": "एक बार",
+  "it": "Una volta",
+  "ja": "1回",
+  "pt": "Uma vez",
+  "zh": "一次"
+ },
+ "Time": {
+  "de": "Uhrzeit",
+  "es": "Hora",
+  "fr": "Heure",
+  "hi": "समय",
+  "it": "Ora",
+  "ja": "時刻",
+  "pt": "Horário",
+  "zh": "时间"
+ },
+ "When you tap it, open": {
+  "de": "Beim Tippen öffnen",
+  "es": "Al tocarlo, abrir",
+  "fr": "En le touchant, ouvrir",
+  "hi": "टैप करने पर खोलें",
+  "it": "Quando lo tocchi, apri",
+  "ja": "タップしたときに開く",
+  "pt": "Ao tocar, abrir",
+  "zh": "轻点后打开"
+ },
+ "Tool": {
+  "de": "Tool",
+  "es": "Herramienta",
+  "fr": "Outil",
+  "hi": "टूल",
+  "it": "Strumento",
+  "ja": "ツール",
+  "pt": "Ferramenta",
+  "zh": "工具"
+ },
+ "Nothing — just remind me": {
+  "de": "Nichts – nur erinnern",
+  "es": "Nada, solo recuérdamelo",
+  "fr": "Rien — juste me rappeler",
+  "hi": "कुछ नहीं — बस याद दिलाएँ",
+  "it": "Niente, solo ricordamelo",
+  "ja": "何も開かない（通知のみ）",
+  "pt": "Nada — só me lembrar",
+  "zh": "不打开——只提醒我"
+ },
+ "Set reminder": {
+  "de": "Erinnerung setzen",
+  "es": "Crear recordatorio",
+  "fr": "Créer le rappel",
+  "hi": "रिमाइंडर सेट करें",
+  "it": "Imposta promemoria",
+  "ja": "リマインダーを設定",
+  "pt": "Criar lembrete",
+  "zh": "设置提醒"
+ },
+ "Your reminders": {
+  "de": "Deine Erinnerungen",
+  "es": "Tus recordatorios",
+  "fr": "Vos rappels",
+  "hi": "आपके रिमाइंडर",
+  "it": "I tuoi promemoria",
+  "ja": "あなたのリマインダー",
+  "pt": "Seus lembretes",
+  "zh": "你的提醒"
+ },
+ "Reminders come from iPhone itself, so they arrive even when Tenzy is closed.": {
+  "de": "Erinnerungen kommen vom iPhone selbst, sie kommen also auch, wenn Tenzy geschlossen ist.",
+  "es": "Los recordatorios los envía el propio iPhone, así que llegan aunque Tenzy esté cerrado.",
+  "fr": "Les rappels viennent de l'iPhone lui-même : ils arrivent même quand Tenzy est fermé.",
+  "hi": "रिमाइंडर सीधे iPhone से आते हैं, इसलिए Tenzy बंद होने पर भी पहुँचते हैं।",
+  "it": "I promemoria arrivano dall'iPhone stesso, quindi anche con Tenzy chiuso.",
+  "ja": "リマインダーはiPhone自体から届くので、Tenzyを閉じていても届きます。",
+  "pt": "Os lembretes vêm do próprio iPhone, então chegam mesmo com o Tenzy fechado.",
+  "zh": "提醒由 iPhone 本身发出，所以即使 Tenzy 关闭也能收到。"
+ },
+ "Build a reminder": {
+  "de": "Erinnerung erstellen",
+  "es": "Crear un recordatorio",
+  "fr": "Créer un rappel",
+  "hi": "रिमाइंडर बनाएँ",
+  "it": "Crea un promemoria",
+  "ja": "リマインダーを作る",
+  "pt": "Criar um lembrete",
+  "zh": "创建提醒"
+ },
+ "Your own reminder": {
+  "de": "Deine eigene Erinnerung",
+  "es": "Tu propio recordatorio",
+  "fr": "Votre propre rappel",
+  "hi": "आपका अपना रिमाइंडर",
+  "it": "Il tuo promemoria",
+  "ja": "自分だけのリマインダー",
+  "pt": "Seu próprio lembrete",
+  "zh": "你的专属提醒"
+ },
+ "Say what and when. It can open the tool you need, ready to go.": {
+  "de": "Sag, was und wann. Es kann das passende Tool gleich startklar öffnen.",
+  "es": "Di qué y cuándo. Puede abrir la herramienta que necesitas, lista para usar.",
+  "fr": "Dites quoi et quand. Il peut ouvrir l'outil dont vous avez besoin, prêt à l'emploi.",
+  "hi": "बताएँ क्या और कब। यह ज़रूरी टूल को तैयार खोल सकता है।",
+  "it": "Di' cosa e quando. Può aprire lo strumento che ti serve, già pronto.",
+  "ja": "何をいつ知らせるかを決めるだけ。必要なツールをすぐ使える状態で開けます。",
+  "pt": "Diga o quê e quando. Ele pode abrir a ferramenta de que você precisa, pronta para usar.",
+  "zh": "说出内容和时间。它还能直接打开你需要的工具。"
+ },
+ "Today at": {
+  "de": "Heute um",
+  "es": "Hoy a las",
+  "fr": "Aujourd'hui à",
+  "hi": "आज",
+  "it": "Oggi alle",
+  "ja": "今日",
+  "pt": "Hoje às",
+  "zh": "今天"
+ },
+ "Tomorrow at": {
+  "de": "Morgen um",
+  "es": "Mañana a las",
+  "fr": "Demain à",
+  "hi": "कल",
+  "it": "Domani alle",
+  "ja": "明日",
+  "pt": "Amanhã às",
+  "zh": "明天"
+ },
+ "Every day at": {
+  "de": "Jeden Tag um",
+  "es": "Todos los días a las",
+  "fr": "Tous les jours à",
+  "hi": "हर दिन",
+  "it": "Ogni giorno alle",
+  "ja": "毎日",
+  "pt": "Todo dia às",
+  "zh": "每天"
+ },
+ "Pick at least one day": {
+  "de": "Wähle mindestens einen Tag",
+  "es": "Elige al menos un día",
+  "fr": "Choisissez au moins un jour",
+  "hi": "कम से कम एक दिन चुनें",
+  "it": "Scegli almeno un giorno",
+  "ja": "曜日を1つ以上選んでください",
+  "pt": "Escolha pelo menos um dia",
+  "zh": "请至少选择一天"
+ },
+ "My reminders": {
+  "de": "Meine Erinnerungen",
+  "es": "Mis recordatorios",
+  "fr": "Mes rappels",
+  "hi": "मेरे रिमाइंडर",
+  "it": "I miei promemoria",
+  "ja": "マイリマインダー",
+  "pt": "Meus lembretes",
+  "zh": "我的提醒"
+ },
+ "Say what and when — it reminds you, and can open the tool you need.": {
+  "de": "Sag, was und wann – es erinnert dich und kann das passende Tool öffnen.",
+  "es": "Di qué y cuándo: te lo recuerda y puede abrir la herramienta que necesitas.",
+  "fr": "Dites quoi et quand — il vous le rappelle et peut ouvrir l'outil utile.",
+  "hi": "बताएँ क्या और कब — यह याद दिलाएगा और ज़रूरी टूल खोल सकता है।",
+  "it": "Di' cosa e quando: te lo ricorda e può aprire lo strumento che ti serve.",
+  "ja": "何をいつ知らせるかを決めるだけ。通知し、必要なツールも開けます。",
+  "pt": "Diga o quê e quando — ele lembra você e pode abrir a ferramenta de que precisa.",
+  "zh": "说出内容和时间——它会提醒你，还能打开你需要的工具。"
+ },
+ "Sent — check the top of the screen in 5 seconds.": {
+  "de": "Gesendet – schau in 5 Sekunden oben auf den Bildschirm.",
+  "es": "Enviado: mira la parte superior de la pantalla en 5 segundos.",
+  "fr": "Envoyé — regardez en haut de l'écran dans 5 secondes.",
+  "hi": "भेज दिया — 5 सेकंड में स्क्रीन के ऊपर देखें।",
+  "it": "Inviato: guarda in alto sullo schermo tra 5 secondi.",
+  "ja": "送信しました。5秒後に画面上部を確認してください。",
+  "pt": "Enviado — veja o topo da tela em 5 segundos.",
+  "zh": "已发送——5 秒后请看屏幕顶部。"
  }
 }
