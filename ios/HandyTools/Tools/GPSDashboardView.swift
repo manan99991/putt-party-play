@@ -6,6 +6,13 @@ import AudioToolbox
 /// GPS Dashboard — the instrument cluster your phone never shows: live speed, heading, altitude and
 /// GPS accuracy, a trip computer (distance, moving time, max, average), a windshield HUD mode,
 /// exact coordinates to copy or send to someone, and "park here → walk me back".
+/// Set by "Save where I parked" (Control Center, Lock Screen, Shortcuts): the dashboard drops the pin on its first fix.
+@MainActor enum ParkNow {
+    static var pending = false
+    /// Posted when the dashboard is already open, so it starts saving straight away.
+    static let notification = Notification.Name("tenzy.parknow")
+}
+
 struct GPSDashboardView: View {
     @StateObject private var gps = GPSFeed()
     @AppStorage("gps.metric") private var metric = !(Locale.current.measurementSystem == .us)
@@ -22,6 +29,9 @@ struct GPSDashboardView: View {
     @AppStorage("gps.speedLimit") private var speedLimit = 0.0
     @State private var warnState = SpeedWarning.State()
     @State private var overLimit = false
+    @State private var savingNow = false
+    @State private var savingSince = Date()
+    @State private var autoNote: String?
 
     var body: some View {
         ToolPage(title: "GPS Dashboard", subtitle: "Find your parked car, grab your exact location to share, and get a full driving dashboard — all from GPS.") {
@@ -34,8 +44,16 @@ struct GPSDashboardView: View {
 
             // 1) The everyday job most people open this for: find the car again.
             sectionHeader("Find my car", "Drop a pin where you parked, then get walking directions back to it.")
+            if savingNow {
+                HStack(spacing: HandySpacing.s8) {
+                    BusySpinner()
+                    Text(L("Saving where you parked — getting a GPS fix…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }.cardStyle()
+            }
+            if let autoNote { Label(L(autoNote), systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success).cardStyle() }
             parkCard
             if parked != nil { meterCard }
+            autoParkCard
 
             // 2) Your exact spot, to copy or send to someone.
             sectionHeader("My location", "Your exact coordinates — copy them or text them to someone meeting you.")
@@ -56,7 +74,20 @@ struct GPSDashboardView: View {
             Text(L("Speed comes from GPS, so it lags a second and reads low under trees or between tall buildings. Trip tracking pauses when you leave the app."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .onAppear { if Launch.startHardware { gps.start() } }
+        .onAppear {
+            if Launch.startHardware { gps.start() }
+            if ParkNow.pending { gps.start(); savingSince = Date(); savingNow = true }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: ParkNow.notification)) { _ in
+            guard ParkNow.pending else { return }
+            gps.start(); savingSince = Date(); autoNote = nil; savingNow = true
+        }
+        // "Save where I parked" from Control Center, the Lock Screen or the car-Bluetooth automation: drop the pin on the
+        // first GPS fix (good to 65 m), or after 20 s on whatever fix there is.
+        .onReceive(gps.$coordinate) { c in
+            guard savingNow, c != nil else { return }
+            if gps.accuracy >= 0 && gps.accuracy <= 65 || Date().timeIntervalSince(savingSince) > 20 { autoPark() }
+        }
         // The HUD is a full-screen cover, which can count as leaving this page — keep GPS running under it.
         .onDisappear { if !hud { gps.stop() } }
         .onChange(of: hud) { _, on in if !on { gps.start() } }
@@ -261,6 +292,46 @@ struct GPSDashboardView: View {
     private func park() {
         guard let c = gps.coordinate else { return }
         ParkStore.save(c); parked = c; parkedAt = Date(); HandyHaptics.success()
+    }
+
+    private func autoPark() {
+        savingNow = false; ParkNow.pending = false
+        park()
+        autoNote = "Saved where you parked. Walk back to it any time from here."
+    }
+
+    /// Save it without opening the app first: a button in Control Center or on the Lock Screen, or an automation that
+    /// runs when the phone leaves the car's Bluetooth. Steps in plain words, and a Test run that does the real thing.
+    private var autoParkCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L("Save it without opening Tenzy"), systemImage: "bolt.car.fill").font(HandyFont.bodyStrong)
+            Text(L("When you leave the car — automatically")).font(HandyFont.caption.weight(.semibold)).foregroundStyle(HandyColor.textPrimary)
+            autoStep(1, "Open the Shortcuts app and tap Automation, then +.")
+            autoStep(2, "Choose Bluetooth, pick your car, and choose Is Disconnected. Set it to Run Immediately.")
+            autoStep(3, "Tap New Blank Automation, search for Tenzy and add Save Where I Parked. Done.")
+            Text(L("With a button — Control Center or the Lock Screen")).font(HandyFont.caption.weight(.semibold)).foregroundStyle(HandyColor.textPrimary).padding(.top, 4)
+            autoStep(1, "Swipe down from the top right, tap +, then Add a Control.")
+            autoStep(2, "Search for Tenzy and tap Save where I parked. (On the Lock Screen: touch and hold it, tap Customize, then a button at the bottom.)")
+            HStack(spacing: HandySpacing.s8) {
+                if let u = URL(string: "shortcuts://") {
+                    Button { UIApplication.shared.open(u) } label: { Label(L("Open Shortcuts"), systemImage: "square.on.square") }.compactButton()
+                }
+                Button {
+                    ParkNow.pending = true; savingSince = Date(); savingNow = true; autoNote = nil; gps.start()
+                } label: { Label(L("Test run"), systemImage: "play.circle") }
+                .compactButton().accessibilityIdentifier("gps-autopark-test")
+            }
+            Text(L("Test run does exactly what the automation does: saves where you are now.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+        }
+        .cardStyle()
+    }
+
+    private func autoStep(_ n: Int, _ text: String) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: HandySpacing.s8) {
+            Text("\(n)").font(HandyFont.caption.weight(.bold)).foregroundStyle(.white)
+                .frame(width: 20, height: 20).background(HandyColor.accent, in: Circle())
+            Text(L(text)).font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary).fixedSize(horizontal: false, vertical: true)
+        }
     }
     private func walkBack(_ c: CLLocationCoordinate2D) {
         let item = MKMapItem(placemark: MKPlacemark(coordinate: c)); item.name = "Your car"

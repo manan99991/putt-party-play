@@ -140,6 +140,13 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   the published copy; keep the two files the same). Any later change to the page is a public change and needs his yes again. `ToolLink.live`
   (iOS) and `ToolLink.LIVE` (Android) switch link and QR sharing on or off. Android declares a `tenzy://import` link filter; an
   imported tool is only saved to My tools, never run by itself.
+- Outside the app (24 Nov): Control Center / Lock Screen / Action-button controls (Save where I parked, Scan, What is this?,
+  Translate) and the Shortcuts action "Save Where I Parked" (made for an automation when the car's Bluetooth disconnects)
+  all **open Tenzy** and do the work in the foreground: the parking pin uses the existing when-in-use location, never
+  background location, so no new permission or usage string. The parking meter shows as a Live Activity on the Lock Screen
+  and in the Dynamic Island (`NSSupportsLiveActivities`, local only, no push), started when the person sets a meter and
+  ended when it's cancelled or the car is cleared. Nothing is collected. Reviewer note before production: say the controls
+  and the Shortcuts action open the app, and the Live Activity is the meter countdown.
 - "Change the voice" only changes speed and pitch. Do not describe it as voice cloning or as sounding like a real person.
 - Build your own, Pro steps: only the 10 basic steps are free (`Block.freeStepIDs` / `FREE_STEP_IDS`, matched on both
   phones): Read text, Tidy text, Summarize, Find links/emails/phones, Clean tracking, Make a QR code, Wi-Fi join code,

@@ -46588,5 +46588,145 @@
   "ja": "%@ に駐車",
   "pt": "Estacionado %@",
   "zh": "%@ 停的车"
+ },
+ "Tap New Blank Automation, search for Tenzy and add Save Where I Parked. Done.": {
+  "de": "Tippe auf „Neue leere Automation“, suche nach Tenzy und füge „Save Where I Parked“ hinzu. Fertig.",
+  "es": "Toca Nueva automatización en blanco, busca Tenzy y añade Save Where I Parked. Listo.",
+  "fr": "Touchez Nouvelle automatisation vierge, cherchez Tenzy et ajoutez Save Where I Parked. C'est fait.",
+  "hi": "नया खाली ऑटोमेशन पर टैप करें, Tenzy खोजें और Save Where I Parked जोड़ें। हो गया।",
+  "it": "Tocca Nuova automazione vuota, cerca Tenzy e aggiungi Save Where I Parked. Fatto.",
+  "ja": "「新規の空のオートメーション」をタップし、Tenzy を検索して「Save Where I Parked」を追加。完了です。",
+  "pt": "Toque em Nova automação em branco, procure Tenzy e adicione Save Where I Parked. Pronto.",
+  "zh": "点按“新建空白自动化”，搜索 Tenzy，添加“Save Where I Parked”。完成。"
+ },
+ "mph": {
+  "de": "mph",
+  "es": "mph",
+  "fr": "mph",
+  "hi": "mph",
+  "it": "mph",
+  "ja": "mph",
+  "pt": "mph",
+  "zh": "英里/时"
+ },
+ "HUD": {
+  "de": "HUD",
+  "es": "HUD",
+  "fr": "HUD",
+  "hi": "HUD",
+  "it": "HUD",
+  "ja": "HUD",
+  "pt": "HUD",
+  "zh": "抬头显示"
+ },
+ "km/h": {
+  "de": "km/h",
+  "es": "km/h",
+  "fr": "km/h",
+  "hi": "km/h",
+  "it": "km/h",
+  "ja": "km/h",
+  "pt": "km/h",
+  "zh": "公里/时"
+ },
+ "With a button — Control Center or the Lock Screen": {
+  "de": "Mit einer Taste – im Kontrollzentrum oder auf dem Sperrbildschirm",
+  "es": "Con un botón: en el Centro de control o en la pantalla de bloqueo",
+  "fr": "Avec un bouton — dans le centre de contrôle ou sur l'écran verrouillé",
+  "hi": "एक बटन से — कंट्रोल सेंटर या लॉक स्क्रीन पर",
+  "it": "Con un pulsante — nel Centro di Controllo o nella schermata di blocco",
+  "ja": "ボタンで — コントロールセンターやロック画面から",
+  "pt": "Com um botão — na Central de Controle ou na Tela Bloqueada",
+  "zh": "用按钮——在控制中心或锁定屏幕"
+ },
+ "Swipe down from the top right, tap +, then Add a Control.": {
+  "de": "Wische oben rechts nach unten, tippe auf + und dann auf „Steuerelement hinzufügen“.",
+  "es": "Desliza hacia abajo desde la esquina superior derecha, toca + y luego Añadir un control.",
+  "fr": "Balayez vers le bas depuis le coin supérieur droit, touchez +, puis Ajouter une commande.",
+  "hi": "ऊपर दाईं ओर से नीचे स्वाइप करें, + पर टैप करें, फिर Add a Control चुनें।",
+  "it": "Scorri in basso dall'angolo in alto a destra, tocca +, poi Aggiungi un controllo.",
+  "ja": "右上から下にスワイプし、＋をタップして「コントロールを追加」を選びます。",
+  "pt": "Deslize para baixo a partir do canto superior direito, toque em + e depois em Adicionar um controle.",
+  "zh": "从右上角向下轻扫，点按 +，再点按“添加控制”。"
+ },
+ "Choose Bluetooth, pick your car, and choose Is Disconnected. Set it to Run Immediately.": {
+  "de": "Wähle Bluetooth, dann dein Auto und „Getrennt“. Stelle auf „Sofort ausführen“.",
+  "es": "Elige Bluetooth, tu coche y Se desconecta. Ponlo en Ejecutar inmediatamente.",
+  "fr": "Choisissez Bluetooth, votre voiture, puis Est déconnecté. Réglez sur Exécuter immédiatement.",
+  "hi": "Bluetooth चुनें, अपनी कार चुनें और Is Disconnected चुनें। इसे Run Immediately पर रखें।",
+  "it": "Scegli Bluetooth, la tua auto e È disconnesso. Imposta Esegui immediatamente.",
+  "ja": "「Bluetooth」を選び、車を選んで「接続解除時」を選択。「すぐに実行」にします。",
+  "pt": "Escolha Bluetooth, selecione seu carro e Desconectado. Defina como Executar imediatamente.",
+  "zh": "选择“蓝牙”，选你的车，再选“断开连接时”。设为“立即运行”。"
+ },
+ "Saved where you parked. Walk back to it any time from here.": {
+  "de": "Dein Parkplatz ist gespeichert. Von hier aus findest du jederzeit zurück.",
+  "es": "Guardado dónde aparcaste. Vuelve a él cuando quieras desde aquí.",
+  "fr": "Votre place est enregistrée. Retrouvez-la quand vous voulez depuis ici.",
+  "hi": "आपकी पार्किंग की जगह सेव हो गई। यहीं से कभी भी वापस पैदल पहुँचें।",
+  "it": "Salvato dove hai parcheggiato. Torna lì quando vuoi da qui.",
+  "ja": "駐車位置を保存しました。ここからいつでも歩いて戻れます。",
+  "pt": "Salvo onde você estacionou. Volte até ele quando quiser a partir daqui.",
+  "zh": "已保存停车位置。随时可从这里步行导航回去。"
+ },
+ "Test run does exactly what the automation does: saves where you are now.": {
+  "de": "Der Testlauf macht genau das, was die Automation macht: Er speichert, wo du gerade bist.",
+  "es": "La prueba hace exactamente lo que hará la automatización: guarda dónde estás ahora.",
+  "fr": "Le test fait exactement ce que fera l'automatisation : il enregistre l'endroit où vous êtes.",
+  "hi": "टेस्ट रन वही करता है जो ऑटोमेशन करेगा: अभी आप जहाँ हैं, उसे सेव करता है।",
+  "it": "La prova fa esattamente ciò che fa l'automazione: salva dove sei adesso.",
+  "ja": "テスト実行はオートメーションと同じことをします：今いる場所を保存します。",
+  "pt": "O teste faz exatamente o que a automação faz: salva onde você está agora.",
+  "zh": "测试运行与自动化完全相同：保存你现在所在的位置。"
+ },
+ "Saving where you parked — getting a GPS fix…": {
+  "de": "Parkplatz wird gespeichert – GPS wird gesucht …",
+  "es": "Guardando dónde aparcaste: buscando la señal GPS…",
+  "fr": "Enregistrement de votre place — recherche du GPS…",
+  "hi": "पार्किंग की जगह सेव हो रही है — GPS सिग्नल ढूँढ रहे हैं…",
+  "it": "Salvo dove hai parcheggiato — cerco il GPS…",
+  "ja": "駐車位置を保存中 — GPS を取得しています…",
+  "pt": "Salvando onde você estacionou — buscando o GPS…",
+  "zh": "正在保存停车位置——正在获取 GPS 信号……"
+ },
+ "Search for Tenzy and tap Save where I parked. (On the Lock Screen: touch and hold it, tap Customize, then a button at the bottom.)": {
+  "de": "Suche nach Tenzy und tippe auf „Save where I parked“. (Auf dem Sperrbildschirm: gedrückt halten, „Anpassen“ tippen, dann eine Taste unten.)",
+  "es": "Busca Tenzy y toca Save where I parked. (En la pantalla de bloqueo: mantenla pulsada, toca Personalizar y luego un botón de abajo).",
+  "fr": "Cherchez Tenzy et touchez Save where I parked. (Sur l'écran verrouillé : maintenez le doigt, touchez Personnaliser, puis un bouton en bas.)",
+  "hi": "Tenzy खोजें और Save where I parked पर टैप करें। (लॉक स्क्रीन पर: दबाकर रखें, Customize पर टैप करें, फिर नीचे का कोई बटन चुनें।)",
+  "it": "Cerca Tenzy e tocca Save where I parked. (Nella schermata di blocco: tienila premuta, tocca Personalizza, poi un pulsante in basso.)",
+  "ja": "Tenzy を検索して「Save where I parked」をタップ。（ロック画面では長押しして「カスタマイズ」、下のボタンを選びます。）",
+  "pt": "Procure Tenzy e toque em Save where I parked. (Na Tela Bloqueada: toque e segure, toque em Personalizar e depois num botão embaixo.)",
+  "zh": "搜索 Tenzy，点按“Save where I parked”。（锁定屏幕：按住，点“自定”，再选底部的一个按钮。）"
+ },
+ "Open the Shortcuts app and tap Automation, then +.": {
+  "de": "Öffne die Kurzbefehle-App, tippe auf „Automation“ und dann auf +.",
+  "es": "Abre la app Atajos, toca Automatización y luego +.",
+  "fr": "Ouvrez l'app Raccourcis, touchez Automatisation, puis +.",
+  "hi": "Shortcuts ऐप खोलें, Automation पर टैप करें, फिर + पर।",
+  "it": "Apri l'app Comandi, tocca Automazione, poi +.",
+  "ja": "ショートカットAppを開き、「オートメーション」をタップして＋を押します。",
+  "pt": "Abra o app Atalhos, toque em Automação e depois em +.",
+  "zh": "打开“快捷指令”App，点按“自动化”，再点 +。"
+ },
+ "Save it without opening Tenzy": {
+  "de": "Speichern, ohne Tenzy zu öffnen",
+  "es": "Guárdalo sin abrir Tenzy",
+  "fr": "Enregistrez-la sans ouvrir Tenzy",
+  "hi": "Tenzy खोले बिना सेव करें",
+  "it": "Salvalo senza aprire Tenzy",
+  "ja": "Tenzy を開かずに保存",
+  "pt": "Salve sem abrir o Tenzy",
+  "zh": "无需打开 Tenzy 即可保存"
+ },
+ "When you leave the car — automatically": {
+  "de": "Wenn du aus dem Auto steigst – automatisch",
+  "es": "Al salir del coche, automáticamente",
+  "fr": "Quand vous quittez la voiture — automatiquement",
+  "hi": "जब आप कार से उतरें — अपने आप",
+  "it": "Quando scendi dall'auto — in automatico",
+  "ja": "車を降りたとき — 自動で",
+  "pt": "Quando você sai do carro — automaticamente",
+  "zh": "下车时——自动保存"
  }
 }

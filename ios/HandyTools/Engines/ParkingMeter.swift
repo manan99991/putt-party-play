@@ -1,5 +1,6 @@
 import Foundation
 import UserNotifications
+import ActivityKit
 
 /// "My meter runs out at…": a heads-up before the parking time ends (with the walk back), and one when it ends.
 /// Plus the speed warning for the driving dashboard. Pure parts are unit-tested.
@@ -33,6 +34,7 @@ enum ParkingMeter {
     static func schedule(ends: Date, lead: Int, walk: String?) async {
         cancel()
         endsAt = ends; self.lead = lead
+        await ParkingLive.start(ends: ends, note: ParkStore.note())
         let t = fireTimes(ends: ends, lead: lead)
         let m = messages(lead: lead, walk: walk)
         let center = UNUserNotificationCenter.current()
@@ -49,6 +51,7 @@ enum ParkingMeter {
     static func cancel() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
         endsAt = nil
+        Task { await ParkingLive.end() }
     }
 
     /// What the reminder will look like, in 5 seconds — lock the phone to see it on the Lock Screen.
@@ -77,5 +80,19 @@ enum SpeedWarning {
         if let last = state.lastWarn, now.timeIntervalSince(last) < gapSeconds { return false }
         state.armed = false; state.lastWarn = now
         return true
+    }
+}
+
+/// The meter counting down on the Lock Screen and in the Dynamic Island (a Live Activity). Started when the meter is set,
+/// ended when it's cancelled or the car is cleared; once the time is up it says so and goes after a while.
+enum ParkingLive {
+    static func start(ends: Date, note: String) async {
+        await end()
+        guard ActivityAuthorizationInfo().areActivitiesEnabled, ends > Date() else { return }
+        let content = ActivityContent(state: ParkingAttributes.ContentState(ends: ends, note: note), staleDate: ends)
+        _ = try? Activity.request(attributes: ParkingAttributes(parkedAt: ParkStore.date() ?? Date()), content: content, pushType: nil)
+    }
+    static func end() async {
+        for a in Activity<ParkingAttributes>.activities { await a.end(nil, dismissalPolicy: .immediate) }
     }
 }

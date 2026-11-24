@@ -79,5 +79,17 @@ struct TenzyWidgets: WidgetBundle {
     var body: some Widget {
         StickyWidget()
         ToolsWidget()
+        ParkingLiveActivity()
+        TenzyControls().body
+    }
+}
+
+/// Buttons for Control Center, the Lock Screen and the Action button.
+struct TenzyControls: WidgetBundle {
+    var body: some Widget {
+        ParkControl()
+        ScanControl()
+        IdentifyControl()
+        TranslateControl()
     }
 }

@@ -233,6 +233,9 @@ struct TenzyShortcuts: AppShortcutsProvider {
         AppShortcut(intent: OpenAppToolIntent(),
                     phrases: ["Open \(\.$tool) in \(.applicationName)", "\(.applicationName) \(\.$tool)", "Use \(.applicationName) \(\.$tool)"],
                     shortTitle: "Open a Tenzy Tool", systemImageName: "square.grid.2x2.fill")
+        AppShortcut(intent: SaveParkingIntent(),
+                    phrases: ["Save where I parked in \(.applicationName)", "\(.applicationName) save my parking", "Park my car in \(.applicationName)"],
+                    shortTitle: "Save Where I Parked", systemImageName: "car.fill")
         AppShortcut(intent: FlashlightPatternIntent(),
                     phrases: ["Start SOS light in \(.applicationName)", "\(.applicationName) SOS light", "Start \(\.$pattern) in \(.applicationName)"],
                     shortTitle: "Flashlight SOS", systemImageName: "light.beacon.max.fill")

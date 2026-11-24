@@ -44,6 +44,8 @@ struct TenzyApp: App {
             }
             .copyToastHost()   // one shared "Copied" confirmation for every tool
             .onChange(of: phase) { _, p in
+                // A button outside the app (Control Center, Lock Screen, a Shortcuts automation) asked for something.
+                if p == .active { OutsideActions.run() }
                 // Every time Tenzy comes to the front: check the "tell me when…" alerts, and book the next background check.
                 if p == .active, !Launch.uitest { Task { await SmartAlerts.checkAll(); await DailyBrief.refresh(); await PageWatcher.checkAll() }; SmartAlerts.scheduleBackground() }
                 // The photo index (Search My Photos, the smart photo picker) builds quietly: a little after Tenzy
@@ -655,6 +657,7 @@ struct HomeView: View {
             }
             .onReceive(NotificationCenter.default.publisher(for: .showPaywall)) { _ in showPaywall = true }
             .onReceive(NotificationCenter.default.publisher(for: .showMyStuff)) { _ in path = []; tab = .mine }
+            .onReceive(NotificationCenter.default.publisher(for: OutsideAction.notification)) { _ in OutsideActions.run() }
             .onReceive(NotificationCenter.default.publisher(for: .showTab)) { n in
                 guard let raw = n.object as? String, let t = RootTab(rawValue: raw) else { return }
                 path = []; withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { tab = t }
@@ -1146,4 +1149,19 @@ extension Notification.Name {
     static let tabReselected = Notification.Name("handytools.tabReselected")
     static let showPaywall = Notification.Name("handytools.showPaywall")
     static let showSetup = Notification.Name("handytools.showSetup")
+}
+
+/// Carries out what a Control Center / Lock Screen button or a Shortcuts automation asked for (see Shared/OutsideApp).
+@MainActor enum OutsideActions {
+    static func run() {
+        guard let a = OutsideAction.take() else { return }
+        if a == "park" {
+            ParkNow.pending = true
+            NotificationCenter.default.post(name: .openTool, object: "gpsdash")
+            NotificationCenter.default.post(name: ParkNow.notification, object: nil)
+        } else if a.hasPrefix("tool:") {
+            let id = String(a.dropFirst(5))
+            if TOOLS.contains(where: { $0.id == id }) { NotificationCenter.default.post(name: .openTool, object: id) }
+        }
+    }
 }

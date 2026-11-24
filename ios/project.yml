@@ -56,6 +56,7 @@ targets:
     sources:
       - path: HandyTools
       - path: Shared
+      - path: OutsideShared
     dependencies:
       - package: SwiftOGG
       - package: SWCompression
@@ -306,7 +307,7 @@ targets:
     platform: iOS
     settings:
       base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.toolkit.widget }
-    sources: [StickyWidget, Shared]
+    sources: [StickyWidget, Shared, OutsideShared]   # OutsideShared: Control Center / Lock Screen actions (app + widgets only)
     entitlements:
       path: StickyWidget/StickyWidget.entitlements
       properties:
