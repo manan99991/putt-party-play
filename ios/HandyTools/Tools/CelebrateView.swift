@@ -54,6 +54,8 @@ struct CelebrateView: View {
     @State private var poster: CGImage?
     /// False until the preview's first frame is on screen — till then the still frame shows, never a black box.
     @State private var rolling = false
+    /// What the preview box is showing, for the build machine's check (refreshed while the page is open in a test).
+    @State private var probe = ""
     @State private var duration: Double = 4
     @State private var beats: [Double] = []
     @State private var thumbs: [String: UIImage] = [:]
@@ -88,12 +90,15 @@ struct CelebrateView: View {
             if (n.object as? AVPlayerItem) == player.currentItem { player.seek(to: .zero); player.play() }
         }
         // The still frame stays up until the video has really moved on screen (a "playing" flag alone came before the
-        // first picture, and the box showed black — Gold Book review, 24 Nov).
-        .onReceive(player.publisher(for: \.timeControlStatus)) { s in
-            guard s == .playing, !rolling else { return }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                if player.timeControlStatus == .playing, player.currentTime().seconds > 0.25,
-                   (player.currentItem?.presentationSize.width ?? 0) > 0 { rolling = true }
+        // first picture, and the box showed black — Gold Book review, 24 Nov). Checked until it moves, not once: a
+        // single check 0.6 s after "playing" could miss, and the box then kept the plain still for good.
+        .onReceive(Timer.publish(every: 0.3, on: .main, in: .common).autoconnect()) { _ in
+            guard source != nil, resultURL == nil, !rolling || Launch.uitest else { return }
+            let item = player.currentItem
+            if !rolling, player.timeControlStatus == .playing, player.currentTime().seconds > 0.25,
+               (item?.presentationSize.width ?? 0) > 0 { rolling = true }
+            if Launch.uitest {
+                probe = "poster \(poster != nil) rolling \(rolling) playing \(player.timeControlStatus == .playing) item \(item != nil) status \(item?.status.rawValue ?? -1) wait \(player.reasonForWaitingToPlay?.rawValue ?? "-") err \(item?.error?.localizedDescription ?? "-") size \(Int(item?.presentationSize.width ?? 0)) t \(String(format: "%.1f", player.currentTime().seconds))"
             }
         }
         .onDisappear { player.pause(); previewTask?.cancel(); thumbTask?.cancel() }
@@ -134,7 +139,7 @@ struct CelebrateView: View {
                 // Diagnostics for the Gold Book review (the preview showed black on the build machine): what it's showing.
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier("celebrate-preview")
-                .accessibilityValue("poster \(poster != nil) rolling \(rolling) playing \(player.timeControlStatus == .playing) item \(player.currentItem != nil) size \(Int(player.currentItem?.presentationSize.width ?? 0)) t \(String(format: "%.1f", player.currentTime().seconds))")
+                .accessibilityValue(probe)
             howMuch
             tabs
             Group {
