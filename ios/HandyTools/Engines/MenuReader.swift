@@ -322,7 +322,7 @@ enum MenuReader {
     /// its dishes and misread the rest). First the whole page — it settles the menu's language and catches the big
     /// headings. Then, when the print is small, the page again in overlapping tiles at full resolution, each tile read
     /// as if it were its own photo, with the menu's words expected; the pieces are put back together on one page.
-    static func read(_ image: UIImage) -> [Box] {
+    static func read(_ image: UIImage, tiles useTiles: Bool = true) -> [Box] {
         let up = image.normalizedUp()
         guard let full = up.resized(maxDimension: 4800).cgImage, let page = up.resized(maxDimension: 2400).cgImage else { return [] }
         func pass(_ cg: CGImage, _ languages: [String]?, minHeight: Float? = nil) -> [VNRecognizedTextObservation] {
@@ -362,7 +362,7 @@ enum MenuReader {
         let heights = best.map(lineHeight).sorted()
         let median = heights.isEmpty ? 1 : heights[heights.count / 2]
         let W = CGFloat(full.width), H = CGFloat(full.height)
-        guard best.count >= 30 || median < 0.02 || best.isEmpty, max(W, H) > 1800 else { return best }
+        guard useTiles, best.count >= 30 || median < 0.02 || best.isEmpty, max(W, H) > 1800 else { return best }
         let side: CGFloat = 1500, overlap: CGFloat = 0.14
         let cols = max(1, Int(ceil(W / side))), rowsN = max(1, Int(ceil(H / side)))
         guard cols * rowsN > 1 else { return best }

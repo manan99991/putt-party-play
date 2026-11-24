@@ -1,12 +1,7 @@
-# 24 Nov — Menu Assistant on Manan's own photos (a five-screen Indian menu board came back as 8 "dishes"; a steakhouse
-# menu misread "Cowboy" and ran descriptions together; some Chinese dishes stayed in characters). The reader now reads
-# small print tile by tile at full resolution and cuts the page into its panels and columns. Proven on the two real
-# photos (decrypted here from the encrypted test set) and the earlier menu tests.
+# 24 Nov — Menu Assistant on Manan's two real menu photos. First run: the board 0/34 dishes with the right price,
+# the steakhouse 11/38, while the built examples all passed. Same failure means the theory is wrong (rulebook §8):
+# this run dumps exactly what the camera read (encrypted) so the reading can be worked out off the build machine.
 HandyToolsTests/MenuBoardTests
-HandyToolsTests/GuideMenuReceiptTests
-HandyToolsTests/EngineTests/testMenuReaderFindsDishesPricesAndWhatsInThem
-# Still waiting on its own proof: the Meeting Notes rewrite.
-HandyToolsTests/MeetingDigestTests
-HandyToolsTests/EngineTests/testCatalogIsConsistent
-HandyToolsTests/EngineTests/testMeetingTurnsSplitAtPauses
-HandyToolsTests/TuneGuideTests
+# Also proven here: your own reminders and the one-line Home tabs.
+HandyToolsTests/OwnRemindersTests
+HandyToolsTests/HomeShelvesTests

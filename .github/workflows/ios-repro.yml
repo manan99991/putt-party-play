@@ -57,7 +57,7 @@ jobs:
           for p in camera microphone photos location; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
           xcodebuild build-for-testing -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation 2>&1 | tail -3
-          TEST_RUNNER_REAL_PHOTOS="$RUNNER_TEMP/real" TEST_RUNNER_GOLDEN="$PWD/RealPhotos/golden.json" xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
+          TEST_RUNNER_MENU_DUMP="$RUNNER_TEMP/menu-dump.json" TEST_RUNNER_REAL_PHOTOS="$RUNNER_TEMP/real" TEST_RUNNER_GOLDEN="$PWD/RealPhotos/golden.json" xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
             $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD|REALINPUT|TOOLINPUT|SMOKE|MENU\||Failed to|accessibility" || true
           # Any crash the simulator recorded for the app, newest first.
@@ -70,3 +70,13 @@ jobs:
         run: |
           { grep -E "error:|Test Case|Executed|TEST (SUCCEEDED|FAILED)|crashed|failed -|XCTAssert|BISECT|REALINPUT|TOOLINPUT|SMOKE|MENU\||Failed to|accessibility|Elapsed" ios/repro.log | grep -v "MENUREAD" | head -300; echo "== crash reports"; cat ios/crashes.txt 2>/dev/null; } > ios-repro.log
           bash .github/publish-log.sh ios-repro ios-repro.log || true
+      - name: Publish what the camera read on the private menus (encrypted)
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}", TEST_PHOTOS_KEY: "${{ secrets.TEST_PHOTOS_KEY }}" }
+        run: |
+          if [ -f "$RUNNER_TEMP/menu-dump.json" ] && [ -n "$TEST_PHOTOS_KEY" ]; then
+            mkdir -p "$RUNNER_TEMP/menupub"
+            openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -md sha256 -in "$RUNNER_TEMP/menu-dump.json" -out "$RUNNER_TEMP/menupub/menu-dump.json.enc" -pass env:TEST_PHOTOS_KEY
+            bash .github/publish-log.sh ios-repro-menu "$RUNNER_TEMP/menupub" || true
+          fi

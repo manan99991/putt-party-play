@@ -155,12 +155,26 @@ final class MenuBoardTests: XCTestCase {
               let gdata = try? Data(contentsOf: URL(fileURLWithPath: gpath)),
               let g = try? JSONSerialization.jsonObject(with: gdata) as? [String: Any] else { throw XCTSkip("private photos not decrypted") }
         let dir = URL(fileURLWithPath: root).appendingPathComponent("private")
+        // What the camera read, piece by piece, for working out a failure off the build machine. Written only where
+        // the workflow asks for it, and published only encrypted (it's text from a private photo).
+        var dump: [String: Any] = [:]
+        func pieces(_ b: [MenuReader.Box]) -> [[String: Any]] {
+            b.map { ["t": $0.text, "x": $0.rect.minX, "y": $0.rect.minY, "w": $0.rect.width, "h": $0.rect.height, "s": $0.slope, "c": $0.confidence] }
+        }
+        defer {
+            if let path = ProcessInfo.processInfo.environment["MENU_DUMP"], let d = try? JSONSerialization.data(withJSONObject: dump) {
+                try? d.write(to: URL(fileURLWithPath: path))
+            }
+        }
         for case let e as [String: Any] in g["menus"] as? [Any] ?? [] {
             let file = e["file"] as? String ?? ""
             guard ["menu-indian-board.jpg", "menu-steakhouse.jpg"].contains(file) else { continue }
             guard let img = UIImage(contentsOfFile: dir.appendingPathComponent(file).path) else { XCTFail("missing \(file)"); continue }
             let started = Date()
-            let lines = MenuReader.lines(from: MenuReader.read(img))
+            let boxes = MenuReader.read(img)
+            let lines = MenuReader.lines(from: boxes)
+            dump[file] = ["tiled": pieces(boxes), "page": pieces(MenuReader.read(img, tiles: false)), "lines": lines,
+                          "size": [img.size.width * img.scale, img.size.height * img.scale]]
             let items = MenuReader.parse(lines).filter { !$0.note }
             let want = e["dishes"] as? [[Any]] ?? []
             var missed: [String] = []
