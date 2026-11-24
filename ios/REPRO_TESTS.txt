@@ -1,4 +1,3 @@
-# 24 Nov, run 13. Run 12: still frame up (no black box) but the switch to the moving video was a one-shot check and
-# the readings were stale. Now checked every 0.3 s with live readings (status, wait reason, error). Celebrate test too.
-HandyToolsUITests/PromiseTests/testVideoEffectsPreviewIsNeverABlackBox
-HandyToolsUITests/PromiseTests/testCelebrateOffersEveryFestivalAndTypedOnes
+# 24 Nov, run 14. Run 13: the preview player item FAILS ("The operation could not be completed") while export of the
+# same effects works. Control: play the sample plain vs with the effects, with the full error.
+HandyToolsTests/VideoFXPlaybackTests
