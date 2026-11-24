@@ -1,13 +1,6 @@
-# 24 Nov — Menu Assistant on Manan's two real menu photos. First run: the board 0/34 dishes with the right price,
-# the steakhouse 11/38, while the built examples all passed. Same failure means the theory is wrong (rulebook §8):
-# the dump showed why: the page read kept only big text, the small print was garbled (guessed as Arabic), and two
-# screens ran together. Now: named languages, every text size, sections enlarged 1.6x before reading, and gutters
-# that a stray wide piece can't hide. Run 2: board 26/34, steakhouse 18/38. Run 3 adds: prices matched to the row they
-# line up with, misread words put right against a menu vocabulary (never a real word), the best of the camera's guesses.
-# Run 3: board 30/34 (passes), steakhouse 29/38. Run 4: "9o" anywhere, a lone S ending a line, small print enlarged more.
+# 24 Nov — Identify on Manan's living-room photo (a big TV came back "Container 88%, Vase 88%"): views now count by
+# how much of the photo they show; filler labels go down. The first test prints what the classifier can name.
+HandyToolsTests/IdentifyRealTests
+HandyToolsTests/EngineTests/testIdentifierCleansLabels
+# The menu proof stays in the list (it passed on run 5).
 HandyToolsTests/MenuBoardTests
-# Also proven here: your own reminders and the one-line Home tabs.
-HandyToolsTests/OwnRemindersTests
-HandyToolsTests/HomeShelvesTests
-# (run 4 did not compile: a test typo; rerun)
-# Run 4: enlarging to 2,400 px made the board worse (21/34) — back to 2,000; the word and price rules stay.

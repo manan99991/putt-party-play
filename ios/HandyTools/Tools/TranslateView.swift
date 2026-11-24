@@ -30,6 +30,12 @@ struct TranslateView: View {
     private enum PickerSide: Int, Identifiable { case from, to; var id: Int { rawValue } }
     @State private var showPicker: PickerSide? = nil
     @State private var travelCat = 0
+    /// The phrase last tapped (highlighted, and its translation shown above the list).
+    @State private var shownPhrase: String?
+    /// The phrasebook in the person's own language, keyed by the English original.
+    @State private var yours: [String: String] = [:]
+    @State private var listConfig: TranslationSession.Configuration?
+    @State private var listBusy = false
     /// Face to face: the phone flat between two people, each half facing its reader, big type, one mic each.
     @State private var faceToFace = false
     @AppStorage("translate.favs") private var favsRaw = ""
@@ -42,11 +48,8 @@ struct TranslateView: View {
 
     var body: some View {
         ToolPage(title: "Translate", subtitle: "Type, talk, or photograph — on-device translation that works offline and stays private.", working: busy) {
-            HowTo("translate", [
-                "Pick the languages, then type, paste, or tap the mic to speak.",
-                "The translation appears below; tap the speaker to hear it.",
-                "Swap the languages with the arrows for a two-way chat.",
-            ])
+            // How to use, for the mode you're in (Manan, 23 Nov: "I didn't get any understanding on how the tool worked").
+            HowTo("translate-\(mode.rawValue)", howSteps).id("howto-\(mode.rawValue)")
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; errorText = nil } }
             }
@@ -91,6 +94,22 @@ struct TranslateView: View {
         }
     }
 
+    private var howSteps: [String] {
+        switch mode {
+        case .text: return ["Left: the language you write in. Right: the language you want.",
+                            "Type or paste, then tap Translate.",
+                            "Copy it, hear it, or tap Show to hold it up big for someone."]
+        case .talk: return ["Left: your language. Right: theirs.",
+                            "Tap your button and speak; tap again when you're done. They hear it in their language.",
+                            "They tap their button to answer. Face to face splits the screen so you each read your half."]
+        case .photo: return ["Left: the language on the sign or menu. Right: yours.",
+                             "Choose a photo — Tenzy reads the words and translates them."]
+        case .travel: return ["Right: the language of the place you're visiting.",
+                              "Pick a topic, then tap any phrase. Tenzy says it out loud in that language.",
+                              "Tap Show to hold it up big for the person you're talking to. Star the ones you'll need."]
+        }
+    }
+
     private var languageBar: some View {
         VStack(spacing: HandySpacing.s8) {
             HStack(spacing: HandySpacing.s8) {
@@ -124,15 +143,29 @@ struct TranslateView: View {
     private func resultCard(_ s: String) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text(s).font(.system(size: 20)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
+            // Four even buttons, icon over word: a row of four labelled pills was wider than the phone and pushed the
+            // whole page off the left edge (Manan, 23 Nov).
             HStack(spacing: HandySpacing.s8) {
-                Button { Copier.copy(s); ClipStore.add(s) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
-                Button { say(s, lang: toCode) } label: { Label(L("Speak"), systemImage: "speaker.wave.2") }.compactButton()
-                Button { big = BigText(text: s) } label: { Label(L("Show"), systemImage: "arrow.up.left.and.arrow.down.right") }.compactButton()
+                resultAction("Copy", "doc.on.doc") { Copier.copy(s); ClipStore.add(s); HandyHaptics.success() }
+                resultAction("Speak", "speaker.wave.2.fill") { say(s, lang: toCode) }
+                resultAction("Show", "arrow.up.left.and.arrow.down.right") { big = BigText(text: s) }
                     .accessibilityHint(L("Shows it big for the other person to read"))
-                ShareLink(item: s) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
-                Spacer()
+                ShareLink(item: s) { actionLabel("Share", "square.and.arrow.up") }.buttonStyle(.plain)
             }
         }.cardStyle(padding: HandySpacing.s12)
+    }
+
+    private func actionLabel(_ title: String, _ icon: String) -> some View {
+        VStack(spacing: 3) {
+            Image(systemName: icon).font(.system(size: 17, weight: .semibold))
+            Text(L(title)).font(.system(size: 12, weight: .semibold)).lineLimit(1).minimumScaleFactor(0.7)
+        }
+        .foregroundStyle(.white)
+        .frame(maxWidth: .infinity, minHeight: 52)
+        .background(HandyColor.accent, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+    private func resultAction(_ title: String, _ icon: String, _ act: @escaping () -> Void) -> some View {
+        Button(action: act) { actionLabel(title, icon) }.buttonStyle(.plain)
     }
 
     // MARK: talk
@@ -242,31 +275,81 @@ struct TranslateView: View {
 
     private var travelPanel: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text(toCode == "en" ? "Pick a destination language above, then tap a phrase to hear it."
-                                : "Tap any phrase to see and hear it in \(name(toCode)). Star the ones you'll need — the phrasebook is fully offline.")
+            Text(toCode == fromCode ? L("Pick the language of the place you're visiting on the right.")
+                                    : "\(L("Tap a phrase — Tenzy says it out loud in")) \(name(toCode)).")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
-                HChip(text: "★ Saved", selected: travelCat == -1) { travelCat = -1 }
-                ForEach(Array(Phrasebook.categories.enumerated()), id: \.offset) { i, c in HChip(text: c.name, selected: travelCat == i) { travelCat = i } }
+                HChip(text: "★ " + L("Saved"), selected: travelCat == -1) { travelCat = -1; shownPhrase = nil }
+                ForEach(Array(Phrasebook.categories.enumerated()), id: \.offset) { i, c in
+                    HChip(text: L(c.name), selected: travelCat == i) { travelCat = i; shownPhrase = nil; output = "" }
+                }
             }
-            if !output.isEmpty { resultCard(output) }
+            if shownPhrase != nil, !output.isEmpty { resultCard(output) }
             if currentPhrases.isEmpty {
-                Text(travelCat == -1 ? "No saved phrases yet — tap the star on the ones you want to keep handy." : "")
+                Text(travelCat == -1 ? L("No saved phrases yet — tap the star on the ones you want to keep handy.") : "")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
             VStack(spacing: 0) {
                 ForEach(currentPhrases, id: \.self) { phrase in
+                    let on = shownPhrase == phrase
                     HStack(spacing: HandySpacing.s8) {
-                        Text(phrase).font(HandyFont.body).frame(maxWidth: .infinity, alignment: .leading)
-                        Button { toggleFav(phrase) } label: { Image(systemName: favs.contains(phrase) ? "star.fill" : "star").accessibilityLabel(L("Favourite")) }
-                            .buttonStyle(.plain).foregroundStyle(HandyColor.accent).accessibilityLabel(favs.contains(phrase) ? "Unstar" : "Star")
-                        Button { translate(phrase, from: "en", to: toCode, speak: true) } label: { Image(systemName: "character.bubble.fill").accessibilityLabel(L("Speak")) }
-                            .buttonStyle(.plain).foregroundStyle(HandyColor.accent).disabled(toCode == "en" || overQuota)
-                    }.padding(.vertical, 10)
+                        // The whole row is the button: tap the phrase, hear it in their language (it used to be only the
+                        // small icon, so tapping a phrase did nothing and the last translation stayed up).
+                        Button { sayPhrase(phrase) } label: {
+                            HStack(spacing: HandySpacing.s8) {
+                                Image(systemName: on && busy ? "ellipsis" : "speaker.wave.2.fill")
+                                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(HandyColor.accent).frame(width: 22)
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text(yours[phrase] ?? phrase).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                    if fromCode != "en", yours[phrase] == nil, listBusy {
+                                        Text(L("Putting it in your language…")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                                    }
+                                }
+                                Spacer(minLength: 0)
+                            }.contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain).disabled(toCode == fromCode || overQuota)
+                        .accessibilityIdentifier("phrase-\(phrase)")
+                        Button { toggleFav(phrase) } label: { Image(systemName: favs.contains(phrase) ? "star.fill" : "star").frame(width: 36, height: 36) }
+                            .buttonStyle(.plain).foregroundStyle(HandyColor.accent).accessibilityLabel(favs.contains(phrase) ? L("Unstar") : L("Star"))
+                    }
+                    .padding(.vertical, 6).padding(.horizontal, 6)
+                    .background(on ? HandyColor.accentSoft : Color.clear, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                     if phrase != currentPhrases.last { Divider() }
                 }
             }
         }
+        .onAppear { localisePhrases() }
+        .onChange(of: fromCode) { _, _ in yours = [:]; localisePhrases() }
+        .onChange(of: toCode) { _, _ in shownPhrase = nil; output = "" }
+        .translationTask(listConfig) { session in
+            let all = Phrasebook.categories.flatMap(\.phrases)
+            let requests = all.map { TranslationSession.Request(sourceText: $0, clientIdentifier: $0) }
+            do {
+                let done = try await session.translations(from: requests)
+                var map: [String: String] = [:]
+                for r in done { if let k = r.clientIdentifier { map[k] = r.targetText } }
+                await MainActor.run { yours = map; listBusy = false }
+            } catch {
+                await MainActor.run { listBusy = false }
+            }
+        }
+    }
+
+    /// The phrasebook is written in English; it's shown in the language on the left so the person reads their own words.
+    private func localisePhrases() {
+        guard fromCode != "en" else { yours = [:]; return }
+        listBusy = true
+        let c = TranslationSession.Configuration(source: Locale.Language(identifier: "en"), target: Locale.Language(identifier: fromCode))
+        if listConfig?.target == c.target { listConfig?.invalidate() } else { listConfig = c }
+    }
+
+    /// Say one phrase in the other person's language (from the English original, which translates most reliably).
+    private func sayPhrase(_ phrase: String) {
+        shownPhrase = phrase
+        if toCode == "en" { output = phrase; say(phrase, lang: "en"); return }
+        translate(phrase, from: "en", to: toCode, speak: true)
     }
 }
 

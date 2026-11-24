@@ -45218,5 +45218,175 @@
   "ja": "送信しました。5秒後に画面上部を確認してください。",
   "pt": "Enviado — veja o topo da tela em 5 segundos.",
   "zh": "已发送——5 秒后请看屏幕顶部。"
+ },
+ "Left: the language you write in. Right: the language you want.": {
+  "de": "Links: die Sprache, in der du schreibst. Rechts: die gewünschte Sprache.",
+  "es": "Izquierda: el idioma en que escribes. Derecha: el que quieres.",
+  "fr": "À gauche : la langue dans laquelle vous écrivez. À droite : celle que vous voulez.",
+  "hi": "बाएँ: जिस भाषा में आप लिखते हैं। दाएँ: जो भाषा आप चाहते हैं।",
+  "it": "A sinistra: la lingua in cui scrivi. A destra: quella che vuoi.",
+  "ja": "左：書く言語。右：訳したい言語。",
+  "pt": "Esquerda: o idioma em que você escreve. Direita: o idioma que você quer.",
+  "zh": "左边：你书写的语言。右边：你想要的语言。"
+ },
+ "Type or paste, then tap Translate.": {
+  "de": "Tippe oder füge ein, dann tippe auf Übersetzen.",
+  "es": "Escribe o pega y toca Traducir.",
+  "fr": "Tapez ou collez, puis touchez Traduire.",
+  "hi": "टाइप या पेस्ट करें, फिर अनुवाद करें पर टैप करें।",
+  "it": "Scrivi o incolla, poi tocca Traduci.",
+  "ja": "入力または貼り付けて「翻訳」をタップ。",
+  "pt": "Digite ou cole e toque em Traduzir.",
+  "zh": "输入或粘贴，然后轻点“翻译”。"
+ },
+ "Copy it, hear it, or tap Show to hold it up big for someone.": {
+  "de": "Kopiere es, hör es dir an oder tippe auf Zeigen, um es groß zu zeigen.",
+  "es": "Cópialo, escúchalo o toca Mostrar para enseñarlo en grande.",
+  "fr": "Copiez-le, écoutez-le ou touchez Montrer pour l'afficher en grand.",
+  "hi": "कॉपी करें, सुनें, या किसी को बड़ा दिखाने के लिए दिखाएँ पर टैप करें।",
+  "it": "Copialo, ascoltalo o tocca Mostra per mostrarlo in grande.",
+  "ja": "コピー、読み上げ、または「表示」で大きく見せられます。",
+  "pt": "Copie, ouça ou toque em Mostrar para exibir em tamanho grande.",
+  "zh": "复制、收听，或轻点“展示”大字给别人看。"
+ },
+ "Left: your language. Right: theirs.": {
+  "de": "Links: deine Sprache. Rechts: ihre.",
+  "es": "Izquierda: tu idioma. Derecha: el suyo.",
+  "fr": "À gauche : votre langue. À droite : la sienne.",
+  "hi": "बाएँ: आपकी भाषा। दाएँ: उनकी।",
+  "it": "A sinistra: la tua lingua. A destra: la loro.",
+  "ja": "左：あなたの言語。右：相手の言語。",
+  "pt": "Esquerda: seu idioma. Direita: o da outra pessoa.",
+  "zh": "左边：你的语言。右边：对方的语言。"
+ },
+ "Tap your button and speak; tap again when you're done. They hear it in their language.": {
+  "de": "Tippe auf deine Taste und sprich; tippe erneut, wenn du fertig bist. Sie hören es in ihrer Sprache.",
+  "es": "Toca tu botón y habla; vuelve a tocarlo al terminar. Lo oirán en su idioma.",
+  "fr": "Touchez votre bouton et parlez ; touchez à nouveau quand vous avez fini. Il l'entend dans sa langue.",
+  "hi": "अपना बटन टैप करके बोलें; खत्म होने पर फिर टैप करें। वे इसे अपनी भाषा में सुनेंगे।",
+  "it": "Tocca il tuo pulsante e parla; toccalo di nuovo quando hai finito. Lo sentiranno nella loro lingua.",
+  "ja": "自分のボタンをタップして話し、終わったらもう一度タップ。相手の言語で読み上げます。",
+  "pt": "Toque no seu botão e fale; toque de novo ao terminar. A outra pessoa ouve no idioma dela.",
+  "zh": "轻点你的按钮说话，说完再轻点一次。对方会听到他们的语言。"
+ },
+ "They tap their button to answer. Face to face splits the screen so you each read your half.": {
+  "de": "Sie tippen auf ihre Taste, um zu antworten. „Gegenüber“ teilt den Bildschirm, damit jeder seine Hälfte liest.",
+  "es": "Para responder, tocan su botón. Cara a cara divide la pantalla para que cada uno lea su mitad.",
+  "fr": "Il touche son bouton pour répondre. Face à face partage l'écran pour que chacun lise sa moitié.",
+  "hi": "जवाब देने के लिए वे अपना बटन टैप करें। आमने-सामने मोड स्क्रीन को बाँट देता है ताकि हर कोई अपना आधा पढ़े।",
+  "it": "Per rispondere toccano il loro pulsante. Faccia a faccia divide lo schermo così ognuno legge la sua metà.",
+  "ja": "相手は自分のボタンで返事します。「向かい合わせ」で画面を分けて、それぞれが読めます。",
+  "pt": "A outra pessoa toca no botão dela para responder. Frente a frente divide a tela para cada um ler sua metade.",
+  "zh": "对方轻点自己的按钮回答。“面对面”会分屏，各自读自己的一半。"
+ },
+ "Left: the language on the sign or menu. Right: yours.": {
+  "de": "Links: die Sprache auf dem Schild oder der Karte. Rechts: deine.",
+  "es": "Izquierda: el idioma del cartel o la carta. Derecha: el tuyo.",
+  "fr": "À gauche : la langue du panneau ou du menu. À droite : la vôtre.",
+  "hi": "बाएँ: बोर्ड या मेन्यू की भाषा। दाएँ: आपकी।",
+  "it": "A sinistra: la lingua del cartello o del menu. A destra: la tua.",
+  "ja": "左：看板やメニューの言語。右：あなたの言語。",
+  "pt": "Esquerda: o idioma da placa ou do cardápio. Direita: o seu.",
+  "zh": "左边：招牌或菜单上的语言。右边：你的语言。"
+ },
+ "Choose a photo — Tenzy reads the words and translates them.": {
+  "de": "Wähle ein Foto – Tenzy liest den Text und übersetzt ihn.",
+  "es": "Elige una foto: Tenzy lee el texto y lo traduce.",
+  "fr": "Choisissez une photo — Tenzy lit le texte et le traduit.",
+  "hi": "एक फ़ोटो चुनें — Tenzy शब्द पढ़कर उनका अनुवाद करता है।",
+  "it": "Scegli una foto: Tenzy legge il testo e lo traduce.",
+  "ja": "写真を選ぶと、Tenzyが文字を読み取って翻訳します。",
+  "pt": "Escolha uma foto — o Tenzy lê o texto e traduz.",
+  "zh": "选一张照片——Tenzy 会读取文字并翻译。"
+ },
+ "Right: the language of the place you're visiting.": {
+  "de": "Rechts: die Sprache des Ortes, den du besuchst.",
+  "es": "Derecha: el idioma del lugar que visitas.",
+  "fr": "À droite : la langue du lieu que vous visitez.",
+  "hi": "दाएँ: उस जगह की भाषा जहाँ आप जा रहे हैं।",
+  "it": "A destra: la lingua del posto che visiti.",
+  "ja": "右：訪問先の言語。",
+  "pt": "Direita: o idioma do lugar que você está visitando.",
+  "zh": "右边：你所去地方的语言。"
+ },
+ "Pick a topic, then tap any phrase. Tenzy says it out loud in that language.": {
+  "de": "Wähle ein Thema und tippe auf einen Satz. Tenzy spricht ihn in dieser Sprache aus.",
+  "es": "Elige un tema y toca una frase. Tenzy la dice en voz alta en ese idioma.",
+  "fr": "Choisissez un thème, puis touchez une phrase. Tenzy la dit à voix haute dans cette langue.",
+  "hi": "एक विषय चुनें, फिर कोई वाक्य टैप करें। Tenzy उसे उस भाषा में बोलकर सुनाता है।",
+  "it": "Scegli un argomento e tocca una frase. Tenzy la pronuncia in quella lingua.",
+  "ja": "トピックを選んでフレーズをタップ。その言語で読み上げます。",
+  "pt": "Escolha um tema e toque em uma frase. O Tenzy fala em voz alta nesse idioma.",
+  "zh": "选一个主题，再轻点任意短语。Tenzy 会用那种语言读出来。"
+ },
+ "Tap Show to hold it up big for the person you're talking to. Star the ones you'll need.": {
+  "de": "Tippe auf Zeigen, um es deinem Gegenüber groß zu zeigen. Markiere die Sätze, die du brauchst.",
+  "es": "Toca Mostrar para enseñárselo en grande a la otra persona. Marca con estrella las que necesitarás.",
+  "fr": "Touchez Montrer pour l'afficher en grand à votre interlocuteur. Mettez une étoile à celles dont vous aurez besoin.",
+  "hi": "जिससे बात कर रहे हैं उसे बड़ा दिखाने के लिए दिखाएँ पर टैप करें। ज़रूरी वाक्यों पर स्टार लगाएँ।",
+  "it": "Tocca Mostra per mostrarlo in grande a chi parli. Metti la stella a quelle che ti serviranno.",
+  "ja": "「表示」で相手に大きく見せられます。よく使うものは星を付けて。",
+  "pt": "Toque em Mostrar para exibir em tamanho grande para a outra pessoa. Marque com estrela as que vai precisar.",
+  "zh": "轻点“展示”大字给对方看。给常用的加星标。"
+ },
+ "Pick the language of the place you're visiting on the right.": {
+  "de": "Wähle rechts die Sprache des Ortes, den du besuchst.",
+  "es": "Elige a la derecha el idioma del lugar que visitas.",
+  "fr": "Choisissez à droite la langue du lieu que vous visitez.",
+  "hi": "दाईं ओर उस जगह की भाषा चुनें जहाँ आप जा रहे हैं।",
+  "it": "Scegli a destra la lingua del posto che visiti.",
+  "ja": "右側で訪問先の言語を選んでください。",
+  "pt": "Escolha à direita o idioma do lugar que você está visitando.",
+  "zh": "在右边选择你所去地方的语言。"
+ },
+ "Tap a phrase — Tenzy says it out loud in": {
+  "de": "Tippe auf einen Satz – Tenzy spricht ihn aus auf",
+  "es": "Toca una frase: Tenzy la dice en voz alta en",
+  "fr": "Touchez une phrase — Tenzy la dit à voix haute en",
+  "hi": "कोई वाक्य टैप करें — Tenzy उसे बोलकर सुनाएगा:",
+  "it": "Tocca una frase: Tenzy la pronuncia in",
+  "ja": "フレーズをタップすると読み上げます：",
+  "pt": "Toque em uma frase — o Tenzy fala em voz alta em",
+  "zh": "轻点短语——Tenzy 会读出来，语言："
+ },
+ "Putting it in your language…": {
+  "de": "Wird in deine Sprache übertragen …",
+  "es": "Pasándolo a tu idioma…",
+  "fr": "Traduction dans votre langue…",
+  "hi": "आपकी भाषा में बदला जा रहा है…",
+  "it": "Lo traduco nella tua lingua…",
+  "ja": "あなたの言語に変換中…",
+  "pt": "Passando para o seu idioma…",
+  "zh": "正在转换为你的语言…"
+ },
+ "Saved": {
+  "de": "Gespeichert",
+  "es": "Guardadas",
+  "fr": "Enregistrées",
+  "hi": "सहेजे गए",
+  "it": "Salvate",
+  "ja": "保存済み",
+  "pt": "Salvas",
+  "zh": "已保存"
+ },
+ "Unstar": {
+  "de": "Stern entfernen",
+  "es": "Quitar estrella",
+  "fr": "Retirer l'étoile",
+  "hi": "स्टार हटाएँ",
+  "it": "Togli stella",
+  "ja": "星を外す",
+  "pt": "Remover estrela",
+  "zh": "取消星标"
+ },
+ "Star": {
+  "de": "Markieren",
+  "es": "Marcar",
+  "fr": "Ajouter une étoile",
+  "hi": "स्टार लगाएँ",
+  "it": "Metti stella",
+  "ja": "星を付ける",
+  "pt": "Marcar",
+  "zh": "加星标"
  }
 }

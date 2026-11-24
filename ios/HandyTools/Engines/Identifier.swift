@@ -52,16 +52,20 @@ enum Identifier {
 
         // Classify the whole frame AND zoomed-in windows, so a small subject still surfaces; best confidence
         // per label across all views wins, with generic "any photo" labels demoted.
-        var views: [CGImage] = [cg]
-        if let subject = subjectCrop(cg) { views.append(subject) }
-        views += windows(of: cg, fraction: 0.5)
-        views += windows(of: cg, fraction: 0.33)
+        // Each view counts by how much of the picture it shows (Manan, 23 Nov: a living room with a big TV came back
+        // "Container 88%, Vase 88%" — a vase in one small corner window beat the TV that fills the frame). The whole
+        // photo counts fully, the main subject nearly so, a quarter window much less, a ninth window least; a label
+        // seen across many views gets a little more.
+        var views: [(CGImage, Double)] = [(cg, 1.0)]
+        if let subject = subjectCrop(cg) { views.append((subject, 0.95)) }
+        views += windows(of: cg, fraction: 0.5).map { ($0, 0.6) }
+        views += windows(of: cg, fraction: 0.33).map { ($0, 0.4) }
         let frames = views
         let box = Merge()
         DispatchQueue.concurrentPerform(iterations: frames.count) { i in
             let req = VNClassifyImageRequest()
-            try? VNImageRequestHandler(cgImage: frames[i], orientation: .up).perform([req])
-            box.add((req.results ?? []).filter { $0.confidence > 0.08 }.map { ($0.identifier, Double($0.confidence)) })
+            try? VNImageRequestHandler(cgImage: frames[i].0, orientation: .up).perform([req])
+            box.add((req.results ?? []).filter { $0.confidence > 0.08 }.map { ($0.identifier, Double($0.confidence)) }, weight: frames[i].1)
         }
         let best = box.best
         let ranked = best.map { (id: $0.key, conf: $0.value, score: $0.value * (generic.contains($0.key.lowercased()) ? 0.3 : 1)) }
@@ -137,8 +141,17 @@ enum Identifier {
     private final class Merge: @unchecked Sendable {
         private let lock = NSLock()
         private var map: [String: Double] = [:]
-        func add(_ items: [(String, Double)]) { lock.lock(); for (k, v) in items { map[k] = max(map[k] ?? 0, v) }; lock.unlock() }
-        var best: [String: Double] { lock.lock(); defer { lock.unlock() }; return map }
+        private var seen: [String: Int] = [:]
+        func add(_ items: [(String, Double)], weight: Double = 1) {
+            lock.lock()
+            for (k, v) in items { map[k] = max(map[k] ?? 0, v * weight); seen[k, default: 0] += 1 }
+            lock.unlock()
+        }
+        /// Weighted best per label, nudged up (at most 15%) when many views agree, capped at 1.
+        var best: [String: Double] {
+            lock.lock(); defer { lock.unlock() }
+            return map.reduce(into: [:]) { out, kv in out[kv.key] = min(1, kv.value * (1 + min(0.15, 0.03 * Double((seen[kv.key] ?? 1) - 1)))) }
+        }
     }
 
     /// Labels that describe nearly any photo with people, sky or ground in it — including the people words that
@@ -148,7 +161,10 @@ enum Identifier {
         "baby", "toddler", "man", "woman", "boy", "girl", "human", "kid", "family", "group", "outerwear", "jacket", "hat",
         "headwear", "portrait", "face", "hair", "sky", "cloudy", "cloud", "outdoor", "indoor", "structure", "water", "material",
         "wood_processed", "textile", "fabric", "denim", "sportswear", "t_shirt", "shirt", "pants", "coat", "sweater", "hoodie",
-        "sunglasses", "glasses", "machine", "land", "ground", "floor", "wall", "ceiling", "room", "furniture", "table"
+        "sunglasses", "glasses", "machine", "land", "ground", "floor", "wall", "ceiling", "room", "furniture", "table",
+        // Words that fit almost anything and named nothing useful (23 Nov: "Container", "Document", "Screenshot" for a TV).
+        "container", "decoration", "art", "document", "screenshot", "interior_room", "interior_shop", "consumer_electronics",
+        "electronics", "appliance", "object", "equipment", "liquid_container", "vessel"
     ]
 
     /// Read the most prominent writing on the thing (a brand, a model number). The two largest text lines, joined.
