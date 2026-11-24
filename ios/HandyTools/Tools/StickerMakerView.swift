@@ -28,7 +28,7 @@ enum StickerMaker {
 }
 
 /// Sticker Maker — a sticker studio. Pick one photo or a dozen; Tenzy cuts out each subject and shows ten
-/// designed sticker styles live on YOUR photo (Classic, Comic, Neon, Holographic, Badge, Pop burst,
+/// designed sticker styles live on YOUR photo, still or animated (nine moves: StickerMotion) (Classic, Comic, Neon, Holographic, Badge, Pop burst,
 /// Retro, Sketch, Noir, Clean). Tap one, then fine-tune anything: the look, edge, edge colour, glow,
 /// shadow, a badge/tile/starburst behind it, a caption, sparkles. Copy into any chat, save the whole pack
 /// to Photos and add them to the iPhone's sticker drawer, or print a sticker sheet. On device.
@@ -49,6 +49,15 @@ struct StickerMakerView: View {
     @State private var sheetURL: URL?
     @State private var errorText: String?
     @State private var note: String?
+    /// Still or animated (Manan, 24 Nov: "can they be animated too — give them both"). The style is the look; the move
+    /// is what it does.
+    @State private var animated = false
+    @State private var motion: StickerMotion = .bounce
+    @State private var moving: UIImage?                 // the big preview, playing
+    @State private var movingFrames: [UIImage] = []
+    @State private var motionThumbs: [String: UIImage] = [:]
+    @State private var motionTask: Task<Void, Never>?
+    @State private var gifShare: Data?
 
     var body: some View {
         ToolPage(title: "Sticker Maker", subtitle: "Turn photos into designed stickers for Messages, WhatsApp and more.", working: cutting || working) {
@@ -61,6 +70,9 @@ struct StickerMakerView: View {
         .onChange(of: picks) { _, items in load(items) }
         .onChange(of: style) { _, _ in rerender(); resetActions() }
         .onChange(of: current) { _, _ in rerender(thumbsToo: true); resetActions() }
+        .onChange(of: preview) { _, _ in rerenderMotion(thumbsToo: true) }
+        .onChange(of: motion) { _, _ in rerenderMotion(); resetActions() }
+        .onChange(of: animated) { _, on in resetActions(); if on { rerenderMotion(thumbsToo: true) } }
         .handoffPhotos("sticker") { imgs in cut(Array(imgs.prefix(12))) }
     }
 
@@ -88,10 +100,21 @@ struct StickerMakerView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             ZStack {
                 Checkerboard().clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-                if let p = preview { Image(uiImage: p).resizable().scaledToFit().padding(HandySpacing.s12).opensFullSize(p) }
+                if animated {
+                    if let m = moving { PlayingImage(image: m).padding(HandySpacing.s8).accessibilityLabel("\(L("Animated sticker")): \(L(motion.title))") }
+                    else { BusySpinner() }
+                } else if let p = preview { Image(uiImage: p).resizable().scaledToFit().padding(HandySpacing.s12).opensFullSize(p) }
                 else { BusySpinner() }
             }
             .frame(maxWidth: .infinity).frame(height: 320)
+
+            Picker(L("Kind"), selection: $animated) {
+                Label(L("Still"), systemImage: "photo").tag(false)
+                Label(L("Animated"), systemImage: "sparkles.rectangle.stack").tag(true)
+            }
+            .pickerStyle(.segmented).accessibilityIdentifier("sticker-kind")
+
+            if animated { motionPicker }
 
             if subjects.count > 1 {
                 HandyFlow(spacing: HandySpacing.s8) {
@@ -133,6 +156,36 @@ struct StickerMakerView: View {
             }
 
             actions
+        }
+    }
+
+    /// The moves, each playing on your own sticker, three across.
+    private var motionPicker: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text(L("Move")).font(HandyFont.bodyStrong)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
+                ForEach(StickerMotion.allCases) { m in
+                    let on = m == motion
+                    Button { motion = m } label: {
+                        VStack(spacing: 4) {
+                            ZStack {
+                                Checkerboard()
+                                if let t = motionThumbs[m.id] { PlayingImage(image: t).padding(4) }
+                                else { Image(systemName: m.icon).font(.system(size: 22, weight: .bold)).foregroundStyle(HandyColor.accent) }
+                            }
+                            .frame(height: 92)
+                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(on ? HandyColor.accent : HandyColor.border, lineWidth: on ? 3 : 1))
+                            Label(L(m.title), systemImage: m.icon).font(HandyFont.caption.weight(on ? .bold : .regular))
+                                .foregroundStyle(on ? HandyColor.accent : HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.8)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("motion-\(m.id)")
+                    .accessibilityLabel(L(m.title))
+                    .accessibilityAddTraits(on ? .isSelected : [])
+                }
+            }
         }
     }
 
@@ -184,7 +237,43 @@ struct StickerMakerView: View {
         }
     }
 
-    private var actions: some View {
+    @ViewBuilder private var actions: some View {
+        if animated { animatedActions } else { stillActions }
+    }
+
+    /// Animated: copy it (plays in Messages), save the pack to Photos as GIFs, or share the GIF.
+    private var animatedActions: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Button { copyMoving() } label: {
+                Label(copied ? L("Copied — paste it into any chat") : L("Copy animated sticker"), systemImage: copied ? "checkmark" : "doc.on.doc")
+                    .frame(maxWidth: .infinity)
+            }.primaryButton().disabled(movingFrames.isEmpty).accessibilityIdentifier("sticker-copy-animated")
+            Button { saveAllMoving() } label: {
+                Label(saved ? L("Saved to Photos") : (subjects.count > 1 ? "\(L("Save all to Photos")) (\(subjects.count))" : L("Save to Photos")),
+                      systemImage: saved ? "checkmark.circle.fill" : "square.and.arrow.down").frame(maxWidth: .infinity)
+            }.secondaryButton().disabled(working || saved || movingFrames.isEmpty)
+            if working { ToolProgressBar(label: "Making your animated stickers…", showsTime: false) }
+            HStack(spacing: HandySpacing.s8) {
+                if let g = gifShare, let m = moving {
+                    ShareLink(item: GIFFile(data: g), preview: SharePreview("Sticker", image: Image(uiImage: m.images?.first ?? m))) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
+                }
+                Spacer()
+            }
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                Label(L("Where it plays"), systemImage: "play.circle").font(HandyFont.bodyStrong)
+                step(1, "Tap Copy, then paste it into Messages — it plays there, with its soft see-through edge.")
+                step(2, "WhatsApp, Instagram and others: paste or share it — it sends as a moving GIF.")
+                step(3, "Saved to Photos, it's in the Animated album, ready to send any time.")
+            }
+            .cardStyle(padding: HandySpacing.s12)
+            if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+            if let n = note { Text(L(n)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            SmartPhotoButton(kind: .any, max: 12, picked: { imgs in cut(Array(imgs.prefix(12))) }) { Label(L("Make more"), systemImage: "photo") }
+                .textButton().font(HandyFont.caption).frame(maxWidth: .infinity)
+        }
+    }
+
+    private var stillActions: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Button { copyCurrent() } label: {
                 Label(copied ? L("Copied — paste it into any chat") : L("Copy sticker"), systemImage: copied ? "checkmark" : "doc.on.doc")
@@ -236,6 +325,68 @@ struct StickerMakerView: View {
     /// A preset stays highlighted only while the style still matches it (fine-tuning un-highlights it).
     private func isOn(_ p: StickerStudio.Preset) -> Bool { keepCaption(p.style) == style }
     private func resetActions() { saved = false; copied = false; sheetURL = nil }
+
+    /// Play the chosen move on the sticker as it looks now (and, when the look changed, every move's small preview).
+    private func rerenderMotion(thumbsToo: Bool = false) {
+        guard animated, let still = preview else { return }
+        motionTask?.cancel()
+        let m = motion
+        if thumbsToo { motionThumbs = [:] }
+        motionTask = Task {
+            let frames = await Task.detached(priority: .userInitiated) { StickerMotion.frames(still, motion: m) }.value
+            if Task.isCancelled { return }
+            let loop = Double(frames.count) * StickerMotion.delay
+            await MainActor.run {
+                movingFrames = frames
+                moving = UIImage.animatedImage(with: frames, duration: loop)
+                gifShare = nil
+            }
+            let gif = await Task.detached(priority: .utility) { StickerMotion.gif(frames) }.value
+            if Task.isCancelled { return }
+            await MainActor.run { gifShare = gif }
+            guard thumbsToo else { return }
+            let small = still.resized(maxDimension: 220)
+            for mm in StickerMotion.allCases {
+                if Task.isCancelled { return }
+                let t = await Task.detached(priority: .utility) { StickerMotion.frames(small, motion: mm, side: 140) }.value
+                await MainActor.run { motionThumbs[mm.id] = UIImage.animatedImage(with: t, duration: Double(t.count) * StickerMotion.delay) }
+            }
+        }
+    }
+
+    /// Both kinds go on the clipboard: an animated PNG (Messages plays it, soft edge kept) and a GIF for every other app.
+    private func copyMoving() {
+        let frames = movingFrames
+        guard !frames.isEmpty else { return }
+        Task {
+            let made = await Task.detached(priority: .userInitiated) { (StickerMotion.apng(frames), StickerMotion.gif(frames)) }.value
+            await MainActor.run {
+                var item: [String: Any] = [:]
+                if let a = made.0 { item[UTType.png.identifier] = a }
+                if let g = made.1 { item[UTType.gif.identifier] = g }
+                guard !item.isEmpty else { errorText = "Couldn't make the animated sticker. Try another move."; return }
+                UIPasteboard.general.setItems([item])
+                copied = true; HandyHaptics.success()
+            }
+        }
+    }
+
+    /// Every sticker in the pack, moving the same way, saved to Photos as GIFs (Photos plays GIFs in its Animated album).
+    private func saveAllMoving() {
+        working = true; errorText = nil
+        let m = motion
+        Task {
+            let pack = await renderPack()
+            let gifs = await Task.detached(priority: .userInitiated) { pack.compactMap { StickerMotion.gif(StickerMotion.frames($0, motion: m)) } }.value
+            var ok = false
+            if !gifs.isEmpty { ok = await StickerMaker.saveToPhotos(gifs) }
+            await MainActor.run {
+                working = false
+                if ok { saved = true; HandyHaptics.success() }
+                else { errorText = "Tenzy needs permission to add to Photos — allow it in Settings → Privacy → Photos → Tenzy, or use Copy." }
+            }
+        }
+    }
 
     private func load(_ items: [PhotosPickerItem]) {
         guard !items.isEmpty else { return }
@@ -337,5 +488,25 @@ struct StickerMakerView: View {
                 if (try? data.write(to: u)) != nil { sheetURL = u; HandyHaptics.success() }
             }
         }
+    }
+}
+
+/// A looping animated picture (an animated sticker). SwiftUI's Image shows only the first frame of one.
+struct PlayingImage: UIViewRepresentable {
+    let image: UIImage
+    func makeUIView(context: Context) -> UIImageView {
+        let v = UIImageView()
+        v.contentMode = .scaleAspectFit
+        v.clipsToBounds = true
+        for axis in [NSLayoutConstraint.Axis.vertical, .horizontal] {
+            v.setContentHuggingPriority(.defaultLow, for: axis)
+            v.setContentCompressionResistancePriority(.defaultLow, for: axis)
+        }
+        v.image = image
+        v.startAnimating()
+        return v
+    }
+    func updateUIView(_ v: UIImageView, context: Context) {
+        if v.image !== image { v.image = image; v.startAnimating() }
     }
 }

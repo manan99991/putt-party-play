@@ -45648,5 +45648,155 @@
   "ja": "言語、テーマ、Pro、プライバシー — Tenzyのしくみも。",
   "pt": "Idioma, tema, Pro, privacidade — e como o Tenzy funciona.",
   "zh": "语言、主题、Pro、隐私——以及 Tenzy 的工作方式。"
+ },
+ "No saved phrases yet — tap the star on the ones you want to keep handy.": {
+  "de": "Noch keine gespeicherten Sätze – tippe auf den Stern bei denen, die du griffbereit haben willst.",
+  "es": "Aún no hay frases guardadas: toca la estrella en las que quieras tener a mano.",
+  "fr": "Aucune phrase enregistrée — touchez l'étoile de celles que vous voulez garder sous la main.",
+  "hi": "अभी कोई सहेजा वाक्य नहीं — जिन्हें पास रखना है, उन पर स्टार टैप करें।",
+  "it": "Nessuna frase salvata — tocca la stella su quelle che vuoi tenere a portata di mano.",
+  "ja": "保存したフレーズはまだありません — すぐ使いたいものの星をタップしてください。",
+  "pt": "Nenhuma frase salva ainda — toque na estrela das que quer ter à mão.",
+  "zh": "还没有收藏的短语——点按想常用短语旁的星标即可收藏。"
+ },
+ "Animated sticker": {
+  "de": "Animierter Sticker",
+  "es": "Sticker animado",
+  "fr": "Sticker animé",
+  "hi": "एनिमेटेड स्टिकर",
+  "it": "Sticker animato",
+  "ja": "動くステッカー",
+  "pt": "Figurinha animada",
+  "zh": "动态贴纸"
+ },
+ "Animated": {
+  "de": "Animiert",
+  "es": "Animado",
+  "fr": "Animé",
+  "hi": "एनिमेटेड",
+  "it": "Animato",
+  "ja": "動く",
+  "pt": "Animada",
+  "zh": "动态"
+ },
+ "Copy animated sticker": {
+  "de": "Animierten Sticker kopieren",
+  "es": "Copiar sticker animado",
+  "fr": "Copier le sticker animé",
+  "hi": "एनिमेटेड स्टिकर कॉपी करें",
+  "it": "Copia sticker animato",
+  "ja": "動くステッカーをコピー",
+  "pt": "Copiar figurinha animada",
+  "zh": "复制动态贴纸"
+ },
+ "Making your animated stickers…": {
+  "de": "Deine animierten Sticker entstehen …",
+  "es": "Creando tus stickers animados…",
+  "fr": "Création de vos stickers animés…",
+  "hi": "आपके एनिमेटेड स्टिकर बन रहे हैं…",
+  "it": "Sto creando i tuoi sticker animati…",
+  "ja": "動くステッカーを作成中…",
+  "pt": "Criando suas figurinhas animadas…",
+  "zh": "正在制作你的动态贴纸……"
+ },
+ "Where it plays": {
+  "de": "Wo er sich bewegt",
+  "es": "Dónde se reproduce",
+  "fr": "Où il s'anime",
+  "hi": "यह कहाँ चलता है",
+  "it": "Dove si anima",
+  "ja": "動く場所",
+  "pt": "Onde ela se mexe",
+  "zh": "在哪里能动起来"
+ },
+ "Tap Copy, then paste it into Messages — it plays there, with its soft see-through edge.": {
+  "de": "Tippe auf Kopieren und füge ihn in Nachrichten ein – dort bewegt er sich, mit weichem, durchsichtigem Rand.",
+  "es": "Toca Copiar y pégalo en Mensajes: allí se mueve, con su borde suave y transparente.",
+  "fr": "Touchez Copier, puis collez-le dans Messages — il s'y anime, avec son bord doux et transparent.",
+  "hi": "कॉपी पर टैप करें, फिर Messages में पेस्ट करें — वहाँ यह अपने मुलायम, पारदर्शी किनारे के साथ चलता है।",
+  "it": "Tocca Copia, poi incollalo in Messaggi: lì si anima, con il suo bordo morbido e trasparente.",
+  "ja": "コピーをタップしてメッセージに貼り付けると、やわらかな透明の縁のまま動きます。",
+  "pt": "Toque em Copiar e cole no Mensagens — lá ela se mexe, com a borda suave e transparente.",
+  "zh": "点按“复制”，再粘贴到“信息”中——它会带着柔和的透明边缘动起来。"
+ },
+ "WhatsApp, Instagram and others: paste or share it — it sends as a moving GIF.": {
+  "de": "WhatsApp, Instagram und andere: einfügen oder teilen – er wird als bewegtes GIF gesendet.",
+  "es": "WhatsApp, Instagram y otras: pégalo o compártelo; se envía como GIF animado.",
+  "fr": "WhatsApp, Instagram et autres : collez-le ou partagez-le — il part en GIF animé.",
+  "hi": "WhatsApp, Instagram और बाकी ऐप्स: पेस्ट या शेयर करें — यह चलती GIF के रूप में जाता है।",
+  "it": "WhatsApp, Instagram e altre: incollalo o condividilo, parte come GIF animata.",
+  "ja": "WhatsAppやInstagramなど：貼り付けるか共有すると、動くGIFとして送られます。",
+  "pt": "WhatsApp, Instagram e outros: cole ou compartilhe — ela vai como GIF animado.",
+  "zh": "WhatsApp、Instagram 等：粘贴或分享——会以动态 GIF 发送。"
+ },
+ "Saved to Photos, it's in the Animated album, ready to send any time.": {
+  "de": "In Fotos gespeichert, liegt er im Album „Animiert“ – jederzeit bereit zum Senden.",
+  "es": "Guardado en Fotos, está en el álbum Animados, listo para enviarlo cuando quieras.",
+  "fr": "Enregistré dans Photos, il est dans l'album Animés, prêt à être envoyé à tout moment.",
+  "hi": "Photos में सहेजने पर यह Animated एल्बम में रहता है, कभी भी भेजने के लिए तैयार।",
+  "it": "Salvato in Foto, è nell'album Animate, pronto da inviare quando vuoi.",
+  "ja": "写真に保存すると「アニメーション」アルバムに入り、いつでも送れます。",
+  "pt": "Salva no Fotos, fica no álbum Animados, pronta para enviar quando quiser.",
+  "zh": "保存到“照片”后，它在“动图”相簿中，随时可以发送。"
+ },
+ "Couldn't make the animated sticker. Try another move.": {
+  "de": "Der animierte Sticker ließ sich nicht erstellen. Versuch eine andere Bewegung.",
+  "es": "No se pudo crear el sticker animado. Prueba otro movimiento.",
+  "fr": "Impossible de créer le sticker animé. Essayez un autre mouvement.",
+  "hi": "एनिमेटेड स्टिकर नहीं बन सका। कोई और मूव आज़माएँ।",
+  "it": "Impossibile creare lo sticker animato. Prova un'altra mossa.",
+  "ja": "動くステッカーを作れませんでした。別の動きを試してください。",
+  "pt": "Não foi possível criar a figurinha animada. Tente outro movimento.",
+  "zh": "无法制作动态贴纸。换个动作试试。"
+ },
+ "Jelly": {
+  "de": "Wackelpudding",
+  "es": "Gelatina",
+  "fr": "Gelée",
+  "hi": "जेली",
+  "it": "Gelatina",
+  "ja": "ぷるぷる",
+  "pt": "Gelatina",
+  "zh": "果冻"
+ },
+ "LOL": {
+  "de": "LOL",
+  "es": "LOL",
+  "fr": "MDR",
+  "hi": "LOL",
+  "it": "LOL",
+  "ja": "爆笑",
+  "pt": "KKK",
+  "zh": "哈哈"
+ },
+ "Flip": {
+  "de": "Salto",
+  "es": "Voltereta",
+  "fr": "Salto",
+  "hi": "पलटी",
+  "it": "Capriola",
+  "ja": "宙返り",
+  "pt": "Cambalhota",
+  "zh": "翻转"
+ },
+ "Float": {
+  "de": "Schweben",
+  "es": "Flotar",
+  "fr": "Flotter",
+  "hi": "तैरना",
+  "it": "Fluttua",
+  "ja": "ふわふわ",
+  "pt": "Flutuar",
+  "zh": "漂浮"
+ },
+ "Disco": {
+  "de": "Disco",
+  "es": "Disco",
+  "fr": "Disco",
+  "hi": "डिस्को",
+  "it": "Disco",
+  "ja": "ディスコ",
+  "pt": "Disco",
+  "zh": "迪斯科"
  }
 }

@@ -8,6 +8,12 @@ struct PNGFile: Transferable {
     static var transferRepresentation: some TransferRepresentation { DataRepresentation(exportedContentType: .png) { $0.data } }
 }
 
+/// An animated GIF to share (an animated sticker).
+struct GIFFile: Transferable {
+    let data: Data
+    static var transferRepresentation: some TransferRepresentation { DataRepresentation(exportedContentType: .gif) { $0.data } }
+}
+
 struct JPEGFile: Transferable {
     let data: Data
     static var transferRepresentation: some TransferRepresentation { DataRepresentation(exportedContentType: .jpeg) { $0.data } }
