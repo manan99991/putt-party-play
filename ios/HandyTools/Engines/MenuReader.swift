@@ -445,7 +445,8 @@ enum MenuReader {
         DispatchQueue.concurrentPerform(iterations: tiles.count) { i in
             let t = tiles[i]
             guard let crop = full.cropping(to: t) else { return }
-            let scale = min(3, max(1, 2400 / max(t.width, t.height)))
+            // ~2,000 px per section reads best: 2,400 made the board worse (run 4: 21/34 against 30/34).
+            let scale = min(2.5, max(1, 2000 / max(t.width, t.height)))
             let input = scale > 1.05 ? (enlarge(crop, by: scale) ?? crop) : crop
             let got: [(Box, Bool)] = pass(input, languages, minHeight: 0.004).compactMap { obs in
                 guard let b = box(obs, tile: t, page: fullSize) else { return nil }

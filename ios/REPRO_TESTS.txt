@@ -10,3 +10,4 @@ HandyToolsTests/MenuBoardTests
 HandyToolsTests/OwnRemindersTests
 HandyToolsTests/HomeShelvesTests
 # (run 4 did not compile: a test typo; rerun)
+# Run 4: enlarging to 2,400 px made the board worse (21/34) — back to 2,000; the word and price rules stay.
