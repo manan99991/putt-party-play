@@ -634,6 +634,8 @@ struct HomeView: View {
                 case "myreminders": ReminderMakerView().toolbarRole(.editor)   // Build a reminder (Build a tool, My stuff)
                 case "results": HistoryView().toolbarRole(.editor)   // a finished-job notification lands here
                 case "sheets": SheetsView().toolbarRole(.editor)   // My stuff › Sheets
+                case let c where c.hasPrefix("category-"):   // Tools › a category: every one of its tools
+                    BuilderView(face: .category(String(c.dropFirst("category-".count)))).toolbarRole(.editor)
                 default: ToolDestination(id: id).toolbarRole(.editor).disablesSwipeBack()
                 }
             }

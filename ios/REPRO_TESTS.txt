@@ -1,14 +1,14 @@
-# 24 Nov, run 2 — Identify on Manan's living-room photo led with "Night Sky 56%" (run 1). Theory "weight the views by
-# size" was wrong for this photo: the TV's own picture names it. Diagnostics: what each view, the salient boxes and the
-# big rectangles are called, with the TV and room words' confidence in each.
+# 24 Nov, run 3.
+# Identify: run 2 showed every view of the living room — the sofa too — called "night_sky 49" to the digit, so the
+# classifier isn't working on this simulator. A control proves it; the TV is now also found by its shape (a big
+# TV-proportioned rectangle with a dark bezel), which this machine can judge.
 HandyToolsTests/IdentifyRealTests
-# Five tabs (Home, Tools, Build, My stuff, Settings) and animated stickers.
+HandyToolsTests/ScreenShapeTests
+# Stickers: confetti and hearts may cross the corners; the box-behind-it check now allows that.
 HandyToolsTests/StickerMotionTests
-HandyToolsTests/HomeShelvesTests
-HandyToolsTests/OwnRemindersTests
+# Tools tab: scrolling to a category didn't happen on run 2, so a category now opens its own page.
 HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
-HandyToolsUITests/PromiseTests/testBuildTabMakesToolsAndReminders
 HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen
+HandyToolsUITests/PromiseTests/testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid
 HandyToolsUITests/PromiseTests/testWelcomeIsOneScreenAndOpensTheChosenTab
-HandyToolsUITests/PromiseTests/testForYouCardShowsTheCarAndNotNowPutsItAway
-HandyToolsUITests/PromiseTests/testRunFromMyToolsStaysOpenAndComesBack
+HandyToolsUITests/PromiseTests/testBuildTabMakesToolsAndReminders

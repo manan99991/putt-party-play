@@ -60,8 +60,18 @@ final class StickerMotionTests: XCTestCase {
                     XCTAssertEqual(edge, 0, "\(m.title) frame \(k): the sticker runs off the edge")
                 }
             }
-            // A sticker, not a picture: the corners stay see-through.
-            for f in maps { XCTAssertEqual(f.a[0], 0, "\(m.title): the top-left corner isn't see-through") }
+            // A sticker, not a picture: the corners stay see-through. Confetti and hearts fly past the edges, so for those
+            // the border must still be almost all see-through (no box behind the sticker).
+            for (k, f) in maps.enumerated() {
+                if m == .party || m == .love {
+                    var solid = 0, total = 0
+                    for x in 0..<f.w { total += 2; solid += Int(f.a[x] > 128 ? 1 : 0) + Int(f.a[(f.h - 1) * f.w + x] > 128 ? 1 : 0) }
+                    for y in 0..<f.h { total += 2; solid += Int(f.a[y * f.w] > 128 ? 1 : 0) + Int(f.a[y * f.w + f.w - 1] > 128 ? 1 : 0) }
+                    XCTAssertLessThan(Double(solid) / Double(total), 0.05, "\(m.title) frame \(k): the edge is filled in, like a box behind it")
+                } else {
+                    XCTAssertEqual(f.a[0], 0, "\(m.title) frame \(k): the top-left corner isn't see-through")
+                }
+            }
         }
     }
 

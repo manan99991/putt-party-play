@@ -446,7 +446,7 @@ struct BuilderView: View {
     var showDemo = false
     /// Which bottom tab this page is (Manan, 24 Nov: five tabs, each with its own soul). Home is the front door — say
     /// it, or start with what you have; Tools is every tool, by what it works on; Build is making your own.
-    enum Face { case home, tools, build }
+    enum Face { case home, tools, build, category(String) }
     var face: Face = .home
     @Environment(\.dismiss) private var dismissPage
     @State private var mine: [Chain] = ChainStore.load()
@@ -513,16 +513,13 @@ struct BuilderView: View {
     /// A Business job: its ready-made chain runs straight away (the same runner as My tools), or its tool opens.
     private func openBusinessJob(_ j: HomeShelves.BusinessJob) {
         if let id = j.chain, let c = ChainTemplates.all.first(where: { $0.id == id }) { running = c }
-        else if let t = j.tool { NotificationCenter.default.post(name: .openTool, object: t, userInfo: ["from": "builder"]) }
+        else if let t = j.tool { NotificationCenter.default.post(name: .openTool, object: t, userInfo: ["from": "category-business"]) }
     }
     /// "For you now" cards; a short screen shows only the most pressing one so a full tab still fits.
     @State private var forYou: [ForYou.Card] = []
     private var shownCards: [ForYou.Card] { (Launch.screenshots || builtIn != nil) ? [] : Array(forYou.prefix(shortScreen ? 1 : ForYou.maxCards)) }
     /// Tools tab: the category a tile above was tapped for (the page scrolls to it), and the find-a-tool box.
-    @State private var jumpTo: String?
     @State private var findTool = ""
-    /// The category the welcome screen picked, for the Tools tab to glide to the first time it opens.
-    static let jumpKey = "tenzy.jumpTo"
     private func loadForYou() async {
         let f = await ForYou.gather()
         let c = ForYou.cards(f, hidden: ForYou.hidden, off: ForYou.off)
@@ -542,6 +539,7 @@ struct BuilderView: View {
             case .home: homeFace
             case .tools: toolsFace
             case .build: buildFace
+            case .category(let id): categoryFace(id)
             }
         }
         .frame(maxWidth: .infinity, alignment: .top)
@@ -552,11 +550,6 @@ struct BuilderView: View {
         // Tapping the tab you're already on goes back to the top, as everywhere on iPhone.
         .onReceive(NotificationCenter.default.publisher(for: .tabReselected)) { _ in
             withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) { proxy.scrollTo("page-top", anchor: .top) }
-        }
-        .onChange(of: jumpTo) { _, id in
-            guard let id else { return }
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) { proxy.scrollTo("section-\(id)", anchor: .top) }
-            jumpTo = nil
         }
         }
         .scrollDismissesKeyboard(.interactively)
@@ -1081,7 +1074,6 @@ struct BuilderView: View {
             }
             if q.isEmpty {
                 categoryGrid
-                ForEach(homeTabs) { sh in toolSection(sh) }
             } else {
                 let found = searchTools(q)
                 SectionLabel(text: found.count == 1 ? "1 tool" : "\(found.count) tools", icon: "magnifyingglass")
@@ -1100,36 +1092,67 @@ struct BuilderView: View {
             }
         }
         .onAppear {
-            // Store screenshots of one category: -route hometab-pdf opens Tools at Documents. The welcome's pick does
-            // the same, once.
-            var id: String?
-            if Launch.screenshots, let r = Launch.route, r.hasPrefix("hometab-") { id = String(r.dropFirst("hometab-".count)) }
-            if let j = UserDefaults.standard.string(forKey: Self.jumpKey) { id = j; UserDefaults.standard.removeObject(forKey: Self.jumpKey) }
-            if let id { DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { jumpTo = id } }
+            // Store screenshots of one category: -route hometab-pdf opens Tools at Documents.
+            if Launch.screenshots, let r = Launch.route, r.hasPrefix("hometab-") {
+                let id = String(r.dropFirst("hometab-".count))
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { NotificationCenter.default.post(name: .openTool, object: "category-\(id)") }
+            }
         }
     }
 
-    /// One tile per category — its icon in its own colour, a one-word name, how many tools — three or four across, all
-    /// on screen at once. Tapping one glides the page to that category.
+    /// A category's own page (Tools › Documents): its colour, its one line, and every one of its tools — no more than
+    /// nine, so all of them sit on one screen.
+    private func categoryFace(_ id: String) -> some View {
+        let sh = (HomeShelves.all + [HomeShelves.business]).first { $0.id == id } ?? HomeShelves.all[0]
+        return VStack(alignment: .leading, spacing: HandySpacing.s16) {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(spacing: HandySpacing.s12) {
+                    Image(systemName: sh.icon).font(.system(size: 22, weight: .bold)).foregroundStyle(.white)
+                        .frame(width: 48, height: 48)
+                        .background(.white.opacity(0.2), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .accessibilityHidden(true)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(L(sh.title)).font(.system(size: 26, weight: .heavy)).foregroundStyle(.white).accessibilityAddTraits(.isHeader)
+                        Text(L(sh.line)).font(.system(size: 13, weight: .medium)).foregroundStyle(.white.opacity(0.9))
+                            .lineLimit(2).fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: 0)
+                }
+            }
+            .padding(HandySpacing.s16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(PostTileGround(hex: sh.hex, icon: sh.icon))
+            toolGrid(sh)
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("category-page-\(sh.id)")
+    }
+
+    /// One tile per category, two across: its icon in its own colour, its one-word name, what's in it and how many
+    /// tools. Tapping one opens that category's page with every one of its tools (Manan's rule: show the options
+    /// first, the items only once one is tapped). All of them fit one screen.
     private var categoryGrid: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: homeTabs.count > 8 ? 3 : 4), spacing: HandySpacing.s8) {
+        LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8)], spacing: HandySpacing.s8) {
             ForEach(homeTabs) { sh in
-                Button { jumpTo = sh.id } label: {
-                    VStack(spacing: 5) {
+                let n = sh.id == HomeShelves.business.id ? HomeShelves.businessJobs.count : sh.tools.count
+                NavigationLink(value: "category-\(sh.id)") {
+                    HStack(spacing: 10) {
                         Image(systemName: sh.icon).font(.system(size: 17, weight: .bold)).foregroundStyle(.white)
-                            .frame(width: 38, height: 38)
+                            .frame(width: 40, height: 40)
                             .background(Color(hex: sh.hex).gradient, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                             .shadow(color: Color(hex: sh.hex).opacity(0.4), radius: 6, y: 3)
                             .accessibilityHidden(true)
-                        Text(L(sh.title)).font(.system(size: 12, weight: .bold)).foregroundStyle(HandyColor.textPrimary)
-                            .lineLimit(1).minimumScaleFactor(0.7)
-                        Text("\(sh.id == HomeShelves.business.id ? HomeShelves.businessJobs.count : sh.tools.count)")
-                            .font(.system(size: 10, weight: .semibold)).monospacedDigit().foregroundStyle(HandyColor.textSecondary)
-                            .accessibilityHidden(true)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(L(sh.title)).font(.system(size: 15, weight: .bold)).foregroundStyle(HandyColor.textPrimary)
+                                .lineLimit(1).minimumScaleFactor(0.75)
+                            Text("\(n) \(L(n == 1 ? "tool" : "tools"))").font(.system(size: 11, weight: .semibold)).foregroundStyle(HandyColor.textSecondary)
+                        }
+                        Spacer(minLength: 0)
                     }
-                    .frame(maxWidth: .infinity, minHeight: 92)
+                    .padding(10)
+                    .frame(maxWidth: .infinity, minHeight: 62, alignment: .leading)
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Color(hex: sh.hex).opacity(0.35), lineWidth: 1))
+                    .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Color(hex: sh.hex).opacity(0.4), lineWidth: 1))
                     .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }
                 .buttonStyle(.plain)
@@ -1139,45 +1162,28 @@ struct BuilderView: View {
         }
     }
 
-    /// A category: a header in its colour with its one line, then every one of its tools as a tile.
-    private func toolSection(_ sh: HomeShelves.Shelf) -> some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            HStack(spacing: 10) {
-                Image(systemName: sh.icon).font(.system(size: 14, weight: .bold)).foregroundStyle(.white)
-                    .frame(width: 30, height: 30)
-                    .background(Color(hex: sh.hex).gradient, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-                    .accessibilityHidden(true)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(L(sh.title)).font(.system(size: 19, weight: .heavy)).foregroundStyle(HandyColor.textPrimary).accessibilityAddTraits(.isHeader)
-                    Text(L(sh.line)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(2).fixedSize(horizontal: false, vertical: true)
+    /// Every one of a category's tools as a tile, three across.
+    private func toolGrid(_ sh: HomeShelves.Shelf) -> some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
+            if sh.id == HomeShelves.business.id {
+                ForEach(HomeShelves.businessJobs) { j in
+                    Button { openBusinessJob(j) } label: { HomeJobTile(title: j.title, icon: j.icon, hex: sh.hex, compact: false) }
+                        .buttonStyle(.plain).accessibilityIdentifier("home-job-\(j.id)")
                 }
-                Spacer(minLength: 0)
-            }
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
-                if sh.id == HomeShelves.business.id {
-                    ForEach(HomeShelves.businessJobs) { j in
-                        Button { openBusinessJob(j) } label: { HomeJobTile(title: j.title, icon: j.icon, hex: sh.hex, compact: false) }
-                            .buttonStyle(.plain).accessibilityIdentifier("home-job-\(j.id)")
+                // "What else would help your business?" — their answers decide the next business tools.
+                Button {
+                    if let u = URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20business%20idea&body=What%20would%20help%20your%20business%3F%20") { UIApplication.shared.open(u) }
+                } label: { HomeJobTile(title: "What else would help?", icon: "envelope.fill", hex: sh.hex, compact: false) }
+                    .buttonStyle(.plain).accessibilityIdentifier("home-job-ask")
+            } else {
+                ForEach(sh.tools.compactMap { id in TOOLS.first { $0.id == id } }) { t in
+                    Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "category-\(sh.id)"]) } label: {
+                        HomeToolTile(tool: t, hex: sh.hex)
                     }
-                    // "What else would help your business?" — their answers decide the next business tools.
-                    Button {
-                        if let u = URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20business%20idea&body=What%20would%20help%20your%20business%3F%20") { UIApplication.shared.open(u) }
-                    } label: { HomeJobTile(title: "What else would help?", icon: "envelope.fill", hex: sh.hex, compact: false) }
-                        .buttonStyle(.plain).accessibilityIdentifier("home-job-ask")
-                } else {
-                    ForEach(sh.tools.compactMap { id in TOOLS.first { $0.id == id } }) { t in
-                        Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
-                            HomeToolTile(tool: t, hex: sh.hex)
-                        }
-                        .buttonStyle(.plain).accessibilityIdentifier("home-tool-\(t.id)")
-                    }
+                    .buttonStyle(.plain).accessibilityIdentifier("home-tool-\(t.id)")
                 }
             }
         }
-        .padding(.top, HandySpacing.s8)
-        .id("section-\(sh.id)")
-        .accessibilityElement(children: .contain)
-        .accessibilityIdentifier("section-\(sh.id)")
     }
 
     // MARK: - Build: make your own

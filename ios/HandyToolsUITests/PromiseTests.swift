@@ -25,7 +25,7 @@ final class PromiseTests: XCTestCase {
     }
 
     /// Five tabs (Manan, 24 Nov): Home keeps start-with-what-you-have on screen and no category grid (it made doubles:
-    /// Photo and Photos, PDF and Files); the Tools tab shows every category, and tapping one glides to it with every one
+    /// Photo and Photos, PDF and Files); the Tools tab shows every category, and tapping one opens its page with every one
     /// of its tools on screen — the flashlight and Contacts too — and a tool opens from its tile.
     func testHomeAndToolsTabsReachEveryTool() {
         let app = XCUIApplication()
@@ -43,27 +43,24 @@ final class PromiseTests: XCTestCase {
         app.buttons["tools-tab"].firstMatch.tap()
         let tabs = ["camera": 9, "photos": 8, "video": 5, "pdf": 9, "audio": 6, "words": 6, "day": 9, "phone": 5]
         for (tab, count) in tabs.sorted(by: { $0.key < $1.key }) {
-            app.buttons["tools-tab"].firstMatch.tap()   // tapping the tab again goes back to the top
-            sleep(1)
             let t = any["tab-\(tab)"].firstMatch
-            XCTAssertTrue(t.waitForExistence(timeout: 10) && t.isHittable, "category \(tab) isn't on screen")
+            XCTAssertTrue(t.waitForExistence(timeout: 10) && t.isHittable, "category \(tab) isn't on the Tools page without scrolling")
             t.tap()
-            sleep(1)
-            let section = any["section-\(tab)"].firstMatch
-            let tiles = section.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'home-tool-'"))
+            let page = any["category-page-\(tab)"].firstMatch
+            XCTAssertTrue(page.waitForExistence(timeout: 10), "\(tab) didn't open its page")
+            let tiles = page.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'home-tool-'"))
             let shown = (0..<tiles.count).map { tiles.element(boundBy: $0) }
             let off = shown.filter { !$0.isHittable }.map(\.identifier)
             let win = app.windows.firstMatch.frame
             let lastY = shown.map { Int($0.frame.maxY) }.max() ?? -1
-            let bar = Int(app.buttons["builder-entry"].firstMatch.frame.minY)
-            let why = "screen \(Int(win.width))x\(Int(win.height)), section at \(Int(section.frame.minY)), last tile ends at \(lastY), tab bar at \(bar)"
+            let why = "screen \(Int(win.width))x\(Int(win.height)), last tile ends at \(lastY)"
             XCTAssertEqual(shown.count, count, "\(tab) shows \(shown.count) tools; \(why)")
-            XCTAssertEqual(off, [], "\(tab): after tapping it, these tools are still off screen; \(why)")
+            XCTAssertEqual(off, [], "\(tab): these tools need scrolling; \(why)")
+            app.navigationBars.buttons.element(boundBy: 0).tap()   // back to Tools
+            sleep(1)
         }
-        app.buttons["tools-tab"].firstMatch.tap()
-        sleep(1)
         any["tab-phone"].firstMatch.tap()
-        sleep(1)
+        XCTAssertTrue(any["category-page-phone"].firstMatch.waitForExistence(timeout: 10))
         XCTAssertTrue(any["home-tool-contacts"].firstMatch.isHittable, "Contacts has no tile")
         let light = any["home-tool-light"].firstMatch
         XCTAssertTrue(light.isHittable, "the Phone category has no Flashlight")

@@ -53,6 +53,36 @@ final class IdentifyRealTests: XCTestCase {
         }
     }
 
+    /// Control (run 2: every view of the living room, the grey sofa included, came back "night_sky 49" to the digit):
+    /// does the classifier on this machine tell different pictures apart at all? If a red square and a menu photo get the
+    /// very same answer, it isn't working here and only the shape test can be judged on this machine.
+    func testDoesTheClassifierWorkOnThisMachine() throws {
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1
+        let red = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 400), format: fmt).image { c in UIColor.red.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 400)) }
+        var pics: [(String, CGImage)] = [("red square", red.cgImage!)]
+        if let root = ProcessInfo.processInfo.environment["REAL_PHOTOS"],
+           let m = UIImage(contentsOfFile: URL(fileURLWithPath: root).appendingPathComponent("private/menu-steakhouse.jpg").path)?.cgImage { pics.append(("menu", m)) }
+        var answers: [String] = []
+        for (name, cg) in pics {
+            let req = VNClassifyImageRequest()
+            try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
+            let top = (req.results ?? []).prefix(5).map { "\($0.identifier) \(Int($0.confidence * 100))" }.joined(separator: ", ")
+            print("IDENTIFY| control \(name): \(top)")
+            answers.append(top)
+        }
+        print("IDENTIFY| classifier works on this machine: \(Set(answers).count == answers.count)")
+    }
+
+    /// The shape test on the real photo: Vision's rectangle finder and the dark-bezel check, no classifier involved.
+    func testTheTVIsFoundByItsShape() throws {
+        guard let root = ProcessInfo.processInfo.environment["REAL_PHOTOS"] else { throw XCTSkip("private photos not decrypted") }
+        let url = URL(fileURLWithPath: root).appendingPathComponent("private/identify-living-room.jpg")
+        guard let img = UIImage(contentsOfFile: url.path), let cg = img.normalizedUp().cgImage else { throw XCTSkip("no living-room photo") }
+        let s = Identifier.screenIn(cg)
+        print("IDENTIFY| shape: \(s.map { "\($0.label) \(Int($0.confidence * 100))% at \($0.box)" } ?? "none")")
+        XCTAssertEqual(s?.label, "Television")
+    }
+
     func testALivingRoomWithABigTVIsCalledATV() async throws {
         guard let root = ProcessInfo.processInfo.environment["REAL_PHOTOS"] else { throw XCTSkip("private photos not decrypted") }
         let url = URL(fileURLWithPath: root).appendingPathComponent("private/identify-living-room.jpg")

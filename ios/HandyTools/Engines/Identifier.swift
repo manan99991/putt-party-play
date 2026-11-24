@@ -70,7 +70,12 @@ enum Identifier {
         let best = box.best
         let ranked = best.map { (id: $0.key, conf: $0.value, score: $0.value * (generic.contains($0.key.lowercased()) ? 0.3 : 1)) }
             .sorted { $0.score > $1.score }
-        let specific = ranked.filter { !generic.contains($0.id.lowercased()) }
+        // A screen in the room — a TV on the wall — is named for what it is, not for the picture it's showing (24 Nov:
+        // Manan's living room came back "Container, Vase", then "Night Sky" from the TV's own wallpaper). Found by its
+        // shape, not by the classifier: a big, wide, TV-proportioned rectangle with a dark bezel round the edge.
+        let screen = screenIn(cg)
+        let onScreen: Set<String> = ["night_sky", "sky", "celestial_body", "moon", "screenshot", "document", "website", "text", "outdoor"]
+        let specific = ranked.filter { !generic.contains($0.id.lowercased()) && !(screen != nil && onScreen.contains($0.id.lowercased())) }
         let topSpecific = specific.first
 
         // Decide what the picture mainly is.
@@ -80,7 +85,7 @@ enum Identifier {
             subject = .animal
         } else if barcode != nil {
             subject = .object
-        } else if people > 0.3 && (topSpecific?.conf ?? 0) < 0.5 {
+        } else if screen == nil && people > 0.3 && (topSpecific?.conf ?? 0) < 0.5 {
             // People fill the frame and nothing else stands out — don't invent an object name.
             subject = .people
             sceneNote = "This looks like a photo of people, not a single object. To name something, point at the one thing you want — get in close on just that."
@@ -100,8 +105,10 @@ enum Identifier {
             guesses = dedupe(g)
         case .object:
             // Prefer specific labels; fall back to whatever we have (still honest about low confidence).
-            let source = specific.isEmpty ? ranked : specific
-            guesses = source.prefix(6).map { Guess(label: cleanLabel($0.id), confidence: $0.conf) }
+            let source = specific.isEmpty && screen == nil ? ranked : specific
+            var g = source.prefix(6).map { Guess(label: cleanLabel($0.id), confidence: $0.conf) }
+            if let screen { g.insert(Guess(label: screen.label, confidence: screen.confidence), at: 0) }
+            guesses = dedupe(Array(g.prefix(6)))
         }
 
         let topLabel = guesses.first?.label
@@ -136,6 +143,58 @@ enum Identifier {
     }
 
     // MARK: - Pieces
+
+    /// A TV or monitor in the picture, found by its shape: the biggest wide rectangle that is TV-proportioned (about
+    /// 16:9, between 3:2 and 2.2:1), takes a fair part of the photo but isn't the whole photo (then it's a screenshot
+    /// or a photo of a screen up close), and has a dark bezel — the thin band just inside its edge is near-black.
+    static func screenIn(_ cg: CGImage) -> (label: String, confidence: Double, box: CGRect)? {
+        let req = VNDetectRectanglesRequest()
+        req.maximumObservations = 8
+        req.minimumSize = 0.2
+        req.minimumConfidence = 0.6
+        req.minimumAspectRatio = 0.4
+        req.maximumAspectRatio = 0.72
+        req.quadratureTolerance = 20
+        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
+        let W = CGFloat(cg.width), H = CGFloat(cg.height)
+        let found = (req.results ?? []).sorted { $0.boundingBox.width * $0.boundingBox.height > $1.boundingBox.width * $1.boundingBox.height }
+        for r in found {
+            let b = r.boundingBox
+            let rect = CGRect(x: b.minX * W, y: (1 - b.maxY) * H, width: b.width * W, height: b.height * H).integral
+            let area = b.width * b.height
+            let aspect = rect.width / max(1, rect.height)
+            guard area >= 0.06, area <= 0.7, aspect >= 1.45, aspect <= 2.2 else { continue }
+            guard let edge = bezelLuma(cg, rect), edge < 0.22 else { continue }
+            return ("Television", min(0.95, 0.75 + 0.2 * Double(r.confidence)), rect)
+        }
+        return nil
+    }
+
+    /// Brightness (0…1) of the darkest thin ring just inside a rectangle's edge, looking a little way in (0–11.5%), so a
+    /// detected box that sits a few pixels off the TV's real edge still finds the bezel.
+    static func bezelLuma(_ cg: CGImage, _ rect: CGRect) -> Double? {
+        guard let crop = cg.cropping(to: rect) else { return nil }
+        let w = 240, h = max(16, Int(240 * rect.height / max(1, rect.width)))
+        var px = [UInt8](repeating: 0, count: w * h * 4)
+        guard let ctx = CGContext(data: &px, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w * 4,
+                                  space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+        ctx.interpolationQuality = .medium
+        ctx.draw(crop, in: CGRect(x: 0, y: 0, width: w, height: h))
+        var rings: [Double] = []
+        // Rings 1.5% wide, every 1%: a TV's bezel is often only about 1% of its width.
+        for start in stride(from: 0.0, through: 0.10, by: 0.01) {
+            let lo = Int(Double(w) * start), hi = lo + max(2, Int(Double(w) * 0.015))
+            var sum = 0.0, n = 0
+            for y in 0..<h { for x in 0..<w {
+                let d = min(x, y, w - 1 - x, h - 1 - y)
+                guard d >= lo, d < hi else { continue }
+                let i = (y * w + x) * 4
+                sum += (0.2126 * Double(px[i]) + 0.7152 * Double(px[i + 1]) + 0.0722 * Double(px[i + 2])) / 255; n += 1
+            } }
+            if n > 0 { rings.append(sum / Double(n)) }
+        }
+        return rings.min()
+    }
 
     /// Thread-safe "best confidence per label" accumulator for the parallel classification passes.
     private final class Merge: @unchecked Sendable {
