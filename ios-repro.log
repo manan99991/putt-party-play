@@ -1,12 +1,17 @@
-Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (155.890 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' started.
-VIDEOFX| 1s: poster true rolling false playing false item false status -1 wait - err - size 0 t nan
-VIDEOFX| 3s: poster true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err The operation could not be completed size 1080 t 0.0
-VIDEOFX| 6s: poster true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err The operation could not be completed size 1080 t 0.0
-VIDEOFX| 10s: poster true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err The operation could not be completed size 1080 t 0.0
-Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (57.401 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 213.291 (213.365) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 213.291 (213.368) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 213.291 (213.371) seconds
+2026-11-24 14:17:59.896515+0000 HandyTools[19876:65334] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-24 14:18:03.558558+0000 HandyTools[19876:65346] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 14:18:03.567496+0000 HandyTools[19876:65346] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 14:18:03.568698+0000 HandyTools[19876:65346] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 14:18:03.569285+0000 HandyTools[19876:65346] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 14:18:03.647848+0000 HandyTools[19876:65346] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 14:18:03.648841+0000 HandyTools[19876:65346] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+Test Case '-[HandyToolsTests.VideoFXPlaybackTests testPreviewPlaysWithTheEffectsOn]' started.
+VIDEOFX| sample: codec 61766331 size (1080.0, 1350.0) duration 7.0
+VIDEOFX| plain: status 1 t 1.19 wait - err - 0 - under - 0 log -
+VIDEOFX| comp: render (1080.0, 1350.0) frame 0.03333333333333333 instructions 1
+VIDEOFX| effects: status 1 t 1.02 wait - err - 0 - under - 0 log -
+Test Case '-[HandyToolsTests.VideoFXPlaybackTests testPreviewPlaysWithTheEffectsOn]' passed (22.030 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 22.030 (22.034) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 22.030 (22.037) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 22.030 (22.039) seconds
 == crash reports
