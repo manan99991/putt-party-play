@@ -1105,6 +1105,12 @@ struct BuilderView: View {
     private func categoryFace(_ id: String) -> some View {
         let sh = (HomeShelves.all + [HomeShelves.business]).first { $0.id == id } ?? HomeShelves.all[0]
         return VStack(alignment: .leading, spacing: HandySpacing.s16) {
+            // Always a way back (the page has no bar of its own: Home's bar is hidden).
+            Button { dismissPage() } label: {
+                Label(L("Tools"), systemImage: "chevron.left").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+                    .frame(minHeight: 44).contentShape(Rectangle())
+            }
+            .buttonStyle(.plain).accessibilityIdentifier("category-back")
             VStack(alignment: .leading, spacing: 6) {
                 HStack(spacing: HandySpacing.s12) {
                     Image(systemName: sh.icon).font(.system(size: 22, weight: .bold)).foregroundStyle(.white)

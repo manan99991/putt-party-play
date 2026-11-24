@@ -56,7 +56,9 @@ final class PromiseTests: XCTestCase {
             let why = "screen \(Int(win.width))x\(Int(win.height)), last tile ends at \(lastY)"
             XCTAssertEqual(shown.count, count, "\(tab) shows \(shown.count) tools; \(why)")
             XCTAssertEqual(off, [], "\(tab): these tools need scrolling; \(why)")
-            app.navigationBars.buttons.element(boundBy: 0).tap()   // back to Tools
+            let back = any["category-back"].firstMatch
+            XCTAssertTrue(back.isHittable, "\(tab)'s page has no way back")
+            back.tap()
             sleep(1)
         }
         any["tab-phone"].firstMatch.tap()

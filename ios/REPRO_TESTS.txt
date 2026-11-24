@@ -1,14 +1,6 @@
-# 24 Nov, run 3.
-# Identify: run 2 showed every view of the living room — the sofa too — called "night_sky 49" to the digit, so the
-# classifier isn't working on this simulator. A control proves it; the TV is now also found by its shape (a big
-# TV-proportioned rectangle with a dark bezel), which this machine can judge.
-HandyToolsTests/IdentifyRealTests
-HandyToolsTests/ScreenShapeTests
-# Stickers: confetti and hearts may cross the corners; the box-behind-it check now allows that.
-HandyToolsTests/StickerMotionTests
-# Tools tab: scrolling to a category didn't happen on run 2, so a category now opens its own page.
+# 24 Nov, run 4. Run 3 passed Identify (Television 95% on the living-room photo, found by its shape), the shape tests,
+# the stickers, Build, Business, invoices and the welcome pick. A category page had no way back: it now has its own.
 HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
-HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen
-HandyToolsUITests/PromiseTests/testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid
-HandyToolsUITests/PromiseTests/testWelcomeIsOneScreenAndOpensTheChosenTab
-HandyToolsUITests/PromiseTests/testBuildTabMakesToolsAndReminders
+HandyToolsUITests/PromiseTests/testRunFromMyToolsStaysOpenAndComesBack
+HandyToolsUITests/PromiseTests/testForYouCardShowsTheCarAndNotNowPutsItAway
+HandyToolsTests/HomeShelvesTests
