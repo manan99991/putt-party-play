@@ -1,8 +1,6 @@
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' passed (77.758 seconds).
 Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (30.102 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 107.860 (107.869) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 107.860 (107.873) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 107.860 (107.875) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (54.152 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 54.152 (54.173) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 54.152 (54.176) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 54.152 (54.178) seconds
 == crash reports
