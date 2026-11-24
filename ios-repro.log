@@ -1,29 +1,40 @@
-2026-11-24 15:26:47.157734+0000 HandyTools[30418:86334] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-24 15:26:49.709247+0000 HandyTools[30418:86335] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 15:26:49.716653+0000 HandyTools[30418:86335] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 15:26:49.717182+0000 HandyTools[30418:86335] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 15:26:49.717412+0000 HandyTools[30418:86335] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 15:26:49.720985+0000 HandyTools[30418:86335] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 15:26:49.721644+0000 HandyTools[30418:86335] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 15:50:12.020727+0000 HandyTools[26848:76508] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-24 15:50:15.653406+0000 HandyTools[26848:76505] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 15:50:15.663493+0000 HandyTools[26848:76505] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 15:50:15.664387+0000 HandyTools[26848:76505] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 15:50:15.664810+0000 HandyTools[26848:76505] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 15:50:15.748433+0000 HandyTools[26848:76505] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-24 15:50:15.748709+0000 HandyTools[26848:76505] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+Test Case '-[HandyToolsTests.LanguageTests testChoosingALanguageSwitchesAtOnce]' started.
+Test Case '-[HandyToolsTests.LanguageTests testChoosingALanguageSwitchesAtOnce]' passed (0.015 seconds).
+Test Case '-[HandyToolsTests.LanguageTests testEveryChoiceIsTranslated]' started.
+Test Case '-[HandyToolsTests.LanguageTests testEveryChoiceIsTranslated]' passed (0.061 seconds).
+Test Case '-[HandyToolsTests.LanguageTests testHomeTabIsTheScreenNotAnAddress]' started.
+Test Case '-[HandyToolsTests.LanguageTests testHomeTabIsTheScreenNotAnAddress]' passed (0.014 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.090 (0.097) seconds
 Test Case '-[HandyToolsTests.VideoFXPlaybackTests testPreviewPlaysWithTheEffectsOn]' started.
 VIDEOFX| sample: codec 61766331 size (1080.0, 1350.0) duration 7.0
-VIDEOFX| plain: frames 9 screen false status 1 t 1.61 wait - err - 0 - under - 0 log -
+VIDEOFX| plain: frames 8 screen false status 1 t 1.55 wait - err - 0 - under - 0 log -
 VIDEOFX| comp: render (1080.0, 1350.0) frame 0.03333333333333333 instructions 1
 VIDEOFX| effects: frames 0 screen false status 2 t 0.00 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 An unknown error occurred (-12784) under NSOSStatusErrorDomain -12784 log -
 VIDEOFX| effects on screen: frames 0 screen true status 2 t 0.00 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 An unknown error occurred (-12784) under NSOSStatusErrorDomain -12784 log -
-VIDEOFX| identity: frames 0 screen false status 2 t 0.00 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 An unknown error occurred (-12784) under NSOSStatusErrorDomain -12784 log -
-VIDEOFX| identity cropped: frames 0 screen false status 2 t 0.00 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 An unknown error occurred (-12784) under NSOSStatusErrorDomain -12784 log -
-VIDEOFX| effects cropped: frames 0 screen false status 2 t 0.00 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 An unknown error occurred (-12784) under NSOSStatusErrorDomain -12784 log -
-VIDEOFX| effects with context: frames 0 screen false status 2 t 0.00 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 An unknown error occurred (-12784) under NSOSStatusErrorDomain -12784 log -
-VIDEOFX| standard composition: frames 0 screen false status 2 t 0.00 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 An unknown error occurred (-12784) under NSOSStatusErrorDomain -12784 log -
-VIDEOFX| export: Tenzy-6C4192.mp4
-VIDEOFX| exported file: frames 8 screen false status 1 t 1.58 wait - err - 0 - under - 0 log -
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/VideoFXPlaybackTests.swift:100: error: -[HandyToolsTests.VideoFXPlaybackTests testPreviewPlaysWithTheEffectsOn] : XCTAssertNotEqual failed: ("AVPlayerItemStatus(rawValue: 2)") is equal to ("AVPlayerItemStatus(rawValue: 2)") - the preview with effects failed: frames 0 screen false status 2 t 0.00 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 An unknown error occurred (-12784) under NSOSStatusErrorDomain -12784 log -
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/VideoFXPlaybackTests.swift:101: error: -[HandyToolsTests.VideoFXPlaybackTests testPreviewPlaysWithTheEffectsOn] : XCTAssertGreaterThan failed: ("0") is not greater than ("0") - the effects drew no frames: frames 0 screen false status 2 t 0.00 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 An unknown error occurred (-12784) under NSOSStatusErrorDomain -12784 log -
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/VideoFXPlaybackTests.swift:100: error: -[HandyToolsTests.VideoFXPlaybackTests testPreviewPlaysWithTheEffectsOn] : XCTAssertNotEqual failed: ("AVPlayerItemStatus(rawValue: 2)") is equal to ("AVPlayerItemStatus(rawValue: 2)") - the preview with effects failed: frames 0 screen true status 2 t 0.00 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 An unknown error occurred (-12784) under NSOSStatusErrorDomain -12784 log -
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/VideoFXPlaybackTests.swift:101: error: -[HandyToolsTests.VideoFXPlaybackTests testPreviewPlaysWithTheEffectsOn] : XCTAssertGreaterThan failed: ("0") is not greater than ("0") - the effects drew no frames: frames 0 screen true status 2 t 0.00 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 An unknown error occurred (-12784) under NSOSStatusErrorDomain -12784 log -
-Test Case '-[HandyToolsTests.VideoFXPlaybackTests testPreviewPlaysWithTheEffectsOn]' failed (55.600 seconds).
-	 Executed 1 test, with 4 failures (0 unexpected) in 55.600 (55.605) seconds
-	 Executed 1 test, with 4 failures (0 unexpected) in 55.600 (55.607) seconds
-	 Executed 1 test, with 4 failures (0 unexpected) in 55.600 (55.609) seconds
+VIDEOFX| live works: false on screen: false
+VIDEOFX| clip: size (1024.0, 1280.0) seconds 7.0
+VIDEOFX| rendered clip on screen: frames 9 screen true status 1 t 1.70 wait - err - 0 - under - 0 log -
+Test Case '-[HandyToolsTests.VideoFXPlaybackTests testPreviewPlaysWithTheEffectsOn]' passed (28.819 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 28.819 (28.842) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 28.909 (28.942) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 28.909 (28.945) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' started.
+Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (64.604 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' started.
+VIDEOFX| 1s: poster true rendered true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 NSOSStatusErrorDomain -12784 log - size 1080 t 0.0
+VIDEOFX| 3s: poster true rendered true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 NSOSStatusErrorDomain -12784 log - size 1080 t 0.0
+VIDEOFX| 6s: poster true rendered true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 NSOSStatusErrorDomain -12784 log - size 1080 t 0.0
+VIDEOFX| 10s: poster true rendered true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 NSOSStatusErrorDomain -12784 log - size 1080 t 0.0
+VIDEOFX| moving at 12s: poster true rendered true rolling true playing true item true status 1 wait - err - log - size 1024 t 1.4
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (50.853 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 115.457 (115.478) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 115.457 (115.482) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 115.457 (115.484) seconds
 == crash reports
