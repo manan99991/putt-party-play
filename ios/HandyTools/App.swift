@@ -635,7 +635,10 @@ struct HomeView: View {
                 case "results": HistoryView().toolbarRole(.editor)   // a finished-job notification lands here
                 case "sheets": SheetsView().toolbarRole(.editor)   // My stuff › Sheets
                 case let c where c.hasPrefix("category-"):   // Tools › a category: every one of its tools
-                    BuilderView(face: .category(String(c.dropFirst("category-".count)))).toolbarRole(.editor)
+                    // Its own "‹ Tools" back button and Tenzy's ground, so the bar is hidden (it showed a second back).
+                    BuilderView(face: .category(String(c.dropFirst("category-".count))))
+                        .background(TenzyBackdrop())
+                        .toolbar(.hidden, for: .navigationBar)
                 default: ToolDestination(id: id).toolbarRole(.editor).disablesSwipeBack()
                 }
             }

@@ -496,7 +496,7 @@ struct BusinessSwitch: View {
         Toggle(isOn: $on) {
             VStack(alignment: .leading, spacing: 3) {
                 Text(L("I run a small business")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                Text(L("Adds a Business tab to Home: expenses, product photos, customers, contracts and QR codes."))
+                Text(L("Adds Business to Tools: expenses, product photos, customers, contracts and QR codes."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }
         }

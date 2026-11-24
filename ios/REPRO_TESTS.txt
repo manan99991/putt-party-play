@@ -1,6 +1,5 @@
-# 24 Nov, run 4. Run 3 passed Identify (Television 95% on the living-room photo, found by its shape), the shape tests,
-# the stickers, Build, Business, invoices and the welcome pick. A category page had no way back: it now has its own.
+# 24 Nov, run 5. Category pages: the system bar is hidden (it showed a second back button next to "‹ Tools") and the
+# page sits on Tenzy's ground. Re-prove every category opens, shows all its tools and goes back.
 HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
-HandyToolsUITests/PromiseTests/testRunFromMyToolsStaysOpenAndComesBack
-HandyToolsUITests/PromiseTests/testForYouCardShowsTheCarAndNotNowPutsItAway
-HandyToolsTests/HomeShelvesTests
+HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen
+HandyToolsUITests/PromiseTests/testWelcomeIsOneScreenAndOpensTheChosenTab

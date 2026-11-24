@@ -45798,5 +45798,15 @@
   "ja": "ディスコ",
   "pt": "Disco",
   "zh": "迪斯科"
+ },
+ "Adds Business to Tools: expenses, product photos, customers, contracts and QR codes.": {
+  "de": "Fügt „Business“ zu Werkzeuge hinzu: Ausgaben, Produktfotos, Kunden, Verträge und QR-Codes.",
+  "es": "Añade Negocio a Herramientas: gastos, fotos de productos, clientes, contratos y códigos QR.",
+  "fr": "Ajoute Business aux Outils : dépenses, photos de produits, clients, contrats et codes QR.",
+  "hi": "टूल्स में बिज़नेस जोड़ता है: खर्च, प्रोडक्ट फ़ोटो, ग्राहक, कॉन्ट्रैक्ट और QR कोड।",
+  "it": "Aggiunge Business a Strumenti: spese, foto dei prodotti, clienti, contratti e codici QR.",
+  "ja": "ツールに「ビジネス」を追加：経費、商品写真、顧客、契約書、QRコード。",
+  "pt": "Adiciona Negócios às Ferramentas: despesas, fotos de produtos, clientes, contratos e códigos QR.",
+  "zh": "在“工具”中加入“商务”：开支、商品照片、客户、合同和二维码。"
  }
 }
