@@ -14,7 +14,7 @@ final class ToolRealInputTests: XCTestCase {
         "audioconvert", "audiocompress", "ringtone", "audioedit", "audiomix", "audiotags", "audioclean", "meetingnotes",
         "soundboard", "translate", "voicenotes", "shield", "contacts", "light", "measure", "gpsdash",
         "audiolab", "rest", "seeread", "colorvision", "fileviewer", "pricecheck", "vault", "speechnotes",
-        "audiostudio", "invoice"
+        "audiostudio", "invoice", "mileage", "pricelist"
     ]
 
     func testEveryToolWithItsSampleKeepsTheAppOpen() {

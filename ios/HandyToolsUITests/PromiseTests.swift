@@ -217,6 +217,47 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(any["reminder-text"].firstMatch.waitForExistence(timeout: 10), "New reminder didn't open the reminder maker")
     }
 
+    /// Business (24 Nov): Business Miles adds a drive and the rough deduction goes up; Price List makes a PDF shown before
+    /// Send; and Invoices & Quotes fills a line from the price list in one tap.
+    func testBusinessMilesAndPriceListWork() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "mileage", "-uitest", "-sample"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let est = any["mileage-estimate"].firstMatch
+        XCTAssertTrue(est.waitForExistence(timeout: 20), "Business Miles didn't open")
+        let before = est.label
+        let add = any["mileage-add"].firstMatch
+        if !add.isHittable { app.swipeUp() }
+        add.tap()
+        sleep(1)
+        if !est.isHittable { app.swipeDown() }
+        XCTAssertNotEqual(est.label, before, "adding a 12.4-mile round trip didn't change the deduction (\(before))")
+        app.terminate()
+
+        app.launchArguments = ["-route", "pricelist", "-uitest", "-sample"]
+        app.launch()
+        let make = any["price-make"].firstMatch
+        XCTAssertTrue(make.waitForExistence(timeout: 20), "Price List has no Make PDF")
+        if !make.isHittable { app.swipeUp() }
+        make.tap()
+        XCTAssertTrue(any["price-preview"].firstMatch.waitForExistence(timeout: 10), "no preview of the price list before Send")
+        XCTAssertTrue(any["price-send"].firstMatch.exists, "no Send after Make PDF")
+        app.terminate()
+
+        app.launchArguments = ["-route", "invoice", "-uitest", "-sample"]
+        app.launch()
+        let fromList = any["invoice-fromlist"].firstMatch
+        XCTAssertTrue(fromList.waitForExistence(timeout: 20), "Invoices & Quotes has no From price list")
+        if !fromList.isHittable { app.swipeUp() }
+        fromList.tap()
+        let item = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Faucet repair'")).firstMatch
+        XCTAssertTrue(item.waitForExistence(timeout: 5), "the price list items aren't offered")
+        item.tap()
+        let filled = any.matching(NSPredicate(format: "identifier BEGINSWITH 'invoice-what-' AND value BEGINSWITH 'Faucet repair'")).firstMatch
+        XCTAssertTrue(filled.waitForExistence(timeout: 5), "picking Faucet repair didn't add it as a line")
+    }
+
     /// "Editable watermark text — type the words instead of a fixed message" (said done; was only in Edit tool).
     func testWatermarkToolsLetYouTypeYourOwnWords() {
         for id in ["id-copy-watermarked", "id-both-sides"] {

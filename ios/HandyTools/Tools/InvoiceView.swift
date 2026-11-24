@@ -7,6 +7,7 @@ import PDFKit
 /// to the unpaid list and hands you a Send button. Free makes 3 a month; Tenzy Pro, unlimited.
 struct InvoiceView: View {
     @ObservedObject private var book = InvoiceStore.shared
+    @ObservedObject private var prices = PriceListStore.shared
     @EnvironmentObject private var pro: StoreManager
 
     private struct Draft: Identifiable, Equatable { var id = UUID(); var what = ""; var qty = "1"; var price = "" }
@@ -126,8 +127,20 @@ struct InvoiceView: View {
                     }
                 }
             }
-            Button { lines.append(Draft()) } label: { Label(L("Add a line"), systemImage: "plus") }
-                .textButton().accessibilityIdentifier("invoice-addline")
+            HStack {
+                Button { lines.append(Draft()) } label: { Label(L("Add a line"), systemImage: "plus") }
+                    .textButton().accessibilityIdentifier("invoice-addline")
+                Spacer()
+                // Your price list, one tap a line (Business › Price List).
+                if !prices.items.isEmpty {
+                    Menu {
+                        ForEach(prices.items) { i in
+                            Button("\(i.label) — \(Invoice.money(i.price, currency: currency))") { addFromList(i) }
+                        }
+                    } label: { Label(L("From price list"), systemImage: "list.bullet.rectangle").font(HandyFont.caption).frame(minHeight: 44) }
+                    .accessibilityIdentifier("invoice-fromlist")
+                }
+            }
 
             HStack(spacing: HandySpacing.s8) {
                 TextField(L("Tax %"), text: $tax).keyboardType(.decimalPad).invoiceField().frame(width: 90)
@@ -250,6 +263,13 @@ struct InvoiceView: View {
         return Double(t.replacingOccurrences(of: ",", with: ".")) ?? 0
     }
     private func amount(_ l: Draft) -> Double { Invoice.round2(number(l.qty) * number(l.price)) }
+
+    /// A price-list item fills the first empty line, or a new one.
+    private func addFromList(_ i: PriceList.Item) {
+        let d = Draft(what: i.label, qty: "1", price: String(format: "%g", i.price))
+        if let k = lines.firstIndex(where: { $0.what.trimmingCharacters(in: .whitespaces).isEmpty && $0.price.isEmpty }) { lines[k] = d }
+        else { lines.append(d) }
+    }
 
     private func doc() -> Invoice.Doc {
         let now = Date()

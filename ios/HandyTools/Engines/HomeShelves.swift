@@ -21,6 +21,8 @@ enum HomeShelves {
 
     /// A tab never holds more than this many tools (three rows of three), so it fits the screen.
     static let maxPerTab = 9
+    /// Business has its own page with no hero above the grid, so four rows of three fit there.
+    static let maxBusinessTiles = 12
 
     static let all: [Shelf] = [
         Shelf(id: "camera", title: "Camera", line: "Point your camera: scan, identify, measure, read a menu",
@@ -80,6 +82,8 @@ enum HomeShelves {
     }
     static let businessJobs: [BusinessJob] = [
         BusinessJob(id: "invoice", title: "Send an invoice", icon: "doc.text.fill", chain: nil, tool: "invoice"),
+        BusinessJob(id: "mileage", title: "Log business miles", icon: "car.fill", chain: nil, tool: "mileage"),
+        BusinessJob(id: "pricelist", title: "My price list", icon: "list.bullet.rectangle.fill", chain: nil, tool: "pricelist"),
         BusinessJob(id: "expense", title: "Log an expense", icon: "receipt.fill", chain: "receipt-run", tool: nil),
         BusinessJob(id: "product", title: "Product photo to sell", icon: "bag.fill", chain: "photo-sell", tool: nil),
         BusinessJob(id: "customer", title: "Save a customer", icon: "person.crop.rectangle.fill", chain: "card-to-contact", tool: nil),

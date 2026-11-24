@@ -1,4 +1,10 @@
-# 24 Nov, run 6. Home's "Every tool" card showed eight bare coloured icons (Manan: users would never understand them).
-# Each category is now a named button that opens its page. Re-prove Home and Tools.
+# 24 Nov, run 7. Business Miles (IRS 2026 rate, round trips, month/year, spreadsheet) and Price List (PDF, and one-tap
+# lines in Invoices & Quotes); the Business page now holds up to 12 tiles. Plus Home's named category buttons.
+HandyToolsTests/BusinessBooksTests
+HandyToolsTests/HomeShelvesTests
+HandyToolsTests/InvoiceTests
+HandyToolsTests/EngineTests/testCatalogIsConsistent
+HandyToolsTests/ToolCatalogCoverageTests
+HandyToolsUITests/PromiseTests/testBusinessMilesAndPriceListWork
+HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen
 HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
-HandyToolsUITests/PromiseTests/testForYouCardShowsTheCarAndNotNowPutsItAway

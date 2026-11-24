@@ -45808,5 +45808,585 @@
   "ja": "ツールに「ビジネス」を追加：経費、商品写真、顧客、契約書、QRコード。",
   "pt": "Adiciona Negócios às Ferramentas: despesas, fotos de produtos, clientes, contratos e códigos QR.",
   "zh": "在“工具”中加入“商务”：开支、商品照片、客户、合同和二维码。"
+ },
+ "%d drives · %@ miles · about %@": {
+  "de": "%d Fahrten · %@ Meilen · etwa %@",
+  "es": "%d trayectos · %@ millas · unos %@",
+  "fr": "%d trajets · %@ miles · environ %@",
+  "hi": "%d ड्राइव · %@ मील · लगभग %@",
+  "it": "%d tragitti · %@ miglia · circa %@",
+  "ja": "%d 回の運転・%@ マイル・約 %@",
+  "pt": "%d viagens · %@ milhas · cerca de %@",
+  "zh": "%d 次行程 · %@ 英里 · 约 %@"
+ },
+ "A note at the bottom (optional) — e.g. Prices valid until March": {
+  "de": "Ein Hinweis unten (optional) – z. B. Preise gültig bis März",
+  "es": "Una nota al pie (opcional), p. ej., Precios válidos hasta marzo",
+  "fr": "Une note en bas (facultatif) — ex. Prix valables jusqu'en mars",
+  "hi": "नीचे एक नोट (वैकल्पिक) — जैसे कीमतें मार्च तक मान्य",
+  "it": "Una nota in fondo (facoltativa) — es. Prezzi validi fino a marzo",
+  "ja": "下に添えるメモ（任意）— 例：価格は3月まで有効",
+  "pt": "Uma nota no fim (opcional) — ex.: Preços válidos até março",
+  "zh": "底部备注（可选）——例如：价格有效期至三月"
+ },
+ "Add a drive": {
+  "de": "Fahrt hinzufügen",
+  "es": "Añadir un trayecto",
+  "fr": "Ajouter un trajet",
+  "hi": "ड्राइव जोड़ें",
+  "it": "Aggiungi un tragitto",
+  "ja": "運転を追加",
+  "pt": "Adicionar uma viagem",
+  "zh": "添加一次行程"
+ },
+ "Add an item": {
+  "de": "Eintrag hinzufügen",
+  "es": "Añadir un artículo",
+  "fr": "Ajouter un article",
+  "hi": "आइटम जोड़ें",
+  "it": "Aggiungi una voce",
+  "ja": "項目を追加",
+  "pt": "Adicionar um item",
+  "zh": "添加一项"
+ },
+ "Add drive": {
+  "de": "Fahrt hinzufügen",
+  "es": "Añadir trayecto",
+  "fr": "Ajouter le trajet",
+  "hi": "ड्राइव जोड़ें",
+  "it": "Aggiungi tragitto",
+  "ja": "運転を追加",
+  "pt": "Adicionar viagem",
+  "zh": "添加行程"
+ },
+ "Add to list": {
+  "de": "Zur Liste hinzufügen",
+  "es": "Añadir a la lista",
+  "fr": "Ajouter à la liste",
+  "hi": "सूची में जोड़ें",
+  "it": "Aggiungi alla lista",
+  "ja": "リストに追加",
+  "pt": "Adicionar à lista",
+  "zh": "加入列表"
+ },
+ "Add what you sell or charge and its price — each, per hour, per visit.": {
+  "de": "Füge hinzu, was du verkaufst oder berechnest, mit Preis – pro Stück, pro Stunde, pro Besuch.",
+  "es": "Añade lo que vendes o cobras y su precio: por unidad, por hora, por visita.",
+  "fr": "Ajoutez ce que vous vendez ou facturez et son prix — à l'unité, à l'heure, par visite.",
+  "hi": "जो आप बेचते हैं या जिसका शुल्क लेते हैं, उसे कीमत के साथ जोड़ें — प्रति नग, प्रति घंटा, प्रति विज़िट।",
+  "it": "Aggiungi ciò che vendi o fai pagare e il suo prezzo — cadauno, all'ora, a visita.",
+  "ja": "販売するもの・請求するものと価格を追加 — 1個あたり、1時間あたり、1回あたり。",
+  "pt": "Adicione o que você vende ou cobra e o preço — por unidade, por hora, por visita.",
+  "zh": "添加你出售或收费的项目及价格——按件、按小时、按次。"
+ },
+ "And %d more in the spreadsheet.": {
+  "de": "Und %d weitere in der Tabelle.",
+  "es": "Y %d más en la hoja de cálculo.",
+  "fr": "Et %d de plus dans le tableur.",
+  "hi": "और %d स्प्रेडशीट में।",
+  "it": "E altri %d nel foglio di calcolo.",
+  "ja": "残り %d 件はスプレッドシートにあります。",
+  "pt": "E mais %d na planilha.",
+  "zh": "另有 %d 条在表格中。"
+ },
+ "At the IRS standard rate for %d: %@ a business mile. An estimate, not tax advice — your accountant decides what you can claim.": {
+  "de": "Zum IRS-Standardsatz für %d: %@ pro Geschäftsmeile. Eine Schätzung, keine Steuerberatung – was absetzbar ist, entscheidet deine Steuerberatung.",
+  "es": "A la tarifa estándar del IRS para %d: %@ por milla de negocio. Es una estimación, no asesoría fiscal: tu contador decide qué puedes deducir.",
+  "fr": "Au tarif standard de l'IRS pour %d : %@ par mile professionnel. Une estimation, pas un conseil fiscal — votre comptable décide de ce que vous pouvez déduire.",
+  "hi": "%d की IRS मानक दर पर: हर बिज़नेस मील %@। यह अनुमान है, टैक्स सलाह नहीं — आप क्या क्लेम कर सकते हैं, यह आपका अकाउंटेंट तय करेगा।",
+  "it": "Alla tariffa standard IRS per il %d: %@ per miglio di lavoro. È una stima, non una consulenza fiscale — decide il tuo commercialista cosa puoi detrarre.",
+  "ja": "%d年のIRS標準レート：業務1マイルあたり %@。概算であり税務アドバイスではありません — 何を申告できるかは会計士が判断します。",
+  "pt": "Pela taxa padrão do IRS de %d: %@ por milha a trabalho. É uma estimativa, não orientação fiscal — seu contador decide o que pode ser deduzido.",
+  "zh": "按 %d 年 IRS 标准费率：每商务英里 %@。仅为估算，并非税务建议——可申报多少由你的会计决定。"
+ },
+ "Business Miles": {
+  "de": "Geschäftsmeilen",
+  "es": "Millas de negocio",
+  "fr": "Miles professionnels",
+  "hi": "बिज़नेस मील",
+  "it": "Miglia di lavoro",
+  "ja": "業務走行距離",
+  "pt": "Milhas a trabalho",
+  "zh": "商务里程"
+ },
+ "Change this item": {
+  "de": "Diesen Eintrag ändern",
+  "es": "Cambiar este artículo",
+  "fr": "Modifier cet article",
+  "hi": "यह आइटम बदलें",
+  "it": "Modifica questa voce",
+  "ja": "この項目を変更",
+  "pt": "Alterar este item",
+  "zh": "修改此项"
+ },
+ "Charity": {
+  "de": "Wohltätigkeit",
+  "es": "Benéfico",
+  "fr": "Caritatif",
+  "hi": "दान",
+  "it": "Beneficenza",
+  "ja": "慈善",
+  "pt": "Caridade",
+  "zh": "慈善"
+ },
+ "From price list": {
+  "de": "Aus der Preisliste",
+  "es": "De la lista de precios",
+  "fr": "Depuis la liste de prix",
+  "hi": "मूल्य सूची से",
+  "it": "Dal listino",
+  "ja": "価格表から",
+  "pt": "Da lista de preços",
+  "zh": "从价目表"
+ },
+ "In Invoices & Quotes, tap From price list to add a line in one tap.": {
+  "de": "Tippe in Rechnungen & Angebote auf „Aus der Preisliste“, um eine Zeile mit einem Tipp hinzuzufügen.",
+  "es": "En Facturas y presupuestos, toca De la lista de precios para añadir una línea con un toque.",
+  "fr": "Dans Factures et devis, touchez Depuis la liste de prix pour ajouter une ligne d'un geste.",
+  "hi": "इनवॉइस और कोटेशन में, एक टैप में लाइन जोड़ने के लिए मूल्य सूची से पर टैप करें।",
+  "it": "In Fatture e preventivi, tocca Dal listino per aggiungere una riga con un tocco.",
+  "ja": "請求書と見積書で「価格表から」をタップすると1回で行を追加できます。",
+  "pt": "Em Faturas e orçamentos, toque em Da lista de preços para adicionar uma linha com um toque.",
+  "zh": "在“发票和报价”中点按“从价目表”，一键添加一行。"
+ },
+ "Log a drive in seconds. See your miles and a rough deduction, and send the year to your accountant.": {
+  "de": "Fahrt in Sekunden erfassen. Meilen und eine grobe Absetzung sehen und das Jahr an die Steuerberatung schicken.",
+  "es": "Registra un trayecto en segundos. Ve tus millas y una deducción aproximada, y envía el año a tu contador.",
+  "fr": "Notez un trajet en quelques secondes. Voyez vos miles et une déduction approximative, et envoyez l'année à votre comptable.",
+  "hi": "सेकंडों में ड्राइव दर्ज करें। अपने मील और अनुमानित कटौती देखें, और साल भर का हिसाब अकाउंटेंट को भेजें।",
+  "it": "Registra un tragitto in pochi secondi. Vedi le miglia e una detrazione indicativa, e invia l'anno al commercialista.",
+  "ja": "運転を数秒で記録。走行距離とおおよその控除額を確認し、1年分を会計士に送れます。",
+  "pt": "Registre uma viagem em segundos. Veja suas milhas e uma dedução aproximada, e envie o ano ao seu contador.",
+  "zh": "几秒记下一次行程。查看里程和大致抵扣额，并把全年记录发给会计。"
+ },
+ "Log business miles": {
+  "de": "Geschäftsmeilen erfassen",
+  "es": "Registrar millas",
+  "fr": "Noter les miles pro",
+  "hi": "बिज़नेस मील दर्ज करें",
+  "it": "Registra le miglia",
+  "ja": "業務の走行を記録",
+  "pt": "Registrar milhas",
+  "zh": "记录商务里程"
+ },
+ "Log drives, see a rough deduction": {
+  "de": "Fahrten erfassen, grobe Absetzung sehen",
+  "es": "Registra trayectos y ve una deducción aproximada",
+  "fr": "Notez vos trajets, voyez une déduction approximative",
+  "hi": "ड्राइव दर्ज करें, अनुमानित कटौती देखें",
+  "it": "Registra i tragitti, vedi una detrazione indicativa",
+  "ja": "運転を記録して控除額の目安を確認",
+  "pt": "Registre viagens e veja uma dedução aproximada",
+  "zh": "记录行程，查看大致抵扣"
+ },
+ "Medical": {
+  "de": "Medizinisch",
+  "es": "Médico",
+  "fr": "Médical",
+  "hi": "चिकित्सा",
+  "it": "Medico",
+  "ja": "医療",
+  "pt": "Médico",
+  "zh": "医疗"
+ },
+ "Mileage %d": {
+  "de": "Fahrtenbuch %d",
+  "es": "Millaje %d",
+  "fr": "Kilométrage %d",
+  "hi": "माइलेज %d",
+  "it": "Chilometraggio %d",
+  "ja": "走行記録 %d",
+  "pt": "Quilometragem %d",
+  "zh": "%d 年里程"
+ },
+ "Miles": {
+  "de": "Meilen",
+  "es": "Millas",
+  "fr": "Miles",
+  "hi": "मील",
+  "it": "Miglia",
+  "ja": "マイル",
+  "pt": "Milhas",
+  "zh": "英里"
+ },
+ "My price list": {
+  "de": "Meine Preisliste",
+  "es": "Mi lista de precios",
+  "fr": "Ma liste de prix",
+  "hi": "मेरी मूल्य सूची",
+  "it": "Il mio listino",
+  "ja": "自分の価格表",
+  "pt": "Minha lista de preços",
+  "zh": "我的价目表"
+ },
+ "No unit": {
+  "de": "Keine Einheit",
+  "es": "Sin unidad",
+  "fr": "Sans unité",
+  "hi": "कोई इकाई नहीं",
+  "it": "Nessuna unità",
+  "ja": "単位なし",
+  "pt": "Sem unidade",
+  "zh": "无单位"
+ },
+ "Opens in Numbers, Excel or Google Sheets. Each drive is a row, with the rate and estimate beside it.": {
+  "de": "Öffnet sich in Numbers, Excel oder Google Tabellen. Jede Fahrt ist eine Zeile, mit Satz und Schätzung daneben.",
+  "es": "Se abre en Numbers, Excel o Hojas de cálculo de Google. Cada trayecto es una fila, con la tarifa y la estimación al lado.",
+  "fr": "S'ouvre dans Numbers, Excel ou Google Sheets. Chaque trajet est une ligne, avec le tarif et l'estimation à côté.",
+  "hi": "Numbers, Excel या Google Sheets में खुलता है। हर ड्राइव एक पंक्ति है, साथ में दर और अनुमान।",
+  "it": "Si apre in Numbers, Excel o Fogli Google. Ogni tragitto è una riga, con tariffa e stima accanto.",
+  "ja": "Numbers、Excel、Google スプレッドシートで開けます。1回の運転が1行で、レートと概算が横に並びます。",
+  "pt": "Abre no Numbers, Excel ou Planilhas Google. Cada viagem é uma linha, com a taxa e a estimativa ao lado.",
+  "zh": "可在 Numbers、Excel 或 Google 表格中打开。每次行程一行，旁边附费率和估算。"
+ },
+ "PRICE LIST": {
+  "de": "PREISLISTE",
+  "es": "LISTA DE PRECIOS",
+  "fr": "LISTE DE PRIX",
+  "hi": "मूल्य सूची",
+  "it": "LISTINO PREZZI",
+  "ja": "価格表",
+  "pt": "LISTA DE PREÇOS",
+  "zh": "价目表"
+ },
+ "Price List": {
+  "de": "Preisliste",
+  "es": "Lista de precios",
+  "fr": "Liste de prix",
+  "hi": "मूल्य सूची",
+  "it": "Listino prezzi",
+  "ja": "価格表",
+  "pt": "Lista de preços",
+  "zh": "价目表"
+ },
+ "Rough deduction this year": {
+  "de": "Grobe Absetzung dieses Jahr",
+  "es": "Deducción aproximada este año",
+  "fr": "Déduction approximative cette année",
+  "hi": "इस साल की अनुमानित कटौती",
+  "it": "Detrazione indicativa quest'anno",
+  "ja": "今年の控除額の目安",
+  "pt": "Dedução aproximada este ano",
+  "zh": "今年大致抵扣"
+ },
+ "Round trip": {
+  "de": "Hin und zurück",
+  "es": "Ida y vuelta",
+  "fr": "Aller-retour",
+  "hi": "आना-जाना",
+  "it": "Andata e ritorno",
+  "ja": "往復",
+  "pt": "Ida e volta",
+  "zh": "往返"
+ },
+ "Round trip counts the drive both ways.": {
+  "de": "Hin und zurück zählt die Fahrt in beide Richtungen.",
+  "es": "Ida y vuelta cuenta el trayecto en ambos sentidos.",
+  "fr": "Aller-retour compte le trajet dans les deux sens.",
+  "hi": "आना-जाना चुनने पर दोनों तरफ़ की ड्राइव गिनी जाती है।",
+  "it": "Andata e ritorno conta il tragitto in entrambi i sensi.",
+  "ja": "往復にすると行きと帰りの両方を数えます。",
+  "pt": "Ida e volta conta a viagem nos dois sentidos.",
+  "zh": "往返会把来回两段都计入。"
+ },
+ "See this month and this year, with a rough deduction at the IRS standard rate.": {
+  "de": "Sieh diesen Monat und dieses Jahr, mit grober Absetzung zum IRS-Standardsatz.",
+  "es": "Ve este mes y este año, con una deducción aproximada a la tarifa estándar del IRS.",
+  "fr": "Voyez ce mois-ci et cette année, avec une déduction approximative au tarif standard de l'IRS.",
+  "hi": "इस महीने और इस साल का हिसाब देखें, IRS मानक दर पर अनुमानित कटौती के साथ।",
+  "it": "Vedi questo mese e quest'anno, con una detrazione indicativa alla tariffa standard IRS.",
+  "ja": "今月と今年の合計を、IRS標準レートでの控除額の目安と一緒に確認できます。",
+  "pt": "Veja este mês e este ano, com uma dedução aproximada pela taxa padrão do IRS.",
+  "zh": "查看本月和今年的里程，并按 IRS 标准费率估算抵扣。"
+ },
+ "Send spreadsheet": {
+  "de": "Tabelle senden",
+  "es": "Enviar hoja de cálculo",
+  "fr": "Envoyer le tableur",
+  "hi": "स्प्रेडशीट भेजें",
+  "it": "Invia foglio di calcolo",
+  "ja": "スプレッドシートを送る",
+  "pt": "Enviar planilha",
+  "zh": "发送表格"
+ },
+ "Send the list to a customer as a clean PDF.": {
+  "de": "Schick die Liste als sauberes PDF an Kundschaft.",
+  "es": "Envía la lista a un cliente como un PDF limpio.",
+  "fr": "Envoyez la liste à un client en PDF soigné.",
+  "hi": "सूची को साफ़ PDF के रूप में ग्राहक को भेजें।",
+  "it": "Invia il listino a un cliente come PDF pulito.",
+  "ja": "価格表をきれいなPDFでお客様に送れます。",
+  "pt": "Envie a lista a um cliente como um PDF limpo.",
+  "zh": "把价目表做成整洁的 PDF 发给客户。"
+ },
+ "Send the year as a spreadsheet (Numbers or Excel) to your accountant.": {
+  "de": "Schick das Jahr als Tabelle (Numbers oder Excel) an deine Steuerberatung.",
+  "es": "Envía el año como hoja de cálculo (Numbers o Excel) a tu contador.",
+  "fr": "Envoyez l'année en tableur (Numbers ou Excel) à votre comptable.",
+  "hi": "साल भर का हिसाब स्प्रेडशीट (Numbers या Excel) में अकाउंटेंट को भेजें।",
+  "it": "Invia l'anno come foglio di calcolo (Numbers o Excel) al commercialista.",
+  "ja": "1年分をスプレッドシート（Numbers または Excel）で会計士に送れます。",
+  "pt": "Envie o ano como planilha (Numbers ou Excel) ao seu contador.",
+  "zh": "把全年记录以表格（Numbers 或 Excel）发给会计。"
+ },
+ "Send to a customer": {
+  "de": "An Kundschaft senden",
+  "es": "Enviar a un cliente",
+  "fr": "Envoyer à un client",
+  "hi": "ग्राहक को भेजें",
+  "it": "Invia a un cliente",
+  "ja": "お客様に送る",
+  "pt": "Enviar a um cliente",
+  "zh": "发给客户"
+ },
+ "Send to accountant": {
+  "de": "An Steuerberatung",
+  "es": "Enviar al contador",
+  "fr": "Envoyer au comptable",
+  "hi": "अकाउंटेंट को भेजें",
+  "it": "Invia al commercialista",
+  "ja": "会計士に送る",
+  "pt": "Enviar ao contador",
+  "zh": "发给会计"
+ },
+ "Tap an item to change it; touch and hold to delete.": {
+  "de": "Tippe auf einen Eintrag, um ihn zu ändern; halte ihn gedrückt, um ihn zu löschen.",
+  "es": "Toca un artículo para cambiarlo; mantenlo pulsado para eliminarlo.",
+  "fr": "Touchez un article pour le modifier ; maintenez le doigt dessus pour le supprimer.",
+  "hi": "बदलने के लिए आइटम पर टैप करें; हटाने के लिए दबाकर रखें।",
+  "it": "Tocca una voce per modificarla; tienila premuta per eliminarla.",
+  "ja": "項目をタップすると変更、長押しすると削除できます。",
+  "pt": "Toque num item para alterar; toque e segure para apagar.",
+  "zh": "点按一项可修改；按住可删除。"
+ },
+ "Touch and hold a drive to delete it.": {
+  "de": "Halte eine Fahrt gedrückt, um sie zu löschen.",
+  "es": "Mantén pulsado un trayecto para eliminarlo.",
+  "fr": "Maintenez le doigt sur un trajet pour le supprimer.",
+  "hi": "किसी ड्राइव को हटाने के लिए उसे दबाकर रखें।",
+  "it": "Tieni premuto un tragitto per eliminarlo.",
+  "ja": "運転を長押しすると削除できます。",
+  "pt": "Toque e segure uma viagem para apagá-la.",
+  "zh": "按住一次行程即可删除。"
+ },
+ "Type how many miles the drive was.": {
+  "de": "Gib ein, wie viele Meilen die Fahrt war.",
+  "es": "Escribe cuántas millas fue el trayecto.",
+  "fr": "Saisissez le nombre de miles du trajet.",
+  "hi": "ड्राइव कितने मील की थी, यह लिखें।",
+  "it": "Scrivi quante miglia era il tragitto.",
+  "ja": "運転した距離（マイル）を入力してください。",
+  "pt": "Digite quantas milhas teve a viagem.",
+  "zh": "输入这次行程有多少英里。"
+ },
+ "Type where you went, why, and how far — or tap one of your usual trips.": {
+  "de": "Gib ein, wohin, warum und wie weit – oder tippe auf eine deiner üblichen Fahrten.",
+  "es": "Escribe adónde fuiste, por qué y qué distancia, o toca uno de tus trayectos habituales.",
+  "fr": "Saisissez où vous êtes allé, pourquoi et la distance — ou touchez un de vos trajets habituels.",
+  "hi": "कहाँ गए, क्यों गए और कितनी दूर — लिखें, या अपनी रोज़ की किसी ड्राइव पर टैप करें।",
+  "it": "Scrivi dove sei andato, perché e quanta strada — o tocca uno dei tuoi tragitti abituali.",
+  "ja": "行き先・目的・距離を入力 — またはいつもの運転をタップ。",
+  "pt": "Digite aonde foi, por quê e a distância — ou toque numa das suas viagens habituais.",
+  "zh": "输入去了哪里、为什么、多远——或点按一条常用行程。"
+ },
+ "Unit (optional)": {
+  "de": "Einheit (optional)",
+  "es": "Unidad (opcional)",
+  "fr": "Unité (facultatif)",
+  "hi": "इकाई (वैकल्पिक)",
+  "it": "Unità (facoltativa)",
+  "ja": "単位（任意）",
+  "pt": "Unidade (opcional)",
+  "zh": "单位（可选）"
+ },
+ "What you sell or charge, with prices. Send it as a PDF, and pick from it on an invoice.": {
+  "de": "Was du verkaufst oder berechnest, mit Preisen. Als PDF senden und auf Rechnungen daraus wählen.",
+  "es": "Lo que vendes o cobras, con precios. Envíalo en PDF y elige de ahí en una factura.",
+  "fr": "Ce que vous vendez ou facturez, avec les prix. Envoyez-le en PDF et piochez-y sur une facture.",
+  "hi": "आप क्या बेचते हैं या किसका शुल्क लेते हैं, कीमतों के साथ। PDF में भेजें और इनवॉइस में इसी से चुनें।",
+  "it": "Ciò che vendi o fai pagare, con i prezzi. Invialo in PDF e sceglilo in fattura.",
+  "ja": "販売・請求するものと価格。PDFで送れて、請求書でここから選べます。",
+  "pt": "O que você vende ou cobra, com preços. Envie em PDF e escolha dela numa fatura.",
+  "zh": "你出售或收费的项目和价格。可做成 PDF 发送，开发票时直接从中选取。"
+ },
+ "What — e.g. Faucet repair, Logo design": {
+  "de": "Was – z. B. Wasserhahn-Reparatur, Logo-Design",
+  "es": "Qué: p. ej., Reparación de grifo, Diseño de logo",
+  "fr": "Quoi — ex. Réparation de robinet, Création de logo",
+  "hi": "क्या — जैसे नल की मरम्मत, लोगो डिज़ाइन",
+  "it": "Cosa — es. Riparazione rubinetto, Design del logo",
+  "ja": "内容 — 例：蛇口の修理、ロゴデザイン",
+  "pt": "O quê — ex.: Conserto de torneira, Criação de logo",
+  "zh": "项目——例如：修水龙头、标志设计"
+ },
+ "Why": {
+  "de": "Warum",
+  "es": "Por qué",
+  "fr": "Pourquoi",
+  "hi": "क्यों",
+  "it": "Perché",
+  "ja": "目的",
+  "pt": "Por quê",
+  "zh": "事由"
+ },
+ "Why — e.g. client visit, supplies run": {
+  "de": "Warum – z. B. Kundenbesuch, Materialeinkauf",
+  "es": "Por qué: p. ej., visita a cliente, compra de material",
+  "fr": "Pourquoi — ex. visite client, achat de fournitures",
+  "hi": "क्यों — जैसे ग्राहक से मिलना, सामान लेने जाना",
+  "it": "Perché — es. visita a un cliente, acquisto materiali",
+  "ja": "目的 — 例：顧客訪問、資材の買い出し",
+  "pt": "Por quê — ex.: visita a cliente, compra de material",
+  "zh": "事由——例如：拜访客户、采购物料"
+ },
+ "Your business name goes at the top: type it once in Invoices & Quotes.": {
+  "de": "Dein Firmenname steht oben: gib ihn einmal in Rechnungen & Angebote ein.",
+  "es": "El nombre de tu negocio va arriba: escríbelo una vez en Facturas y presupuestos.",
+  "fr": "Le nom de votre entreprise s'affiche en haut : saisissez-le une fois dans Factures et devis.",
+  "hi": "आपके बिज़नेस का नाम सबसे ऊपर आता है: इसे इनवॉइस और कोटेशन में एक बार लिखें।",
+  "it": "Il nome della tua attività va in alto: scrivilo una volta in Fatture e preventivi.",
+  "ja": "事業名は上部に入ります：請求書と見積書で一度入力してください。",
+  "pt": "O nome do seu negócio vai no topo: digite-o uma vez em Faturas e orçamentos.",
+  "zh": "你的商家名称显示在顶部：在“发票和报价”中填写一次即可。"
+ },
+ "Your drives": {
+  "de": "Deine Fahrten",
+  "es": "Tus trayectos",
+  "fr": "Vos trajets",
+  "hi": "आपकी ड्राइव",
+  "it": "I tuoi tragitti",
+  "ja": "あなたの運転",
+  "pt": "Suas viagens",
+  "zh": "你的行程"
+ },
+ "Your list (%d)": {
+  "de": "Deine Liste (%d)",
+  "es": "Tu lista (%d)",
+  "fr": "Votre liste (%d)",
+  "hi": "आपकी सूची (%d)",
+  "it": "Il tuo listino (%d)",
+  "ja": "あなたのリスト（%d）",
+  "pt": "Sua lista (%d)",
+  "zh": "你的列表（%d）"
+ },
+ "Your prices, as a PDF and on invoices": {
+  "de": "Deine Preise, als PDF und auf Rechnungen",
+  "es": "Tus precios, en PDF y en facturas",
+  "fr": "Vos prix, en PDF et sur les factures",
+  "hi": "आपकी कीमतें, PDF में और इनवॉइस पर",
+  "it": "I tuoi prezzi, in PDF e in fattura",
+  "ja": "価格をPDFと請求書に",
+  "pt": "Seus preços, em PDF e nas faturas",
+  "zh": "你的价格，可做 PDF，也能用于发票"
+ },
+ "Your usual trips — tap to fill in": {
+  "de": "Deine üblichen Fahrten – zum Ausfüllen tippen",
+  "es": "Tus trayectos habituales: toca para rellenar",
+  "fr": "Vos trajets habituels — touchez pour remplir",
+  "hi": "आपकी रोज़ की ड्राइव — भरने के लिए टैप करें",
+  "it": "I tuoi tragitti abituali — tocca per compilare",
+  "ja": "いつもの運転 — タップで入力",
+  "pt": "Suas viagens habituais — toque para preencher",
+  "zh": "常用行程——点按即可填入"
+ },
+ "miles in %d": {
+  "de": "Meilen in %d",
+  "es": "millas en %d",
+  "fr": "miles en %d",
+  "hi": "%d में मील",
+  "it": "miglia nel %d",
+  "ja": "%d年のマイル",
+  "pt": "milhas em %d",
+  "zh": "%d 年英里数"
+ },
+ "miles this month": {
+  "de": "Meilen diesen Monat",
+  "es": "millas este mes",
+  "fr": "miles ce mois-ci",
+  "hi": "इस महीने के मील",
+  "it": "miglia questo mese",
+  "ja": "今月のマイル",
+  "pt": "milhas este mês",
+  "zh": "本月英里数"
+ },
+ "per day": {
+  "de": "pro Tag",
+  "es": "por día",
+  "fr": "par jour",
+  "hi": "प्रति दिन",
+  "it": "al giorno",
+  "ja": "1日あたり",
+  "pt": "por dia",
+  "zh": "每天"
+ },
+ "per hour": {
+  "de": "pro Stunde",
+  "es": "por hora",
+  "fr": "de l'heure",
+  "hi": "प्रति घंटा",
+  "it": "all'ora",
+  "ja": "1時間あたり",
+  "pt": "por hora",
+  "zh": "每小时"
+ },
+ "per item": {
+  "de": "pro Stück",
+  "es": "por artículo",
+  "fr": "par article",
+  "hi": "प्रति आइटम",
+  "it": "a pezzo",
+  "ja": "1点あたり",
+  "pt": "por item",
+  "zh": "每件"
+ },
+ "per mile": {
+  "de": "pro Meile",
+  "es": "por milla",
+  "fr": "par mile",
+  "hi": "प्रति मील",
+  "it": "a miglio",
+  "ja": "1マイルあたり",
+  "pt": "por milha",
+  "zh": "每英里"
+ },
+ "per m²": {
+  "de": "pro m²",
+  "es": "por m²",
+  "fr": "par m²",
+  "hi": "प्रति m²",
+  "it": "al m²",
+  "ja": "1m²あたり",
+  "pt": "por m²",
+  "zh": "每平方米"
+ },
+ "per sq ft": {
+  "de": "pro Quadratfuß",
+  "es": "por pie²",
+  "fr": "par pi²",
+  "hi": "प्रति वर्ग फ़ुट",
+  "it": "al piede²",
+  "ja": "1平方フィートあたり",
+  "pt": "por pé²",
+  "zh": "每平方英尺"
+ },
+ "per visit": {
+  "de": "pro Besuch",
+  "es": "por visita",
+  "fr": "par visite",
+  "hi": "प्रति विज़िट",
+  "it": "a visita",
+  "ja": "1回あたり",
+  "pt": "por visita",
+  "zh": "每次上门"
+ },
+ "round trip": {
+  "de": "hin und zurück",
+  "es": "ida y vuelta",
+  "fr": "aller-retour",
+  "hi": "आना-जाना",
+  "it": "andata e ritorno",
+  "ja": "往復",
+  "pt": "ida e volta",
+  "zh": "往返"
  }
 }

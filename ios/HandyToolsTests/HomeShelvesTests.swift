@@ -97,7 +97,7 @@ final class HomeShelvesTests: XCTestCase {
             let h = (j.title as NSString).boundingRect(with: CGSize(width: 89, height: 1000), options: [.usesLineFragmentOrigin], attributes: [.font: font], context: nil).height
             XCTAssertLessThanOrEqual(Int((h / font.lineHeight).rounded()), 2, "\(j.title) needs more than two lines")
         }
-        XCTAssertLessThanOrEqual(HomeShelves.businessJobs.count + 1, HomeShelves.maxPerTab, "the Business tab must fit (jobs + the 'what else' tile)")
+        XCTAssertLessThanOrEqual(HomeShelves.businessJobs.count + 1, HomeShelves.maxBusinessTiles, "the Business page must fit (jobs + the 'what else' tile)")
     }
 
     /// Manan, 23 Nov: "Contacts & phone" squeezed onto two lines looked crammed. Every tab name is short enough for
