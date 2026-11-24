@@ -67,6 +67,34 @@ final class VideoFXPlaybackTests: XCTestCase {
         shown.videoComposition = comp
         let fxScreen = await play(shown, "effects on screen", onScreen: true)
 
+        // Run 15: effects fail with -11800/-12784 and draw nothing, plain plays. Which part does it? (rulebook §8)
+        func variant(_ name: String, _ handler: @escaping @Sendable (AVAsynchronousCIImageFilteringRequest) -> Void) async {
+            guard let c = try? await AVMutableVideoComposition.videoComposition(with: asset, applyingCIFiltersWithHandler: handler) else {
+                print("VIDEOFX| \(name): no composition"); return
+            }
+            let i = AVPlayerItem(asset: asset); i.videoComposition = c
+            _ = await play(i, name)
+        }
+        await variant("identity") { r in r.finish(with: r.sourceImage, context: nil) }
+        await variant("identity cropped") { r in r.finish(with: r.sourceImage.cropped(to: CGRect(origin: .zero, size: r.renderSize)), context: nil) }
+        let kit = VideoFX.Kit(VideoFX.vibes[0].recipe)
+        await variant("effects cropped") { r in
+            let out = VideoFX.frame(r.sourceImage, t: r.compositionTime.seconds, duration: 7, size: r.renderSize, kit: kit, beats: [], caption: nil)
+            if r.compositionTime.seconds < 0.05 { print("VIDEOFX| effects cropped extent \(out.extent) render \(r.renderSize) src \(r.sourceImage.extent)") }
+            r.finish(with: out.cropped(to: CGRect(origin: .zero, size: r.renderSize)), context: nil)
+        }
+        await variant("effects with context") { r in
+            let out = VideoFX.frame(r.sourceImage, t: r.compositionTime.seconds, duration: 7, size: r.renderSize, kit: kit, beats: [], caption: nil)
+            r.finish(with: out.cropped(to: CGRect(origin: .zero, size: r.renderSize)), context: VideoFX.context)
+        }
+        if let props = try? await AVMutableVideoComposition.videoComposition(withPropertiesOf: asset) {
+            let i = AVPlayerItem(asset: asset); i.videoComposition = props
+            _ = await play(i, "standard composition")
+        }
+        let exported = await VideoFX.export(url, recipe: VideoFX.vibes[0].recipe, caption: nil)
+        print("VIDEOFX| export: \(exported?.lastPathComponent ?? "nil")")
+        if let exported { _ = await play(AVPlayerItem(url: exported), "exported file") }
+
         XCTAssertNotEqual(plain.status, .failed, "the control (plain video) failed too: \(plain.detail)")
         for r in [fx, fxScreen] {
             XCTAssertNotEqual(r.status, .failed, "the preview with effects failed: \(r.detail)")

@@ -1,4 +1,3 @@
-# 24 Nov, run 15. Run 14: plain and effects both PLAY with no screen (no frames pulled, so the effects may not have
-# run). Now pulls real frames, also on screen in a player layer; the app's readings carry the error code.
+# 24 Nov, run 16. Run 15 reproduced it: effects playback fails -11800/-12784 with no frames, plain plays. Variants:
+# identity, cropped, effects cropped, with a context, standard composition, and the exported file.
 HandyToolsTests/VideoFXPlaybackTests
-HandyToolsUITests/PromiseTests/testVideoEffectsPreviewIsNeverABlackBox
