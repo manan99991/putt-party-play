@@ -1017,7 +1017,7 @@ struct BuilderView: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
                 ForEach(Self.popular.compactMap { id in TOOLS.first { $0.id == id } }) { t in
                     Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
-                        HomeToolTile(tool: t, hex: HomeShelves.shelf(of: t.id)?.hex ?? 0x7B5CFF, compact: false)
+                        HomeToolTile(tool: t, hex: HomeShelves.shelf(of: t.id)?.hex ?? 0x7B5CFF, compact: shortScreen)
                     }
                     .buttonStyle(.plain).accessibilityIdentifier("popular-\(t.id)")
                 }
@@ -1042,8 +1042,18 @@ struct BuilderView: View {
                 }
                 .buttonStyle(.plain).accessibilityIdentifier("home-browse")
             }
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 4), spacing: 6) {
-                ForEach(homeTabs) { sh in
+            // A plain grid (not lazy): all eight are always there, so none goes missing on a small phone.
+            Grid(horizontalSpacing: 6, verticalSpacing: 6) {
+                ForEach(Array(stride(from: 0, to: homeTabs.count, by: 4)), id: \.self) { start in
+                    GridRow {
+                        ForEach(Array(homeTabs[start..<min(start + 4, homeTabs.count)])) { sh in categoryButton(sh) }
+                    }
+                }
+            }
+        }
+    }
+
+    private func categoryButton(_ sh: HomeShelves.Shelf) -> some View {
                     NavigationLink(value: "category-\(sh.id)") {
                         VStack(spacing: 4) {
                             Image(systemName: sh.icon).font(.system(size: 15, weight: .bold)).foregroundStyle(.white)
@@ -1061,9 +1071,6 @@ struct BuilderView: View {
                     .buttonStyle(.plain)
                     .accessibilityIdentifier("home-cat-\(sh.id)")
                     .accessibilityHint(L(sh.line))
-                }
-            }
-        }
     }
 
     // MARK: - Tools: every tool, by what it works on

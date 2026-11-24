@@ -1,10 +1,7 @@
-# 24 Nov, run 7. Business Miles (IRS 2026 rate, round trips, month/year, spreadsheet) and Price List (PDF, and one-tap
-# lines in Invoices & Quotes); the Business page now holds up to 12 tiles. Plus Home's named category buttons.
-HandyToolsTests/BusinessBooksTests
-HandyToolsTests/HomeShelvesTests
-HandyToolsTests/InvoiceTests
-HandyToolsTests/EngineTests/testCatalogIsConsistent
-HandyToolsTests/ToolCatalogCoverageTests
-HandyToolsUITests/PromiseTests/testBusinessMilesAndPriceListWork
-HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen
+# 24 Nov, run 8. Run 7 passed Business Miles, Price List and the Business page. Home's second row of category buttons
+# was below the edge of the small test phone (a lazy grid never made them): a plain grid now, with compact tiles on
+# short phones. Plus For you cards in other languages and the outside-the-app hand-over.
 HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
+HandyToolsUITests/PromiseTests/testForYouCardShowsTheCarAndNotNowPutsItAway
+HandyToolsTests/ForYouTests
+HandyToolsTests/OutsideAppTests
