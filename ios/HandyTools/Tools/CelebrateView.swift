@@ -87,7 +87,15 @@ struct CelebrateView: View {
         .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { n in
             if (n.object as? AVPlayerItem) == player.currentItem { player.seek(to: .zero); player.play() }
         }
-        .onReceive(player.publisher(for: \.timeControlStatus)) { if $0 == .playing { rolling = true } }
+        // The still frame stays up until the video has really moved on screen (a "playing" flag alone came before the
+        // first picture, and the box showed black — Gold Book review, 24 Nov).
+        .onReceive(player.publisher(for: \.timeControlStatus)) { s in
+            guard s == .playing, !rolling else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                if player.timeControlStatus == .playing, player.currentTime().seconds > 0.25,
+                   (player.currentItem?.presentationSize.width ?? 0) > 0 { rolling = true }
+            }
+        }
         .onDisappear { player.pause(); previewTask?.cancel(); thumbTask?.cancel() }
         .handoff("celebrate") { p in adopt(p) }
         .onAppear { if Launch.sample, source == nil { sample() } }

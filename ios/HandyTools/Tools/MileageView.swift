@@ -92,20 +92,21 @@ struct MileageView: View {
                 }
             }
             HStack(spacing: HandySpacing.s8) {
-                TextField(L("From"), text: $from).bizField().accessibilityIdentifier("mileage-from")
+                TextField(L("From"), text: $from).bizField().frame(maxWidth: .infinity).accessibilityIdentifier("mileage-from")
                 Image(systemName: "arrow.right").foregroundStyle(HandyColor.textSecondary).accessibilityHidden(true)
-                TextField(L("To"), text: $to).bizField().accessibilityIdentifier("mileage-to")
+                TextField(L("To"), text: $to).bizField().frame(maxWidth: .infinity).accessibilityIdentifier("mileage-to")
             }
             TextField(L("Why — e.g. client visit, supplies run"), text: $why).bizField().accessibilityIdentifier("mileage-why")
             HStack(spacing: HandySpacing.s8) {
                 TextField(L("Miles"), text: $miles).keyboardType(.decimalPad).bizField().frame(width: 100).accessibilityIdentifier("mileage-miles")
                 Toggle(L("Round trip"), isOn: $roundTrip).tint(HandyColor.accent).font(HandyFont.caption).accessibilityIdentifier("mileage-round")
             }
-            HStack(spacing: HandySpacing.s8) {
+            // Purpose chips wrap, and the date has its own row, so nothing ever pushes the page wider than the screen.
+            HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(Mileage.Purpose.allCases) { p in HChip(text: L(p.title), selected: purpose == p) { purpose = p } }
-                Spacer(minLength: 0)
-                DatePicker("", selection: $date, in: ...Date(), displayedComponents: .date).labelsHidden()
             }
+            DatePicker(L("When"), selection: $date, in: ...Date(), displayedComponents: .date)
+                .font(HandyFont.caption).tint(HandyColor.accent)
             Button(action: add) { Label(L("Add drive"), systemImage: "plus.circle.fill").frame(maxWidth: .infinity) }
                 .primaryButton().disabled(number(miles) <= 0).accessibilityIdentifier("mileage-add")
             if number(miles) <= 0 {
