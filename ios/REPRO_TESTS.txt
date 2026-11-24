@@ -1,2 +1,2 @@
-# 24 Nov, run 10. The VIDEOFX lines were filtered out of the log last run; the filter now keeps them.
+# 24 Nov, run 11. The filter joined three markers into one; each is its own match now.
 HandyToolsUITests/PromiseTests/testVideoEffectsPreviewIsNeverABlackBox
