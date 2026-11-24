@@ -130,7 +130,11 @@ jobs:
         run: |
           echo "$PLAY_JSON" > "$GITHUB_WORKSPACE/play-key.json"
           export SUPPLY_JSON_KEY_PATH="$GITHUB_WORKSPACE/play-key.json"
-          gem install fastlane --no-document --quiet || sudo gem install fastlane --no-document --quiet
+          # The runner's gems can land outside PATH (23 Nov: "fastlane: command not found"), so put both gem bin
+          # folders on PATH and fail loudly if fastlane still isn't there.
+          gem install fastlane --no-document --quiet --user-install || sudo gem install fastlane --no-document --quiet
+          export PATH="$(ruby -e 'print Gem.user_dir')/bin:$(gem environment gemdir)/bin:$PATH"
+          command -v fastlane || { echo "fastlane is not installed"; exit 1; }
           set -o pipefail
           fastlane upload 2>&1 | tee "$GITHUB_WORKSPACE/upload.log"
 
@@ -154,7 +158,11 @@ jobs:
         run: |
           echo "$PLAY_JSON" > "$GITHUB_WORKSPACE/play-key.json"
           export SUPPLY_JSON_KEY_PATH="$GITHUB_WORKSPACE/play-key.json"
-          gem install fastlane --no-document --quiet || sudo gem install fastlane --no-document --quiet
+          # The runner's gems can land outside PATH (23 Nov: "fastlane: command not found"), so put both gem bin
+          # folders on PATH and fail loudly if fastlane still isn't there.
+          gem install fastlane --no-document --quiet --user-install || sudo gem install fastlane --no-document --quiet
+          export PATH="$(ruby -e 'print Gem.user_dir')/bin:$(gem environment gemdir)/bin:$PATH"
+          command -v fastlane || { echo "fastlane is not installed"; exit 1; }
           # No '|| true': let this step's conclusion reflect whether the listing push actually
           # succeeded (continue-on-error keeps a failure from blocking the AAB upload).
           if [ -n "${{ github.event.inputs.version_code }}" ]; then export VERSION_CODE="${{ github.event.inputs.version_code }}"; fi
