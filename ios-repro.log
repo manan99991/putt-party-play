@@ -1,43 +1,8 @@
-2026-11-24 10:46:10.062561+0000 HandyTools[32423:91601] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-24 10:46:12.792639+0000 HandyTools[32423:91601] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 10:46:12.801256+0000 HandyTools[32423:91601] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 10:46:12.801450+0000 HandyTools[32423:91601] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 10:46:12.801558+0000 HandyTools[32423:91601] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 10:46:12.923471+0000 HandyTools[32423:91601] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-24 10:46:12.923842+0000 HandyTools[32423:91601] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-Test Case '-[HandyToolsTests.ForYouTests testABillMoreThanThreeDaysOutWaits]' started.
-Test Case '-[HandyToolsTests.ForYouTests testABillMoreThanThreeDaysOutWaits]' passed (0.010 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testAMeterRunningOutOutranksABill]' started.
-Test Case '-[HandyToolsTests.ForYouTests testAMeterRunningOutOutranksABill]' passed (0.010 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testAMissedDoseComesFirstAndMarksTaken]' started.
-Test Case '-[HandyToolsTests.ForYouTests testAMissedDoseComesFirstAndMarksTaken]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testATakenOrFarOffDoseShowsNothing]' started.
-Test Case '-[HandyToolsTests.ForYouTests testATakenOrFarOffDoseShowsNothing]' passed (0.033 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testCardLinesFollowTheAppLanguage]' started.
-Test Case '-[HandyToolsTests.ForYouTests testCardLinesFollowTheAppLanguage]' passed (0.012 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testContactsBackupOnlyForABigListWithNoRecentBackup]' started.
-Test Case '-[HandyToolsTests.ForYouTests testContactsBackupOnlyForABigListWithNoRecentBackup]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testNeverMoreThanTwo]' started.
-Test Case '-[HandyToolsTests.ForYouTests testNeverMoreThanTwo]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testNothingSetUpMeansNoCards]' started.
-Test Case '-[HandyToolsTests.ForYouTests testNothingSetUpMeansNoCards]' passed (0.000 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testNotNowHidesThatCardAndDontSuggestHidesTheKind]' started.
-Test Case '-[HandyToolsTests.ForYouTests testNotNowHidesThatCardAndDontSuggestHidesTheKind]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ForYouTests testTheCarGivesWalkingDirectionsForTwoDays]' started.
-Test Case '-[HandyToolsTests.ForYouTests testTheCarGivesWalkingDirectionsForTwoDays]' passed (0.001 seconds).
-	 Executed 10 tests, with 0 failures (0 unexpected) in 0.076 (0.146) seconds
-Test Case '-[HandyToolsTests.OutsideAppTests testAnAskIsTakenOnceAndGoesStale]' started.
-Test Case '-[HandyToolsTests.OutsideAppTests testAnAskIsTakenOnceAndGoesStale]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.OutsideAppTests testTheParkingAskOpensFindMyCar]' started.
-Test Case '-[HandyToolsTests.OutsideAppTests testTheParkingAskOpensFindMyCar]' passed (0.009 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.016 (0.017) seconds
-	 Executed 12 tests, with 0 failures (0 unexpected) in 0.092 (1.580) seconds
-	 Executed 12 tests, with 0 failures (0 unexpected) in 0.092 (1.581) seconds
-Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' passed (16.997 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' passed (92.781 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 109.778 (109.852) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 109.778 (109.854) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 109.778 (109.857) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' started.
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' passed (77.758 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' started.
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (30.102 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 107.860 (107.869) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 107.860 (107.873) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 107.860 (107.875) seconds
 == crash reports
