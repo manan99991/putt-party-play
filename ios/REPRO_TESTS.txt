@@ -1,4 +1,4 @@
-# 25 Nov. (1) Every tool has a tile, on screen on the short phone (the 9 jobs inside other tools). (2) Parking pins only
+# 25 Nov, run 2. Run 1: all 27 unit tests passed; the tile check had the old counts hard-coded (every tile was on screen).
 # a fresh fix (ParkFix). (3) Save my spot automatically: drive-end and spot rules over recorded situations (AutoParkTests),
 # no new permission. (4) The controls' hand-off still opens Find my car (OutsideAppTests).
 HandyToolsTests/HomeShelvesTests
