@@ -1,2 +1,2 @@
-# 25 Nov: heavy-videos autorun, with a step-by-step trail of why a video is passed over (run 1 made no copy).
+# heavy videos: the test now waits for its clip to be in Photos (run 2 saw 0 videos) and the clip is dated now
 HandyToolsUITests/PromiseTests/testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame

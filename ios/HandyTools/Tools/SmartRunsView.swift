@@ -13,6 +13,7 @@ struct SmartRunsView: View {
     @State private var pickingFolder = false
     @State private var note: String?
     @State private var photosDenied = false
+    @State private var seeded = false   // UI tests: the test media is in the library
 
     var body: some View {
         ScrollView {
@@ -27,6 +28,7 @@ struct SmartRunsView: View {
                     Text(L("Tenzy does the end-of-day jobs for you, on your phone. You look it over, then it's done."))
                         .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
                 }
+                if seeded { Text(verbatim: "ready").font(.system(size: 1)).opacity(0.01).accessibilityIdentifier("seed-done") }
                 if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true) }
                 if photosDenied {
                     VStack(alignment: .leading, spacing: 6) {
@@ -51,7 +53,7 @@ struct SmartRunsView: View {
         .task {
             if Launch.uitest, Launch.args.contains("-seedreceipt") { await Self.seedReceipt() }
             Self.seedDrives()
-            if Launch.uitest, Launch.args.contains("-seedheavyvideo") { await Self.seedHeavyVideo() }
+            if Launch.uitest, Launch.args.contains("-seedheavyvideo") { await Self.seedHeavyVideo(); seeded = true }
             await store.runDue()
         }
         .fileImporter(isPresented: $pickingFolder, allowedContentTypes: [.folder]) { r in
@@ -104,9 +106,13 @@ struct SmartRunsView: View {
         await writer.finishWriting()
         guard writer.status == .completed else { return }
         do {
-            try await PHPhotoLibrary.shared().performChanges { PHAssetCreationRequest.forAsset().addResource(with: .video, fileURL: url, options: nil) }
+            try await PHPhotoLibrary.shared().performChanges {
+                let r = PHAssetCreationRequest.forAsset()
+                r.addResource(with: .video, fileURL: url, options: nil)
+                r.creationDate = Date()   // taken now, as a camera clip would be
+            }
             UserDefaults.standard.set(true, forKey: key)
-        } catch {}
+        } catch { SmartVideos.note("test clip not saved: \(error.localizedDescription)") }
     }
 
     /// UI tests: two drives earlier today, about 4.2 and 1.3 miles.

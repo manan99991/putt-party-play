@@ -685,6 +685,7 @@ final class PromiseTests: XCTestCase {
         let any = app.descendants(matching: .any)
         let test = any["smartrun-test-heavyVideos"].firstMatch
         XCTAssertTrue(test.waitForExistence(timeout: 60), "the autoruns page didn't open")
+        XCTAssertTrue(any["seed-done"].firstMatch.waitForExistence(timeout: 180), "the test clip never reached the photo library")
         if !test.isHittable { app.swipeUp() }
         test.tap()
         let check = any["smartrun-check-heavyVideos"].firstMatch
