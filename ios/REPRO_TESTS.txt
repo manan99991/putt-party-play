@@ -1,8 +1,6 @@
-# fix: the autorun now reads lines the same way as the receipt tool (TOTAL and 12.37 kept together)
-# 25 Nov: smart autorun — receipts. Engine rows/categories/duplicates/column line-up, and a Test run on a real receipt
-# photo taken today: read, reviewed, added as one row.
-HandyToolsTests/SmartReceiptsTests
-HandyToolsTests/SmartRunsTests
-HandyToolsTests/SheetPeriodTests
+# 25 Nov: Home camera — a picture of a receipt suggests the receipt job first; recognition of menus, flyers,
+# documents, plants/things; plus the receipts autorun again on top of the camera change.
+HandyToolsTests/GuideMenuReceiptTests
+HandyToolsUITests/PromiseTests/testHomeCameraSuggestsWhatToDoWithThePicture
 HandyToolsUITests/PromiseTests/testReceiptsAutorunReadsTodaysReceiptIntoTheSheet
-HandyToolsUITests/PromiseTests/testBuildTabMakesToolsAndReminders
+HandyToolsTests/SmartReceiptsTests
