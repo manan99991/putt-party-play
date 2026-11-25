@@ -16,21 +16,25 @@ Resolve Package Graph
 
 Fetching from https://github.com/element-hq/swift-ogg
 
-Fetching from https://github.com/tsolomko/BitByteData
-
 Fetching from https://github.com/tsolomko/SWCompression
+
+Fetching from https://github.com/vector-im/ogg-swift.git
 
 Fetching from https://github.com/vector-im/opus-swift
 
-Fetching from https://github.com/vector-im/ogg-swift.git
+Fetching from https://github.com/tsolomko/BitByteData
+
+Creating working copy of package ‘opus-swift’
+
+Checking out 0.8.4 of package ‘opus-swift’
 
 Creating working copy of package ‘SWCompression’
 
 Checking out 4.8.6 of package ‘SWCompression’
 
-Creating working copy of package ‘opus-swift’
+Creating working copy of package ‘swift-ogg’
 
-Checking out 0.8.4 of package ‘opus-swift’
+Checking out main (a00a22b) of package ‘swift-ogg’
 
 Creating working copy of package ‘BitByteData’
 
@@ -40,19 +44,15 @@ Creating working copy of package ‘ogg-swift’
 
 Checking out 0.8.3 of package ‘ogg-swift’
 
-Creating working copy of package ‘swift-ogg’
-
-Checking out main (a00a22b) of package ‘swift-ogg’
-
 
 Resolved source packages:
-  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
-  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
-  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
-  BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
   SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
   Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
+  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
+  BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
+  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
   StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
 
-resolved source packages: SwiftOGG, YbridOpus, YbridOgg, BitByteData, SWCompression, Unrar, StbVorbis
+resolved source packages: SWCompression, Unrar, SwiftOGG, YbridOpus, BitByteData, YbridOgg, StbVorbis
 == build.log (errors)
