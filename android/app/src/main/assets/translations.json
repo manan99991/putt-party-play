@@ -14238,5 +14238,265 @@
   "ja": "撮ったばかりの写真",
   "pt": "Uma foto que acabou de tirar",
   "zh": "刚拍的照片"
+ },
+ "Done — all personal": {
+  "de": "Fertig – alles privat",
+  "es": "Listo: todo personal",
+  "fr": "Terminé — tout personnel",
+  "hi": "हो गया — सब निजी",
+  "it": "Fatto: tutto personale",
+  "ja": "完了 — すべて私用",
+  "pt": "Concluído — tudo pessoal",
+  "zh": "完成——全部私人"
+ },
+ "Done. Nothing was logged — all personal.": {
+  "de": "Fertig. Nichts eingetragen – alles privat.",
+  "es": "Listo. No se registró nada: todo personal.",
+  "fr": "Terminé. Rien n'a été enregistré — tout est personnel.",
+  "hi": "हो गया। कुछ दर्ज नहीं हुआ — सब निजी।",
+  "it": "Fatto. Nulla registrato: tutto personale.",
+  "ja": "完了。記録なし（すべて私用）。",
+  "pt": "Concluído. Nada registado — tudo pessoal.",
+  "zh": "完成。没有记录——全部私人。"
+ },
+ "Finding the places…": {
+  "de": "Orte werden gesucht …",
+  "es": "Buscando los lugares…",
+  "fr": "Recherche des lieux…",
+  "hi": "जगहें ढूँढ रहे हैं…",
+  "it": "Cerco i luoghi…",
+  "ja": "場所を調べています…",
+  "pt": "A procurar os locais…",
+  "zh": "正在查找地点…"
+ },
+ "Open Business Miles": {
+  "de": "Geschäftsfahrten öffnen",
+  "es": "Abrir Millas de trabajo",
+  "fr": "Ouvrir Kilométrage pro",
+  "hi": "बिज़नेस माइल्स खोलें",
+  "it": "Apri Miglia di lavoro",
+  "ja": "業務走行距離を開く",
+  "pt": "Abrir Milhas de trabalho",
+  "zh": "打开商务里程"
+ },
+ "Switch this on first — it uses Find my car's drive detection.": {
+  "de": "Schalte das zuerst ein – es nutzt die Fahrterkennung von „Mein Auto finden“.",
+  "es": "Actívalo primero: usa la detección de trayectos de Encontrar mi coche.",
+  "fr": "Activez-le d'abord — il utilise la détection de trajets de Retrouver ma voiture.",
+  "hi": "पहले इसे चालू करें — यह 'मेरी कार ढूँढें' की ड्राइव पहचान इस्तेमाल करता है।",
+  "it": "Attivalo prima: usa il rilevamento dei viaggi di Trova la mia auto.",
+  "ja": "先にオンにしてください —「車を探す」の運転検出を使います。",
+  "pt": "Ative primeiro — usa a deteção de viagens de Encontrar o meu carro.",
+  "zh": "请先打开——它使用“找我的车”的驾驶检测。"
+ },
+ "Tap Check to log the ones for work.": {
+  "de": "Tippe auf Prüfen, um die beruflichen einzutragen.",
+  "es": "Toca Revisar para registrar los de trabajo.",
+  "fr": "Touchez Vérifier pour enregistrer ceux du travail.",
+  "hi": "काम वाली दर्ज करने के लिए जाँचें दबाएँ।",
+  "it": "Tocca Controlla per registrare quelli di lavoro.",
+  "ja": "「確認」をタップして仕事分を記録。",
+  "pt": "Toque em Verificar para registar as de trabalho.",
+  "zh": "点按“检查”记录工作行程。"
+ },
+ "Tap to see today's drives and log the ones for work.": {
+  "de": "Tippe, um die heutigen Fahrten zu sehen und die beruflichen einzutragen.",
+  "es": "Toca para ver los trayectos de hoy y registrar los de trabajo.",
+  "fr": "Touchez pour voir les trajets du jour et enregistrer ceux du travail.",
+  "hi": "आज की ड्राइव देखने और काम वाली दर्ज करने के लिए टैप करें।",
+  "it": "Tocca per vedere i viaggi di oggi e registrare quelli di lavoro.",
+  "ja": "タップして今日の運転を確認し、仕事分を記録。",
+  "pt": "Toque para ver as viagens de hoje e registar as de trabalho.",
+  "zh": "点按查看今天的行程并记录工作行程。"
+ },
+ "Tap what each drive was for. Personal drives are left out of the log.": {
+  "de": "Tippe an, wofür jede Fahrt war. Private Fahrten kommen nicht ins Fahrtenbuch.",
+  "es": "Toca para qué fue cada trayecto. Los personales no se registran.",
+  "fr": "Touchez le motif de chaque trajet. Les trajets personnels ne sont pas enregistrés.",
+  "hi": "हर ड्राइव किसलिए थी, टैप करें। निजी ड्राइव लॉग में नहीं जातीं।",
+  "it": "Tocca a cosa è servito ogni viaggio. Quelli personali restano fuori.",
+  "ja": "各運転の目的をタップ。私用は記録しません。",
+  "pt": "Toque no motivo de cada viagem. As pessoais ficam de fora.",
+  "zh": "点选每次行程的用途。私人行程不记入。"
+ },
+ "Test run worked: no drives yet this week. Your next drive shows up here once you park.": {
+  "de": "Testlauf hat funktioniert: diese Woche noch keine Fahrten. Deine nächste Fahrt erscheint hier, sobald du parkst.",
+  "es": "La prueba funcionó: aún no hay trayectos esta semana. El próximo aparecerá aquí al aparcar.",
+  "fr": "L'essai a fonctionné : aucun trajet cette semaine. Le prochain apparaîtra ici quand vous vous garerez.",
+  "hi": "टेस्ट रन ठीक चला: इस हफ़्ते अभी कोई ड्राइव नहीं। पार्क करते ही अगली ड्राइव यहाँ दिखेगी।",
+  "it": "La prova ha funzionato: nessun viaggio questa settimana. Il prossimo comparirà qui quando parcheggi.",
+  "ja": "テスト成功：今週の運転はまだありません。駐車すると次の運転がここに表示されます。",
+  "pt": "O teste funcionou: ainda sem viagens esta semana. A próxima aparece aqui quando estacionar.",
+  "zh": "试运行成功：本周还没有行程。停车后下一次行程会显示在这里。"
+ },
+ "Today's drives": {
+  "de": "Heutige Fahrten",
+  "es": "Trayectos de hoy",
+  "fr": "Trajets du jour",
+  "hi": "आज की ड्राइव",
+  "it": "Viaggi di oggi",
+  "ja": "今日の運転",
+  "pt": "Viagens de hoje",
+  "zh": "今天的行程"
+ },
+ "What for (optional) — e.g. client visit": {
+  "de": "Wofür (optional) – z. B. Kundenbesuch",
+  "es": "Para qué (opcional), p. ej. visita a cliente",
+  "fr": "Pour quoi (facultatif) — ex. visite client",
+  "hi": "किसलिए (वैकल्पिक) — जैसे ग्राहक से मिलना",
+  "it": "Per cosa (facoltativo), es. visita cliente",
+  "ja": "目的（任意）— 例：顧客訪問",
+  "pt": "Para quê (opcional) — ex. visita a cliente",
+  "zh": "用途（可选）——例如拜访客户"
+ },
+ "drive": {
+  "de": "Fahrt",
+  "es": "trayecto",
+  "fr": "trajet",
+  "hi": "ड्राइव",
+  "it": "viaggio",
+  "ja": "件",
+  "pt": "viagem",
+  "zh": "次行程"
+ },
+ "drives": {
+  "de": "Fahrten",
+  "es": "trayectos",
+  "fr": "trajets",
+  "hi": "ड्राइव",
+  "it": "viaggi",
+  "ja": "件",
+  "pt": "viagens",
+  "zh": "次行程"
+ },
+ "Log": {
+  "de": "Eintragen",
+  "es": "Registrar",
+  "fr": "Enregistrer",
+  "hi": "दर्ज करें",
+  "it": "Registra",
+  "ja": "記録",
+  "pt": "Registar",
+  "zh": "记录"
+ },
+ "mi": {
+  "de": "mi",
+  "es": "mi",
+  "fr": "mi",
+  "hi": "मील",
+  "it": "mi",
+  "ja": "マイル",
+  "pt": "mi",
+  "zh": "英里"
+ },
+ "Personal": {
+  "de": "Privat",
+  "es": "Personal",
+  "fr": "Personnel",
+  "hi": "निजी",
+  "it": "Personale",
+  "ja": "私用",
+  "pt": "Pessoal",
+  "zh": "私人"
+ },
+ "drive today — was it for work?": {
+  "de": "Fahrt heute – war sie beruflich?",
+  "es": "trayecto hoy: ¿fue de trabajo?",
+  "fr": "trajet aujourd'hui — était-il pour le travail ?",
+  "hi": "ड्राइव आज — क्या यह काम के लिए थी?",
+  "it": "viaggio oggi: era per lavoro?",
+  "ja": "件の運転 — 仕事でしたか？",
+  "pt": "viagem hoje — foi de trabalho?",
+  "zh": "次行程——是工作吗？"
+ },
+ "drives today — which were for work?": {
+  "de": "Fahrten heute – welche waren beruflich?",
+  "es": "trayectos hoy: ¿cuáles fueron de trabajo?",
+  "fr": "trajets aujourd'hui — lesquels pour le travail ?",
+  "hi": "ड्राइव आज — कौन-सी काम के लिए थीं?",
+  "it": "viaggi oggi: quali per lavoro?",
+  "ja": "件の運転 — どれが仕事ですか？",
+  "pt": "viagens hoje — quais foram de trabalho?",
+  "zh": "次行程——哪些是工作？"
+ },
+ "drive logged in your mileage.": {
+  "de": "Fahrt im Fahrtenbuch eingetragen.",
+  "es": "trayecto registrado en tu kilometraje.",
+  "fr": "trajet enregistré dans votre kilométrage.",
+  "hi": "ड्राइव आपके माइलेज में दर्ज हुई।",
+  "it": "viaggio registrato nel chilometraggio.",
+  "ja": "件を走行距離に記録しました。",
+  "pt": "viagem registada na sua quilometragem.",
+  "zh": "次行程已记入里程。"
+ },
+ "drives logged in your mileage.": {
+  "de": "Fahrten im Fahrtenbuch eingetragen.",
+  "es": "trayectos registrados en tu kilometraje.",
+  "fr": "trajets enregistrés dans votre kilométrage.",
+  "hi": "ड्राइव आपके माइलेज में दर्ज हुईं।",
+  "it": "viaggi registrati nel chilometraggio.",
+  "ja": "件を走行距離に記録しました。",
+  "pt": "viagens registadas na sua quilometragem.",
+  "zh": "次行程已记入里程。"
+ },
+ "No drives waiting": {
+  "de": "Keine Fahrten offen",
+  "es": "No hay trayectos pendientes",
+  "fr": "Aucun trajet en attente",
+  "hi": "कोई ड्राइव बाकी नहीं",
+  "it": "Nessun viaggio in attesa",
+  "ja": "待機中の運転はありません",
+  "pt": "Sem viagens à espera",
+  "zh": "没有待处理的行程"
+ },
+ "Drives show up here after you park.": {
+  "de": "Fahrten erscheinen hier, nachdem du geparkt hast.",
+  "es": "Los trayectos aparecen aquí al aparcar.",
+  "fr": "Les trajets apparaissent ici après vous être garé.",
+  "hi": "पार्क करने के बाद ड्राइव यहाँ दिखती हैं।",
+  "it": "I viaggi compaiono qui dopo il parcheggio.",
+  "ja": "駐車後、運転がここに表示されます。",
+  "pt": "As viagens aparecem aqui depois de estacionar.",
+  "zh": "停车后行程会显示在这里。"
+ },
+ "Today's drives into my mileage log": {
+  "de": "Heutige Fahrten ins Fahrtenbuch",
+  "es": "Trayectos de hoy a mi registro de kilometraje",
+  "fr": "Trajets du jour dans mon carnet de kilométrage",
+  "hi": "आज की ड्राइव मेरे माइलेज लॉग में",
+  "it": "Viaggi di oggi nel registro chilometri",
+  "ja": "今日の運転を走行記録へ",
+  "pt": "Viagens de hoje no meu registo de quilometragem",
+  "zh": "把今天的行程记入里程表"
+ },
+ "Lists the drives your phone noticed today — when, from where to where, how far. Tap which were for work and they go into your mileage log with the IRS rate.": {
+  "de": "Zeigt die Fahrten, die dein Handy heute erkannt hat – wann, von wo nach wo, wie weit. Tippe an, welche beruflich waren, und sie kommen mit dem IRS-Satz ins Fahrtenbuch.",
+  "es": "Muestra los trayectos que tu teléfono detectó hoy: cuándo, de dónde a dónde y cuánto. Toca los de trabajo y se añaden a tu registro con la tarifa del IRS.",
+  "fr": "Liste les trajets repérés aujourd'hui — quand, d'où à où, quelle distance. Touchez ceux du travail et ils vont dans votre carnet au taux de l'IRS.",
+  "hi": "आज फ़ोन ने जो ड्राइव पहचानीं, उनकी सूची — कब, कहाँ से कहाँ, कितनी दूर। काम वाली चुनें, वे IRS दर के साथ माइलेज लॉग में चली जाएँगी।",
+  "it": "Elenca i viaggi rilevati oggi: quando, da dove a dove, quanto. Tocca quelli di lavoro e finiscono nel registro con la tariffa IRS.",
+  "ja": "今日スマホが検出した運転（時刻・出発地と到着地・距離）を一覧表示。仕事分をタップするとIRS単価で走行記録に入ります。",
+  "pt": "Lista as viagens que o telemóvel detetou hoje — quando, de onde para onde, que distância. Toque nas de trabalho e vão para o registo com a taxa do IRS.",
+  "zh": "列出手机今天检测到的行程——时间、起止地点、距离。点选工作行程，即按 IRS 费率记入里程表。"
+ },
+ "Uses Find my car's drive detection, which is on.": {
+  "de": "Nutzt die Fahrterkennung von „Mein Auto finden“, die an ist.",
+  "es": "Usa la detección de trayectos de Encontrar mi coche, que está activada.",
+  "fr": "Utilise la détection de trajets de Retrouver ma voiture, qui est activée.",
+  "hi": "'मेरी कार ढूँढें' की ड्राइव पहचान इस्तेमाल करता है, जो चालू है।",
+  "it": "Usa il rilevamento viaggi di Trova la mia auto, che è attivo.",
+  "ja": "「車を探す」の運転検出（オン）を使います。",
+  "pt": "Usa a deteção de viagens de Encontrar o meu carro, que está ativa.",
+  "zh": "使用已开启的“找我的车”驾驶检测。"
+ },
+ "Uses Find my car's drive detection — switching this on turns it on.": {
+  "de": "Nutzt die Fahrterkennung von „Mein Auto finden“ – einschalten schaltet sie mit ein.",
+  "es": "Usa la detección de trayectos de Encontrar mi coche: al activar esto, se activa también.",
+  "fr": "Utilise la détection de trajets de Retrouver ma voiture — l'activer ici l'active aussi.",
+  "hi": "'मेरी कार ढूँढें' की ड्राइव पहचान इस्तेमाल करता है — इसे चालू करने से वह भी चालू होगी।",
+  "it": "Usa il rilevamento viaggi di Trova la mia auto: attivarlo qui lo attiva.",
+  "ja": "「車を探す」の運転検出を使います — オンにすると一緒にオンになります。",
+  "pt": "Usa a deteção de viagens de Encontrar o meu carro — ativar isto ativa-a.",
+  "zh": "使用“找我的车”的驾驶检测——打开此项会同时打开它。"
  }
 }

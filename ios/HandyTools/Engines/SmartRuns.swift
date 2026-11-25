@@ -11,12 +11,13 @@ import Foundation
 /// This file is the pure part (what to look at, when, and in what order), so it is unit-tested.
 enum SmartRuns {
     enum Kind: String, CaseIterable, Codable, Identifiable {
-        case receipts, heavyVideos, readyToPost, dayCollage, businessCards
+        case receipts, drives, heavyVideos, readyToPost, dayCollage, businessCards
         var id: String { rawValue }
 
         var title: String {
             switch self {
             case .receipts: return "Today's receipts into my expense sheet"
+            case .drives: return "Today's drives into my mileage log"
             case .heavyVideos: return "Make today's heavy videos smaller"
             case .readyToPost: return "Get today's best videos ready to post"
             case .dayCollage: return "Today's photos as one collage"
@@ -27,6 +28,7 @@ enum SmartRuns {
         var line: String {
             switch self {
             case .receipts: return "Finds the receipts you photographed or saved as PDFs today and adds each one to your expense sheet — shop, date, total, tax — after you look them over."
+            case .drives: return "Lists the drives your phone noticed today — when, from where to where, how far. Tap which were for work and they go into your mileage log with the IRS rate."
             case .heavyVideos: return "Re-saves today's big videos in a smaller format that looks the same, checks every one frame by frame, and shows how much space you'd get back."
             case .readyToPost: return "Picks today's best clips, gives them your look and the tall size Reels, TikTok and Shorts want, ready for you to watch and post."
             case .dayCollage: return "Picks the best photos of the people you took today — sharp, no repeats — and lays them out as one beautiful picture to keep or send."
@@ -36,6 +38,7 @@ enum SmartRuns {
         var icon: String {
             switch self {
             case .receipts: return "receipt"
+            case .drives: return "car.fill"
             case .heavyVideos: return "arrow.down.right.and.arrow.up.left"
             case .readyToPost: return "sparkles.tv"
             case .dayCollage: return "square.grid.3x3.fill"
@@ -45,6 +48,7 @@ enum SmartRuns {
         var hex: UInt32 {
             switch self {
             case .receipts: return 0x10B981
+            case .drives: return 0x0EA5E9
             case .heavyVideos: return 0x8B5CF6
             case .readyToPost: return 0xEC4899
             case .dayCollage: return 0xF59E0B
@@ -55,6 +59,7 @@ enum SmartRuns {
         var looksAt: Media {
             switch self {
             case .receipts: return .photosAndPDFs
+            case .drives: return .drives
             case .heavyVideos, .readyToPost: return .videos
             case .dayCollage, .businessCards: return .photos
             }
@@ -63,6 +68,7 @@ enum SmartRuns {
         var habitTools: Set<String> {
             switch self {
             case .receipts: return ["receipts", "expense", "warranty", "scan", "datagrab"]
+            case .drives: return ["mileage", "gpsdash"]
             case .heavyVideos: return ["videoshrink", "shrink", "cleaner", "videofinish"]
             case .readyToPost: return ["celebrate", "videofx", "socialpost", "vertical", "captions"]
             case .dayCollage: return ["collage", "photogrid", "animate"]
@@ -71,7 +77,7 @@ enum SmartRuns {
         }
     }
 
-    enum Media: String, Codable { case photos, videos, photosAndPDFs }
+    enum Media: String, Codable { case photos, videos, photosAndPDFs, drives }
 
     /// One autorun as the person set it.
     struct Plan: Codable, Equatable {
@@ -223,6 +229,7 @@ enum SmartRuns {
     static func threshold(_ k: Kind) -> Int {
         switch k {
         case .receipts: return 8
+        case .drives: return 6
         case .heavyVideos: return 4
         case .readyToPost: return 10
         case .dayCollage: return 30

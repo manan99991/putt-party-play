@@ -38,6 +38,43 @@ enum AutoParkRules {
 
     static func driving(motion: Motion, speed: Double) -> Bool { motion == .driving || speed >= carSpeed }
 
+    /// How far a drive went, in metres, along the GPS fixes taken during it (25 Nov, drives into the mileage log).
+    /// Rough fixes (worse than 65 m) are left out, and a jump no car could make (faster than 70 m/s, 157 mph) is a bad
+    /// reading, not distance. Straight lines between fixes taken every few metres follow the road closely.
+    static func distance(_ fixes: [Fix]) -> Double {
+        let good = fixes.filter { $0.accuracy >= 0 && $0.accuracy <= 65 }.sorted { $0.time < $1.time }
+        var total = 0.0
+        var last: Fix?
+        for f in good {
+            if let l = last {
+                let d = metres(l, f), t = f.time.timeIntervalSince(l.time)
+                if t > 0, d / t > 70 { continue }      // a glitch: skip this fix, keep measuring from the last good one
+                total += d
+            }
+            last = f
+        }
+        return total
+    }
+
+    /// A drive's length: the precise fixes along the way, plus the stretch from the rough fix taken before GPS was
+    /// turned up (only when that stretch is longer than the rough fix's own uncertainty, so a guess never adds miles).
+    static func driveMetres(_ route: [Fix]) -> Double {
+        let precise = route.filter { $0.accuracy >= 0 && $0.accuracy <= 65 }
+        var m = distance(route)
+        if let first = route.first, first.accuracy > 65, let p = precise.first {
+            let lead = metres(first, p)
+            if lead > first.accuracy { m += lead - first.accuracy }
+        }
+        return m
+    }
+
+    static func metres(_ a: Fix, _ b: Fix) -> Double {
+        let r = 6_371_000.0, p1 = a.lat * .pi / 180, p2 = b.lat * .pi / 180
+        let dp = (b.lat - a.lat) * .pi / 180, dl = (b.lng - a.lng) * .pi / 180
+        let h = sin(dp / 2) * sin(dp / 2) + cos(p1) * cos(p2) * sin(dl / 2) * sin(dl / 2)
+        return 2 * r * atan2(sqrt(h), sqrt(1 - h))
+    }
+
     /// Has the drive ended with the car parked? Walking after a real drive, or still for three minutes. A red light or
     /// a traffic jam is "driving" or "still" for less than that, so it never counts.
     static func parked(drivingSince: Date?, lastDriving: Date?, motion: Motion, motionSince: Date, now: Date) -> Bool {
@@ -105,6 +142,10 @@ final class AutoPark: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var motionSince = Date()
     private var trackingSince: Date?
     private var waitingForSpot: Date?
+    /// Every good fix since the drive began, for its distance (the 5-minute window above is only for the spot).
+    private var route: [AutoParkRules.Fix] = []
+    /// The last fix before the drive was noticed, so the first stretch counts too.
+    private var beforeDrive: AutoParkRules.Fix?
 
     override init() {
         super.init()
@@ -212,10 +253,19 @@ final class AutoPark: NSObject, ObservableObject, CLLocationManagerDelegate {
         guard !tracking else { return }
         tracking = true
         trackingSince = Date()
+        route = beforeDrive.map { [$0] } ?? []
         fullGPS()
     }
 
     private func endDrive() {
+        // A real drive (two minutes or more) goes into the drives list, for the mileage autorun.
+        if tracking, let start = drivingSince, let last = lastDriving, last.timeIntervalSince(start) >= AutoParkRules.minDrive,
+           let from = route.first, let to = route.last {
+            DriveStore.add(DriveStore.Drive(start: start, end: last, fromLat: from.lat, fromLng: from.lng, toLat: to.lat, toLng: to.lng,
+                                            metres: AutoParkRules.driveMetres(route)))
+            Task { @MainActor in await SmartRunAlerts.ready(.drives, count: SmartRunStore.shared.waitingCount(.drives)) }
+        }
+        route = []
         tracking = false
         drivingSince = nil; lastDriving = nil; trackingSince = nil; waitingForSpot = nil
         if listening { lowPower() }
@@ -279,6 +329,8 @@ final class AutoPark: NSObject, ObservableObject, CLLocationManagerDelegate {
         Task { @MainActor in
             guard Self.isOn else { return }
             self.fixes = AutoParkRules.trim(self.fixes + new, now: Date())
+            if self.tracking { self.route += new.filter { $0.accuracy >= 0 && $0.accuracy <= 65 } }
+            else if let good = new.last(where: { $0.accuracy >= 0 && $0.accuracy <= 600 }) { self.beforeDrive = good }
             self.evaluate()
         }
     }

@@ -8,7 +8,7 @@ import UserNotifications
 @MainActor final class SmartRunStore: ObservableObject {
     static let shared = SmartRunStore()
     /// The autoruns built so far. An autorun is only offered once it truly works end to end.
-    static let built: [SmartRuns.Kind] = [.receipts]
+    static let built: [SmartRuns.Kind] = [.receipts, .drives]
 
     @Published private(set) var plans: [SmartRuns.Kind: SmartRuns.Plan] = [:]
     @Published private(set) var receipts: [SmartReceipts.Entry] = []      // found, waiting for a look
@@ -45,7 +45,33 @@ import UserNotifications
         SmartRunWorker.scheduleBackground()
     }
 
-    func waitingCount(_ k: SmartRuns.Kind) -> Int { k == .receipts ? receipts.count : 0 }
+    func waitingCount(_ k: SmartRuns.Kind) -> Int {
+        switch k {
+        case .receipts: return receipts.count
+        case .drives: return drives.count
+        default: return 0
+        }
+    }
+
+    /// Drives from the last week not yet looked at (a missed evening doesn't lose them).
+    var drives: [DriveStore.Drive] {
+        DriveStore.waiting(DriveStore.all(), in: DateInterval(start: Date().addingTimeInterval(-7 * 86_400), end: Date()))
+    }
+
+    /// Logs the drives marked for work (or medical, charity) into the mileage log; every drive shown counts as looked at.
+    func logDrives(_ picks: [UUID: (purpose: Mileage.Purpose?, miles: Double, why: String)], places: [UUID: (String, String)]) -> Int {
+        var n = 0
+        for d in drives {
+            guard let p = picks[d.id], let purpose = p.purpose, p.miles > 0 else { continue }
+            let pl = places[d.id] ?? ("", "")
+            MileageStore.shared.add(Mileage.Trip(date: d.start, from: pl.0, to: pl.1, why: p.why, miles: p.miles, purpose: purpose))
+            n += 1
+        }
+        DriveStore.markReviewed(Set(drives.map(\.id)))
+        objectWillChange.send()
+        Task { await SmartRunAlerts.ready(.drives, count: 0) }
+        return n
+    }
 
     // MARK: running
 
@@ -64,6 +90,8 @@ import UserNotifications
             let have = Set(receipts.map(\.id))
             receipts = SmartReceipts.deduped(receipts + found.filter { !have.contains($0.id) })
             saveReceipts()
+        case .drives:
+            progress = (1, "Done")   // drives are recorded as they happen; the run only gathers them for a look
         default: break
         }
         if !test { AppGroup.defaults.set(now.timeIntervalSince1970, forKey: lastKey(k)) }
@@ -132,11 +160,19 @@ enum SmartRunAlerts {
         let c = UNUserNotificationCenter.current()
         c.removePendingNotificationRequests(withIdentifiers: (0..<2).map { id(k, $0) })
         guard p.on else { return }
+        // Drives are known as they happen: no drives, no notification.
+        if k == .drives && waiting == 0 { return }
         for (n, t) in p.times.enumerated() {
             let body = UNMutableNotificationContent()
             body.title = L(k.title)
-            body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "receipt is ready to check and add." : "receipts are ready to check and add."))"
-                                    : L("Tap and Tenzy finds today's receipts, reads them and gets them ready for your sheet.")
+            switch k {
+            case .drives:
+                body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "drive today — was it for work?" : "drives today — which were for work?"))"
+                                        : L("Tap to see today's drives and log the ones for work.")
+            default:
+                body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "receipt is ready to check and add." : "receipts are ready to check and add."))"
+                                        : L("Tap and Tenzy finds today's receipts, reads them and gets them ready for your sheet.")
+            }
             body.sound = .default
             body.userInfo = ["open": "smartruns"]
             let trig = UNCalendarNotificationTrigger(dateMatching: DateComponents(hour: t.hour, minute: t.minute), repeats: true)

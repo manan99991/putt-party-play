@@ -49,6 +49,7 @@ struct SmartRunsView: View {
         .accessibilityIdentifier("smartruns")
         .task {
             if Launch.uitest, Launch.args.contains("-seedreceipt") { await Self.seedReceipt() }
+            Self.seedDrives()
             await store.runDue()
         }
         .fileImporter(isPresented: $pickingFolder, allowedContentTypes: [.folder]) { r in
@@ -56,6 +57,17 @@ struct SmartRunsView: View {
                 note = SmartReceipts.remember(folder: u) ? "\(L("Tenzy will also read the PDFs saved in")) \u{201C}\(u.lastPathComponent)\u{201D}." : L("That folder couldn't be opened. Try another one.")
             }
         }
+    }
+
+    /// UI tests: two drives earlier today, about 4.2 and 1.3 miles.
+    static func seedDrives() {
+        guard Launch.uitest, Launch.args.contains("-seeddrives"), DriveStore.all().isEmpty else { return }
+        let now = Date()
+        DriveStore.add(DriveStore.Drive(start: now.addingTimeInterval(-7200), end: now.addingTimeInterval(-6600), fromLat: 41.7508, fromLng: -88.1535,
+                                        toLat: 41.7858, toLng: -88.1472, metres: 6760))
+        DriveStore.add(DriveStore.Drive(start: now.addingTimeInterval(-3600), end: now.addingTimeInterval(-3240), fromLat: 41.7858, fromLng: -88.1472,
+                                        toLat: 41.7700, toLng: -88.1600, metres: 2090))
+        SmartRunStore.shared.objectWillChange.send()
     }
 
     /// UI tests: a real-looking shop receipt saved to the library (taken now), so a Test run has something to read.
@@ -120,6 +132,10 @@ struct SmartRunsView: View {
                 Text(p.times.map { ChainSchedule.clock(hour: $0.hour, minute: $0.minute, uses24h: false) }.joined(separator: " " + L("and") + " "))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.accent)
             }
+            if k == .drives {
+                Text(L(AutoPark.isOn ? "Uses Find my car's drive detection, which is on." : "Uses Find my car's drive detection — switching this on turns it on."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            }
             if k == .receipts {
                 Button { pickingFolder = true } label: {
                     Label(SmartReceipts.folder.map { "\(L("PDFs from")) \($0.lastPathComponent)" } ?? L("Also read PDFs from a folder…"), systemImage: "folder")
@@ -129,7 +145,7 @@ struct SmartRunsView: View {
                 Button { Task { await testRun(k) } } label: { Label(L("Test run"), systemImage: "play.circle").frame(maxWidth: .infinity) }
                     .secondaryButton().disabled(store.working != nil).accessibilityIdentifier("smartrun-test-\(k.rawValue)")
                 if store.waitingCount(k) > 0 {
-                    NavigationLink(value: "smartreceipts") {
+                    NavigationLink(value: k == .drives ? "smartdrives" : "smartreceipts") {
                         Text("\(L("Check")) \(store.waitingCount(k))").frame(maxWidth: .infinity)
                     }.primaryButton().accessibilityIdentifier("smartrun-check-\(k.rawValue)")
                 }
@@ -147,7 +163,10 @@ struct SmartRunsView: View {
 
     private func turn(_ k: SmartRuns.Kind, on: Bool) async {
         var p = store.plan(k)
-        if on {
+        if on, k == .drives {
+            // Drives come from Find my car's drive detection: switching this on switches that on too.
+            if !AutoPark.isOn { AutoPark.shared.turnOn() }
+        } else if on {
             guard await photosOK() else { return }
             let granted = (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])) ?? false
             if !granted { note = L("Notifications are off for Tenzy, so it can't tell you when this is ready. Turn them on in Settings › Tenzy › Notifications.") }
@@ -158,6 +177,13 @@ struct SmartRunsView: View {
     }
 
     private func testRun(_ k: SmartRuns.Kind) async {
+        if k == .drives {
+            let n = store.waitingCount(.drives)
+            note = n > 0 ? "\(L("Test run found")) \(n) \(L(n == 1 ? "drive" : "drives")). \(L("Tap Check to log the ones for work."))"
+                         : (AutoPark.isOn ? L("Test run worked: no drives yet this week. Your next drive shows up here once you park.")
+                                          : L("Switch this on first — it uses Find my car's drive detection."))
+            HandyHaptics.success(); return
+        }
         guard await photosOK() else { return }
         let before = store.waitingCount(k)
         await store.run(k, test: true)
@@ -269,5 +295,95 @@ private struct ReceiptEntryCard: View {
         e.merchant = shop.trimmingCharacters(in: .whitespaces)
         e.total = Double(total.replacingOccurrences(of: ",", with: "."))
         store.update(e)
+    }
+}
+
+
+/// The drives waiting for a look: when, from where to where, how far. Mark each as work, medical, charity or personal;
+/// the work ones (and medical, charity) go into the mileage log with the IRS rate.
+struct SmartDrivesReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var purpose: [UUID: Mileage.Purpose?] = [:]
+    @State private var miles: [UUID: String] = [:]
+    @State private var why: [UUID: String] = [:]
+    @State private var places: [UUID: (String, String)] = [:]
+    @State private var done: String?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Today's drives")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                Text(L("Tap what each drive was for. Personal drives are left out of the log."))
+                    .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                if let done { Label(done, systemImage: "checkmark.seal.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true) }
+                let list = store.drives
+                if list.isEmpty && done == nil {
+                    EmptyState(icon: "car.fill", line: "No drives waiting", sub: "Drives show up here after you park.")
+                }
+                ForEach(list) { d in card(d) }
+                if !list.isEmpty {
+                    let logged = list.filter { (purpose[$0.id] ?? nil) != nil }.count
+                    Button {
+                        let picks = Dictionary(uniqueKeysWithValues: list.map { d in
+                            (d.id, (purpose: purpose[d.id] ?? nil, miles: Double((miles[d.id] ?? "").replacingOccurrences(of: ",", with: ".")) ?? d.miles, why: why[d.id] ?? ""))
+                        })
+                        let n = store.logDrives(picks, places: places)
+                        done = n == 0 ? L("Done. Nothing was logged — all personal.") : "\(n) \(L(n == 1 ? "drive logged in your mileage." : "drives logged in your mileage."))"
+                        HandyHaptics.success()
+                    } label: { Text(logged == 0 ? L("Done — all personal") : "\(L("Log")) \(logged) \(L(logged == 1 ? "drive" : "drives"))").frame(maxWidth: .infinity) }
+                        .primaryButton().accessibilityIdentifier("smartdrives-log")
+                }
+                if done != nil {
+                    NavigationLink(value: "mileage") { Label(L("Open Business Miles"), systemImage: "car.fill").frame(maxWidth: .infinity) }.secondaryButton()
+                }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartdrives")
+        .onAppear { SmartRunsView.seedDrives() }
+        .task {
+            for d in store.drives where places[d.id] == nil {
+                let a = await DrivePlaces.name(lat: d.fromLat, lng: d.fromLng), b = await DrivePlaces.name(lat: d.toLat, lng: d.toLng)
+                places[d.id] = (a, b)
+            }
+        }
+    }
+
+    private func card(_ d: DriveStore.Drive) -> some View {
+        let p = purpose[d.id] ?? nil
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack {
+                Text("\(d.start.formatted(date: .omitted, time: .shortened)) – \(d.end.formatted(date: .omitted, time: .shortened))")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Spacer()
+                TextField("0.0", text: Binding(get: { miles[d.id] ?? String(format: "%.1f", d.miles) }, set: { miles[d.id] = $0 }))
+                    .keyboardType(.decimalPad).multilineTextAlignment(.trailing).font(HandyFont.cardTitle.monospacedDigit()).frame(maxWidth: 80)
+                    .accessibilityIdentifier("smartdrive-miles")
+                Text(L("mi")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
+            let pl = places[d.id]
+            Text(pl.map { "\($0.0.isEmpty ? L("Start") : $0.0) → \($0.1.isEmpty ? L("End") : $0.1)" } ?? L("Finding the places…"))
+                .font(HandyFont.bodyStrong).fixedSize(horizontal: false, vertical: true)
+            HandyFlow(spacing: 6) {   // wraps on a narrow phone, never scrolls sideways
+                ForEach(Mileage.Purpose.allCases) { k in
+                    HChip(text: L(k.title), selected: p == k) { purpose[d.id] = p == k ? .some(nil) : .some(k) }
+                        .accessibilityIdentifier("smartdrive-\(k.rawValue)")
+                }
+                HChip(text: L("Personal"), selected: purpose[d.id] != nil && p == nil) { purpose[d.id] = .some(nil) }
+            }
+            if p != nil {
+                TextField(L("What for (optional) — e.g. client visit"), text: Binding(get: { why[d.id] ?? "" }, set: { why[d.id] = $0 }))
+                    .font(HandyFont.caption).padding(8).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 10))
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityIdentifier("smartdrive-card")
     }
 }

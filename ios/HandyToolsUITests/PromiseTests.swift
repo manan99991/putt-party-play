@@ -654,6 +654,27 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(words.contains("receipt"), "the suggestion doesn't say it's a receipt: \(suggested.label)")
     }
 
+    /// Smart autorun, drives (25 Nov): today's two drives wait for a look; marking the first as Business logs exactly that
+    /// one in Business Miles with its miles, and the personal one is left out.
+    func testDrivesAutorunLogsTheWorkDrive() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "smartdrives", "-uitest", "-seeddrives"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let cards = any.matching(identifier: "smartdrive-card")
+        XCTAssertTrue(cards.firstMatch.waitForExistence(timeout: 20), "no drives to look at")
+        XCTAssertEqual(cards.count, 2)
+        let miles = app.textFields.matching(identifier: "smartdrive-miles").allElementsBoundByIndex.map { $0.value as? String ?? "" }
+        XCTAssertEqual(miles, ["4.2", "1.3"], "the miles shown aren't the drives' distances")
+        any.matching(identifier: "smartdrive-business").element(boundBy: 0).tap()
+        let log = any["smartdrives-log"].firstMatch
+        XCTAssertTrue(log.label.contains("1"), "Log button: \(log.label)")
+        log.tap()
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1 drive logged'")).firstMatch.waitForExistence(timeout: 5),
+                      "it didn't say one drive was logged")
+        XCTAssertEqual(cards.count, 0, "both drives were looked at, so neither waits any more")
+    }
+
     /// "Just swiping the finger lets select multiple files" (Manan, 22 Nov): Home › Photo opens Tenzy's own grid, and a
     /// sideways swipe across the first row ticks every photo it passes over.
     func testSwipeAcrossPhotosPicksSeveral() {
