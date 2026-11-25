@@ -1,11 +1,6 @@
 Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' started.
-    t =   297.33s     Requesting snapshot of accessibility hierarchy for app with pid 29688
-    t =   301.80s         Requesting snapshot of accessibility hierarchy for app with pid 29688
-    t =   301.88s     Requesting snapshot of accessibility hierarchy for app with pid 29688
-    t =   301.95s     Requesting snapshot of accessibility hierarchy for app with pid 29688
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:692: error: -[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame] : Failed to get matching snapshot: No matches found for Element at index 21 from input {(
-Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' failed (303.180 seconds).
-	 Executed 1 test, with 1 failure (0 unexpected) in 303.180 (303.218) seconds
-	 Executed 1 test, with 1 failure (0 unexpected) in 303.180 (303.230) seconds
-	 Executed 1 test, with 1 failure (0 unexpected) in 303.180 (303.234) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' passed (425.830 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 425.830 (425.890) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 425.830 (425.896) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 425.830 (425.898) seconds
 == crash reports
