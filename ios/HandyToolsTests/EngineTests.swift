@@ -258,6 +258,47 @@ final class EngineTests: XCTestCase {
         XCTAssertGreaterThan(seamed.seams[0], 400); XCTAssertLessThan(seamed.seams[0], seamed.image.size.height - 100)
     }
 
+    /// 25 Nov: Manan's long screenshot came out upside down (every piece flipped). The stitched image must read like
+    /// the page: its top, middle and bottom rows match the page's.
+    func testStitchedScreenshotsAreUpright() throws {
+        let w = 300
+        let page = try XCTUnwrap(Self.noisy(CGSize(width: CGFloat(w), height: 1400)).cgImage)
+        let a = UIImage(cgImage: try XCTUnwrap(page.cropping(to: CGRect(x: 0, y: 0, width: w, height: 800))))
+        let b = UIImage(cgImage: try XCTUnwrap(page.cropping(to: CGRect(x: 0, y: 500, width: w, height: 800))))
+        let out = try XCTUnwrap(Stitcher.stitch([a, b]))
+        XCTAssertEqual(out.size.height, 1300, accuracy: 30, "the 300 shared rows appear once")
+        let h = Int(out.size.height)
+        let got = Stitcher.grayscale(out, width: 160)
+        let want = Stitcher.grayscale(UIImage(cgImage: try XCTUnwrap(page.cropping(to: CGRect(x: 0, y: 0, width: w, height: h)))), width: 160)
+        for r in [2, got.rows / 4, got.rows / 2, got.rows * 3 / 4, got.rows - 3] {
+            XCTAssertLessThan(Stitcher.rowDiff(got, r, want, r), 12, "row \(r) must match the page, not be upside down")
+        }
+    }
+
+    /// The status bar's clock differs between screenshots; the app header below it is the same and must not be
+    /// stitched into the middle of the page.
+    func testAChangingClockDoesntHideTheRepeatedHeader() throws {
+        let W: CGFloat = 430, H: CGFloat = 932
+        let page = Self.noisy(CGSize(width: W, height: 1800))
+        func shot(_ top: CGFloat, clock: UIColor) -> UIImage {
+            let f = UIGraphicsImageRendererFormat.default(); f.scale = 1
+            return UIGraphicsImageRenderer(size: CGSize(width: W, height: H), format: f).image { ctx in
+                if let cg = page.cgImage?.cropping(to: CGRect(x: 0, y: top, width: W, height: H)) {
+                    UIImage(cgImage: cg).draw(in: CGRect(x: 0, y: 0, width: W, height: H))
+                }
+                UIColor.black.setFill(); ctx.fill(CGRect(x: 0, y: 0, width: W, height: 54))          // status bar
+                clock.setFill(); ctx.fill(CGRect(x: 30, y: 15, width: 80, height: 26))                 // the clock, different each shot
+                UIColor.darkGray.setFill(); ctx.fill(CGRect(x: 0, y: 54, width: W, height: 90))       // the app's subject bar
+            }
+        }
+        let a = shot(0, clock: .white), b = shot(600, clock: .black)   // the digits change: lit in one, gone in the other
+        let ga = Stitcher.grayscale(a, width: 160), gb = Stitcher.grayscale(b, width: 160)
+        let headerRows = Stitcher.commonTop(ga, gb)
+        XCTAssertGreaterThanOrEqual(CGFloat(headerRows) * H / CGFloat(ga.rows), 130, "status bar and subject bar are both chrome")
+        let out = try XCTUnwrap(Stitcher.stitch([a, b]))
+        XCTAssertLessThan(out.size.height, H + 600 + 20, "the second shot adds only its new rows, without its bars")
+    }
+
     func testStitcherOrdersShuffledScreenshots() throws {
         // Slice a tall image into 3 overlapping strips, hand them over SHUFFLED — the stitcher must
         // recover the true top-to-bottom order (new: Long Screenshot auto-orders any pick order).

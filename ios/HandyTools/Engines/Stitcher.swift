@@ -83,12 +83,13 @@ enum Stitcher {
         else { return composeBounded(pieces: pieces, width: width, height: height) }
         ctx.setFillColor(red: 1, green: 1, blue: 1, alpha: 1)
         ctx.fill(CGRect(x: 0, y: 0, width: CGFloat(w), height: CGFloat(h)))
-        // CGContext is bottom-left; flip once so screenshots stack top-to-bottom and draw upright.
-        ctx.translateBy(x: 0, y: CGFloat(h)); ctx.scaleBy(x: 1, y: -1)
+        // CGContext counts y from the bottom and draws each image upright in that space. Flipping the whole
+        // context (as this did until 25 Nov) put every piece upside down — Manan's long screenshot read upside
+        // down. Keep the context as it is and place each piece measured from the top instead.
         var y: CGFloat = 0
         for (img, src) in pieces {
             if let cg = img.cgImage?.cropping(to: src) {
-                ctx.draw(cg, in: CGRect(x: 0, y: y, width: width, height: src.height))
+                ctx.draw(cg, in: CGRect(x: 0, y: CGFloat(h) - y - src.height, width: width, height: src.height))
             }
             y += src.height
         }
@@ -158,7 +159,20 @@ enum Stitcher {
     static func commonTop(_ a: Gray, _ b: Gray) -> Int {
         var n = 0
         while n < min(a.rows, b.rows), rowDiff(a, n, b, n) < 8 { n += 1 }
-        return n
+        // A phone screenshot's status bar (the clock, battery) changes between shots, so "identical rows" stopped at
+        // the clock and the app's own header under it (the email's subject bar) was stitched into the middle of the
+        // page (25 Nov). On phone screenshots, step over the status bar and keep looking for the shared header.
+        let band = statusBand(a)
+        guard band > 0, a.rows == b.rows, n < band else { return n }
+        var m = band
+        while m < min(a.rows, b.rows), rowDiff(a, m, b, m) < 8 { m += 1 }
+        return m
+    }
+
+    /// The status-bar rows of a full-screen phone screenshot (tall, about 9:19.5), or 0 for anything else.
+    static func statusBand(_ g: Gray) -> Int {
+        let ratio = Double(g.rows) / Double(max(1, g.width))
+        return (1.9...2.3).contains(ratio) ? Int((Double(g.rows) * 0.065).rounded(.up)) : 0
     }
 
     /// Rows from the bottom that are (nearly) identical — the nav bar / keyboard.
