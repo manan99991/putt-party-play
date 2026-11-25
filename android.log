@@ -48,9 +48,9 @@ Unable to strip the following libraries, packaging them as they are: libandroidx
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1795628696990.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1795629529101.json
 
-BUILD SUCCESSFUL in 1m 23s
+BUILD SUCCESSFUL in 2m 5s
 38 actionable tasks: 19 executed, 19 up-to-date
 === keystore sanity ===
 upload.jks bytes: 2694 (expect ~2694)
@@ -81,18 +81,18 @@ Daemon will be stopped at the end of the build
 > Task :app:processReleaseManifest
 > Task :app:processReleaseManifestForPackage
 > Task :app:javaPreCompileRelease
-> Task :app:mergeReleaseResources
 > Task :app:mergeReleaseArtProfile
 > Task :app:extractProguardFiles
 > Task :app:mergeReleaseStartupProfile
 > Task :app:mergeReleaseJniLibFolders
+> Task :app:mergeReleaseResources
 > Task :app:writeReleaseAppMetadata
 > Task :app:collectReleaseDependencies
 > Task :app:configureReleaseDependencies
 > Task :app:parseReleaseIntegrityConfig
 > Task :app:validateSigningRelease
-> Task :app:processReleaseResources
 > Task :app:mergeReleaseNativeLibs
+> Task :app:processReleaseResources
 
 > Task :app:stripReleaseDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libface_detector_v2_jni.so, libimage_processing_util_jni.so, liblanguage_id_l2c_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
@@ -142,7 +142,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1795628780855.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1795629655058.json
 
-BUILD SUCCESSFUL in 4m 11s
+BUILD SUCCESSFUL in 6m 1s
 50 actionable tasks: 50 executed
