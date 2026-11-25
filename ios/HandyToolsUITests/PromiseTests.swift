@@ -277,7 +277,10 @@ final class PromiseTests: XCTestCase {
             sleep(1)
             last = (box.value as? String) ?? "-"
             if [1, 3, 6, 10, 20, 30].contains(s) { print("VIDEOFX| \(s)s: \(last)") }
-            XCTAssertTrue(last.contains("poster true") || last.contains("rolling true"), "\(s)s: the box has neither a still nor a moving video: \(last)")
+            // Every second the box shows something: the moving video, a still frame, or (only in the first few seconds,
+            // while the first frame is made) a spinner saying the preview is coming. Never a silent black box.
+            let showing = last.contains("poster true") || last.contains("rolling true") || (s <= 5 && last.contains("loading true"))
+            XCTAssertTrue(showing, "\(s)s: the box shows nothing (no video, no still, no 'getting ready'): \(last)")
             if last.contains("rolling true") { print("VIDEOFX| moving at \(s)s: \(last)"); break }
         }
         XCTAssertTrue(last.contains("rolling true"), "the preview never showed the effects moving: \(last)")

@@ -1,5 +1,5 @@
-# 25 Nov, run 2 (run 1: App.swift lacked import StoreKit). New pricing: monthly $2.99 + yearly $29.99, 7-day trial, 13 free tools (Home's front row + Find my car + the
-# old free seven), the two-plan paywall's legal terms, every pricing phrase translated.
+# 25 Nov. Submission build stopped on the Video Effects check: at 1 s the box's reading was empty (the reading timer
+# lived inside body and restarted on redraws). Now: a steady timer, an immediate reading, and a "getting ready" spinner
+# instead of black before the first frame.
+HandyToolsUITests/PromiseTests/testVideoEffectsPreviewIsNeverABlackBox
 HandyToolsTests/PricingTests
-HandyToolsTests/LanguageTests
-HandyToolsTests/HomeShelvesTests

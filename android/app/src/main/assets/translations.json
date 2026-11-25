@@ -13458,5 +13458,15 @@
   "ja": "1 日の上限なし。自由に作って使えます",
   "pt": "Sem limites diários: crie e use à vontade",
   "zh": "无每日限制——随心创建和使用"
+ },
+ "Getting your preview ready…": {
+  "de": "Vorschau wird vorbereitet …",
+  "es": "Preparando tu vista previa…",
+  "fr": "Préparation de l'aperçu…",
+  "hi": "आपका प्रीव्यू तैयार हो रहा है…",
+  "it": "Preparo l'anteprima…",
+  "ja": "プレビューを準備しています…",
+  "pt": "Preparando sua prévia…",
+  "zh": "正在准备预览…"
  }
 }

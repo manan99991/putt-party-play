@@ -56,6 +56,8 @@ struct CelebrateView: View {
     @State private var rolling = false
     /// What the preview box is showing, for the build machine's check (refreshed while the page is open in a test).
     @State private var probe = ""
+    /// Kept as a property: a timer made inside `body` restarts on every redraw and could keep missing its beat.
+    private let previewTick = Timer.publish(every: 0.3, on: .main, in: .common).autoconnect()
     /// This phone's player couldn't run the effects live (any video composition failed, -11800/-12784, on the build
     /// machine while the saved video played). Then the preview is a quick rendered copy with the effects on.
     @State private var liveFails = false
@@ -97,14 +99,14 @@ struct CelebrateView: View {
         // The still frame stays up until the video has really moved on screen (a "playing" flag alone came before the
         // first picture, and the box showed black — Gold Book review, 24 Nov). Checked until it moves, not once: a
         // single check 0.6 s after "playing" could miss, and the box then kept the plain still for good.
-        .onReceive(Timer.publish(every: 0.3, on: .main, in: .common).autoconnect()) { _ in
+        .onReceive(previewTick) { _ in
             guard source != nil, resultURL == nil else { return }
             let item = player.currentItem
             if item?.status == .failed, !liveFails { liveFails = true; schedulePreview() }
             if !rolling, player.timeControlStatus == .playing, player.currentTime().seconds > 0.25,
                (item?.presentationSize.width ?? 0) > 0 { rolling = true }
             if Launch.uitest {
-                probe = "poster \(poster != nil) rendered \(liveFails) rolling \(rolling) playing \(player.timeControlStatus == .playing) item \(item != nil) status \(item?.status.rawValue ?? -1) wait \(player.reasonForWaitingToPlay?.rawValue ?? "-") err \((item?.error as NSError?).map { e in "\(e.domain) \(e.code) \((e.userInfo[NSUnderlyingErrorKey] as? NSError).map { "\($0.domain) \($0.code)" } ?? "-")" } ?? "-") log \(item?.errorLog()?.events.last.map { "\($0.errorDomain) \($0.errorStatusCode)" } ?? "-") size \(Int(item?.presentationSize.width ?? 0)) t \(String(format: "%.1f", player.currentTime().seconds))"
+                probe = "poster \(poster != nil) loading \(poster == nil && !rolling) rendered \(liveFails) rolling \(rolling) playing \(player.timeControlStatus == .playing) item \(item != nil) status \(item?.status.rawValue ?? -1) wait \(player.reasonForWaitingToPlay?.rawValue ?? "-") err \((item?.error as NSError?).map { e in "\(e.domain) \(e.code) \((e.userInfo[NSUnderlyingErrorKey] as? NSError).map { "\($0.domain) \($0.code)" } ?? "-")" } ?? "-") log \(item?.errorLog()?.events.last.map { "\($0.errorDomain) \($0.errorStatusCode)" } ?? "-") size \(Int(item?.presentationSize.width ?? 0)) t \(String(format: "%.1f", player.currentTime().seconds))"
             }
         }
         .onDisappear { player.pause(); previewTask?.cancel(); thumbTask?.cancel() }
@@ -145,7 +147,7 @@ struct CelebrateView: View {
                 // Diagnostics for the Gold Book review (the preview showed black on the build machine): what it's showing.
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier("celebrate-preview")
-                .accessibilityValue(probe)
+                .accessibilityValue(!Launch.uitest ? "" : probe.isEmpty ? "poster \(poster != nil) loading \(poster == nil && !rolling) rolling \(rolling)" : probe)
             howMuch
             tabs
             Group {
@@ -393,6 +395,13 @@ struct CelebrateView: View {
                 VideoPlayer(player: player).disabled(true)
                 if !rolling, let p = poster {
                     Image(decorative: p, scale: 1).resizable().scaledToFit().allowsHitTesting(false)
+                } else if !rolling {
+                    // Never a silent black box (Gold Book): until the first frame is ready, say it's coming.
+                    VStack(spacing: 8) {
+                        ProgressView().tint(.white)
+                        Text(L("Getting your preview ready…")).font(HandyFont.caption).foregroundStyle(.white.opacity(0.85))
+                    }
+                    .accessibilityElement(children: .combine)
                 }
                 Button {
                     soundOn.toggle(); player.isMuted = !soundOn
