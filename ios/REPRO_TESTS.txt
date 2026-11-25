@@ -1,6 +1,6 @@
-# 25 Nov: Home camera — a picture of a receipt suggests the receipt job first; recognition of menus, flyers,
-# documents, plants/things; plus the receipts autorun again on top of the camera change.
-HandyToolsTests/GuideMenuReceiptTests
-HandyToolsUITests/PromiseTests/testHomeCameraSuggestsWhatToDoWithThePicture
+# 25 Nov: smart autorun — drives into the mileage log. Distance along GPS fixes (glitches and rough fixes add no
+# miles), drives kept/waiting, and the review logging exactly the work drive. Plus the engine rules.
+HandyToolsTests/AutoParkTests
+HandyToolsTests/SmartRunsTests
+HandyToolsUITests/PromiseTests/testDrivesAutorunLogsTheWorkDrive
 HandyToolsUITests/PromiseTests/testReceiptsAutorunReadsTodaysReceiptIntoTheSheet
-HandyToolsTests/SmartReceiptsTests
