@@ -33,7 +33,7 @@
           "internalID" : "1003",
           "introductoryOffer" : { "internalID" : "1004", "paymentMode" : "free", "subscriptionPeriod" : "P1W" },
           "localizations" : [ { "description" : "Every Tenzy tool, no daily limits.", "displayName" : "Tenzy Pro (Monthly)", "locale" : "en_US" } ],
-          "productID" : "tenzy_pro_monthly",
+          "productID" : "tenzy_pro_month",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Pro Monthly",
           "subscriptionGroupID" : "1",

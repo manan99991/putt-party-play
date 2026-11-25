@@ -162,7 +162,8 @@ platform :ios do
 
     want = [
       { pid: "tenzy_pro_yearly",  name: "Tenzy Pro (Yearly)",  period: "ONE_YEAR",  usd: "29.99", preserve: true },
-      { pid: "tenzy_pro_monthly", name: "Tenzy Pro (Monthly)", period: "ONE_MONTH", usd: "2.99",  preserve: false },
+      # "tenzy_pro_monthly" belonged to the old, deleted monthly plan; Apple never reuses a product ID.
+      { pid: "tenzy_pro_month",   name: "Tenzy Pro (Monthly)", period: "ONE_MONTH", usd: "2.99",  preserve: false },
     ]
     trial = "ONE_WEEK"   # 7-day free trial on both plans
     want.each do |w|
@@ -201,25 +202,50 @@ platform :ios do
         UI.message("  availability -> #{code}#{code >= 400 ? " #{data}" : ""}")
       end
 
-      code, pp = req.call(:get, "/v1/subscriptions/#{sub_id}/pricePoints?filter%5Bterritory%5D=USA&limit=200")
-      points = pp["data"] || []
-      target = points.min_by { |p| (p.dig("attributes", "customerPrice").to_f - w[:usd].to_f).abs } if points.any?
+      # The US price point nearest the target (all pages: there are hundreds of tiers).
+      points = []
+      nextpp = "/v1/subscriptions/#{sub_id}/pricePoints?filter%5Bterritory%5D=USA&limit=200"
+      while nextpp
+        code, pp = req.call(:get, nextpp)
+        points += (pp.is_a?(Hash) ? (pp["data"] || []) : [])
+        link = pp.is_a?(Hash) ? pp.dig("links", "next") : nil
+        nextpp = link ? link.sub(base, "") : nil
+      end
+      target = points.min_by { |p| (p.dig("attributes", "customerPrice").to_f - w[:usd].to_f).abs }
       current = nil
       code, cp = req.call(:get, "/v1/subscriptions/#{sub_id}/prices?filter%5Bterritory%5D=USA&include=subscriptionPricePoint&limit=50")
       if cp.is_a?(Hash)
         ids = (cp["data"] || []).map { |pr| pr.dig("relationships", "subscriptionPricePoint", "data", "id") }
         current = (cp["included"] || []).select { |i| ids.include?(i["id"]) }.map { |i| i.dig("attributes", "customerPrice") }.last
       end
-      if target && current && (current.to_f - target.dig("attributes", "customerPrice").to_f).abs < 0.005
+      if target.nil?
+        UI.important("  no USD price points returned")
+      elsif current && (current.to_f - target.dig("attributes", "customerPrice").to_f).abs < 0.005
         UI.message("  price already $#{current}")
-      elsif target
-        code, data = req.call(:post, "/v1/subscriptionPrices",
-          { data: { type: "subscriptionPrices", attributes: { preserveCurrentPrice: w[:preserve] },
-                    relationships: { subscription: { data: { type: "subscriptions", id: sub_id } },
-                                     subscriptionPricePoint: { data: { type: "subscriptionPricePoints", id: target["id"] } } } } })
-        UI.success("  price -> #{code} near $#{w[:usd]} (#{target.dig('attributes', 'customerPrice')})#{code >= 400 ? " #{data}" : ""}")
       else
-        UI.important("  no USD price points returned (#{code})")
+        # Every territory at Apple's own equivalent of the US price (the equalizations), so it sells everywhere.
+        eq = []
+        nexteq = "/v1/subscriptionPricePoints/#{target['id']}/equalizations?limit=200"
+        while nexteq
+          code, ed = req.call(:get, nexteq)
+          eq += (ed.is_a?(Hash) ? (ed["data"] || []) : [])
+          link = ed.is_a?(Hash) ? ed.dig("links", "next") : nil
+          nexteq = link ? link.sub(base, "") : nil
+        end
+        # A plan that already has a price (approved) takes a price CHANGE, which needs a start date; a new plan
+        # takes its first price with none. People already subscribed keep their price when `preserve` is set.
+        start = current ? Time.now.utc.strftime("%Y-%m-%d") : nil
+        ok = 0; bad = 0; first_err = nil
+        ([target] + eq).each do |pt|
+          attrs = { preserveCurrentPrice: w[:preserve] }
+          attrs[:startDate] = start if start
+          c, d = req.call(:post, "/v1/subscriptionPrices",
+            { data: { type: "subscriptionPrices", attributes: attrs,
+                      relationships: { subscription: { data: { type: "subscriptions", id: sub_id } },
+                                       subscriptionPricePoint: { data: { type: "subscriptionPricePoints", id: pt["id"] } } } } })
+          if c < 300 || c == 409 && d.to_s.include?("already") then ok += 1 else bad += 1; first_err ||= "#{c} #{d.to_s[0, 300]}" end
+        end
+        UI.success("  price $#{target.dig('attributes', 'customerPrice')} (was #{current || 'none'}): set in #{ok} territories, failed #{bad}#{first_err ? " — first: #{first_err}" : ''}")
       end
 
       # 3-day free-trial introductory offer — the trial the paywall AND the App Store listing both

@@ -4,7 +4,7 @@ import StoreKit
 /// StoreKit 2. Tenzy Pro, monthly or yearly (Manan's pricing, 22 Nov; shipped 25 Nov).
 ///
 /// App Store Connect (set by `fastlane subscriptions`): group "Tenzy Pro"
-///   • tenzy_pro_monthly   1 Month   $2.99    7-day free trial (introductory offer)
+///   • tenzy_pro_month     1 Month   $2.99    7-day free trial (introductory offer)
 ///   • tenzy_pro_yearly    1 Year    $29.99   7-day free trial (people already on $19.99 keep their price)
 ///
 /// For local testing without ASC, use Tenzy/Resources/Products.storekit
@@ -13,7 +13,8 @@ import StoreKit
 final class StoreManager: ObservableObject {
     static let shared = StoreManager()
     static let yearlyID = "tenzy_pro_yearly"
-    static let monthlyID = "tenzy_pro_monthly"
+    /// "tenzy_pro_monthly" was used by the old monthly plan (removed in November) and Apple never reuses an ID.
+    static let monthlyID = "tenzy_pro_month"
     static var productIDs: [String] { [yearlyID, monthlyID] }
 
     @Published private(set) var yearly: Product?

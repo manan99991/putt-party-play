@@ -6,7 +6,7 @@ import XCTest
 @MainActor
 final class PricingTests: XCTestCase {
     func testBothPlansAreSold() {
-        XCTAssertEqual(Set(StoreManager.productIDs), ["tenzy_pro_yearly", "tenzy_pro_monthly"])
+        XCTAssertEqual(Set(StoreManager.productIDs), ["tenzy_pro_yearly", "tenzy_pro_month"])
     }
 
     func testNothingOnHomesFrontRowIsLocked() {
