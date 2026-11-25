@@ -58,8 +58,8 @@ final class SheetPeriodTests: XCTestCase {
     }
 
     func testAMonthlySheetKeepsTheNameItAlwaysHad() {
-        let before = UserDefaults.standard.string(forKey: SheetPeriod.key)
-        defer { UserDefaults.standard.set(before, forKey: SheetPeriod.key) }
+        let before = AppGroup.defaults.string(forKey: SheetPeriod.key)
+        defer { AppGroup.defaults.set(before, forKey: SheetPeriod.key) }
         SheetPeriod.current = .monthly
         let d = day(2026, 11, 15)
         XCTAssertEqual(ChainName.file(pattern: RunningList.defaultName, tool: "List", day: d, ext: "csv"), "Expenses \(SheetPeriod.monthly.token(d)).csv")

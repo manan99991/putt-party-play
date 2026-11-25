@@ -9,8 +9,8 @@ enum SheetPeriod: String, CaseIterable, Identifiable {
 
     static let key = "sheets.period"
     static var current: SheetPeriod {
-        get { SheetPeriod(rawValue: UserDefaults.standard.string(forKey: key) ?? "") ?? .monthly }
-        set { UserDefaults.standard.set(newValue.rawValue, forKey: key) }
+        get { SheetPeriod(rawValue: AppGroup.defaults.string(forKey: key) ?? "") ?? .monthly }
+        set { AppGroup.defaults.set(newValue.rawValue, forKey: key) }
     }
 
     var title: String {
@@ -78,8 +78,8 @@ extension RunningList {
 
     private static let redirectKey = "sheets.redirect"
     private static var redirects: [String: String] {
-        get { UserDefaults.standard.dictionary(forKey: redirectKey) as? [String: String] ?? [:] }
-        set { UserDefaults.standard.set(newValue, forKey: redirectKey) }
+        get { AppGroup.defaults.dictionary(forKey: redirectKey) as? [String: String] ?? [:] }
+        set { AppGroup.defaults.set(newValue, forKey: redirectKey) }
     }
 
     /// The file a helper adds to for this sheet name pattern: this period's sheet, or the newer one the person
