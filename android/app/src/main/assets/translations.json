@@ -13258,5 +13258,175 @@
   "ja": "オンにする",
   "pt": "Ativar",
   "zh": "打开"
+ },
+ "Save %d%%": {
+  "de": "%d %% sparen",
+  "es": "Ahorra un %d %%",
+  "fr": "Économisez %d %%",
+  "hi": "%d%% बचाएँ",
+  "it": "Risparmia il %d%%",
+  "ja": "%d%% お得",
+  "pt": "Economize %d%%",
+  "zh": "省 %d%%"
+ },
+ "%@ free, then %@ a year": {
+  "de": "%@ gratis, dann %@ pro Jahr",
+  "es": "%@ gratis, luego %@ al año",
+  "fr": "%@ gratuits, puis %@ par an",
+  "hi": "%@ मुफ़्त, फिर %@ प्रति वर्ष",
+  "it": "%@ gratis, poi %@ all'anno",
+  "ja": "%@無料、その後 年額 %@",
+  "pt": "%@ grátis, depois %@ por ano",
+  "zh": "免费 %@，之后每年 %@"
+ },
+ "%@ free, then %@ a month": {
+  "de": "%@ gratis, dann %@ pro Monat",
+  "es": "%@ gratis, luego %@ al mes",
+  "fr": "%@ gratuits, puis %@ par mois",
+  "hi": "%@ मुफ़्त, फिर %@ प्रति माह",
+  "it": "%@ gratis, poi %@ al mese",
+  "ja": "%@無料、その後 月額 %@",
+  "pt": "%@ grátis, depois %@ por mês",
+  "zh": "免费 %@，之后每月 %@"
+ },
+ "Renews yearly · cancel anytime": {
+  "de": "Verlängert sich jährlich · jederzeit kündbar",
+  "es": "Se renueva cada año · cancela cuando quieras",
+  "fr": "Renouvelé chaque année · résiliable à tout moment",
+  "hi": "हर साल रिन्यू · कभी भी रद्द करें",
+  "it": "Si rinnova ogni anno · disdici quando vuoi",
+  "ja": "毎年更新 · いつでも解約できます",
+  "pt": "Renova anualmente · cancele quando quiser",
+  "zh": "每年续订 · 随时取消"
+ },
+ "Renews monthly · cancel anytime": {
+  "de": "Verlängert sich monatlich · jederzeit kündbar",
+  "es": "Se renueva cada mes · cancela cuando quieras",
+  "fr": "Renouvelé chaque mois · résiliable à tout moment",
+  "hi": "हर महीने रिन्यू · कभी भी रद्द करें",
+  "it": "Si rinnova ogni mese · disdici quando vuoi",
+  "ja": "毎月更新 · いつでも解約できます",
+  "pt": "Renova mensalmente · cancele quando quiser",
+  "zh": "每月续订 · 随时取消"
+ },
+ "Try Pro free for %@": {
+  "de": "Pro %@ gratis testen",
+  "es": "Prueba Pro gratis durante %@",
+  "fr": "Essayez Pro gratuitement pendant %@",
+  "hi": "Pro को %@ मुफ़्त आज़माएँ",
+  "it": "Prova Pro gratis per %@",
+  "ja": "Pro を %@無料で試す",
+  "pt": "Experimente o Pro grátis por %@",
+  "zh": "免费试用 Pro %@"
+ },
+ "Go Pro · %@ a year": {
+  "de": "Pro holen · %@ pro Jahr",
+  "es": "Hazte Pro · %@ al año",
+  "fr": "Passer à Pro · %@ par an",
+  "hi": "Pro लें · %@ प्रति वर्ष",
+  "it": "Passa a Pro · %@ all'anno",
+  "ja": "Pro にする · 年額 %@",
+  "pt": "Assinar o Pro · %@ por ano",
+  "zh": "升级 Pro · 每年 %@"
+ },
+ "Go Pro · %@ a month": {
+  "de": "Pro holen · %@ pro Monat",
+  "es": "Hazte Pro · %@ al mes",
+  "fr": "Passer à Pro · %@ par mois",
+  "hi": "Pro लें · %@ प्रति माह",
+  "it": "Passa a Pro · %@ al mese",
+  "ja": "Pro にする · 月額 %@",
+  "pt": "Assinar o Pro · %@ por mês",
+  "zh": "升级 Pro · 每月 %@"
+ },
+ "%@ a month or %@ a year · cancel anytime": {
+  "de": "%@ pro Monat oder %@ pro Jahr · jederzeit kündbar",
+  "es": "%@ al mes o %@ al año · cancela cuando quieras",
+  "fr": "%@ par mois ou %@ par an · résiliable à tout moment",
+  "hi": "%@ प्रति माह या %@ प्रति वर्ष · कभी भी रद्द करें",
+  "it": "%@ al mese o %@ all'anno · disdici quando vuoi",
+  "ja": "月額 %@ または年額 %@ · いつでも解約できます",
+  "pt": "%@ por mês ou %@ por ano · cancele quando quiser",
+  "zh": "每月 %@ 或每年 %@ · 随时取消"
+ },
+ "See Pro plans": {
+  "de": "Pro-Abos ansehen",
+  "es": "Ver planes Pro",
+  "fr": "Voir les formules Pro",
+  "hi": "Pro प्लान देखें",
+  "it": "Vedi i piani Pro",
+  "ja": "Pro プランを見る",
+  "pt": "Ver planos Pro",
+  "zh": "查看 Pro 方案"
+ },
+ "%@ a month or %@ a year. Every tool, no daily limits.": {
+  "de": "%@ pro Monat oder %@ pro Jahr. Alle Werkzeuge, keine Tageslimits.",
+  "es": "%@ al mes o %@ al año. Todas las herramientas, sin límites diarios.",
+  "fr": "%@ par mois ou %@ par an. Tous les outils, sans limite quotidienne.",
+  "hi": "%@ प्रति माह या %@ प्रति वर्ष। हर टूल, कोई दैनिक सीमा नहीं।",
+  "it": "%@ al mese o %@ all'anno. Tutti gli strumenti, senza limiti giornalieri.",
+  "ja": "月額 %@ または年額 %@。すべてのツール、1 日の上限なし。",
+  "pt": "%@ por mês ou %@ por ano. Todas as ferramentas, sem limites diários.",
+  "zh": "每月 %@ 或每年 %@。所有工具，无每日限制。"
+ },
+ "%@ is part of Tenzy Pro. Try it free for %@, with every other Pro tool and no daily limits.": {
+  "de": "%@ gehört zu Tenzy Pro. Teste es %@ gratis, mit allen anderen Pro-Werkzeugen und ohne Tageslimits.",
+  "es": "%@ forma parte de Tenzy Pro. Pruébalo gratis durante %@, con todas las demás herramientas Pro y sin límites diarios.",
+  "fr": "%@ fait partie de Tenzy Pro. Essayez-le gratuitement pendant %@, avec tous les autres outils Pro et sans limite quotidienne.",
+  "hi": "%@ Tenzy Pro का हिस्सा है। इसे %@ मुफ़्त आज़माएँ, बाकी सभी Pro टूल के साथ और बिना दैनिक सीमा के।",
+  "it": "%@ fa parte di Tenzy Pro. Provalo gratis per %@, con tutti gli altri strumenti Pro e senza limiti giornalieri.",
+  "ja": "%@ は Tenzy Pro の機能です。ほかのすべての Pro ツールと一緒に %@無料でお試しいただけます。1 日の上限はありません。",
+  "pt": "%@ faz parte do Tenzy Pro. Experimente grátis por %@, com todas as outras ferramentas Pro e sem limites diários.",
+  "zh": "%@ 属于 Tenzy Pro。可免费试用 %@，包含所有其他 Pro 工具，无每日限制。"
+ },
+ "%@ is part of Tenzy Pro. Go Pro to unlock it and every other Pro tool, with no daily limits.": {
+  "de": "%@ gehört zu Tenzy Pro. Hol dir Pro, um es und alle anderen Pro-Werkzeuge ohne Tageslimits freizuschalten.",
+  "es": "%@ forma parte de Tenzy Pro. Hazte Pro para desbloquearlo junto con todas las demás herramientas Pro, sin límites diarios.",
+  "fr": "%@ fait partie de Tenzy Pro. Passez à Pro pour le débloquer avec tous les autres outils Pro, sans limite quotidienne.",
+  "hi": "%@ Tenzy Pro का हिस्सा है। इसे और बाकी सभी Pro टूल को बिना दैनिक सीमा के खोलने के लिए Pro लें।",
+  "it": "%@ fa parte di Tenzy Pro. Passa a Pro per sbloccarlo insieme a tutti gli altri strumenti Pro, senza limiti giornalieri.",
+  "ja": "%@ は Tenzy Pro の機能です。Pro にすると、ほかのすべての Pro ツールとともに 1 日の上限なしで使えます。",
+  "pt": "%@ faz parte do Tenzy Pro. Assine o Pro para desbloqueá-lo com todas as outras ferramentas Pro, sem limites diários.",
+  "zh": "%@ 属于 Tenzy Pro。升级 Pro 即可解锁它和所有其他 Pro 工具，无每日限制。"
+ },
+ "%@ free, then %@ a year. Payment is charged to your Apple ID when the trial ends. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions.": {
+  "de": "%@ gratis, dann %@ pro Jahr. Die Zahlung wird bei Ende der Testphase über deine Apple-ID abgebucht. Verlängert sich automatisch, wenn du nicht spätestens 24 Stunden vor Ende des Zeitraums unter Einstellungen › Apple-ID › Abonnements kündigst.",
+  "es": "%@ gratis, luego %@ al año. El pago se carga a tu Apple ID al terminar la prueba. Se renueva automáticamente salvo que lo canceles al menos 24 horas antes del final del periodo, en Ajustes › Apple ID › Suscripciones.",
+  "fr": "%@ gratuits, puis %@ par an. Le paiement est débité sur votre identifiant Apple à la fin de l'essai. Renouvellement automatique sauf résiliation au moins 24 heures avant la fin de la période, dans Réglages › Identifiant Apple › Abonnements.",
+  "hi": "%@ मुफ़्त, फिर %@ प्रति वर्ष। ट्रायल खत्म होने पर आपके Apple ID से भुगतान लिया जाता है। अवधि खत्म होने से कम से कम 24 घंटे पहले सेटिंग्स › Apple ID › सब्सक्रिप्शन में रद्द न करने पर यह अपने आप रिन्यू होता है।",
+  "it": "%@ gratis, poi %@ all'anno. Il pagamento viene addebitato sull'ID Apple alla fine della prova. Si rinnova automaticamente se non disdici almeno 24 ore prima della fine del periodo, in Impostazioni › ID Apple › Abbonamenti.",
+  "ja": "%@無料、その後 年額 %@。お試し期間の終了時に Apple ID に請求されます。期間終了の 24 時間前までに 設定 › Apple ID › サブスクリプション で解約しない限り、自動更新されます。",
+  "pt": "%@ grátis, depois %@ por ano. O pagamento é cobrado no seu ID Apple quando o teste termina. Renova automaticamente, a menos que seja cancelado pelo menos 24 horas antes do fim do período, em Ajustes › ID Apple › Assinaturas.",
+  "zh": "免费 %@，之后每年 %@。试用结束时通过你的 Apple ID 扣款。除非在当前周期结束前至少 24 小时于 设置 › Apple ID › 订阅 中取消，否则将自动续订。"
+ },
+ "%@ a year. Payment is charged to your Apple ID. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions.": {
+  "de": "%@ pro Jahr. Die Zahlung wird über deine Apple-ID abgebucht. Verlängert sich automatisch, wenn du nicht spätestens 24 Stunden vor Ende des Zeitraums unter Einstellungen › Apple-ID › Abonnements kündigst.",
+  "es": "%@ al año. El pago se carga a tu Apple ID. Se renueva automáticamente salvo que lo canceles al menos 24 horas antes del final del periodo, en Ajustes › Apple ID › Suscripciones.",
+  "fr": "%@ par an. Le paiement est débité sur votre identifiant Apple. Renouvellement automatique sauf résiliation au moins 24 heures avant la fin de la période, dans Réglages › Identifiant Apple › Abonnements.",
+  "hi": "%@ प्रति वर्ष। भुगतान आपके Apple ID से लिया जाता है। अवधि खत्म होने से कम से कम 24 घंटे पहले सेटिंग्स › Apple ID › सब्सक्रिप्शन में रद्द न करने पर यह अपने आप रिन्यू होता है।",
+  "it": "%@ all'anno. Il pagamento viene addebitato sull'ID Apple. Si rinnova automaticamente se non disdici almeno 24 ore prima della fine del periodo, in Impostazioni › ID Apple › Abbonamenti.",
+  "ja": "年額 %@。Apple ID に請求されます。期間終了の 24 時間前までに 設定 › Apple ID › サブスクリプション で解約しない限り、自動更新されます。",
+  "pt": "%@ por ano. O pagamento é cobrado no seu ID Apple. Renova automaticamente, a menos que seja cancelado pelo menos 24 horas antes do fim do período, em Ajustes › ID Apple › Assinaturas.",
+  "zh": "每年 %@。通过你的 Apple ID 扣款。除非在当前周期结束前至少 24 小时于 设置 › Apple ID › 订阅 中取消，否则将自动续订。"
+ },
+ "%@ free, then %@ a month. Payment is charged to your Apple ID when the trial ends. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions.": {
+  "de": "%@ gratis, dann %@ pro Monat. Die Zahlung wird bei Ende der Testphase über deine Apple-ID abgebucht. Verlängert sich automatisch, wenn du nicht spätestens 24 Stunden vor Ende des Zeitraums unter Einstellungen › Apple-ID › Abonnements kündigst.",
+  "es": "%@ gratis, luego %@ al mes. El pago se carga a tu Apple ID al terminar la prueba. Se renueva automáticamente salvo que lo canceles al menos 24 horas antes del final del periodo, en Ajustes › Apple ID › Suscripciones.",
+  "fr": "%@ gratuits, puis %@ par mois. Le paiement est débité sur votre identifiant Apple à la fin de l'essai. Renouvellement automatique sauf résiliation au moins 24 heures avant la fin de la période, dans Réglages › Identifiant Apple › Abonnements.",
+  "hi": "%@ मुफ़्त, फिर %@ प्रति माह। ट्रायल खत्म होने पर आपके Apple ID से भुगतान लिया जाता है। अवधि खत्म होने से कम से कम 24 घंटे पहले सेटिंग्स › Apple ID › सब्सक्रिप्शन में रद्द न करने पर यह अपने आप रिन्यू होता है।",
+  "it": "%@ gratis, poi %@ al mese. Il pagamento viene addebitato sull'ID Apple alla fine della prova. Si rinnova automaticamente se non disdici almeno 24 ore prima della fine del periodo, in Impostazioni › ID Apple › Abbonamenti.",
+  "ja": "%@無料、その後 月額 %@。お試し期間の終了時に Apple ID に請求されます。期間終了の 24 時間前までに 設定 › Apple ID › サブスクリプション で解約しない限り、自動更新されます。",
+  "pt": "%@ grátis, depois %@ por mês. O pagamento é cobrado no seu ID Apple quando o teste termina. Renova automaticamente, a menos que seja cancelado pelo menos 24 horas antes do fim do período, em Ajustes › ID Apple › Assinaturas.",
+  "zh": "免费 %@，之后每月 %@。试用结束时通过你的 Apple ID 扣款。除非在当前周期结束前至少 24 小时于 设置 › Apple ID › 订阅 中取消，否则将自动续订。"
+ },
+ "%@ a month. Payment is charged to your Apple ID. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions.": {
+  "de": "%@ pro Monat. Die Zahlung wird über deine Apple-ID abgebucht. Verlängert sich automatisch, wenn du nicht spätestens 24 Stunden vor Ende des Zeitraums unter Einstellungen › Apple-ID › Abonnements kündigst.",
+  "es": "%@ al mes. El pago se carga a tu Apple ID. Se renueva automáticamente salvo que lo canceles al menos 24 horas antes del final del periodo, en Ajustes › Apple ID › Suscripciones.",
+  "fr": "%@ par mois. Le paiement est débité sur votre identifiant Apple. Renouvellement automatique sauf résiliation au moins 24 heures avant la fin de la période, dans Réglages › Identifiant Apple › Abonnements.",
+  "hi": "%@ प्रति माह। भुगतान आपके Apple ID से लिया जाता है। अवधि खत्म होने से कम से कम 24 घंटे पहले सेटिंग्स › Apple ID › सब्सक्रिप्शन में रद्द न करने पर यह अपने आप रिन्यू होता है।",
+  "it": "%@ al mese. Il pagamento viene addebitato sull'ID Apple. Si rinnova automaticamente se non disdici almeno 24 ore prima della fine del periodo, in Impostazioni › ID Apple › Abbonamenti.",
+  "ja": "月額 %@。Apple ID に請求されます。期間終了の 24 時間前までに 設定 › Apple ID › サブスクリプション で解約しない限り、自動更新されます。",
+  "pt": "%@ por mês. O pagamento é cobrado no seu ID Apple. Renova automaticamente, a menos que seja cancelado pelo menos 24 horas antes do fim do período, em Ajustes › ID Apple › Assinaturas.",
+  "zh": "每月 %@。通过你的 Apple ID 扣款。除非在当前周期结束前至少 24 小时于 设置 › Apple ID › 订阅 中取消，否则将自动续订。"
  }
 }

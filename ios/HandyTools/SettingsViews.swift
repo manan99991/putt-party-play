@@ -185,7 +185,7 @@ struct SettingsView: View {
                             }
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(store.isPremium ? "Tenzy Pro" : "Go Pro").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                Text(store.isPremium ? "Every tool unlimited. No daily limits." : "\(store.yearlyPrice)/yr. Every tool unlimited, no daily limits.")
+                                Text(store.isPremium ? "Every tool unlimited. No daily limits." : String(format: L("%@ a month or %@ a year. Every tool, no daily limits."), store.monthlyPrice, store.yearlyPrice))
                                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.leading)
                             }
                             Spacer()
@@ -452,7 +452,7 @@ struct PrivacyView: View {
                 Block("No ads", check: true, [
                     "Tenzy shows no ads at all — free or Pro. There is no ad SDK and no advertising identifier is used.",
                 ], note: nil)
-                Block("Payments", check: false, ["Pro is $19.99 a year, billed by Apple. We never see your card."], note: nil)
+                Block("Payments", check: false, ["Pro is $2.99 a month or $29.99 a year, billed by Apple. We never see your card."], note: nil)
                 Block("Permissions — each asked for by the tool that needs it", check: false, [
                     "Camera: scanning, QR and barcodes, Pro Camera, Identify, Color Vision.",
                     "Microphone: Voice notes, Hearing Boost, Rest, and the sound meter (which measures level only, unless you record).",

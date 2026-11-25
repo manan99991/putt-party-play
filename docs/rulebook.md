@@ -21,9 +21,11 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
 ## 2. Privacy & data declarations (must match `docs/privacy.html`)
 
 - No analytics, no crash SDK, no account. Files stay on device.
-- AdMob was removed (Nov 17 2026): no ads, no advertising identifier, no ATT prompt. Nothing is collected. Pro is a single auto-renewing subscription, **yearly only — $19.99/yr with a
-  3-day free trial**. There is no monthly plan (the old $2.99/mo plan was removed; do not reintroduce
-  it in copy or metadata).
+- AdMob was removed (Nov 17 2026): no ads, no advertising identifier, no ATT prompt. Nothing is collected. Pro (25 Nov, Manan's pricing): two auto-renewing plans in
+  the "Tenzy Pro" group, **monthly $2.99 and yearly $29.99, each with a 7-day free trial** (`fastlane subscriptions`
+  sets both; people already on yearly at $19.99 keep their price). Both plans must be Add-for-Review'd with the version,
+  each with its App Review screenshot (the current two-plan paywall). Ads for free users come later, once an ad
+  network approves the account; until then no ads, no advertising identifier, no ATT prompt.
 - The Contacts tool reads and writes contacts on-device only: find duplicates, merge, export a .vcf backup, and copy or move them between the user's own accounts (Gmail/iCloud/phone). Android already declares READ/WRITE_CONTACTS; iOS uses the same Contacts permission. A move always saves a backup first.
   Nothing from Contacts is uploaded or collected; declare accordingly and keep the usage string,
   reviewer notes and privacy policy aligned.
@@ -49,10 +51,11 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   reminders and logging, never outcomes; the description carries "doesn't give medical advice — check with your
   doctor or pharmacist" (Apple 1.4.1) and the Play listing adds "not a medical device" (Play health policy).
   The Android listing states only what the Android build ships.
-- The listing must represent the **free/Pro split honestly**: seven tools are free (`Tool.freeIDs`: Flashlight,
-  QR & Wi-Fi, See & Read, Measure, Cleaner, Translate, Vault), plus 2 saved tools of your own with the free
+- The listing must represent the **free/Pro split honestly**: thirteen tools are free (`Tool.freeIDs`: Flashlight,
+  QR & Wi-Fi, See & Read, Measure, Cleaner, Translate, Vault, and since 25 Nov Home's "Most loved" row — Scan, What is
+  this?, Read a menu, Sign a PDF, Make a sticker — plus Find my car), plus 2 saved tools of your own with the free
   builder steps; Invoices & Quotes (Business tab) makes 3 a month free (`Tool.meteredIDs`); the rest are Tenzy Pro.
-  Do not imply the whole app is free. The paywall screen must show price, the 3-day trial terms,
+  Do not imply the whole app is free. The paywall screen must show both prices, the 7-day trial terms,
   auto-renew disclosure, and working Terms (EULA) + Privacy links (Guideline 3.1.2).
 
 ## 4. Asset specs

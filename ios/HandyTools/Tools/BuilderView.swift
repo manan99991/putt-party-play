@@ -2443,7 +2443,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     Text(L("A Pro tool")).font(.system(size: 22, weight: .bold))
                     Text("This tool uses \(chain.proSteps.count == 1 ? "a Pro step" : "Pro steps") (\(chain.proSteps.map(\.title).joined(separator: ", "))). Go Pro to run it — plus every Pro step, every tool, and no daily limits.")
                         .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-                    Button { showPro = true } label: { Label(store.showsFreeTrial ? "Start \(store.trialLength) free trial" : "Go Pro — \(store.yearlyPrice)/year", systemImage: "crown.fill").frame(maxWidth: .infinity) }.primaryButton()
+                    Button { showPro = true } label: { Label(store.showsFreeTrial ? String(format: L("Try Pro free for %@"), store.trialLengthWords) : L("See Pro plans"), systemImage: "crown.fill").frame(maxWidth: .infinity) }.primaryButton()
                 }.frame(maxWidth: .infinity).padding(.top, HandySpacing.s24)
             }.padding(HandySpacing.gutter)
         }

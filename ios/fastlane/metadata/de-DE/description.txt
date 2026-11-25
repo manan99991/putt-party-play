@@ -37,9 +37,9 @@ Auf unterstützten iPhones nutzen die Denk- und Schreibwerkzeuge das Modell in d
 Tenzy erinnert dich; es gibt keinen medizinischen Rat. Frag zu deinen Medikamenten immer deine Ärztin, deinen Arzt oder die Apotheke.
 
 KOSTENLOS, MIT OPTIONALEM TENZY PRO
-Sieben Alltagswerkzeuge sind kostenlos (Taschenlampe+, QR & WLAN, Sehen & Lesen, Messen, Aufräumen, Übersetzen und der Face-ID-Tresor), und du kannst zwei eigene Helfer bauen und behalten. Tenzy Pro schaltet alles andere frei, unbegrenzt viele Helfer und alle Designs. Starte mit 3 Tagen gratis, danach 19,99 $ pro Jahr.
+Dreizehn Alltagswerkzeuge sind kostenlos, darunter Scannen, Übersetzen, Was ist das?, Mein Auto finden und die Taschenlampe, und du kannst zwei eigene Helfer bauen und behalten. Tenzy Pro schaltet alles andere frei, unbegrenzt viele Helfer und alle Designs: 2,99 $ pro Monat oder 29,99 $ pro Jahr, jeweils mit 7 Tagen gratis zum Start.
 
 DATENSCHUTZ
 Kein Konto, keine Werbung, kein Tracking. Deine Dateien bleiben auf deinem Gerät. Datenschutz: https://manan99991.github.io/tenzy/privacy.html
 Nutzungsbedingungen: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
-Abo: Tenzy Pro verlängert sich jedes Jahr automatisch, wenn es nicht mindestens 24 Stunden vor Ablauf gekündigt wird. Verwalten oder kündigen in deinen Apple-ID-Einstellungen.
+Abo: Tenzy Pro verlängert sich je nach Abo jeden Monat oder jedes Jahr automatisch, wenn es nicht mindestens 24 Stunden vor Ablauf gekündigt wird. Verwalten oder kündigen in deinen Apple-ID-Einstellungen.

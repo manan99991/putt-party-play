@@ -37,9 +37,9 @@ Sugli iPhone compatibili, gli strumenti per pensare e scrivere usano il modello 
 Tenzy ti ricorda; non dà consigli medici. Chiedi sempre al tuo medico o al farmacista per i tuoi farmaci.
 
 GRATIS, CON TENZY PRO FACOLTATIVO
-Sette strumenti di tutti i giorni sono gratis (Torcia+, QR e Wi-Fi, Vedi e leggi, Misura, Pulizia, Traduci e la Cassaforte con Face ID) e puoi creare e tenere due assistenti tuoi. Tenzy Pro sblocca tutto il resto, assistenti illimitati e tutti i temi. Inizia con 3 giorni di prova gratuita, poi 19,99 $ all'anno.
+Tredici strumenti di tutti i giorni sono gratis, tra cui Scansiona, Traduci, Cos'è questo?, Trova la mia auto e la Torcia, e puoi creare e tenere due assistenti tuoi. Tenzy Pro sblocca tutto il resto, assistenti illimitati e tutti i temi: 2,99 $ al mese o 29,99 $ all'anno, entrambi con 7 giorni di prova gratuita per iniziare.
 
 PRIVACY
 Nessun account, nessuna pubblicità, nessun tracciamento. I tuoi file restano sul dispositivo. Informativa sulla privacy: https://manan99991.github.io/tenzy/privacy.html
 Condizioni d'uso: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
-Abbonamento: Tenzy Pro si rinnova automaticamente ogni anno, salvo disdetta almeno 24 ore prima della fine del periodo. Gestiscilo o disdicilo nelle impostazioni del tuo ID Apple.
+Abbonamento: Tenzy Pro si rinnova automaticamente ogni mese o ogni anno, in base al piano, salvo disdetta almeno 24 ore prima della fine del periodo. Gestiscilo o disdicilo nelle impostazioni del tuo ID Apple.

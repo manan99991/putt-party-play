@@ -106,8 +106,10 @@ platform :ios do
     upload_to_testflight(api_key: key, skip_waiting_for_build_processing: true)
   end
 
-  # Creates/updates the single auto-renewing Yearly subscription and its price directly through the
-  # App Store Connect API, so the plan + price are set by the pipeline, not by hand.
+  # Creates/updates Tenzy Pro's two auto-renewing plans and their prices directly through the App Store
+  # Connect API, so plans + prices are set by the pipeline, not by hand. Manan's pricing (22 Nov, shipped
+  # 25 Nov): monthly $2.99, yearly $29.99, each with a 7-day free trial. People already on yearly at $19.99
+  # keep their price (preserveCurrentPrice), so nobody is asked to agree to an increase.
   # Idempotent: safe to re-run. Run via the "iOS Subscriptions" workflow (workflow_dispatch).
   lane :subscriptions do
     require 'net/http'
@@ -159,8 +161,10 @@ platform :ios do
     UI.message("Territories: #{all_territories.size}")
 
     want = [
-      { pid: "tenzy_pro_yearly",  name: "Tenzy Pro (Yearly)",  period: "ONE_YEAR",  usd: "19.99" },
+      { pid: "tenzy_pro_yearly",  name: "Tenzy Pro (Yearly)",  period: "ONE_YEAR",  usd: "29.99", preserve: true },
+      { pid: "tenzy_pro_monthly", name: "Tenzy Pro (Monthly)", period: "ONE_MONTH", usd: "2.99",  preserve: false },
     ]
+    trial = "ONE_WEEK"   # 7-day free trial on both plans
     want.each do |w|
       sub = existing.find { |s| s.dig("attributes", "productId") == w[:pid] }
       unless sub
@@ -180,7 +184,7 @@ platform :ios do
       unless (locs["data"] || []).any? { |l| l.dig("attributes", "locale") == "en-US" }
         code, data = req.call(:post, "/v1/subscriptionLocalizations",
           { data: { type: "subscriptionLocalizations",
-                    attributes: { locale: "en-US", name: w[:name], description: "Everything in Tenzy, unlimited. No ads." },
+                    attributes: { locale: "en-US", name: w[:name], description: "Every Tenzy tool, no daily limits." },
                     relationships: { subscription: { data: { type: "subscriptions", id: sub_id } } } } })
         UI.message("  localization -> #{code}")
       end
@@ -200,9 +204,17 @@ platform :ios do
       code, pp = req.call(:get, "/v1/subscriptions/#{sub_id}/pricePoints?filter%5Bterritory%5D=USA&limit=200")
       points = pp["data"] || []
       target = points.min_by { |p| (p.dig("attributes", "customerPrice").to_f - w[:usd].to_f).abs } if points.any?
-      if target
+      current = nil
+      code, cp = req.call(:get, "/v1/subscriptions/#{sub_id}/prices?filter%5Bterritory%5D=USA&include=subscriptionPricePoint&limit=50")
+      if cp.is_a?(Hash)
+        ids = (cp["data"] || []).map { |pr| pr.dig("relationships", "subscriptionPricePoint", "data", "id") }
+        current = (cp["included"] || []).select { |i| ids.include?(i["id"]) }.map { |i| i.dig("attributes", "customerPrice") }.last
+      end
+      if target && current && (current.to_f - target.dig("attributes", "customerPrice").to_f).abs < 0.005
+        UI.message("  price already $#{current}")
+      elsif target
         code, data = req.call(:post, "/v1/subscriptionPrices",
-          { data: { type: "subscriptionPrices", attributes: { preserveCurrentPrice: false },
+          { data: { type: "subscriptionPrices", attributes: { preserveCurrentPrice: w[:preserve] },
                     relationships: { subscription: { data: { type: "subscriptions", id: sub_id } },
                                      subscriptionPricePoint: { data: { type: "subscriptionPricePoints", id: target["id"] } } } } })
         UI.success("  price -> #{code} near $#{w[:usd]} (#{target.dig('attributes', 'customerPrice')})#{code >= 400 ? " #{data}" : ""}")
@@ -218,19 +230,33 @@ platform :ios do
       # The ASC API requires ONE introductory offer per territory, so create the 3-day free trial for
       # every territory the subscription is available in. Idempotent: territories that already have the
       # offer are skipped, and a duplicate POST returns 409 (tolerated). Non-fatal.
-      code, offers = req.call(:get, "/v1/subscriptions/#{sub_id}/introductoryOffers?include=territory&limit=200")
-      have = (offers["data"] || []).map { |o| o.dig("relationships", "territory", "data", "id") }.compact
+      offers_all = []
+      nexto = "/v1/subscriptions/#{sub_id}/introductoryOffers?include=territory&limit=200"
+      while nexto
+        code, offers = req.call(:get, nexto)
+        offers_all += (offers.is_a?(Hash) ? (offers["data"] || []) : [])
+        link = offers.is_a?(Hash) ? offers.dig("links", "next") : nil
+        nexto = link ? link.sub(base, "") : nil
+      end
+      # The old 3-day trial goes: an offer can't be edited, so remove any that isn't the 7-day one.
+      removed = 0
+      offers_all.select { |o| o.dig("attributes", "duration") != trial }.each do |o|
+        c, _ = req.call(:delete, "/v1/subscriptionIntroductoryOffers/#{o['id']}")
+        removed += 1 if c < 300
+      end
+      UI.message("  removed #{removed} old trial offers") if removed > 0
+      have = offers_all.select { |o| o.dig("attributes", "duration") == trial }.map { |o| o.dig("relationships", "territory", "data", "id") }.compact
       made = 0; exist = have.size; failed = 0
       all_territories.each do |terr|
         next if have.include?(terr[:id])
         code, data = req.call(:post, "/v1/subscriptionIntroductoryOffers",
           { data: { type: "subscriptionIntroductoryOffers",
-                    attributes: { duration: "THREE_DAYS", numberOfPeriods: 1, offerMode: "FREE_TRIAL" },
+                    attributes: { duration: trial, numberOfPeriods: 1, offerMode: "FREE_TRIAL" },
                     relationships: { subscription: { data: { type: "subscriptions", id: sub_id } },
                                      territory: { data: { type: "territories", id: terr[:id] } } } } })
         if code < 300 then made += 1 elsif code == 409 then exist += 1 else failed += 1; (UI.important("  intro #{terr[:id]} -> #{code} #{data}") if failed <= 2) end
       end
-      UI.success("  intro offer 3-day free trial: created #{made}, already present #{exist}, failed #{failed} (of #{all_territories.size} territories)")
+      UI.success("  intro offer 7-day free trial: created #{made}, already present #{exist}, failed #{failed} (of #{all_territories.size} territories)")
 
       # Subscription App Review screenshot — REQUIRED so the IAP leaves "Missing Metadata" and is
       # reviewed WITH the app (fixes Apple 2.1(b): a Pro-referencing binary whose IAP wasn't

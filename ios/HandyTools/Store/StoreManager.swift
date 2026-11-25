@@ -1,12 +1,11 @@
 import Foundation
 import StoreKit
 
-/// StoreKit 2. One auto-renewing subscription — Tenzy Pro, billed yearly.
+/// StoreKit 2. Tenzy Pro, monthly or yearly (Manan's pricing, 22 Nov; shipped 25 Nov).
 ///
-/// App Store Connect setup (one time):
-///   App > Subscriptions > group "Tenzy Pro"
-///   • Product ID: tenzy_pro_yearly    Duration: 1 Year   Price: $19.99
-///   (Product ID must match the constant below.) 3-day free trial (introductory offer).
+/// App Store Connect (set by `fastlane subscriptions`): group "Tenzy Pro"
+///   • tenzy_pro_monthly   1 Month   $2.99    7-day free trial (introductory offer)
+///   • tenzy_pro_yearly    1 Year    $29.99   7-day free trial (people already on $19.99 keep their price)
 ///
 /// For local testing without ASC, use Tenzy/Resources/Products.storekit
 /// (Edit Scheme > Run > Options > StoreKit Configuration).
@@ -14,9 +13,11 @@ import StoreKit
 final class StoreManager: ObservableObject {
     static let shared = StoreManager()
     static let yearlyID = "tenzy_pro_yearly"
-    static var productIDs: [String] { [yearlyID] }
+    static let monthlyID = "tenzy_pro_monthly"
+    static var productIDs: [String] { [yearlyID, monthlyID] }
 
     @Published private(set) var yearly: Product?
+    @Published private(set) var monthly: Product?
     @Published private(set) var isPremium: Bool = Premium.isActive
     @Published var purchaseError: String?
 
@@ -50,7 +51,16 @@ final class StoreManager: ObservableObject {
     }
 
     // Shown on the paywall button. Falls back to our set price if the store hasn't loaded yet.
-    var yearlyPrice: String { yearly?.displayPrice ?? "$19.99" }
+    var yearlyPrice: String { yearly?.displayPrice ?? "$29.99" }
+    var monthlyPrice: String { monthly?.displayPrice ?? "$2.99" }
+    /// "Save 16%" — yearly against twelve months, worked out from the live prices (nil if it doesn't save).
+    var yearlySaving: String? {
+        guard let y = yearly?.price, let m = monthly?.price, m > 0 else { return screenshotMode ? "Save 16%" : nil }
+        let full = m * 12
+        guard full > y else { return nil }
+        let pct = Int(NSDecimalNumber(decimal: (full - y) / full * 100).doubleValue.rounded(.down))
+        return pct >= 5 ? String(format: L("Save %d%%"), pct) : nil
+    }
 
     // CI screenshot capture: force the trial copy on so marketing shots show it even though the
     // simulator has no real offer. Production never uses this path.
@@ -65,26 +75,44 @@ final class StoreManager: ObservableObject {
         return o.paymentMode == .freeTrial
     }
 
-    /// Trial length as "3-day", read from the live offer (falls back to "3-day" for screenshots).
+    /// Whether a plan has a live free trial (the person hasn't used one yet).
+    func hasTrial(_ p: Product?) -> Bool {
+        if screenshotMode { return true }
+        return p?.subscription?.introductoryOffer?.paymentMode == .freeTrial
+    }
+
+    /// Trial length as "7-day", read from the live offer (falls back to "3-day" for screenshots).
     var trialLength: String {
-        guard !screenshotMode, let p = yearly?.subscription?.introductoryOffer?.period else { return "3-day" }
+        guard !screenshotMode, let p = yearly?.subscription?.introductoryOffer?.period else { return "7-day" }
         let unit: String
         switch p.unit { case .day: unit = "day"; case .week: unit = "week"; case .month: unit = "month"; case .year: unit = "year"; @unknown default: unit = "day" }
         return "\(p.value)-\(unit)"
     }
 
-    /// Trial length in prose, e.g. "3 days".
+    /// Trial length in prose, in the app's language: "7 days", "7 Tage", "7 días".
     var trialLengthWords: String {
-        guard !screenshotMode, let p = yearly?.subscription?.introductoryOffer?.period else { return "3 days" }
-        let plural = p.value != 1
-        let unit: String
-        switch p.unit { case .day: unit = plural ? "days" : "day"; case .week: unit = plural ? "weeks" : "week"; case .month: unit = plural ? "months" : "month"; case .year: unit = plural ? "years" : "year"; @unknown default: unit = "days" }
-        return "\(p.value) \(unit)"
+        var c = DateComponents()
+        if !screenshotMode, let p = yearly?.subscription?.introductoryOffer?.period {
+            switch p.unit {
+            case .day: c.day = p.value
+            case .week: c.day = p.value * 7
+            case .month: c.month = p.value
+            case .year: c.year = p.value
+            @unknown default: c.day = 7
+            }
+        } else { c.day = 7 }
+        let f = DateComponentsFormatter()
+        f.unitsStyle = .full
+        f.maximumUnitCount = 1
+        var cal = Calendar.current; cal.locale = Localizer.shared.locale
+        f.calendar = cal
+        return f.string(from: c) ?? "7 days"
     }
 
     func load() async {
         let products = (try? await Product.products(for: Self.productIDs)) ?? []
         yearly = products.first { $0.id == Self.yearlyID }
+        monthly = products.first { $0.id == Self.monthlyID }
     }
 
     func refresh() async {
@@ -101,7 +129,7 @@ final class StoreManager: ObservableObject {
     func purchase(_ product: Product?) async {
         guard let product else {
             await load()
-            if yearly == nil { purchaseError = "Couldn't reach the App Store. Check your connection and tap again." }
+            if yearly == nil && monthly == nil { purchaseError = "Couldn't reach the App Store. Check your connection and tap again." }
             return
         }
         purchaseError = nil

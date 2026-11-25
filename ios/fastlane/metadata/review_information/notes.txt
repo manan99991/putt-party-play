@@ -4,8 +4,8 @@ HOW THE APP WORKS
 Tenzy is a set of on-device tools plus ready-made "Build your own" tools the user can also describe in a sentence. Seven everyday tools are always free: Flashlight, QR & Wi-Fi, See & Read, Measure, Cleaner, Translate, and the Face ID Vault. The remaining tools are part of Tenzy Pro.
 
 TENZY PRO (in-app subscription)
-- A single auto-renewing subscription: "Tenzy Pro", 1 year, US$19.99, with a 3-day free trial. There is no monthly plan.
-- It unlocks the Pro tools and removes the daily limits.
+- Two plans in the "Tenzy Pro" group: monthly US$2.99, yearly US$29.99, each with a 7-day free trial. Both submitted with this version.
+- Unlocks the Pro tools and removes daily limits.
 - The purchase screen (Settings > Go Pro, or any Pro tool's unlock screen) shows the price, trial terms, auto-renewal disclosure, and Terms of Use (EULA) and Privacy Policy links (3.1.2).
 - Buyable in the sandbox there; a real App Store install keeps Pro tools locked until purchase.
 

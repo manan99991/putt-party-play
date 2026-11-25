@@ -1,8 +1,5 @@
-# 25 Nov, run 2. Run 1: all 27 unit tests passed; the tile check had the old counts hard-coded (every tile was on screen).
-# a fresh fix (ParkFix). (3) Save my spot automatically: drive-end and spot rules over recorded situations (AutoParkTests),
-# no new permission. (4) The controls' hand-off still opens Find my car (OutsideAppTests).
+# 25 Nov. New pricing: monthly $2.99 + yearly $29.99, 7-day trial, 13 free tools (Home's front row + Find my car + the
+# old free seven), the two-plan paywall's legal terms, every pricing phrase translated.
+HandyToolsTests/PricingTests
+HandyToolsTests/LanguageTests
 HandyToolsTests/HomeShelvesTests
-HandyToolsTests/ParkFixTests
-HandyToolsTests/AutoParkTests
-HandyToolsTests/OutsideAppTests
-HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool

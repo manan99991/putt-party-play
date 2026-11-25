@@ -131,7 +131,10 @@ struct Tool: Identifiable {
     var keywords: [String] = []   // synonyms that power search
 
     /// The everyday basics stay free; everything else is a Pro tool. One place to tune the split.
-    static let freeIDs: Set<String> = ["light", "qrwifi", "seeread", "measure", "cleaner", "translate", "vault"]
+    /// 25 Nov (new pricing): the everyday basics people already had free, plus everything on Home's "Most loved" row and
+    /// Find my car, so nobody meets a lock on the front page. Everything else is Pro (7-day free trial).
+    static let freeIDs: Set<String> = ["light", "qrwifi", "seeread", "measure", "cleaner", "translate", "vault",
+                                       "scan", "identify", "menu", "pdfsign", "sticker", "gpsdash"]
     /// Open to everyone with a monthly allowance; Pro removes the limit (the tool counts and asks itself).
     /// Invoices & Quotes: 3 a month (`Invoice.freePerMonth`).
     static let meteredIDs: Set<String> = ["invoice"]
@@ -966,13 +969,13 @@ struct ProLockView: View {
                 }.padding(.top, HandySpacing.s32)
                 Text(L("A Pro tool")).font(.system(size: 22, weight: .bold))
                 Text(store.showsFreeTrial
-                     ? "\(tool.name) is part of Tenzy Pro. Start a \(store.trialLength) free trial to unlock it and every other Pro tool — unlimited use, no daily limits."
-                     : "\(tool.name) is part of Tenzy Pro. Go Pro to unlock it and every other Pro tool — unlimited use, no daily limits.")
+                     ? String(format: L("%@ is part of Tenzy Pro. Try it free for %@, with every other Pro tool and no daily limits."), L(tool.name), store.trialLengthWords)
+                     : String(format: L("%@ is part of Tenzy Pro. Go Pro to unlock it and every other Pro tool, with no daily limits."), L(tool.name)))
                     .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 Button { NotificationCenter.default.post(name: .showPaywall, object: nil) } label: {
-                    Label(store.showsFreeTrial ? "Start \(store.trialLength) free trial" : "Go Pro — \(store.yearlyPrice)/year", systemImage: "crown.fill").frame(maxWidth: .infinity)
+                    Label(store.showsFreeTrial ? String(format: L("Try Pro free for %@"), store.trialLengthWords) : L("See Pro plans"), systemImage: "crown.fill").frame(maxWidth: .infinity)
                 }.primaryButton()
-                Text(store.showsFreeTrial ? "Then \(store.yearlyPrice)/year · cancel anytime" : "\(store.yearlyPrice)/year · cancel anytime").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(String(format: L("%@ a month or %@ a year · cancel anytime"), store.monthlyPrice, store.yearlyPrice)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }.frame(maxWidth: .infinity).padding(.horizontal, HandySpacing.s8)
         }
     }
@@ -986,9 +989,20 @@ struct ToolCardPress: ButtonStyle {
 }
 
 /// Paywall sheet. Two honest plans, yearly preselected. No timers, no fake discounts.
+/// Monthly $2.99 or yearly $29.99, each with a 7-day free trial (Manan's pricing, 22 Nov).
 struct PaywallView: View {
     @EnvironmentObject var store: StoreManager
     @Environment(\.dismiss) private var dismiss
+    @State private var pickYearly = true
+
+    private var chosen: Product? { pickYearly ? store.yearly : store.monthly }
+    private var chosenPrice: String { pickYearly ? store.yearlyPrice : store.monthlyPrice }
+    private var chosenTrial: Bool { store.hasTrial(chosen) || (chosen == nil && store.showsFreeTrial) }
+    // Guideline 3.1.2: the price, the period, when payment is taken and how to cancel, at the point of purchase.
+    static let trialTermsYear = "%@ free, then %@ a year. Payment is charged to your Apple ID when the trial ends. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions."
+    static let trialTermsMonth = "%@ free, then %@ a month. Payment is charged to your Apple ID when the trial ends. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions."
+    static let termsYear = "%@ a year. Payment is charged to your Apple ID. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions."
+    static let termsMonth = "%@ a month. Payment is charged to your Apple ID. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions."
 
     var body: some View {
         VStack(spacing: HandySpacing.s16) {
@@ -1020,17 +1034,25 @@ struct PaywallView: View {
                     Text(L("Test build: every tool is already unlocked. You can still try the purchase below with a sandbox account."))
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 }
-                PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: store.showsFreeTrial ? "\(store.trialLength) free trial, then yearly" : "Renews yearly · cancel anytime", badge: nil) { }
+                PlanRow(selected: pickYearly, title: L("Yearly"), price: store.yearlyPrice,
+                        caption: store.hasTrial(store.yearly) ? String(format: L("%@ free, then %@ a year"), store.trialLengthWords, store.yearlyPrice) : L("Renews yearly · cancel anytime"),
+                        badge: store.yearlySaving) { pickYearly = true }
+                    .accessibilityIdentifier("paywall-yearly")
+                PlanRow(selected: !pickYearly, title: L("Monthly"), price: store.monthlyPrice,
+                        caption: store.hasTrial(store.monthly) ? String(format: L("%@ free, then %@ a month"), store.trialLengthWords, store.monthlyPrice) : L("Renews monthly · cancel anytime"),
+                        badge: nil) { pickYearly = false }
+                    .accessibilityIdentifier("paywall-monthly")
 
                 Button {
-                    Task { let was = store.isPremium; await store.purchase(store.yearly); if store.isPremium && !was { dismiss() } }
+                    Task { let was = store.isPremium; await store.purchase(chosen); if store.isPremium && !was { dismiss() } }
                 } label: {
-                    Text(store.showsFreeTrial ? "Start \(store.trialLength) free trial" : "Go Pro · \(store.yearlyPrice)/year").frame(maxWidth: .infinity)
-                }.primaryButton()
+                    Text(chosenTrial ? String(format: L("Try Pro free for %@"), store.trialLengthWords)
+                         : String(format: L(pickYearly ? "Go Pro · %@ a year" : "Go Pro · %@ a month"), chosenPrice)).frame(maxWidth: .infinity)
+                }.primaryButton().accessibilityIdentifier("paywall-buy")
 
-                Text(store.showsFreeTrial
-                     ? "\(store.trialLengthWords) free, then \(store.yearlyPrice)/year. Payment is charged to your Apple ID when the trial ends. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions."
-                     : "\(store.yearlyPrice)/year. Payment is charged to your Apple ID. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions.")
+                Text(chosenTrial
+                     ? String(format: L(pickYearly ? Self.trialTermsYear : Self.trialTermsMonth), store.trialLengthWords, chosenPrice)
+                     : String(format: L(pickYearly ? Self.termsYear : Self.termsMonth), chosenPrice))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 HStack(spacing: HandySpacing.s24) {
                     Button(L("Restore purchases")) { Task { await store.restore() } }.textButton()
