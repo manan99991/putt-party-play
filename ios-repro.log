@@ -1,49 +1,35 @@
-2026-11-25 05:40:49.370392+0000 HandyTools[16571:51446] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-25 05:40:51.838638+0000 HandyTools[16571:51448] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 05:40:51.842684+0000 HandyTools[16571:51448] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 05:40:51.853411+0000 HandyTools[16571:51448] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 05:40:51.856291+0000 HandyTools[16571:51448] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 05:40:52.178962+0000 HandyTools[16571:51448] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 05:40:52.191578+0000 HandyTools[16571:51448] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-Test Case '-[HandyToolsTests.HomeShelvesTests testBusinessTabOnlyWhenOnAndEveryJobIsReal]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testBusinessTabOnlyWhenOnAndEveryJobIsReal]' passed (0.034 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryShelfToolExists]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabFitsWithoutScrolling]' passed (0.000 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabNameFitsOneLine]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTabNameFitsOneLine]' passed (0.000 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTileHasAJobNameThatFitsTwoLines]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryTileHasAJobNameThatFitsTwoLines]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testEveryToolHasItsOwnTileInATab]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testFlashlightAndContactsHaveTiles]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testNoToolSitsOnTwoShelves]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.HomeShelvesTests testWelcomeChoicesOpenARealTab]' started.
-Test Case '-[HandyToolsTests.HomeShelvesTests testWelcomeChoicesOpenARealTab]' passed (0.001 seconds).
-	 Executed 9 tests, with 0 failures (0 unexpected) in 0.045 (0.203) seconds
-Test Case '-[HandyToolsTests.LanguageTests testChoosingALanguageSwitchesAtOnce]' started.
-Test Case '-[HandyToolsTests.LanguageTests testChoosingALanguageSwitchesAtOnce]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.LanguageTests testEveryChoiceIsTranslated]' started.
-Test Case '-[HandyToolsTests.LanguageTests testEveryChoiceIsTranslated]' passed (0.040 seconds).
-Test Case '-[HandyToolsTests.LanguageTests testHomeTabIsTheScreenNotAnAddress]' started.
-Test Case '-[HandyToolsTests.LanguageTests testHomeTabIsTheScreenNotAnAddress]' passed (0.009 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.056 (0.057) seconds
+2026-11-25 08:18:04.911196+0000 HandyTools[35422:97790] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-25 08:18:06.725675+0000 HandyTools[35422:97778] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-11-25 08:18:07.354113+0000 HandyTools[35422:97778] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+2026-11-25 08:18:08.705839+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-25 08:18:08.734568+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-25 08:18:08.734838+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-25 08:18:08.734976+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-25 08:18:08.802544+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-25 08:18:08.802783+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
 Test Case '-[HandyToolsTests.PricingTests testBothPlansAreSold]' started.
-Test Case '-[HandyToolsTests.PricingTests testBothPlansAreSold]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.PricingTests testBothPlansAreSold]' passed (0.005 seconds).
 Test Case '-[HandyToolsTests.PricingTests testEveryPricingPhraseIsTranslatedWithTheSamePlaceholders]' started.
-Test Case '-[HandyToolsTests.PricingTests testEveryPricingPhraseIsTranslatedWithTheSamePlaceholders]' passed (0.037 seconds).
+Test Case '-[HandyToolsTests.PricingTests testEveryPricingPhraseIsTranslatedWithTheSamePlaceholders]' passed (0.087 seconds).
 Test Case '-[HandyToolsTests.PricingTests testMostToolsArePro]' started.
 Test Case '-[HandyToolsTests.PricingTests testMostToolsArePro]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.PricingTests testNothingOnHomesFrontRowIsLocked]' started.
-Test Case '-[HandyToolsTests.PricingTests testNothingOnHomesFrontRowIsLocked]' passed (0.000 seconds).
+Test Case '-[HandyToolsTests.PricingTests testNothingOnHomesFrontRowIsLocked]' passed (0.089 seconds).
 Test Case '-[HandyToolsTests.PricingTests testTheFreeToolsPeopleAlreadyHadStayFree]' started.
-Test Case '-[HandyToolsTests.PricingTests testTheFreeToolsPeopleAlreadyHadStayFree]' passed (0.027 seconds).
+Test Case '-[HandyToolsTests.PricingTests testTheFreeToolsPeopleAlreadyHadStayFree]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.PricingTests testThePurchaseTermsSayEverythingAppleRequires]' started.
 Test Case '-[HandyToolsTests.PricingTests testThePurchaseTermsSayEverythingAppleRequires]' passed (0.001 seconds).
-	 Executed 6 tests, with 0 failures (0 unexpected) in 0.067 (0.150) seconds
-	 Executed 18 tests, with 0 failures (0 unexpected) in 0.167 (0.733) seconds
-	 Executed 18 tests, with 0 failures (0 unexpected) in 0.167 (0.733) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.184 (0.191) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.184 (0.193) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.184 (0.195) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' started.
+VIDEOFX| 1s: poster true loading false rendered false rolling false playing false item true status 0 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err - log - size 0 t 0.0
+VIDEOFX| 3s: poster true loading false rendered true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 NSOSStatusErrorDomain -12784 log - size 1080 t 0.0
+VIDEOFX| 6s: poster true loading false rendered true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 NSOSStatusErrorDomain -12784 log - size 1080 t 0.0
+VIDEOFX| 10s: poster true loading false rendered true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 NSOSStatusErrorDomain -12784 log - size 1080 t 0.0
+VIDEOFX| moving at 15s: poster true loading false rendered true rolling true playing true item true status 1 wait - err - log - size 1024 t 0.4
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (60.726 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 60.726 (60.734) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 60.726 (60.736) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 60.726 (60.738) seconds
 == crash reports
