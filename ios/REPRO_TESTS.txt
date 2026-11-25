@@ -1,4 +1,4 @@
-# 25 Nov. New pricing: monthly $2.99 + yearly $29.99, 7-day trial, 13 free tools (Home's front row + Find my car + the
+# 25 Nov, run 2 (run 1: App.swift lacked import StoreKit). New pricing: monthly $2.99 + yearly $29.99, 7-day trial, 13 free tools (Home's front row + Find my car + the
 # old free seven), the two-plan paywall's legal terms, every pricing phrase translated.
 HandyToolsTests/PricingTests
 HandyToolsTests/LanguageTests

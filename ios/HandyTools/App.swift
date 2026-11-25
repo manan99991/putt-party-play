@@ -1,4 +1,5 @@
 import SwiftUI
+import StoreKit
 import UIKit
 
 @main
