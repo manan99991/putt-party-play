@@ -630,7 +630,8 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(card.waitForExistence(timeout: 10), "the review page shows no receipt")
         XCTAssertTrue(app.textFields.matching(NSPredicate(format: "value CONTAINS[c] 'corner market'")).firstMatch.exists,
                       "the shop wasn't read as Corner Market: \(app.textFields.allElementsBoundByIndex.map { $0.value as? String ?? "" })")
-        XCTAssertTrue(app.textFields.matching(NSPredicate(format: "value == '12.37'")).firstMatch.exists, "the total wasn't read as 12.37")
+        XCTAssertTrue(app.textFields.matching(NSPredicate(format: "value == '12.37'")).firstMatch.exists,
+                      "the total wasn't read as 12.37 — fields: \(app.textFields.allElementsBoundByIndex.map { $0.value as? String ?? "" }); card: \(card.label) | \(app.staticTexts.allElementsBoundByIndex.map(\.label).joined(separator: " / "))")
         let add = any["smartreceipts-add"].firstMatch
         XCTAssertTrue(add.waitForExistence(timeout: 5), "a receipt that adds up isn't ready to add")
         add.tap()

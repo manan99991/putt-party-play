@@ -1,3 +1,4 @@
+# re-run with the fields printed (total not 12.37 on run 1)
 # 25 Nov: smart autorun — receipts. Engine rows/categories/duplicates/column line-up, and a Test run on a real receipt
 # photo taken today: read, reviewed, added as one row.
 HandyToolsTests/SmartReceiptsTests
