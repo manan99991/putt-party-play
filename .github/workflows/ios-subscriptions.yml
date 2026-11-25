@@ -3,6 +3,10 @@ name: iOS Subscriptions
 # subscriptions). Run by hand; separate from the iOS release so it never waits behind a build. Never submits.
 on:
   workflow_dispatch: {}
+  # Touch .github/subscriptions.trigger on handytools to run it (outside ios/, so it never starts a build).
+  push:
+    branches: [handytools]
+    paths: [".github/subscriptions.trigger"]
 concurrency:
   group: ios-subscriptions
   cancel-in-progress: false
