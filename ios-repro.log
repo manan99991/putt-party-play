@@ -1,50 +1,49 @@
-2026-11-25 19:52:19.874172+0000 HandyTools[14298:45354] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-25 19:52:21.250105+0000 HandyTools[14298:45362] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
-2026-11-25 19:52:21.642642+0000 HandyTools[14298:45361] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
-2026-11-25 19:52:22.124252+0000 HandyTools[14298:45322] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 19:52:22.131714+0000 HandyTools[14298:45322] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 19:52:22.132288+0000 HandyTools[14298:45322] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 19:52:22.132941+0000 HandyTools[14298:45322] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 19:52:22.200087+0000 HandyTools[14298:45322] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 19:52:22.200871+0000 HandyTools[14298:45322] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-25 20:18:26.196260+0000 HandyTools[24106:71143] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-11-25 20:18:26.614404+0000 HandyTools[24106:71141] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+2026-11-25 20:18:27.402164+0000 HandyTools[24106:71140] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-25 20:18:27.410640+0000 HandyTools[24106:71140] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-25 20:18:27.411051+0000 HandyTools[24106:71140] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-25 20:18:27.411388+0000 HandyTools[24106:71140] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-25 20:18:27.590137+0000 HandyTools[24106:71140] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-25 20:18:27.590360+0000 HandyTools[24106:71140] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
 Test Case '-[HandyToolsTests.SheetPeriodTests testAMissingShopOrDateIsMarkedNotBlocked]' started.
-Test Case '-[HandyToolsTests.SheetPeriodTests testAMissingShopOrDateIsMarkedNotBlocked]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.SheetPeriodTests testAMissingShopOrDateIsMarkedNotBlocked]' passed (0.013 seconds).
 Test Case '-[HandyToolsTests.SheetPeriodTests testAMonthlySheetKeepsTheNameItAlwaysHad]' started.
-Test Case '-[HandyToolsTests.SheetPeriodTests testAMonthlySheetKeepsTheNameItAlwaysHad]' passed (0.008 seconds).
+Test Case '-[HandyToolsTests.SheetPeriodTests testAMonthlySheetKeepsTheNameItAlwaysHad]' passed (0.016 seconds).
 Test Case '-[HandyToolsTests.SheetPeriodTests testAReceiptThatDoesntAddUpCantBeAdded]' started.
-Test Case '-[HandyToolsTests.SheetPeriodTests testAReceiptThatDoesntAddUpCantBeAdded]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.SheetPeriodTests testAReceiptThatDoesntAddUpCantBeAdded]' passed (0.006 seconds).
 Test Case '-[HandyToolsTests.SheetPeriodTests testEachPeriodNamesItsSheet]' started.
-Test Case '-[HandyToolsTests.SheetPeriodTests testEachPeriodNamesItsSheet]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.SheetPeriodTests testEachPeriodNamesItsSheet]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.SheetPeriodTests testNowIsOnlyThisPeriodsSheet]' started.
-Test Case '-[HandyToolsTests.SheetPeriodTests testNowIsOnlyThisPeriodsSheet]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SheetPeriodTests testNowIsOnlyThisPeriodsSheet]' passed (0.045 seconds).
 Test Case '-[HandyToolsTests.SheetPeriodTests testStartingANewSheetNeverOverwrites]' started.
-Test Case '-[HandyToolsTests.SheetPeriodTests testStartingANewSheetNeverOverwrites]' passed (0.143 seconds).
+Test Case '-[HandyToolsTests.SheetPeriodTests testStartingANewSheetNeverOverwrites]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.SheetPeriodTests testTheSheetsPeriodIsReadFromItsName]' started.
-Test Case '-[HandyToolsTests.SheetPeriodTests testTheSheetsPeriodIsReadFromItsName]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.SheetPeriodTests testTheSheetsPeriodIsReadFromItsName]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.SheetPeriodTests testTheYearsEndWeeksBelongToTheRightYear]' started.
 Test Case '-[HandyToolsTests.SheetPeriodTests testTheYearsEndWeeksBelongToTheRightYear]' passed (0.001 seconds).
-	 Executed 8 tests, with 0 failures (0 unexpected) in 0.163 (0.168) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.085 (0.096) seconds
 Test Case '-[HandyToolsTests.SmartReceiptsTests testAddingTheSameRunAgainAddsNothing]' started.
-Test Case '-[HandyToolsTests.SmartReceiptsTests testAddingTheSameRunAgainAddsNothing]' passed (0.009 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testAddingTheSameRunAgainAddsNothing]' passed (0.021 seconds).
 Test Case '-[HandyToolsTests.SmartReceiptsTests testAShopNameWithACommaStaysInOneCell]' started.
-Test Case '-[HandyToolsTests.SmartReceiptsTests testAShopNameWithACommaStaysInOneCell]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testAShopNameWithACommaStaysInOneCell]' passed (0.007 seconds).
 Test Case '-[HandyToolsTests.SmartReceiptsTests testCategories]' started.
-Test Case '-[HandyToolsTests.SmartReceiptsTests testCategories]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testCategories]' passed (0.004 seconds).
 Test Case '-[HandyToolsTests.SmartReceiptsTests testEachReceiptIsOneExactRow]' started.
 Test Case '-[HandyToolsTests.SmartReceiptsTests testEachReceiptIsOneExactRow]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.SmartReceiptsTests testHeldBackWhenTheNumbersDontAddUp]' started.
-Test Case '-[HandyToolsTests.SmartReceiptsTests testHeldBackWhenTheNumbersDontAddUp]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testHeldBackWhenTheNumbersDontAddUp]' passed (0.004 seconds).
 Test Case '-[HandyToolsTests.SmartReceiptsTests testOldAndNewSheetsTakeEachOthersRows]' started.
 Test Case '-[HandyToolsTests.SmartReceiptsTests testOldAndNewSheetsTakeEachOthersRows]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.SmartReceiptsTests testTheSameReceiptTwiceCountsOnce]' started.
-Test Case '-[HandyToolsTests.SmartReceiptsTests testTheSameReceiptTwiceCountsOnce]' passed (0.002 seconds).
-	 Executed 7 tests, with 0 failures (0 unexpected) in 0.026 (0.091) seconds
+Test Case '-[HandyToolsTests.SmartReceiptsTests testTheSameReceiptTwiceCountsOnce]' passed (0.003 seconds).
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.041 (2.107) seconds
 Test Case '-[HandyToolsTests.SmartRunsTests testASmallerVideoMustSaveRealSpace]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testASmallerVideoMustSaveRealSpace]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testASmallerVideoMustSaveRealSpace]' passed (0.549 seconds).
 Test Case '-[HandyToolsTests.SmartRunsTests testDueOnlyOncePerChosenTime]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testDueOnlyOncePerChosenTime]' passed (0.008 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testDueOnlyOncePerChosenTime]' passed (0.006 seconds).
 Test Case '-[HandyToolsTests.SmartRunsTests testHabitsSuggestTheRightAutorun]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testHabitsSuggestTheRightAutorun]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testHabitsSuggestTheRightAutorun]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.SmartRunsTests testItComesBackAtTheNextChosenTime]' started.
 Test Case '-[HandyToolsTests.SmartRunsTests testItComesBackAtTheNextChosenTime]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.SmartRunsTests testItLooksAtWhatsNewButNeverAWeekAtOnce]' started.
@@ -61,15 +60,15 @@ Test Case '-[HandyToolsTests.SmartRunsTests testTheSamePictureBar]' started.
 Test Case '-[HandyToolsTests.SmartRunsTests testTheSamePictureBar]' passed (0.012 seconds).
 Test Case '-[HandyToolsTests.SmartRunsTests testTwiceADayIsTwelveHoursApart]' started.
 Test Case '-[HandyToolsTests.SmartRunsTests testTwiceADayIsTwelveHoursApart]' passed (0.001 seconds).
-	 Executed 11 tests, with 0 failures (0 unexpected) in 0.031 (0.036) seconds
-	 Executed 26 tests, with 0 failures (0 unexpected) in 0.220 (0.297) seconds
-	 Executed 26 tests, with 0 failures (0 unexpected) in 0.220 (0.298) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 0.576 (0.713) seconds
+	 Executed 26 tests, with 0 failures (0 unexpected) in 0.703 (2.989) seconds
+	 Executed 26 tests, with 0 failures (0 unexpected) in 0.703 (2.990) seconds
 Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (19.970 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (25.160 seconds).
 Test Case '-[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:633: error: -[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet] : XCTAssertTrue failed - the total wasn't read as 12.37
-Test Case '-[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet]' failed (29.380 seconds).
-	 Executed 2 tests, with 1 failure (0 unexpected) in 49.350 (49.368) seconds
-	 Executed 2 tests, with 1 failure (0 unexpected) in 49.350 (49.369) seconds
-	 Executed 2 tests, with 1 failure (0 unexpected) in 49.350 (49.370) seconds
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:633: error: -[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet] : XCTAssertTrue failed - the total wasn't read as 12.37 — fields: ["CORNER MARKET", "11.64"]; card: Photo | Today's receipts / Check each one, then add them to “Expenses 2026-11”. / Photo / Nov 25, 2026 / · Groceries / Back
+Test Case '-[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet]' failed (37.711 seconds).
+	 Executed 2 tests, with 1 failure (0 unexpected) in 62.871 (62.879) seconds
+	 Executed 2 tests, with 1 failure (0 unexpected) in 62.871 (62.880) seconds
+	 Executed 2 tests, with 1 failure (0 unexpected) in 62.871 (62.882) seconds
 == crash reports
