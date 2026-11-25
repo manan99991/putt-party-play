@@ -1015,10 +1015,10 @@ struct PaywallView: View {
             Text(L("Every tool and every builder step. No daily limits.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
 
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                ForEach(["Unlock every tool", "Every Build-your-own step, unlimited saved tools", "Every theme unlocked", "No daily limits — build and run freely"], id: \.self) { line in
-                    HStack(spacing: HandySpacing.s12) {
+                ForEach(["Unlock every tool", "Build as many of your own tools as you like", "Every theme unlocked", "No daily limits — build and run freely"], id: \.self) { line in
+                    HStack(alignment: .firstTextBaseline, spacing: HandySpacing.s12) {
                         Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.accent)
-                        Text(line).font(HandyFont.body)
+                        Text(L(line)).font(HandyFont.body).fixedSize(horizontal: false, vertical: true)
                     }
                 }
             }.frame(maxWidth: .infinity, alignment: .leading).padding(.top, HandySpacing.s8)

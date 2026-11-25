@@ -13428,5 +13428,35 @@
   "ja": "月額 %@。Apple ID に請求されます。期間終了の 24 時間前までに 設定 › Apple ID › サブスクリプション で解約しない限り、自動更新されます。",
   "pt": "%@ por mês. O pagamento é cobrado no seu ID Apple. Renova automaticamente, a menos que seja cancelado pelo menos 24 horas antes do fim do período, em Ajustes › ID Apple › Assinaturas.",
   "zh": "每月 %@。通过你的 Apple ID 扣款。除非在当前周期结束前至少 24 小时于 设置 › Apple ID › 订阅 中取消，否则将自动续订。"
+ },
+ "Build as many of your own tools as you like": {
+  "de": "Baue so viele eigene Werkzeuge, wie du willst",
+  "es": "Crea tantas herramientas propias como quieras",
+  "fr": "Créez autant d'outils à vous que vous voulez",
+  "hi": "जितने चाहें उतने अपने टूल बनाएँ",
+  "it": "Crea tutti gli strumenti tuoi che vuoi",
+  "ja": "自分のツールを好きなだけ作れます",
+  "pt": "Crie quantas ferramentas suas quiser",
+  "zh": "想建多少自己的工具都可以"
+ },
+ "Every theme unlocked": {
+  "de": "Alle Designs freigeschaltet",
+  "es": "Todos los temas desbloqueados",
+  "fr": "Tous les thèmes débloqués",
+  "hi": "सभी थीम अनलॉक",
+  "it": "Tutti i temi sbloccati",
+  "ja": "すべてのテーマが使えます",
+  "pt": "Todos os temas liberados",
+  "zh": "解锁所有主题"
+ },
+ "No daily limits — build and run freely": {
+  "de": "Keine Tageslimits – bauen und nutzen, so viel du willst",
+  "es": "Sin límites diarios: crea y usa con libertad",
+  "fr": "Aucune limite quotidienne : créez et utilisez librement",
+  "hi": "कोई दैनिक सीमा नहीं — खुलकर बनाएँ और चलाएँ",
+  "it": "Nessun limite giornaliero: crea e usa liberamente",
+  "ja": "1 日の上限なし。自由に作って使えます",
+  "pt": "Sem limites diários: crie e use à vontade",
+  "zh": "无每日限制——随心创建和使用"
  }
 }
