@@ -142,11 +142,21 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   imported tool is only saved to My tools, never run by itself.
 - Outside the app (24 Nov): Control Center / Lock Screen / Action-button controls (Save where I parked, Scan, What is this?,
   Translate) and the Shortcuts action "Save Where I Parked" (made for an automation when the car's Bluetooth disconnects)
-  all **open Tenzy** and do the work in the foreground: the parking pin uses the existing when-in-use location, never
-  background location, so no new permission or usage string. The parking meter shows as a Live Activity on the Lock Screen
+  all **open Tenzy** and do the work in the foreground with the existing when-in-use location (the automation steps offer
+  CarPlay or Bluetooth disconnecting). A pin only uses a fresh fix taken after saving began (ParkFix), never the phone's
+  remembered old one. The parking meter shows as a Live Activity on the Lock Screen
   and in the Dynamic Island (`NSSupportsLiveActivities`, local only, no push), started when the person sets a meter and
   ended when it's cancelled or the car is cleared. Nothing is collected. Reviewer note before production: say the controls
   and the Shortcuts action open the app, and the Live Activity is the meter countdown.
+- Automatic parking (25 Nov, Manan: "build around existing permissions"): GPS Dashboard > "Save my spot automatically", **off by
+  default**. Uses only When In Use location and Motion & Fitness (both already declared; the two usage strings now name this
+  use) plus `UIBackgroundModes: location` and a `CLBackgroundActivitySession` started when the person switches it on (iPhone
+  shows the blue location indicator). **Never request Always location** for it. Cell-level accuracy off the road, full GPS only
+  while the motion chip or speed says driving; the spot is saved on the phone when the person walks away (or after three minutes
+  still), with a local notification and a "Not my car" undo. Nothing is uploaded, so App Privacy stays "Data Not Collected".
+  Reviewer note explains it (BACKGROUND LOCATION). The privacy policy needs one line about it before the store submit (drafted in
+  docs/listing-draft.md; the website change needs Manan's yes). Android port: same switch, foreground-service-free design to
+  be chosen at port time (Android background location is a Play declaration; ask before adding it).
 - "Change the voice" only changes speed and pitch. Do not describe it as voice cloning or as sounding like a real person.
 - Build your own, Pro steps: only the 10 basic steps are free (`Block.freeStepIDs` / `FREE_STEP_IDS`, matched on both
   phones): Read text, Tidy text, Summarize, Find links/emails/phones, Clean tracking, Make a QR code, Wi-Fi join code,

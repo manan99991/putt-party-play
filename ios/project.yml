@@ -82,7 +82,7 @@ targets:
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         UIRequiresFullScreen: true
         ITSAppUsesNonExemptEncryption: false
-        UIBackgroundModes: [audio, fetch, processing]   # audio: Rest keeps playing with the screen off · fetch: smart alert checks · processing: the photo index finishes while charging
+        UIBackgroundModes: [audio, fetch, processing, location]   # audio: Rest keeps playing with the screen off · fetch: smart alert checks · processing: the photo index finishes while charging · location: "Save my spot automatically" (While Using + a background location session, only when switched on)
         BGTaskSchedulerPermittedIdentifiers: [com.tenzy.toolkit.smartalerts, com.tenzy.toolkit.photoindex]
         CFBundleURLTypes:
           - CFBundleURLName: com.tenzy.toolkit
@@ -230,8 +230,8 @@ targets:
         NSCameraUsageDescription: Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded.
         NSMicrophoneUsageDescription: Needed for the sound meter and voice tools. Levels are measured on your phone; nothing is uploaded.
         NSAppleMusicUsageDescription: Lets you add a song from your Music app to a video you make. Songs are read on your phone and never uploaded.
-        NSLocationWhenInUseUsageDescription: Needed for the compass (true north), altitude, the GPS dashboard, and to put where you are into a tool when you tap Location. It is only shared if you send it.
-        NSMotionUsageDescription: Needed for the level, barometer/altimeter and metal detector readings.
+        NSLocationWhenInUseUsageDescription: Needed for the compass (true north), altitude, the GPS dashboard, saving where you parked (and, if you switch it on, saving it automatically when you stop driving), and to put where you are into a tool when you tap Location. It stays on your phone and is only shared if you send it.
+        NSMotionUsageDescription: Needed for the level, barometer/altimeter and metal detector readings, and to tell when you stop driving so your parking spot saves by itself (only if you switch that on). It stays on your phone.
         NSSpeechRecognitionUsageDescription: Needed to transcribe your voice to text. Audio is processed on your phone and never uploaded.
         NSPhotoLibraryUsageDescription: Needed to read text from screenshots, view or strip photo metadata, and find large or duplicate photos and videos you choose to remove. iOS always asks you to confirm a deletion.
         NSPhotoLibraryAddUsageDescription: Needed to save cleaned photos and scanned documents.

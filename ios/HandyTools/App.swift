@@ -23,6 +23,7 @@ struct TenzyApp: App {
         SmartAlerts.registerBackground()      // "tell me when…" checks, when iPhone grants a background refresh
         MemoryIndex.registerBackground()      // the photo index finishes overnight while the phone charges
         ScreenshotDemo.seed()                 // store screenshots only (-screenshots -demo)
+        MainActor.assumeIsolated { AutoPark.shared.resume() }   // automatic parking, when switched on (also when iPhone relaunches Tenzy for it)
     }
     @Environment(\.scenePhase) private var phase
 

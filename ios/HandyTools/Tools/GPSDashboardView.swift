@@ -1,6 +1,7 @@
 import SwiftUI
 import CoreLocation
 import MapKit
+import UserNotifications
 import AudioToolbox
 
 /// GPS Dashboard — the instrument cluster your phone never shows: live speed, heading, altitude and
@@ -27,6 +28,8 @@ enum ParkFix {
     static var pending = false
     /// Posted when the dashboard is already open, so it starts saving straight away.
     static let notification = Notification.Name("tenzy.parknow")
+    /// Posted when automatic parking saves a spot, so an open Find my car shows it at once.
+    static let saved = Notification.Name("tenzy.parknow.saved")
 }
 
 struct GPSDashboardView: View {
@@ -42,6 +45,10 @@ struct GPSDashboardView: View {
     @State private var customMeter = Date().addingTimeInterval(3600)
     @State private var meterNote: String?
     @State private var notifyOff = false
+    @ObservedObject private var auto = AutoPark.shared
+    @AppStorage(AutoPark.onKey) private var autoOn = false
+    @State private var alertsAllowed = false
+    @State private var autoTest: String?
     @AppStorage("gps.speedLimit") private var speedLimit = 0.0
     @State private var warnState = SpeedWarning.State()
     @State private var overLimit = false
@@ -69,6 +76,7 @@ struct GPSDashboardView: View {
             if let autoNote { Label(L(autoNote), systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success).cardStyle() }
             parkCard
             if parked != nil { meterCard }
+            automaticCard
             autoParkCard
 
             // 2) Your exact spot, to copy or send to someone.
@@ -189,7 +197,22 @@ struct GPSDashboardView: View {
                     UserAnnotation()
                 }
                 .frame(height: 160).clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-                if let parkedAt { Text("Saved \(parkedAt.formatted(.relative(presentation: .named)))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                // A new spot redraws the map around it (the map kept showing the old place after a new save, 24 Nov).
+                .id("\(p.latitude),\(p.longitude)")
+                if let parkedAt {
+                    HStack(spacing: 6) {
+                        Text(ParkStore.wasAuto
+                             ? String(format: L("Saved by itself %@"), parkedAt.formatted(.relative(presentation: .named))) + (ParkStore.accuracy.map { " · " + String(format: L("within %@"), GeoFormat.distance($0, metric: metric)) } ?? "")
+                             : String(format: L("Saved %@"), parkedAt.formatted(.relative(presentation: .named))))
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        Spacer(minLength: 4)
+                        if ParkStore.wasAuto {
+                            // A bus, a taxi or a friend's car isn't yours: put the earlier spot back.
+                            Button { ParkStore.restorePrevious(); reloadSpot() } label: { Text(L("Not my car")).font(HandyFont.caption.weight(.semibold)) }
+                                .buttonStyle(.plain).foregroundStyle(HandyColor.accent).frame(minHeight: 44).accessibilityIdentifier("gps-not-my-car")
+                        }
+                    }
+                }
                 TextField(L("Note (Level 3, near the lift…)"), text: $parkNote).textFieldStyle(.handy).onChange(of: parkNote) { _, n in ParkStore.setNote(n) }
                 HStack(spacing: HandySpacing.s8) {
                     Button { walkBack(p) } label: { Label(L("Walk me back"), systemImage: "figure.walk").frame(maxWidth: .infinity) }.primaryButton()
@@ -306,6 +329,104 @@ struct GPSDashboardView: View {
         .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
     }
 
+    private func reloadSpot() {
+        parked = ParkStore.load(); parkedAt = ParkStore.date(); parkNote = ParkStore.note()
+    }
+
+    // MARK: Save my spot automatically
+
+    /// One switch, no setup (Manan, 24 Nov): Tenzy notices the drive ending and saves where you got out. Uses only the
+    /// While Using location and Motion & Fitness. Shows what's still needed, with a Settings button for each, and a
+    /// Test run that checks everything and sends a sample alert.
+    private var automaticCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Toggle(isOn: Binding(get: { autoOn }, set: { on in
+                autoOn = on
+                if on { auto.turnOn() } else { auto.turnOff() }
+                autoTest = nil
+                Task { await refreshAlertsAllowed() }
+            })) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Label(L("Save my spot automatically"), systemImage: "car.side.arrowtriangle.down.fill").font(HandyFont.bodyStrong)
+                    Text(L("When you stop driving and get out, Tenzy saves where you parked and tells you. Nothing to set up.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+            }
+            .tint(HandyColor.accent).accessibilityIdentifier("gps-autopark-switch")
+            if autoOn {
+                autoRow(auto.allowed, L("Location"), auto.authorization == .denied || auto.authorization == .restricted ? L("Turn on in Settings › Tenzy › Location") : L("Allow when asked"))
+                autoRow(auto.precise, L("Precise location"), L("Turn on Precise Location in Settings › Tenzy › Location"))
+                autoRow(AutoPark.motionAllowed, L("Motion & Fitness"), L("Turn on in Settings › Tenzy"))
+                autoRow(alertsAllowed, L("Alerts"), L("Optional: turn on to hear when your spot is saved"))
+                if ProcessInfo.processInfo.isLowPowerModeEnabled {
+                    Label(L("Low Power Mode is on: iPhone may pause this until it's off."), systemImage: "battery.25").font(HandyFont.caption).foregroundStyle(HandyColor.amber)
+                }
+                if let last = AutoPark.lastSaved {
+                    Text(String(format: L("Last saved by itself: %@"), last.formatted(.relative(presentation: .named)))).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+                HStack(spacing: HandySpacing.s8) {
+                    Button { runAutoTest() } label: { Label(L("Test run"), systemImage: "play.circle") }
+                        .compactButton().accessibilityIdentifier("gps-autopark-check")
+                    if !(auto.allowed && auto.precise && AutoPark.motionAllowed), let u = URL(string: UIApplication.openSettingsURLString) {
+                        Button { UIApplication.shared.open(u) } label: { Label(L("Open Settings"), systemImage: "gear") }.compactButton()
+                    }
+                }
+                if let autoTest {
+                    Text(autoTest).font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary).accessibilityIdentifier("gps-autopark-result")
+                }
+                Text(L("Uses the location and motion access Tenzy already has. iPhone shows a small blue location pill while it's on. Swiping Tenzy away pauses it until you open it again. Nothing leaves your phone."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            }
+        }
+        .cardStyle()
+        .task { await refreshAlertsAllowed() }
+        .onReceive(NotificationCenter.default.publisher(for: ParkNow.saved)) { _ in reloadSpot() }
+    }
+
+    private func autoRow(_ ok: Bool, _ what: String, _ fix: String) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: ok ? "checkmark.circle.fill" : "exclamationmark.circle.fill")
+                .foregroundStyle(ok ? HandyColor.success : HandyColor.amber).accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(what).font(HandyFont.caption.weight(.semibold)).foregroundStyle(HandyColor.textPrimary)
+                if !ok { Text(fix).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
+            }
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    private func refreshAlertsAllowed() async {
+        let s = await UNUserNotificationCenter.current().notificationSettings()
+        alertsAllowed = s.authorizationStatus == .authorized || s.authorizationStatus == .provisional
+    }
+
+    /// Checks every piece and says, in plain words, what Tenzy sees right now; sends a sample "Car parked" alert.
+    private func runAutoTest() {
+        auto.askMotion()
+        Task {
+            await refreshAlertsAllowed()
+            try? await Task.sleep(nanoseconds: 600_000_000)
+            var missing: [String] = []
+            if !auto.allowed { missing.append(L("Location")) }
+            if !auto.precise { missing.append(L("Precise location")) }
+            if !AutoPark.motionAllowed { missing.append(L("Motion & Fitness")) }
+            let seen: String
+            switch auto.motionNow {
+            case .driving: seen = L("driving")
+            case .walking: seen = L("walking")
+            case .still: seen = L("still")
+            case .unknown: seen = L("not sure yet")
+            }
+            if missing.isEmpty {
+                autoTest = String(format: L("Ready. Right now Tenzy sees you %@. Next time you park and walk away, your spot saves by itself."), seen)
+                    + (alertsAllowed ? " " + L("A sample alert arrives in 5 seconds.") : "")
+                if alertsAllowed { AutoPark.notify(at: Date(), test: true) }
+                HandyHaptics.success()
+            } else {
+                autoTest = String(format: L("Not ready yet. Still needed: %@."), missing.joined(separator: ", "))
+            }
+        }
+    }
+
     private func park() {
         guard let c = gps.coordinate, ParkFix.fresh(gps.fixTime, now: Date()) else { return }
         ParkStore.save(c); parked = c; parkedAt = Date(); HandyHaptics.success()
@@ -321,7 +442,7 @@ struct GPSDashboardView: View {
     /// runs when the phone leaves the car's Bluetooth. Steps in plain words, and a Test run that does the real thing.
     private var autoParkCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Label(L("Save it without opening Tenzy"), systemImage: "bolt.car.fill").font(HandyFont.bodyStrong)
+            Label(L("Other ways to save it"), systemImage: "bolt.car.fill").font(HandyFont.bodyStrong)
             Text(L("When you leave the car — automatically")).font(HandyFont.caption.weight(.semibold)).foregroundStyle(HandyColor.textPrimary)
             autoStep(1, "Open the Shortcuts app and tap Automation, then +.")
             autoStep(2, "Choose CarPlay (or Bluetooth, then your car) and choose Disconnects. Set it to Run Immediately.")

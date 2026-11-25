@@ -1,4 +1,8 @@
-# 25 Nov. Manan: "where is the icon for the 9 remaining tools?" The jobs inside another tool now have their own tiles
-# (Audio and Words replace their menu hubs). Proof: every tool has a tile, and every tile is on screen on the short phone.
+# 25 Nov. (1) Every tool has a tile, on screen on the short phone (the 9 jobs inside other tools). (2) Parking pins only
+# a fresh fix (ParkFix). (3) Save my spot automatically: drive-end and spot rules over recorded situations (AutoParkTests),
+# no new permission. (4) The controls' hand-off still opens Find my car (OutsideAppTests).
 HandyToolsTests/HomeShelvesTests
+HandyToolsTests/ParkFixTests
+HandyToolsTests/AutoParkTests
+HandyToolsTests/OutsideAppTests
 HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool

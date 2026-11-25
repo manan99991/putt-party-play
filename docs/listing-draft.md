@@ -211,3 +211,10 @@ Release notes (top lines):
 • Identify names the big thing in the photo (a TV, not the vase beside it)
 
 Checked against rulebook §3: no tool counts, no "best/#1", no price in subtitle or screenshots, medicine line unchanged.
+
+
+## 25 Nov — privacy policy line for automatic parking (needs Manan's yes: the website is public)
+Add under Location on manan99991.github.io/tenzy/privacy.html:
+> If you turn on "Save my spot automatically" in GPS Dashboard, Tenzy uses your location while it runs in the background
+> (iPhone shows the blue location indicator) and your phone's motion activity to notice when you stop driving, and saves
+> where you parked. This stays on your phone and is never uploaded. Turn it off any time in the same place.

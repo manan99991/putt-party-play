@@ -72,5 +72,26 @@ enum ParkStore {
     static func date() -> Date? { d.object(forKey: "park.at") as? Date }
     static func note() -> String { d.string(forKey: "park.note") ?? "" }
     static func setNote(_ s: String) { d.set(s, forKey: "park.note") }
-    static func clear() { ["park.lat", "park.lng", "park.at", "park.note"].forEach { d.removeObject(forKey: $0) } }
+    static func clear() { ["park.lat", "park.lng", "park.at", "park.note", "park.auto", "park.acc"].forEach { d.removeObject(forKey: $0) } }
+
+    /// Saved by itself (automatic parking), and how close the fix was, for "Saved automatically · within 12 m".
+    static func setAuto(accuracy: Double) { d.set(true, forKey: "park.auto"); d.set(accuracy, forKey: "park.acc") }
+    static var wasAuto: Bool { d.bool(forKey: "park.auto") }
+    static var accuracy: Double? { d.object(forKey: "park.acc") as? Double }
+
+    /// Before an automatic save: keep the spot it replaces, so "Not my car" puts it back (a bus or a lift isn't your car).
+    static func keepPrevious() {
+        for k in ["lat", "lng", "at", "note", "auto", "acc"] {
+            if let v = d.object(forKey: "park.\(k)") { d.set(v, forKey: "park.prev.\(k)") } else { d.removeObject(forKey: "park.prev.\(k)") }
+        }
+        d.removeObject(forKey: "park.note"); d.removeObject(forKey: "park.auto"); d.removeObject(forKey: "park.acc")
+    }
+    static var hasPrevious: Bool { d.object(forKey: "park.prev.lat") != nil }
+    /// "Not my car": put the earlier spot back (or clear it if there wasn't one).
+    static func restorePrevious() {
+        for k in ["lat", "lng", "at", "note", "auto", "acc"] {
+            if let v = d.object(forKey: "park.prev.\(k)") { d.set(v, forKey: "park.\(k)") } else { d.removeObject(forKey: "park.\(k)") }
+            d.removeObject(forKey: "park.prev.\(k)")
+        }
+    }
 }

@@ -46788,5 +46788,275 @@
   "ja": "現在地を探しています。電波をよくするには屋外に出てください。",
   "pt": "A procurar onde você está agora — vá para fora para ter melhor sinal.",
   "zh": "正在查找你现在的位置——到室外信号会更好。"
+ },
+ "Car parked": {
+  "de": "Auto geparkt",
+  "es": "Coche aparcado",
+  "fr": "Voiture garée",
+  "hi": "गाड़ी पार्क हुई",
+  "it": "Auto parcheggiata",
+  "ja": "駐車しました",
+  "pt": "Carro estacionado",
+  "zh": "已停车"
+ },
+ "Saved where you parked at %@. Tap to see it and walk back.": {
+  "de": "Dein Parkplatz wurde um %@ gespeichert. Tippe, um ihn zu sehen und zurückzugehen.",
+  "es": "Guardado dónde aparcaste a las %@. Toca para verlo y volver andando.",
+  "fr": "Emplacement enregistré à %@. Touchez pour le voir et y retourner à pied.",
+  "hi": "%@ बजे आपकी पार्किंग की जगह सेव हुई। देखने और वापस पैदल जाने के लिए टैप करें।",
+  "it": "Salvato dove hai parcheggiato alle %@. Tocca per vederlo e tornarci a piedi.",
+  "ja": "%@ に駐車位置を保存しました。タップして確認し、歩いて戻れます。",
+  "pt": "Salvamos onde você estacionou às %@. Toque para ver e voltar a pé.",
+  "zh": "已在 %@ 保存停车位置。轻点查看并步行返回。"
+ },
+ "Saved by itself %@": {
+  "de": "Automatisch gespeichert %@",
+  "es": "Guardado solo %@",
+  "fr": "Enregistré tout seul %@",
+  "hi": "अपने आप सेव हुआ %@",
+  "it": "Salvato da solo %@",
+  "ja": "自動で保存 %@",
+  "pt": "Salvo sozinho %@",
+  "zh": "已自动保存 %@"
+ },
+ "within %@": {
+  "de": "auf %@ genau",
+  "es": "con %@ de margen",
+  "fr": "à %@ près",
+  "hi": "%@ के भीतर",
+  "it": "entro %@",
+  "ja": "誤差 %@",
+  "pt": "margem de %@",
+  "zh": "误差 %@ 内"
+ },
+ "Saved %@": {
+  "de": "Gespeichert %@",
+  "es": "Guardado %@",
+  "fr": "Enregistré %@",
+  "hi": "सेव हुआ %@",
+  "it": "Salvato %@",
+  "ja": "保存 %@",
+  "pt": "Salvo %@",
+  "zh": "已保存 %@"
+ },
+ "Not my car": {
+  "de": "Nicht mein Auto",
+  "es": "No es mi coche",
+  "fr": "Pas ma voiture",
+  "hi": "मेरी गाड़ी नहीं",
+  "it": "Non è la mia auto",
+  "ja": "自分の車ではない",
+  "pt": "Não é meu carro",
+  "zh": "不是我的车"
+ },
+ "Save my spot automatically": {
+  "de": "Parkplatz automatisch speichern",
+  "es": "Guardar mi plaza automáticamente",
+  "fr": "Enregistrer ma place automatiquement",
+  "hi": "मेरी जगह अपने आप सेव करें",
+  "it": "Salva il parcheggio in automatico",
+  "ja": "駐車位置を自動で保存",
+  "pt": "Salvar minha vaga automaticamente",
+  "zh": "自动保存停车位置"
+ },
+ "When you stop driving and get out, Tenzy saves where you parked and tells you. Nothing to set up.": {
+  "de": "Wenn du anhältst und aussteigst, speichert Tenzy deinen Parkplatz und sagt dir Bescheid. Nichts einzurichten.",
+  "es": "Cuando dejas de conducir y te bajas, Tenzy guarda dónde aparcaste y te avisa. No hay que configurar nada.",
+  "fr": "Quand vous arrêtez de conduire et sortez, Tenzy enregistre où vous êtes garé et vous prévient. Rien à configurer.",
+  "hi": "जब आप गाड़ी रोककर उतरते हैं, Tenzy पार्किंग की जगह सेव करके आपको बताता है। कुछ सेट नहीं करना है।",
+  "it": "Quando smetti di guidare e scendi, Tenzy salva dove hai parcheggiato e te lo dice. Niente da impostare.",
+  "ja": "運転をやめて車を降りると、Tenzy が駐車位置を保存してお知らせします。設定は不要です。",
+  "pt": "Quando você para de dirigir e desce, o Tenzy salva onde você estacionou e avisa. Nada para configurar.",
+  "zh": "当你停车下车时，Tenzy 会保存停车位置并通知你。无需设置。"
+ },
+ "Turn on in Settings › Tenzy › Location": {
+  "de": "Unter Einstellungen › Tenzy › Ortung einschalten",
+  "es": "Actívalo en Ajustes › Tenzy › Ubicación",
+  "fr": "Activez dans Réglages › Tenzy › Position",
+  "hi": "सेटिंग्स › Tenzy › लोकेशन में चालू करें",
+  "it": "Attiva in Impostazioni › Tenzy › Posizione",
+  "ja": "設定 › Tenzy › 位置情報 でオンにしてください",
+  "pt": "Ative em Ajustes › Tenzy › Localização",
+  "zh": "在 设置 › Tenzy › 位置 中打开"
+ },
+ "Allow when asked": {
+  "de": "Erlauben, wenn gefragt",
+  "es": "Permítelo cuando te lo pida",
+  "fr": "Autorisez quand on vous le demande",
+  "hi": "पूछे जाने पर अनुमति दें",
+  "it": "Consenti quando richiesto",
+  "ja": "確認されたら許可してください",
+  "pt": "Permita quando for pedido",
+  "zh": "出现提示时选择允许"
+ },
+ "Precise location": {
+  "de": "Genauer Standort",
+  "es": "Ubicación exacta",
+  "fr": "Position exacte",
+  "hi": "सटीक लोकेशन",
+  "it": "Posizione esatta",
+  "ja": "正確な位置情報",
+  "pt": "Localização precisa",
+  "zh": "精确位置"
+ },
+ "Turn on Precise Location in Settings › Tenzy › Location": {
+  "de": "Genauen Standort unter Einstellungen › Tenzy › Ortung einschalten",
+  "es": "Activa Ubicación exacta en Ajustes › Tenzy › Ubicación",
+  "fr": "Activez Position exacte dans Réglages › Tenzy › Position",
+  "hi": "सेटिंग्स › Tenzy › लोकेशन में सटीक लोकेशन चालू करें",
+  "it": "Attiva Posizione esatta in Impostazioni › Tenzy › Posizione",
+  "ja": "設定 › Tenzy › 位置情報 で「正確な位置情報」をオンにしてください",
+  "pt": "Ative Localização Precisa em Ajustes › Tenzy › Localização",
+  "zh": "在 设置 › Tenzy › 位置 中打开“精确位置”"
+ },
+ "Motion & Fitness": {
+  "de": "Bewegung & Fitness",
+  "es": "Movimiento y forma física",
+  "fr": "Mouvements et forme",
+  "hi": "मोशन और फ़िटनेस",
+  "it": "Movimento e fitness",
+  "ja": "モーションとフィットネス",
+  "pt": "Movimento e Preparo Físico",
+  "zh": "运动与健身"
+ },
+ "Turn on in Settings › Tenzy": {
+  "de": "Unter Einstellungen › Tenzy einschalten",
+  "es": "Actívalo en Ajustes › Tenzy",
+  "fr": "Activez dans Réglages › Tenzy",
+  "hi": "सेटिंग्स › Tenzy में चालू करें",
+  "it": "Attiva in Impostazioni › Tenzy",
+  "ja": "設定 › Tenzy でオンにしてください",
+  "pt": "Ative em Ajustes › Tenzy",
+  "zh": "在 设置 › Tenzy 中打开"
+ },
+ "Alerts": {
+  "de": "Mitteilungen",
+  "es": "Avisos",
+  "fr": "Alertes",
+  "hi": "अलर्ट",
+  "it": "Avvisi",
+  "ja": "通知",
+  "pt": "Alertas",
+  "zh": "提醒"
+ },
+ "Optional: turn on to hear when your spot is saved": {
+  "de": "Optional: einschalten, um zu erfahren, wann dein Parkplatz gespeichert ist",
+  "es": "Opcional: actívalo para saber cuándo se guarda tu plaza",
+  "fr": "Facultatif : activez-les pour savoir quand votre place est enregistrée",
+  "hi": "वैकल्पिक: जगह सेव होने पर सूचना पाने के लिए चालू करें",
+  "it": "Facoltativo: attivali per sapere quando il parcheggio è salvato",
+  "ja": "任意：オンにすると保存時にお知らせします",
+  "pt": "Opcional: ative para saber quando sua vaga for salva",
+  "zh": "可选：打开后，保存停车位置时会通知你"
+ },
+ "Low Power Mode is on: iPhone may pause this until it's off.": {
+  "de": "Stromsparmodus ist an: iPhone pausiert das eventuell, bis er aus ist.",
+  "es": "El modo de bajo consumo está activado: el iPhone puede pausar esto hasta que lo desactives.",
+  "fr": "Le mode Économie d'énergie est activé : l'iPhone peut mettre ceci en pause jusqu'à sa désactivation.",
+  "hi": "लो पावर मोड चालू है: बंद होने तक iPhone इसे रोक सकता है।",
+  "it": "Il risparmio energetico è attivo: l'iPhone può sospendere questa funzione finché non lo disattivi.",
+  "ja": "低電力モードがオンです：オフになるまで iPhone が一時停止することがあります。",
+  "pt": "O Modo de Pouca Energia está ativado: o iPhone pode pausar isto até ser desativado.",
+  "zh": "低电量模式已开启：关闭前 iPhone 可能会暂停此功能。"
+ },
+ "Last saved by itself: %@": {
+  "de": "Zuletzt automatisch gespeichert: %@",
+  "es": "Último guardado automático: %@",
+  "fr": "Dernier enregistrement automatique : %@",
+  "hi": "पिछली बार अपने आप सेव: %@",
+  "it": "Ultimo salvataggio automatico: %@",
+  "ja": "前回の自動保存：%@",
+  "pt": "Último salvamento automático: %@",
+  "zh": "上次自动保存：%@"
+ },
+ "Uses the location and motion access Tenzy already has. iPhone shows a small blue location pill while it's on. Swiping Tenzy away pauses it until you open it again. Nothing leaves your phone.": {
+  "de": "Nutzt den Standort- und Bewegungszugriff, den Tenzy schon hat. Solange es an ist, zeigt das iPhone ein kleines blaues Ortungssymbol. Wenn du Tenzy wegwischst, pausiert es, bis du es wieder öffnest. Nichts verlässt dein Handy.",
+  "es": "Usa el acceso a la ubicación y al movimiento que Tenzy ya tiene. Mientras está activado, el iPhone muestra una pequeña píldora azul de ubicación. Si cierras Tenzy deslizando, se pausa hasta que lo vuelvas a abrir. Nada sale de tu teléfono.",
+  "fr": "Utilise l'accès à la position et aux mouvements que Tenzy a déjà. Tant que c'est activé, l'iPhone affiche une petite pastille bleue de localisation. Si vous fermez Tenzy en le balayant, c'est en pause jusqu'à sa réouverture. Rien ne quitte votre téléphone.",
+  "hi": "Tenzy के पास पहले से मौजूद लोकेशन और मोशन अनुमति का ही उपयोग करता है। चालू रहने पर iPhone ऊपर एक छोटा नीला लोकेशन चिह्न दिखाता है। Tenzy को स्वाइप करके बंद करने पर यह दोबारा खोलने तक रुक जाता है। आपके फ़ोन से कुछ बाहर नहीं जाता।",
+  "it": "Usa l'accesso a posizione e movimento che Tenzy ha già. Mentre è attivo, l'iPhone mostra una piccola pillola blu della posizione. Se chiudi Tenzy scorrendo, si ferma finché non lo riapri. Nulla lascia il telefono.",
+  "ja": "Tenzy がすでに持っている位置情報とモーションのアクセスを使います。オンの間、iPhone には小さな青い位置情報マークが表示されます。Tenzy を上にスワイプして閉じると、次に開くまで一時停止します。データは端末の外に出ません。",
+  "pt": "Usa o acesso à localização e ao movimento que o Tenzy já tem. Enquanto estiver ativado, o iPhone mostra uma pequena pílula azul de localização. Se você fechar o Tenzy deslizando, ele pausa até ser aberto de novo. Nada sai do seu celular.",
+  "zh": "使用 Tenzy 已有的位置和运动访问权限。开启时 iPhone 会显示一个蓝色的小定位标记。上滑关闭 Tenzy 后会暂停，直到你再次打开。所有数据都不会离开你的手机。"
+ },
+ "driving": {
+  "de": "am Fahren",
+  "es": "conduciendo",
+  "fr": "en voiture",
+  "hi": "गाड़ी चलाते हुए",
+  "it": "alla guida",
+  "ja": "運転中",
+  "pt": "dirigindo",
+  "zh": "在开车"
+ },
+ "walking": {
+  "de": "zu Fuß",
+  "es": "caminando",
+  "fr": "à pied",
+  "hi": "पैदल चलते हुए",
+  "it": "a piedi",
+  "ja": "歩行中",
+  "pt": "andando",
+  "zh": "在步行"
+ },
+ "still": {
+  "de": "in Ruhe",
+  "es": "quieto",
+  "fr": "immobile",
+  "hi": "रुके हुए",
+  "it": "fermo",
+  "ja": "静止中",
+  "pt": "parado",
+  "zh": "静止"
+ },
+ "not sure yet": {
+  "de": "noch unklar",
+  "es": "aún no está claro",
+  "fr": "pas encore sûr",
+  "hi": "अभी पक्का नहीं",
+  "it": "non ancora chiaro",
+  "ja": "まだ判定中",
+  "pt": "ainda incerto",
+  "zh": "还不确定"
+ },
+ "Ready. Right now Tenzy sees you %@. Next time you park and walk away, your spot saves by itself.": {
+  "de": "Bereit. Gerade sieht Tenzy dich %@. Wenn du das nächste Mal parkst und weggehst, wird dein Parkplatz automatisch gespeichert.",
+  "es": "Listo. Ahora mismo Tenzy te ve %@. La próxima vez que aparques y te alejes, tu plaza se guardará sola.",
+  "fr": "Prêt. En ce moment, Tenzy vous voit %@. La prochaine fois que vous vous garez et partez, votre place s'enregistre toute seule.",
+  "hi": "तैयार। अभी Tenzy आपको %@ देख रहा है। अगली बार पार्क करके चलने पर आपकी जगह अपने आप सेव होगी।",
+  "it": "Pronto. In questo momento Tenzy ti vede %@. La prossima volta che parcheggi e ti allontani, il parcheggio si salva da solo.",
+  "ja": "準備完了。現在 Tenzy はあなたを「%@」と判定しています。次に駐車して歩き出すと、自動で保存されます。",
+  "pt": "Pronto. Agora o Tenzy vê você %@. Da próxima vez que estacionar e se afastar, sua vaga será salva sozinha.",
+  "zh": "已就绪。Tenzy 现在判断你正%@。下次停车走开时，会自动保存停车位置。"
+ },
+ "A sample alert arrives in 5 seconds.": {
+  "de": "In 5 Sekunden kommt eine Beispielmitteilung.",
+  "es": "En 5 segundos llegará un aviso de ejemplo.",
+  "fr": "Une alerte d'exemple arrive dans 5 secondes.",
+  "hi": "5 सेकंड में एक नमूना अलर्ट आएगा।",
+  "it": "Tra 5 secondi arriverà un avviso di prova.",
+  "ja": "5 秒後にサンプルの通知が届きます。",
+  "pt": "Um alerta de exemplo chega em 5 segundos.",
+  "zh": "5 秒后会收到一条示例提醒。"
+ },
+ "Not ready yet. Still needed: %@.": {
+  "de": "Noch nicht bereit. Es fehlt noch: %@.",
+  "es": "Aún no está listo. Falta: %@.",
+  "fr": "Pas encore prêt. Il manque : %@.",
+  "hi": "अभी तैयार नहीं। अभी चाहिए: %@।",
+  "it": "Non ancora pronto. Manca: %@.",
+  "ja": "まだ準備できていません。必要なもの：%@。",
+  "pt": "Ainda não está pronto. Falta: %@.",
+  "zh": "尚未就绪。还需要：%@。"
+ },
+ "Other ways to save it": {
+  "de": "Weitere Wege zum Speichern",
+  "es": "Otras formas de guardarlo",
+  "fr": "Autres façons de l'enregistrer",
+  "hi": "सेव करने के और तरीके",
+  "it": "Altri modi per salvarlo",
+  "ja": "その他の保存方法",
+  "pt": "Outras formas de salvar",
+  "zh": "其他保存方式"
  }
 }
