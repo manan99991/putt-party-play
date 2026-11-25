@@ -6,6 +6,22 @@ import AudioToolbox
 /// GPS Dashboard — the instrument cluster your phone never shows: live speed, heading, altitude and
 /// GPS accuracy, a trip computer (distance, moving time, max, average), a windshield HUD mode,
 /// exact coordinates to copy or send to someone, and "park here → walk me back".
+/// Which location a parking pin may use. iPhone's first answer after it starts looking is often a remembered one from
+/// earlier (where the phone last checked), which pinned old places (Manan, 24 Nov). A pin uses only a fix taken after
+/// saving began: the first good to 65 m, or after 20 s the freshest there is.
+enum ParkFix {
+    /// Taken after saving began (2 s of clock slack).
+    static func ready(fixTime: Date?, accuracy: Double, since: Date, now: Date) -> Bool {
+        guard let f = fixTime, f >= since.addingTimeInterval(-2) else { return false }
+        return (accuracy >= 0 && accuracy <= 65) || now.timeIntervalSince(since) > 20
+    }
+    /// For the Park here button: the fix is from the last 15 seconds.
+    static func fresh(_ fixTime: Date?, now: Date) -> Bool {
+        guard let f = fixTime else { return false }
+        return now.timeIntervalSince(f) <= 15
+    }
+}
+
 /// Set by "Save where I parked" (Control Center, Lock Screen, Shortcuts): the dashboard drops the pin on its first fix.
 @MainActor enum ParkNow {
     static var pending = false
@@ -82,11 +98,12 @@ struct GPSDashboardView: View {
             guard ParkNow.pending else { return }
             gps.start(); savingSince = Date(); autoNote = nil; savingNow = true
         }
-        // "Save where I parked" from Control Center, the Lock Screen or the car-Bluetooth automation: drop the pin on the
-        // first GPS fix (good to 65 m), or after 20 s on whatever fix there is.
+        // "Save where I parked" from Control Center, the Lock Screen, Siri or the CarPlay/Bluetooth automation: drop the
+        // pin on the first FRESH fix good to 65 m, or after 20 s on the freshest there is. Never on the remembered fix
+        // iPhone hands over first (Manan, 24 Nov: parked twice and it kept showing an old address).
         .onReceive(gps.$coordinate) { c in
             guard savingNow, c != nil else { return }
-            if gps.accuracy >= 0 && gps.accuracy <= 65 || Date().timeIntervalSince(savingSince) > 20 { autoPark() }
+            if ParkFix.ready(fixTime: gps.fixTime, accuracy: gps.accuracy, since: savingSince, now: Date()) { autoPark() }
         }
         // The HUD is a full-screen cover, which can count as leaving this page — keep GPS running under it.
         .onDisappear { if !hud { gps.stop() } }
@@ -188,8 +205,8 @@ struct GPSDashboardView: View {
                     }.compactButton()
                 }
             } else {
-                Button { park() } label: { Label(L("Park here — remember this spot"), systemImage: "mappin.and.ellipse").frame(maxWidth: .infinity) }.primaryButton().disabled(gps.coordinate == nil)
-                Text(gps.coordinate == nil ? "Waiting for a GPS fix — step outside for a clearer signal." : "Saves the spot on your phone. Nothing is uploaded.")
+                Button { park() } label: { Label(L("Park here — remember this spot"), systemImage: "mappin.and.ellipse").frame(maxWidth: .infinity) }.primaryButton().disabled(!ParkFix.fresh(gps.fixTime, now: Date()))
+                Text(!ParkFix.fresh(gps.fixTime, now: Date()) ? "Finding where you are now — step outside for a clearer signal." : "Saves the spot on your phone. Nothing is uploaded.")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
         }.cardStyle()
@@ -290,7 +307,7 @@ struct GPSDashboardView: View {
     }
 
     private func park() {
-        guard let c = gps.coordinate else { return }
+        guard let c = gps.coordinate, ParkFix.fresh(gps.fixTime, now: Date()) else { return }
         ParkStore.save(c); parked = c; parkedAt = Date(); HandyHaptics.success()
     }
 
@@ -307,7 +324,7 @@ struct GPSDashboardView: View {
             Label(L("Save it without opening Tenzy"), systemImage: "bolt.car.fill").font(HandyFont.bodyStrong)
             Text(L("When you leave the car — automatically")).font(HandyFont.caption.weight(.semibold)).foregroundStyle(HandyColor.textPrimary)
             autoStep(1, "Open the Shortcuts app and tap Automation, then +.")
-            autoStep(2, "Choose Bluetooth, pick your car, and choose Is Disconnected. Set it to Run Immediately.")
+            autoStep(2, "Choose CarPlay (or Bluetooth, then your car) and choose Disconnects. Set it to Run Immediately.")
             autoStep(3, "Tap New Blank Automation, search for Tenzy and add Save Where I Parked. Done.")
             Text(L("With a button — Control Center or the Lock Screen")).font(HandyFont.caption.weight(.semibold)).foregroundStyle(HandyColor.textPrimary).padding(.top, 4)
             autoStep(1, "Swipe down from the top right, tap +, then Add a Control.")
@@ -381,6 +398,8 @@ final class GPSFeed: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var accuracy = -1.0
     @Published var altitude: Double? = nil
     @Published var coordinate: CLLocationCoordinate2D? = nil
+    /// When the current fix was taken. iPhone's first answer is often a remembered, old one; parking must not use it.
+    @Published var fixTime: Date? = nil
     @Published var trip = TripTracker()
     @Published var denied = false
     private let m = CLLocationManager()
@@ -391,7 +410,7 @@ final class GPSFeed: NSObject, ObservableObject, CLLocationManagerDelegate {
         guard let l = locs.last else { return }
         let sp = l.speed, co = l.course, acc = l.horizontalAccuracy, alt = l.altitude, va = l.verticalAccuracy, c = l.coordinate, t = l.timestamp
         Task { @MainActor in
-            self.speed = sp >= 0 ? sp : 0; self.course = co; self.accuracy = acc; self.coordinate = c
+            self.speed = sp >= 0 ? sp : 0; self.course = co; self.accuracy = acc; self.coordinate = c; self.fixTime = t
             if va >= 0 { self.altitude = alt }
             self.trip.add(coordinate: c, speed: max(0, sp), horizontalAccuracy: acc, timestamp: t)
         }

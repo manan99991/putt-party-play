@@ -46768,5 +46768,25 @@
   "ja": "会議のメモ",
   "pt": "Notas de uma reunião",
   "zh": "会议笔记"
+ },
+ "Choose CarPlay (or Bluetooth, then your car) and choose Disconnects. Set it to Run Immediately.": {
+  "de": "Wähle CarPlay (oder Bluetooth, dann dein Auto) und „Trennt Verbindung“. Stelle „Sofort ausführen“ ein.",
+  "es": "Elige CarPlay (o Bluetooth y luego tu coche) y «Se desconecta». Ponlo en «Ejecutar inmediatamente».",
+  "fr": "Choisissez CarPlay (ou Bluetooth, puis votre voiture) et « Se déconnecte ». Réglez sur « Exécuter immédiatement ».",
+  "hi": "CarPlay चुनें (या Bluetooth, फिर अपनी गाड़ी) और ‘डिस्कनेक्ट होने पर’ चुनें। इसे ‘तुरंत चलाएँ’ पर सेट करें।",
+  "it": "Scegli CarPlay (o Bluetooth, poi la tua auto) e «Si disconnette». Imposta «Esegui immediatamente».",
+  "ja": "CarPlay（または Bluetooth で車を選択）を選び、「接続解除時」を選びます。「すぐに実行」に設定します。",
+  "pt": "Escolha CarPlay (ou Bluetooth e depois o seu carro) e «Desconecta». Defina «Executar imediatamente».",
+  "zh": "选择 CarPlay（或蓝牙，然后选你的车），再选“断开连接时”。设为“立即运行”。"
+ },
+ "Finding where you are now — step outside for a clearer signal.": {
+  "de": "Wir suchen, wo du gerade bist – geh nach draußen für ein besseres Signal.",
+  "es": "Buscando dónde estás ahora: sal al exterior para tener mejor señal.",
+  "fr": "Recherche de votre position actuelle — sortez pour un meilleur signal.",
+  "hi": "आप अभी कहाँ हैं, यह ढूँढ रहे हैं — बेहतर सिग्नल के लिए बाहर जाएँ।",
+  "it": "Sto cercando dove sei ora: esci all'aperto per un segnale migliore.",
+  "ja": "現在地を探しています。電波をよくするには屋外に出てください。",
+  "pt": "A procurar onde você está agora — vá para fora para ter melhor sinal.",
+  "zh": "正在查找你现在的位置——到室外信号会更好。"
  }
 }

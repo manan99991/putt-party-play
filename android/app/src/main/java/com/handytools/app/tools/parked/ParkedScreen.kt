@@ -98,7 +98,9 @@ fun ParkedScreen() {
             }
             try {
                 providers.forEach { p ->
-                    lm.getLastKnownLocation(p)?.let { if (here == null) here = it }
+                    // The phone's remembered location can be from hours ago (iPhone's version pinned old places, 24 Nov):
+                    // use it only if it's from the last 15 seconds; otherwise wait for a live fix.
+                    lm.getLastKnownLocation(p)?.let { if (here == null && System.currentTimeMillis() - it.time < 15_000) here = it }
                     lm.requestLocationUpdates(p, 1000L, 0.5f, listener)
                 }
             } catch (_: SecurityException) {}
