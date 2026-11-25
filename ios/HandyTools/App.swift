@@ -601,8 +601,10 @@ struct HomeView: View {
     @State private var search = ""
     @FocusState private var searching: Bool
     @State private var path: [String] = Launch.route.flatMap { r in
+        // The old Tools / Build tabs are pages now. Checked first: the screenshot list still names them as tabs, and
+        // that left a launch on "tools" or "build" on the tab with no page (25 Nov tests).
+        if let p = RootTab.page(for: r) { return [p] }
         if r.hasPrefix("onboarding") || ScreenshotDemo.homeRoutes.contains(r) { return nil }
-        if let p = RootTab.page(for: r) { return [p] }   // the old Tools / Build tabs are pages now
         return [r]
     } ?? []
 
