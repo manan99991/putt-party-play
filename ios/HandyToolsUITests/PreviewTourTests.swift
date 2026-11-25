@@ -35,7 +35,9 @@ final class PreviewTourTests: XCTestCase {
         sleep(2)                                   // the result, on screen
         if app.buttons["Done"].firstMatch.exists { app.buttons["Done"].firstMatch.tap() }
 
-        app.buttons["tools-tab"].firstMatch.tap()  // every tool by what it works on, one tab away
+        let seeAll = app.descendants(matching: .any)["home-browse"].firstMatch   // Home › See all: every helper
+        if !seeAll.isHittable { app.swipeUp() }
+        seeAll.tap()
         sleep(1)
         let tab = any["tab-phone"]
         if tab.waitForExistence(timeout: 5) { tab.tap() }   // a category's own page, every tool on one screen

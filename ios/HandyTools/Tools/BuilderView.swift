@@ -448,6 +448,8 @@ struct BuilderView: View {
     /// it, or start with what you have; Tools is every tool, by what it works on; Build is making your own.
     enum Face { case home, tools, build, category(String) }
     var face: Face = .home
+    /// Shown as a page (Home › See all, My stuff › Build a helper), with its own way back.
+    var asPage = false
     @Environment(\.dismiss) private var dismissPage
     @State private var mine: [Chain] = ChainStore.load()
     @State private var editing: Chain?
@@ -1033,7 +1035,7 @@ struct BuilderView: View {
             HStack {
                 SectionLabel(text: "All tools", icon: "square.grid.2x2.fill")
                 Spacer()
-                Button { NotificationCenter.default.post(name: .showTab, object: "tools") } label: {
+                NavigationLink(value: "allhelpers") {
                     HStack(spacing: 3) {
                         Text(L("See all")).font(.system(size: 13, weight: .semibold))
                         Image(systemName: "chevron.right").font(.system(size: 11, weight: .bold))
@@ -1081,6 +1083,13 @@ struct BuilderView: View {
     private var toolsFace: some View {
         let q = findTool.trimmingCharacters(in: .whitespacesAndNewlines)
         return VStack(alignment: .leading, spacing: HandySpacing.s16) {
+            if asPage {
+                Button { dismissPage() } label: {
+                    Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+                        .frame(minHeight: 44).contentShape(Rectangle())
+                }
+                .buttonStyle(.plain).accessibilityIdentifier("page-back")
+            }
             TabHero(title: "Tools", line: "Every tool, by what it works on. All on your phone.", symbol: "square.grid.2x2.fill") {
                 HStack(spacing: 8) {
                     Image(systemName: "magnifyingglass").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.textSecondary).accessibilityHidden(true)
@@ -1221,6 +1230,13 @@ struct BuilderView: View {
     /// and how a tool works in three steps.
     private var buildFace: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s16) {
+            if asPage {
+                Button { dismissPage() } label: {
+                    Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+                        .frame(minHeight: 44).contentShape(Rectangle())
+                }
+                .buttonStyle(.plain).accessibilityIdentifier("page-back")
+            }
             TabHero(title: "Build", line: "Make your own tool or reminder. Tenzy runs it for you, any time.", symbol: "wand.and.stars")
             LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8)], spacing: HandySpacing.s8) {
                 Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []) } label: {

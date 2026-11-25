@@ -1,5 +1,5 @@
-# 25 Nov. Submission build stopped on the Video Effects check: at 1 s the box's reading was empty (the reading timer
-# lived inside body and restarted on redraws). Now: a steady timer, an immediate reading, and a "getting ready" spinner
-# instead of black before the first frame.
-HandyToolsUITests/PromiseTests/testVideoEffectsPreviewIsNeverABlackBox
-HandyToolsTests/PricingTests
+# 25 Nov, redesign step 1: three tabs (Home, My stuff, Settings). All helpers is Home › See all; Build a helper is a page
+# off My stuff; My stuff's counts are buttons.
+HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
+HandyToolsUITests/PromiseTests/testBuildTabMakesToolsAndReminders
+HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen

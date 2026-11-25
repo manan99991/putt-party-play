@@ -493,21 +493,25 @@ enum Launch {
 /// Five tabs, each with its own job (Manan, 24 Nov): Home, the front door — say it, or start with what you have; Tools,
 /// every tool by what it works on; Build, making your own tools and reminders; My stuff, what Tenzy keeps for you; and
 /// Settings.
-enum RootTab: String, CaseIterable { case home, tools, build, mine, settings
+/// Three tabs (Manan, 25 Nov): Home holds the whole app (All helpers is a page off it), My stuff holds what's yours
+/// (Build a helper is a page off it), and Settings. The old Tools and Build tabs live on as those pages.
+enum RootTab: String, CaseIterable { case home, mine, settings
     /// The tab a launch route opens on (store screenshots, UI tests, a notification).
     static func from(route: String?) -> RootTab {
         guard let r = route else { return .home }
-        if r == "mystuff" { return .mine }
-        if r == "tools" || r.hasPrefix("hometab-") { return .tools }
-        if r == "build" { return .build }
+        if r == "mystuff" || r == "build" || r == "buildhelper" { return .mine }
         if r == "settingstab" { return .settings }
         return .home
+    }
+    /// Old tab names still used by routes and links: the page that replaced them.
+    static func page(for route: String) -> String? {
+        if route == "tools" || route.hasPrefix("hometab-") { return "allhelpers" }
+        if route == "build" { return "buildhelper" }
+        return nil
     }
     var icon: String {
         switch self {
         case .home: return "house.fill"
-        case .tools: return "square.grid.2x2.fill"
-        case .build: return "wand.and.stars"
         case .mine: return "tray.full.fill"
         case .settings: return "gearshape.fill"
         }
@@ -523,8 +527,6 @@ enum RootTab: String, CaseIterable { case home, tools, build, mine, settings
     var label: String {
         switch self {
         case .home: return "Home"
-        case .tools: return "Tools"
-        case .build: return "Build"
         case .mine: return "My stuff"
         case .settings: return "Settings"
         }
@@ -535,7 +537,6 @@ enum RootTab: String, CaseIterable { case home, tools, build, mine, settings
         case .home: return "builder-entry"
         case .mine: return "mystuff-tab"
         case .settings: return "settings-tab"
-        default: return "\(rawValue)-tab"
         }
     }
 }
@@ -599,7 +600,11 @@ struct HomeView: View {
     @State private var tab: RootTab = RootTab.from(route: Launch.route)
     @State private var search = ""
     @FocusState private var searching: Bool
-    @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || ScreenshotDemo.homeRoutes.contains($0) ? nil : [$0] } ?? []
+    @State private var path: [String] = Launch.route.flatMap { r in
+        if r.hasPrefix("onboarding") || ScreenshotDemo.homeRoutes.contains(r) { return nil }
+        if let p = RootTab.page(for: r) { return [p] }   // the old Tools / Build tabs are pages now
+        return [r]
+    } ?? []
 
     private let captions = ["Everyday essentials", "Power tools", "AI · on your phone", "Think & plan"]
 
@@ -619,12 +624,6 @@ struct HomeView: View {
                     case .home:
                         // The front door: say it, or start with what you have.
                         BuilderView(face: .home)
-                    case .tools:
-                        // Every tool, by what it works on — nothing behind a tab.
-                        BuilderView(face: .tools)
-                    case .build:
-                        // Make your own: a tool, a reminder, a ready-made one to start from.
-                        BuilderView(face: .build)
                     case .mine:
                         // Everything that's yours: your tools, reminders, history and sheets.
                         AutomationsView(tab: true)
@@ -653,6 +652,10 @@ struct HomeView: View {
                 case "myreminders": ReminderMakerView().toolbarRole(.editor)   // Build a reminder (Build a tool, My stuff)
                 case "results": HistoryView().toolbarRole(.editor)   // a finished-job notification lands here
                 case "sheets": SheetsView().toolbarRole(.editor)   // My stuff › Sheets
+                // Home › See all: every helper on one map, with the ready-made flows of each section.
+                case "allhelpers": BuilderView(face: .tools, asPage: true).background(TenzyBackdrop()).toolbar(.hidden, for: .navigationBar)
+                // My stuff › Build a helper: start from nothing, from a ready-made one, or say it.
+                case "buildhelper": BuilderView(face: .build, asPage: true).background(TenzyBackdrop()).toolbar(.hidden, for: .navigationBar)
                 case let c where c.hasPrefix("category-"):   // Tools › a category: every one of its tools
                     // Its own "‹ Tools" back button and Tenzy's ground, so the bar is hidden (it showed a second back).
                     BuilderView(face: .category(String(c.dropFirst("category-".count))))
@@ -672,7 +675,12 @@ struct HomeView: View {
             .onReceive(NotificationCenter.default.publisher(for: .showMyStuff)) { _ in path = []; tab = .mine }
             .onReceive(NotificationCenter.default.publisher(for: OutsideAction.notification)) { _ in OutsideActions.run() }
             .onReceive(NotificationCenter.default.publisher(for: .showTab)) { n in
-                guard let raw = n.object as? String, let t = RootTab(rawValue: raw) else { return }
+                guard let raw = n.object as? String else { return }
+                if let page = RootTab.page(for: raw) {   // "tools" / "build" are pages now
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { tab = raw == "build" ? .mine : .home }
+                    path = [page]; return
+                }
+                guard let t = RootTab(rawValue: raw) else { return }
                 path = []; withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { tab = t }
             }
             .onReceive(NotificationCenter.default.publisher(for: .openTool)) { n in

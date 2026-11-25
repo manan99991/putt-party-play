@@ -134,29 +134,64 @@ struct AutomationsView: View {
         return VStack(alignment: .leading, spacing: HandySpacing.s16) {
             // The tab's hero, in Tenzy's colours, with what you have at a glance inside it. A row of zeros greets a new
             // person with emptiness (23 Nov audit): the counts show once there's something to count.
-            TabHero(title: "My stuff", line: "Your tools, reminders and results, all in one place.", symbol: "tray.full.fill") {
-                if toolCount + onCount + made > 0 {
-                    HStack(spacing: 0) {
-                        stat(toolCount, toolCount == 1 ? "tool" : "tools")
-                        Rectangle().fill(.white.opacity(0.3)).frame(width: 1, height: 28)
-                        stat(onCount, onCount == 1 ? "reminder on" : "reminders on")
-                        Rectangle().fill(.white.opacity(0.3)).frame(width: 1, height: 28)
-                        stat(made, made == 1 ? "result kept" : "results kept")
-                    }
-                    .padding(.vertical, HandySpacing.s12)
-                    .background(.white.opacity(0.14), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(.white.opacity(0.22), lineWidth: 1))
-                }
-            }
-            // What's yours, one row: the tools you made, everything they made, and the sheets they add to. Ready-made
-            // tools live in Build and Settings has its own tab (24 Nov), so neither repeats here.
+            // Three tabs (Manan, 25 Nov): the counts ARE the buttons. Tap one to see that list.
             let sheetCount = RunningList.all().count
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
-                shortcut("My tools", "square.stack.3d.up.fill", 0x7B5CFF, sub: toolCount == 0 ? L("Build one") : "\(toolCount) \(L("saved"))", "mytools")
-                shortcut("History", "clock.arrow.circlepath", 0x0EA5E9, sub: made == 0 ? "Every result" : "\(made) \(L("kept"))", "results")
-                shortcut("Sheets", "tablecells.fill", 0x22C55E, sub: sheetCount == 0 ? "Tools add rows" : "\(sheetCount) \(L("sheets"))", "sheets")
+            TabHero(title: "My stuff", line: "Your helpers, autoruns, results and sheets, all in one place.", symbol: "tray.full.fill") {
+                HStack(spacing: 0) {
+                    chip(toolCount, toolCount == 1 ? "helper" : "helpers", "mytools")
+                    Rectangle().fill(.white.opacity(0.3)).frame(width: 1, height: 28)
+                    chip(onCount, onCount == 1 ? "autorun on" : "autoruns on", "automations")
+                    Rectangle().fill(.white.opacity(0.3)).frame(width: 1, height: 28)
+                    chip(made, made == 1 ? "result kept" : "results kept", "results")
+                    Rectangle().fill(.white.opacity(0.3)).frame(width: 1, height: 28)
+                    chip(sheetCount, sheetCount == 1 ? "sheet" : "sheets", "sheets")
+                }
+                .padding(.vertical, HandySpacing.s8)
+                .background(.white.opacity(0.14), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(.white.opacity(0.22), lineWidth: 1))
+            }
+            // Make something new: a helper (a job Tenzy does on what you give it) or an autorun (something it does by
+            // itself, at a time or when something happens).
+            HStack(spacing: HandySpacing.s8) {
+                bigTile("Build a helper", "Start from one of ours or say what you need", "wand.and.stars", 0x7B5CFF, "buildhelper")
+                bigTile("Set an autorun", "A nudge at a time, or a job that runs by itself", "bolt.badge.clock.fill", 0xF97316, "myreminders")
             }
         }
+    }
+
+    /// A count in the My stuff bar that opens its list.
+    private func chip(_ n: Int, _ label: String, _ route: String) -> some View {
+        NavigationLink(value: route) {
+            VStack(spacing: 1) {
+                Text("\(n)").font(.system(size: 20, weight: .bold)).monospacedDigit().foregroundStyle(.white)
+                Text(L(label)).font(.system(size: 11, weight: .medium)).foregroundStyle(.white.opacity(0.9)).lineLimit(1).minimumScaleFactor(0.7)
+            }
+            .frame(maxWidth: .infinity, minHeight: 44).contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityHint(L("Opens the list"))
+        .accessibilityIdentifier("mine-\(route)")
+    }
+
+    private func bigTile(_ title: String, _ sub: String, _ icon: String, _ hex: UInt32, _ route: String) -> some View {
+        NavigationLink(value: route) {
+            VStack(alignment: .leading, spacing: 8) {
+                Image(systemName: icon).font(.system(size: 20, weight: .bold)).foregroundStyle(.white)
+                    .frame(width: 44, height: 44)
+                    .background(Color(hex: hex), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+                    .accessibilityHidden(true)
+                Text(L(title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                Text(L(sub)).font(.system(size: 12)).foregroundStyle(HandyColor.textSecondary).lineLimit(3).fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+            }
+            .padding(HandySpacing.s12)
+            .frame(maxWidth: .infinity, minHeight: 150, alignment: .topLeading)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(Color(hex: hex).opacity(0.5), lineWidth: 1))
+            .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        }
+        .buttonStyle(.plain).accessibilityIdentifier("mine-\(route)")
     }
 
     private func stat(_ n: Int, _ label: String) -> some View {

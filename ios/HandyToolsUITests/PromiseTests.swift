@@ -48,11 +48,15 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(any["category-page-pdf"].firstMatch.waitForExistence(timeout: 10), "Home's Documents didn't open Documents")
         any["category-back"].firstMatch.tap()
         sleep(1)
-        if !app.buttons["tools-tab"].firstMatch.isHittable { app.swipeDown() }
-        for id in ["builder-entry", "tools-tab", "build-tab", "mystuff-tab", "settings-tab"] {
+        if !app.buttons["mystuff-tab"].firstMatch.isHittable { app.swipeDown() }
+        // Three tabs (25 Nov): Home, My stuff, Settings. Every helper is on Home › See all.
+        for id in ["builder-entry", "mystuff-tab", "settings-tab"] {
             XCTAssertTrue(app.buttons[id].firstMatch.isHittable, "the tab bar has no \(id)")
         }
-        app.buttons["tools-tab"].firstMatch.tap()
+        XCTAssertFalse(app.buttons["tools-tab"].firstMatch.exists, "the old Tools tab is still there")
+        let seeAll = any["home-browse"].firstMatch
+        if !seeAll.isHittable { app.swipeUp() }
+        seeAll.tap()
         // 25 Nov: the jobs that lived inside other tools got their own tiles (Photos +1, Documents +1, Audio 6 → 10 in place
         // of the Audio Editor menu, Words 6 → 7 in place of the Notes from speech menu).
         let tabs = ["camera": 9, "photos": 9, "video": 5, "pdf": 10, "audio": 10, "words": 7, "day": 9, "phone": 5]
@@ -149,8 +153,10 @@ final class PromiseTests: XCTestCase {
         app.launch()
         let any = app.descendants(matching: .any)
         XCTAssertTrue(any["have-photo"].firstMatch.waitForExistence(timeout: 20))
-        app.buttons["tools-tab"].firstMatch.tap()
-        XCTAssertTrue(any["tab-camera"].firstMatch.waitForExistence(timeout: 10), "Tools didn't open")
+        let seeAll = any["home-browse"].firstMatch
+        if !seeAll.isHittable { app.swipeUp() }
+        seeAll.tap()
+        XCTAssertTrue(any["tab-camera"].firstMatch.waitForExistence(timeout: 10), "All helpers didn't open")
         XCTAssertFalse(any["tab-business"].firstMatch.exists, "Business shows for someone who never said they run one")
         app.terminate()
         app.launchArguments = ["-route", "tools", "-uitest", "-tenzy.business", "YES"]
