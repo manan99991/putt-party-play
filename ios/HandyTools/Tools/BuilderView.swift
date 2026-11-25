@@ -978,7 +978,7 @@ struct BuilderView: View {
     /// Start with what you have: six tiles, one row — the thing you hold decides the tools offered.
     private var haveRow: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            SectionLabel(text: "Start with what you have", icon: "tray.and.arrow.down.fill")
+            SectionLabel(text: "Got something? Tenzy takes it from here", icon: "tray.and.arrow.down.fill")
             HStack(spacing: 6) {
                 // Our own photo grid: big tiles, tap or swipe a finger across to pick several (Manan, 22 Nov), originals kept.
                 SmartPhotoFilesButton(kind: .any, max: 20, picked: { files in
@@ -1033,7 +1033,7 @@ struct BuilderView: View {
     private var browseCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack {
-                SectionLabel(text: "All tools", icon: "square.grid.2x2.fill")
+                SectionLabel(text: "All helpers", icon: "square.grid.2x2.fill")
                 Spacer()
                 NavigationLink(value: "allhelpers") {
                     HStack(spacing: 3) {
@@ -1068,6 +1068,13 @@ struct BuilderView: View {
                         .frame(maxWidth: .infinity, minHeight: shortScreen ? 58 : 64)
                         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Color(hex: sh.hex).opacity(0.35), lineWidth: 1))
+                        // How many helpers are inside, so nothing feels hidden (25 Nov redesign).
+                        .overlay(alignment: .topTrailing) {
+                            Text("\(sh.tools.count)").font(.system(size: 10, weight: .bold)).monospacedDigit().foregroundStyle(Color(hex: sh.hex))
+                                .padding(.horizontal, 5).padding(.vertical, 1)
+                                .background(Color(hex: sh.hex).opacity(0.14), in: Capsule()).padding(4)
+                                .accessibilityLabel("\(sh.tools.count) \(L("helpers"))")
+                        }
                         .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                     }
                     .buttonStyle(.plain)

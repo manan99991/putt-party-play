@@ -13678,5 +13678,35 @@
   "ja": "2週間ごと",
   "pt": "A cada duas semanas",
   "zh": "每两周"
+ },
+ "Got something? Tenzy takes it from here": {
+  "de": "Hast du etwas? Tenzy übernimmt ab hier",
+  "es": "¿Tienes algo? Tenzy se encarga desde aquí",
+  "fr": "Vous avez quelque chose ? Tenzy s'en occupe",
+  "hi": "कुछ है? आगे Tenzy संभाल लेगा",
+  "it": "Hai qualcosa? Da qui ci pensa Tenzy",
+  "ja": "何かある？ あとはTenzyにおまかせ",
+  "pt": "Tem alguma coisa? O Tenzy trata do resto",
+  "zh": "有东西？交给 Tenzy 吧"
+ },
+ "All helpers": {
+  "de": "Alle Helfer",
+  "es": "Todos los asistentes",
+  "fr": "Tous les assistants",
+  "hi": "सभी हेल्पर",
+  "it": "Tutti gli aiutanti",
+  "ja": "すべてのヘルパー",
+  "pt": "Todos os ajudantes",
+  "zh": "全部助手"
+ },
+ "helpers": {
+  "de": "Helfer",
+  "es": "asistentes",
+  "fr": "assistants",
+  "hi": "हेल्पर",
+  "it": "aiutanti",
+  "ja": "ヘルパー",
+  "pt": "ajudantes",
+  "zh": "个助手"
  }
 }
