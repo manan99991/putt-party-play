@@ -1,6 +1,5 @@
-# 25 Nov: smart autorun — drives into the mileage log. Distance along GPS fixes (glitches and rough fixes add no
-# miles), drives kept/waiting, and the review logging exactly the work drive. Plus the engine rules.
-HandyToolsTests/AutoParkTests
-HandyToolsTests/SmartRunsTests
+# 25 Nov: review cards keep their inner buttons' IDs (.contain); drives autorun, heavy-videos autorun, receipts autorun.
 HandyToolsUITests/PromiseTests/testDrivesAutorunLogsTheWorkDrive
+HandyToolsUITests/PromiseTests/testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame
 HandyToolsUITests/PromiseTests/testReceiptsAutorunReadsTodaysReceiptIntoTheSheet
+HandyToolsTests/SmartRunsTests

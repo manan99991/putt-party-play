@@ -342,7 +342,7 @@ private struct ReceiptEntryCard: View {
         .onAppear { shop = entry.merchant; total = entry.total.map { String(format: "%.2f", $0) } ?? "" }
         .onChange(of: shop) { _, _ in save() }
         .onChange(of: total) { _, _ in save() }
-        .accessibilityIdentifier("smartreceipt-card")
+        .accessibilityElement(children: .contain).accessibilityIdentifier("smartreceipt-card")
     }
 
     private func save() {
@@ -439,7 +439,7 @@ struct SmartDrivesReview: View {
             }
         }
         .cardStyle(padding: HandySpacing.s12)
-        .accessibilityIdentifier("smartdrive-card")
+        .accessibilityElement(children: .contain).accessibilityIdentifier("smartdrive-card")
     }
 }
 
@@ -529,7 +529,7 @@ struct SmartVideosReview: View {
             Spacer(minLength: 0)
         }
         .cardStyle(padding: HandySpacing.s12)
-        .accessibilityIdentifier("smartvideo-row")
+        .accessibilityElement(children: .contain).accessibilityIdentifier("smartvideo-row")
     }
 }
 
