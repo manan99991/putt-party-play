@@ -1,4 +1,4 @@
-# 25 Nov, redesign step 1: three tabs (Home, My stuff, Settings). All helpers is Home › See all; Build a helper is a page
+# 25 Nov, redesign step 1: three tabs (Home, My stuff, Settings). All helpers is Home › See all; Build a helper is a page (re-run on the fixed unit test, 25 Nov pm)
 # off My stuff; My stuff's counts are buttons.
 HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
 HandyToolsUITests/PromiseTests/testBuildTabMakesToolsAndReminders
