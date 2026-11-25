@@ -172,7 +172,7 @@ enum SmartReceipts {
             else { seen = await PhotoFinder.read(a); if let seen { cache[a.localIdentifier] = seen } }
             guard let seen, PhotoFinder.score(seen, for: .receipt) >= PhotoFinder.threshold else { continue }
             guard let img = await PhotoFinder.image(a, side: 3000) else { continue }
-            let text = await Task.detached(priority: .userInitiated) { DocEngine.text(ChainText.readDocument(img)) }.value
+            let text = await Task.detached(priority: .userInitiated) { ChainText.documentText(img) }.value
             guard DataGrab.looksLikeReceipt(text) else { continue }
             let r = DataGrab.receipt(text)
             guard r.total != nil || !r.lines.isEmpty else { continue }
@@ -221,7 +221,7 @@ enum SmartReceipts {
                 let size = page.bounds(for: .mediaBox).size
                 let k = 2400 / max(size.width, size.height, 1)
                 let img = page.thumbnail(of: CGSize(width: size.width * k, height: size.height * k), for: .mediaBox)
-                t = await Task.detached(priority: .userInitiated) { DocEngine.text(ChainText.readDocument(img)) }.value
+                t = await Task.detached(priority: .userInitiated) { ChainText.documentText(img) }.value
             }
             pages.append(t)
         }

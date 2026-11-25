@@ -2893,7 +2893,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         message = "Reading the words from your picture…"
         let wasEmpty = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         Task.detached(priority: .userInitiated) {
-            let words = DocEngine.text(DocEngine.recognize(img.normalizedUp()))
+            let words = ChainText.documentText(DocEngine.recognize(img.normalizedUp()))
             await MainActor.run {
                 guard !words.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
                     message = "That picture has no words Tenzy can read. Try a sharper screenshot, or paste the text."
@@ -2923,7 +2923,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     DispatchQueue.main.async { message = "Couldn't read that paste. Copy some text or a screenshot and try again." }
                     return
                 }
-                let words = DocEngine.text(DocEngine.recognize(img.normalizedUp()))
+                let words = ChainText.documentText(DocEngine.recognize(img.normalizedUp()))
                 DispatchQueue.main.async {
                     if words.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                         message = "That image has no readable text. Copy some text, or use a photo tool to work on the picture itself."

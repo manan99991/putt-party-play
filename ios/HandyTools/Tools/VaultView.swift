@@ -242,7 +242,7 @@ struct VaultView: View {
         Task {
             let found = await Task.detached(priority: .utility) { () -> (name: String?, expires: Date?) in
                 guard let img = UIImage(data: data) else { return (nil, nil) }
-                return VaultExpiry.read(DocEngine.text(DocEngine.recognize(img)))
+                return VaultExpiry.read(ChainText.documentText(DocEngine.recognize(img)))
             }.value
             guard let exp = found.expires, exp > Date() else { return }
             vault.setExpiry(id, expires: exp, name: found.name)

@@ -454,7 +454,7 @@ struct ScanView: View {
         let p = first
         Task.detached(priority: .utility) {
             let lines = p.ocr ?? DocEngine.recognize(DocEngine.render(p))
-            let r = ScanSmart.read(DocEngine.text(lines))
+            let r = ScanSmart.read(ChainText.documentText(lines))
             await MainActor.run {
                 if let i = pages.firstIndex(where: { $0.id == p.id }), pages[i].ocr == nil { pages[i].ocr = lines }
                 smart = lines.isEmpty ? nil : r

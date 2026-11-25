@@ -656,7 +656,7 @@ enum ChainRunner {
             // Read the document, not the screen around it: a receipt in a screenshot is cut out of the browser or
             // app first, and the phone's status bar ("9:32", battery) is never read as part of it.
             let ocr = ChainText.readDocument(img)
-            let text = rows(ocr).trimmingCharacters(in: .whitespacesAndNewlines)
+            let text = ChainText.documentText(ocr)
             // Remember how big each piece was printed, so a poster's biggest words can become its title.
             DataGrab.rememberHeights(text, Dictionary(ocr.map { ($0.text, $0.box.height) }, uniquingKeysWith: max))
             return text.isEmpty ? .failure(.nothingFound(b)) : .success(.text(text))
@@ -1210,6 +1210,14 @@ enum ChainText {
         let page = PageFlatten.cropToPage(img)
         return DocEngine.recognize(page ?? img).filter { page != nil || !isStatusBar($0) }
     }
+
+    /// The document's words as lines a parser can use: every reader of receipts, cards and forms goes through this
+    /// one function, so "TOTAL" and its "12.37" across a wide gap are always one line (25 Nov: the receipts autorun
+    /// joined lines differently from the receipt tool and read the subtotal as the total).
+    static func documentText(_ ocr: [DocEngine.OCRLine]) -> String {
+        ChainRunner.rows(ocr).trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    static func documentText(_ img: UIImage) -> String { documentText(readDocument(img)) }
 
     static func isStatusBar(_ l: DocEngine.OCRLine) -> Bool {
         guard l.box.minY < 0.045 else { return false }

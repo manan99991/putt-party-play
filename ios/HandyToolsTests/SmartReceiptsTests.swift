@@ -77,6 +77,23 @@ final class SmartReceiptsTests: XCTestCase {
         XCTAssertEqual(row.count, 9); XCTAssertEqual(row[1], "Jewel"); XCTAssertEqual(row[2], "23.10")
     }
 
+    /// 25 Nov: the autorun read "TOTAL" and "12.37" as two lines (a wide gap on the receipt) and took the subtotal as the
+    /// total. Every reader now goes through ChainText.documentText, which keeps a label and its amount together.
+    func testALabelAndItsAmountAcrossAGapStayTogether() {
+        func line(_ t: String, x: CGFloat, row: Int) -> DocEngine.OCRLine {
+            DocEngine.OCRLine(text: t, box: CGRect(x: x, y: 0.1 + CGFloat(row) * 0.05, width: 0.2, height: 0.03))
+        }
+        let ocr = [line("CORNER MARKET", x: 0.1, row: 0), line("Milk 2%", x: 0.1, row: 2), line("4.29", x: 0.7, row: 2),
+                   line("Sourdough Bread", x: 0.1, row: 3), line("5.49", x: 0.7, row: 3), line("Bananas", x: 0.1, row: 4), line("1.86", x: 0.7, row: 4),
+                   line("SUBTOTAL", x: 0.1, row: 6), line("11.64", x: 0.7, row: 6), line("TAX", x: 0.1, row: 7), line("0.73", x: 0.7, row: 7),
+                   line("TOTAL", x: 0.1, row: 8), line("12.37", x: 0.7, row: 8), line("VISA ****4821", x: 0.1, row: 10), line("12.37", x: 0.7, row: 10)]
+        let r = DataGrab.receipt(ChainText.documentText(ocr))
+        XCTAssertEqual(r.merchant, "CORNER MARKET")
+        XCTAssertEqual(r.total, 12.37); XCTAssertEqual(r.subtotal, 11.64); XCTAssertEqual(r.tax, 0.73)
+        XCTAssertEqual(r.lines.map(\.amount), [4.29, 5.49, 1.86])
+        XCTAssertNil(DataGrab.entryProblems(r).block, "this receipt adds up")
+    }
+
     func testAddingTheSameRunAgainAddsNothing() {
         let csv = SmartReceipts.rows([entry("a", receipt("Shell", 40, tax: 2)), entry("b", receipt("Jewel", 23.1))], header: nil)
         let once = RunningList.merged(existing: "", incoming: csv)
