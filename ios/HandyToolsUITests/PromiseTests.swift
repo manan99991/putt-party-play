@@ -580,6 +580,15 @@ final class PromiseTests: XCTestCase {
         sleep(2)
         let shown = (0..<min(cells.count, 12)).map { cells.element(boundBy: $0) }.filter { $0.isHittable }
         XCTAssertGreaterThanOrEqual(shown.count, 6, "the six tall pictures should be on screen")
+        // The bug only shows when the tall picture is really drawn: wait until each thumbnail has loaded and is tall.
+        for (n, c) in shown.prefix(6).enumerated() {
+            let loaded = NSPredicate(format: "value BEGINSWITH 'loaded'")
+            let e = expectation(for: loaded, evaluatedWith: c)
+            wait(for: [e], timeout: 20)
+            let v = (c.value as? String ?? "").split(separator: " ").last.map(String.init) ?? ""
+            let wh = v.split(separator: "x").compactMap { Int($0) }
+            XCTAssertTrue(wh.count == 2 && wh[1] > wh[0], "photo \(n + 1) isn't one of the tall test pictures: \(c.value as? String ?? "")")
+        }
         // Each one in turn: tap 8% from its bottom, then 8% from its top; it, and only it, gets picked and unpicked.
         for (n, c) in shown.prefix(6).enumerated() {
             for dy in [0.92, 0.08] {

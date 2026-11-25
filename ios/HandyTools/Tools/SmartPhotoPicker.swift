@@ -27,6 +27,8 @@ struct SmartPhotoPicker: View {
     @State private var swipeBase: [String] = []
     /// Under UI tests only: which photo the swipe started and ended on, so a failed swipe check says why.
     @State private var swipeTrace = ""
+    /// Under UI tests only: each thumbnail's loaded size, so a test knows the real picture is drawn.
+    @State private var thumbSizes: [String: CGSize] = [:]
     @Environment(\.dismiss) private var dismiss
 
     private let cols = Array(repeating: GridItem(.flexible(), spacing: 6), count: 3)
@@ -192,7 +194,7 @@ struct SmartPhotoPicker: View {
             if maxCount == 1 { use([a.localIdentifier]); return }
             if on { picked.removeAll { $0 == a.localIdentifier } } else if picked.count < maxCount { picked.append(a.localIdentifier) }
         } label: {
-            AssetThumb(asset: a)
+            AssetThumb(asset: a, loaded: Launch.uitest ? { sz in thumbSizes[a.localIdentifier] = sz } : nil)
                 .overlay(alignment: .topTrailing) {
                     if maxCount > 1 {
                         Image(systemName: on ? "checkmark.circle.fill" : "circle").font(.system(size: 22))
@@ -205,6 +207,7 @@ struct SmartPhotoPicker: View {
         .accessibilityLabel(L("Photo"))
         .accessibilityAddTraits(on ? [.isButton, .isSelected] : .isButton)
         .accessibilityIdentifier("finder-photo")
+        .accessibilityValue(Launch.uitest ? (thumbSizes[a.localIdentifier].map { "loaded \(Int($0.width))x\(Int($0.height))" } ?? "empty") : "")
     }
 
     private var bottomBar: some View {
@@ -264,12 +267,21 @@ struct SmartPhotoPicker: View {
 /// One square photo from the library.
 private struct AssetThumb: View {
     let asset: PHAsset
+    var loaded: ((CGSize) -> Void)? = nil
     @State private var img: UIImage?
     var body: some View {
         Color.clear.aspectRatio(1, contentMode: .fit)
             .overlay { if let img { Image(uiImage: img).resizable().scaledToFill() } else { HandyColor.surface } }
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous)).contentShape(Rectangle())
-            .task(id: asset.localIdentifier) { img = await PhotoFinder.image(asset, side: 300) }
+            // A just-saved or iCloud photo can say "not ready yet" the first time: ask again a few times before giving up.
+            .task(id: asset.localIdentifier) {
+                for wait in [0, 400, 1200, 3000] as [UInt64] {
+                    if wait > 0 { try? await Task.sleep(nanoseconds: wait * 1_000_000) }
+                    if Task.isCancelled { return }
+                    if let i = await PhotoFinder.image(asset, side: 300) { img = i; loaded?(i.size); return }
+                }
+            }
+
     }
 }
 

@@ -1,15 +1,4 @@
-# 25 Nov, redesign: three tabs (Home, My stuff, Settings); launch routes "tools"/"build" open their pages (were
-# swallowed by the screenshot route list). Plus Sheets periods / ask-before-add checks, and Long Screenshot upright +
-# status-bar seam. Plus the photo picker's edge taps (tall screenshots picked the photo below) and the smart
-# autorun rules.
-HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
-HandyToolsUITests/PromiseTests/testBuildTabMakesToolsAndReminders
-HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen
-HandyToolsTests/SheetPeriodTests
-HandyToolsTests/EngineTests/testStitchedScreenshotsAreUpright
-HandyToolsTests/EngineTests/testAChangingClockDoesntHideTheRepeatedHeader
-HandyToolsTests/EngineTests/testStitcherRemovesOverlapAndKeepsChromeOnce
-HandyToolsTests/EngineTests/testStitcherOrdersShuffledScreenshots
+# 25 Nov: photo picker edge taps, now waiting until each tall test picture is really drawn (the last run's thumbnails
+# hadn't loaded, so the cells were plain squares). Thumbnails retry a just-saved or iCloud photo.
 HandyToolsUITests/PromiseTests/testTappingNearAPhotosEdgePicksThatPhoto
 HandyToolsUITests/PromiseTests/testSwipeAcrossPhotosPicksSeveral
-HandyToolsTests/SmartRunsTests
