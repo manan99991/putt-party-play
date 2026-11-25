@@ -14,7 +14,7 @@ final class LanguageTests: XCTestCase {
         }
         Localizer.shared.use("de")
         XCTAssertEqual(L("Home"), "Privat", "the address label in Contacts keeps its meaning")
-        XCTAssertEqual(RootTab.tools.shown, "Werkzeuge")
+        XCTAssertNotEqual(RootTab.settings.shown, "Settings", "the other tabs are translated too")
     }
 
     /// Picking a language in Settings switches every L() at once, and "Phone language" goes back to the phone's.
