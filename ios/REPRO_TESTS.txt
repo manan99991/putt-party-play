@@ -1,5 +1,2 @@
-# 25 Nov: review cards keep their inner buttons' IDs (.contain); drives autorun, heavy-videos autorun, receipts autorun.
-HandyToolsUITests/PromiseTests/testDrivesAutorunLogsTheWorkDrive
+# 25 Nov: heavy-videos autorun, with a step-by-step trail of why a video is passed over (run 1 made no copy).
 HandyToolsUITests/PromiseTests/testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame
-HandyToolsUITests/PromiseTests/testReceiptsAutorunReadsTodaysReceiptIntoTheSheet
-HandyToolsTests/SmartRunsTests

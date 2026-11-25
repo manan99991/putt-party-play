@@ -100,8 +100,10 @@ import UserNotifications
             progress = (1, "Done")   // drives are recorded as they happen; the run only gathers them for a look
         case .heavyVideos:
             let have = Set(videos.map(\.id))
+            SmartVideos.trail = []
             let picks = SmartVideos.found(in: window).filter { !have.contains($0.0.id) }
             let heavy = SmartRuns.heavy(picks.map(\.0)).compactMap { f in picks.first { $0.0.id == f.id } }
+            SmartVideos.note("\(picks.count) videos in the window (\(picks.map { "\($0.0.bytes / 1_000_000) MB/\(Int($0.0.seconds)) s" }.joined(separator: ", "))), \(heavy.count) heavy")
             for (i, (f, a)) in heavy.enumerated() {
                 if Task.isCancelled { break }
                 let label = "\(L("Making video")) \(i + 1)/\(heavy.count)"

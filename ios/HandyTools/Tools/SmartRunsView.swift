@@ -241,6 +241,7 @@ struct SmartRunsView: View {
         if k == .heavyVideos {
             note = found > 0 ? "\(L("Test run made")) \(found) \(L(found == 1 ? "video smaller" : "videos smaller")). \(L("Tap Check to compare before anything changes."))"
                              : L("Test run worked: no video from the last 24 hours could be made noticeably smaller without losing quality.")
+                               + (Launch.uitest ? " [" + SmartVideos.trail.joined(separator: " | ") + "]" : "")
         } else {
             note = found > 0 ? "\(L("Test run found")) \(found) \(L(found == 1 ? "receipt" : "receipts")). \(L("Check them before they're added."))"
                              : L("Test run worked: no receipts in your photos or PDFs from the last 24 hours.")

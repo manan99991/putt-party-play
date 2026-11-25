@@ -23,6 +23,10 @@ enum SmartVideos {
         var saving: Int { max(0, before - after) }
     }
 
+    /// Why the last run passed over each video, step by step (shown under UI tests; kept for Diagnostics).
+    nonisolated(unsafe) static var trail: [String] = []
+    static func note(_ s: String) { trail.append(s); Diagnostics.shared.crumb("Heavy videos: " + s) }
+
     static var folder: URL {
         let d = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("SmartRuns/Videos", isDirectory: true)
         try? FileManager.default.createDirectory(at: d, withIntermediateDirectories: true)
@@ -51,20 +55,22 @@ enum SmartVideos {
 
     /// Re-save one video smaller and prove it looks the same. nil when it can't be made smaller without a visible change.
     static func shrink(_ found: SmartRuns.Found, _ asset: PHAsset, progress: ((Double) -> Void)? = nil) async -> Result? {
-        guard let src = await avAsset(asset) else { return nil }
+        guard let src = await avAsset(asset) else { note("couldn't open the video"); return nil }
         let before = found.bytes > 0 ? found.bytes : ((src as? AVURLAsset).flatMap { SizeTarget.fileSize($0.url) } ?? 0)
-        guard before > 0 else { return nil }
+        guard before > 0 else { note("size unknown"); return nil }
         // Apple's own HEVC export at the highest quality: keeps the size, frame rate and HDR, uses the hardware encoder.
-        guard let s = AVAssetExportSession(asset: src, presetName: AVAssetExportPresetHEVCHighestQuality), s.supportedFileTypes.contains(.mov) else { return nil }
+        guard let s = AVAssetExportSession(asset: src, presetName: AVAssetExportPresetHEVCHighestQuality) else { note("no HEVC export here"); return nil }
+        guard s.supportedFileTypes.contains(.mov) else { note("HEVC export can't write .mov: \(s.supportedFileTypes.map(\.rawValue))"); return nil }
         let out = folder.appendingPathComponent("\(UUID().uuidString).mov")
         s.outputURL = out; s.outputFileType = .mov; s.shouldOptimizeForNetworkUse = true
         let ticker = Task { while !Task.isCancelled { progress?(Double(s.progress)); try? await Task.sleep(nanoseconds: 400_000_000) } }
         let ok = await VideoEngine.run(s, seconds: found.seconds)
         ticker.cancel()
-        guard ok, let after = SizeTarget.fileSize(out) else { try? FileManager.default.removeItem(at: out); return nil }
-        guard SmartRuns.worthIt(original: before, smaller: after) else { try? FileManager.default.removeItem(at: out); return nil }
+        guard ok, let after = SizeTarget.fileSize(out) else { note("export failed: \(s.error?.localizedDescription ?? "no file")"); try? FileManager.default.removeItem(at: out); return nil }
+        guard SmartRuns.worthIt(original: before, smaller: after) else { note("not worth it: \(before) → \(after) bytes"); try? FileManager.default.removeItem(at: out); return nil }
         let worst = await worstMatch(src, AVURLAsset(url: out), seconds: found.seconds)
-        guard worst >= SmartRuns.samePictureDB else { try? FileManager.default.removeItem(at: out); return nil }
+        guard worst >= SmartRuns.samePictureDB else { note("looked different: worst frame \(String(format: "%.1f", worst)) dB"); try? FileManager.default.removeItem(at: out); return nil }
+        note("made smaller: \(before) → \(after) bytes, worst frame \(String(format: "%.1f", worst)) dB")
         return Result(id: asset.localIdentifier, file: out.lastPathComponent, before: before, after: after, seconds: found.seconds,
                       worstDB: worst, created: asset.creationDate)
     }
