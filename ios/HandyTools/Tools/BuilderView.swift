@@ -492,6 +492,7 @@ struct BuilderView: View {
     @State private var newName = ""
     /// "Start with what you have": the thing picked, waiting for a tool to be chosen for it.
     @State private var given: Given?
+    @State private var shooting = false   // the Home camera is open
     @State private var unzipping: UnzipTarget?
     @State private var anyPick: PhotosPickerItem?
     @State private var anyPhotos: [PhotosPickerItem] = []
@@ -568,6 +569,14 @@ struct BuilderView: View {
         .sheet(item: $demoRun, onDismiss: { Completion.holdPrompt(false) }) { c in
             NavigationStack { ChainRunView(chain: c, initial: .image(SampleAssets.photo()), demo: true) }
                 .onAppear { Completion.holdPrompt(true) }
+        }
+        .fullScreenCover(isPresented: $shooting) {
+            CameraShot { img in
+                shooting = false
+                guard let img else { return }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { given = Given(payload: .image(img), label: "A photo you just took") }
+            }
+            .ignoresSafeArea()
         }
         .sheet(item: $given) { g in
             if GuideView.skip.contains("all") { Text(verbatim: "What do you want to do?") }   // UI tests only: is it the guide or the sheet?
@@ -1494,6 +1503,18 @@ struct BuilderView: View {
                 .frame(minHeight: 50)
                 .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(empty ? (onBrand ? Color.clear : HandyColor.border) : HandyColor.accent, lineWidth: 1))
+                if onBrand && empty {
+                    // Take a picture of anything — a receipt, a card, a menu, a page, a plant — and Tenzy says what it
+                    // is and what it can do with it (25 Nov).
+                    Button { shoot() } label: {
+                        Image(systemName: "camera.fill").font(.system(size: 19, weight: .semibold)).foregroundStyle(HandyColor.accent)
+                            .frame(width: 50, height: 50)
+                            .background(Color.white, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(L("Take a picture")).accessibilityHint(L("Tenzy tells you what it is and what it can do with it"))
+                    .accessibilityIdentifier("home-camera")
+                }
                 Button { buildFromAsk() } label: {
                     Group {
                         if planning { ProgressView().tint(onBrand ? HandyColor.accent : HandyColor.onAccent) }
@@ -1508,6 +1529,14 @@ struct BuilderView: View {
                 .disabled(planning || empty)
                 .accessibilityLabel(L("Build it for me")).accessibilityIdentifier("describe-build")
         }
+    }
+
+    /// The Home camera: a picture straight to "what is it, and what can I do with it".
+    private func shoot() {
+        if Launch.uitest, Launch.args.contains("-camerasample") {   // no camera on the simulator: a receipt as if just taken
+            given = Given(payload: .image(SampleAssets.receipt()), label: "A photo you just took"); return
+        }
+        shooting = true
     }
 
     /// Open the editor on a planned tool, with an honest note of what it covers and what it can't do.

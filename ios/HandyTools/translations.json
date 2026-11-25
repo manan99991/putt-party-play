@@ -47998,5 +47998,75 @@
   "ja": "1回目の時刻",
   "pt": "Primeira hora",
   "zh": "第一次时间"
+ },
+ "Take a picture": {
+  "de": "Foto aufnehmen",
+  "es": "Hacer una foto",
+  "fr": "Prendre une photo",
+  "hi": "फ़ोटो लें",
+  "it": "Scatta una foto",
+  "ja": "写真を撮る",
+  "pt": "Tirar uma foto",
+  "zh": "拍照"
+ },
+ "Tenzy tells you what it is and what it can do with it": {
+  "de": "Tenzy sagt dir, was es ist und was es damit tun kann",
+  "es": "Tenzy te dice qué es y qué puede hacer con ello",
+  "fr": "Tenzy vous dit ce que c'est et ce qu'il peut en faire",
+  "hi": "Tenzy बताता है कि यह क्या है और इससे क्या कर सकता है",
+  "it": "Tenzy ti dice cos'è e cosa può farci",
+  "ja": "Tenzyが何かを判断し、できることを提案します",
+  "pt": "O Tenzy diz-lhe o que é e o que pode fazer com isso",
+  "zh": "Tenzy 会告诉你这是什么、能用它做什么"
+ },
+ "It looks like a menu": {
+  "de": "Sieht aus wie eine Speisekarte",
+  "es": "Parece un menú",
+  "fr": "On dirait un menu",
+  "hi": "यह मेन्यू जैसा लगता है",
+  "it": "Sembra un menù",
+  "ja": "メニューのようです",
+  "pt": "Parece um menu",
+  "zh": "看起来是一份菜单"
+ },
+ "It looks like an event — add it to your calendar": {
+  "de": "Sieht aus wie eine Veranstaltung – in den Kalender eintragen",
+  "es": "Parece un evento: añádelo a tu calendario",
+  "fr": "On dirait un événement — ajoutez-le à votre calendrier",
+  "hi": "यह किसी कार्यक्रम जैसा है — कैलेंडर में जोड़ें",
+  "it": "Sembra un evento: aggiungilo al calendario",
+  "ja": "イベントのようです — カレンダーに追加",
+  "pt": "Parece um evento — adicione-o ao calendário",
+  "zh": "看起来是个活动——加入日历"
+ },
+ "It looks like a document — make it a clean PDF": {
+  "de": "Sieht aus wie ein Dokument – mach ein sauberes PDF daraus",
+  "es": "Parece un documento: conviértelo en un PDF limpio",
+  "fr": "On dirait un document — faites-en un PDF net",
+  "hi": "यह दस्तावेज़ जैसा है — साफ़ PDF बनाएँ",
+  "it": "Sembra un documento: trasformalo in un PDF pulito",
+  "ja": "書類のようです — きれいなPDFに",
+  "pt": "Parece um documento — faça um PDF limpo",
+  "zh": "看起来是份文件——生成清晰的 PDF"
+ },
+ "Find out what it is": {
+  "de": "Finde heraus, was es ist",
+  "es": "Descubre qué es",
+  "fr": "Découvrez ce que c'est",
+  "hi": "पता करें यह क्या है",
+  "it": "Scopri cos'è",
+  "ja": "何かを調べる",
+  "pt": "Descubra o que é",
+  "zh": "看看这是什么"
+ },
+ "A photo you just took": {
+  "de": "Ein gerade aufgenommenes Foto",
+  "es": "Una foto que acabas de hacer",
+  "fr": "Une photo que vous venez de prendre",
+  "hi": "अभी ली गई फ़ोटो",
+  "it": "Una foto appena scattata",
+  "ja": "撮ったばかりの写真",
+  "pt": "Uma foto que acabou de tirar",
+  "zh": "刚拍的照片"
  }
 }

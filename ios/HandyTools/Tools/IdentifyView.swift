@@ -82,6 +82,7 @@ struct IdentifyView: View {
             }
         }
         .onAppear { if Launch.sample, image == nil { run(SampleAssets.receipt()) } }
+        .handoffPhotos("identify") { imgs in if let img = imgs.first { run(img) } }   // a photo just taken from Home
     }
 
     private func run(_ img: UIImage) {
@@ -97,21 +98,3 @@ struct IdentifyView: View {
     }
 }
 
-/// Camera capture for Identify — snap the subject. Falls back gracefully where there's no camera.
-private struct CameraShot: UIViewControllerRepresentable {
-    let done: (UIImage?) -> Void
-    func makeCoordinator() -> Coord { Coord(done: done) }
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let p = UIImagePickerController()
-        if UIImagePickerController.isSourceTypeAvailable(.camera) { p.sourceType = .camera }
-        p.delegate = context.coordinator
-        return p
-    }
-    func updateUIViewController(_ vc: UIImagePickerController, context: Context) {}
-    final class Coord: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        let done: (UIImage?) -> Void
-        init(done: @escaping (UIImage?) -> Void) { self.done = done }
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) { done(info[.originalImage] as? UIImage) }
-        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) { done(nil) }
-    }
-}

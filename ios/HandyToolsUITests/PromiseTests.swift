@@ -640,6 +640,20 @@ final class PromiseTests: XCTestCase {
         XCTAssertEqual(app.state, .runningForeground)
     }
 
+    /// 25 Nov: the Home camera. A picture of a receipt opens "what to do with it" with the receipt job suggested first.
+    func testHomeCameraSuggestsWhatToDoWithThePicture() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "home", "-uitest", "-camerasample"]
+        app.launch()
+        let cam = app.descendants(matching: .any)["home-camera"].firstMatch
+        XCTAssertTrue(cam.waitForExistence(timeout: 20), "Home has no camera button")
+        cam.tap()
+        let suggested = app.descendants(matching: .any)["guide-suggested"].firstMatch
+        XCTAssertTrue(suggested.waitForExistence(timeout: 20), "no suggestion after the picture")
+        let words = (suggested.label + " " + app.staticTexts.allElementsBoundByIndex.map(\.label).joined(separator: " ")).lowercased()
+        XCTAssertTrue(words.contains("receipt"), "the suggestion doesn't say it's a receipt: \(suggested.label)")
+    }
+
     /// "Just swiping the finger lets select multiple files" (Manan, 22 Nov): Home › Photo opens Tenzy's own grid, and a
     /// sideways swipe across the first row ticks every photo it passes over.
     func testSwipeAcrossPhotosPicksSeveral() {

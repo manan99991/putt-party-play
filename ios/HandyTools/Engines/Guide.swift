@@ -43,6 +43,8 @@ enum Guide {
         var text = ""
         var barcode = false
         var hasLocation = false
+        /// What Vision sees in it (plant, dog, document, food…), lowercased.
+        var labels: [String] = []
     }
 
     // MARK: goals
@@ -170,6 +172,8 @@ enum Guide {
         case "sticker", "faceemoji": return "fun"
         case "scrub", "fitit": return "share"
         case "menu": return "read"
+        case "identify": return "read"
+        case "scan": return "doc"
         case "cards": return "save"
         case "pdfsign", "pdfform", "pdfannotate": return "sign"
         case "pdfredact": return "share"
@@ -232,7 +236,25 @@ enum Guide {
         if receiptWords.filter({ low.contains($0) }).count >= 2 { return Guess(goal: "save", why: "It looks like a receipt", block: .expenseRow) }
         let d = TextTidy.details(c.text)
         if (!d.phones.isEmpty || !d.emails.isEmpty), words < 70 { return Guess(goal: "save", why: "It looks like a business card", tool: "cards") }
+        func label(_ names: [String]) -> Bool { c.labels.contains { l in names.contains { l.contains($0) } } }
+        // A menu: food words and prices, or Vision calling it one.
+        let seen = PhotoFinder.Seen(modified: 0, labels: c.labels, text: c.text, faces: c.faces, codes: c.barcode ? 1 : 0, screenshot: false)
+        if PhotoFinder.score(seen, for: .menu) >= PhotoFinder.threshold { return Guess(goal: "read", why: "It looks like a menu", tool: "menu") }
+        // A flyer or invitation: a date and a time, few words, no prices.
+        let money = low.range(of: #"\d+[.,]\d{2}\b"#, options: .regularExpression) != nil
+        let dated = low.range(of: #"\b(\d{1,2}(:\d{2})?\s?(am|pm)|\d{1,2}:\d{2})\b"#, options: .regularExpression) != nil
+            && low.range(of: #"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2}\b|\b\d{1,2}/\d{1,2}(/\d{2,4})?\b|\b(mon|tues|wednes|thurs|fri|satur|sun)day\b"#, options: .regularExpression) != nil
+        if dated, !money, words >= 4, words < 90 { return Guess(goal: "save", why: "It looks like an event — add it to your calendar", block: .calendarEvent) }
+        // A page of print: a letter, a form, a bill — straight into a clean PDF.
+        if words >= 60 || (words >= 20 && label(["document", "paper", "text", "letter", "printed page"])) {
+            return Guess(goal: "doc", why: "It looks like a document — make it a clean PDF", tool: "scan")
+        }
         if words >= 30 { return Guess(goal: "read", why: "There's writing in it", block: .readText) }
+        // A plant, an animal, food or a thing: find out what it is.
+        if c.faces == 0, words < 8, label(["plant", "flower", "tree", "leaf", "animal", "dog", "cat", "bird", "insect", "food", "fruit", "mushroom",
+                                            "shoe", "furniture", "car", "bottle", "landmark", "building", "toy", "gadget", "electronics", "watch"]) {
+            return Guess(goal: "read", why: "Find out what it is", tool: "identify")
+        }
         if c.hasLocation { return Guess(goal: "share", why: "It carries where it was taken — clear it before you share", tool: "scrub") }
         if c.faces > 0 { return Guess(goal: "fun", why: c.faces == 1 ? "There's someone in it" : "There are \(c.faces) people in it", tool: "sticker") }
         return Guess(goal: "share", why: "Ready to send", tool: "fitit")
@@ -371,8 +393,10 @@ enum Guide {
             text.recognitionLevel = .fast
             text.usesLanguageCorrection = false
             let codes = VNDetectBarcodesRequest()
+            let kinds = VNClassifyImageRequest()
             let h = VNImageRequestHandler(cgImage: cg, orientation: .up)
-            try? h.perform([faces, text, codes])
+            try? h.perform([faces, text, codes, kinds])
+            c.labels = (kinds.results ?? []).filter { $0.confidence > 0.3 }.prefix(10).map { $0.identifier.lowercased().replacingOccurrences(of: "_", with: " ") }
             c.faces = faces.results?.count ?? 0
             c.text = (text.results ?? []).compactMap { $0.topCandidates(1).first?.string }.joined(separator: "\n")
             c.barcode = !(codes.results ?? []).isEmpty

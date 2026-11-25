@@ -82,6 +82,7 @@ struct ScanView: View {
             if pages.isEmpty { AlsoInThisTool(hub: "scan") }
         }
         .onAppear { if Launch.sample, pages.isEmpty { append([SampleAssets.document(), SampleAssets.receipt()]) } }
+        .handoffPhotos("scan") { imgs in append(imgs.map { $0.resized(maxDimension: 2400) }) }   // a page just photographed from Home
         .fullScreenCover(isPresented: $showScanner) {
             DocCameraSheet { images in showScanner = false; append(images) }.ignoresSafeArea()
         }

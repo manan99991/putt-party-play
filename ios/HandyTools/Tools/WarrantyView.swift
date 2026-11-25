@@ -69,7 +69,7 @@ struct WarrantyView: View {
         // The camera always closes — on ✕ as well as after a photo (its ✕ did nothing before, Manan 22 Nov) — and the
         // receipt opens only once it has, since a second sheet can't open over the first.
         .sheet(isPresented: $showCamera) {
-            CameraCapture { img in
+            CameraShot { img in
                 showCamera = false
                 if let img { DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { startDraft(img) } }
             }.ignoresSafeArea()
@@ -395,24 +395,3 @@ private struct ReceiptDetail: View {
     }
 }
 
-/// Camera capture — snap a receipt. Falls back to nil on a device with no camera (simulator), so the
-/// photo picker still covers the user.
-private struct CameraCapture: UIViewControllerRepresentable {
-    let done: (UIImage?) -> Void
-    func makeCoordinator() -> Coord { Coord(done: done) }
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let p = UIImagePickerController()
-        if UIImagePickerController.isSourceTypeAvailable(.camera) { p.sourceType = .camera }
-        p.delegate = context.coordinator
-        return p
-    }
-    func updateUIViewController(_ vc: UIImagePickerController, context: Context) {}
-    final class Coord: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        let done: (UIImage?) -> Void
-        init(done: @escaping (UIImage?) -> Void) { self.done = done }
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            done(info[.originalImage] as? UIImage)
-        }
-        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) { done(nil) }
-    }
-}

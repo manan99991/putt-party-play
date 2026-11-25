@@ -224,6 +224,22 @@ final class GuideMenuReceiptTests: XCTestCase {
         XCTAssertNil(Guide.guess(.init(), kind: .pdf))
     }
 
+    /// 25 Nov, the Home camera: whatever is photographed, the first suggestion fits it.
+    func testTheGuessKnowsMoreKindsOfPicture() {
+        let menu = "Starters\nSamosa 6.50\nPaneer Tikka 11.00\nMains\nButter Chicken 16.00\nBiryani 15.00\nNaan 3.00\nDesserts\nKulfi 5.00"
+        XCTAssertEqual(Guide.guess(.init(text: menu), kind: .image)?.tool, "menu")
+        let flyer = "Spring Bake Sale\nSaturday, April 12\n10:00 am - 2 pm\nLincoln Elementary Gym\nEveryone welcome"
+        XCTAssertEqual(Guide.guess(.init(text: flyer), kind: .image)?.block, .calendarEvent)
+        let letter = String(repeating: "Dear Mr Shah, thank you for your letter about the account and the agreement we discussed last week. ", count: 4)
+        XCTAssertEqual(Guide.guess(.init(text: letter), kind: .image)?.tool, "scan")
+        XCTAssertEqual(Guide.guess(.init(labels: ["plant", "flower"]), kind: .image)?.tool, "identify")
+        XCTAssertEqual(Guide.guess(.init(faces: 1, labels: ["dog"]), kind: .image)?.goal, "fun", "a person in it is still about the person")
+        // The receipt and the card still win over everything else.
+        XCTAssertEqual(Guide.guess(.init(text: "CORNER MARKET\n11/25/2026 12:41 PM\nSUBTOTAL 11.64\nTAX 0.73\nTOTAL 12.37\nVISA"), kind: .image)?.block, .expenseRow)
+        // Every tool a suggestion points to really takes the photo it was handed.
+        for t in ["menu", "scan", "identify", "cards"] { XCTAssertTrue(ToolHandoff.tools(for: .image).contains(t), "\(t) can't take the photo") }
+    }
+
     @MainActor func testRequestNamesBecomePlainTitles() {
         let c = Chain(id: "x", name: "I want an image to convert to pdf", steps: [ChainStep(block: .stripLocation), ChainStep(block: .convertImage), ChainStep(block: .photoPdf)])
         let t = Guide.title(.chain(c), count: 1)
