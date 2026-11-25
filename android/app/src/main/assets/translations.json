@@ -13708,5 +13708,465 @@
   "ja": "ヘルパー",
   "pt": "ajudantes",
   "zh": "个助手"
+ },
+ "Allow Full Access in Settings": {
+  "de": "Vollzugriff in den Einstellungen erlauben",
+  "es": "Permitir acceso total en Ajustes",
+  "fr": "Autoriser l'accès complet dans Réglages",
+  "hi": "सेटिंग्स में पूरी अनुमति दें",
+  "it": "Consenti accesso completo in Impostazioni",
+  "ja": "設定で「フルアクセス」を許可",
+  "pt": "Permitir acesso total nos Definições",
+  "zh": "在设置中允许完全访问"
+ },
+ "Also read PDFs from a folder…": {
+  "de": "Auch PDFs aus einem Ordner lesen …",
+  "es": "Leer también PDF de una carpeta…",
+  "fr": "Lire aussi les PDF d'un dossier…",
+  "hi": "किसी फ़ोल्डर से PDF भी पढ़ें…",
+  "it": "Leggi anche i PDF di una cartella…",
+  "ja": "フォルダのPDFも読む…",
+  "pt": "Ler também PDFs de uma pasta…",
+  "zh": "同时读取某个文件夹中的 PDF…"
+ },
+ "Check each one, then add them to": {
+  "de": "Prüfe jeden und füge sie dann hinzu zu",
+  "es": "Revisa cada uno y luego añádelos a",
+  "fr": "Vérifiez chacun, puis ajoutez-les à",
+  "hi": "हर एक जाँचें, फिर इनमें जोड़ें:",
+  "it": "Controlla ognuno, poi aggiungili a",
+  "ja": "一つずつ確認してから追加：",
+  "pt": "Verifique cada um e depois adicione a",
+  "zh": "逐一检查，然后添加到"
+ },
+ "Check them before they're added.": {
+  "de": "Prüfe sie, bevor sie hinzugefügt werden.",
+  "es": "Revísalos antes de añadirlos.",
+  "fr": "Vérifiez-les avant qu'ils soient ajoutés.",
+  "hi": "जोड़ने से पहले इन्हें जाँच लें।",
+  "it": "Controllali prima che vengano aggiunti.",
+  "ja": "追加する前に確認してください。",
+  "pt": "Verifique-os antes de serem adicionados.",
+  "zh": "添加前请先检查。"
+ },
+ "Do this for me": {
+  "de": "Mach das für mich",
+  "es": "Hazlo por mí",
+  "fr": "Faites-le pour moi",
+  "hi": "यह मेरे लिए करें",
+  "it": "Fallo per me",
+  "ja": "おまかせする",
+  "pt": "Faça isto por mim",
+  "zh": "帮我做"
+ },
+ "Finds the receipts you photographed or saved as PDFs today and adds each one to your expense sheet — shop, date, total, tax — after you look them over.": {
+  "de": "Findet die Belege, die du heute fotografiert oder als PDF gespeichert hast, und trägt jeden in deine Ausgabentabelle ein – Geschäft, Datum, Betrag, Steuer –, nachdem du sie geprüft hast.",
+  "es": "Encuentra los recibos que fotografiaste o guardaste en PDF hoy y añade cada uno a tu hoja de gastos (tienda, fecha, total, impuesto) después de que los revises.",
+  "fr": "Trouve les reçus photographiés ou enregistrés en PDF aujourd'hui et ajoute chacun à votre feuille de dépenses — magasin, date, total, taxe — après votre vérification.",
+  "hi": "आज खींची गई या PDF में सहेजी गई रसीदें ढूँढता है और आपके देखने के बाद हर एक को खर्च शीट में जोड़ता है — दुकान, तारीख, कुल, टैक्स।",
+  "it": "Trova gli scontrini fotografati o salvati in PDF oggi e li aggiunge al foglio spese — negozio, data, totale, imposta — dopo che li hai controllati.",
+  "ja": "今日撮影またはPDF保存したレシートを見つけ、確認後に1件ずつ経費シートへ追加します（店名・日付・合計・税）。",
+  "pt": "Encontra os recibos fotografados ou guardados em PDF hoje e adiciona cada um à sua folha de despesas — loja, data, total, imposto — depois de os rever.",
+  "zh": "找到你今天拍下或存为 PDF 的收据，经你核对后逐条加入支出表——商店、日期、总额、税额。"
+ },
+ "Fuel": {
+  "de": "Kraftstoff",
+  "es": "Combustible",
+  "fr": "Carburant",
+  "hi": "ईंधन",
+  "it": "Carburante",
+  "ja": "燃料",
+  "pt": "Combustível",
+  "zh": "燃油"
+ },
+ "Groceries": {
+  "de": "Lebensmittel",
+  "es": "Supermercado",
+  "fr": "Courses",
+  "hi": "किराना",
+  "it": "Spesa",
+  "ja": "食料品",
+  "pt": "Mercearia",
+  "zh": "日用杂货"
+ },
+ "Health": {
+  "de": "Gesundheit",
+  "es": "Salud",
+  "fr": "Santé",
+  "hi": "स्वास्थ्य",
+  "it": "Salute",
+  "ja": "医療",
+  "pt": "Saúde",
+  "zh": "医疗"
+ },
+ "Lodging": {
+  "de": "Unterkunft",
+  "es": "Alojamiento",
+  "fr": "Hébergement",
+  "hi": "ठहरना",
+  "it": "Alloggio",
+  "ja": "宿泊",
+  "pt": "Alojamento",
+  "zh": "住宿"
+ },
+ "Meals": {
+  "de": "Essen",
+  "es": "Comidas",
+  "fr": "Repas",
+  "hi": "भोजन",
+  "it": "Pasti",
+  "ja": "飲食",
+  "pt": "Refeições",
+  "zh": "餐饮"
+ },
+ "New receipts show up here after the next run.": {
+  "de": "Neue Belege erscheinen hier nach dem nächsten Durchlauf.",
+  "es": "Los recibos nuevos aparecerán aquí después de la próxima ejecución.",
+  "fr": "Les nouveaux reçus apparaîtront ici après la prochaine exécution.",
+  "hi": "अगली बार चलने के बाद नई रसीदें यहाँ दिखेंगी।",
+  "it": "I nuovi scontrini compariranno qui dopo la prossima esecuzione.",
+  "ja": "次回の実行後、新しいレシートがここに表示されます。",
+  "pt": "Os novos recibos aparecem aqui depois da próxima execução.",
+  "zh": "下次运行后，新收据会显示在这里。"
+ },
+ "No date on it — the day it was taken is used": {
+  "de": "Kein Datum darauf – der Aufnahmetag wird verwendet",
+  "es": "Sin fecha: se usa el día en que se tomó",
+  "fr": "Pas de date — le jour de la prise est utilisé",
+  "hi": "इस पर तारीख नहीं — जिस दिन लिया गया वह तारीख लगेगी",
+  "it": "Nessuna data: si usa il giorno dello scatto",
+  "ja": "日付なし — 撮影日を使います",
+  "pt": "Sem data — usa-se o dia em que foi tirada",
+  "zh": "上面没有日期——使用拍摄当天的日期"
+ },
+ "Not a business receipt — leave it out": {
+  "de": "Kein Geschäftsbeleg – weglassen",
+  "es": "No es un recibo de negocio: déjalo fuera",
+  "fr": "Pas un reçu professionnel — l'exclure",
+  "hi": "व्यवसाय की रसीद नहीं — छोड़ दें",
+  "it": "Non è uno scontrino di lavoro: escludilo",
+  "ja": "経費ではない — 除外する",
+  "pt": "Não é um recibo de trabalho — deixar de fora",
+  "zh": "不是公务收据——不要添加"
+ },
+ "Nothing waiting": {
+  "de": "Nichts wartet",
+  "es": "Nada pendiente",
+  "fr": "Rien en attente",
+  "hi": "कुछ बाकी नहीं",
+  "it": "Niente in attesa",
+  "ja": "待機中のものはありません",
+  "pt": "Nada à espera",
+  "zh": "没有待处理的内容"
+ },
+ "Notifications are off for Tenzy, so it can't tell you when this is ready. Turn them on in Settings › Tenzy › Notifications.": {
+  "de": "Mitteilungen sind für Tenzy aus, daher kann es dir nicht sagen, wann es fertig ist. Schalte sie unter Einstellungen › Tenzy › Mitteilungen ein.",
+  "es": "Las notificaciones de Tenzy están desactivadas, así que no puede avisarte cuando esté listo. Actívalas en Ajustes › Tenzy › Notificaciones.",
+  "fr": "Les notifications de Tenzy sont désactivées : il ne peut pas vous prévenir quand c'est prêt. Activez-les dans Réglages › Tenzy › Notifications.",
+  "hi": "Tenzy की सूचनाएँ बंद हैं, इसलिए यह तैयार होने पर बता नहीं सकता। सेटिंग्स › Tenzy › सूचनाएँ में चालू करें।",
+  "it": "Le notifiche di Tenzy sono disattivate, quindi non può avvisarti quando è pronto. Attivale in Impostazioni › Tenzy › Notifiche.",
+  "ja": "Tenzyの通知がオフのため、準備ができても知らせられません。設定 › Tenzy › 通知 でオンにしてください。",
+  "pt": "As notificações do Tenzy estão desligadas, por isso não o pode avisar quando estiver pronto. Ative-as em Definições › Tenzy › Notificações.",
+  "zh": "Tenzy 的通知已关闭，准备好时无法提醒你。请在“设置 › Tenzy › 通知”中打开。"
+ },
+ "Office & shipping": {
+  "de": "Büro & Versand",
+  "es": "Oficina y envíos",
+  "fr": "Bureau et envois",
+  "hi": "ऑफ़िस और शिपिंग",
+  "it": "Ufficio e spedizioni",
+  "ja": "事務・発送",
+  "pt": "Escritório e envios",
+  "zh": "办公与快递"
+ },
+ "Once a day": {
+  "de": "Einmal am Tag",
+  "es": "Una vez al día",
+  "fr": "Une fois par jour",
+  "hi": "दिन में एक बार",
+  "it": "Una volta al giorno",
+  "ja": "1日1回",
+  "pt": "Uma vez por dia",
+  "zh": "每天一次"
+ },
+ "Open my sheets": {
+  "de": "Meine Tabellen öffnen",
+  "es": "Abrir mis hojas",
+  "fr": "Ouvrir mes feuilles",
+  "hi": "मेरी शीटें खोलें",
+  "it": "Apri i miei fogli",
+  "ja": "シートを開く",
+  "pt": "Abrir as minhas folhas",
+  "zh": "打开我的表格"
+ },
+ "Or a simple reminder at a time you pick": {
+  "de": "Oder eine einfache Erinnerung zur gewählten Zeit",
+  "es": "O un recordatorio sencillo a la hora que elijas",
+  "fr": "Ou un simple rappel à l'heure choisie",
+  "hi": "या अपने चुने समय पर एक सादा रिमाइंडर",
+  "it": "Oppure un semplice promemoria all'ora che scegli",
+  "ja": "または選んだ時刻のシンプルなリマインダー",
+  "pt": "Ou um lembrete simples à hora que escolher",
+  "zh": "或在你选的时间设一个简单提醒"
+ },
+ "PDFs from": {
+  "de": "PDFs aus",
+  "es": "PDF de",
+  "fr": "PDF de",
+  "hi": "PDF यहाँ से:",
+  "it": "PDF da",
+  "ja": "PDFの場所：",
+  "pt": "PDFs de",
+  "zh": "PDF 来自"
+ },
+ "Parking & tolls": {
+  "de": "Parken & Maut",
+  "es": "Estacionamiento y peajes",
+  "fr": "Stationnement et péages",
+  "hi": "पार्किंग और टोल",
+  "it": "Parcheggi e pedaggi",
+  "ja": "駐車・通行料",
+  "pt": "Estacionamento e portagens",
+  "zh": "停车与过路费"
+ },
+ "Phone, internet & software": {
+  "de": "Telefon, Internet & Software",
+  "es": "Teléfono, internet y software",
+  "fr": "Téléphone, internet et logiciels",
+  "hi": "फ़ोन, इंटरनेट और सॉफ़्टवेयर",
+  "it": "Telefono, internet e software",
+  "ja": "電話・ネット・ソフト",
+  "pt": "Telefone, internet e software",
+  "zh": "电话、网络与软件"
+ },
+ "Set. Tap Test run to see what it does right now.": {
+  "de": "Eingestellt. Tippe auf Testlauf, um zu sehen, was es jetzt tut.",
+  "es": "Listo. Toca Prueba para ver lo que hace ahora mismo.",
+  "fr": "C'est réglé. Touchez Essai pour voir ce qu'il fait maintenant.",
+  "hi": "सेट हो गया। अभी यह क्या करता है, देखने के लिए टेस्ट रन दबाएँ।",
+  "it": "Impostato. Tocca Prova per vedere cosa fa adesso.",
+  "ja": "設定しました。テスト実行で今すぐ動作を確認できます。",
+  "pt": "Definido. Toque em Teste para ver o que faz agora.",
+  "zh": "已设置。点按“试运行”看看它现在会做什么。"
+ },
+ "Smart autoruns": {
+  "de": "Smarte Autoruns",
+  "es": "Autoruns inteligentes",
+  "fr": "Autoruns intelligents",
+  "hi": "स्मार्ट ऑटोरन",
+  "it": "Autorun intelligenti",
+  "ja": "スマートオートラン",
+  "pt": "Autoruns inteligentes",
+  "zh": "智能自动运行"
+ },
+ "Supplies & hardware": {
+  "de": "Material & Werkzeug",
+  "es": "Materiales y ferretería",
+  "fr": "Fournitures et quincaillerie",
+  "hi": "सामान और हार्डवेयर",
+  "it": "Forniture e ferramenta",
+  "ja": "資材・工具",
+  "pt": "Materiais e ferragens",
+  "zh": "耗材与五金"
+ },
+ "Tap and Tenzy finds today's receipts, reads them and gets them ready for your sheet.": {
+  "de": "Tippe, und Tenzy findet die heutigen Belege, liest sie und bereitet sie für deine Tabelle vor.",
+  "es": "Toca y Tenzy encuentra los recibos de hoy, los lee y los prepara para tu hoja.",
+  "fr": "Touchez et Tenzy trouve les reçus du jour, les lit et les prépare pour votre feuille.",
+  "hi": "टैप करें, Tenzy आज की रसीदें ढूँढकर पढ़ेगा और आपकी शीट के लिए तैयार करेगा।",
+  "it": "Tocca e Tenzy trova gli scontrini di oggi, li legge e li prepara per il tuo foglio.",
+  "ja": "タップすると、Tenzyが今日のレシートを見つけて読み取り、シート用に準備します。",
+  "pt": "Toque e o Tenzy encontra os recibos de hoje, lê-os e prepara-os para a sua folha.",
+  "zh": "点按后，Tenzy 会找到今天的收据，读取并为你的表格准备好。"
+ },
+ "Tenzy does the end-of-day jobs for you, on your phone. You look it over, then it's done.": {
+  "de": "Tenzy erledigt die Aufgaben am Tagesende für dich, auf deinem Handy. Du schaust drüber, fertig.",
+  "es": "Tenzy hace las tareas del final del día por ti, en tu teléfono. Lo revisas y listo.",
+  "fr": "Tenzy fait les tâches de fin de journée pour vous, sur votre téléphone. Vous vérifiez, c'est fait.",
+  "hi": "Tenzy दिन के आख़िर के काम आपके फ़ोन पर ही कर देता है। आप देख लें, बस हो गया।",
+  "it": "Tenzy fa i lavori di fine giornata per te, sul telefono. Tu controlli ed è fatta.",
+  "ja": "Tenzyが一日の終わりの作業をスマホ上で代わりに行います。確認すれば完了です。",
+  "pt": "O Tenzy faz as tarefas do fim do dia por si, no telemóvel. Revê e está feito.",
+  "zh": "Tenzy 在手机上替你完成一天结束时的事务。你看一眼，就完成了。"
+ },
+ "Tenzy will also read the PDFs saved in": {
+  "de": "Tenzy liest auch die PDFs in",
+  "es": "Tenzy también leerá los PDF guardados en",
+  "fr": "Tenzy lira aussi les PDF enregistrés dans",
+  "hi": "Tenzy इसमें सहेजे PDF भी पढ़ेगा:",
+  "it": "Tenzy leggerà anche i PDF salvati in",
+  "ja": "Tenzyは次の場所のPDFも読みます：",
+  "pt": "O Tenzy também vai ler os PDFs guardados em",
+  "zh": "Tenzy 也会读取保存在以下位置的 PDF："
+ },
+ "Test run found": {
+  "de": "Testlauf hat gefunden:",
+  "es": "La prueba encontró",
+  "fr": "L'essai a trouvé",
+  "hi": "टेस्ट रन में मिले:",
+  "it": "La prova ha trovato",
+  "ja": "テスト実行で見つかったもの：",
+  "pt": "O teste encontrou",
+  "zh": "试运行找到了"
+ },
+ "Test run worked: no receipts in your photos or PDFs from the last 24 hours.": {
+  "de": "Testlauf hat funktioniert: keine Belege in deinen Fotos oder PDFs der letzten 24 Stunden.",
+  "es": "La prueba funcionó: no hay recibos en tus fotos ni PDF de las últimas 24 horas.",
+  "fr": "L'essai a fonctionné : aucun reçu dans vos photos ou PDF des dernières 24 heures.",
+  "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों की फ़ोटो या PDF में कोई रसीद नहीं।",
+  "it": "La prova ha funzionato: nessuno scontrino nelle foto o nei PDF delle ultime 24 ore.",
+  "ja": "テスト実行は成功：過去24時間の写真やPDFにレシートはありません。",
+  "pt": "O teste funcionou: não há recibos nas fotos nem nos PDFs das últimas 24 horas.",
+  "zh": "试运行成功：过去 24 小时的照片或 PDF 中没有收据。"
+ },
+ "That folder couldn't be opened. Try another one.": {
+  "de": "Dieser Ordner ließ sich nicht öffnen. Versuche einen anderen.",
+  "es": "No se pudo abrir esa carpeta. Prueba con otra.",
+  "fr": "Impossible d'ouvrir ce dossier. Essayez-en un autre.",
+  "hi": "वह फ़ोल्डर नहीं खुल सका। कोई और आज़माएँ।",
+  "it": "Impossibile aprire la cartella. Provane un'altra.",
+  "ja": "そのフォルダを開けませんでした。別のフォルダを試してください。",
+  "pt": "Não foi possível abrir essa pasta. Experimente outra.",
+  "zh": "无法打开该文件夹，请换一个试试。"
+ },
+ "To find today's receipts, Tenzy needs to look through your photos. It reads them on this phone only — nothing is uploaded.": {
+  "de": "Um die heutigen Belege zu finden, muss Tenzy deine Fotos durchsehen. Es liest sie nur auf diesem Handy – nichts wird hochgeladen.",
+  "es": "Para encontrar los recibos de hoy, Tenzy necesita revisar tus fotos. Las lee solo en este teléfono: no se sube nada.",
+  "fr": "Pour trouver les reçus du jour, Tenzy doit parcourir vos photos. Il les lit uniquement sur ce téléphone — rien n'est envoyé.",
+  "hi": "आज की रसीदें ढूँढने के लिए Tenzy को आपकी फ़ोटो देखनी होंगी। यह सिर्फ़ इसी फ़ोन पर पढ़ता है — कुछ भी अपलोड नहीं होता।",
+  "it": "Per trovare gli scontrini di oggi, Tenzy deve guardare le tue foto. Le legge solo su questo telefono: non viene caricato nulla.",
+  "ja": "今日のレシートを見つけるには、Tenzyが写真を確認する必要があります。読み取りはこのスマホ内だけで、何もアップロードしません。",
+  "pt": "Para encontrar os recibos de hoje, o Tenzy precisa de ver as suas fotos. Lê-as só neste telemóvel — nada é enviado.",
+  "zh": "为了找到今天的收据，Tenzy 需要查看你的照片。只在这台手机上读取，不会上传任何内容。"
+ },
+ "Today's receipts": {
+  "de": "Heutige Belege",
+  "es": "Recibos de hoy",
+  "fr": "Reçus du jour",
+  "hi": "आज की रसीदें",
+  "it": "Scontrini di oggi",
+  "ja": "今日のレシート",
+  "pt": "Recibos de hoje",
+  "zh": "今天的收据"
+ },
+ "Today's receipts into my expense sheet": {
+  "de": "Heutige Belege in meine Ausgabentabelle",
+  "es": "Los recibos de hoy a mi hoja de gastos",
+  "fr": "Les reçus du jour dans ma feuille de dépenses",
+  "hi": "आज की रसीदें मेरी खर्च शीट में",
+  "it": "Gli scontrini di oggi nel mio foglio spese",
+  "ja": "今日のレシートを経費シートへ",
+  "pt": "Os recibos de hoje na minha folha de despesas",
+  "zh": "把今天的收据记入支出表"
+ },
+ "Travel": {
+  "de": "Reisen",
+  "es": "Viajes",
+  "fr": "Déplacements",
+  "hi": "यात्रा",
+  "it": "Viaggi",
+  "ja": "交通",
+  "pt": "Viagens",
+  "zh": "差旅"
+ },
+ "Twice a day": {
+  "de": "Zweimal am Tag",
+  "es": "Dos veces al día",
+  "fr": "Deux fois par jour",
+  "hi": "दिन में दो बार",
+  "it": "Due volte al giorno",
+  "ja": "1日2回",
+  "pt": "Duas vezes por dia",
+  "zh": "每天两次"
+ },
+ "and": {
+  "de": "und",
+  "es": "y",
+  "fr": "et",
+  "hi": "और",
+  "it": "e",
+  "ja": "と",
+  "pt": "e",
+  "zh": "和"
+ },
+ "to my sheet": {
+  "de": "zu meiner Tabelle",
+  "es": "a mi hoja",
+  "fr": "à ma feuille",
+  "hi": "मेरी शीट में",
+  "it": "al mio foglio",
+  "ja": "をシートへ",
+  "pt": "à minha folha",
+  "zh": "到我的表格"
+ },
+ "were already in it.": {
+  "de": "waren schon drin.",
+  "es": "ya estaban en ella.",
+  "fr": "y étaient déjà.",
+  "hi": "पहले से उसमें थीं।",
+  "it": "erano già presenti.",
+  "ja": "件は既に入っていました。",
+  "pt": "já lá estavam.",
+  "zh": "已经在表中。"
+ },
+ "iPhone decides when apps may work in the background, usually overnight while charging. If the work isn't done by your time, tapping the notification finishes it.": {
+  "de": "Das iPhone entscheidet, wann Apps im Hintergrund arbeiten dürfen, meist nachts beim Laden. Ist es bis zu deiner Zeit nicht fertig, erledigt ein Tippen auf die Mitteilung den Rest.",
+  "es": "El iPhone decide cuándo pueden trabajar las apps en segundo plano, normalmente de noche mientras carga. Si no está listo a tu hora, tocar la notificación lo termina.",
+  "fr": "L'iPhone décide quand les apps peuvent travailler en arrière-plan, souvent la nuit pendant la charge. Si ce n'est pas fini à votre heure, toucher la notification le termine.",
+  "hi": "iPhone तय करता है कि ऐप बैकग्राउंड में कब काम करें, आमतौर पर रात में चार्ज होते समय। अगर आपके समय तक काम न हुआ हो, तो सूचना पर टैप करने से पूरा हो जाता है।",
+  "it": "L'iPhone decide quando le app possono lavorare in background, di solito di notte in carica. Se non è finito per la tua ora, toccare la notifica lo completa.",
+  "ja": "アプリがバックグラウンドで動けるタイミングはiPhoneが決めます（多くは夜間の充電中）。指定時刻までに終わっていなければ、通知をタップすると完了します。",
+  "pt": "O iPhone decide quando as apps podem trabalhar em segundo plano, normalmente de noite a carregar. Se não estiver pronto à sua hora, tocar na notificação termina-o.",
+  "zh": "iPhone 决定 App 何时可在后台工作，通常是夜间充电时。如果到你设定的时间还没完成，点按通知即可完成。"
+ },
+ "receipt added to": {
+  "de": "Beleg hinzugefügt zu",
+  "es": "recibo añadido a",
+  "fr": "reçu ajouté à",
+  "hi": "रसीद जोड़ी गई:",
+  "it": "scontrino aggiunto a",
+  "ja": "件のレシートを追加：",
+  "pt": "recibo adicionado a",
+  "zh": "张收据已加入"
+ },
+ "receipts added to": {
+  "de": "Belege hinzugefügt zu",
+  "es": "recibos añadidos a",
+  "fr": "reçus ajoutés à",
+  "hi": "रसीदें जोड़ी गईं:",
+  "it": "scontrini aggiunti a",
+  "ja": "件のレシートを追加：",
+  "pt": "recibos adicionados a",
+  "zh": "张收据已加入"
+ },
+ "receipt is ready to check and add.": {
+  "de": "Beleg ist bereit zum Prüfen und Hinzufügen.",
+  "es": "recibo listo para revisar y añadir.",
+  "fr": "reçu prêt à vérifier et ajouter.",
+  "hi": "रसीद जाँचने और जोड़ने के लिए तैयार है।",
+  "it": "scontrino pronto da controllare e aggiungere.",
+  "ja": "件のレシートを確認して追加できます。",
+  "pt": "recibo pronto para verificar e adicionar.",
+  "zh": "张收据可以核对并添加了。"
+ },
+ "receipts are ready to check and add.": {
+  "de": "Belege sind bereit zum Prüfen und Hinzufügen.",
+  "es": "recibos listos para revisar y añadir.",
+  "fr": "reçus prêts à vérifier et ajouter.",
+  "hi": "रसीदें जाँचने और जोड़ने के लिए तैयार हैं।",
+  "it": "scontrini pronti da controllare e aggiungere.",
+  "ja": "件のレシートを確認して追加できます。",
+  "pt": "recibos prontos para verificar e adicionar.",
+  "zh": "张收据可以核对并添加了。"
+ },
+ "First time": {
+  "de": "Erste Zeit",
+  "es": "Primera hora",
+  "fr": "Première heure",
+  "hi": "पहला समय",
+  "it": "Primo orario",
+  "ja": "1回目の時刻",
+  "pt": "Primeira hora",
+  "zh": "第一次时间"
  }
 }
