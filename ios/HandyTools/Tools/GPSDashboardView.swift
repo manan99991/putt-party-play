@@ -49,6 +49,8 @@ struct GPSDashboardView: View {
     @AppStorage(AutoPark.onKey) private var autoOn = false
     @State private var alertsAllowed = false
     @State private var autoTest: String?
+    @State private var offerAuto = false
+    @AppStorage("autopark.offer.declined") private var autoOfferDeclined = false
     @AppStorage("gps.speedLimit") private var speedLimit = 0.0
     @State private var warnState = SpeedWarning.State()
     @State private var overLimit = false
@@ -74,6 +76,21 @@ struct GPSDashboardView: View {
                 }.cardStyle()
             }
             if let autoNote { Label(L(autoNote), systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success).cardStyle() }
+            // Offered at the moment it helps (Manan, 25 Nov: "simple, runs on behalf of the user without them setting it
+            // up"): right after someone saves a spot by hand, one tap makes it happen by itself from then on.
+            if offerAuto && !autoOn {
+                VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                    Label(L("Want Tenzy to do this by itself next time?"), systemImage: "car.side.arrowtriangle.down.fill").font(HandyFont.bodyStrong)
+                    Text(L("When you stop driving and walk away, your spot saves on its own. One tap, nothing else to set up.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    HStack(spacing: HandySpacing.s8) {
+                        Button { autoOn = true; auto.turnOn(); offerAuto = false; Task { await refreshAlertsAllowed() } } label: {
+                            Label(L("Turn on"), systemImage: "checkmark").frame(maxWidth: .infinity)
+                        }.primaryButton().accessibilityIdentifier("gps-autopark-offer-on")
+                        Button { offerAuto = false; autoOfferDeclined = true } label: { Text(L("Not now")) }.compactButton()
+                    }
+                }
+                .cardStyle()
+            }
             parkCard
             if parked != nil { meterCard }
             automaticCard
@@ -430,6 +447,7 @@ struct GPSDashboardView: View {
     private func park() {
         guard let c = gps.coordinate, ParkFix.fresh(gps.fixTime, now: Date()) else { return }
         ParkStore.save(c); parked = c; parkedAt = Date(); HandyHaptics.success()
+        if !autoOn && !autoOfferDeclined && !Launch.screenshots { withAnimation { offerAuto = true } }
     }
 
     private func autoPark() {

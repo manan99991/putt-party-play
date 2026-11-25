@@ -47058,5 +47058,35 @@
   "ja": "その他の保存方法",
   "pt": "Outras formas de salvar",
   "zh": "其他保存方式"
+ },
+ "Want Tenzy to do this by itself next time?": {
+  "de": "Soll Tenzy das nächstes Mal von selbst erledigen?",
+  "es": "¿Quieres que Tenzy lo haga solo la próxima vez?",
+  "fr": "Voulez-vous que Tenzy le fasse tout seul la prochaine fois ?",
+  "hi": "क्या अगली बार Tenzy यह अपने आप करे?",
+  "it": "Vuoi che Tenzy lo faccia da solo la prossima volta?",
+  "ja": "次回から Tenzy に自動で任せますか？",
+  "pt": "Quer que o Tenzy faça isso sozinho da próxima vez?",
+  "zh": "下次要让 Tenzy 自动完成吗？"
+ },
+ "When you stop driving and walk away, your spot saves on its own. One tap, nothing else to set up.": {
+  "de": "Wenn du anhältst und weggehst, wird dein Parkplatz von selbst gespeichert. Ein Tippen, sonst nichts einzurichten.",
+  "es": "Cuando dejes de conducir y te alejes, tu plaza se guardará sola. Un toque y nada más que configurar.",
+  "fr": "Quand vous arrêtez de conduire et partez, votre place s'enregistre toute seule. Un toucher, rien d'autre à configurer.",
+  "hi": "जब आप गाड़ी रोककर चल देंगे, आपकी जगह अपने आप सेव हो जाएगी। बस एक टैप, और कुछ सेट नहीं करना।",
+  "it": "Quando smetti di guidare e ti allontani, il parcheggio si salva da solo. Un tocco, nient'altro da impostare.",
+  "ja": "運転をやめて歩き出すと、駐車位置が自動で保存されます。タップ 1 回だけで、ほかの設定は不要です。",
+  "pt": "Quando você parar de dirigir e se afastar, sua vaga será salva sozinha. Um toque e nada mais para configurar.",
+  "zh": "当你停车走开时，停车位置会自动保存。轻点一下即可，无需其他设置。"
+ },
+ "Turn on": {
+  "de": "Einschalten",
+  "es": "Activar",
+  "fr": "Activer",
+  "hi": "चालू करें",
+  "it": "Attiva",
+  "ja": "オンにする",
+  "pt": "Ativar",
+  "zh": "打开"
  }
 }
