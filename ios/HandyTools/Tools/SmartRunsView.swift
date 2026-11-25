@@ -2,6 +2,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 import Photos
 import UserNotifications
+import AVKit
 
 /// Smart autoruns (25 Nov): the end-of-day jobs a personal assistant would do. Switch one on, pick once or twice a
 /// day and the time, and Test run shows exactly what it would do right now. What it finds waits here for a look —
@@ -50,6 +51,7 @@ struct SmartRunsView: View {
         .task {
             if Launch.uitest, Launch.args.contains("-seedreceipt") { await Self.seedReceipt() }
             Self.seedDrives()
+            if Launch.uitest, Launch.args.contains("-seedheavyvideo") { await Self.seedHeavyVideo() }
             await store.runDue()
         }
         .fileImporter(isPresented: $pickingFolder, allowedContentTypes: [.folder]) { r in
@@ -57,6 +59,54 @@ struct SmartRunsView: View {
                 note = SmartReceipts.remember(folder: u) ? "\(L("Tenzy will also read the PDFs saved in")) \u{201C}\(u.lastPathComponent)\u{201D}." : L("That folder couldn't be opened. Try another one.")
             }
         }
+    }
+
+    /// UI tests: a 12-second 1080p clip saved wastefully (a very high H.264 bitrate), the way some cameras and apps
+    /// save video — the case where HEVC saves a lot and looks the same.
+    static func seedHeavyVideo() async {
+        let key = "uitest.seededHeavy"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("heavy-\(UUID().uuidString).mp4")
+        let w = 1920, h = 1080, fps: Int32 = 30, frames = 360
+        guard let writer = try? AVAssetWriter(outputURL: url, fileType: .mp4) else { return }
+        let input = AVAssetWriterInput(mediaType: .video, outputSettings: [
+            AVVideoCodecKey: AVVideoCodecType.h264, AVVideoWidthKey: w, AVVideoHeightKey: h,
+            AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: 45_000_000, AVVideoMaxKeyFrameIntervalKey: 1,
+                                              AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel]])
+        let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: [
+            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA, kCVPixelBufferWidthKey as String: w, kCVPixelBufferHeightKey as String: h])
+        writer.add(input)
+        guard writer.startWriting() else { return }
+        writer.startSession(atSourceTime: .zero)
+        for i in 0..<frames {
+            while !input.isReadyForMoreMediaData { try? await Task.sleep(nanoseconds: 2_000_000) }
+            guard let pool = adaptor.pixelBufferPool else { break }
+            var pb: CVPixelBuffer?
+            CVPixelBufferPoolCreatePixelBuffer(nil, pool, &pb)
+            guard let pb else { break }
+            CVPixelBufferLockBaseAddress(pb, [])
+            if let ctx = CGContext(data: CVPixelBufferGetBaseAddress(pb), width: w, height: h, bitsPerComponent: 8, bytesPerRow: CVPixelBufferGetBytesPerRow(pb),
+                                   space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue) {
+                let t = CGFloat(i) / CGFloat(frames)
+                let g = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: [UIColor(hue: t, saturation: 0.6, brightness: 0.9, alpha: 1).cgColor,
+                                                                                         UIColor(hue: 1 - t, saturation: 0.7, brightness: 0.5, alpha: 1).cgColor] as CFArray, locations: nil)!
+                ctx.drawLinearGradient(g, start: .zero, end: CGPoint(x: w, y: h), options: [])
+                for k in 0..<12 {
+                    let x = CGFloat(w) * (0.5 + 0.4 * sin(t * 6.28 * 2 + CGFloat(k))), y = CGFloat(h) * (0.5 + 0.4 * cos(t * 6.28 + CGFloat(k) * 0.7))
+                    ctx.setFillColor(UIColor(hue: CGFloat(k) / 12, saturation: 0.8, brightness: 1, alpha: 0.9).cgColor)
+                    ctx.fillEllipse(in: CGRect(x: x - 90, y: y - 90, width: 180, height: 180))
+                }
+            }
+            CVPixelBufferUnlockBaseAddress(pb, [])
+            adaptor.append(pb, withPresentationTime: CMTime(value: CMTimeValue(i), timescale: fps))
+        }
+        input.markAsFinished()
+        await writer.finishWriting()
+        guard writer.status == .completed else { return }
+        do {
+            try await PHPhotoLibrary.shared().performChanges { PHAssetCreationRequest.forAsset().addResource(with: .video, fileURL: url, options: nil) }
+            UserDefaults.standard.set(true, forKey: key)
+        } catch {}
     }
 
     /// UI tests: two drives earlier today, about 4.2 and 1.3 miles.
@@ -145,7 +195,7 @@ struct SmartRunsView: View {
                 Button { Task { await testRun(k) } } label: { Label(L("Test run"), systemImage: "play.circle").frame(maxWidth: .infinity) }
                     .secondaryButton().disabled(store.working != nil).accessibilityIdentifier("smartrun-test-\(k.rawValue)")
                 if store.waitingCount(k) > 0 {
-                    NavigationLink(value: k == .drives ? "smartdrives" : "smartreceipts") {
+                    NavigationLink(value: k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : "smartreceipts") {
                         Text("\(L("Check")) \(store.waitingCount(k))").frame(maxWidth: .infinity)
                     }.primaryButton().accessibilityIdentifier("smartrun-check-\(k.rawValue)")
                 }
@@ -188,8 +238,13 @@ struct SmartRunsView: View {
         let before = store.waitingCount(k)
         await store.run(k, test: true)
         let found = store.waitingCount(k) - before
-        note = found > 0 ? "\(L("Test run found")) \(found) \(L(found == 1 ? "receipt" : "receipts")). \(L("Check them before they're added."))"
-                         : L("Test run worked: no receipts in your photos or PDFs from the last 24 hours.")
+        if k == .heavyVideos {
+            note = found > 0 ? "\(L("Test run made")) \(found) \(L(found == 1 ? "video smaller" : "videos smaller")). \(L("Tap Check to compare before anything changes."))"
+                             : L("Test run worked: no video from the last 24 hours could be made noticeably smaller without losing quality.")
+        } else {
+            note = found > 0 ? "\(L("Test run found")) \(found) \(L(found == 1 ? "receipt" : "receipts")). \(L("Check them before they're added."))"
+                             : L("Test run worked: no receipts in your photos or PDFs from the last 24 hours.")
+        }
         HandyHaptics.success()
     }
 }
@@ -385,5 +440,107 @@ struct SmartDrivesReview: View {
         }
         .cardStyle(padding: HandySpacing.s12)
         .accessibilityIdentifier("smartdrive-card")
+    }
+}
+
+
+/// The smaller copies a run made, each with how much it saves and a frame-by-frame check that it looks the same. Save
+/// them to Photos, then — only if you want — delete the originals through iPhone's own prompt.
+struct SmartVideosReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var playing: URL?
+    @State private var done: String?
+    @State private var busy = false
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Smaller videos")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                let total = store.videos.map(\.saving).reduce(0, +)
+                if !store.videos.isEmpty {
+                    Text("\(L("Saves")) \(SmartVideos.bytes(total)) — \(L("same size picture, same frame rate, checked frame by frame."))")
+                        .font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("smartvideos-total")
+                }
+                if let done { Label(done, systemImage: "checkmark.seal.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true) }
+                if store.videos.isEmpty && done == nil {
+                    EmptyState(icon: "film", line: "Nothing waiting", sub: "Heavy videos show up here after the next run.")
+                }
+                ForEach(store.videos) { r in row(r) }
+                if busy { HStack { BusySpinner(); Text(L("Saving to Photos…")).font(HandyFont.caption) } }
+                let unsaved = store.videos.filter { !$0.saved }
+                if !unsaved.isEmpty {
+                    Button {
+                        busy = true
+                        Task {
+                            let n = await store.saveVideos(Set(unsaved.map(\.id)))
+                            busy = false
+                            done = "\(n) \(L(n == 1 ? "smaller copy saved to Photos, with its original date and place." : "smaller copies saved to Photos, with their original dates and places."))"
+                            HandyHaptics.success()
+                        }
+                    } label: { Text("\(L("Save")) \(unsaved.count) \(L(unsaved.count == 1 ? "smaller copy" : "smaller copies"))").frame(maxWidth: .infinity) }
+                        .primaryButton().disabled(busy).accessibilityIdentifier("smartvideos-save")
+                }
+                let saved = store.videos.filter(\.saved)
+                if !saved.isEmpty {
+                    Button(role: .destructive) {
+                        Task {
+                            let ok = await store.deleteOriginals()
+                            done = ok ? "\(L("Originals deleted. iPhone keeps them in Recently Deleted for 30 days; empty it there to get the space back now."))"
+                                      : L("The originals were kept.")
+                        }
+                    } label: { Text("\(L("Delete the")) \(saved.count) \(L(saved.count == 1 ? "original" : "originals")) · \(L("frees")) \(SmartVideos.bytes(saved.map(\.saving).reduce(0, +)))").frame(maxWidth: .infinity) }
+                        .secondaryButton().accessibilityIdentifier("smartvideos-delete")
+                    Button { store.keepOriginals(); done = L("Kept both. The smaller copies are in Photos too.") } label: { Text(L("Keep the originals too")) }.textButton()
+                    Text(L("iPhone asks before anything is deleted."))
+                        .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartvideos")
+        .sheet(item: Binding(get: { playing.map { PlayURL(url: $0) } }, set: { playing = $0?.url })) { p in
+            VideoPlayer(player: AVPlayer(url: p.url)).ignoresSafeArea()
+        }
+    }
+
+    private func row(_ r: SmartVideos.Result) -> some View {
+        let url = SmartVideos.folder.appendingPathComponent(r.file)
+        return HStack(spacing: HandySpacing.s12) {
+            Button { playing = url } label: {
+                ZStack {
+                    VideoThumb(url: url).frame(width: 72, height: 72).clipShape(RoundedRectangle(cornerRadius: 10)).contentShape(Rectangle())
+                    Image(systemName: "play.circle.fill").font(.system(size: 26)).foregroundStyle(.white).shadow(radius: 2)
+                }
+            }.buttonStyle(.plain).accessibilityLabel(L("Play the smaller copy"))
+            VStack(alignment: .leading, spacing: 3) {
+                Text("\(SmartVideos.bytes(r.before)) → \(SmartVideos.bytes(r.after))").font(HandyFont.bodyStrong).monospacedDigit()
+                Text("\(L("Saves")) \(SmartVideos.bytes(r.saving)) · \(SocialPost.clock(r.seconds))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Label(L("Looks the same — 7 frames checked"), systemImage: "checkmark.seal").font(HandyFont.micro).foregroundStyle(HandyColor.success)
+                if r.saved { Label(L("Saved to Photos"), systemImage: "checkmark.circle.fill").font(HandyFont.micro).foregroundStyle(HandyColor.accent) }
+            }
+            Spacer(minLength: 0)
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityIdentifier("smartvideo-row")
+    }
+}
+
+private struct PlayURL: Identifiable { let url: URL; var id: String { url.path } }
+
+/// A still from a video, for a list row.
+private struct VideoThumb: View {
+    let url: URL
+    @State private var img: UIImage?
+    var body: some View {
+        ZStack { HandyColor.surface; if let img { Image(uiImage: img).resizable().scaledToFill() } }
+            .task(id: url) { img = await VideoEngine.thumbnail(url, at: 0.5, maxDim: 300) }
     }
 }

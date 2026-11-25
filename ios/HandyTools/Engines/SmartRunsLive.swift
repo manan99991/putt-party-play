@@ -8,10 +8,11 @@ import UserNotifications
 @MainActor final class SmartRunStore: ObservableObject {
     static let shared = SmartRunStore()
     /// The autoruns built so far. An autorun is only offered once it truly works end to end.
-    static let built: [SmartRuns.Kind] = [.receipts, .drives]
+    static let built: [SmartRuns.Kind] = [.receipts, .drives, .heavyVideos]
 
     @Published private(set) var plans: [SmartRuns.Kind: SmartRuns.Plan] = [:]
     @Published private(set) var receipts: [SmartReceipts.Entry] = []      // found, waiting for a look
+    @Published private(set) var videos: [SmartVideos.Result] = []          // smaller copies made, waiting for a look
     @Published var working: SmartRuns.Kind?
     @Published var progress: (share: Double, what: String) = (0, "")
     @Published var started: Date?
@@ -24,12 +25,16 @@ import UserNotifications
         return d
     }
     private var receiptsURL: URL { folder.appendingPathComponent("receipts.json") }
+    private var videosURL: URL { folder.appendingPathComponent("videos.json") }
 
     init() {
         if let d = AppGroup.defaults.data(forKey: plansKey), let p = try? JSONDecoder().decode([String: SmartRuns.Plan].self, from: d) {
             plans = Dictionary(uniqueKeysWithValues: p.compactMap { k, v in SmartRuns.Kind(rawValue: k).map { ($0, v) } })
         }
         if let d = try? Data(contentsOf: receiptsURL), let r = try? JSONDecoder().decode([SmartReceipts.Entry].self, from: d) { receipts = r }
+        if let d = try? Data(contentsOf: videosURL), let r = try? JSONDecoder().decode([SmartVideos.Result].self, from: d) {
+            videos = r.filter { FileManager.default.fileExists(atPath: SmartVideos.folder.appendingPathComponent($0.file).path) }
+        }
     }
 
     func plan(_ k: SmartRuns.Kind) -> SmartRuns.Plan { plans[k] ?? SmartRuns.Plan() }
@@ -49,6 +54,7 @@ import UserNotifications
         switch k {
         case .receipts: return receipts.count
         case .drives: return drives.count
+        case .heavyVideos: return videos.count
         default: return 0
         }
     }
@@ -92,6 +98,20 @@ import UserNotifications
             saveReceipts()
         case .drives:
             progress = (1, "Done")   // drives are recorded as they happen; the run only gathers them for a look
+        case .heavyVideos:
+            let have = Set(videos.map(\.id))
+            let picks = SmartVideos.found(in: window).filter { !have.contains($0.0.id) }
+            let heavy = SmartRuns.heavy(picks.map(\.0)).compactMap { f in picks.first { $0.0.id == f.id } }
+            for (i, (f, a)) in heavy.enumerated() {
+                if Task.isCancelled { break }
+                let label = "\(L("Making video")) \(i + 1)/\(heavy.count)"
+                progress = (Double(i) / Double(max(1, heavy.count)), label)
+                if let r = await SmartVideos.shrink(f, a, progress: { p in Task { @MainActor in
+                    self.progress = ((Double(i) + p) / Double(max(1, heavy.count)), label) } }) {
+                    videos.append(r); saveVideos()
+                }
+            }
+            progress = (1, "Done")
         default: break
         }
         if !test { AppGroup.defaults.set(now.timeIntervalSince1970, forKey: lastKey(k)) }
@@ -119,6 +139,36 @@ import UserNotifications
         receipts.removeAll(where: \.ready); saveReceipts()
         Task { await SmartRunAlerts.ready(.receipts, count: receipts.count) }
         return r
+    }
+
+    /// The smaller copies, into Photos (with the originals' dates and places). Returns how many were saved.
+    func saveVideos(_ ids: Set<String>) async -> Int {
+        var n = 0
+        for i in videos.indices where ids.contains(videos[i].id) && !videos[i].saved {
+            if let id = await SmartVideos.saveToPhotos(videos[i]) { videos[i].saved = true; videos[i].savedID = id; n += 1 }
+        }
+        saveVideos()
+        return n
+    }
+
+    /// iPhone's own prompt to delete the originals of the saved copies; the list then clears.
+    func deleteOriginals() async -> Bool {
+        let done = videos.filter(\.saved)
+        guard !done.isEmpty, await SmartVideos.deleteOriginals(done.map(\.id)) else { return false }
+        for r in done { try? FileManager.default.removeItem(at: SmartVideos.folder.appendingPathComponent(r.file)) }
+        videos.removeAll(where: \.saved); saveVideos()
+        Task { await SmartRunAlerts.ready(.heavyVideos, count: videos.count) }
+        return true
+    }
+
+    /// Keeps the originals: the copies already saved stay in Photos, the list clears.
+    func keepOriginals() {
+        for r in videos where !r.saved { try? FileManager.default.removeItem(at: SmartVideos.folder.appendingPathComponent(r.file)) }
+        videos.removeAll(); saveVideos()
+    }
+
+    private func saveVideos() {
+        if let d = try? JSONEncoder().encode(videos) { try? d.write(to: videosURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
     }
 
     private func saveReceipts() {
@@ -166,6 +216,9 @@ enum SmartRunAlerts {
             let body = UNMutableNotificationContent()
             body.title = L(k.title)
             switch k {
+            case .heavyVideos:
+                body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "video can be made smaller — it looks the same." : "videos can be made smaller — they look the same."))"
+                                        : L("Tap and Tenzy finds today's heavy videos and makes them smaller without losing quality.")
             case .drives:
                 body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "drive today — was it for work?" : "drives today — which were for work?"))"
                                         : L("Tap to see today's drives and log the ones for work.")

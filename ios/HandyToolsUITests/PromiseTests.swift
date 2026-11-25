@@ -675,6 +675,32 @@ final class PromiseTests: XCTestCase {
         XCTAssertEqual(cards.count, 0, "both drives were looked at, so neither waits any more")
     }
 
+    /// Smart autorun, heavy videos (25 Nov): a wastefully saved 12-second 1080p clip taken today is made smaller, the
+    /// copy passes the frame-by-frame "looks the same" check, it's saved to Photos, and the originals are only offered
+    /// for deletion after that.
+    func testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "smartruns", "-uitest", "-seedheavyvideo"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let test = any["smartrun-test-heavyVideos"].firstMatch
+        XCTAssertTrue(test.waitForExistence(timeout: 60), "the autoruns page didn't open")
+        if !test.isHittable { app.swipeUp() }
+        test.tap()
+        let check = any["smartrun-check-heavyVideos"].firstMatch
+        XCTAssertTrue(check.waitForExistence(timeout: 240),
+                      "no smaller copy was made: \(app.staticTexts.allElementsBoundByIndex.map(\.label).filter { $0.contains("Test run") })")
+        if !check.isHittable { app.swipeUp() }
+        check.tap()
+        let row = any["smartvideo-row"].firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["Looks the same — 7 frames checked"].exists)
+        XCTAssertFalse(any["smartvideos-delete"].exists, "deleting originals must never be offered before the copy is saved")
+        any["smartvideos-save"].firstMatch.tap()
+        XCTAssertTrue(any["smartvideos-delete"].firstMatch.waitForExistence(timeout: 30), "after saving, deleting the originals isn't offered")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1 smaller copy saved'")).firstMatch.exists)
+    }
+
     /// "Just swiping the finger lets select multiple files" (Manan, 22 Nov): Home › Photo opens Tenzy's own grid, and a
     /// sideways swipe across the first row ticks every photo it passes over.
     func testSwipeAcrossPhotosPicksSeveral() {

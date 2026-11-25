@@ -659,6 +659,7 @@ struct HomeView: View {
                 case "smartruns": SmartRunsView()                     // My stuff › Set an autorun, and its notifications
                 case "smartreceipts": SmartReceiptsReview()           // the receipts an autorun found, waiting for a look
                 case "smartdrives": SmartDrivesReview()               // the drives an autorun found, waiting for a look
+                case "smartvideos": SmartVideosReview()               // smaller copies of heavy videos, waiting for a look
                 // Home › See all: every helper on one map, with the ready-made flows of each section.
                 case "allhelpers": BuilderView(face: .tools, asPage: true).background(TenzyBackdrop()).toolbar(.hidden, for: .navigationBar)
                 // My stuff › Build a helper: start from nothing, from a ready-made one, or say it.

@@ -14498,5 +14498,315 @@
   "ja": "「車を探す」の運転検出を使います — オンにすると一緒にオンになります。",
   "pt": "Usa a deteção de viagens de Encontrar o meu carro — ativar isto ativa-a.",
   "zh": "使用“找我的车”的驾驶检测——打开此项会同时打开它。"
+ },
+ "Test run made": {
+  "de": "Testlauf hat erstellt:",
+  "es": "La prueba hizo",
+  "fr": "L'essai a rendu",
+  "hi": "टेस्ट रन ने छोटा किया:",
+  "it": "La prova ha reso",
+  "ja": "テスト実行で縮小：",
+  "pt": "O teste tornou",
+  "zh": "试运行已处理"
+ },
+ "Tap Check to compare before anything changes.": {
+  "de": "Tippe auf Prüfen, um zu vergleichen, bevor sich etwas ändert.",
+  "es": "Toca Revisar para comparar antes de que cambie nada.",
+  "fr": "Touchez Vérifier pour comparer avant tout changement.",
+  "hi": "कुछ बदलने से पहले तुलना करने के लिए जाँचें दबाएँ।",
+  "it": "Tocca Controlla per confrontare prima che cambi qualcosa.",
+  "ja": "何か変わる前に「確認」で比べてください。",
+  "pt": "Toque em Verificar para comparar antes de mudar algo.",
+  "zh": "点按“检查”，在任何改动前先对比。"
+ },
+ "Test run worked: no video from the last 24 hours could be made noticeably smaller without losing quality.": {
+  "de": "Testlauf hat funktioniert: Kein Video der letzten 24 Stunden ließ sich ohne Qualitätsverlust deutlich verkleinern.",
+  "es": "La prueba funcionó: ningún vídeo de las últimas 24 horas podía reducirse notablemente sin perder calidad.",
+  "fr": "L'essai a fonctionné : aucune vidéo des dernières 24 heures ne pouvait être nettement réduite sans perte de qualité.",
+  "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों का कोई वीडियो गुणवत्ता खोए बिना काफ़ी छोटा नहीं हो सकता था।",
+  "it": "La prova ha funzionato: nessun video delle ultime 24 ore poteva ridursi molto senza perdere qualità.",
+  "ja": "テスト成功：過去24時間の動画で、画質を落とさず大きく縮められるものはありませんでした。",
+  "pt": "O teste funcionou: nenhum vídeo das últimas 24 horas podia ficar bem mais pequeno sem perder qualidade.",
+  "zh": "试运行成功：过去 24 小时没有能在不损失画质的情况下明显缩小的视频。"
+ },
+ "Smaller videos": {
+  "de": "Kleinere Videos",
+  "es": "Vídeos más pequeños",
+  "fr": "Vidéos plus légères",
+  "hi": "छोटे वीडियो",
+  "it": "Video più leggeri",
+  "ja": "小さくした動画",
+  "pt": "Vídeos mais pequenos",
+  "zh": "更小的视频"
+ },
+ "Saves": {
+  "de": "Spart",
+  "es": "Ahorra",
+  "fr": "Économise",
+  "hi": "बचत",
+  "it": "Risparmia",
+  "ja": "節約",
+  "pt": "Poupa",
+  "zh": "节省"
+ },
+ "same size picture, same frame rate, checked frame by frame.": {
+  "de": "gleiche Bildgröße, gleiche Bildrate, Bild für Bild geprüft.",
+  "es": "misma resolución, mismos fotogramas por segundo, comprobado fotograma a fotograma.",
+  "fr": "même taille d'image, même cadence, vérifié image par image.",
+  "hi": "वही तस्वीर का आकार, वही फ़्रेम रेट, फ़्रेम-दर-फ़्रेम जाँचा।",
+  "it": "stessa risoluzione, stessi fotogrammi al secondo, controllato fotogramma per fotogramma.",
+  "ja": "解像度もフレームレートも同じ、フレームごとに確認済み。",
+  "pt": "mesma resolução, mesma taxa de fotogramas, verificado fotograma a fotograma.",
+  "zh": "分辨率和帧率不变，已逐帧检查。"
+ },
+ "Saving to Photos…": {
+  "de": "Wird in Fotos gesichert …",
+  "es": "Guardando en Fotos…",
+  "fr": "Enregistrement dans Photos…",
+  "hi": "फ़ोटो में सहेज रहे हैं…",
+  "it": "Salvataggio in Foto…",
+  "ja": "写真に保存中…",
+  "pt": "A guardar nas Fotos…",
+  "zh": "正在存入照片…"
+ },
+ "Originals deleted. iPhone keeps them in Recently Deleted for 30 days; empty it there to get the space back now.": {
+  "de": "Originale gelöscht. Das iPhone behält sie 30 Tage in „Zuletzt gelöscht“; leere es dort, um den Platz sofort zurückzubekommen.",
+  "es": "Originales eliminados. El iPhone los guarda 30 días en Eliminado; vacíalo ahí para recuperar el espacio ya.",
+  "fr": "Originaux supprimés. L'iPhone les garde 30 jours dans Suppressions récentes ; videz-le pour récupérer l'espace tout de suite.",
+  "hi": "मूल हटा दिए। iPhone इन्हें 30 दिन 'हाल ही में हटाए गए' में रखता है; अभी जगह पाने के लिए वहाँ खाली करें।",
+  "it": "Originali eliminati. L'iPhone li tiene 30 giorni in Eliminati di recente; svuotalo lì per recuperare subito lo spazio.",
+  "ja": "元の動画を削除しました。iPhoneは「最近削除した項目」に30日間残します。今すぐ容量を空けるにはそこを空にしてください。",
+  "pt": "Originais apagados. O iPhone guarda-os 30 dias em Apagados recentemente; esvazie-o para recuperar o espaço já.",
+  "zh": "原视频已删除。iPhone 会在“最近删除”中保留 30 天；在那里清空即可立刻释放空间。"
+ },
+ "The originals were kept.": {
+  "de": "Die Originale wurden behalten.",
+  "es": "Se conservaron los originales.",
+  "fr": "Les originaux ont été conservés.",
+  "hi": "मूल रखे गए।",
+  "it": "Gli originali sono stati conservati.",
+  "ja": "元の動画は残しました。",
+  "pt": "Os originais foram mantidos.",
+  "zh": "原视频已保留。"
+ },
+ "Delete the": {
+  "de": "Löschen:",
+  "es": "Eliminar los",
+  "fr": "Supprimer les",
+  "hi": "हटाएँ:",
+  "it": "Elimina gli",
+  "ja": "削除：",
+  "pt": "Apagar os",
+  "zh": "删除"
+ },
+ "frees": {
+  "de": "gibt frei:",
+  "es": "libera",
+  "fr": "libère",
+  "hi": "खाली होगा:",
+  "it": "libera",
+  "ja": "空き容量：",
+  "pt": "liberta",
+  "zh": "释放"
+ },
+ "Kept both. The smaller copies are in Photos too.": {
+  "de": "Beide behalten. Die kleineren Kopien sind auch in Fotos.",
+  "es": "Se conservan ambos. Las copias más pequeñas también están en Fotos.",
+  "fr": "Les deux sont gardés. Les copies plus légères sont aussi dans Photos.",
+  "hi": "दोनों रखे। छोटी कॉपियाँ भी फ़ोटो में हैं।",
+  "it": "Tenuti entrambi. Le copie più leggere sono anche in Foto.",
+  "ja": "両方残しました。小さいコピーも写真にあります。",
+  "pt": "Mantidos ambos. As cópias mais pequenas também estão nas Fotos.",
+  "zh": "两者都保留了。较小的副本也在照片中。"
+ },
+ "Keep the originals too": {
+  "de": "Originale auch behalten",
+  "es": "Conservar también los originales",
+  "fr": "Garder aussi les originaux",
+  "hi": "मूल भी रखें",
+  "it": "Tieni anche gli originali",
+  "ja": "元の動画も残す",
+  "pt": "Manter também os originais",
+  "zh": "也保留原视频"
+ },
+ "iPhone asks before anything is deleted.": {
+  "de": "Das iPhone fragt, bevor etwas gelöscht wird.",
+  "es": "El iPhone pregunta antes de eliminar nada.",
+  "fr": "L'iPhone demande avant toute suppression.",
+  "hi": "कुछ भी हटाने से पहले iPhone पूछता है।",
+  "it": "L'iPhone chiede prima di eliminare qualcosa.",
+  "ja": "削除の前にiPhoneが確認します。",
+  "pt": "O iPhone pergunta antes de apagar algo.",
+  "zh": "删除前 iPhone 会先询问。"
+ },
+ "Play the smaller copy": {
+  "de": "Kleinere Kopie abspielen",
+  "es": "Reproducir la copia más pequeña",
+  "fr": "Lire la copie plus légère",
+  "hi": "छोटी कॉपी चलाएँ",
+  "it": "Riproduci la copia più leggera",
+  "ja": "小さいコピーを再生",
+  "pt": "Reproduzir a cópia mais pequena",
+  "zh": "播放较小的副本"
+ },
+ "Looks the same — 7 frames checked": {
+  "de": "Sieht gleich aus – 7 Bilder geprüft",
+  "es": "Se ve igual: 7 fotogramas comprobados",
+  "fr": "Identique à l'œil — 7 images vérifiées",
+  "hi": "एक जैसा दिखता है — 7 फ़्रेम जाँचे",
+  "it": "Uguale a vedersi: 7 fotogrammi controllati",
+  "ja": "見た目は同じ — 7フレーム確認済み",
+  "pt": "Parece igual — 7 fotogramas verificados",
+  "zh": "看起来一样——已检查 7 帧"
+ },
+ "Making video": {
+  "de": "Video wird verkleinert",
+  "es": "Reduciendo vídeo",
+  "fr": "Allègement de la vidéo",
+  "hi": "वीडियो छोटा हो रहा है",
+  "it": "Riduzione video",
+  "ja": "動画を縮小中",
+  "pt": "A reduzir o vídeo",
+  "zh": "正在处理视频"
+ },
+ "Tap and Tenzy finds today's heavy videos and makes them smaller without losing quality.": {
+  "de": "Tippe, und Tenzy findet die großen Videos von heute und verkleinert sie ohne Qualitätsverlust.",
+  "es": "Toca y Tenzy encuentra los vídeos pesados de hoy y los reduce sin perder calidad.",
+  "fr": "Touchez et Tenzy trouve les vidéos lourdes du jour et les allège sans perte de qualité.",
+  "hi": "टैप करें, Tenzy आज के भारी वीडियो ढूँढकर गुणवत्ता खोए बिना छोटा करेगा।",
+  "it": "Tocca e Tenzy trova i video pesanti di oggi e li riduce senza perdere qualità.",
+  "ja": "タップすると、Tenzyが今日の大きな動画を見つけ、画質を落とさず小さくします。",
+  "pt": "Toque e o Tenzy encontra os vídeos pesados de hoje e torna-os mais pequenos sem perder qualidade.",
+  "zh": "点按后，Tenzy 会找到今天的大视频，并在不损失画质的情况下缩小。"
+ },
+ "Heavy videos show up here after the next run.": {
+  "de": "Große Videos erscheinen hier nach dem nächsten Durchlauf.",
+  "es": "Los vídeos pesados aparecerán aquí tras la próxima ejecución.",
+  "fr": "Les vidéos lourdes apparaîtront ici après la prochaine exécution.",
+  "hi": "अगली बार चलने के बाद भारी वीडियो यहाँ दिखेंगे।",
+  "it": "I video pesanti compariranno qui dopo la prossima esecuzione.",
+  "ja": "次回の実行後、大きな動画がここに表示されます。",
+  "pt": "Os vídeos pesados aparecem aqui após a próxima execução.",
+  "zh": "下次运行后，大视频会显示在这里。"
+ },
+ "video smaller": {
+  "de": "Video kleiner",
+  "es": "vídeo más pequeño",
+  "fr": "vidéo plus légère",
+  "hi": "वीडियो छोटा",
+  "it": "video più leggero",
+  "ja": "本を縮小",
+  "pt": "vídeo mais pequeno",
+  "zh": "个视频变小"
+ },
+ "videos smaller": {
+  "de": "Videos kleiner",
+  "es": "vídeos más pequeños",
+  "fr": "vidéos plus légères",
+  "hi": "वीडियो छोटे",
+  "it": "video più leggeri",
+  "ja": "本を縮小",
+  "pt": "vídeos mais pequenos",
+  "zh": "个视频变小"
+ },
+ "smaller copy": {
+  "de": "kleinere Kopie",
+  "es": "copia más pequeña",
+  "fr": "copie plus légère",
+  "hi": "छोटी कॉपी",
+  "it": "copia più leggera",
+  "ja": "件の小さいコピー",
+  "pt": "cópia mais pequena",
+  "zh": "个较小副本"
+ },
+ "smaller copies": {
+  "de": "kleinere Kopien",
+  "es": "copias más pequeñas",
+  "fr": "copies plus légères",
+  "hi": "छोटी कॉपियाँ",
+  "it": "copie più leggere",
+  "ja": "件の小さいコピー",
+  "pt": "cópias mais pequenas",
+  "zh": "个较小副本"
+ },
+ "original": {
+  "de": "Original",
+  "es": "original",
+  "fr": "original",
+  "hi": "मूल",
+  "it": "originale",
+  "ja": "件の元動画",
+  "pt": "original",
+  "zh": "个原视频"
+ },
+ "originals": {
+  "de": "Originale",
+  "es": "originales",
+  "fr": "originaux",
+  "hi": "मूल",
+  "it": "originali",
+  "ja": "件の元動画",
+  "pt": "originais",
+  "zh": "个原视频"
+ },
+ "smaller copy saved to Photos, with its original date and place.": {
+  "de": "kleinere Kopie in Fotos gesichert, mit Originaldatum und -ort.",
+  "es": "copia más pequeña guardada en Fotos, con su fecha y lugar originales.",
+  "fr": "copie plus légère enregistrée dans Photos, avec sa date et son lieu d'origine.",
+  "hi": "छोटी कॉपी फ़ोटो में सहेजी गई, मूल तारीख और जगह के साथ।",
+  "it": "copia più leggera salvata in Foto, con data e luogo originali.",
+  "ja": "件の小さいコピーを、元の日付と場所付きで写真に保存しました。",
+  "pt": "cópia mais pequena guardada nas Fotos, com a data e o local originais.",
+  "zh": "个较小副本已存入照片，保留原日期和地点。"
+ },
+ "smaller copies saved to Photos, with their original dates and places.": {
+  "de": "kleinere Kopien in Fotos gesichert, mit Originaldaten und -orten.",
+  "es": "copias más pequeñas guardadas en Fotos, con sus fechas y lugares originales.",
+  "fr": "copies plus légères enregistrées dans Photos, avec leurs dates et lieux d'origine.",
+  "hi": "छोटी कॉपियाँ फ़ोटो में सहेजी गईं, मूल तारीखों और जगहों के साथ।",
+  "it": "copie più leggere salvate in Foto, con date e luoghi originali.",
+  "ja": "件の小さいコピーを、元の日付と場所付きで写真に保存しました。",
+  "pt": "cópias mais pequenas guardadas nas Fotos, com as datas e locais originais.",
+  "zh": "个较小副本已存入照片，保留原日期和地点。"
+ },
+ "video can be made smaller — it looks the same.": {
+  "de": "Video kann kleiner werden – es sieht gleich aus.",
+  "es": "vídeo puede ser más pequeño y se ve igual.",
+  "fr": "vidéo peut être allégée — elle reste identique.",
+  "hi": "वीडियो छोटा हो सकता है — दिखेगा वैसा ही।",
+  "it": "video può diventare più leggero e resta uguale.",
+  "ja": "本の動画を、見た目そのままで小さくできます。",
+  "pt": "vídeo pode ficar mais pequeno — fica igual.",
+  "zh": "个视频可以缩小——看起来一样。"
+ },
+ "videos can be made smaller — they look the same.": {
+  "de": "Videos können kleiner werden – sie sehen gleich aus.",
+  "es": "vídeos pueden ser más pequeños y se ven igual.",
+  "fr": "vidéos peuvent être allégées — elles restent identiques.",
+  "hi": "वीडियो छोटे हो सकते हैं — दिखेंगे वैसे ही।",
+  "it": "video possono diventare più leggeri e restano uguali.",
+  "ja": "本の動画を、見た目そのままで小さくできます。",
+  "pt": "vídeos podem ficar mais pequenos — ficam iguais.",
+  "zh": "个视频可以缩小——看起来一样。"
+ },
+ "Make today's heavy videos smaller": {
+  "de": "Heutige große Videos verkleinern",
+  "es": "Reducir los vídeos pesados de hoy",
+  "fr": "Alléger les vidéos lourdes du jour",
+  "hi": "आज के भारी वीडियो छोटे करें",
+  "it": "Riduci i video pesanti di oggi",
+  "ja": "今日の大きな動画を小さく",
+  "pt": "Tornar mais pequenos os vídeos pesados de hoje",
+  "zh": "缩小今天的大视频"
+ },
+ "Re-saves today's big videos in a smaller format that looks the same, checks every one frame by frame, and shows how much space you'd get back.": {
+  "de": "Speichert die großen Videos von heute in einem kleineren Format, das gleich aussieht, prüft jedes Bild für Bild und zeigt, wie viel Platz du zurückbekommst.",
+  "es": "Vuelve a guardar los vídeos grandes de hoy en un formato más pequeño que se ve igual, comprueba cada uno fotograma a fotograma y muestra cuánto espacio recuperarías.",
+  "fr": "Réenregistre les grosses vidéos du jour dans un format plus léger identique à l'œil, vérifie chacune image par image et indique l'espace récupérable.",
+  "hi": "आज के बड़े वीडियो को छोटे फ़ॉर्मैट में फिर से सहेजता है जो वैसा ही दिखता है, हर एक को फ़्रेम-दर-फ़्रेम जाँचता है और बताता है कितनी जगह बचेगी।",
+  "it": "Risalva i video grandi di oggi in un formato più leggero che appare uguale, controlla ognuno fotogramma per fotogramma e mostra quanto spazio recuperi.",
+  "ja": "今日の大きな動画を見た目の変わらない小さい形式で保存し直し、1本ずつフレーム単位で確認して、空く容量を表示します。",
+  "pt": "Volta a guardar os vídeos grandes de hoje num formato mais pequeno que parece igual, verifica cada um fotograma a fotograma e mostra quanto espaço recupera.",
+  "zh": "把今天的大视频重新存为更小但看起来一样的格式，逐帧检查每一个，并显示能腾出多少空间。"
  }
 }
