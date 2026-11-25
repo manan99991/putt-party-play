@@ -234,7 +234,18 @@ platform :ios do
         end
         # A plan that already has a price (approved) takes a price CHANGE, which needs a start date; a new plan
         # takes its first price with none. People already subscribed keep their price when `preserve` is set.
-        start = current ? Time.now.utc.strftime("%Y-%m-%d") : nil
+        # A change must start on a future date (Apple: "a future date is expected, and must be on or after ...").
+        start = current ? (Time.now.utc + 86_400).strftime("%Y-%m-%d") : nil
+        if start
+          c, d = req.call(:post, "/v1/subscriptionPrices",
+            { data: { type: "subscriptionPrices", attributes: { preserveCurrentPrice: w[:preserve], startDate: start },
+                      relationships: { subscription: { data: { type: "subscriptions", id: sub_id } },
+                                       subscriptionPricePoint: { data: { type: "subscriptionPricePoints", id: target["id"] } } } } })
+          if c >= 400 && (m = d.to_s.match(/on or after (\d{4}-\d{2}-\d{2})/))
+            start = m[1]
+            UI.message("  Apple asks for a start on or after #{start}")
+          end
+        end
         ok = 0; bad = 0; first_err = nil
         ([target] + eq).each do |pt|
           attrs = { preserveCurrentPrice: w[:preserve] }
