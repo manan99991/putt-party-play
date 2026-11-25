@@ -1,10 +1,11 @@
 Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' started.
-    t =   278.20s     Requesting snapshot of accessibility hierarchy for app with pid 33273
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:691: error: -[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame] : XCTAssertTrue failed - no smaller copy was made: ["Test run worked: no video from the last 24 hours could be made noticeably smaller without losing quality. [0 videos in the window (), 0 heavy]", "Test run", "Test run", "Test run"]
-    t =   287.31s Requesting snapshot of accessibility hierarchy for app with pid 33273
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:694: error: -[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame] : Failed to tap "smartrun-check-heavyVideos" Any: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"smartrun-check-heavyVideos" IN identifiers'`, given input App element pid: 33273
-Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' failed (287.749 seconds).
-	 Executed 1 test, with 2 failures (0 unexpected) in 287.749 (287.770) seconds
-	 Executed 1 test, with 2 failures (0 unexpected) in 287.749 (287.781) seconds
-	 Executed 1 test, with 2 failures (0 unexpected) in 287.749 (287.783) seconds
+    t =   297.33s     Requesting snapshot of accessibility hierarchy for app with pid 29688
+    t =   301.80s         Requesting snapshot of accessibility hierarchy for app with pid 29688
+    t =   301.88s     Requesting snapshot of accessibility hierarchy for app with pid 29688
+    t =   301.95s     Requesting snapshot of accessibility hierarchy for app with pid 29688
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:692: error: -[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame] : Failed to get matching snapshot: No matches found for Element at index 21 from input {(
+Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' failed (303.180 seconds).
+	 Executed 1 test, with 1 failure (0 unexpected) in 303.180 (303.218) seconds
+	 Executed 1 test, with 1 failure (0 unexpected) in 303.180 (303.230) seconds
+	 Executed 1 test, with 1 failure (0 unexpected) in 303.180 (303.234) seconds
 == crash reports
