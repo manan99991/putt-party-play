@@ -9,6 +9,9 @@ struct ReceiptResult: View {
     @State private var addedTo: String?
     @State private var kept = false
     @State private var totalText: String
+    @State private var asking = false
+    @State private var override = false
+    @State private var dateTouched = false
 
     init(receipt: DataGrab.Receipt, photo: UIImage?) {
         self.photo = photo
@@ -25,7 +28,7 @@ struct ReceiptResult: View {
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             card
-            if let warn = DataGrab.check(r) {
+            if let warn = DataGrab.entryProblems(r).block {
                 Label(L(warn), systemImage: "exclamationmark.triangle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.amber)
                     .fixedSize(horizontal: false, vertical: true)
             } else if r.total != nil, !r.lines.isEmpty {
@@ -33,10 +36,17 @@ struct ReceiptResult: View {
             }
 
             Text(L("Where should it go?")).font(HandyFont.bodyStrong).padding(.top, 4)
-            Button { addToExpenses() } label: {
-                Label(addedTo == nil ? L("Add to this month's expenses") : L("Added to your expenses"), systemImage: addedTo == nil ? "tablecells.badge.ellipsis" : "checkmark.circle.fill")
+            let problems = DataGrab.entryProblems(r)
+            Button { askThenAdd() } label: {
+                Label(addedTo == nil ? L("Add to my expense sheet") : L("Added to your expenses"), systemImage: addedTo == nil ? "tablecells.badge.ellipsis" : "checkmark.circle.fill")
                     .frame(maxWidth: .infinity)
-            }.primaryButton().disabled(addedTo != nil).accessibilityIdentifier("receipt-add-expenses")
+            }.primaryButton().disabled(addedTo != nil || (problems.block != nil && !override)).accessibilityIdentifier("receipt-add-expenses")
+            if addedTo == nil, problems.block != nil {
+                // Blocked until fixed, but never a dead end: a misread line can't be typed over, so the person can
+                // say the receipt really reads this way.
+                Toggle(isOn: $override) { Text(L("I've checked it against the receipt, add it as shown")).font(HandyFont.caption) }
+                    .tint(HandyColor.amber).accessibilityIdentifier("receipt-override")
+            }
             if let addedTo {
                 Text("\(L("Saved as a row in")) \u{201C}\(addedTo)\u{201D}. \(L("Open it any time from My sheets, or share it as a spreadsheet."))")
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
@@ -59,6 +69,16 @@ struct ReceiptResult: View {
                 CopyButton(text: DataGrab.receiptCSV(r), title: "Copy")
             }
         }
+        .confirmationDialog(L("Add to this sheet?"), isPresented: $asking, titleVisibility: .visible) {
+            let file = RunningList.target(pattern: RunningList.defaultName)
+            Button("\(L("Add to")) \((file as NSString).deletingPathExtension)") { addToExpenses() }
+            Button(L("Start a new sheet")) { RunningList.startNew(from: file); addToExpenses() }
+            Button(L("Cancel"), role: .cancel) {}
+        } message: {
+            let file = RunningList.target(pattern: RunningList.defaultName)
+            let n = RunningList.rowCount(RunningList.read(file))
+            Text("\((file as NSString).deletingPathExtension) · \(n) \(L(n == 1 ? "entry so far" : "entries so far"))")
+        }
     }
 
     private var card: some View {
@@ -68,7 +88,15 @@ struct ReceiptResult: View {
                     .frame(width: 40, height: 40).background(HandyColor.accent, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
                     TextField(L("Shop"), text: $r.merchant).font(HandyFont.cardTitle).accessibilityIdentifier("receipt-shop")
+                        .padding(.horizontal, 4).background(unsure("shop") ? HandyColor.amber.opacity(0.18) : .clear, in: RoundedRectangle(cornerRadius: 6))
                     if !meta.isEmpty { Text(meta).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                    if r.date == nil || dateTouched {
+                        // No date on the receipt: pick it (today until changed), marked until looked at.
+                        DatePicker(L("Date"), selection: Binding(get: { r.date ?? Date() }, set: { r.date = $0; dateTouched = true }), displayedComponents: .date)
+                            .font(HandyFont.caption).padding(.horizontal, 4)
+                            .background(dateTouched ? .clear : HandyColor.amber.opacity(0.18), in: RoundedRectangle(cornerRadius: 6))
+                            .accessibilityIdentifier("receipt-date")
+                    }
                 }
             }
             if !r.lines.isEmpty {
@@ -95,6 +123,7 @@ struct ReceiptResult: View {
                 Text(r.currency).font(HandyFont.cardTitle)
                 TextField("0.00", text: $totalText).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
                     .font(HandyFont.cardTitle).monospacedDigit().frame(maxWidth: 120)
+                    .padding(.horizontal, 4).background(unsure("total") ? HandyColor.amber.opacity(0.18) : .clear, in: RoundedRectangle(cornerRadius: 6))
                     .onChange(of: totalText) { _, v in r.total = Double(v.replacingOccurrences(of: ",", with: ".")) }
                     .accessibilityIdentifier("receipt-total")
             }
@@ -103,15 +132,24 @@ struct ReceiptResult: View {
         .cardStyle(padding: HandySpacing.s16)
     }
 
+    private func unsure(_ field: String) -> Bool { DataGrab.entryProblems(r).unsure.contains(field) }
+
     private func sumRow(_ label: String, _ v: Double) -> some View {
         HStack { Text(label).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(money(v)).font(HandyFont.caption).monospacedDigit() }
     }
 
     /// One row in this month's expense sheet (the same sheet the "Receipt into this month's expense sheet" helper fills).
     private func addToExpenses() {
-        let name = ChainName.file(pattern: RunningList.defaultName, tool: "List", ext: "csv")
+        if r.date == nil { r.date = Date() }   // the date shown in the picker, today unless changed
+        let name = RunningList.target(pattern: RunningList.defaultName)
         let merged = RunningList.merged(existing: RunningList.read(name), incoming: DataGrab.expenseRow(r))
         if RunningList.write(name, merged) { addedTo = (name as NSString).deletingPathExtension }
+    }
+
+    /// "Add to Expenses 2026-11 (12 entries so far)? / Start a new sheet". A sheet that doesn't exist yet just starts.
+    private func askThenAdd() {
+        let file = RunningList.target(pattern: RunningList.defaultName)
+        if RunningList.rowCount(RunningList.read(file)) == 0 { addToExpenses() } else { asking = true }
     }
 
     private func keep() {

@@ -857,7 +857,7 @@ enum ChainRunner {
 
         case (.addToList, .text(let t)):
             // Every run adds to the same sheet (one per month by default) and hands back the whole sheet.
-            let name = ChainName.file(pattern: step.settings["list"] ?? RunningList.defaultName, tool: "List", ext: "csv")
+            let name = RunningList.target(pattern: step.settings["list"])
             let merged = RunningList.merged(existing: dryRun ? "" : RunningList.read(name), incoming: t)
             guard !merged.isEmpty, let d = merged.data(using: .utf8) else { return .failure(.nothingFound(b)) }
             if !dryRun, !RunningList.write(name, merged) { return .failure(.failed(b)) }
@@ -1900,7 +1900,8 @@ enum ChainName {
     static func file(pattern: String?, tool: String, day: Date = Date(), index: Int? = nil, ext: String) -> String {
         let f = DateFormatter(); f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM-dd"
         var base = (pattern ?? "").replacingOccurrences(of: "{date}", with: f.string(from: day)).replacingOccurrences(of: "{tool}", with: tool)
-            .replacingOccurrences(of: "{month}", with: String(f.string(from: day).prefix(7)))
+            // "{month}" is the sheet period (monthly unless changed in Sheets); "{period}" says the same.
+            .replacingOccurrences(of: "{month}", with: SheetPeriod.current.token(day)).replacingOccurrences(of: "{period}", with: SheetPeriod.current.token(day))
         base = String(base.unicodeScalars.filter { !"/\\:*?\"<>|".unicodeScalars.contains($0) && !CharacterSet.newlines.contains($0) && !CharacterSet.controlCharacters.contains($0) })
             .trimmingCharacters(in: CharacterSet.whitespaces.union(CharacterSet(charactersIn: ".")))
         if base.count > 80 { base = String(base.prefix(80)).trimmingCharacters(in: .whitespaces) }

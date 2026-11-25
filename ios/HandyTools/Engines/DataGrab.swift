@@ -201,6 +201,18 @@ enum DataGrab {
         return nil
     }
 
+    /// Before a receipt goes into a sheet (25 Nov, "utmost accuracy"): what stops it being added, and which fields
+    /// to look at again. A missing or zero total, or numbers that don't add up, block it; a missing shop or date is
+    /// only marked. Pure, so it is tested.
+    static func entryProblems(_ r: Receipt) -> (block: String?, unsure: Set<String>) {
+        var unsure = Set<String>()
+        if r.merchant.trimmingCharacters(in: .whitespaces).isEmpty { unsure.insert("shop") }
+        if r.date == nil { unsure.insert("date") }
+        guard let t = r.total, t > 0 else { unsure.insert("total"); return ("No total was found. Type it in from the receipt before adding.", unsure) }
+        if let warn = check(r) { unsure.insert("total"); return (warn, unsure) }
+        return (nil, unsure)
+    }
+
     static func receiptCSV(_ r: Receipt) -> String {
         if r.lines.contains(where: { $0.qty != nil }) {
             return receiptRows(r).map { $0.map(csv).joined(separator: ",") }.joined(separator: "\n")

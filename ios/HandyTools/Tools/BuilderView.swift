@@ -3166,7 +3166,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     /// The running sheet this tool adds to, when it is one (receipts into this month's expense sheet).
     private var sheetFile: String? {
         guard let st = chain.steps.last, st.block == .addToList, chain.steps.contains(where: { $0.block == .expenseRow }) else { return nil }
-        return ChainName.file(pattern: st.settings["list"] ?? RunningList.defaultName, tool: "List", ext: "csv")
+        return RunningList.target(pattern: st.settings["list"])
     }
 
     /// What the photo grid should show first for this tool: receipts for a receipt flow, faces for a passport photo…

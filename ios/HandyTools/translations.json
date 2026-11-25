@@ -47388,5 +47388,125 @@
   "ja": "ヘルパー、オートラン、結果、シートをひとまとめに。",
   "pt": "Os seus ajudantes, autoruns, resultados e folhas, tudo num só lugar.",
   "zh": "你的助手、自动运行、结果和表格，尽在一处。"
+ },
+ "Add to my expense sheet": {
+  "de": "Zu meiner Ausgabentabelle hinzufügen",
+  "es": "Añadir a mi hoja de gastos",
+  "fr": "Ajouter à ma feuille de dépenses",
+  "hi": "मेरी खर्च शीट में जोड़ें",
+  "it": "Aggiungi al mio foglio spese",
+  "ja": "経費シートに追加",
+  "pt": "Adicionar à minha folha de despesas",
+  "zh": "添加到我的支出表"
+ },
+ "I've checked it against the receipt, add it as shown": {
+  "de": "Ich habe es mit dem Beleg verglichen, so hinzufügen",
+  "es": "Lo he comprobado con el recibo, añadir tal cual",
+  "fr": "J'ai vérifié avec le reçu, l'ajouter tel quel",
+  "hi": "मैंने रसीद से मिला लिया है, जैसा दिख रहा है वैसा जोड़ें",
+  "it": "L'ho controllato con lo scontrino, aggiungi così",
+  "ja": "レシートと照合済み。このまま追加",
+  "pt": "Verifiquei com o recibo, adicionar como está",
+  "zh": "我已对照收据核对，按所示添加"
+ },
+ "Add to this sheet?": {
+  "de": "Zu dieser Tabelle hinzufügen?",
+  "es": "¿Añadir a esta hoja?",
+  "fr": "Ajouter à cette feuille ?",
+  "hi": "इस शीट में जोड़ें?",
+  "it": "Aggiungere a questo foglio?",
+  "ja": "このシートに追加しますか？",
+  "pt": "Adicionar a esta folha?",
+  "zh": "添加到这个表格？"
+ },
+ "Add to": {
+  "de": "Hinzufügen zu",
+  "es": "Añadir a",
+  "fr": "Ajouter à",
+  "hi": "इसमें जोड़ें:",
+  "it": "Aggiungi a",
+  "ja": "追加先：",
+  "pt": "Adicionar a",
+  "zh": "添加到"
+ },
+ "Start a new sheet": {
+  "de": "Neue Tabelle beginnen",
+  "es": "Empezar una hoja nueva",
+  "fr": "Commencer une nouvelle feuille",
+  "hi": "नई शीट शुरू करें",
+  "it": "Inizia un nuovo foglio",
+  "ja": "新しいシートを始める",
+  "pt": "Começar uma folha nova",
+  "zh": "新建表格"
+ },
+ "entry so far": {
+  "de": "Eintrag bisher",
+  "es": "entrada hasta ahora",
+  "fr": "entrée pour l'instant",
+  "hi": "प्रविष्टि अब तक",
+  "it": "voce finora",
+  "ja": "件（現在）",
+  "pt": "entrada até agora",
+  "zh": "条记录"
+ },
+ "entries so far": {
+  "de": "Einträge bisher",
+  "es": "entradas hasta ahora",
+  "fr": "entrées pour l'instant",
+  "hi": "प्रविष्टियाँ अब तक",
+  "it": "voci finora",
+  "ja": "件（現在）",
+  "pt": "entradas até agora",
+  "zh": "条记录"
+ },
+ "No total was found. Type it in from the receipt before adding.": {
+  "de": "Kein Gesamtbetrag gefunden. Gib ihn vom Beleg ein, bevor du hinzufügst.",
+  "es": "No se encontró el total. Escríbelo a partir del recibo antes de añadir.",
+  "fr": "Aucun total trouvé. Saisissez-le depuis le reçu avant d'ajouter.",
+  "hi": "कुल राशि नहीं मिली। जोड़ने से पहले रसीद से टाइप करें।",
+  "it": "Nessun totale trovato. Inseriscilo dallo scontrino prima di aggiungere.",
+  "ja": "合計が見つかりません。追加する前にレシートを見て入力してください。",
+  "pt": "Não foi encontrado o total. Escreva-o a partir do recibo antes de adicionar.",
+  "zh": "未找到总额。添加前请按收据输入。"
+ },
+ "Being filled now": {
+  "de": "Wird gerade gefüllt",
+  "es": "En uso ahora",
+  "fr": "En cours",
+  "hi": "अभी भरी जा रही है",
+  "it": "In uso ora",
+  "ja": "現在記入中",
+  "pt": "Em uso agora",
+  "zh": "正在填写"
+ },
+ "Earlier sheets": {
+  "de": "Frühere Tabellen",
+  "es": "Hojas anteriores",
+  "fr": "Feuilles précédentes",
+  "hi": "पिछली शीटें",
+  "it": "Fogli precedenti",
+  "ja": "以前のシート",
+  "pt": "Folhas anteriores",
+  "zh": "以前的表格"
+ },
+ "Next entries go into": {
+  "de": "Neue Einträge kommen in",
+  "es": "Las próximas entradas van a",
+  "fr": "Les prochaines entrées vont dans",
+  "hi": "अगली प्रविष्टियाँ इसमें जाएँगी:",
+  "it": "Le prossime voci vanno in",
+  "ja": "次の記入先：",
+  "pt": "As próximas entradas vão para",
+  "zh": "新记录将写入"
+ },
+ "Every two weeks": {
+  "de": "Alle zwei Wochen",
+  "es": "Cada dos semanas",
+  "fr": "Toutes les deux semaines",
+  "hi": "हर दो हफ़्ते",
+  "it": "Ogni due settimane",
+  "ja": "2週間ごと",
+  "pt": "A cada duas semanas",
+  "zh": "每两周"
  }
 }

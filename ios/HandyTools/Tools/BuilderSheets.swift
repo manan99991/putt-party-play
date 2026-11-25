@@ -9,6 +9,7 @@ struct SheetsView: View {
     @State private var newName = ""
     @State private var deleting: RunningList.Sheet?
     @State private var note: String?
+    @State private var period = SheetPeriod.current
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -16,12 +17,22 @@ struct SheetsView: View {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 Text(L("Each sheet opens in Numbers, Excel or Google Sheets. They stay on this phone until you send one."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                periodPicker
                 if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
                 if sheets.isEmpty {
                     Text(L("No sheets yet. Run \"Receipt into this month's expense sheet\" and it appears here."))
                         .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).cardStyle()
                 }
-                ForEach(sheets) { s in card(s) }
+                let now = sheets.filter { RunningList.isCurrent($0.name, period: period) }
+                let earlier = sheets.filter { !RunningList.isCurrent($0.name, period: period) }
+                if !now.isEmpty {
+                    SectionLabel(text: "Being filled now")
+                    ForEach(now) { s in card(s, current: true) }
+                }
+                if !earlier.isEmpty {
+                    SectionLabel(text: "Earlier sheets")
+                    ForEach(earlier) { s in card(s, current: false) }
+                }
             }.padding(HandySpacing.gutter)
         }
         .background(HandyColor.bg)
@@ -49,12 +60,35 @@ struct SheetsView: View {
 
     private func reload() { sheets = RunningList.all() }
 
-    private func card(_ s: RunningList.Sheet) -> some View {
+    /// Weekly, every two weeks, monthly (the default), quarterly or yearly: when a fresh sheet starts.
+    private var periodPicker: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text(L("Start a new sheet")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+            Picker(L("Start a new sheet"), selection: $period) {
+                ForEach(SheetPeriod.allCases) { p in Text(L(p.title)).tag(p) }
+            }
+            .pickerStyle(.menu).tint(HandyColor.accent).accessibilityIdentifier("sheets-period")
+            .onChange(of: period) { _, p in SheetPeriod.current = p }
+            Text("\(L("Next entries go into")) \u{201C}\((RunningList.target(pattern: RunningList.defaultName) as NSString).deletingPathExtension)\u{201D}.")
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .cardStyle(padding: HandySpacing.s12)
+    }
+
+    private func card(_ s: RunningList.Sheet, current: Bool) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Button { open = open?.file == s.file ? nil : s } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(s.name).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                        HStack(spacing: 6) {
+                            Text(s.name).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                            if current {
+                                Text(L("Now")).font(.system(size: 10, weight: .bold)).foregroundStyle(.white)
+                                    .padding(.horizontal, 6).padding(.vertical, 2).background(HandyColor.accent, in: Capsule())
+                                    .accessibilityIdentifier("sheet-now")
+                            }
+                        }
                         Text(SheetsView.summary(rows: s.rows, changed: s.changed)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     }
                     Spacer()
@@ -71,7 +105,9 @@ struct SheetsView: View {
                 Spacer()
                 Button(role: .destructive) { deleting = s } label: { Label(L("Delete"), systemImage: "trash") }.font(HandyFont.caption)
             }.frame(minHeight: 44)
-        }.cardStyle(padding: HandySpacing.s12)
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(current ? HandyColor.accent : .clear, lineWidth: 1.5))
     }
 
     /// The entries, newest last, as plain lines. Long sheets show their last 30.
