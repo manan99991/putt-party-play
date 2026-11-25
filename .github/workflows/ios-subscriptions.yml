@@ -1,0 +1,41 @@
+name: iOS Subscriptions
+# Sets Tenzy Pro's plans, prices, 7-day trials and App Review screenshot in App Store Connect (fastlane
+# subscriptions). Run by hand; separate from the iOS release so it never waits behind a build. Never submits.
+on:
+  workflow_dispatch: {}
+concurrency:
+  group: ios-subscriptions
+  cancel-in-progress: false
+jobs:
+  subscriptions:
+    runs-on: ubuntu-latest
+    defaults:
+      run: { working-directory: ios }
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8_B64: ${{ secrets.ASC_KEY_P8_B64 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with: { ruby-version: "3.3" }
+      - name: Install fastlane
+        run: gem install fastlane --no-document
+      - name: Write ASC key
+        run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          KP="$HOME/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8"
+          echo "$ASC_KEY_P8_B64" | base64 -d > "$KP"
+          echo "ASC_KEY_PATH=$KP" >> $GITHUB_ENV
+          echo "FASTLANE_HIDE_CHANGELOG=1" >> $GITHUB_ENV
+      - name: Reconcile plans, prices, trials, review screenshot
+        run: |
+          set -o pipefail
+          fastlane subscriptions 2>&1 | tee subs.log
+      - name: Publish log (always)
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          tail -80 ios/subs.log > ios-subscriptions.log 2>/dev/null || true
+          bash .github/publish-log.sh ios-subscriptions ios-subscriptions.log || true
