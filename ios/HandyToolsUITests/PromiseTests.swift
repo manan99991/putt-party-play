@@ -603,6 +603,42 @@ final class PromiseTests: XCTestCase {
         }
     }
 
+    /// Smart autorun, receipts (25 Nov): switched on and Test run on a real receipt photo taken today, it finds and reads
+    /// it — shop, total — waits for a look, and Add puts exactly one correct row into this month's expense sheet.
+    func testReceiptsAutorunReadsTodaysReceiptIntoTheSheet() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "smartruns", "-uitest", "-seedreceipt"]
+        addUIInterruptionMonitor(withDescription: "notifications") { alert in
+            for b in ["Allow", "Allow Full Access", "OK"] where alert.buttons[b].exists { alert.buttons[b].tap(); return true }
+            return false
+        }
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let on = any["smartrun-on-receipts"].firstMatch
+        XCTAssertTrue(on.waitForExistence(timeout: 20), "the autoruns page didn't open")
+        if (on.value as? String) != "1" { on.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap() }
+        sleep(1)
+        app.staticTexts["Smart autoruns"].firstMatch.tap()   // a harmless tap lets the monitor answer a permission alert
+        XCTAssertTrue(NSPredicate(format: "value == '1'").evaluate(with: on), "the receipts autorun didn't switch on")
+        let test = any["smartrun-test-receipts"].firstMatch
+        XCTAssertTrue(test.waitForExistence(timeout: 10))
+        test.tap()
+        let check = any["smartrun-check-receipts"].firstMatch
+        XCTAssertTrue(check.waitForExistence(timeout: 120), "Test run didn't find today's receipt photo")
+        check.tap()
+        let card = any["smartreceipt-card"].firstMatch
+        XCTAssertTrue(card.waitForExistence(timeout: 10), "the review page shows no receipt")
+        XCTAssertTrue(app.textFields.matching(NSPredicate(format: "value CONTAINS[c] 'corner market'")).firstMatch.exists,
+                      "the shop wasn't read as Corner Market: \(app.textFields.allElementsBoundByIndex.map { $0.value as? String ?? "" })")
+        XCTAssertTrue(app.textFields.matching(NSPredicate(format: "value == '12.37'")).firstMatch.exists, "the total wasn't read as 12.37")
+        let add = any["smartreceipts-add"].firstMatch
+        XCTAssertTrue(add.waitForExistence(timeout: 5), "a receipt that adds up isn't ready to add")
+        add.tap()
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1 receipt added to'")).firstMatch.waitForExistence(timeout: 5),
+                      "Add didn't say one receipt went into the sheet")
+        XCTAssertEqual(app.state, .runningForeground)
+    }
+
     /// "Just swiping the finger lets select multiple files" (Manan, 22 Nov): Home › Photo opens Tenzy's own grid, and a
     /// sideways swipe across the first row ticks every photo it passes over.
     func testSwipeAcrossPhotosPicksSeveral() {

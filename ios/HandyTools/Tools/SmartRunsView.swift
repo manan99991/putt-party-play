@@ -1,0 +1,273 @@
+import SwiftUI
+import UniformTypeIdentifiers
+import Photos
+import UserNotifications
+
+/// Smart autoruns (25 Nov): the end-of-day jobs a personal assistant would do. Switch one on, pick once or twice a
+/// day and the time, and Test run shows exactly what it would do right now. What it finds waits here for a look —
+/// nothing is added, sent or deleted without the person seeing it first.
+struct SmartRunsView: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var pickingFolder = false
+    @State private var note: String?
+    @State private var photosDenied = false
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s16) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }
+                        .accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(L("Smart autoruns")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                    Text(L("Tenzy does the end-of-day jobs for you, on your phone. You look it over, then it's done."))
+                        .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                }
+                if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true) }
+                if photosDenied {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(L("To find today's receipts, Tenzy needs to look through your photos. It reads them on this phone only — nothing is uploaded."))
+                            .font(HandyFont.caption).fixedSize(horizontal: false, vertical: true)
+                        Button { Permission.openSettings() } label: { Label(L("Allow Full Access in Settings"), systemImage: "gearshape") }.textButton()
+                    }.cardStyle(padding: HandySpacing.s12)
+                }
+                if let k = store.working { workingCard(k) }
+                ForEach(SmartRunStore.built) { k in card(k) }
+                NavigationLink(value: "myreminders") {
+                    Label(L("Or a simple reminder at a time you pick"), systemImage: "bell.badge").frame(maxWidth: .infinity, alignment: .leading)
+                }.secondaryButton().accessibilityIdentifier("smartruns-reminder")
+                Text(L("iPhone decides when apps may work in the background, usually overnight while charging. If the work isn't done by your time, tapping the notification finishes it."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartruns")
+        .task {
+            if Launch.uitest, Launch.args.contains("-seedreceipt") { await Self.seedReceipt() }
+            await store.runDue()
+        }
+        .fileImporter(isPresented: $pickingFolder, allowedContentTypes: [.folder]) { r in
+            if case .success(let u) = r {
+                note = SmartReceipts.remember(folder: u) ? "\(L("Tenzy will also read the PDFs saved in")) \u{201C}\(u.lastPathComponent)\u{201D}." : L("That folder couldn't be opened. Try another one.")
+            }
+        }
+    }
+
+    /// UI tests: a real-looking shop receipt saved to the library (taken now), so a Test run has something to read.
+    static func seedReceipt() async {
+        let key = "uitest.seededReceipt"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+        let lines = ["CORNER MARKET", "1420 Ogden Ave, Naperville IL", "11/25/2026  12:41 PM", "", "Milk 2%           4.29", "Sourdough Bread   5.49",
+                     "Bananas           1.86", "", "SUBTOTAL         11.64", "TAX               0.73", "TOTAL            12.37", "", "VISA ****4821    12.37", "THANK YOU"]
+        let f = UIGraphicsImageRendererFormat(); f.scale = 1
+        let img = UIGraphicsImageRenderer(size: CGSize(width: 1000, height: 1600), format: f).image { ctx in
+            UIColor.white.setFill(); ctx.fill(CGRect(x: 0, y: 0, width: 1000, height: 1600))
+            let font = UIFont.monospacedSystemFont(ofSize: 44, weight: .medium)
+            for (i, l) in lines.enumerated() {
+                (l as NSString).draw(at: CGPoint(x: 90, y: 120 + CGFloat(i) * 92), withAttributes: [.font: font, .foregroundColor: UIColor.black])
+            }
+        }
+        do {
+            try await PHPhotoLibrary.shared().performChanges { PHAssetChangeRequest.creationRequestForAsset(from: img) }
+            UserDefaults.standard.set(true, forKey: key)
+        } catch {}
+    }
+
+    private func workingCard(_ k: SmartRuns.Kind) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack { BusySpinner(); Text(L(store.progress.what)).font(HandyFont.caption) }
+            ProgressView(value: store.progress.share).tint(HandyColor.accent)
+            if let s = store.started {
+                TimelineView(.periodic(from: s, by: 1)) { ctx in
+                    let gone = ctx.date.timeIntervalSince(s)
+                    let left = store.progress.share > 0.05 ? gone / store.progress.share - gone : nil
+                    Text(left.map { "\(L("About")) \(Int($0.rounded(.up)))s \(L("left"))" } ?? "\(Int(gone))s")
+                        .font(HandyFont.micro.monospacedDigit()).foregroundStyle(HandyColor.textSecondary)
+                }
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityIdentifier("smartrun-working")
+    }
+
+    private func card(_ k: SmartRuns.Kind) -> some View {
+        let p = store.plan(k)
+        return VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            HStack(alignment: .top, spacing: HandySpacing.s12) {
+                Image(systemName: k.icon).font(.system(size: 18, weight: .bold)).foregroundStyle(.white)
+                    .frame(width: 40, height: 40).background(Color(hex: k.hex).gradient, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(L(k.title)).font(HandyFont.bodyStrong)
+                    Text(L(k.line)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            Toggle(isOn: Binding(get: { p.on }, set: { on in Task { await turn(k, on: on) } })) { Text(L("Do this for me")).font(HandyFont.bodyStrong) }
+                .tint(HandyColor.accent).accessibilityIdentifier("smartrun-on-\(k.rawValue)")
+            if p.on {
+                Picker(L("How often"), selection: Binding(get: { p.twice }, set: { var q = p; q.twice = $0; store.set(k, q) })) {
+                    Text(L("Once a day")).tag(false); Text(L("Twice a day")).tag(true)
+                }.pickerStyle(.segmented)
+                DatePicker(L(p.twice ? "First time" : "Time"), selection: Binding(get: {
+                    Calendar.current.date(from: DateComponents(hour: p.hour, minute: p.minute)) ?? Date()
+                }, set: { d in var q = p; let c = Calendar.current.dateComponents([.hour, .minute], from: d); q.hour = c.hour ?? 20; q.minute = c.minute ?? 0; store.set(k, q) }),
+                           displayedComponents: .hourAndMinute).font(HandyFont.body)
+                Text(p.times.map { ChainSchedule.clock(hour: $0.hour, minute: $0.minute, uses24h: false) }.joined(separator: " " + L("and") + " "))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.accent)
+            }
+            if k == .receipts {
+                Button { pickingFolder = true } label: {
+                    Label(SmartReceipts.folder.map { "\(L("PDFs from")) \($0.lastPathComponent)" } ?? L("Also read PDFs from a folder…"), systemImage: "folder")
+                }.textButton().accessibilityIdentifier("smartrun-folder")
+            }
+            HStack(spacing: HandySpacing.s8) {
+                Button { Task { await testRun(k) } } label: { Label(L("Test run"), systemImage: "play.circle").frame(maxWidth: .infinity) }
+                    .secondaryButton().disabled(store.working != nil).accessibilityIdentifier("smartrun-test-\(k.rawValue)")
+                if store.waitingCount(k) > 0 {
+                    NavigationLink(value: "smartreceipts") {
+                        Text("\(L("Check")) \(store.waitingCount(k))").frame(maxWidth: .infinity)
+                    }.primaryButton().accessibilityIdentifier("smartrun-check-\(k.rawValue)")
+                }
+            }
+        }
+        .cardStyle(padding: HandySpacing.s16)
+    }
+
+    private func photosOK() async -> Bool {
+        var s = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+        if s == .notDetermined { s = await PHPhotoLibrary.requestAuthorization(for: .readWrite) }
+        photosDenied = !(s == .authorized || s == .limited)
+        return !photosDenied
+    }
+
+    private func turn(_ k: SmartRuns.Kind, on: Bool) async {
+        var p = store.plan(k)
+        if on {
+            guard await photosOK() else { return }
+            let granted = (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])) ?? false
+            if !granted { note = L("Notifications are off for Tenzy, so it can't tell you when this is ready. Turn them on in Settings › Tenzy › Notifications.") }
+        }
+        p.on = on
+        store.set(k, p)
+        if on { note = (note ?? "") .isEmpty ? L("Set. Tap Test run to see what it does right now.") : note }
+    }
+
+    private func testRun(_ k: SmartRuns.Kind) async {
+        guard await photosOK() else { return }
+        let before = store.waitingCount(k)
+        await store.run(k, test: true)
+        let found = store.waitingCount(k) - before
+        note = found > 0 ? "\(L("Test run found")) \(found) \(L(found == 1 ? "receipt" : "receipts")). \(L("Check them before they're added."))"
+                         : L("Test run worked: no receipts in your photos or PDFs from the last 24 hours.")
+        HandyHaptics.success()
+    }
+}
+
+/// The receipts the autorun found, each as it will go into the sheet. Fix anything marked, then add them all.
+struct SmartReceiptsReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var done: String?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Today's receipts")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                let file = (RunningList.target(pattern: RunningList.defaultName) as NSString).deletingPathExtension
+                Text("\(L("Check each one, then add them to")) \u{201C}\(file)\u{201D}.")
+                    .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                if let done { Label(done, systemImage: "checkmark.seal.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true) }
+                if store.receipts.isEmpty && done == nil {
+                    EmptyState(icon: "receipt", line: "Nothing waiting", sub: "New receipts show up here after the next run.")
+                }
+                ForEach(store.receipts) { e in ReceiptEntryCard(entry: e) }
+                let ready = store.receipts.filter(\.ready).count
+                if ready > 0 {
+                    Button {
+                        let r = store.addReady()
+                        done = "\(r.added) \(L(r.added == 1 ? "receipt added to" : "receipts added to")) \u{201C}\(r.sheet)\u{201D}" + (r.already > 0 ? ". \(r.already) \(L("were already in it.")) " : ".")
+                        HandyHaptics.success()
+                    } label: { Text("\(L("Add")) \(ready) \(L("to my sheet"))").frame(maxWidth: .infinity) }
+                        .primaryButton().accessibilityIdentifier("smartreceipts-add")
+                }
+                if done != nil {
+                    NavigationLink(value: "sheets") { Label(L("Open my sheets"), systemImage: "tablecells").frame(maxWidth: .infinity) }.secondaryButton()
+                }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartreceipts")
+    }
+}
+
+/// One found receipt: where it came from, the fields that go into the sheet (shop and total editable, anything
+/// unsure marked), and why it's held back if it is.
+private struct ReceiptEntryCard: View {
+    let entry: SmartReceipts.Entry
+    @ObservedObject private var store = SmartRunStore.shared
+    @State private var shop = ""
+    @State private var total = ""
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack {
+                Label(L(entry.from.hasPrefix("PDF") ? "PDF" : entry.from), systemImage: entry.from.hasPrefix("PDF") ? "doc.richtext" : "photo")
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                if entry.from.hasPrefix("PDF: ") { Text(String(entry.from.dropFirst(5))).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1) }
+                Spacer()
+                Button(role: .destructive) { store.drop(entry.id) } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(HandyColor.textSecondary) }
+                    .accessibilityLabel(L("Not a business receipt — leave it out"))
+            }
+            TextField(L("Shop"), text: $shop).font(HandyFont.cardTitle)
+                .padding(4).background(entry.unsure.contains("shop") ? HandyColor.amber.opacity(0.18) : .clear, in: RoundedRectangle(cornerRadius: 6))
+                .onSubmit(save)
+            HStack {
+                Text(entry.date.map { $0.formatted(date: .abbreviated, time: .omitted) } ?? L("No date on it — the day it was taken is used"))
+                    .font(HandyFont.caption).padding(4)
+                    .background(entry.unsure.contains("date") ? HandyColor.amber.opacity(0.18) : .clear, in: RoundedRectangle(cornerRadius: 6))
+                Text("· \(L(entry.category))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Spacer()
+                Text(entry.currency).font(HandyFont.cardTitle)
+                TextField("0.00", text: $total).keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                    .font(HandyFont.cardTitle.monospacedDigit()).frame(maxWidth: 110)
+                    .padding(4).background(entry.unsure.contains("total") ? HandyColor.amber.opacity(0.18) : .clear, in: RoundedRectangle(cornerRadius: 6))
+                    .onSubmit(save)
+            }
+            if let t = entry.tax { Text("\(L("Tax")) \(entry.currency)\(String(format: "%.2f", t))").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
+            if !entry.lines.isEmpty {
+                Text(entry.lines.prefix(4).joined(separator: " · ") + (entry.lines.count > 4 ? " …" : ""))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
+            }
+            if let b = entry.block {
+                Label(L(b), systemImage: "exclamationmark.triangle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.amber).fixedSize(horizontal: false, vertical: true)
+                Toggle(isOn: Binding(get: { entry.confirmed }, set: { var e = entry; e.confirmed = $0; store.update(e) })) {
+                    Text(L("I've checked it against the receipt, add it as shown")).font(HandyFont.caption)
+                }.tint(HandyColor.amber)
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(entry.block == nil ? .clear : HandyColor.amber, lineWidth: 1.5))
+        .onAppear { shop = entry.merchant; total = entry.total.map { String(format: "%.2f", $0) } ?? "" }
+        .onChange(of: shop) { _, _ in save() }
+        .onChange(of: total) { _, _ in save() }
+        .accessibilityIdentifier("smartreceipt-card")
+    }
+
+    private func save() {
+        var e = entry
+        e.merchant = shop.trimmingCharacters(in: .whitespaces)
+        e.total = Double(total.replacingOccurrences(of: ",", with: "."))
+        store.update(e)
+    }
+}

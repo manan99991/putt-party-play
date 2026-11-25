@@ -23,6 +23,7 @@ struct TenzyApp: App {
         ToolNotifications.shared.install()   // so a tapped tool reminder opens that tool
         SmartAlerts.registerBackground()      // "tell me when…" checks, when iPhone grants a background refresh
         MemoryIndex.registerBackground()      // the photo index finishes overnight while the phone charges
+        SmartRunWorker.registerBackground()   // smart autoruns: today's receipts and the rest, done ahead of their time
         ScreenshotDemo.seed()                 // store screenshots only (-screenshots -demo)
         MainActor.assumeIsolated { AutoPark.shared.resume() }   // automatic parking, when switched on (also when iPhone relaunches Tenzy for it)
     }
@@ -50,6 +51,7 @@ struct TenzyApp: App {
                 if p == .active { OutsideActions.run() }
                 // Every time Tenzy comes to the front: check the "tell me when…" alerts, and book the next background check.
                 if p == .active, !Launch.uitest { Task { await SmartAlerts.checkAll(); await DailyBrief.refresh(); await PageWatcher.checkAll() }; SmartAlerts.scheduleBackground() }
+                if p == .active, !Launch.uitest { Task { @MainActor in await SmartRunStore.shared.runDue(); SmartRunWorker.scheduleBackground() } }
                 // The photo index (Search My Photos, the smart photo picker) builds quietly: a little after Tenzy
                 // opens, gently, and only the photos it hasn't read yet. Leaving the app saves where it got to.
                 if p == .active, !Launch.uitest, !Launch.sample {
@@ -654,6 +656,8 @@ struct HomeView: View {
                 case "myreminders": ReminderMakerView().toolbarRole(.editor)   // Build a reminder (Build a tool, My stuff)
                 case "results": HistoryView().toolbarRole(.editor)   // a finished-job notification lands here
                 case "sheets": SheetsView().toolbarRole(.editor)   // My stuff › Sheets
+                case "smartruns": SmartRunsView()                     // My stuff › Set an autorun, and its notifications
+                case "smartreceipts": SmartReceiptsReview()           // the receipts an autorun found, waiting for a look
                 // Home › See all: every helper on one map, with the ready-made flows of each section.
                 case "allhelpers": BuilderView(face: .tools, asPage: true).background(TenzyBackdrop()).toolbar(.hidden, for: .navigationBar)
                 // My stuff › Build a helper: start from nothing, from a ready-made one, or say it.

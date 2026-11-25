@@ -154,7 +154,7 @@ struct AutomationsView: View {
             // itself, at a time or when something happens).
             HStack(spacing: HandySpacing.s8) {
                 bigTile("Build a helper", "Start from one of ours or say what you need", "wand.and.stars", 0x7B5CFF, "buildhelper")
-                bigTile("Set an autorun", "A nudge at a time, or a job that runs by itself", "bolt.badge.clock.fill", 0xF97316, "myreminders")
+                bigTile("Set an autorun", "Jobs Tenzy does for you each day, or a nudge at a time", "bolt.badge.clock.fill", 0xF97316, "smartruns")
             }
         }
     }

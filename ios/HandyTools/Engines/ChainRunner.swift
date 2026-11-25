@@ -1923,6 +1923,15 @@ enum RunningList {
         let old = rows(existing)
         var new = rows(incoming)
         if let header = old.first, new.first == header { new.removeFirst() }
+        // Expense rows made with a different set of columns (the older five, or the fuller set the receipts autorun
+        // writes) are lined up by column name, so neither kind is ever dropped from a sheet of the other.
+        else if let header = old.first, let nh = new.first, nh != header, isExpenseHeader(nh), isExpenseHeader(header) {
+            let from = fields(nh), to = fields(header)
+            new = new.dropFirst().map { line in
+                let d = Dictionary(zip(from, fields(line)), uniquingKeysWith: { a, _ in a })
+                return to.map { cell(d[$0] ?? "") }.joined(separator: ",")
+            }
+        }
         guard let header = old.first ?? new.first else { return "" }
         // A sheet keeps its shape: a line that isn't a row of the sheet's columns (stray text from another tool,
         // a wrapped paragraph) is never added — and any that got in before are cleaned out. The same entry
@@ -1938,6 +1947,16 @@ enum RunningList {
             out.append(line)
         }
         return out.joined(separator: "\n")
+    }
+
+    /// The column names expense sheets use.
+    static let expenseColumns: Set<String> = ["Date", "Merchant", "Total", "Tax", "Currency", "Payment", "Category", "Receipt #", "From"]
+    static func isExpenseHeader(_ line: String) -> Bool {
+        let f = fields(line)
+        return f.count >= 3 && f.allSatisfy(expenseColumns.contains) && f.contains("Merchant") && f.contains("Total")
+    }
+    static func cell(_ s: String) -> String {
+        s.contains(where: { ",\"\n".contains($0) }) ? "\"" + s.replacingOccurrences(of: "\"", with: "\"\"") + "\"" : s
     }
 
     /// The cells of one CSV line ("a","b, c",d → a | b, c | d).

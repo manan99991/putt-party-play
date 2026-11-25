@@ -83,7 +83,7 @@ targets:
         UIRequiresFullScreen: true
         ITSAppUsesNonExemptEncryption: false
         UIBackgroundModes: [audio, fetch, processing, location]   # audio: Rest keeps playing with the screen off · fetch: smart alert checks · processing: the photo index finishes while charging · location: "Save my spot automatically" (While Using + a background location session, only when switched on)
-        BGTaskSchedulerPermittedIdentifiers: [com.tenzy.toolkit.smartalerts, com.tenzy.toolkit.photoindex]
+        BGTaskSchedulerPermittedIdentifiers: [com.tenzy.toolkit.smartalerts, com.tenzy.toolkit.photoindex, com.tenzy.toolkit.smartruns]
         CFBundleURLTypes:
           - CFBundleURLName: com.tenzy.toolkit
             CFBundleURLSchemes: [tenzy]

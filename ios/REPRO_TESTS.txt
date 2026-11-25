@@ -1,4 +1,7 @@
-# 25 Nov: photo picker edge taps, now waiting until each tall test picture is really drawn (the last run's thumbnails
-# hadn't loaded, so the cells were plain squares). Thumbnails retry a just-saved or iCloud photo.
-HandyToolsUITests/PromiseTests/testTappingNearAPhotosEdgePicksThatPhoto
-HandyToolsUITests/PromiseTests/testSwipeAcrossPhotosPicksSeveral
+# 25 Nov: smart autorun — receipts. Engine rows/categories/duplicates/column line-up, and a Test run on a real receipt
+# photo taken today: read, reviewed, added as one row.
+HandyToolsTests/SmartReceiptsTests
+HandyToolsTests/SmartRunsTests
+HandyToolsTests/SheetPeriodTests
+HandyToolsUITests/PromiseTests/testReceiptsAutorunReadsTodaysReceiptIntoTheSheet
+HandyToolsUITests/PromiseTests/testBuildTabMakesToolsAndReminders
