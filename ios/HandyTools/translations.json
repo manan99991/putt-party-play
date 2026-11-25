@@ -47298,5 +47298,95 @@
   "ja": "プレビューを準備しています…",
   "pt": "Preparando sua prévia…",
   "zh": "正在准备预览…"
+ },
+ "Opens the list": {
+  "de": "Öffnet die Liste",
+  "es": "Abre la lista",
+  "fr": "Ouvre la liste",
+  "hi": "सूची खोलता है",
+  "it": "Apre l'elenco",
+  "ja": "一覧を開きます",
+  "pt": "Abre a lista",
+  "zh": "打开列表"
+ },
+ "Pick a look": {
+  "de": "Wähle einen Look",
+  "es": "Elige un estilo",
+  "fr": "Choisissez un style",
+  "hi": "एक लुक चुनें",
+  "it": "Scegli uno stile",
+  "ja": "見た目を選ぶ",
+  "pt": "Escolha um visual",
+  "zh": "选择外观"
+ },
+ "Tap to change the look": {
+  "de": "Tippen, um den Look zu ändern",
+  "es": "Toca para cambiar el estilo",
+  "fr": "Touchez pour changer de style",
+  "hi": "लुक बदलने के लिए टैप करें",
+  "it": "Tocca per cambiare stile",
+  "ja": "タップして見た目を変更",
+  "pt": "Toque para mudar o visual",
+  "zh": "轻点以更换外观"
+ },
+ "Looks after your phone, so you don't have to": {
+  "de": "Kümmert sich um dein Handy, damit du es nicht musst",
+  "es": "Cuida tu teléfono para que tú no tengas que hacerlo",
+  "fr": "Veille sur votre téléphone, pour que vous n'ayez pas à le faire",
+  "hi": "आपके फ़ोन का ध्यान रखता है, ताकि आपको न रखना पड़े",
+  "it": "Si prende cura del telefono, così non devi farlo tu",
+  "ja": "スマホのお世話はおまかせ",
+  "pt": "Cuida do seu telemóvel, para que não tenha de o fazer",
+  "zh": "替你照看手机，省心省力"
+ },
+ "Everything stays on your phone. Nothing is collected.": {
+  "de": "Alles bleibt auf deinem Handy. Nichts wird gesammelt.",
+  "es": "Todo se queda en tu teléfono. No se recopila nada.",
+  "fr": "Tout reste sur votre téléphone. Rien n'est collecté.",
+  "hi": "सब कुछ आपके फ़ोन पर ही रहता है। कुछ भी इकट्ठा नहीं किया जाता।",
+  "it": "Tutto resta sul telefono. Non viene raccolto nulla.",
+  "ja": "すべてスマホの中に。何も収集しません。",
+  "pt": "Tudo fica no seu telemóvel. Nada é recolhido.",
+  "zh": "一切都留在你的手机上，不收集任何数据。"
+ },
+ "Every helper": {
+  "de": "Alle Helfer",
+  "es": "Todos los asistentes",
+  "fr": "Tous les assistants",
+  "hi": "सभी हेल्पर",
+  "it": "Tutti gli aiutanti",
+  "ja": "すべてのヘルパー",
+  "pt": "Todos os ajudantes",
+  "zh": "全部助手"
+ },
+ "Build a helper": {
+  "de": "Helfer bauen",
+  "es": "Crear un asistente",
+  "fr": "Créer un assistant",
+  "hi": "हेल्पर बनाएँ",
+  "it": "Crea un aiutante",
+  "ja": "ヘルパーを作る",
+  "pt": "Criar um ajudante",
+  "zh": "创建助手"
+ },
+ "Set an autorun": {
+  "de": "Autorun einrichten",
+  "es": "Configurar un autorun",
+  "fr": "Régler un autorun",
+  "hi": "ऑटोरन सेट करें",
+  "it": "Imposta un autorun",
+  "ja": "オートランを設定",
+  "pt": "Definir um autorun",
+  "zh": "设置自动运行"
+ },
+ "Your helpers, autoruns, results and sheets, all in one place.": {
+  "de": "Deine Helfer, Autoruns, Ergebnisse und Tabellen an einem Ort.",
+  "es": "Tus asistentes, autoruns, resultados y hojas, todo en un lugar.",
+  "fr": "Vos assistants, autoruns, résultats et feuilles, au même endroit.",
+  "hi": "आपके हेल्पर, ऑटोरन, नतीजे और शीट, सब एक जगह।",
+  "it": "I tuoi aiutanti, autorun, risultati e fogli, tutto in un posto.",
+  "ja": "ヘルパー、オートラン、結果、シートをひとまとめに。",
+  "pt": "Os seus ajudantes, autoruns, resultados e folhas, tudo num só lugar.",
+  "zh": "你的助手、自动运行、结果和表格，尽在一处。"
  }
 }

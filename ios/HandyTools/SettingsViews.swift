@@ -139,6 +139,7 @@ struct SettingsView: View {
     @State private var showAbout = false
     @State private var showDiagnostics = false
     @State private var showGuide = false
+    @State private var themesOpen = false
     @State private var devTaps = 0
     @AppStorage("tenzy.devUnlocked") private var devUnlocked = false
     private var version: String { Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0" }
@@ -204,6 +205,25 @@ struct SettingsView: View {
                     BusinessSwitch()
 
                     Section(L("Theme")) {
+                        // Collapsed to one row showing the current look; tap to pick another (25 Nov redesign).
+                        Button { withAnimation(HandyMotion.crossfade) { themesOpen.toggle() } } label: {
+                            HStack(spacing: HandySpacing.s12) {
+                                RoundedRectangle(cornerRadius: 9, style: .continuous)
+                                    .fill(LinearGradient(colors: theme.current.swatch, startPoint: .topLeading, endPoint: .bottomTrailing))
+                                    .frame(width: 40, height: 40)
+                                    .overlay(RoundedRectangle(cornerRadius: 9, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(theme.current.title).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                    Text(L(themesOpen ? "Pick a look" : "Tap to change the look")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.down").rotationEffect(.degrees(themesOpen ? 180 : 0)).foregroundStyle(HandyColor.textSecondary)
+                            }
+                            .cardStyle(padding: HandySpacing.s12)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("theme-toggle")
+                        if themesOpen {
                         VStack(spacing: HandySpacing.s8) {
                             ForEach(TenzyTheme.allCases) { th in
                                 Button {
@@ -236,12 +256,13 @@ struct SettingsView: View {
                         if !store.isPremium {
                             Text(L("Aurora is free. The rest unlock with Pro.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         }
+                        }
                     }
 
                     Section(L("What Tenzy does")) {
                         NavigationLink(value: "myalerts") {
                             Label { VStack(alignment: .leading, spacing: 2) {
-                                Text(L("My alerts")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                Text(L("Looks after your phone, so you don't have to")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                                 Text(L("Screenshots piling up, space running low, big videos")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                             } } icon: { Image(systemName: "bell.badge.fill").foregroundStyle(HandyColor.accent) }
                         }
@@ -252,7 +273,7 @@ struct SettingsView: View {
                                     Image(systemName: "square.grid.2x2.fill").font(.system(size: 18)).foregroundStyle(HandyColor.accent)
                                 }
                                 VStack(alignment: .leading, spacing: 2) {
-                                    Text(L("Every tool")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                    Text(L("Every helper")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                                     Text(L("Everything Tenzy does, each with a tap to open")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                                 }
                                 Spacer()
@@ -262,7 +283,7 @@ struct SettingsView: View {
                         }.buttonStyle(.plain)
                     }
 
-                    Section(L("App")) {
+                    Section(L("Everything stays on your phone. Nothing is collected.")) {
                         SettingsRow(icon: "slider.horizontal.3", title: "Permissions", sub: "Camera, microphone, speech, location, Photos") { showSetup = true }
                         SettingsRow(icon: "lock", title: "Privacy", sub: "What stays on your phone (everything)") { showPrivacy = true }
                     }
