@@ -29,7 +29,7 @@ struct SmartRunsView: View {
                         .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
                 }
                 if seeded { Text(verbatim: "ready").font(.system(size: 1)).opacity(0.01).accessibilityIdentifier("seed-done") }
-                if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true) }
+                if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true).accessibilityIdentifier("smartruns-note") }
                 if photosDenied {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(L("To find today's receipts, Tenzy needs to look through your photos. It reads them on this phone only — nothing is uploaded."))

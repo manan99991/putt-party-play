@@ -1,2 +1,2 @@
-# heavy videos: the test now waits for its clip to be in Photos (run 2 saw 0 videos) and the clip is dated now
+# heavy videos: read the run message by its own id and wait up to 10 min (run 3 timed out at 4 min)
 HandyToolsUITests/PromiseTests/testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame

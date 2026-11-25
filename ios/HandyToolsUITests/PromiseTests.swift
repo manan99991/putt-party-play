@@ -689,8 +689,11 @@ final class PromiseTests: XCTestCase {
         if !test.isHittable { app.swipeUp() }
         test.tap()
         let check = any["smartrun-check-heavyVideos"].firstMatch
-        XCTAssertTrue(check.waitForExistence(timeout: 240),
-                      "no smaller copy was made: \(app.staticTexts.allElementsBoundByIndex.map(\.label).filter { $0.contains("Test run") })")
+        let note = any["smartruns-note"].firstMatch
+        // Making a 1080p clip smaller on a simulator is slow: wait for the result, or for the run to say why not.
+        let deadline = Date().addingTimeInterval(600)
+        while Date() < deadline, !check.exists, !(note.exists && note.label.contains("Test run")) { sleep(5) }
+        XCTAssertTrue(check.exists, "no smaller copy was made: \(note.exists ? note.label : "no message")")
         if !check.isHittable { app.swipeUp() }
         check.tap()
         let row = any["smartvideo-row"].firstMatch
