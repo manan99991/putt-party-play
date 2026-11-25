@@ -2,8 +2,9 @@ import Foundation
 
 /// Home's category tabs (Manan, 23 Nov: "Contacts and other tabs are missing — make sure nothing is missing from the
 /// home page"): eight tabs, all on screen at once (no sideways scrolling), and the tab you pick shows every one of its
-/// tools as its own tile — at most nine, so a tab always fits without scrolling. Every tool sits in exactly one tab;
-/// the only ones not listed are those that live inside another tool (`Tool.homes`), which open from that tool.
+/// tools as its own tile — at most twelve (four rows of three), so a tab always fits without scrolling. Every tool sits
+/// in exactly one tab, the jobs inside another tool included (Manan, 24 Nov: "where is the icon for the 9 remaining
+/// tools?"). The only ones without a tile are the menu-only hubs (`hubs`), whose every job has its own tile instead.
 /// Pure, so a unit test proves nothing built is ever missing from Home.
 enum HomeShelves {
     struct Shelf: Equatable, Identifiable {
@@ -19,8 +20,12 @@ enum HomeShelves {
     /// & phone" squeezed onto two lines looked crammed). A unit test holds them to this.
     static let maxTitleLength = 10
 
-    /// A tab never holds more than this many tools (three rows of three), so it fits the screen.
-    static let maxPerTab = 9
+    /// A tab never holds more than this many tools (four rows of three): its page has the same room as Business's,
+    /// which fits twelve on the short test phone.
+    static let maxPerTab = 12
+    /// Tools that are only a menu of jobs (Audio Editor, Notes from Speech). Each of their jobs has its own tile, so a
+    /// tile for the menu would repeat them; search still finds the menu.
+    static let hubs: Set<String> = ["audiostudio", "speechnotes"]
     /// Business has its own page with no hero above the grid, so four rows of three fit there.
     static let maxBusinessTiles = 12
 
@@ -30,19 +35,19 @@ enum HomeShelves {
               tools: ["scan", "identify", "procam", "measure", "qrwifi", "menu", "cards", "datagrab", "colorvision"]),
         Shelf(id: "photos", title: "Photos", line: "Fix, cut out, hide, join and find your photos",
               icon: "photo.on.rectangle.angled", hex: 0xEC4899,
-              tools: ["studio", "sticker", "collage", "comicstrip", "scrub", "stitch", "formatfix", "memory"]),
+              tools: ["studio", "sticker", "collage", "comicstrip", "scrub", "faceemoji", "stitch", "formatfix", "memory"]),
         Shelf(id: "video", title: "Video", line: "Shrink, trim, add effects, post, or make one from photos",
               icon: "film.fill", hex: 0x8B5CF6,
               tools: ["video", "celebrate", "post", "animate", "fitit"]),
         Shelf(id: "pdf", title: "Documents", line: "Sign, black out, fill, organize, lock and open files",
               icon: "doc.richtext.fill", hex: 0xEF4444,
-              tools: ["pdfsign", "pdfredact", "pdfform", "pdfannotate", "pdfpages", "pdfconvert", "pdfprotect", "zipmaker", "fileviewer"]),
+              tools: ["pdfsign", "pdfredact", "pdfform", "pdfannotate", "pdfpages", "pdfconvert", "pdfprotect", "pdfsearchable", "zipmaker", "fileviewer"]),
         Shelf(id: "audio", title: "Audio", line: "Edit recordings, ringtones, song info, sounds to sleep to",
               icon: "waveform", hex: 0xF59E0B,
-              tools: ["audiostudio", "audioconvert", "audiotags", "soundboard", "audiolab", "rest"]),
+              tools: ["audioedit", "ringtone", "audiomix", "audioclean", "audiocompress", "audioconvert", "audiotags", "soundboard", "audiolab", "rest"]),
         Shelf(id: "words", title: "Words", line: "Write, translate, notes from speech, read aloud, spot scams, think",
               icon: "text.bubble.fill", hex: 0x22C55E,
-              tools: ["textstudio", "translate", "speechnotes", "seeread", "shield", "thinking"]),
+              tools: ["textstudio", "translate", "voicenotes", "meetingnotes", "seeread", "shield", "thinking"]),
         Shelf(id: "day", title: "Everyday", line: "Medicine, plans, bills, moods, prices and receipts",
               icon: "sun.max.fill", hex: 0xF97316,
               tools: ["medreminder", "untangle", "planner", "brief", "daydiary", "sorted", "warranty", "pricewatch", "pricecheck"]),
@@ -102,15 +107,17 @@ enum HomeShelves {
         "datagrab": "Copy a table", "colorvision": "Tell colors apart",
         "studio": "Fix a photo", "sticker": "Make a sticker", "collage": "Make a collage", "comicstrip": "Make a comic",
         "scrub": "Hide faces and location", "stitch": "Join screenshots", "formatfix": "Fix files that won't open",
-        "memory": "Find a photo",
+        "memory": "Find a photo", "faceemoji": "Cover faces with emoji",
         "video": "Shrink or trim a video", "celebrate": "Add effects to a video", "post": "Size a video for social",
         "animate": "Turn photos into a video", "fitit": "Fit under a size limit",
         "pdfsign": "Sign a PDF", "pdfredact": "Black out text", "pdfform": "Fill in a form", "pdfannotate": "Mark up a PDF",
         "pdfpages": "Reorder PDF pages", "pdfconvert": "PDF to photos or text", "pdfprotect": "Lock a PDF",
-        "zipmaker": "Zip files together", "fileviewer": "Open any file",
-        "audiostudio": "Edit a recording", "audioconvert": "Change audio format", "audiotags": "Fix song info",
+        "zipmaker": "Zip files together", "fileviewer": "Open any file", "pdfsearchable": "Make a PDF searchable",
+        "audiostudio": "Edit a recording", "audioedit": "Trim a recording", "ringtone": "Make a ringtone",
+        "audiomix": "Join clips or change speed", "audioclean": "Clean up a recording", "audiocompress": "Shrink a recording",
+        "audioconvert": "Change audio format", "audiotags": "Fix song info",
         "soundboard": "Change your voice", "audiolab": "Tune an instrument", "rest": "Sleep sounds",
-        "textstudio": "Fix or rewrite text", "translate": "Translate anything", "speechnotes": "Notes from speech",
+        "textstudio": "Fix or rewrite text", "translate": "Translate anything", "speechnotes": "Notes from speech", "voicenotes": "Talk and take notes", "meetingnotes": "Notes from a meeting",
         "seeread": "Magnify and read aloud", "shield": "Is this a scam?", "thinking": "Think it through",
         "medreminder": "Medicine reminders", "untangle": "Plan my day", "planner": "Photo to checklist",
         "brief": "Morning summary", "daydiary": "Mood diary", "sorted": "Track a bill", "warranty": "Keep receipts",

@@ -11,15 +11,19 @@ final class HomeShelvesTests: XCTestCase {
     /// tools — Sign, Redact and the other PDF tools among them — pass with no tile anywhere on Home.)
     func testEveryToolHasItsOwnTileInATab() {
         let tiled = Set(HomeShelves.all.flatMap(\.tools))
-        // A tool made for running a business has its tile on the Business tab (shown to people who run one).
-        let missing = TOOLS.map(\.id).filter { !tiled.contains($0) && Tool.homes[$0] == nil && !HomeShelves.businessTools.contains($0) }
+        // A tool made for running a business has its tile on the Business tab (shown to people who run one). A menu-only
+        // hub has no tile because each of its jobs has one.
+        let missing = TOOLS.map(\.id).filter { !tiled.contains($0) && !HomeShelves.hubs.contains($0) && !HomeShelves.businessTools.contains($0) }
         XCTAssertEqual(missing, [], "No tile on Home: \(missing)")
-        for (child, parent) in Tool.homes { XCTAssertTrue(tiled.contains(parent), "\(child) lives in \(parent), which has no Home tile") }
-        let inside = HomeShelves.all.flatMap(\.tools).filter { Tool.homes[$0] != nil }
-        XCTAssertEqual(inside, [], "These live inside another tool, so a tile would repeat it: \(inside)")
+        // "Where is the icon for the 9 remaining tools?" (Manan, 24 Nov): the jobs inside another tool get tiles too.
+        for child in Tool.homes.keys { XCTAssertTrue(tiled.contains(child), "\(child) lives inside \(Tool.homes[child]!) and has no tile of its own") }
+        for hub in HomeShelves.hubs {
+            XCTAssertFalse(tiled.contains(hub), "\(hub) is only a menu; its jobs have tiles, so its own tile would repeat them")
+            for j in ToolHub.jobs(hub) { XCTAssertTrue(tiled.contains(j.id), "\(hub)'s job \(j.id) has no tile") }
+        }
     }
 
-    /// A tab fits the screen: never more than three rows of three.
+    /// A tab fits the screen: never more than four rows of three.
     func testEveryTabFitsWithoutScrolling() {
         for s in HomeShelves.all {
             XCTAssertLessThanOrEqual(s.tools.count, HomeShelves.maxPerTab, "\(s.title) has \(s.tools.count) tools")

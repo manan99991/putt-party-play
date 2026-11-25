@@ -12908,5 +12908,35 @@
   "ja": "ホーム",
   "pt": "Início",
   "zh": "首页"
+ },
+ "Trim a recording": {
+  "de": "Aufnahme kürzen",
+  "es": "Recortar una grabación",
+  "fr": "Couper un enregistrement",
+  "hi": "रिकॉर्डिंग ट्रिम करें",
+  "it": "Taglia una registrazione",
+  "ja": "録音をトリミング",
+  "pt": "Cortar uma gravação",
+  "zh": "剪辑录音"
+ },
+ "Clean up a recording": {
+  "de": "Aufnahme bereinigen",
+  "es": "Limpiar una grabación",
+  "fr": "Nettoyer un enregistrement",
+  "hi": "रिकॉर्डिंग साफ़ करें",
+  "it": "Pulisci una registrazione",
+  "ja": "録音をクリアに",
+  "pt": "Limpar uma gravação",
+  "zh": "清理录音"
+ },
+ "Notes from a meeting": {
+  "de": "Notizen aus einem Meeting",
+  "es": "Notas de una reunión",
+  "fr": "Notes d'une réunion",
+  "hi": "मीटिंग के नोट्स",
+  "it": "Appunti da una riunione",
+  "ja": "会議のメモ",
+  "pt": "Notas de uma reunião",
+  "zh": "会议笔记"
  }
 }
