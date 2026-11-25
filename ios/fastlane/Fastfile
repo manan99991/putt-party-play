@@ -377,6 +377,28 @@ platform :ios do
       }
     )
     if ENV["STAGE_ONLY"] == "true"
+      # Attach the newest TestFlight build of this version, once Apple has processed it, so the only taps left are
+      # adding the plans to the review and Submit (Manan, 25 Nov: "iPhone tonight").
+      begin
+        app = Spaceship::ConnectAPI::App.find("com.tenzy.toolkit")
+        version = app.get_edit_app_store_version(platform: Spaceship::ConnectAPI::Platform::IOS)
+        picked = nil
+        40.times do
+          builds = Spaceship::ConnectAPI::Build.all(app_id: app.id, version: marketing, sort: "-uploadedDate", limit: 5)
+          b = builds.first
+          if b && b.processing_state == "VALID" then picked = b; break end
+          UI.message("Waiting for Apple to finish processing build #{b&.version} (#{b&.processing_state || 'none yet'})")
+          sleep 45
+        end
+        if picked && version
+          version.select_build(build_id: picked.id)
+          UI.success("Attached build #{picked.version} (#{marketing}) to the version for review.")
+        else
+          UI.important("No processed build of #{marketing} to attach yet; pick it on the version page.")
+        end
+      rescue => e
+        UI.important("Couldn't attach the build automatically: #{e.message[0, 200]}")
+      end
       UI.success("Staged Tenzy metadata + screenshots on the editable version (NOT submitted — final tap is manual).")
     else
       UI.success("Submitted Tenzy to App Store review (held for manual release).")
