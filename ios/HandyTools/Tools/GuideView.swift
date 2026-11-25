@@ -169,7 +169,7 @@ struct GuideView: View {
                     Image(systemName: "play.fill").font(.system(size: 16, weight: .bold)).foregroundStyle(.white)
                         .frame(width: 32, height: 32).background(.black.opacity(0.45), in: Circle())
                 }
-                .frame(width: 68, height: 68).clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .frame(width: 68, height: 68).clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous)).contentShape(Rectangle())
             }
             .buttonStyle(.plain).accessibilityLabel(L("Play it")).accessibilityIdentifier("guide-just-open")
             VStack(alignment: .leading, spacing: 3) {
@@ -198,7 +198,7 @@ struct GuideView: View {
             HStack(spacing: HandySpacing.s8) {
                 ForEach(Array(previews.thumbs.prefix(4).enumerated()), id: \.offset) { i, t in
                     ZStack {
-                        Image(uiImage: t).resizable().scaledToFill().frame(width: 64, height: 64).clipped().accessibilityHidden(true)
+                        Image(uiImage: t).resizable().scaledToFill().frame(width: 64, height: 64).clipped().contentShape(Rectangle()).accessibilityHidden(true)
                         if i == 3, given.count > 4 {
                             Color.black.opacity(0.55)
                             Text("+\(given.count - 3)").font(HandyFont.bodyStrong).foregroundStyle(.white)
@@ -480,7 +480,7 @@ struct OptionRow: View {
                     // No badge laid over the picture: a badge overlaid on this preview made iOS's screen reading
                     // (VoiceOver, Voice Control, tests) recurse until the app ran out of stack — your 20 Nov crash
                     // after picking several photos. Proven on the test machine: with the overlay it closes, without it it doesn't.
-                    Image(uiImage: preview).resizable().scaledToFill().frame(width: side, height: side).clipped().accessibilityHidden(true)
+                    Image(uiImage: preview).resizable().scaledToFill().frame(width: side, height: side).clipped().contentShape(Rectangle()).accessibilityHidden(true)
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 } else {
                     badge(side)

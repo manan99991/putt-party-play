@@ -108,7 +108,7 @@ struct AudioTagsView: View {
                 }
             }
             .frame(width: 72, height: 72)
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous)).contentShape(Rectangle())
             VStack(alignment: .leading, spacing: 2) {
                 Text(t.title.isEmpty ? fileName : t.title).font(HandyFont.bodyStrong).lineLimit(1)
                 Text(t.artist.isEmpty ? L("Unknown artist") : t.artist).font(HandyFont.caption)

@@ -565,6 +565,35 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(from.waitForExistence(timeout: 10), "Cancel didn't close the picker")
     }
 
+    /// 25 Nov (Manan's recording): tapping the lower half of a tall screenshot picked the photo below it — the cropped-off
+    /// part of the picture underneath still took taps. Every tap must pick exactly the photo under the finger: near the
+    /// bottom edge, near the top edge, on tall pictures.
+    func testTappingNearAPhotosEdgePicksThatPhoto() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "home", "-uitest", "-seedtall"]
+        app.launch()
+        let tile = app.descendants(matching: .any)["have-photo"].firstMatch
+        XCTAssertTrue(tile.waitForExistence(timeout: 20))
+        tile.tap()
+        let cells = app.buttons.matching(identifier: "finder-photo")
+        XCTAssertTrue(cells.firstMatch.waitForExistence(timeout: 30), "the photo grid didn't open")
+        sleep(2)
+        let shown = (0..<min(cells.count, 12)).map { cells.element(boundBy: $0) }.filter { $0.isHittable }
+        XCTAssertGreaterThanOrEqual(shown.count, 6, "the six tall pictures should be on screen")
+        // Each one in turn: tap 8% from its bottom, then 8% from its top; it, and only it, gets picked and unpicked.
+        for (n, c) in shown.prefix(6).enumerated() {
+            for dy in [0.92, 0.08] {
+                let others = shown.filter { $0.frame != c.frame }
+                c.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: dy)).tap()
+                XCTAssertTrue(c.isSelected, "tapping photo \(n + 1) at \(Int(dy * 100))% down didn't pick it")
+                let wrong = others.filter(\.isSelected).map { "\(Int($0.frame.midX)),\(Int($0.frame.midY))" }
+                XCTAssertEqual(wrong, [], "tapping photo \(n + 1) at \(Int(dy * 100))% down picked another photo too")
+                c.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: dy)).tap()
+                XCTAssertFalse(c.isSelected, "a second tap on photo \(n + 1) didn't unpick it")
+            }
+        }
+    }
+
     /// "Just swiping the finger lets select multiple files" (Manan, 22 Nov): Home › Photo opens Tenzy's own grid, and a
     /// sideways swipe across the first row ticks every photo it passes over.
     func testSwipeAcrossPhotosPicksSeveral() {

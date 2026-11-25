@@ -218,7 +218,7 @@ private struct ReceiptRow: View {
                 if let thumb { Image(uiImage: thumb).resizable().scaledToFill() }
                 else { Image(systemName: "doc.text").foregroundStyle(HandyColor.textSecondary) }
             }
-            .frame(width: 46, height: 46).clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            .frame(width: 46, height: 46).clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous)).contentShape(Rectangle())
             .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
             VStack(alignment: .leading, spacing: 2) {
                 Text(receipt.store).font(HandyFont.bodyStrong).lineLimit(1)

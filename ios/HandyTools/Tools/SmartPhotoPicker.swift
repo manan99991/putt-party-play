@@ -61,7 +61,11 @@ struct SmartPhotoPicker: View {
             .safeAreaInset(edge: .bottom) { bottomBar }
             .navigationTitle(L("Choose a photo")).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Cancel")) { finder.stop(); dismiss() } } }
-            .task { finder.start(kind) }
+            .task {
+                // UI tests: tall phone screenshots at the top of the library, the shape that exposed the 25 Nov tap bug.
+                if Launch.uitest, Launch.args.contains("-seedtall") { await Self.seedTallShots() }
+                finder.start(kind)
+            }
             .onDisappear { finder.stop() }
             .onChange(of: allItems) { _, items in
                 guard !items.isEmpty else { return }
@@ -75,6 +79,24 @@ struct SmartPhotoPicker: View {
                 }
             }
         }
+    }
+
+    /// Six tall (phone-screenshot shaped) pictures, each a different colour, saved to the library once (UI tests only).
+    static func seedTallShots() async {
+        let key = "uitest.seededTall"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+        let f = UIGraphicsImageRendererFormat(); f.scale = 1
+        let shots = (0..<6).map { k in
+            UIGraphicsImageRenderer(size: CGSize(width: 590, height: 1278), format: f).image { ctx in
+                UIColor(hue: CGFloat(k) / 6, saturation: 0.6, brightness: 0.8, alpha: 1).setFill()
+                ctx.fill(CGRect(x: 0, y: 0, width: 590, height: 1278))
+                ("\(k + 1)" as NSString).draw(at: CGPoint(x: 220, y: 520), withAttributes: [.font: UIFont.boldSystemFont(ofSize: 200), .foregroundColor: UIColor.white])
+            }
+        }
+        do {
+            try await PHPhotoLibrary.shared().performChanges { for img in shots { PHAssetChangeRequest.creationRequestForAsset(from: img) } }
+            UserDefaults.standard.set(true, forKey: key)
+        } catch {}
     }
 
     private var header: some View {
@@ -246,7 +268,7 @@ private struct AssetThumb: View {
     var body: some View {
         Color.clear.aspectRatio(1, contentMode: .fit)
             .overlay { if let img { Image(uiImage: img).resizable().scaledToFill() } else { HandyColor.surface } }
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous)).contentShape(Rectangle())
             .task(id: asset.localIdentifier) { img = await PhotoFinder.image(asset, side: 300) }
     }
 }

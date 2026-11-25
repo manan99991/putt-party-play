@@ -514,7 +514,7 @@ struct ContactAvatar: View {
                 Text(person.initials).font(.system(size: size * 0.38, weight: .semibold)).foregroundStyle(HandyColor.accent)
             }
         }
-        .frame(width: size, height: size).clipShape(Circle())
+        .frame(width: size, height: size).clipShape(Circle()).contentShape(Rectangle())
         .task(id: person.id) {
             guard person.hasPhoto else { img = nil; return }
             let id = person.id

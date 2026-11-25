@@ -422,7 +422,7 @@ private struct AssetThumb: View {
                     }
                     else { Rectangle().fill(HandyColor.surface) }
                 }
-                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous)).contentShape(Rectangle())
                 .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(selected ? HandyColor.accent : Color.clear, lineWidth: 3))
                 .overlay(alignment: .bottomLeading) {
                     HStack(spacing: 3) {

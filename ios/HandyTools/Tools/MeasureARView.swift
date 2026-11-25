@@ -484,7 +484,7 @@ struct MeasureARView: View {
                 ForEach(saved) { m in
                     HStack(spacing: HandySpacing.s12) {
                         if let img = RoomMath.image(m) {
-                            Image(uiImage: img).resizable().scaledToFill().frame(width: 48, height: 48).clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                            Image(uiImage: img).resizable().scaledToFill().frame(width: 48, height: 48).clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous)).contentShape(Rectangle())
                         } else {
                             Image(systemName: "ruler").frame(width: 48, height: 48).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                         }

@@ -192,6 +192,23 @@ for f, s in code.items():
         elif tid not in lists.get("video", []):
             bad.append(f"{os.path.basename(f)}: the {tid} tool opens videos but isn't on the video list in ToolHandoff.tools")
 
+# 6. Taps land where they look (25 Nov: tapping the lower half of a photo in the photo picker picked the photo under
+# it). A picture cropped with scaledToFill still takes taps over the part that's cut off, so the cropped square must
+# also say where it can be tapped: .contentShape(...) right after the clip. Backgrounds sit behind and are exempt.
+for f, s in code.items():
+    if "/HandyTools/" not in f or f.endswith("Backgrounds.swift"): continue
+    lines = s.split("\n")
+    for i, l in enumerate(lines):
+        if "scaledToFill()" not in l: continue
+        for j in range(i, min(i + 13, len(lines))):
+            seg = lines[j][lines[j].find("scaledToFill()"):] if j == i else lines[j]
+            k = min([x for x in (seg.find(".clipShape("), seg.find(".clipped()")) if x >= 0], default=-1)
+            if k < 0: continue
+            rest = seg[k:] + "\n" + "\n".join(lines[j + 1:j + 3])
+            if ".contentShape(" not in rest:
+                bad.append(f"{os.path.relpath(f, ios)}:{j + 1}: a scaledToFill picture is clipped but not .contentShape(...) — taps on its cut-off part land on the next item")
+            break
+
 for b in bad: print("✗", b)
 if miss: print(f"! {len(miss)} strings without translations (run the translation pass):", "; ".join(sorted(miss)[:15]), "…" if len(miss) > 15 else "")
 print("precheck:", "FAILED" if bad else "ok", f"({len(files)} files)")

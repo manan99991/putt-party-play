@@ -111,7 +111,7 @@ struct HistoryView: View {
         return VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack(alignment: .top, spacing: HandySpacing.s12) {
                 if let first = urls.first, ["jpg", "jpeg", "png", "gif", "heic"].contains(first.pathExtension.lowercased()), let img = UIImage(contentsOfFile: first.path) {
-                    Image(uiImage: img).resizable().scaledToFill().frame(width: 56, height: 56).clipShape(RoundedRectangle(cornerRadius: 10))
+                    Image(uiImage: img).resizable().scaledToFill().frame(width: 56, height: 56).clipShape(RoundedRectangle(cornerRadius: 10)).contentShape(Rectangle())
                 }
                 VStack(alignment: .leading, spacing: 2) {
                     Text(item.tool).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)

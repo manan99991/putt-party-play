@@ -25,7 +25,7 @@ struct TrimStrip: View {
                     HStack(spacing: 0) {
                         ForEach(frames.indices, id: \.self) { i in
                             Image(uiImage: frames[i]).resizable().scaledToFill()
-                                .frame(width: w / CGFloat(max(frames.count, 1)), height: geo.size.height).clipped()
+                                .frame(width: w / CGFloat(max(frames.count, 1)), height: geo.size.height).clipped().contentShape(Rectangle())
                         }
                         if frames.isEmpty { Rectangle().fill(HandyColor.surface).frame(width: w) }
                     }

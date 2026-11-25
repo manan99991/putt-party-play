@@ -195,7 +195,7 @@ struct VideoView: View {
 
     private func sourceCard(_ url: URL) -> some View {
         HStack(spacing: HandySpacing.s12) {
-            if let thumb { Image(uiImage: thumb).resizable().scaledToFill().frame(width: 64, height: 64).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous)) }
+            if let thumb { Image(uiImage: thumb).resizable().scaledToFill().frame(width: 64, height: 64).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous)).contentShape(Rectangle()) }
             else { RoundedRectangle(cornerRadius: 10, style: .continuous).fill(HandyColor.surface).frame(width: 64, height: 64).overlay(Image(systemName: "film").foregroundStyle(HandyColor.textSecondary)) }
             VStack(alignment: .leading, spacing: 2) {
                 Text(L("Your video")).font(HandyFont.bodyStrong)

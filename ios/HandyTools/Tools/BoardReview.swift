@@ -90,7 +90,7 @@ struct BoardReview: View {
     private var summary: some View {
         HStack(alignment: .top, spacing: HandySpacing.s12) {
             Button { zoom = true } label: {
-                Image(uiImage: photo).resizable().scaledToFill().frame(width: 72, height: 72).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                Image(uiImage: photo).resizable().scaledToFill().frame(width: 72, height: 72).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous)).contentShape(Rectangle())
             }.buttonStyle(.plain).accessibilityLabel(L("See the photo"))
             VStack(alignment: .leading, spacing: 4) {
                 Text(headline).font(HandyFont.bodyStrong).fixedSize(horizontal: false, vertical: true)

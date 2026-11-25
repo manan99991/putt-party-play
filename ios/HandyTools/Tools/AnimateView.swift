@@ -95,7 +95,7 @@ struct AnimateView: View {
                     ForEach(photos.indices, id: \.self) { i in
                         Image(uiImage: photos[i]).resizable().scaledToFill()
                             .frame(width: 52, height: 52)
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous)).contentShape(Rectangle())
                     }
                     SmartPhotoButton(kind: .any, max: Self.maxPhotos, picked: { imgs in adopt(imgs.prefix(Self.maxPhotos).map { $0.resized(maxDimension: 1440).normalizedUp() }) }) {
                         Image(systemName: "plus").frame(width: 52, height: 52)

@@ -82,7 +82,7 @@ struct ShotGuideView: View {
                         Text("\(i + 1). \(L(job.shots[i].name))").font(.system(size: 10, weight: .semibold)).lineLimit(2)
                             .padding(4).background(.black.opacity(0.55)).foregroundStyle(.white)
                     }
-                    .frame(height: 96).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .frame(height: 96).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous)).contentShape(Rectangle())
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(i == current ? HandyColor.accent : .clear, lineWidth: 2.5))
                 }.buttonStyle(.plain)
             }

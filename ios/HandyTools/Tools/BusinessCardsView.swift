@@ -195,7 +195,7 @@ private struct CardEditor: View {
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack(alignment: .top, spacing: HandySpacing.s12) {
-                if let f = entry.front { Image(uiImage: f).resizable().scaledToFill().frame(width: 84, height: 54).clipShape(RoundedRectangle(cornerRadius: 8)) }
+                if let f = entry.front { Image(uiImage: f).resizable().scaledToFill().frame(width: 84, height: 54).clipShape(RoundedRectangle(cornerRadius: 8)).contentShape(Rectangle()) }
                 VStack(alignment: .leading, spacing: 2) {
                     Text(entry.card.name.isEmpty ? L("New contact") : entry.card.name).font(HandyFont.bodyStrong)
                     Text([entry.card.title, entry.card.company].filter { !$0.isEmpty }.joined(separator: " · ")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)

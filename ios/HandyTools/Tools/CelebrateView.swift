@@ -275,7 +275,7 @@ struct CelebrateView: View {
                 else { HandyColor.surface }
                 if thumbs[key] == nil { Text(emoji).font(.system(size: 26)) }
             }
-            .frame(width: 84, height: 112).clipped()
+            .frame(width: 84, height: 112).clipped().contentShape(Rectangle())
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(on ? HandyColor.accent : HandyColor.border, lineWidth: on ? 3 : 1))
             Text("\(emoji) \(L(name))").font(HandyFont.micro).foregroundStyle(on ? HandyColor.accent : HandyColor.textPrimary)

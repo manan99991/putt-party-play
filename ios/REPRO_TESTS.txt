@@ -1,6 +1,7 @@
 # 25 Nov, redesign: three tabs (Home, My stuff, Settings); launch routes "tools"/"build" open their pages (were
 # swallowed by the screenshot route list). Plus Sheets periods / ask-before-add checks, and Long Screenshot upright +
-# status-bar seam.
+# status-bar seam. Plus the photo picker's edge taps (tall screenshots picked the photo below) and the smart
+# autorun rules.
 HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
 HandyToolsUITests/PromiseTests/testBuildTabMakesToolsAndReminders
 HandyToolsUITests/PromiseTests/testBusinessTabShowsOnlyWhenOnAndItsJobsOpen
@@ -9,3 +10,6 @@ HandyToolsTests/EngineTests/testStitchedScreenshotsAreUpright
 HandyToolsTests/EngineTests/testAChangingClockDoesntHideTheRepeatedHeader
 HandyToolsTests/EngineTests/testStitcherRemovesOverlapAndKeepsChromeOnce
 HandyToolsTests/EngineTests/testStitcherOrdersShuffledScreenshots
+HandyToolsUITests/PromiseTests/testTappingNearAPhotosEdgePicksThatPhoto
+HandyToolsUITests/PromiseTests/testSwipeAcrossPhotosPicksSeveral
+HandyToolsTests/SmartRunsTests

@@ -56,7 +56,7 @@ struct PostItView: View {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 HStack(spacing: HandySpacing.s12) {
                     ZStack { if let poster { Image(uiImage: poster).resizable().scaledToFill() } else { HandyColor.surface } }
-                        .frame(width: 64, height: 64).clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        .frame(width: 64, height: 64).clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous)).contentShape(Rectangle())
                     VStack(alignment: .leading, spacing: 3) {
                         Text(L("Your video")).font(HandyFont.bodyStrong)
                         if let f = facts {

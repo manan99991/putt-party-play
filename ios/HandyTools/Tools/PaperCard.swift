@@ -15,7 +15,7 @@ struct PaperCard: View {
                 if let photo {
                     Button { zoom = true } label: {
                         Image(uiImage: photo).resizable().scaledToFill().frame(width: 76, height: 76)
-                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous)).contentShape(Rectangle())
                     }.buttonStyle(.plain).accessibilityLabel(L("See the photo"))
                 }
                 VStack(alignment: .leading, spacing: 4) {

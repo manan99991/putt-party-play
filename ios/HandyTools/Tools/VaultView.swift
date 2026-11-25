@@ -168,7 +168,7 @@ struct VaultView: View {
         HStack(spacing: HandySpacing.s12) {
             ZStack {
                 RoundedRectangle(cornerRadius: HandyRadius.small, style: .continuous).fill(HandyColor.accentSoft).frame(width: 52, height: 52)
-                if item.kind == .photo, let t = thumb(item) { Image(uiImage: t).resizable().scaledToFill().frame(width: 52, height: 52).clipShape(RoundedRectangle(cornerRadius: HandyRadius.small, style: .continuous)) }
+                if item.kind == .photo, let t = thumb(item) { Image(uiImage: t).resizable().scaledToFill().frame(width: 52, height: 52).clipShape(RoundedRectangle(cornerRadius: HandyRadius.small, style: .continuous)).contentShape(Rectangle()) }
                 else { Image(systemName: item.kind == .note ? "note.text" : item.kind == .secret ? "key.fill" : item.kind == .photo ? "photo" : "doc.fill").foregroundStyle(HandyColor.accent) }
             }
             VStack(alignment: .leading, spacing: 2) {

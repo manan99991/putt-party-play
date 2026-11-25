@@ -132,7 +132,7 @@ struct ProCameraView: View {
 
             if let img = cam.lastSaved ?? longResult {
                 HStack(spacing: HandySpacing.s12) {
-                    Image(uiImage: img).resizable().scaledToFill().frame(width: 56, height: 56).clipShape(RoundedRectangle(cornerRadius: 8))
+                    Image(uiImage: img).resizable().scaledToFill().frame(width: 56, height: 56).clipShape(RoundedRectangle(cornerRadius: 8)).contentShape(Rectangle())
                     Text(cam.lastMessage).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     Spacer()
                     if let longResult, let d = longResult.jpegData(compressionQuality: 0.95) {
@@ -558,7 +558,7 @@ private struct ShotReview: View {
                                 Group {
                                     if let t = thumbs[l] { Image(uiImage: t).resizable().scaledToFill() } else { HandyColor.surface }
                                 }
-                                .frame(width: 68, height: 68).clipShape(RoundedRectangle(cornerRadius: 10))
+                                .frame(width: 68, height: 68).clipShape(RoundedRectangle(cornerRadius: 10)).contentShape(Rectangle())
                                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(look == l ? HandyColor.accent : Color.clear, lineWidth: 3))
                                 Text(L(l.title)).font(HandyFont.micro).foregroundStyle(look == l ? HandyColor.accent : HandyColor.textPrimary)
                             }

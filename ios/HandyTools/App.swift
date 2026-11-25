@@ -921,7 +921,7 @@ struct ToolCard: View {
                 HandyColor.surface
                 Image(artName).resizable().scaledToFill()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .clipped()
+                    .clipped().contentShape(Rectangle())
                     .allowsHitTesting(false)
                 // Scrim: art shows through the top, deepening to the surface colour over the bottom third
                 // so the title + blurb read clearly in any theme, light or dark.

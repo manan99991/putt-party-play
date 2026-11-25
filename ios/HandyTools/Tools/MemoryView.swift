@@ -200,7 +200,7 @@ private struct MemoryThumb: View {
             else { Rectangle().fill(HandyColor.accentSoft).overlay(Image(systemName: "photo").foregroundStyle(HandyColor.accent)) }
         }
         .frame(width: 54, height: 72)
-        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous)).contentShape(Rectangle())
         .task(id: id) { image = await MemoryEngine.thumbnail(id: id) }
     }
 }

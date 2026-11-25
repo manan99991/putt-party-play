@@ -282,7 +282,7 @@ struct RunningOnVideoCard: View {
                 RoundedRectangle(cornerRadius: 10).fill(HandyColor.surface)
                 if let thumb { Image(uiImage: thumb).resizable().scaledToFill() }
             }
-            .frame(width: 72, height: 72).clipShape(RoundedRectangle(cornerRadius: 10))
+            .frame(width: 72, height: 72).clipShape(RoundedRectangle(cornerRadius: 10)).contentShape(Rectangle())
             VStack(alignment: .leading, spacing: 4) {
                 Text(L("Your video")).font(HandyFont.bodyStrong)
                 if let f = facts {
