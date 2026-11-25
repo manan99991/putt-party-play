@@ -1,35 +1,21 @@
-2026-11-25 08:18:04.911196+0000 HandyTools[35422:97790] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-25 08:18:06.725675+0000 HandyTools[35422:97778] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
-2026-11-25 08:18:07.354113+0000 HandyTools[35422:97778] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
-2026-11-25 08:18:08.705839+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 08:18:08.734568+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 08:18:08.734838+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 08:18:08.734976+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 08:18:08.802544+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-25 08:18:08.802783+0000 HandyTools[35422:97781] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-Test Case '-[HandyToolsTests.PricingTests testBothPlansAreSold]' started.
-Test Case '-[HandyToolsTests.PricingTests testBothPlansAreSold]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.PricingTests testEveryPricingPhraseIsTranslatedWithTheSamePlaceholders]' started.
-Test Case '-[HandyToolsTests.PricingTests testEveryPricingPhraseIsTranslatedWithTheSamePlaceholders]' passed (0.087 seconds).
-Test Case '-[HandyToolsTests.PricingTests testMostToolsArePro]' started.
-Test Case '-[HandyToolsTests.PricingTests testMostToolsArePro]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.PricingTests testNothingOnHomesFrontRowIsLocked]' started.
-Test Case '-[HandyToolsTests.PricingTests testNothingOnHomesFrontRowIsLocked]' passed (0.089 seconds).
-Test Case '-[HandyToolsTests.PricingTests testTheFreeToolsPeopleAlreadyHadStayFree]' started.
-Test Case '-[HandyToolsTests.PricingTests testTheFreeToolsPeopleAlreadyHadStayFree]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.PricingTests testThePurchaseTermsSayEverythingAppleRequires]' started.
-Test Case '-[HandyToolsTests.PricingTests testThePurchaseTermsSayEverythingAppleRequires]' passed (0.001 seconds).
-	 Executed 6 tests, with 0 failures (0 unexpected) in 0.184 (0.191) seconds
-	 Executed 6 tests, with 0 failures (0 unexpected) in 0.184 (0.193) seconds
-	 Executed 6 tests, with 0 failures (0 unexpected) in 0.184 (0.195) seconds
-Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' started.
-VIDEOFX| 1s: poster true loading false rendered false rolling false playing false item true status 0 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err - log - size 0 t 0.0
-VIDEOFX| 3s: poster true loading false rendered true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 NSOSStatusErrorDomain -12784 log - size 1080 t 0.0
-VIDEOFX| 6s: poster true loading false rendered true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 NSOSStatusErrorDomain -12784 log - size 1080 t 0.0
-VIDEOFX| 10s: poster true loading false rendered true rolling false playing false item true status 2 wait AVPlayerWaitingWhileEvaluatingBufferingRateReason err AVFoundationErrorDomain -11800 NSOSStatusErrorDomain -12784 log - size 1080 t 0.0
-VIDEOFX| moving at 15s: poster true loading false rendered true rolling true playing true item true status 1 wait - err - log - size 1024 t 0.4
-Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (60.726 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 60.726 (60.734) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 60.726 (60.736) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 60.726 (60.738) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' started.
+    t =    57.24s     Requesting snapshot of accessibility hierarchy for app with pid 35731
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:216: error: -[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders] : XCTAssertTrue failed - Build has no Ready-made
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:218: error: -[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders] : XCTAssertTrue failed - Build has no build-new-tool on screen
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:218: error: -[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders] : XCTAssertTrue failed - Build has no build-new-reminder on screen
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:218: error: -[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders] : XCTAssertTrue failed - Build has no build-mine on screen
+    t =    75.21s Requesting snapshot of accessibility hierarchy for app with pid 35731
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:220: error: -[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders] : Failed to tap "build-readymade" Any: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"build-readymade" IN identifiers'`, given input App element pid: 35731
+Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' failed (75.949 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' started.
+    t =    62.59s     Requesting snapshot of accessibility hierarchy for app with pid 37617
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:165: error: -[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen] : XCTAssertTrue failed - Business is switched on but there's no tab
+    t =    66.90s Requesting snapshot of accessibility hierarchy for app with pid 37617
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:166: error: -[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen] : Failed to tap "tab-business" Any: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"tab-business" IN identifiers'`, given input App element pid: 37617
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' failed (67.241 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' started.
+Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' passed (101.269 seconds).
+	 Executed 3 tests, with 7 failures (0 unexpected) in 244.458 (244.504) seconds
+	 Executed 3 tests, with 7 failures (0 unexpected) in 244.458 (244.514) seconds
+	 Executed 3 tests, with 7 failures (0 unexpected) in 244.458 (244.516) seconds
 == crash reports
