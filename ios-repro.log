@@ -1,67 +1,68 @@
-Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' passed (60.830 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 60.830 (60.872) seconds
-Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' started.
-REALINPUT receipt-to-row: result (run-result)
-REALINPUT photo-under-2mb: result (run-result)
-REALINPUT safe-to-share: result (run-result)
-REALINPUT card-to-contact: result (run-result)
-REALINPUT poster-to-event: result (run-result)
-REALINPUT whiteboard-to-tasks: result (run-result)
-REALINPUT passport-photo: message — Passport photo works best with a clear, close photo. Try a clearer or closer photo.
-REALINPUT hide-sensitive: result (run-result)
-REALINPUT short-summary: result (run-result)
-REALINPUT sticker: message — Cut out subject works best with a clear, close photo. Try a clearer or closer photo.
-REALINPUT table-to-sheet: result (run-result)
-REALINPUT links-and-numbers: result (run-result)
-REALINPUT tidy-text: result (run-result)
-REALINPUT scam-check: result (run-result)
-REALINPUT clean-link: result (run-result)
-REALINPUT shelf-best-deal: result (run-result)
-REALINPUT photo-to-pdf: result (run-result)
-REALINPUT text-to-qr: result (run-result)
-REALINPUT what-is-this: result (run-result)
-REALINPUT scan-to-pdf: result (run-result)
-REALINPUT sign-and-send: result (run-result)
-REALINPUT receipt-run: result (run-result)
-REALINPUT whatsapp-no-save: result (run-result)
-REALINPUT contact-qr: result (run-result)
-REALINPUT video-email: result (run-result)
-REALINPUT video-chat: result (run-result)
-REALINPUT video-still: result (run-result)
-REALINPUT video-quiet: result (run-result)
-REALINPUT return-by: result (run-result)
-REALINPUT wifi-sign: result (run-result)
-REALINPUT id-both-sides: result (run-result)
-REALINPUT share-shield: result (run-result)
-REALINPUT id-copy-watermarked: result (run-result)
-REALINPUT portal-photo: result (run-result)
-REALINPUT memo-to-notes: result (run-steplog)
-REALINPUT memo-to-tasks: result (run-steplog)
-REALINPUT qr-safe: result (run-steplog)
-REALINPUT sign-to-english: result (run-result)
-REALINPUT page-to-pdf: result (run-steplog)
-REALINPUT page-summary: result (run-steplog)
-REALINPUT listen-later: result (run-result)
-REALINPUT pdf-email: result (run-result)
-REALINPUT pdf-join: result (run-result)
-REALINPUT pdf-first-page: result (run-result)
-REALINPUT video-story: result (run-result)
-REALINPUT video-gif: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (1565.047 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 1565.047 (1565.049) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 1625.877 (1625.936) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 1625.877 (1625.937) seconds
+2026-11-26 15:53:16.254406+0000 HandyTools[28605:80795] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+Test Case '-[HandyToolsTests.ReminderWordsTests testAOneOffAtATime]' started.
+Test Case '-[HandyToolsTests.ReminderWordsTests testAOneOffAtATime]' passed (0.019 seconds).
+Test Case '-[HandyToolsTests.ReminderWordsTests testInSomeMinutes]' started.
+Test Case '-[HandyToolsTests.ReminderWordsTests testInSomeMinutes]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.ReminderWordsTests testNeverInThePastAndAlwaysSays]' started.
+Test Case '-[HandyToolsTests.ReminderWordsTests testNeverInThePastAndAlwaysSays]' passed (0.020 seconds).
+Test Case '-[HandyToolsTests.ReminderWordsTests testOnlyRemindMeSentencesAreReminders]' started.
+Test Case '-[HandyToolsTests.ReminderWordsTests testOnlyRemindMeSentencesAreReminders]' passed (0.014 seconds).
+Test Case '-[HandyToolsTests.ReminderWordsTests testRepeats]' started.
+Test Case '-[HandyToolsTests.ReminderWordsTests testRepeats]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.ReminderWordsTests testTomorrowTonightAndADay]' started.
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/ReminderWordsTests.swift:54: error: -[HandyToolsTests.ReminderWordsTests testTomorrowTonightAndADay] : XCTAssertEqual failed: ("27") is not equal to ("28")
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/ReminderWordsTests.swift:60: error: -[HandyToolsTests.ReminderWordsTests testTomorrowTonightAndADay] : XCTAssertEqual failed: ("27") is not equal to ("28")
+Test Case '-[HandyToolsTests.ReminderWordsTests testTomorrowTonightAndADay]' failed (2.075 seconds).
+	 Executed 6 tests, with 2 failures (0 unexpected) in 2.132 (2.137) seconds
+Test Case '-[HandyToolsTests.SmartDescribeTests testHalfARequestStillGetsTheWholeJob]' started.
+Test Case '-[HandyToolsTests.SmartDescribeTests testHalfARequestStillGetsTheWholeJob]' passed (0.026 seconds).
+Test Case '-[HandyToolsTests.SmartDescribeTests testItSaysWhenItIsOnlyAGuess]' started.
+Test Case '-[HandyToolsTests.SmartDescribeTests testItSaysWhenItIsOnlyAGuess]' passed (0.018 seconds).
+Test Case '-[HandyToolsTests.SmartDescribeTests testMisspeltWordsAreReadAsMeant]' started.
+Test Case '-[HandyToolsTests.SmartDescribeTests testMisspeltWordsAreReadAsMeant]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.SmartDescribeTests testTheEndingIsReadFromTheRequest]' started.
+Test Case '-[HandyToolsTests.SmartDescribeTests testTheEndingIsReadFromTheRequest]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.SmartDescribeTests testToolsGetNamesPeopleCanRead]' started.
+Test Case '-[HandyToolsTests.SmartDescribeTests testToolsGetNamesPeopleCanRead]' passed (0.025 seconds).
+Test Case '-[HandyToolsTests.SmartDescribeTests testTyposStillBuildTheRightTool]' started.
+Test Case '-[HandyToolsTests.SmartDescribeTests testTyposStillBuildTheRightTool]' passed (0.028 seconds).
+Test Case '-[HandyToolsTests.SmartDescribeTests testWhatIsAlreadyRightIsLeftAlone]' started.
+Test Case '-[HandyToolsTests.SmartDescribeTests testWhatIsAlreadyRightIsLeftAlone]' passed (0.001 seconds).
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.104 (0.425) seconds
+Test Case '-[HandyToolsTests.VoiceFXTests testAutoTuneLandsOnNotes]' started.
+Test Case '-[HandyToolsTests.VoiceFXTests testAutoTuneLandsOnNotes]' passed (2.683 seconds).
+Test Case '-[HandyToolsTests.VoiceFXTests testEveryVoiceIsItsOwnSound]' started.
+Test Case '-[HandyToolsTests.VoiceFXTests testEveryVoiceIsItsOwnSound]' passed (3.209 seconds).
+Test Case '-[HandyToolsTests.VoiceFXTests testTheNewVoicesDoWhatTheySay]' started.
+Test Case '-[HandyToolsTests.VoiceFXTests testTheNewVoicesDoWhatTheySay]' passed (1.471 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 7.364 (7.369) seconds
+	 Executed 16 tests, with 2 failures (0 unexpected) in 9.600 (9.934) seconds
+	 Executed 16 tests, with 2 failures (0 unexpected) in 9.600 (9.935) seconds
+Test Case '-[HandyToolsUITests.CameraButtonTests testAVideoHelperRunsOnAClipItRecorded]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testAVideoHelperRunsOnAClipItRecorded]' passed (39.839 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testCelebrateRecordsAClip]' started.
+    t =    25.19s         Get all elements bound by accessibility element for: Elements matching predicate 'userTestingAttributes CONTAINS "default-button"'
+Test Case '-[HandyToolsUITests.CameraButtonTests testCelebrateRecordsAClip]' passed (38.687 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testFitUnderALimitTakesAPhoto]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testFitUnderALimitTakesAPhoto]' passed (20.945 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPhotoStudioTakesAPhoto]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testPhotoStudioTakesAPhoto]' passed (21.010 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPostItRecordsAClip]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testPostItRecordsAClip]' passed (27.267 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPriceCheckReadsAShelfPhoto]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testPriceCheckReadsAShelfPhoto]' passed (26.965 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPrivacyScrubberTakesAPhoto]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testPrivacyScrubberTakesAPhoto]' passed (21.527 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testReadyToSendTakesAPhoto]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testReadyToSendTakesAPhoto]' passed (21.438 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testThePhotoPickerTakesAPhoto]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testThePhotoPickerTakesAPhoto]' passed (33.391 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testTranslateReadsAPhotoItTook]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testTranslateReadsAPhotoItTook]' passed (32.235 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testVideoRecordsAClip]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testVideoRecordsAClip]' passed (26.255 seconds).
+	 Executed 11 tests, with 0 failures (0 unexpected) in 309.559 (309.592) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 309.559 (309.615) seconds
+	 Executed 11 tests, with 0 failures (0 unexpected) in 309.559 (309.617) seconds
 == main thread when stuck
-HANG| 15:25:37 main thread busy in 86/87 samples
-HANG|      86 start  (in dyld)
-HANG|      86 start_sim  (in dyld_sim)
-HANG|      86 __debug_main_executable_dylib_entry_point  (in HandyTools.debug.dylib) + 12  App.swift:0
-HANG|      86 static TenzyApp.$main()  (in HandyTools.debug.dylib) + 40  /<compiler-generated>:0
-HANG|      86 static App.main()  (in SwiftUI)
-HANG|      86 runApp<A>(_:)  (in SwiftUI)
-HANG|      86 closure #1 in KitRendererCommon(_:)  (in SwiftUI)
-HANG|      86 UIApplicationMain  (in UIKitCore)
-HANG|      86 GSEventRunModal  (in GraphicsServices)
-HANG|      86 _CFRunLoopRunSpecificWithOptions  (in CoreFoundation)
 == crash reports
