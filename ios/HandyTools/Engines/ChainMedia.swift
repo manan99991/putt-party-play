@@ -237,7 +237,25 @@ enum ChainMedia {
         "underwater": VoiceCharacter(pitchCents: -150, distortion: nil, wet: 0, rate: 0.97),
         "megaphone":  VoiceCharacter(pitchCents:    0, distortion: nil, wet: 0),
         "villain":    VoiceCharacter(pitchCents: -650, distortion: nil, wet: 0, rate: 0.95, reverb: .mediumHall, reverbWet: 15),
+        // 26 Nov. Auto-tune: the pitch is snapped note by note while it renders (autotuneCurve), then a small room.
+        "autotune":   VoiceCharacter(pitchCents:    0, distortion: nil, wet: 0, reverb: .mediumRoom, reverbWet: 14),
+        "announcer":  VoiceCharacter(pitchCents: -180, distortion: nil, wet: 0, rate: 0.94, reverb: .largeHall, reverbWet: 22),
+        "radio":      VoiceCharacter(pitchCents:    0, distortion: nil, wet: 0),
+        "whisper":    VoiceCharacter(pitchCents:    0, distortion: nil, wet: 0, rate: 0.97),
     ]
+
+    /// Auto-tune's correction, in cents, for each `step` frames of the recording: the distance from the voice's pitch
+    /// there to the nearest note of the major scale (C), so speech steps from note to note like a sung line. Silent or
+    /// breathy stretches keep the last correction, so nothing jumps between words.
+    static func autotuneCurve(file url: URL, frames: Int64, step: Int) -> [Float] {
+        guard let f = try? AVAudioFile(forReading: url),
+              let buf = AVAudioPCMBuffer(pcmFormat: f.processingFormat, frameCapacity: AVAudioFrameCount(frames)),
+              (try? f.read(into: buf, frameCount: AVAudioFrameCount(frames))) != nil, let ch = buf.floatChannelData else { return [] }
+        let n = Int(buf.frameLength), lanes = Int(buf.format.channelCount), rate = buf.format.sampleRate
+        var mono = [Float](repeating: 0, count: n)
+        for i in 0..<n { var v: Float = 0; for c in 0..<lanes { v += ch[c][i] }; mono[i] = v / Float(max(1, lanes)) }
+        return VoiceFX.snapCurve(mono, rate: rate, step: step)
+    }
 
     /// Pitch-shifts a recording without changing its tempo and adds a character timbre, rendered entirely offline
     /// on the phone (no playback, nothing uploaded). Returns 16-bit mono WAV, or nil so the caller falls back to
@@ -270,13 +288,19 @@ enum ChainMedia {
             try engine.start()
         } catch { return nil }
         defer { engine.stop() }
+        // Auto-tune: how far each stretch must move to land on a note, set on the pitch unit as it renders.
+        let curve: [Float] = voice == "autotune" ? autotuneCurve(file: url, frames: inFrames, step: 1024) : []
         player.scheduleSegment(file, startingFrame: 0, frameCount: AVAudioFrameCount(inFrames), at: nil)
         player.play()
-        guard let render = AVAudioPCMBuffer(pcmFormat: engine.manualRenderingFormat, frameCapacity: engine.manualRenderingMaximumFrameCount) else { return nil }
+        guard let render = AVAudioPCMBuffer(pcmFormat: engine.manualRenderingFormat, frameCapacity: 1024) else { return nil }
         let lanes = max(1, Int(engine.manualRenderingFormat.channelCount))
         var mono: [Float] = []; mono.reserveCapacity(Int(outFrames))
         while engine.manualRenderingSampleTime < outFrames && mono.count < Int(outFrames) {
             let remaining = outFrames - engine.manualRenderingSampleTime
+            if !curve.isEmpty {
+                let k = min(curve.count - 1, Int(engine.manualRenderingSampleTime / 1024))
+                pitch.pitch = max(-2400, min(2400, c.pitchCents + curve[k]))
+            }
             let frames = AVAudioFrameCount(min(Int64(render.frameCapacity), remaining))
             guard let status = try? engine.renderOffline(frames, to: render), status == .success,
                   let ch = render.floatChannelData, render.frameLength > 0 else { break }

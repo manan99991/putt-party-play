@@ -196,9 +196,20 @@ enum ChainPlanner {
             c?.versus = true
             return c
         }
-        if has(["chipmunk", "helium", "robot", "alien", "monster", "giant", "voice changer", "funny voice", "deep voice", "change my voice", "change the voice", "walkie", "radio voice", "ghost", "spooky voice", "echo voice", "cave"]) {
-            let voice = has(["robot"]) ? "robot" : has(["alien"]) ? "alien" : has(["monster"]) ? "monster" : has(["giant"]) ? "giant" : has(["walkie", "radio voice"]) ? "walkie" : has(["ghost", "spooky"]) ? "ghost" : has(["cave", "echo voice"]) ? "cave" : has(["deep", "low voice"]) ? "deep" : has(["helium", "high voice", "squeaky"]) ? "helium" : "chipmunk"
-            return build(ask, (film ? [ChainStep(block: .videoAudio)] : []) + [ChainStep(block: .voiceChange, settings: ["voice": voice])])
+        // Every voice the app has, by the words people use for it (26 Nov: the newer ones were missing here).
+        let voiceWords: [(id: String, words: [String])] = [
+            ("autotune", ["auto-tune", "autotune", "auto tune", "sing in tune", "singing voice", "make me sing", "make it sing"]),
+            ("announcer", ["announcer", "stadium", "commentator", "ringmaster", "boxing ring"]),
+            ("radio", ["old radio", "vintage radio", "1940s", "old-time radio", "wireless set"]),
+            ("whisper", ["whisper"]),
+            ("robot", ["robot"]), ("alien", ["alien"]), ("monster", ["monster"]), ("giant", ["giant"]),
+            ("walkie", ["walkie", "radio voice"]), ("ghost", ["ghost", "spooky"]), ("cave", ["cave", "echo voice"]),
+            ("baby", ["baby voice", "like a baby"]), ("oldman", ["old man voice", "like an old man", "grandpa voice"]),
+            ("underwater", ["underwater"]), ("megaphone", ["megaphone", "loudspeaker"]), ("villain", ["villain", "evil voice"]),
+            ("deep", ["deep voice", "low voice"]), ("helium", ["helium", "high voice", "squeaky"]), ("chipmunk", ["chipmunk"]),
+        ]
+        if let hit = voiceWords.first(where: { has($0.words) })?.id ?? (has(["voice changer", "funny voice", "change my voice", "change the voice"]) ? "chipmunk" : nil) {
+            return build(ask, (film ? [ChainStep(block: .videoAudio)] : []) + [ChainStep(block: .voiceChange, settings: ["voice": hit])])
         }
         if has(["sketch", "pencil", "drawing", "cartoon", "comic", "pop art", "black and white", "noir"]) {
             let style = has(["cartoon", "comic"]) ? "comic" : has(["pop art"]) ? "pop" : has(["black and white", "noir"]) ? "noir" : "sketch"

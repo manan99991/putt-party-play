@@ -135,6 +135,65 @@ enum VoiceFX {
         return out
     }
 
+    /// Whisper: the voice's shape in 16 bands, carried by breath (noise) instead of the vocal cords — the words stay,
+    /// the pitch is gone. A channel vocoder: each band's loudness drives the same band of noise.
+    static func whisper(_ x: [Float], rate: Double) -> [Float] {
+        let lo = 180.0, hi = min(9000.0, rate * 0.45), bands = 16
+        var r = SeededRandom(seed: 11)
+        let noise = x.map { _ in Float(r.next(-1, 1)) }
+        var out = [Float](repeating: 0, count: x.count)
+        for b in 0..<bands {
+            let f = lo * pow(hi / lo, (Double(b) + 0.5) / Double(bands))
+            let voice = filter(x, "bandpass", f: f, q: 4, rate: rate)
+            var env = filter(voice.map { abs($0) }, "lowpass", f: 35, rate: rate)
+            env = env.map { max(0, $0) }
+            let carrier = filter(noise, "bandpass", f: f, q: 4, rate: rate)
+            // Higher bands carry more of a whisper's hiss.
+            let tilt = Float(0.6 + 0.8 * Double(b) / Double(bands))
+            for i in x.indices { out[i] += carrier[i] * env[i] * tilt }
+        }
+        return filter(out, "highpass", f: 250, rate: rate)
+    }
+
+    /// An old wireless: mains hum and the odd crackle and pop, under the voice.
+    static func crackle(_ x: [Float], rate: Double, hum: Float = 0.012) -> [Float] {
+        var r = SeededRandom(seed: 41)
+        var out = x
+        let k = 2 * Double.pi / rate
+        for i in out.indices { out[i] += hum * Float(sin(k * 60 * Double(i)) + 0.5 * sin(k * 120 * Double(i))) }
+        var i = Int(r.next(0, 0.2) * rate)
+        while i < out.count {
+            let len = Int(r.next(0.001, 0.004) * rate), amp = Float(r.next(0.08, 0.3))
+            for j in 0..<len where i + j < out.count { out[i + j] += Float(r.next(-1, 1)) * amp * Float(1 - Double(j) / Double(len)) }
+            i += Int(r.next(0.05, 0.4) * rate)
+        }
+        return out
+    }
+
+    /// Auto-tune's target, in cents, every `step` samples: from the voice's pitch there to the nearest note of the
+    /// C major scale. Where there's no clear pitch (a breath, a "s"), the last correction holds.
+    static func snapCurve(_ x: [Float], rate: Double, step: Int) -> [Float] {
+        let major: Set<Int> = [0, 2, 4, 5, 7, 9, 11]
+        let win = 2048
+        var curve: [Float] = [], last: Float = 0
+        var i = 0
+        while i < x.count {
+            let a = max(0, min(x.count - win, i + step / 2 - win / 2))
+            if x.count >= win, let p = Pitch.detect(Array(x[a..<(a + win)]), sampleRate: rate, minHz: 70, maxHz: 1000), p.clarity > 0.8 {
+                let midi = 12 * log2(p.hz / 440) + 69
+                // Nearest note of the scale (search a semitone either side, then two).
+                var best = Int(midi.rounded()), bestD = Double.infinity
+                for n in (Int(midi) - 2)...(Int(midi) + 2) where major.contains(((n % 12) + 12) % 12) {
+                    let d = abs(Double(n) - midi); if d < bestD { bestD = d; best = n }
+                }
+                last = Float((Double(best) - midi) * 100)
+            }
+            curve.append(last)
+            i += step
+        }
+        return curve
+    }
+
     /// Every voice ends up equally loud (peak just under full scale), with a soft limiter for the loud bits.
     static func level(_ x: [Float]) -> [Float] {
         let peak = x.reduce(Float(0)) { max($0, abs($1)) }
@@ -218,6 +277,31 @@ enum VoiceFX {
             y = filter(y, "lowshelf", f: 120, gainDB: 7, rate: rate)
             y = drive(y, amount: 1.8)
             y = echoes(y, delays: [0.06, 0.06], decay: 0.3, rate: rate)
+        case "autotune":
+            // The pitch is already snapped (ChainMedia.autotuneCurve); a tight double and some sparkle make it a vocal.
+            let double = vibrato(y, hz: 0.25, depthMs: 6, rate: rate)
+            y = zip(y, double).map { $0 * 0.75 + $1 * 0.35 }
+            y = filter(y, "highshelf", f: 6000, gainDB: 3, rate: rate)
+            y = filter(y, "peak", f: 220, q: 1, gainDB: -2, rate: rate)
+        case "announcer":
+            // Big chest, a cutting edge, and the stadium answering back.
+            y = filter(y, "lowshelf", f: 160, gainDB: 5, rate: rate)
+            y = filter(y, "peak", f: 2600, q: 1, gainDB: 6, rate: rate)
+            y = drive(y, amount: 1.7)
+            y = echoes(y, delays: [0.24, 0.24], decay: 0.32, rate: rate)
+        case "radio":
+            // A small 1940s speaker: narrow band, warm drive, slow wobble of the dial, hum and crackle.
+            // The valve's warmth first, then the little speaker, which lets nothing deep or bright through.
+            y = drive(y, amount: 2.2)
+            y = filter(y, "highpass", f: 320, rate: rate)
+            y = filter(y, "highpass", f: 320, rate: rate)
+            y = filter(y, "lowpass", f: 3400, rate: rate)
+            y = filter(y, "lowpass", f: 3400, rate: rate)
+            y = filter(y, "peak", f: 1100, q: 1.2, gainDB: 5, rate: rate)
+            y = vibrato(y, hz: 0.6, depthMs: 0.5, rate: rate)
+            y = crackle(y, rate: rate)
+        case "whisper":
+            y = whisper(y, rate: rate)
         default: break
         }
         return level(y)

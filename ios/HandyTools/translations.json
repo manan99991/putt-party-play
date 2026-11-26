@@ -51368,5 +51368,125 @@
   "ja": "ここで写真を撮るには、設定でTenzyのカメラをオンにしてください。写真はスマホの中に残ります。",
   "pt": "Ative a Câmera para o Tenzy em Ajustes para tirar uma foto aqui. As fotos ficam no seu celular.",
   "zh": "请在设置中为 Tenzy 打开相机，即可在这里拍照。照片只保存在你的手机上。"
+ },
+ "Auto-tune singer": {
+  "de": "Auto-Tune-Sänger",
+  "es": "Cantante con autotune",
+  "fr": "Chanteur autotune",
+  "hi": "ऑटो-ट्यून सिंगर",
+  "it": "Cantante con autotune",
+  "ja": "オートチューン歌手",
+  "pt": "Cantor com autotune",
+  "zh": "自动修音歌手"
+ },
+ "Stadium announcer": {
+  "de": "Stadionsprecher",
+  "es": "Locutor de estadio",
+  "fr": "Speaker de stade",
+  "hi": "स्टेडियम उद्घोषक",
+  "it": "Speaker dello stadio",
+  "ja": "スタジアムのアナウンサー",
+  "pt": "Locutor de estádio",
+  "zh": "体育场播报员"
+ },
+ "Old radio": {
+  "de": "Altes Radio",
+  "es": "Radio antigua",
+  "fr": "Vieille radio",
+  "hi": "पुराना रेडियो",
+  "it": "Vecchia radio",
+  "ja": "古いラジオ",
+  "pt": "Rádio antigo",
+  "zh": "老式收音机"
+ },
+ "Whisper": {
+  "de": "Flüstern",
+  "es": "Susurro",
+  "fr": "Chuchotement",
+  "hi": "फुसफुसाहट",
+  "it": "Sussurro",
+  "ja": "ささやき",
+  "pt": "Sussurro",
+  "zh": "耳语"
+ },
+ "Snaps to the notes, like a pop song": {
+  "de": "Springt auf die Töne, wie ein Popsong",
+  "es": "Se ajusta a las notas, como una canción pop",
+  "fr": "Colle aux notes, comme un tube pop",
+  "hi": "सुरों पर टिक जाती है, पॉप गाने जैसी",
+  "it": "Si aggancia alle note, come una canzone pop",
+  "ja": "音程にぴたっと合う、ポップスのように",
+  "pt": "Encaixa nas notas, como uma música pop",
+  "zh": "自动对准音符，像流行歌"
+ },
+ "Booming from the stands": {
+  "de": "Dröhnt von den Rängen",
+  "es": "Retumbando desde las gradas",
+  "fr": "Qui tonne depuis les tribunes",
+  "hi": "स्टैंड्स से गूंजती आवाज़",
+  "it": "Che rimbomba dagli spalti",
+  "ja": "スタンドに響きわたる",
+  "pt": "Ecoando das arquibancadas",
+  "zh": "响彻看台"
+ },
+ "Crackly old wireless, 1940s": {
+  "de": "Knisterndes altes Radio, 1940er",
+  "es": "Radio antigua con chasquidos, años 40",
+  "fr": "Vieille TSF qui grésille, années 40",
+  "hi": "खरखराता पुराना रेडियो, 1940 का दौर",
+  "it": "Vecchia radio gracchiante, anni '40",
+  "ja": "パチパチ鳴る1940年代のラジオ",
+  "pt": "Rádio antigo chiando, anos 40",
+  "zh": "噼啪作响的四十年代老收音机"
+ },
+ "A breathy secret, no voice at all": {
+  "de": "Ein gehauchtes Geheimnis, ganz ohne Stimme",
+  "es": "Un secreto en un soplo, sin voz",
+  "fr": "Un secret soufflé, sans voix",
+  "hi": "साँसों में कहा राज़, बिना आवाज़ के",
+  "it": "Un segreto soffiato, senza voce",
+  "ja": "声を出さない、息だけの内緒話",
+  "pt": "Um segredo soprado, sem voz",
+  "zh": "只有气声的悄悄话"
+ },
+ "Make a voice sing in tune": {
+  "de": "Eine Stimme richtig singen lassen",
+  "es": "Hacer que una voz cante afinada",
+  "fr": "Faire chanter une voix juste",
+  "hi": "आवाज़ को सुर में गवाएँ",
+  "it": "Far cantare una voce intonata",
+  "ja": "声を音程どおりに歌わせる",
+  "pt": "Fazer uma voz cantar afinada",
+  "zh": "让声音唱得准"
+ },
+ "Make a voice sound like a stadium announcer": {
+  "de": "Eine Stimme wie einen Stadionsprecher klingen lassen",
+  "es": "Hacer que una voz suene como un locutor de estadio",
+  "fr": "Faire sonner une voix comme un speaker de stade",
+  "hi": "आवाज़ को स्टेडियम उद्घोषक जैसा बनाएँ",
+  "it": "Far suonare una voce come uno speaker dello stadio",
+  "ja": "声をスタジアムのアナウンサー風にする",
+  "pt": "Fazer uma voz soar como um locutor de estádio",
+  "zh": "让声音像体育场播报员"
+ },
+ "Make a voice sound like an old radio": {
+  "de": "Eine Stimme wie ein altes Radio klingen lassen",
+  "es": "Hacer que una voz suene como una radio antigua",
+  "fr": "Faire sonner une voix comme une vieille radio",
+  "hi": "आवाज़ को पुराने रेडियो जैसा बनाएँ",
+  "it": "Far suonare una voce come una vecchia radio",
+  "ja": "声を古いラジオ風にする",
+  "pt": "Fazer uma voz soar como um rádio antigo",
+  "zh": "让声音像老式收音机"
+ },
+ "Turn a voice into a whisper": {
+  "de": "Eine Stimme in ein Flüstern verwandeln",
+  "es": "Convertir una voz en un susurro",
+  "fr": "Transformer une voix en chuchotement",
+  "hi": "आवाज़ को फुसफुसाहट में बदलें",
+  "it": "Trasformare una voce in un sussurro",
+  "ja": "声をささやき声にする",
+  "pt": "Transformar uma voz em sussurro",
+  "zh": "把声音变成耳语"
  }
 }

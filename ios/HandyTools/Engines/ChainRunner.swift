@@ -1073,6 +1073,10 @@ enum ChainTemplates {
         Chain(id: "voice-walkie", name: "Make a voice sound like a walkie-talkie", steps: [ChainStep(block: .voiceChange, settings: ["voice": "walkie"])]),
         Chain(id: "voice-cave", name: "Make a voice echo like in a cave", steps: [ChainStep(block: .voiceChange, settings: ["voice": "cave"])]),
         Chain(id: "voice-ghost", name: "Make a voice sound like a ghost", steps: [ChainStep(block: .voiceChange, settings: ["voice": "ghost"])]),
+        Chain(id: "voice-autotune", name: "Make a voice sing in tune", steps: [ChainStep(block: .voiceChange, settings: ["voice": "autotune"])]),
+        Chain(id: "voice-announcer", name: "Make a voice sound like a stadium announcer", steps: [ChainStep(block: .voiceChange, settings: ["voice": "announcer"])]),
+        Chain(id: "voice-radio", name: "Make a voice sound like an old radio", steps: [ChainStep(block: .voiceChange, settings: ["voice": "radio"])]),
+        Chain(id: "voice-whisper", name: "Turn a voice into a whisper", steps: [ChainStep(block: .voiceChange, settings: ["voice": "whisper"])]),
         Chain(id: "video-voice", name: "Give a video a funny voice", steps: [ChainStep(block: .videoAudio), ChainStep(block: .voiceChange, settings: ["voice": "chipmunk"])]),
         Chain(id: "before-after", name: "Make a before-and-after reveal", steps: [ChainStep(block: .stripLocation)], blurb: "Turns your before and after into a swipe-reveal video — the way people post a transformation.", versus: true),
         // Start-to-finish jobs: several steps that together finish a real task, named as what you'd ask for.
@@ -1524,7 +1528,7 @@ enum ChainText {
     // Every voice renders with offline DSP (ChainMedia.characters: pitch without changing the words' speed, plus
     // timbre and room). The rate here is only the fallback if DSP can't run on the device. Robot/alien/monster: offline
     // DSP (ChainMedia.characters) — their rate here is only a fallback if DSP is unavailable on the device.
-    static let voices: [(id: String, name: String, rate: Double)] = [("chipmunk", "Chipmunk", 1.5), ("helium", "Helium", 1.9), ("deep", "Deep", 0.75), ("giant", "Giant", 0.6), ("robot", "Robot", 0.9), ("alien", "Alien", 1.7), ("monster", "Monster", 0.6), ("walkie", "Walkie-talkie", 1.0), ("cave", "Echo cave", 0.95), ("ghost", "Ghost", 1.1), ("baby", "Baby", 1.4), ("oldman", "Old man", 0.9), ("underwater", "Underwater", 0.95), ("megaphone", "Megaphone", 1.0), ("villain", "Villain", 0.7)]
+    static let voices: [(id: String, name: String, rate: Double)] = [("chipmunk", "Chipmunk", 1.5), ("helium", "Helium", 1.9), ("deep", "Deep", 0.75), ("giant", "Giant", 0.6), ("robot", "Robot", 0.9), ("alien", "Alien", 1.7), ("monster", "Monster", 0.6), ("walkie", "Walkie-talkie", 1.0), ("cave", "Echo cave", 0.95), ("ghost", "Ghost", 1.1), ("baby", "Baby", 1.4), ("oldman", "Old man", 0.9), ("underwater", "Underwater", 0.95), ("megaphone", "Megaphone", 1.0), ("villain", "Villain", 0.7), ("autotune", "Auto-tune singer", 1.0), ("announcer", "Stadium announcer", 0.9), ("radio", "Old radio", 1.0), ("whisper", "Whisper", 1.0)]
     /// How each voice looks and what it sounds like, for the picker: a picture (emoji) and one line.
     static let voiceLooks: [String: (emoji: String, line: String)] = [
         "chipmunk": ("🐿️", "Tiny, quick and squeaky"),
@@ -1542,6 +1546,10 @@ enum ChainText {
         "underwater": ("🐠", "Glub glub — talking from the bottom of the sea"),
         "megaphone": ("📣", "Loud, tinny, coach on the field"),
         "villain":  ("🦹", "Dark, low and menacing"),
+        "autotune": ("🎤", "Snaps to the notes, like a pop song"),
+        "announcer": ("🏟️", "Booming from the stands"),
+        "radio":    ("🕰️", "Crackly old wireless, 1940s"),
+        "whisper":  ("🤫", "A breathy secret, no voice at all"),
     ]
     static func voiceRate(_ setting: String?) -> Double { voices.first { $0.id == setting }?.rate ?? 1.5 }
 
