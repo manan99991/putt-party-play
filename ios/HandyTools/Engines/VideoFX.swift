@@ -69,11 +69,8 @@ enum VideoFX {
         Choice(id: "sunset", name: "Sunset", emoji: "🌇"), Choice(id: "night", name: "Night city", emoji: "🌃"),
         Choice(id: "pastel", name: "Pastel", emoji: "🩵"),
     ]
-    static let funnies: [Choice] = [
-        Choice(id: "none", name: "Off", emoji: "⚪️"), Choice(id: "bighead", name: "Big head", emoji: "🎈"),
-        Choice(id: "tinyhead", name: "Tiny head", emoji: "🐜"), Choice(id: "bigeyes", name: "Big eyes", emoji: "👀"),
-        Choice(id: "stretchy", name: "Stretchy face", emoji: "🫠"), Choice(id: "wobbly", name: "Wobbly face", emoji: "🌀"),
-    ]
+    /// Every face and body effect (Engines/FaceFun.swift), with "Off" first.
+    static let funnies: [Choice] = [Choice(id: "none", name: "Off", emoji: "⚪️")] + FaceFun.effects.map { Choice(id: $0.id, name: $0.name, emoji: $0.emoji) }
     static let wordStyles: [Choice] = [
         Choice(id: "pop", name: "Pop", emoji: "💥"), Choice(id: "slide", name: "Slide up", emoji: "⬆️"),
         Choice(id: "fade", name: "Fade", emoji: "🌫️"), Choice(id: "bounce", name: "Bounce", emoji: "🏀"),
@@ -292,8 +289,8 @@ enum VideoFX {
         let cube: CIFilter?
         var painter: Celebrate.Painter?
         var words: (image: CIImage, size: CGSize)?
-        /// The faces last found and when, so a frame where the detector blinks keeps the effect steady.
-        var lastFaces: (t: Double, faces: [Face])?
+        /// The faces last found, so the face effects sit still and a frame where the finder blinks keeps them on.
+        let fun = FaceFun.Memory()
         let lock = NSLock()
         init(_ r: Recipe) {
             recipe = r
@@ -435,17 +432,15 @@ enum VideoFX {
         let W = size.width, H = size.height, short = min(W, H), long = max(W, H)
         // Behind the person and funny faces first, on the clean picture.
         var base = src
-        if r.background != "none", let mask = personMask(src) {
+        let mask = r.background != "none" ? personMask(src) : nil
+        if let mask {
             let bg = backdrop(r.background, src: src, rect: rect, t: t, a: a)
             let soft = mask.clampedToExtent().applyingGaussianBlur(sigma: 1.5).cropped(to: rect)
             base = src.applyingFilter("CIBlendWithMask", parameters: [kCIInputBackgroundImageKey: bg, kCIInputMaskImageKey: soft]).cropped(to: rect)
         }
         if r.funny != "none" {
-            var found = faces(in: src)
-            kit.lock.lock()
-            if found.isEmpty, let last = kit.lastFaces, abs(t - last.t) < 0.6 { found = last.faces } else if !found.isEmpty { kit.lastFaces = (t, found) }
-            kit.lock.unlock()
-            base = funnyFaces(r.funny, base, faces: found, t: t, a: a, rect: rect)
+            let scene = FaceFun.scene(src, for: r.funny, t: t, memory: kit.fun, person: mask ?? personMask(src))
+            base = FaceFun.apply(r.funny, to: base, scene: scene, t: t, amount: a, memory: kit.fun).cropped(to: rect)
         }
         // Motion first (on the clean picture), clamped so the edges never show.
         var img = base.clampedToExtent().transformed(by: motion(r.motion, t: t, duration: duration, size: size, amount: a, beats: beats)).cropped(to: rect)
