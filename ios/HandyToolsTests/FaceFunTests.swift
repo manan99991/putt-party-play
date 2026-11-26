@@ -253,6 +253,12 @@ final class FaceFunTests: XCTestCase {
             let memory = FaceFun.Memory()
             for e in FaceFun.effects {
                 let started = Date()
+                // Round 13 (numbers only): the finder's raw face this time, what the memory held, and the steadied result.
+                let rawNow = FaceFun.faces(in: src).first
+                let held = memory.faces.first
+                let steadied = rawNow.map { FaceFun.smoothed([$0], previous: memory.faces).first }
+                func q(_ g: FaceFun.Face?) -> String { g.map { "d\(Int($0.eyeDistance)) eyeA \(Int($0.eyeA.x)),\(Int($0.eyeA.y)) w\(Int($0.width)) c\(Int($0.center.x)),\(Int($0.center.y))" } ?? "none" }
+                print("VIDEOFX|facefun-steady|\(e.id)|raw \(q(rawNow))|held \(q(held))|steadied \(q(steadied ?? nil))|memory.t \(memory.t)")
                 let scene = FaceFun.scene(src, for: e.id, t: 0.5, memory: memory, person: VideoFX.personMask(src))
                 let out = FaceFun.apply(e.id, to: src, scene: scene, t: 0.5, amount: 0.7, memory: memory)
                 let after = pixels(out)
