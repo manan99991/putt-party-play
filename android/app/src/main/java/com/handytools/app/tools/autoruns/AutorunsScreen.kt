@@ -89,7 +89,7 @@ fun AutorunsScreen() {
             style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space12))
         SmartRuns.Section.entries.forEach { section ->
-            val kinds = Autoruns.available.filter { it.section == section }
+            val kinds = Autoruns.here(ctx).filter { it.section == section }
             if (kinds.isEmpty()) return@forEach
             Text(I18n.t(section.title), Modifier.padding(top = HandyTokens.Space12, bottom = HandyTokens.Space8),
                 style = MaterialTheme.typography.titleSmall, color = Handy.palette.textSecondary)
@@ -161,6 +161,7 @@ fun AutorunRun(k: SmartRuns.Kind, onClose: () -> Unit) {
         SmartRuns.Kind.RECEIPTS -> PaperRun(k, onClose)
         SmartRuns.Kind.BUSINESS_CARDS -> PaperRun(k, onClose)
         SmartRuns.Kind.PAPER_PDFS -> PaperPdfsRun(onClose)
+        SmartRuns.Kind.VOICE_NOTES -> VoiceNotesRun(onClose)
         else -> LaunchedEffect(k) { onClose() }
     }
 }
@@ -719,6 +720,62 @@ private fun PaperPdfsRun(onClose: () -> Unit) {
                 }
             }
         }
+        Spacer(Modifier.height(HandyTokens.Space24))
+    }
+}
+
+/** Today's voice memos, each listened to on the phone and written up: what it's about, the details, the to-dos. */
+@Composable
+private fun VoiceNotesRun(onClose: () -> Unit) {
+    val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val k = SmartRuns.Kind.VOICE_NOTES
+    var folder by remember { mutableStateOf(VoiceNotes.folder(ctx)) }
+    val pick = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { tree -> tree?.let { VoiceNotes.setFolder(ctx, it); folder = it } }
+    var progress by remember { mutableStateOf(0.0) }
+    var notes by remember { mutableStateOf<List<VoiceNotes.Note>?>(null) }
+    var job by remember { mutableStateOf<Job?>(null) }
+    LaunchedEffect(folder) {
+        if (folder == null) return@LaunchedEffect
+        job = scope.launch {
+            val now = System.currentTimeMillis()
+            notes = VoiceNotes.make(ctx, Autoruns.windowFor(ctx, k, now)) { p -> progress = p }
+            Autoruns.markRun(ctx, k, now); Autoruns.clearReady(ctx, k)
+        }
+    }
+    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter),
+        verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+        HTextButton(I18n.t("‹ Back")) { job?.cancel(); onClose() }
+        Text(I18n.t(k.title), style = MaterialTheme.typography.headlineSmall)
+        Text(I18n.t("Heard on your phone — nothing was sent anywhere."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        if (folder == null) {
+            Text(I18n.t("First choose the folder your voice memos are saved in."), color = Handy.palette.textSecondary)
+            HPrimaryButton(I18n.t("Choose the folder your memos go in…"), Modifier.fillMaxWidth()) { pick.launch(null) }
+            return@Column
+        }
+        val n = notes
+        if (n == null) {
+            Text(I18n.t("Listening to today's memos…"), style = MaterialTheme.typography.bodyMedium)
+            LinearProgressIndicator(progress = { progress.toFloat().coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth().testTag("autorun-progress"))
+            return@Column
+        }
+        if (n.isEmpty()) Text(I18n.t("No voice memos from today in that folder."), color = Handy.palette.textSecondary)
+        n.forEach { note ->
+            HCard(Modifier.fillMaxWidth().testTag("memo-note")) {
+                Column(Modifier.padding(HandyTokens.Space12), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space4)) {
+                    Text(note.memo.name, style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(note.about, style = MaterialTheme.typography.bodyMedium)
+                    note.details.forEach { Text("• $it", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) }
+                    note.todos.forEach { Text("☐ $it", style = MaterialTheme.typography.bodySmall) }
+                    HSecondaryButton(I18n.t("Email the notes"), Modifier.fillMaxWidth()) {
+                        val i = android.content.Intent(android.content.Intent.ACTION_SEND).setType("text/plain")
+                            .putExtra(android.content.Intent.EXTRA_SUBJECT, note.memo.name).putExtra(android.content.Intent.EXTRA_TEXT, note.text)
+                        runCatching { ctx.startActivity(android.content.Intent.createChooser(i, I18n.t("Email the notes"))) }
+                    }
+                }
+            }
+        }
+        HTextButton(I18n.t("Choose another folder"), Modifier.fillMaxWidth()) { pick.launch(null) }
         Spacer(Modifier.height(HandyTokens.Space24))
     }
 }

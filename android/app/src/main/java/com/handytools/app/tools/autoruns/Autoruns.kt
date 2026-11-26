@@ -35,7 +35,10 @@ object Autoruns {
 
     /** The autoruns Android does so far, in the page's order; the others stay iPhone-only until they're built here. */
     val available: List<SmartRuns.Kind> = listOf(SmartRuns.Kind.RECEIPTS, SmartRuns.Kind.OVERDUE_INVOICES, SmartRuns.Kind.BUSINESS_CARDS, SmartRuns.Kind.PAPER_PDFS, SmartRuns.Kind.DAY_COLLAGE, SmartRuns.Kind.WEEK_FILM, SmartRuns.Kind.READY_TO_POST,
-        SmartRuns.Kind.HEAVY_VIDEOS, SmartRuns.Kind.TIDY_PHOTOS, SmartRuns.Kind.CONTACTS_BACKUP)
+        SmartRuns.Kind.HEAVY_VIDEOS, SmartRuns.Kind.TIDY_PHOTOS, SmartRuns.Kind.CONTACTS_BACKUP, SmartRuns.Kind.VOICE_NOTES)
+
+    /** The autoruns this phone can do: voice memos only where it can listen on its own (nothing is ever sent). */
+    fun here(ctx: Context): List<SmartRuns.Kind> = available.filter { it != SmartRuns.Kind.VOICE_NOTES || VoiceNotes.canListen(ctx) }
 
     /** What an autorun does, in Android's words where Android does it differently (pages are straightened, not
      *  flattened), otherwise the iPhone's. */
@@ -69,7 +72,7 @@ object Autoruns {
     fun markRun(ctx: Context, k: SmartRuns.Kind, at: Long) { prefs(ctx).edit().putLong("last." + k.id, at).apply() }
 
     /** The autoruns that are on. */
-    fun on(ctx: Context): Set<SmartRuns.Kind> = available.filter { plan(ctx, it).on }.toSet()
+    fun on(ctx: Context): Set<SmartRuns.Kind> = here(ctx).filter { plan(ctx, it).on }.toSet()
 
     // ---- habit offers (For you) ----
 
@@ -84,7 +87,7 @@ object Autoruns {
         val days = ToolDays.all(ctx, now)
         val today = ToolDays.day(now)
         val recent = days.mapValues { (_, d) -> d.filter { it > today - 14 }.toSet() }
-        val k = SmartRuns.suggested(recent, emptyMap(), on(ctx), hidden(ctx)).firstOrNull { it in available } ?: return null
+        val k = SmartRuns.suggested(recent, emptyMap(), on(ctx), hidden(ctx)).firstOrNull { it in here(ctx) } ?: return null
         return k to k.habitTools.flatMap { recent[it].orEmpty() }.toSet().size
     }
 
@@ -94,7 +97,7 @@ object Autoruns {
     fun sync(ctx: Context) {
         val am = ctx.getSystemService(AlarmManager::class.java) ?: return
         val now = ZonedDateTime.now()
-        for (k in available) {
+        for (k in here(ctx)) {
             val pi = alarm(ctx, k)
             am.cancel(pi)
             val next = SmartRuns.nextDue(plan(ctx, k), now) ?: continue
@@ -129,6 +132,10 @@ object Autoruns {
             // Receipts and cards need each photo read, so the quick look only counts today's photos; the reading happens when it's opened.
             SmartRuns.Kind.RECEIPTS, SmartRuns.Kind.BUSINESS_CARDS, SmartRuns.Kind.PAPER_PDFS -> PhotoDays.find(ctx, window).count { !it.screenshot }.let { n ->
                 if (n == 0) null else I18n.fmt("%d photos from today — tap to find the receipts and business cards in them.", n)
+            }
+            SmartRuns.Kind.VOICE_NOTES -> VoiceNotes.memos(ctx, window).size.let { n ->
+                if (n == 0 || !VoiceNotes.canListen(ctx)) null else if (n == 1) I18n.t("1 voice memo from today — tap to have it written up.")
+                else I18n.fmt("%d voice memos from today — tap to have them written up.", n)
             }
             // A quick count of old screenshots; the full look (copies, look-alikes) happens when it's opened.
             SmartRuns.Kind.TIDY_PHOTOS -> TidyPhotos.oldScreenshotCount(ctx, now).let { n ->

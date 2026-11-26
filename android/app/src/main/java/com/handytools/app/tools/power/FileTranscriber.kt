@@ -49,8 +49,10 @@ object FileTranscriber {
     fun budgetMs(durationMs: Long): Long = (durationMs * 5 / 2).coerceIn(20_000L, 900_000L)
 
     /** Decodes [file] + runs recognition. Null if unsupported or nothing decoded/recognised. */
-    suspend fun transcribe(ctx: Context, file: File, durationMs: Long, langTag: String? = null): String? {
+    suspend fun transcribe(ctx: Context, file: File, durationMs: Long, langTag: String? = null, onDeviceOnly: Boolean = false): String? {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || !SpeechRecognizer.isRecognitionAvailable(ctx)) return null
+        // Smart autoruns promise nothing is sent anywhere: with no recogniser on the phone itself, they don't listen.
+        if (onDeviceOnly && !SpeechRecognizer.isOnDeviceRecognitionAvailable(ctx)) return null
         val pcm = try { withContext(Dispatchers.IO) { decodeToPcm(file) } } catch (_: Exception) { null } ?: return null
         try {
             return withTimeoutOrNull(budgetMs(durationMs)) { recognise(ctx, pcm.file, pcm.sampleRate, langTag) }

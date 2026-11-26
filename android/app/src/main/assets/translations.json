@@ -19798,5 +19798,65 @@
   "ja": "書類",
   "pt": "Documento",
   "zh": "文档"
+ },
+ "Listening to today's memos…": {
+  "de": "Die Memos von heute werden angehört…",
+  "es": "Escuchando las notas de voz de hoy…",
+  "fr": "Écoute des mémos du jour…",
+  "hi": "आज के मेमो सुने जा रहे हैं…",
+  "it": "Ascolto i memo di oggi…",
+  "ja": "今日のメモを聞いています…",
+  "pt": "Ouvindo os áudios de hoje…",
+  "zh": "正在听今天的语音备忘…"
+ },
+ "No voice memos from today in that folder.": {
+  "de": "In diesem Ordner gibt es keine Sprachmemos von heute.",
+  "es": "No hay notas de voz de hoy en esa carpeta.",
+  "fr": "Aucun mémo vocal du jour dans ce dossier.",
+  "hi": "उस फ़ोल्डर में आज का कोई वॉइस मेमो नहीं।",
+  "it": "Nessun memo vocale di oggi in quella cartella.",
+  "ja": "そのフォルダに今日のボイスメモはありません。",
+  "pt": "Nenhum áudio de hoje nessa pasta.",
+  "zh": "那个文件夹里没有今天的语音备忘。"
+ },
+ "1 voice memo from today — tap to have it written up.": {
+  "de": "1 Sprachmemo von heute – tippe, um es aufschreiben zu lassen.",
+  "es": "1 nota de voz de hoy: toca para tenerla por escrito.",
+  "fr": "1 mémo vocal du jour — touchez pour le faire mettre par écrit.",
+  "hi": "आज का 1 वॉइस मेमो — लिखवाने के लिए टैप करें।",
+  "it": "1 memo vocale di oggi: tocca per averlo per iscritto.",
+  "ja": "今日のボイスメモ 1 件。タップすると書き起こせます。",
+  "pt": "1 áudio de hoje — toque para ter por escrito.",
+  "zh": "今天有 1 条语音备忘——点按即可整理成文字。"
+ },
+ "%d voice memos from today — tap to have them written up.": {
+  "de": "%d Sprachmemos von heute – tippe, um sie aufschreiben zu lassen.",
+  "es": "%d notas de voz de hoy: toca para tenerlas por escrito.",
+  "fr": "%d mémos vocaux du jour — touchez pour les faire mettre par écrit.",
+  "hi": "आज के %d वॉइस मेमो — लिखवाने के लिए टैप करें।",
+  "it": "%d memo vocali di oggi: tocca per averli per iscritto.",
+  "ja": "今日のボイスメモ %d 件。タップすると書き起こせます。",
+  "pt": "%d áudios de hoje — toque para ter por escrito.",
+  "zh": "今天有 %d 条语音备忘——点按即可整理成文字。"
+ },
+ "Choose another folder": {
+  "de": "Anderen Ordner wählen",
+  "es": "Elegir otra carpeta",
+  "fr": "Choisir un autre dossier",
+  "hi": "दूसरा फ़ोल्डर चुनें",
+  "it": "Scegli un'altra cartella",
+  "ja": "別のフォルダを選ぶ",
+  "pt": "Escolher outra pasta",
+  "zh": "选择其他文件夹"
+ },
+ "To do": {
+  "de": "Zu erledigen",
+  "es": "Pendiente",
+  "fr": "À faire",
+  "hi": "करना है",
+  "it": "Da fare",
+  "ja": "やること",
+  "pt": "A fazer",
+  "zh": "待办"
  }
 }
