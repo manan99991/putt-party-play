@@ -45,7 +45,7 @@ final class MultiPhotoTests: XCTestCase {
         let send = app.descendants(matching: .any)["goal-share"].firstMatch
         XCTAssertTrue(send.waitForExistence(timeout: 10), "no Send it")
         send.tap()
-        let scrub = app.descendants(matching: .any)["guide-scrub"].firstMatch
+        let scrub = app.descendants(matching: .any)["guide-tool-scrub"].firstMatch
         XCTAssertTrue(scrub.waitForExistence(timeout: 10), "no Privacy Scrubber under Send it: \(app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'guide-'")).allElementsBoundByIndex.map(\.identifier))")
         scrub.tap()
         XCTAssertTrue(app.buttons["Choose a different photo or video"].waitForExistence(timeout: 8),

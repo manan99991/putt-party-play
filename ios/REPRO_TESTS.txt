@@ -1,4 +1,4 @@
-# 26 Nov: Duplicates must be copies, never look-alikes (Manan: two calculator screenshots "0" and "96699" were offered
+# 26 Nov (2nd): only the UI test remains — its button is "guide-tool-scrub". Unit tests (copies only, planner) passed.
 # as duplicates). Strict same-picture check + the real-library test; plus the ask-box helper and the scrubber handover.
 HandyToolsTests/CleanerDuplicatesTests
 HandyToolsTests/SmartDescribeTests/testItSaysWhenItIsOnlyAGuess
