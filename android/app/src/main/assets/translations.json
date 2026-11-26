@@ -16898,5 +16898,15 @@
   "ja": "設定する",
   "pt": "Configurar",
   "zh": "设置"
+ },
+ "Stop listening": {
+  "de": "Zuhören beenden",
+  "es": "Dejar de escuchar",
+  "fr": "Arrêter l'écoute",
+  "hi": "सुनना बंद करें",
+  "it": "Smetti di ascoltare",
+  "ja": "聞き取りを止める",
+  "pt": "Parar de ouvir",
+  "zh": "停止聆听"
  }
 }

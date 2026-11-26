@@ -50698,5 +50698,15 @@
   "ja": "最近%d日、手作業でしていました。Tenzyが代わりにできます。",
   "pt": "Você fez isso à mão em %d dias ultimamente. O Tenzy pode fazer por você.",
   "zh": "你最近有 %d 天手动做这件事。Tenzy 可以替你完成。"
+ },
+ "Stop listening": {
+  "de": "Zuhören beenden",
+  "es": "Dejar de escuchar",
+  "fr": "Arrêter l'écoute",
+  "hi": "सुनना बंद करें",
+  "it": "Smetti di ascoltare",
+  "ja": "聞き取りを止める",
+  "pt": "Parar de ouvir",
+  "zh": "停止聆听"
  }
 }

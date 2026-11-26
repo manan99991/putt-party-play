@@ -7,6 +7,7 @@ import UniformTypeIdentifiers
 import WidgetKit
 import PDFKit
 import AVKit
+import Speech
 
 /// Audio types the recording pickers accept. `.audio` covers m4a/mp3/wav/caf and friends; the explicit
 /// opus/ogg extensions also admit WhatsApp & Telegram voice notes (Ogg-Opus), which iOS does not map to
@@ -462,6 +463,9 @@ struct BuilderView: View {
     @State private var clipKind: String?
     @Environment(\.scenePhase) private var scenePhase
     @State private var ask = ""
+    /// The ask box's mic: say what you want instead of typing it (on the phone only).
+    @StateObject private var askVoice = SpeechStream()
+    private var canDictate: Bool { SFSpeechRecognizer(locale: askVoice.locale)?.supportsOnDeviceRecognition ?? false }
     @State private var planning = false
     @State private var sheets: [RunningList.Sheet] = RunningList.all()
     @State private var showSheets = false
@@ -1515,6 +1519,20 @@ struct BuilderView: View {
                     .accessibilityLabel(L("Take a picture")).accessibilityHint(L("Tenzy tells you what it is and what it can do with it"))
                     .accessibilityIdentifier("home-camera")
                 }
+                if (empty || askVoice.running) && canDictate {
+                    // Say it instead of typing it: words appear in the box as they're heard, on the phone only.
+                    Button { dictateAsk() } label: {
+                        Image(systemName: askVoice.running ? "stop.fill" : "mic.fill").font(.system(size: 19, weight: .semibold))
+                            .foregroundStyle(askVoice.running ? Color.white : HandyColor.accent)
+                            .frame(width: 50, height: 50)
+                            .background(askVoice.running ? HandyColor.danger : (onBrand ? Color.white : HandyColor.surface),
+                                        in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(onBrand || askVoice.running ? Color.clear : HandyColor.border, lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(L(askVoice.running ? "Stop listening" : "Say it"))
+                    .accessibilityIdentifier("describe-mic")
+                }
                 Button { buildFromAsk() } label: {
                     Group {
                         if planning { ProgressView().tint(onBrand ? HandyColor.accent : HandyColor.onAccent) }
@@ -1528,6 +1546,21 @@ struct BuilderView: View {
                 .buttonStyle(.plain)
                 .disabled(planning || empty)
                 .accessibilityLabel(L("Build it for me")).accessibilityIdentifier("describe-build")
+        }
+        .onChange(of: askVoice.live) { _, _ in
+            if askVoice.running { ask = (askVoice.committed + [askVoice.live]).filter { !$0.isEmpty }.joined(separator: " ") }
+        }
+        .onDisappear { if askVoice.running { askVoice.stop() } }
+    }
+
+    /// The ask box's mic: listening fills the box as you speak; Stop keeps what was said for Build.
+    private func dictateAsk() {
+        if askVoice.running {
+            askVoice.stop()
+            ask = InputText.joined("", askVoice.committed.joined(separator: " "))
+            askVoice.clear()
+        } else {
+            ask = ""; askVoice.clear(); askVoice.start()
         }
     }
 
