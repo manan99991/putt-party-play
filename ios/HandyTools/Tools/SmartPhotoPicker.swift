@@ -194,7 +194,7 @@ struct SmartPhotoPicker: View {
             if maxCount == 1 { use([a.localIdentifier]); return }
             if on { picked.removeAll { $0 == a.localIdentifier } } else if picked.count < maxCount { picked.append(a.localIdentifier) }
         } label: {
-            AssetThumb(asset: a, loaded: Launch.uitest ? { sz in thumbSizes[a.localIdentifier] = sz } : nil)
+            PhotoThumb(asset: a, loaded: Launch.uitest ? { sz in thumbSizes[a.localIdentifier] = sz } : nil)
                 .overlay(alignment: .topTrailing) {
                     if maxCount > 1 {
                         Image(systemName: on ? "checkmark.circle.fill" : "circle").font(.system(size: 22))
@@ -265,7 +265,8 @@ struct SmartPhotoPicker: View {
 }
 
 /// One square photo from the library.
-private struct AssetThumb: View {
+/// A photo-library thumbnail that retries a just-saved or iCloud photo (shared by the photo picker and the autoruns).
+struct PhotoThumb: View {
     let asset: PHAsset
     var loaded: ((CGSize) -> Void)? = nil
     @State private var img: UIImage?

@@ -237,7 +237,7 @@ struct SmartRunsView: View {
                 Button { Task { await testRun(k) } } label: { Label(L("Test run"), systemImage: "play.circle").frame(maxWidth: .infinity) }
                     .secondaryButton().disabled(store.working != nil).accessibilityIdentifier("smartrun-test-\(k.rawValue)")
                 if store.waitingCount(k) > 0 {
-                    NavigationLink(value: k == .overdueInvoices ? "smartinvoices" : k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : k == .dayCollage ? "smartcollage" : k == .businessCards ? "smartcards" : "smartreceipts") {
+                    NavigationLink(value: k == .tidyPhotos ? "smarttidy" : k == .overdueInvoices ? "smartinvoices" : k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : k == .dayCollage ? "smartcollage" : k == .businessCards ? "smartcards" : "smartreceipts") {
                         Text("\(L("Check")) \(store.waitingCount(k))").frame(maxWidth: .infinity)
                     }.primaryButton().accessibilityIdentifier("smartrun-check-\(k.rawValue)")
                 }
@@ -288,7 +288,11 @@ struct SmartRunsView: View {
         let before = store.waitingCount(k)
         await store.run(k, test: true)
         let found = store.waitingCount(k) - before
-        if k == .businessCards {
+        if k == .tidyPhotos {
+            let bytes = store.tidy.reduce(Int64(0)) { $0 + $1.bytes }
+            note = store.waitingCount(k) > 0 ? "\(L("Test run found")) \(store.waitingCount(k)) \(L("photos you won't miss")) · \(PhotoCleaner.format(bytes)). \(L("Tap Check — nothing goes until you say."))"
+                                             : L("Test run worked: nothing to tidy — no old screenshots, duplicates or extra burst frames.")
+        } else if k == .businessCards {
             note = found > 0 ? "\(L("Test run found")) \(found) \(L(found == 1 ? "business card" : "business cards")). \(L("Check them before they're saved."))"
                              : L("Test run worked: no business cards in your photos from the last 24 hours.")
         } else if k == .dayCollage {
@@ -608,6 +612,76 @@ struct SmartVideosReview: View {
         }
         .cardStyle(padding: HandySpacing.s12)
         .accessibilityElement(children: .contain).accessibilityIdentifier("smartvideo-row")
+    }
+}
+
+/// What a tidy-up found, grouped, with what's kept and why. Pick the groups, then Delete — iPhone asks first.
+struct SmartTidyReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var done: String?
+    @State private var open: String?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Tidy up")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                if let done { Label(done, systemImage: "checkmark.seal.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true) }
+                if store.tidy.isEmpty && done == nil {
+                    EmptyState(icon: "sparkles.rectangle.stack", line: "Nothing to tidy", sub: "Old screenshots, duplicates and extra burst frames show up here after a run.")
+                }
+                ForEach(store.tidy) { g in group(g) }
+                let chosen = store.tidy.filter(\.selected)
+                if !chosen.isEmpty {
+                    let n = chosen.reduce(0) { $0 + $1.ids.count }, bytes = chosen.reduce(Int64(0)) { $0 + $1.bytes }
+                    Button(role: .destructive) {
+                        Task {
+                            if let freed = await store.deleteTidy() {
+                                done = "\(L("Deleted — frees")) \(PhotoCleaner.format(freed)) \(L("once Recently Deleted is emptied (or by itself in 30 days)."))"
+                                HandyHaptics.success()
+                            }
+                        }
+                    } label: { Text("\(L("Delete")) \(n) · \(L("frees")) \(PhotoCleaner.format(bytes))").frame(maxWidth: .infinity) }
+                        .primaryButton().accessibilityIdentifier("smarttidy-delete")
+                    Text(L("iPhone asks before anything is deleted.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smarttidy")
+    }
+
+    private func group(_ g: SmartTidy.Group) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Toggle(isOn: Binding(get: { g.selected }, set: { on in
+                if let i = store.tidy.firstIndex(where: { $0.id == g.id }) { store.tidy[i].selected = on; store.persistTidy() }
+            })) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(L(SmartTidy.title(g))) · \(g.ids.count)").font(HandyFont.bodyStrong)
+                    Text(PhotoCleaner.format(g.bytes)).font(HandyFont.caption.monospacedDigit()).foregroundStyle(HandyColor.accent)
+                }
+            }.tint(HandyColor.accent).accessibilityIdentifier("smarttidy-\(g.id)")
+            Text(SmartTidy.why(g)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            // A look at what would go: a wrapping grid, the first 12 shown, the rest one tap away.
+            let assets = PHAsset.fetchAssets(withLocalIdentifiers: Array(g.ids.prefix(open == g.id ? 60 : 12)), options: nil)
+            let list: [PHAsset] = (0..<assets.count).map { assets.object(at: $0) }
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4), count: 4), spacing: 4) {
+                ForEach(list, id: \.localIdentifier) { a in
+                    PhotoThumb(asset: a).aspectRatio(1, contentMode: .fill).clipShape(RoundedRectangle(cornerRadius: 6)).contentShape(Rectangle())
+                }
+            }
+            if g.ids.count > 12 {
+                Button { open = open == g.id ? nil : g.id } label: { Text(open == g.id ? L("Show fewer") : "\(L("Show more")) (\(g.ids.count - 12))") }.textButton()
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain).accessibilityIdentifier("smarttidy-group")
     }
 }
 

@@ -2,13 +2,14 @@ import Foundation
 import UIKit
 import BackgroundTasks
 import UserNotifications
+import Photos
 
 /// The smart autoruns on this phone: what's switched on, when each last ran, what's waiting for a look, and the work
 /// itself — in the background when iPhone allows (overnight on the charger), or when Tenzy is opened, or on Test run.
 @MainActor final class SmartRunStore: ObservableObject {
     static let shared = SmartRunStore()
     /// The autoruns built so far. An autorun is only offered once it truly works end to end.
-    static let built: [SmartRuns.Kind] = [.receipts, .drives, .overdueInvoices, .heavyVideos, .readyToPost, .dayCollage, .businessCards]
+    static let built: [SmartRuns.Kind] = [.receipts, .drives, .overdueInvoices, .heavyVideos, .tidyPhotos, .readyToPost, .dayCollage, .businessCards]
 
     @Published private(set) var plans: [SmartRuns.Kind: SmartRuns.Plan] = [:]
     @Published private(set) var receipts: [SmartReceipts.Entry] = []      // found, waiting for a look
@@ -16,6 +17,7 @@ import UserNotifications
     @Published private(set) var posts: [SmartPosts.Result] = []            // clips made ready to post, waiting for a look
     @Published private(set) var collages: [SmartCollage.Result] = []       // the day's collages, waiting for a look
     @Published private(set) var cards: [SmartCards.Entry] = []             // business cards read, waiting for a look
+    @Published var tidy: [SmartTidy.Group] = []                             // what could go, waiting for a look
     @Published var working: SmartRuns.Kind?
     @Published var progress: (share: Double, what: String) = (0, "")
     @Published var started: Date?
@@ -32,6 +34,7 @@ import UserNotifications
     private var postsURL: URL { folder.appendingPathComponent("posts.json") }
     private var collagesURL: URL { folder.appendingPathComponent("collages.json") }
     private var cardsURL: URL { folder.appendingPathComponent("cards.json") }
+    private var tidyURL: URL { folder.appendingPathComponent("tidy.json") }
 
     init() {
         if let d = AppGroup.defaults.data(forKey: plansKey), let p = try? JSONDecoder().decode([String: SmartRuns.Plan].self, from: d) {
@@ -41,6 +44,7 @@ import UserNotifications
         if let d = try? Data(contentsOf: videosURL), let r = try? JSONDecoder().decode([SmartVideos.Result].self, from: d) {
             videos = r.filter { FileManager.default.fileExists(atPath: SmartVideos.folder.appendingPathComponent($0.file).path) }
         }
+        if let d = try? Data(contentsOf: tidyURL), let r = try? JSONDecoder().decode([SmartTidy.Group].self, from: d) { tidy = r }
         if let d = try? Data(contentsOf: cardsURL), let r = try? JSONDecoder().decode([SmartCards.Entry].self, from: d) { cards = r }
         if let d = try? Data(contentsOf: collagesURL), let r = try? JSONDecoder().decode([SmartCollage.Result].self, from: d) {
             collages = r.filter { FileManager.default.fileExists(atPath: SmartCollage.folder.appendingPathComponent($0.file).path) }
@@ -72,6 +76,7 @@ import UserNotifications
         case .readyToPost: return posts.filter { !$0.saved }.count
         case .dayCollage: return collages.filter { !$0.saved }.count
         case .businessCards: return cards.count
+        case .tidyPhotos: return tidy.reduce(0) { $0 + $1.ids.count }
         default: return 0
         }
     }
@@ -134,6 +139,9 @@ import UserNotifications
                 }
             }
             progress = (1, "Done")
+        case .tidyPhotos:
+            tidy = await SmartTidy.gather { share, what in Task { @MainActor in self.progress = (share, what) } }
+            persistTidy()
         case .businessCards:
             let found = await SmartCards.gather(in: window) { share, what in Task { @MainActor in self.progress = (share, what) } }
             let have = Set(cards.map(\.id))
@@ -253,6 +261,22 @@ import UserNotifications
         Task { await SmartRunAlerts.ready(.businessCards, count: 0) }
         return n
     }
+    /// Deletes the chosen groups (iPhone asks first). Returns the space freed, or nil if the person said no.
+    func deleteTidy() async -> Int64? {
+        let chosen = tidy.filter(\.selected)
+        let ids = chosen.flatMap(\.ids)
+        let assets = PHAsset.fetchAssets(withLocalIdentifiers: ids, options: nil)
+        var list: [PHAsset] = []; assets.enumerateObjects { a, _, _ in list.append(a) }
+        guard !list.isEmpty, await PhotoCleaner.delete(list) else { return nil }
+        let freed = chosen.reduce(0) { $0 + $1.bytes }
+        tidy.removeAll(where: \.selected); persistTidy()
+        Task { await SmartRunAlerts.ready(.tidyPhotos, count: waitingCount(.tidyPhotos)) }
+        return freed
+    }
+    func persistTidy() {
+        if let d = try? JSONEncoder().encode(tidy) { try? d.write(to: tidyURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
+    }
+
     private func persistCards() {
         if let d = try? JSONEncoder().encode(cards) { try? d.write(to: cardsURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
     }
@@ -304,7 +328,7 @@ enum SmartRunWorker {
 enum SmartRunAlerts {
     static func id(_ k: SmartRuns.Kind, _ n: Int) -> String { "smartrun.\(k.rawValue).\(n)" }
 
-    static func schedule(_ k: SmartRuns.Kind, _ p: SmartRuns.Plan, waiting: Int) async {
+    @MainActor static func schedule(_ k: SmartRuns.Kind, _ p: SmartRuns.Plan, waiting: Int) async {
         let c = UNUserNotificationCenter.current()
         c.removePendingNotificationRequests(withIdentifiers: (0..<2).map { id(k, $0) })
         guard p.on else { return }
@@ -314,6 +338,10 @@ enum SmartRunAlerts {
             let body = UNMutableNotificationContent()
             body.title = L(k.title)
             switch k {
+            case .tidyPhotos:
+                let bytes = SmartRunStore.shared.tidy.reduce(Int64(0)) { $0 + $1.bytes }
+                body.body = waiting > 0 ? "\(waiting) \(L("photos you won't miss could free")) \(PhotoCleaner.format(bytes)). \(L("Nothing goes until you say."))"
+                                        : L("Tap and Tenzy finds old screenshots, duplicates and extra burst frames you won't miss.")
             case .overdueInvoices:
                 body.body = "\(waiting) \(L(waiting == 1 ? "invoice is overdue — a reminder is ready to send." : "invoices are overdue — reminders are ready to send."))"
             case .businessCards:

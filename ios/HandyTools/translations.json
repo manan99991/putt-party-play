@@ -49498,5 +49498,235 @@
   "ja": "請求書の期日を過ぎると、請求書を添付し遅れに合った文面のリマインダーメールを用意します。確認して送信するだけ。",
   "pt": "Quando uma fatura passa o vencimento, fica pronto um e-mail de lembrete — fatura anexada, no tom certo para o atraso. Lê e toca em Enviar.",
   "zh": "发票过了付款截止日，就会备好提醒邮件——附上发票，语气与逾期程度相符。你看一遍，点发送即可。"
+ },
+ "photos you won't miss": {
+  "de": "Fotos, die du nicht vermissen wirst",
+  "es": "fotos que no echarás de menos",
+  "fr": "photos qui ne vous manqueront pas",
+  "hi": "फ़ोटो जिनकी कमी नहीं खलेगी",
+  "it": "foto di cui non sentirai la mancanza",
+  "ja": "枚の不要な写真",
+  "pt": "fotos de que não vai sentir falta",
+  "zh": "张不需要的照片"
+ },
+ "Tap Check — nothing goes until you say.": {
+  "de": "Tippe auf Prüfen – nichts wird gelöscht, bevor du es sagst.",
+  "es": "Toca Revisar: no se borra nada hasta que lo digas.",
+  "fr": "Touchez Vérifier — rien ne part sans votre accord.",
+  "hi": "जाँचें दबाएँ — आपकी मर्ज़ी के बिना कुछ नहीं हटेगा।",
+  "it": "Tocca Controlla: non si elimina nulla finché non lo dici tu.",
+  "ja": "「確認」をタップ — あなたが決めるまで何も消えません。",
+  "pt": "Toque em Verificar — nada é apagado sem a sua ordem.",
+  "zh": "点按“检查”——你同意前什么都不会删除。"
+ },
+ "Test run worked: nothing to tidy — no old screenshots, duplicates or extra burst frames.": {
+  "de": "Testlauf hat funktioniert: nichts aufzuräumen – keine alten Bildschirmfotos, Duplikate oder Serienbilder.",
+  "es": "La prueba funcionó: nada que ordenar, sin capturas antiguas, duplicados ni fotos de ráfaga de más.",
+  "fr": "L'essai a fonctionné : rien à ranger — pas de vieilles captures, doublons ni images de rafale en trop.",
+  "hi": "टेस्ट रन ठीक चला: साफ़ करने को कुछ नहीं — न पुराने स्क्रीनशॉट, न डुप्लिकेट, न बर्स्ट की फ़ालतू फ़्रेम।",
+  "it": "La prova ha funzionato: niente da riordinare, nessuno screenshot vecchio, duplicato o scatto a raffica in più.",
+  "ja": "テスト成功：古いスクショ、重複、余分なバースト写真はありません。",
+  "pt": "O teste funcionou: nada para arrumar — sem capturas antigas, duplicados nem fotos de rajada a mais.",
+  "zh": "试运行成功：没有需要整理的——无旧截图、重复或多余连拍。"
+ },
+ "Deleted — frees": {
+  "de": "Gelöscht – gibt frei:",
+  "es": "Eliminado: libera",
+  "fr": "Supprimé — libère",
+  "hi": "हटाया — खाली होगा",
+  "it": "Eliminato: libera",
+  "ja": "削除しました — 空き容量",
+  "pt": "Apagado — liberta",
+  "zh": "已删除——将释放"
+ },
+ "once Recently Deleted is emptied (or by itself in 30 days).": {
+  "de": "sobald „Zuletzt gelöscht“ geleert ist (oder von selbst nach 30 Tagen).",
+  "es": "cuando vacíes Eliminado (o solo en 30 días).",
+  "fr": "une fois Suppressions récentes vidé (ou automatiquement sous 30 jours).",
+  "hi": "जब 'हाल ही में हटाए गए' खाली हो (या 30 दिन में अपने आप)।",
+  "it": "quando svuoti Eliminati di recente (o da solo in 30 giorni).",
+  "ja": "（「最近削除した項目」を空にすると。30日後には自動で）",
+  "pt": "quando esvaziar Apagados recentemente (ou sozinho em 30 dias).",
+  "zh": "（清空“最近删除”后，或 30 天后自动释放）。"
+ },
+ "Show fewer": {
+  "de": "Weniger zeigen",
+  "es": "Mostrar menos",
+  "fr": "Afficher moins",
+  "hi": "कम दिखाएँ",
+  "it": "Mostra meno",
+  "ja": "少なく表示",
+  "pt": "Mostrar menos",
+  "zh": "收起"
+ },
+ "Show more": {
+  "de": "Mehr zeigen",
+  "es": "Mostrar más",
+  "fr": "Afficher plus",
+  "hi": "और दिखाएँ",
+  "it": "Mostra altro",
+  "ja": "もっと見る",
+  "pt": "Mostrar mais",
+  "zh": "显示更多"
+ },
+ "photos you won't miss could free": {
+  "de": "Fotos, die du nicht vermisst, könnten freigeben:",
+  "es": "fotos que no echarás de menos podrían liberar",
+  "fr": "photos inutiles pourraient libérer",
+  "hi": "फ़ालतू फ़ोटो से इतनी जगह खाली हो सकती है:",
+  "it": "foto superflue potrebbero liberare",
+  "ja": "枚の不要な写真で空く容量：",
+  "pt": "fotos dispensáveis podiam libertar",
+  "zh": "张不需要的照片可释放"
+ },
+ "Nothing goes until you say.": {
+  "de": "Nichts wird gelöscht, bevor du es sagst.",
+  "es": "No se borra nada hasta que lo digas.",
+  "fr": "Rien ne part sans votre accord.",
+  "hi": "आपकी मर्ज़ी के बिना कुछ नहीं हटेगा।",
+  "it": "Non si elimina nulla finché non lo dici tu.",
+  "ja": "あなたが決めるまで何も消えません。",
+  "pt": "Nada é apagado sem a sua ordem.",
+  "zh": "你同意前什么都不会删除。"
+ },
+ "Tap and Tenzy finds old screenshots, duplicates and extra burst frames you won't miss.": {
+  "de": "Tippe, und Tenzy findet alte Bildschirmfotos, Duplikate und überzählige Serienbilder.",
+  "es": "Toca y Tenzy encuentra capturas antiguas, duplicados y fotos de ráfaga que no echarás de menos.",
+  "fr": "Touchez et Tenzy trouve les vieilles captures, doublons et images de rafale en trop.",
+  "hi": "टैप करें, Tenzy पुराने स्क्रीनशॉट, डुप्लिकेट और बर्स्ट की फ़ालतू फ़्रेम ढूँढेगा।",
+  "it": "Tocca e Tenzy trova screenshot vecchi, duplicati e scatti a raffica in più.",
+  "ja": "タップすると、Tenzyが古いスクショ、重複、余分なバースト写真を探します。",
+  "pt": "Toque e o Tenzy encontra capturas antigas, duplicados e fotos de rajada a mais.",
+  "zh": "点按后，Tenzy 会找出旧截图、重复照片和多余连拍。"
+ },
+ "Looking at your screenshots…": {
+  "de": "Bildschirmfotos werden angesehen …",
+  "es": "Mirando tus capturas…",
+  "fr": "Examen de vos captures…",
+  "hi": "आपके स्क्रीनशॉट देख रहे हैं…",
+  "it": "Guardo i tuoi screenshot…",
+  "ja": "スクショを確認中…",
+  "pt": "A ver as suas capturas…",
+  "zh": "正在查看截图…"
+ },
+ "Looking for duplicates…": {
+  "de": "Duplikate werden gesucht …",
+  "es": "Buscando duplicados…",
+  "fr": "Recherche des doublons…",
+  "hi": "डुप्लिकेट ढूँढ रहे हैं…",
+  "it": "Cerco i duplicati…",
+  "ja": "重複を探しています…",
+  "pt": "A procurar duplicados…",
+  "zh": "正在查找重复照片…"
+ },
+ "Looking at bursts…": {
+  "de": "Serienbilder werden angesehen …",
+  "es": "Mirando las ráfagas…",
+  "fr": "Examen des rafales…",
+  "hi": "बर्स्ट देख रहे हैं…",
+  "it": "Guardo le raffiche…",
+  "ja": "バーストを確認中…",
+  "pt": "A ver as rajadas…",
+  "zh": "正在查看连拍…"
+ },
+ "Over a week old. %d kept: receipts, tickets, codes, cards, menus, documents and favourites.": {
+  "de": "Älter als eine Woche. %d behalten: Belege, Tickets, Codes, Karten, Speisekarten, Dokumente und Favoriten.",
+  "es": "De hace más de una semana. Se conservan %d: recibos, entradas, códigos, tarjetas, menús, documentos y favoritos.",
+  "fr": "Plus d'une semaine. %d gardées : reçus, billets, codes, cartes, menus, documents et favoris.",
+  "hi": "एक हफ़्ते से पुराने। %d रखे: रसीदें, टिकट, कोड, कार्ड, मेन्यू, दस्तावेज़ और पसंदीदा।",
+  "it": "Più vecchi di una settimana. %d tenuti: scontrini, biglietti, codici, tessere, menù, documenti e preferiti.",
+  "ja": "1週間以上前のもの。%d 枚は保持：レシート、チケット、コード、カード、メニュー、書類、お気に入り。",
+  "pt": "Com mais de uma semana. %d mantidas: recibos, bilhetes, códigos, cartões, menus, documentos e favoritos.",
+  "zh": "一周以前的。保留 %d 张：收据、票、二维码、名片、菜单、文件和收藏。"
+ },
+ "Copies that look the same. The best of each kept (%d sets): your favourite, else the biggest copy.": {
+  "de": "Kopien, die gleich aussehen. Die beste jeder Gruppe bleibt (%d Gruppen): dein Favorit, sonst die größte Kopie.",
+  "es": "Copias que se ven iguales. Se conserva la mejor de cada grupo (%d grupos): tu favorita o, si no, la copia más grande.",
+  "fr": "Copies identiques. La meilleure de chaque groupe est gardée (%d groupes) : votre favori, sinon la plus grande.",
+  "hi": "एक जैसी दिखने वाली कॉपियाँ। हर सेट की सबसे अच्छी रखी (%d सेट): आपकी पसंदीदा, वरना सबसे बड़ी कॉपी।",
+  "it": "Copie identiche. Tenuta la migliore di ogni gruppo (%d gruppi): la tua preferita, altrimenti la copia più grande.",
+  "ja": "見た目が同じコピー。各組で最良の1枚を保持（%d 組）：お気に入り、なければ最大のもの。",
+  "pt": "Cópias iguais. Fica a melhor de cada grupo (%d grupos): a sua favorita, senão a cópia maior.",
+  "zh": "看起来一样的副本。每组保留最好的一张（共 %d 组）：你的收藏，否则保留最大的那张。"
+ },
+ "The hidden frames behind %d bursts. The one you or iPhone picked is kept.": {
+  "de": "Die versteckten Bilder hinter %d Serien. Das von dir oder dem iPhone gewählte bleibt.",
+  "es": "Las fotos ocultas tras %d ráfagas. Se conserva la que elegiste tú o el iPhone.",
+  "fr": "Les images cachées derrière %d rafales. Celle que vous ou l'iPhone avez choisie est gardée.",
+  "hi": "%d बर्स्ट के पीछे छिपी फ़्रेम। आपकी या iPhone की चुनी फ़्रेम रहेगी।",
+  "it": "I fotogrammi nascosti dietro %d raffiche. Resta quello scelto da te o dall'iPhone.",
+  "ja": "%d 件のバーストに隠れた写真。あなたかiPhoneが選んだ1枚は保持。",
+  "pt": "As fotos escondidas atrás de %d rajadas. Fica a escolhida por si ou pelo iPhone.",
+  "zh": "%d 组连拍中隐藏的照片。保留你或 iPhone 选出的那张。"
+ },
+ "Old screenshots": {
+  "de": "Alte Bildschirmfotos",
+  "es": "Capturas antiguas",
+  "fr": "Vieilles captures",
+  "hi": "पुराने स्क्रीनशॉट",
+  "it": "Screenshot vecchi",
+  "ja": "古いスクショ",
+  "pt": "Capturas antigas",
+  "zh": "旧截图"
+ },
+ "Duplicate photos": {
+  "de": "Doppelte Fotos",
+  "es": "Fotos duplicadas",
+  "fr": "Photos en double",
+  "hi": "डुप्लिकेट फ़ोटो",
+  "it": "Foto doppie",
+  "ja": "重複した写真",
+  "pt": "Fotos duplicadas",
+  "zh": "重复照片"
+ },
+ "Extra burst frames": {
+  "de": "Überzählige Serienbilder",
+  "es": "Fotos de ráfaga de más",
+  "fr": "Images de rafale en trop",
+  "hi": "बर्स्ट की फ़ालतू फ़्रेम",
+  "it": "Scatti a raffica in più",
+  "ja": "余分なバースト写真",
+  "pt": "Fotos de rajada a mais",
+  "zh": "多余连拍"
+ },
+ "Tidy up screenshots, duplicates and bursts": {
+  "de": "Bildschirmfotos, Duplikate und Serien aufräumen",
+  "es": "Ordenar capturas, duplicados y ráfagas",
+  "fr": "Ranger captures, doublons et rafales",
+  "hi": "स्क्रीनशॉट, डुप्लिकेट और बर्स्ट साफ़ करें",
+  "it": "Riordina screenshot, duplicati e raffiche",
+  "ja": "スクショ・重複・バーストを整理",
+  "pt": "Arrumar capturas, duplicados e rajadas",
+  "zh": "整理截图、重复照片和连拍"
+ },
+ "Finds old screenshots you won't need, copies of the same photo and the hidden extra frames of bursts — keeping receipts, tickets, codes, favourites and the best copy — and shows how much space they'd free.": {
+  "de": "Findet alte Bildschirmfotos, Kopien desselben Fotos und versteckte Serienbilder – Belege, Tickets, Codes, Favoriten und die beste Kopie bleiben – und zeigt, wie viel Platz frei würde.",
+  "es": "Encuentra capturas antiguas, copias de la misma foto y fotos ocultas de ráfagas (conserva recibos, entradas, códigos, favoritos y la mejor copia) y muestra cuánto espacio liberarían.",
+  "fr": "Trouve les vieilles captures, copies d'une même photo et images cachées des rafales — en gardant reçus, billets, codes, favoris et la meilleure copie — et indique l'espace libéré.",
+  "hi": "पुराने स्क्रीनशॉट, एक ही फ़ोटो की कॉपियाँ और बर्स्ट की छिपी फ़्रेम ढूँढता है — रसीदें, टिकट, कोड, पसंदीदा और सबसे अच्छी कॉपी रखते हुए — और बताता है कितनी जगह खाली होगी।",
+  "it": "Trova screenshot vecchi, copie della stessa foto e fotogrammi nascosti delle raffiche, tenendo scontrini, biglietti, codici, preferiti e la copia migliore, e mostra quanto spazio liberano.",
+  "ja": "不要な古いスクショ、同じ写真のコピー、バーストの隠れた写真を見つけ（レシート・チケット・コード・お気に入り・最良のコピーは保持）、空く容量を表示します。",
+  "pt": "Encontra capturas antigas, cópias da mesma foto e fotos escondidas de rajadas — mantendo recibos, bilhetes, códigos, favoritos e a melhor cópia — e mostra quanto espaço libertariam.",
+  "zh": "找出旧截图、同一张照片的副本和连拍中隐藏的照片——保留收据、票、二维码、收藏和最好的那张——并显示可释放多少空间。"
+ },
+ "Nothing to tidy": {
+  "de": "Nichts aufzuräumen",
+  "es": "Nada que ordenar",
+  "fr": "Rien à ranger",
+  "hi": "साफ़ करने को कुछ नहीं",
+  "it": "Niente da riordinare",
+  "ja": "整理するものはありません",
+  "pt": "Nada para arrumar",
+  "zh": "没有要整理的"
+ },
+ "Old screenshots, duplicates and extra burst frames show up here after a run.": {
+  "de": "Alte Bildschirmfotos, Duplikate und Serienbilder erscheinen hier nach einem Durchlauf.",
+  "es": "Las capturas antiguas, duplicados y ráfagas aparecen aquí tras una ejecución.",
+  "fr": "Les vieilles captures, doublons et rafales apparaissent ici après une exécution.",
+  "hi": "चलने के बाद पुराने स्क्रीनशॉट, डुप्लिकेट और बर्स्ट फ़्रेम यहाँ दिखते हैं।",
+  "it": "Screenshot vecchi, duplicati e raffiche compaiono qui dopo un'esecuzione.",
+  "ja": "実行後、古いスクショ・重複・バースト写真がここに表示されます。",
+  "pt": "Capturas antigas, duplicados e rajadas aparecem aqui após uma execução.",
+  "zh": "运行后，旧截图、重复照片和多余连拍会显示在这里。"
  }
 }

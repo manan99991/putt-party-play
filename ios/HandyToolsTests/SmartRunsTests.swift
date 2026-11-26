@@ -107,6 +107,18 @@ final class SmartRunsTests: XCTestCase {
         XCTAssertGreaterThan(SmartPosts.sharpness(edges), SmartPosts.sharpness(soft) * 100, "crisp edges score far above a gentle gradient")
     }
 
+    func testTidyKeepsTheRightCopyAndTheUsefulScreenshots() {
+        let t = at(25, 9)
+        XCTAssertEqual(SmartTidy.keeper([(id: "a", fav: false, bytes: 2_000_000, created: t), (id: "b", fav: true, bytes: 900_000, created: t)]), "b", "a favourite always stays")
+        XCTAssertEqual(SmartTidy.keeper([(id: "a", fav: false, bytes: 2_000_000, created: t), (id: "b", fav: false, bytes: 3_100_000, created: t)]), "b", "else the biggest")
+        func seen(_ text: String, codes: Int = 0, labels: [String] = []) -> PhotoFinder.Seen {
+            PhotoFinder.Seen(modified: 0, labels: labels, text: text, faces: 0, codes: codes, screenshot: true)
+        }
+        XCTAssertTrue(SmartTidy.usefulScreenshot(seen("", codes: 1)), "a QR code or boarding pass")
+        XCTAssertTrue(SmartTidy.usefulScreenshot(seen("Order #1182\nSubtotal 42.10\nTax 3.47\nTotal 45.57\nVisa ending 4821\nThank you")), "an e-receipt")
+        XCTAssertFalse(SmartTidy.usefulScreenshot(seen("lol ok see you there")), "a chat you won't look at again")
+    }
+
     func testHabitsSuggestTheRightAutorun() {
         // Receipts on 4 separate days; video shrink twice; lots of baby photos on the phone.
         let days: [String: Set<Int>] = ["receipts": [1, 3], "scan": [5, 8], "videoshrink": [2, 2, 9]]
