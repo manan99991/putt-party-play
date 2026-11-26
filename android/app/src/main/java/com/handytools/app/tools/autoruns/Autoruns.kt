@@ -34,7 +34,7 @@ object Autoruns {
     private const val CHANNEL = "autoruns"
 
     /** The autoruns Android does so far, in the page's order; the others stay iPhone-only until they're built here. */
-    val available: List<SmartRuns.Kind> = listOf(SmartRuns.Kind.OVERDUE_INVOICES, SmartRuns.Kind.HEAVY_VIDEOS, SmartRuns.Kind.CONTACTS_BACKUP)
+    val available: List<SmartRuns.Kind> = listOf(SmartRuns.Kind.OVERDUE_INVOICES, SmartRuns.Kind.READY_TO_POST, SmartRuns.Kind.HEAVY_VIDEOS, SmartRuns.Kind.CONTACTS_BACKUP)
 
     /** Set when a notification is tapped; the page opens that autorun and clears it. */
     var pending by mutableStateOf<String?>(null)
@@ -108,6 +108,9 @@ object Autoruns {
         val news = when (k) {
             SmartRuns.Kind.HEAVY_VIDEOS -> HeavyVideos.find(ctx, window).let { found ->
                 if (found.isEmpty()) null else HeavyVideos.notice(found)
+            }
+            SmartRuns.Kind.READY_TO_POST -> ReadyToPost.find(ctx, window).size.let { n ->
+                if (n == 0) null else if (n == 1) I18n.t("1 clip from today can be made ready to post.") else I18n.fmt("%d clips from today can be made ready to post.", n)
             }
             // The week's copy is made right here; a word only when someone has disappeared since the last one.
             SmartRuns.Kind.CONTACTS_BACKUP -> ContactsBackup.make(ctx, now)?.gone?.size?.let { n ->

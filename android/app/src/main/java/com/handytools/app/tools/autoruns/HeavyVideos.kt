@@ -177,18 +177,5 @@ object HeavyVideos {
     }
 
     /** Saves the smaller copy beside the original in the phone's videos, with the original's date. The saved copy's uri. */
-    fun save(ctx: Context, s: Smaller): Uri? = runCatching {
-        val name = s.item.name.substringBeforeLast('.') + " (smaller).mp4"
-        val v = ContentValues().apply {
-            put(MediaStore.Video.Media.DISPLAY_NAME, name)
-            put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
-            put(MediaStore.Video.Media.DATE_TAKEN, s.item.created)
-            if (Build.VERSION.SDK_INT >= 29) { put(MediaStore.Video.Media.RELATIVE_PATH, Environment.DIRECTORY_MOVIES + "/Tenzy"); put(MediaStore.Video.Media.IS_PENDING, 1) }
-        }
-        val r = ctx.contentResolver
-        val uri = r.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, v) ?: return null
-        r.openOutputStream(uri)?.use { o -> s.file.inputStream().use { it.copyTo(o) } } ?: return null
-        if (Build.VERSION.SDK_INT >= 29) r.update(uri, ContentValues().apply { put(MediaStore.Video.Media.IS_PENDING, 0) }, null, null)
-        uri
-    }.getOrNull()
+    fun save(ctx: Context, s: Smaller): Uri? = ReadyToPost.saveVideo(ctx, s.file, s.item.name.substringBeforeLast('.') + " (smaller).mp4", s.item.created)
 }

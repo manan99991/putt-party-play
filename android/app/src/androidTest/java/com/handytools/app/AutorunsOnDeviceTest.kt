@@ -18,6 +18,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.handytools.app.tools.autoruns.ContactsBackup
 import com.handytools.app.tools.autoruns.HeavyVideos
+import com.handytools.app.tools.autoruns.ReadyToPost
 import com.handytools.app.tools.autoruns.SmartRuns
 import com.handytools.app.tools.studio.Reels
 import kotlinx.coroutines.runBlocking
@@ -110,5 +111,29 @@ class AutorunsOnDeviceTest {
             for (id in listOf(keep, leave)) runCatching { ctx.contentResolver.delete(android.content.ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, id), null, null) }
             ContactsBackup.copies(ctx).forEach { it.delete() }
         }
+    }
+
+    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @Test fun aWideClipIsMadeTallWithItsWholePictureAndASoftFill() {
+        // A wide clip, the way most phones film sideways.
+        val item = androidx.media3.common.MediaItem.Builder().setUri(picture()).setImageDurationMs(3000).build()
+        val edited = androidx.media3.transformer.EditedMediaItem.Builder(item).setFrameRate(30)
+            .setEffects(androidx.media3.transformer.Effects(emptyList(), listOf(androidx.media3.effect.Presentation.createForWidthAndHeight(1280, 720,
+                androidx.media3.effect.Presentation.LAYOUT_SCALE_TO_FIT_WITH_CROP)))).build()
+        val wide = File(ctx.cacheDir, "wide-${System.nanoTime()}.mp4")
+        assertTrue("no wide clip", runBlocking { Reels.export(ctx, androidx.media3.transformer.Composition.Builder(listOf(androidx.media3.transformer.EditedMediaItemSequence(listOf(edited)))).build(), wide) { } })
+        val out = runBlocking { ReadyToPost.make(ctx, Uri.fromFile(wide)) } ?: throw AssertionError("it wasn't made ready")
+        val r = android.media.MediaMetadataRetriever().apply { setDataSource(out.absolutePath) }
+        val w = r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)!!.toInt()
+        val h = r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)!!.toInt()
+        val f = r.getFrameAtTime(1_500_000, android.media.MediaMetadataRetriever.OPTION_CLOSEST)!!; r.release()
+        assertTrue("tall 1080×1920 (${w}×$h)", w == ReadyToPost.W && h == ReadyToPost.H)
+        fun lum(y0: Int, y1: Int): Double { var s = 0.0; var n = 0
+            for (y in y0 until y1 step 8) for (x in 0 until f.width step 8) { val c = f.getPixel(x, y); s += 0.2126 * android.graphics.Color.red(c) + 0.7152 * android.graphics.Color.green(c) + 0.0722 * android.graphics.Color.blue(c); n++ }
+            return s / n }
+        val top = lum(0, 300); val middle = lum(800, 1100)
+        println("AUTORUN| ready to post: top band ${"%.0f".format(top)}, middle ${"%.0f".format(middle)}")
+        assertTrue("above the clip is a soft fill of it, not black bars ($top)", top > 25)
+        assertTrue("the clip itself is in the middle, brighter than its dimmed fill ($middle vs $top)", middle > top)
     }
 }

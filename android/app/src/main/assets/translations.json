@@ -19318,5 +19318,85 @@
   "ja": "先週のコピーの全員がまだいます。",
   "pt": "Todos da cópia da semana passada continuam aqui.",
   "zh": "上周备份里的人都还在。"
+ },
+ "Post it": {
+  "de": "Posten",
+  "es": "Publícalo",
+  "fr": "Publie-la",
+  "hi": "पोस्ट करें",
+  "it": "Pubblicalo",
+  "ja": "投稿する",
+  "pt": "Publique",
+  "zh": "发布"
+ },
+ "Save to my videos": {
+  "de": "In meinen Videos speichern",
+  "es": "Guardar en mis vídeos",
+  "fr": "Enregistrer dans mes vidéos",
+  "hi": "मेरे वीडियो में सेव करें",
+  "it": "Salva nei miei video",
+  "ja": "ビデオに保存",
+  "pt": "Salvar nos meus vídeos",
+  "zh": "保存到我的视频"
+ },
+ "Making it ready to post": {
+  "de": "Wird fürs Posten vorbereitet",
+  "es": "Preparándolo para publicar",
+  "fr": "Préparation pour publier",
+  "hi": "पोस्ट के लिए तैयार किया जा रहा है",
+  "it": "Lo preparo per la pubblicazione",
+  "ja": "投稿用に準備しています",
+  "pt": "Deixando pronto para postar",
+  "zh": "正在准备发布"
+ },
+ "Tenzy needs to see your videos to find today's clips.": {
+  "de": "Tenzy muss deine Videos sehen, um die Clips von heute zu finden.",
+  "es": "Tenzy necesita ver tus vídeos para encontrar los clips de hoy.",
+  "fr": "Tenzy doit voir vos vidéos pour trouver les clips du jour.",
+  "hi": "आज की क्लिप ढूँढने के लिए Tenzy को आपके वीडियो देखने होंगे।",
+  "it": "Tenzy deve vedere i tuoi video per trovare le clip di oggi.",
+  "ja": "今日のクリップを見つけるには、Tenzy がビデオを見られる必要があります。",
+  "pt": "O Tenzy precisa ver seus vídeos para achar os clipes de hoje.",
+  "zh": "Tenzy 需要查看你的视频才能找到今天的片段。"
+ },
+ "No clips from today to make ready — film something and try again.": {
+  "de": "Heute keine Clips zum Vorbereiten – film etwas und versuch es noch mal.",
+  "es": "No hay clips de hoy para preparar: graba algo y vuelve a intentarlo.",
+  "fr": "Aucun clip du jour à préparer — filmez quelque chose et réessayez.",
+  "hi": "आज की कोई क्लिप नहीं — कुछ रिकॉर्ड करें और फिर कोशिश करें।",
+  "it": "Nessuna clip di oggi da preparare: riprendi qualcosa e riprova.",
+  "ja": "今日の準備できるクリップはありません。何か撮ってからもう一度どうぞ。",
+  "pt": "Nenhum clipe de hoje para preparar — grave algo e tente de novo.",
+  "zh": "今天没有可准备的片段——拍点什么再试一次。"
+ },
+ "1 clip from today can be made ready to post.": {
+  "de": "1 Clip von heute kann fürs Posten vorbereitet werden.",
+  "es": "1 clip de hoy se puede preparar para publicar.",
+  "fr": "1 clip du jour peut être préparé pour publier.",
+  "hi": "आज की 1 क्लिप पोस्ट के लिए तैयार की जा सकती है।",
+  "it": "1 clip di oggi può essere preparata per la pubblicazione.",
+  "ja": "今日のクリップ 1 本を投稿用に準備できます。",
+  "pt": "1 clipe de hoje pode ficar pronto para postar.",
+  "zh": "今天有 1 个片段可以准备发布。"
+ },
+ "%d clips from today can be made ready to post.": {
+  "de": "%d Clips von heute können fürs Posten vorbereitet werden.",
+  "es": "%d clips de hoy se pueden preparar para publicar.",
+  "fr": "%d clips du jour peuvent être préparés pour publier.",
+  "hi": "आज की %d क्लिप पोस्ट के लिए तैयार की जा सकती हैं।",
+  "it": "%d clip di oggi possono essere preparate per la pubblicazione.",
+  "ja": "今日のクリップ %d 本を投稿用に準備できます。",
+  "pt": "%d clipes de hoje podem ficar prontos para postar.",
+  "zh": "今天有 %d 个片段可以准备发布。"
+ },
+ "Saved to your videos": {
+  "de": "In deinen Videos gespeichert",
+  "es": "Guardado en tus vídeos",
+  "fr": "Enregistrée dans vos vidéos",
+  "hi": "आपके वीडियो में सेव हुआ",
+  "it": "Salvato nei tuoi video",
+  "ja": "ビデオに保存しました",
+  "pt": "Salvo nos seus vídeos",
+  "zh": "已保存到你的视频"
  }
 }

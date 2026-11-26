@@ -152,6 +152,7 @@ fun AutorunRun(k: SmartRuns.Kind, onClose: () -> Unit) {
         SmartRuns.Kind.HEAVY_VIDEOS -> HeavyVideosRun(onClose)
         SmartRuns.Kind.OVERDUE_INVOICES -> OverdueInvoicesRun(onClose)
         SmartRuns.Kind.CONTACTS_BACKUP -> ContactsBackupRun(onClose)
+        SmartRuns.Kind.READY_TO_POST -> ReadyToPostRun(onClose)
         else -> LaunchedEffect(k) { onClose() }
     }
 }
@@ -345,6 +346,58 @@ private fun ContactsBackupRun(onClose: () -> Unit) {
                 .putExtra(android.content.Intent.EXTRA_TEXT, I18n.t("A copy of my contacts, to keep safe. Open the attachment on any phone or computer to bring them back."))
                 .putExtra(android.content.Intent.EXTRA_STREAM, uri).addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
             runCatching { ctx.startActivity(android.content.Intent.createChooser(i, I18n.t("Email it to myself"))) }
+        }
+        Spacer(Modifier.height(HandyTokens.Space24))
+    }
+}
+
+/** Today's best clips made tall with the look on: watch each, then save it to your videos or post it. */
+@Composable
+private fun ReadyToPostRun(onClose: () -> Unit) {
+    val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val k = SmartRuns.Kind.READY_TO_POST
+    var allowed by remember { mutableStateOf(canReadVideos(ctx)) }
+    val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> allowed = ok }
+    var stage by remember { mutableStateOf("") }
+    var progress by remember { mutableStateOf(0.0) }
+    var finished by remember { mutableStateOf(false) }
+    val made = remember { mutableStateListOf<Pair<ReadyToPost.Clip, java.io.File>>() }
+    val saved = remember { mutableStateListOf<String>() }
+    var job by remember { mutableStateOf<Job?>(null) }
+    LaunchedEffect(allowed) {
+        if (!allowed) { ask.launch(if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_VIDEO else Manifest.permission.READ_EXTERNAL_STORAGE); return@LaunchedEffect }
+        job = scope.launch {
+            val now = System.currentTimeMillis()
+            stage = I18n.t("Looking at today's videos…")
+            val clips = ReadyToPost.find(ctx, Autoruns.windowFor(ctx, k, now))
+            clips.forEachIndexed { i, c ->
+                stage = "${I18n.t("Making it ready to post")} · ${i + 1} / ${clips.size}"
+                ReadyToPost.make(ctx, c.uri) { p -> progress = (i + p) / clips.size }?.let { made += c to it }
+            }
+            Autoruns.markRun(ctx, k, now); Autoruns.clearReady(ctx, k)
+            finished = true
+        }
+    }
+    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter),
+        verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+        HTextButton(I18n.t("‹ Back")) { job?.cancel(); onClose() }
+        Text(I18n.t("Ready to post"), style = MaterialTheme.typography.headlineSmall)
+        if (!allowed) { Text(I18n.t("Tenzy needs to see your videos to find today's clips."), color = Handy.palette.textSecondary); return@Column }
+        if (!finished) {
+            Text(stage, style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            LinearProgressIndicator(progress = { progress.toFloat().coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth().testTag("autorun-progress"))
+            return@Column
+        }
+        if (made.isEmpty()) Text(I18n.t("No clips from today to make ready — film something and try again."), color = Handy.palette.textSecondary)
+        made.forEach { (c, f) ->
+            com.handytools.app.tools.studio.ResultPlayer(f, "ready-${c.uri.lastPathSegment}")
+            Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                HSecondaryButton(I18n.t(if (c.uri.toString() in saved) "Saved to your videos" else "Save to my videos"), Modifier.weight(1f), enabled = c.uri.toString() !in saved) {
+                    if (ReadyToPost.saveVideo(ctx, f, c.name.substringBeforeLast('.') + " (ready to post).mp4", c.created) != null) saved += c.uri.toString()
+                }
+                HPrimaryButton(I18n.t("Post it"), Modifier.weight(1f)) { com.handytools.app.tools.Share.file(ctx, f, "video/mp4") }
+            }
         }
         Spacer(Modifier.height(HandyTokens.Space24))
     }
