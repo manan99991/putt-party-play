@@ -1,6 +1,8 @@
 package com.handytools.app
 
+import android.content.ContentProviderOperation
 import android.content.ContentValues
+import android.provider.ContactsContract
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -14,6 +16,7 @@ import android.provider.MediaStore
 import androidx.media3.common.MimeTypes
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.handytools.app.tools.autoruns.ContactsBackup
 import com.handytools.app.tools.autoruns.HeavyVideos
 import com.handytools.app.tools.autoruns.SmartRuns
 import com.handytools.app.tools.studio.Reels
@@ -71,6 +74,41 @@ class AutorunsOnDeviceTest {
             assertNotNull(HeavyVideos.notice(found))
         } finally {
             runCatching { ctx.contentResolver.delete(uri, null, null) }
+        }
+    }
+
+    /** Adds a contact the way the Contacts app would; its contact id. */
+    private fun addContact(name: String, number: String): Long {
+        val ops = arrayListOf(
+            ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null).withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null).build(),
+            ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, name).build(),
+            ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, number).build(),
+        )
+        val res = ctx.contentResolver.applyBatch(ContactsContract.AUTHORITY, ops)
+        return android.content.ContentUris.parseId(res[0].uri!!)
+    }
+
+    @Test fun theWeeklyContactsCopyNoticesWhoDisappeared() {
+        val keep = addContact("Tenzy Keeper", "+1 312 555 0101")
+        val leave = addContact("Tenzy Leaver", "+1 312 555 0102")
+        try {
+            val first = ContactsBackup.make(ctx) ?: throw AssertionError("no copy was made")
+            assertTrue("both test contacts are in the copy (${first.count})", ContactsBackup.parse(first.file.readText()).map { it.name }.containsAll(listOf("Tenzy Keeper", "Tenzy Leaver")))
+            ctx.contentResolver.delete(android.content.ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, leave), null, null)
+            val second = ContactsBackup.make(ctx, System.currentTimeMillis() + 60_000) ?: throw AssertionError("no second copy")
+            println("AUTORUN| contacts: ${first.count} then ${second.count}, gone ${second.gone.map { it.name }}")
+            assertTrue("the deleted contact should be noticed", second.gone.any { it.name == "Tenzy Leaver" })
+            assertTrue("the kept one isn't gone", second.gone.none { it.name == "Tenzy Keeper" })
+            val back = ContactsBackup.handBack(ctx, second.gone)
+            assertTrue("the hand-back file holds the whole card", back.readText().contains("Tenzy Leaver") && back.readText().contains("BEGIN:VCARD"))
+        } finally {
+            for (id in listOf(keep, leave)) runCatching { ctx.contentResolver.delete(android.content.ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, id), null, null) }
+            ContactsBackup.copies(ctx).forEach { it.delete() }
         }
     }
 }

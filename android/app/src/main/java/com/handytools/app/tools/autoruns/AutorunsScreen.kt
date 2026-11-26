@@ -151,6 +151,7 @@ fun AutorunRun(k: SmartRuns.Kind, onClose: () -> Unit) {
     when (k) {
         SmartRuns.Kind.HEAVY_VIDEOS -> HeavyVideosRun(onClose)
         SmartRuns.Kind.OVERDUE_INVOICES -> OverdueInvoicesRun(onClose)
+        SmartRuns.Kind.CONTACTS_BACKUP -> ContactsBackupRun(onClose)
         else -> LaunchedEffect(k) { onClose() }
     }
 }
@@ -287,6 +288,63 @@ private fun OverdueInvoicesRun(onClose: () -> Unit) {
                     }
                 }
             }
+        }
+        Spacer(Modifier.height(HandyTokens.Space24))
+    }
+}
+
+/** This week's copy of every contact, and anyone who's disappeared since the last one, one tap from coming back. */
+@Composable
+private fun ContactsBackupRun(onClose: () -> Unit) {
+    val ctx = LocalContext.current
+    val k = SmartRuns.Kind.CONTACTS_BACKUP
+    var allowed by remember { mutableStateOf(ContactsBackup.canRead(ctx)) }
+    val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> allowed = ok }
+    var result by remember { mutableStateOf<ContactsBackup.Result?>(null) }
+    var working by remember { mutableStateOf(true) }
+    LaunchedEffect(allowed) {
+        if (!allowed) { ask.launch(Manifest.permission.READ_CONTACTS); working = false; return@LaunchedEffect }
+        working = true
+        result = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { runCatching { ContactsBackup.make(ctx) }.getOrNull() }
+        Autoruns.markRun(ctx, k, System.currentTimeMillis()); Autoruns.clearReady(ctx, k)
+        working = false
+    }
+    fun open(cards: List<ContactsBackup.Card>) {
+        val f = ContactsBackup.handBack(ctx, cards)
+        val uri = androidx.core.content.FileProvider.getUriForFile(ctx, ctx.packageName + ".fileprovider", f)
+        runCatching { ctx.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW).setDataAndType(uri, "text/x-vcard")
+            .addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION or android.content.Intent.FLAG_ACTIVITY_NEW_TASK)) }
+    }
+    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter),
+        verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+        HTextButton(I18n.t("‹ Back")) { onClose() }
+        Text(I18n.t("My contacts backup"), style = MaterialTheme.typography.headlineSmall)
+        if (!allowed) { Text(I18n.t("Tenzy needs to see your contacts to copy them."), color = Handy.palette.textSecondary); return@Column }
+        if (working) { LinearProgressIndicator(modifier = Modifier.fillMaxWidth()); return@Column }
+        val r = result
+        if (r == null) { Text(I18n.t("There are no contacts on this phone to copy."), color = Handy.palette.textSecondary); return@Column }
+        Text(I18n.fmt("%d contacts copied, kept on this phone.", r.count), style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.primary, modifier = Modifier.testTag("contacts-copied"))
+        if (r.gone.isNotEmpty()) {
+            Text(I18n.t("Deleted by mistake, or lost with an account? Bring them back exactly as they were."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            r.gone.forEach { c ->
+                HCard(Modifier.fillMaxWidth().testTag("contact-gone")) {
+                    Row(Modifier.padding(HandyTokens.Space12), verticalAlignment = Alignment.CenterVertically) {
+                        Text(c.name.ifBlank { c.numbers.firstOrNull().orEmpty() }, Modifier.weight(1f), style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        HTextButton(I18n.t("Bring back")) { open(listOf(c)) }
+                    }
+                }
+            }
+            if (r.gone.size > 1) HSecondaryButton(I18n.t("Bring them all back"), Modifier.fillMaxWidth()) { open(r.gone) }
+        } else if (r.since != null) Text(I18n.t("Everyone from last week's copy is still here."), color = Handy.palette.textSecondary)
+        HPrimaryButton(I18n.t("Email it to myself"), Modifier.fillMaxWidth()) {
+            val uri = androidx.core.content.FileProvider.getUriForFile(ctx, ctx.packageName + ".fileprovider",
+                java.io.File(ctx.cacheDir, r.file.name).also { r.file.copyTo(it, overwrite = true) })
+            val i = android.content.Intent(android.content.Intent.ACTION_SEND).setType("text/x-vcard")
+                .putExtra(android.content.Intent.EXTRA_SUBJECT, I18n.t("My contacts backup"))
+                .putExtra(android.content.Intent.EXTRA_TEXT, I18n.t("A copy of my contacts, to keep safe. Open the attachment on any phone or computer to bring them back."))
+                .putExtra(android.content.Intent.EXTRA_STREAM, uri).addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            runCatching { ctx.startActivity(android.content.Intent.createChooser(i, I18n.t("Email it to myself"))) }
         }
         Spacer(Modifier.height(HandyTokens.Space24))
     }

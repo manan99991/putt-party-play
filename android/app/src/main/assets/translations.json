@@ -19258,5 +19258,65 @@
   "ja": "期限切れの請求書はありません。すべて支払い済みか、まだ期限前です。",
   "pt": "Nada está vencido — todas as faturas estão pagas ou ainda não venceram.",
   "zh": "没有逾期的发票——每张都已付款或尚未到期。"
+ },
+ "1 contact has disappeared since last week's copy — tap to bring it back.": {
+  "de": "1 Kontakt ist seit der Kopie der letzten Woche verschwunden – tippe, um ihn zurückzuholen.",
+  "es": "1 contacto ha desaparecido desde la copia de la semana pasada: toca para recuperarlo.",
+  "fr": "1 contact a disparu depuis la copie de la semaine dernière — touchez pour le récupérer.",
+  "hi": "पिछले हफ़्ते की कॉपी के बाद 1 कॉन्टैक्ट गायब हो गया है — वापस लाने के लिए टैप करें।",
+  "it": "1 contatto è sparito dalla copia della settimana scorsa: tocca per recuperarlo.",
+  "ja": "先週のコピー以降、1 件の連絡先が消えています。タップして元に戻せます。",
+  "pt": "1 contato sumiu desde a cópia da semana passada — toque para trazê-lo de volta.",
+  "zh": "自上周备份以来有 1 个联系人不见了——点按即可找回。"
+ },
+ "%d contacts have disappeared since last week's copy — tap to bring them back.": {
+  "de": "%d Kontakte sind seit der Kopie der letzten Woche verschwunden – tippe, um sie zurückzuholen.",
+  "es": "%d contactos han desaparecido desde la copia de la semana pasada: toca para recuperarlos.",
+  "fr": "%d contacts ont disparu depuis la copie de la semaine dernière — touchez pour les récupérer.",
+  "hi": "पिछले हफ़्ते की कॉपी के बाद %d कॉन्टैक्ट गायब हो गए हैं — वापस लाने के लिए टैप करें।",
+  "it": "%d contatti sono spariti dalla copia della settimana scorsa: tocca per recuperarli.",
+  "ja": "先週のコピー以降、%d 件の連絡先が消えています。タップして元に戻せます。",
+  "pt": "%d contatos sumiram desde a cópia da semana passada — toque para trazê-los de volta.",
+  "zh": "自上周备份以来有 %d 个联系人不见了——点按即可找回。"
+ },
+ "Tenzy needs to see your contacts to copy them.": {
+  "de": "Tenzy muss deine Kontakte sehen, um sie zu kopieren.",
+  "es": "Tenzy necesita ver tus contactos para copiarlos.",
+  "fr": "Tenzy doit voir vos contacts pour les copier.",
+  "hi": "कॉन्टैक्ट कॉपी करने के लिए Tenzy को उन्हें देखना होगा।",
+  "it": "Tenzy deve vedere i tuoi contatti per copiarli.",
+  "ja": "コピーするには、Tenzy が連絡先を見られる必要があります。",
+  "pt": "O Tenzy precisa ver seus contatos para copiá-los.",
+  "zh": "Tenzy 需要查看你的联系人才能复制它们。"
+ },
+ "There are no contacts on this phone to copy.": {
+  "de": "Auf diesem Handy gibt es keine Kontakte zum Kopieren.",
+  "es": "No hay contactos en este teléfono para copiar.",
+  "fr": "Il n'y a aucun contact à copier sur ce téléphone.",
+  "hi": "इस फ़ोन पर कॉपी करने के लिए कोई कॉन्टैक्ट नहीं है।",
+  "it": "Su questo telefono non ci sono contatti da copiare.",
+  "ja": "このスマホにはコピーする連絡先がありません。",
+  "pt": "Não há contatos neste celular para copiar.",
+  "zh": "这部手机上没有可复制的联系人。"
+ },
+ "%d contacts copied, kept on this phone.": {
+  "de": "%d Kontakte kopiert und auf diesem Handy aufbewahrt.",
+  "es": "%d contactos copiados y guardados en este teléfono.",
+  "fr": "%d contacts copiés et conservés sur ce téléphone.",
+  "hi": "%d कॉन्टैक्ट कॉपी हुए, इसी फ़ोन पर रखे गए।",
+  "it": "%d contatti copiati e conservati su questo telefono.",
+  "ja": "%d 件の連絡先をコピーし、このスマホに保存しました。",
+  "pt": "%d contatos copiados e guardados neste celular.",
+  "zh": "已复制 %d 个联系人，保存在这部手机上。"
+ },
+ "Everyone from last week's copy is still here.": {
+  "de": "Alle aus der Kopie der letzten Woche sind noch da.",
+  "es": "Todos los de la copia de la semana pasada siguen aquí.",
+  "fr": "Tous ceux de la copie de la semaine dernière sont toujours là.",
+  "hi": "पिछले हफ़्ते की कॉपी के सभी लोग अब भी यहाँ हैं।",
+  "it": "Tutti quelli della copia della settimana scorsa ci sono ancora.",
+  "ja": "先週のコピーの全員がまだいます。",
+  "pt": "Todos da cópia da semana passada continuam aqui.",
+  "zh": "上周备份里的人都还在。"
  }
 }

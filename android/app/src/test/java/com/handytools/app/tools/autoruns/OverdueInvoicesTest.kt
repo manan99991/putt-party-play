@@ -60,7 +60,9 @@ class OverdueInvoicesTest {
             "%d invoices are overdue — reminders are ready to send." to arrayOf<Any>(3),
             "You did this by hand on %d days lately. Tenzy can do it for you." to arrayOf<Any>(4),
             "%d videos (%s) could be smaller and look the same." to arrayOf<Any>(3, "410 MB"),
-            "1 video (%s) could be smaller and look the same." to arrayOf<Any>("410 MB"))
+            "1 video (%s) could be smaller and look the same." to arrayOf<Any>("410 MB"),
+            "%d contacts have disappeared since last week's copy — tap to bring them back." to arrayOf<Any>(3),
+            "%d contacts copied, kept on this phone." to arrayOf<Any>(214))
         for ((key, args) in keys) {
             val at = json.indexOf("\n \"" + key.replace("\"", "\\\"") + "\": {")
             assertTrue("missing translations for: $key", at >= 0)

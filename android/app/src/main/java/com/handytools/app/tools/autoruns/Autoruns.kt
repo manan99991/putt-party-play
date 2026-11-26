@@ -34,7 +34,7 @@ object Autoruns {
     private const val CHANNEL = "autoruns"
 
     /** The autoruns Android does so far, in the page's order; the others stay iPhone-only until they're built here. */
-    val available: List<SmartRuns.Kind> = listOf(SmartRuns.Kind.OVERDUE_INVOICES, SmartRuns.Kind.HEAVY_VIDEOS)
+    val available: List<SmartRuns.Kind> = listOf(SmartRuns.Kind.OVERDUE_INVOICES, SmartRuns.Kind.HEAVY_VIDEOS, SmartRuns.Kind.CONTACTS_BACKUP)
 
     /** Set when a notification is tapped; the page opens that autorun and clears it. */
     var pending by mutableStateOf<String?>(null)
@@ -108,6 +108,10 @@ object Autoruns {
         val news = when (k) {
             SmartRuns.Kind.HEAVY_VIDEOS -> HeavyVideos.find(ctx, window).let { found ->
                 if (found.isEmpty()) null else HeavyVideos.notice(found)
+            }
+            // The week's copy is made right here; a word only when someone has disappeared since the last one.
+            SmartRuns.Kind.CONTACTS_BACKUP -> ContactsBackup.make(ctx, now)?.gone?.size?.let { n ->
+                if (n == 0) null else ContactsBackup.notice(n)
             }
             // Only when something is overdue (as on the iPhone).
             SmartRuns.Kind.OVERDUE_INVOICES -> OverdueInvoices.overdue(com.handytools.app.tools.invoice.InvoiceStore.load(ctx), now).size.let { n ->
