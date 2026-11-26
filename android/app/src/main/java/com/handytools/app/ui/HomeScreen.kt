@@ -30,6 +30,7 @@ import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.MusicNote
 import androidx.compose.material.icons.outlined.DirectionsCar
 import androidx.compose.material.icons.outlined.DocumentScanner
 import androidx.compose.material.icons.outlined.Gif
@@ -158,6 +159,10 @@ val TOOLS = listOf(
         listOf("gif","video","animation","loop","convert","share","clip","meme"),
         about = "Pick a short video and Tenzy turns it into a smooth looping GIF, made on your phone.",
         tint = Color(0xFFDB2777), vicon = Icons.Outlined.Gif),
+    HTool("beatreel", "Beat Reel", "Clips cut to the beat", 0, 0,
+        listOf("reel","reels","beat","music video","montage","tiktok","shorts","highlights","slideshow","music","combine videos","join videos","edit"),
+        about = "Pick a few clips and photos, pick the music, and Tenzy cuts them into a tall reel — every cut on the beat. The music is Tenzy's own, made on your phone.",
+        tint = Color(0xFF8B5CF6), vicon = Icons.Outlined.MusicNote),
     HTool("texttools", "Text Tools", "Clean & change text", 0, 0,
         listOf("text","case","uppercase","lowercase","title case","trim","spaces","line breaks","reverse","word count","character count","clean","format"),
         about = "Paste text and fix it fast — change the case, strip extra spaces and line breaks, reverse it, or just count the words and characters.",
