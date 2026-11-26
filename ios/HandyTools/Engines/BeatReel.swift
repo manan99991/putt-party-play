@@ -93,20 +93,28 @@ enum BeatReel {
         let comp = AVMutableComposition()
         guard let cv = comp.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
         let ts: (Double) -> CMTime = { CMTime(seconds: $0, preferredTimescale: 6000) }
-        var at = 0.0
-        var shapes: [(at: Double, transform: CGAffineTransform)] = []
+        // The timeline is kept in exact clock ticks: adding up rounded seconds left hairline gaps and overlaps between
+        // pieces at tempos whose beats don't fall on the clock's grid (126 BPM), and the export stopped (-11838).
+        var cursor = CMTime.zero
+        var shapes: [(at: CMTime, transform: CGAffineTransform)] = []
         for (i, c) in cuts.enumerated() {
             guard srcs.indices.contains(c.clip) else { continue }
             let src = srcs[c.clip]
             // The last shot carries on, slowing, while the final hit rings (as on Android). A single held frame
             // stretched to the ring-out left the reel empty on the test machine (26 Nov).
             let lasts = c.lasts + (i == cuts.count - 1 ? hold : 0)
-            do { try cv.insertTimeRange(CMTimeRange(start: ts(c.from), duration: ts(c.length)), of: src.track, at: ts(at)) }
+            let piece = ts(c.length)
+            do { try cv.insertTimeRange(CMTimeRange(start: ts(c.from), duration: piece), of: src.track, at: cursor) }
             catch { print("REEL| cut \(c.clip) at \(c.from)s couldn't be inserted: \(error.localizedDescription)"); continue }
-            if abs(lasts - c.length) > 0.01 { cv.scaleTimeRange(CMTimeRange(start: ts(at), duration: ts(c.length)), toDuration: ts(lasts)) }
-            shapes.append((at, fill(natural: src.natural, transform: src.transform)))
-            at += lasts
+            var placed = piece
+            if abs(lasts - c.length) > 0.01 {
+                placed = ts(lasts)
+                cv.scaleTimeRange(CMTimeRange(start: cursor, duration: piece), toDuration: placed)
+            }
+            shapes.append((cursor, fill(natural: src.natural, transform: src.transform)))
+            cursor = CMTimeAdd(cursor, placed)
         }
+        let at = cursor.seconds
         guard at > 0 else { print("REEL| nothing could be cut from \(srcs.count) clips"); return nil }
         // Where the picture really ends (the sum of rounded pieces), so the sound never runs past it.
         let pictureEnd = cv.timeRange.duration.seconds
@@ -119,7 +127,7 @@ enum BeatReel {
 
         // Every clip upright and filling the tall frame.
         let layer = AVMutableVideoCompositionLayerInstruction(assetTrack: cv)
-        for s in shapes { layer.setTransform(s.transform, at: ts(s.at)) }
+        for s in shapes { layer.setTransform(s.transform, at: s.at) }
         let ins = AVMutableVideoCompositionInstruction()
         ins.timeRange = CMTimeRange(start: .zero, duration: comp.duration)
         ins.layerInstructions = [layer]
@@ -134,7 +142,12 @@ enum BeatReel {
         let poll = Task { while !Task.isCancelled { progress?(Double(s.progress)); try? await Task.sleep(nanoseconds: 300_000_000) } }
         let ok = await VideoEngine.run(s, seconds: at)
         poll.cancel()
-        if !ok { print("REEL| the edit didn't save: \(s.error?.localizedDescription ?? "no error given") (\((s.error as NSError?)?.code ?? 0))") }
+        if !ok {
+            let pieces = cv.segments.map { $0.timeMapping.target.duration.seconds }
+            print("REEL| the edit didn't save: \(s.error?.localizedDescription ?? "no error given") (\((s.error as NSError?)?.code ?? 0)) — " +
+                  "\(pieces.count) pieces, shortest \(pieces.min() ?? 0)s, empty \(cv.segments.filter(\.isEmpty).count), picture \(pictureEnd)s, " +
+                  "whole \(comp.duration.seconds)s, clips \(srcs.map { "\(Int($0.natural.width))x\(Int($0.natural.height))" })")
+        }
         return ok ? (out, at) : nil
     }
 

@@ -1,6 +1,6 @@
-# 26 Nov, before the TestFlight build, round 4. Round 3 passed the trailer (made for real, and end to end from a
-# recorded clip) and the stretchy face. Beat Reel still came out empty — the one thing it did that the trailer
-# didn't was hold a single last frame stretched to the ring-out; the last shot now slows into it instead (as on
-# Android, where it works on the device). REEL| lines now reach the published log.
+# 26 Nov, round 5. Round 4: Beat Reel now works end to end in the app (a recorded clip became a finished reel), but
+# the unit reel (two clips, Party, 126 BPM) stopped with -11838. The trailer (96 BPM, beats on the clock's grid)
+# works, so the theory is rounding: pieces placed at summed, rounded seconds left hairline gaps/overlaps. The
+# timeline is now kept in exact clock ticks; REEL| says pieces, shortest, empties and lengths if it fails again.
 HandyToolsTests/BeatReelTests
 HandyToolsUITests/CameraButtonTests/testBeatReelRecordsAClipAndCutsAReel
