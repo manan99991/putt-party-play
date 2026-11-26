@@ -165,4 +165,56 @@ platform :android do
       end
     end
   end
+
+  # The Play store text only, where it still states an old price (26 Nov: Manan, "pricing needs to be consistent
+  # everywhere"). Reads the live listings; for English, replaces the full description with the repo's
+  # (metadata/android/en-US/full_description.txt) only when the live one still says $19.99; other languages that
+  # mention an old price are reported, not touched. No images, screenshots, release notes or releases change.
+  lane :listing_price_text do
+    require "googleauth"
+    require "net/http"
+    require "json"
+    pkg = "com.tenzy.toolkit"
+    creds = Google::Auth::ServiceAccountCredentials.make_creds(json_key_io: File.open(ENV["SUPPLY_JSON_KEY_PATH"] || "play-key.json"), scope: "https://www.googleapis.com/auth/androidpublisher")
+    token = creds.fetch_access_token!["access_token"]
+    base = "https://androidpublisher.googleapis.com/androidpublisher/v3/applications/#{pkg}"
+    call = lambda do |method, path, body = nil|
+      uri = URI(base + path)
+      req = { get: Net::HTTP::Get, post: Net::HTTP::Post, put: Net::HTTP::Put, delete: Net::HTTP::Delete }[method].new(uri)
+      req["Authorization"] = "Bearer #{token}"; req["Content-Type"] = "application/json"
+      req.body = body.to_json if body
+      res = Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |h| h.request(req) }
+      [res.code.to_i, (JSON.parse(res.body) rescue { "raw" => res.body.to_s[0, 300] })]
+    end
+    old = /\$?19[.,]99/
+    repo = File.read(File.join(__dir__, "metadata/android/en-US/full_description.txt")).strip
+    UI.user_error!("the repo's description doesn't have the new price") unless repo.include?("$2.99 a month or $29.99 a year")
+    code, edit = call.(:post, "/edits", {})
+    UI.user_error!("couldn't open an edit (#{code}): #{edit.to_s[0, 300]}") unless code == 200
+    eid = edit["id"]
+    code, res = call.(:get, "/edits/#{eid}/listings")
+    listings = res["listings"] || []
+    UI.message("live listings: #{listings.map { |l| l['language'] }.join(', ')}")
+    changed = 0
+    listings.each do |l|
+      next unless l["fullDescription"].to_s =~ old
+      if l["language"] == "en-US"
+        l["fullDescription"] = repo
+        code, r = call.(:put, "/edits/#{eid}/listings/en-US", l)
+        UI.user_error!("couldn't update en-US (#{code}): #{r.to_s[0, 300]}") unless code == 200
+        changed += 1
+        UI.success("en-US full description: now $2.99 a month or $29.99 a year, 7-day trial")
+      else
+        UI.important("#{l['language']} still mentions $19.99 — not changed here (no source text in the repo)")
+      end
+    end
+    if changed == 0
+      call.(:delete, "/edits/#{eid}")
+      UI.message("nothing on the live listing says $19.99 — no change made")
+      next
+    end
+    code, r = call.(:post, "/edits/#{eid}:commit")
+    UI.user_error!("couldn't save the change (#{code}): #{r.to_s[0, 300]}") unless code == 200
+    UI.success("saved; Google shows it once its review of the text is done")
+  end
 end

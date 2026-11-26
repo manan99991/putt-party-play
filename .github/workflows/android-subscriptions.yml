@@ -6,7 +6,7 @@ on:
   workflow_dispatch: {}
   push:
     branches: [handytools]
-    paths: [".github/play-subscriptions.trigger"]
+    paths: [".github/play-subscriptions.trigger", ".github/play-listing-text.trigger"]
 concurrency:
   group: android-subscriptions
   cancel-in-progress: false
@@ -21,6 +21,7 @@ jobs:
       PLAY_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
     steps:
       - uses: actions/checkout@v4
+        with: { fetch-depth: 2 }
       - uses: ruby/setup-ruby@v1
         with: { ruby-version: "3.3" }
       - name: Install fastlane
@@ -31,7 +32,12 @@ jobs:
           [ -n "$PLAY_JSON" ] || { echo "::error::PLAY_SERVICE_ACCOUNT_JSON is not set"; exit 1; }
           echo "$PLAY_JSON" > "$RUNNER_TEMP/play-key.json"
           export SUPPLY_JSON_KEY_PATH="$RUNNER_TEMP/play-key.json"
-          fastlane subscriptions 2>&1 | tee "$GITHUB_WORKSPACE/play-subscriptions.log"
+          # The listing-text trigger fixes only the price sentence on the live listing; otherwise set the plans.
+          if git -C "$GITHUB_WORKSPACE" diff --name-only HEAD~1 HEAD 2>/dev/null | grep -q "play-listing-text.trigger"; then
+            fastlane listing_price_text 2>&1 | tee "$GITHUB_WORKSPACE/play-subscriptions.log"
+          else
+            fastlane subscriptions 2>&1 | tee "$GITHUB_WORKSPACE/play-subscriptions.log"
+          fi
       - name: Publish log
         if: always()
         working-directory: .
