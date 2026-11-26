@@ -25,14 +25,16 @@ final class HowToFilmTests: XCTestCase {
         app.launch()
         let field = app.textFields["describe-field"].exists ? app.textFields["describe-field"] : app.textViews["describe-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 30))
-        sleep(2); mark("FILM-START")
+        sleep(2); mark("FILM-START"); sleep(2)      // the recorder starts on this mark; give it a moment
         field.tap()
         if app.buttons["Continue"].waitForExistence(timeout: 2) { app.buttons["Continue"].tap() }   // the keyboard's one-time tip
         sleep(1)
         field.typeText("Every evening, help me email today's screenshots to myself")
         sleep(2)
         any["describe-build"].firstMatch.tap()
-        sleep(7)                                  // Tenzy puts the steps together, with an evening reminder
+        sleep(3)                                  // Tenzy puts the steps together, with an evening reminder…
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.03)).tap()   // …and asks to send it: Allow
+        sleep(6)
         mark("FILM-END")
     }
 
@@ -42,7 +44,7 @@ final class HowToFilmTests: XCTestCase {
         app.launch()
         let on = any["smartrun-on-receipts"].firstMatch
         XCTAssertTrue(on.waitForExistence(timeout: 30))
-        sleep(2); mark("FILM-START")
+        sleep(2); mark("FILM-START"); sleep(2)
         if (on.value as? String) != "1" { on.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap() }
         sleep(1)
         app.staticTexts["Smart autoruns"].firstMatch.tap()   // lets the monitor answer the notifications prompt
@@ -63,8 +65,10 @@ final class HowToFilmTests: XCTestCase {
         app.launchArguments = ["-route", "home", "-uitest", "-givephotos", "1"]
         app.launch()
         XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 90))
-        sleep(3); mark("FILM-START")
-        let goal = any.matching(NSPredicate(format: "identifier BEGINSWITH 'goal-'")).firstMatch
+        sleep(2); mark("FILM-START"); sleep(3)
+        // "Send it" (smaller, private, the right format) works on any photo; the sample isn't one to cut out.
+        let send = any["goal-share"].firstMatch
+        let goal = send.waitForExistence(timeout: 10) ? send : any.matching(NSPredicate(format: "identifier BEGINSWITH 'goal-'")).firstMatch
         if goal.waitForExistence(timeout: 10) { goal.tap() }
         sleep(3)
         let way = any.matching(NSPredicate(format: "identifier BEGINSWITH 'guide-' AND identifier != 'guide-more' AND identifier != 'guide-suggested'")).firstMatch
