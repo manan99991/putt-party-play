@@ -249,7 +249,9 @@ struct ScrubView: View {
             videoInURL = nil; result = nil; errorText = nil
             originalData = d; original = img.normalizedUp(); meta = Scrubber.metadata(in: d); detecting = true
         }
-        let found = Scrubber.detect(img)
+        // Off the main thread (26 Nov): run on it, face and text detection froze the screen before the photo could show —
+        // a photo handed over from "Got something?" looked as if it had never arrived. The same as PhotoResultInsight.
+        let found = await Task.detached(priority: .userInitiated) { Scrubber.detect(img) }.value
         await MainActor.run {
             boxes = found.faces.map { Box(rect: $0, kind: .face, on: true) } + found.text.map { Box(rect: $0.rect, kind: .text, on: $0.personal) }
             detecting = false

@@ -1241,6 +1241,15 @@ final class SmartDescribeTests: XCTestCase {
         XCTAssertEqual(ChainPlanner.guess("shrink a photo under 1 mb")?.sure, true)
         // The Home ask box's own example (26 Nov) builds what it says: screenshots in, emailed, a reminder every evening.
         let example = ChainPlanner.guess("Every evening, help me email today's screenshots to myself")
+        // The steps too (the first version of this test checked only the ending, and the helper built was "Shrink a photo
+        // to under 2 MB" — the how-to film caught it): sent as they are, under the name of what was said.
+        XCTAssertEqual(example?.sure, true)
+        XCTAssertEqual(example?.chain.name, "Email today's screenshots to myself")
+        XCTAssertEqual(example?.chain.steps.map(\.block), [.stripLocation], "nothing changes the screenshots on the way")
+        XCTAssertNil(example?.chain.problem(starting: .image))
+        XCTAssertEqual(ChainPlanner.guess("send my photos to me")?.chain.name, "Email my photos to myself")
+        XCTAssertNotEqual(ChainPlanner.guess("shrink my screenshots and email them")?.chain.steps.map(\.block), [.stripLocation],
+                          "a sentence that says what to do to them isn't 'as they are'")
         XCTAssertEqual(example?.chain.finish?.kind, .mail, "it ends in an email")
         XCTAssertEqual(example?.chain.schedule?.hour, 19, "every evening")
         XCTAssertEqual(example?.chain.schedule?.days, [])

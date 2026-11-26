@@ -37,6 +37,22 @@ final class MultiPhotoTests: XCTestCase {
         app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'goal-'")).allElementsBoundByIndex.map(\.identifier)
     }
 
+    /// "Got something?" → a photo → Send it → Privacy Scrubber: the photo is already in the tool (26 Nov — the how-to film
+    /// showed "Choose a photo or video" instead: the scrubber's face and text search held the screen before it could show).
+    func testAPhotoHandedToTheScrubberShowsUp() {
+        launch(photos: 1)
+        XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 90), "guide never opened")
+        let send = app.descendants(matching: .any)["goal-share"].firstMatch
+        XCTAssertTrue(send.waitForExistence(timeout: 10), "no Send it")
+        send.tap()
+        let scrub = app.descendants(matching: .any)["guide-scrub"].firstMatch
+        XCTAssertTrue(scrub.waitForExistence(timeout: 10), "no Privacy Scrubber under Send it: \(app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'guide-'")).allElementsBoundByIndex.map(\.identifier))")
+        scrub.tap()
+        XCTAssertTrue(app.buttons["Choose a different photo or video"].waitForExistence(timeout: 8),
+                      "the photo didn't arrive in the scrubber within 8 s (it still asks to choose one: \(app.buttons["Choose a photo or video"].exists))")
+        alive("scrubber with the handed-over photo")
+    }
+
     func testPickingManyPhotosOpensTheGuide() {
         for n in [1, 2, 8, 20] {
             launch(photos: n)

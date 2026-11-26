@@ -33,6 +33,11 @@ enum ChainPlanner {
     /// The tool for a sentence, and whether the sentence said enough to be sure of it.
     static func guess(_ ask: String) -> (chain: Chain, sure: Bool)? {
         let clean = PlannerWords.tidy(ask)
+        if var c = sendAsIs(clean) {       // "email today's screenshots to myself": sent as they are, under its own name
+            c.finish = ending(clean) ?? ChainFinish(kind: .mail, to: "")
+            c.schedule = timing(clean)
+            return (c, true)
+        }
         var found = rules(clean).map { (chain: $0, sure: true) } ?? fallback(clean).map { (chain: $0, sure: false) }
         guard var c = found?.chain else { return nil }
         if c.finish == nil { c.finish = ending(clean) }
@@ -42,6 +47,24 @@ enum ChainPlanner {
         if found?.sure == true || c.name.isEmpty { c.name = ChainText.toolName(ask: ask, chain: c) }
         found?.chain = c
         return found
+    }
+
+    /// "Every evening, help me email today's screenshots to myself" — the Home ask box's own example (26 Nov). It used to
+    /// fall through to the nearest ready-made tool and built "Shrink a photo to under 2 MB". Pictures someone just wants
+    /// sent go as they are: the one step takes the location out (a screenshot has none, so it looks exactly the same),
+    /// then the email; the helper is named for what was said, and its picker opens on screenshots when they were named.
+    /// A sentence that says what to do to them (shrink, PDF, collage…) is left to the other rules. Pure.
+    static func sendAsIs(_ clean: String) -> Chain? {
+        let s = " " + clean + " "
+        func has(_ words: [String]) -> Bool { words.contains { s.contains($0) } }
+        guard has(["email", "e-mail", " mail ", " send "]), has(["screenshot", "photo", "picture", " pics", " pic "]) else { return nil }
+        guard !has(["shrink", "smaller", "compress", "under ", " mb", " kb", "pdf", "collage", "gif", "convert", "jpg", "jpeg", "heic",
+                    " png", "hide", "blur", "crop", "resize", "watermark", "text from", "read ", "translate", "sticker", "cut out",
+                    "video", "clip", "receipt", "card", "whiteboard", "poster", "scan", "sum up", "summar", "caption"]) else { return nil }
+        let shots = has(["screenshot"])
+        var name = (has(["today"]) ? "Email today's " : "Email my ") + (shots ? "screenshots" : "photos")
+        if has(["myself", " to me ", " me them", " me the "]) { name += " to myself" }
+        return Chain(id: UUID().uuidString, name: name, steps: [ChainStep(block: .stripLocation)])
     }
 
     /// "…and email it" / "…then text it": how the tool should end, when the sentence says. nil leaves it at Save or share.

@@ -1,4 +1,5 @@
-# 26 Nov (2nd run): the first run skipped every item — no cached preview for new photos; now the preview is made from the photo itself.
-# Home › See all lists every ready-made flow under one section.
-HandyToolsTests/CleanerDuplicatesTests
-HandyToolsTests/HomeShelvesTests/testEveryReadyMadeFlowSitsUnderOneSection
+# 26 Nov: the how-to films caught two bugs. The ask box's own example built "Shrink a photo to under 2 MB" (now: Email
+# today's screenshots to myself, sent as they are), and a photo handed to the Privacy Scrubber didn't show (detection
+# held the screen). Planner test checks the steps now; the UI test checks the photo arrives.
+HandyToolsTests/SmartDescribeTests/testItSaysWhenItIsOnlyAGuess
+HandyToolsUITests/MultiPhotoTests/testAPhotoHandedToTheScrubberShowsUp

@@ -1876,7 +1876,7 @@ private struct ChainEditor: View {
             }.padding(HandySpacing.gutter)
         }
         .background(Ground())
-        .navigationTitle(L("Build a tool")).navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(L("Build a helper")).navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button(L("Cancel")) { dismiss() } }
             ToolbarItem(placement: .confirmationAction) { Button(L("Save")) { if !store.isPremium && chain.needsPro { showPro = true } else { var c = chain; c.name = ChainText.savedName(c); onSave(c) } }.disabled(!valid) }
@@ -3311,6 +3311,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         if b.contains(.readCode) { return .code }
         if !b.isDisjoint(with: [.emojiFaces, .hideSensitive]) { return .people }
         if b.contains(.photoPdf) { return .document }
+        if chain.name.lowercased().contains("screenshot") { return .screenshot }   // "Email today's screenshots…": today's first
         return .any
     }
 
