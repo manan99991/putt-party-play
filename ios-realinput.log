@@ -21,7 +21,7 @@ REALINPUT what-is-this: result (run-result)
 REALINPUT scan-to-pdf: result (run-result)
 REALINPUT sign-and-send: result (run-result)
 REALINPUT receipt-run: result (run-result)
-REALINPUT whatsapp-no-save: CRASHED
+REALINPUT whatsapp-no-save: result (run-result)
 REALINPUT contact-qr: result (run-result)
 REALINPUT video-email: result (run-result)
 REALINPUT video-chat: result (run-result)
@@ -45,8 +45,7 @@ REALINPUT pdf-join: result (run-result)
 REALINPUT pdf-first-page: result (run-result)
 REALINPUT video-story: result (run-result)
 REALINPUT video-gif: result (run-result)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/RealInputTests.swift:76: error: -[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles] : XCTAssertTrue failed - The app closed on: whatsapp-no-save
-Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' failed (1505.838 seconds).
+Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (1234.997 seconds).
 Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' started.
 REALINPUT video-words: result (run-result)
 REALINPUT photo-collage: result (run-result)
@@ -74,6 +73,10 @@ REALINPUT voice-monster: result (run-result)
 REALINPUT voice-walkie: result (run-result)
 REALINPUT voice-cave: result (run-result)
 REALINPUT voice-ghost: result (run-result)
+REALINPUT voice-autotune: result (run-result)
+REALINPUT voice-announcer: result (run-result)
+REALINPUT voice-radio: result (run-result)
+REALINPUT voice-whisper: result (run-result)
 REALINPUT video-voice: result (run-result)
 REALINPUT before-after: result (run-result)
 REALINPUT photo-sell: result (run-result)
@@ -94,79 +97,19 @@ REALINPUT whiteboard-email: result (run-result)
 REALINPUT chat-scam: result (run-result)
 REALINPUT rewrite-clear: result (run-result)
 REALINPUT signature-contact: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1505.847 seconds).
-	 Executed 2 tests, with 1 failure (0 unexpected) in 3011.685 (3011.720) seconds
+Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1436.150 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 2671.147 (2671.173) seconds
 Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' started.
-TOOLINPUT studio: ok 33s
-TOOLINPUT procam: ok 33s
-TOOLINPUT video: ok 40s
-TOOLINPUT formatfix: ok 35s
-TOOLINPUT fitit: ok 38s
-TOOLINPUT scrub: ok 35s
-TOOLINPUT identify: ok 35s
-TOOLINPUT stitch: ok 33s
-TOOLINPUT qrwifi: ok 34s
-TOOLINPUT cleaner: ok 34s
-TOOLINPUT scan: ok 33s
-TOOLINPUT datagrab: ok 36s
-TOOLINPUT pdfredact: ok 33s
-TOOLINPUT sorted: ok 33s
-TOOLINPUT memory: ok 35s
-TOOLINPUT warranty: ok 36s
-TOOLINPUT textstudio: ok 31s
-TOOLINPUT thinking: ok 42s
-TOOLINPUT medreminder: ok 34s
-TOOLINPUT pricewatch: ok 34s
-TOOLINPUT planner: ok 33s
-TOOLINPUT brief: ok 35s
-TOOLINPUT daydiary: ok 34s
-TOOLINPUT untangle: ok 33s
-TOOLINPUT menu: ok 35s
-TOOLINPUT cards: ok 35s
-TOOLINPUT pdfannotate: ok 34s
-TOOLINPUT pdfconvert: ok 40s
-TOOLINPUT pdfpages: ok 36s
-TOOLINPUT pdfsign: ok 34s
-TOOLINPUT pdfprotect: ok 39s
-TOOLINPUT pdfsearchable: ok 34s
-TOOLINPUT pdfform: ok 34s
-TOOLINPUT zipmaker: ok 35s
-TOOLINPUT celebrate: ok 44s
-TOOLINPUT animate: ok 38s
-TOOLINPUT collage: ok 38s
-TOOLINPUT faceemoji: ok 37s
-TOOLINPUT comicstrip: ok 37s
-TOOLINPUT sticker: ok 36s
-TOOLINPUT audioconvert: ok 34s
-TOOLINPUT audiocompress: ok 33s
-TOOLINPUT ringtone: ok 32s
-TOOLINPUT audioedit: ok 34s
-TOOLINPUT audiomix: ok 34s
-TOOLINPUT audiotags: ok 32s
-TOOLINPUT audioclean: ok 31s
-TOOLINPUT meetingnotes: ok 34s
-TOOLINPUT soundboard: ok 32s
-TOOLINPUT translate: ok 31s
-TOOLINPUT voicenotes: ok 31s
-TOOLINPUT shield: ok 40s
-TOOLINPUT contacts: ok 34s
-TOOLINPUT light: ok 40s
-TOOLINPUT measure: ok 34s
-TOOLINPUT gpsdash: ok 41s
-TOOLINPUT audiolab: ok 36s
-TOOLINPUT rest: ok 45s
-TOOLINPUT seeread: ok 34s
-TOOLINPUT colorvision: ok 35s
-TOOLINPUT fileviewer: ok 34s
-TOOLINPUT pricecheck: ok 34s
-TOOLINPUT vault: ok 33s
-TOOLINPUT speechnotes: ok 33s
-TOOLINPUT audiostudio: ok 33s
-TOOLINPUT invoice: ok 36s
-TOOLINPUT mileage: ok 35s
-TOOLINPUT pricelist: ok 33s
-Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' passed (2492.030 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 2492.030 (2492.032) seconds
-	 Executed 3 tests, with 1 failure (0 unexpected) in 5503.715 (5503.760) seconds
-	 Executed 3 tests, with 1 failure (0 unexpected) in 5503.715 (5503.763) seconds
-** TEST EXECUTE FAILED **
+TOOLINPUT studio: ok 35s
+TOOLINPUT procam: ok 32s
+TOOLINPUT video: ok 32s
+TOOLINPUT formatfix: ok 33s
+TOOLINPUT fitit: ok 33s
+TOOLINPUT scrub: ok 33s
+TOOLINPUT identify: ok 34s
+TOOLINPUT stitch: ok 31s
+TOOLINPUT qrwifi: ok 33s
+TOOLINPUT cleaner: ok 31s
+TOOLINPUT scan: ok 35s
+TOOLINPUT datagrab: ok 34s
+TOOLINPUT pdfredact: ok 34s
