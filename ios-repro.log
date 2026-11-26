@@ -1,76 +1,31 @@
-2026-11-26 03:05:06.878573+0000 HandyTools[33858:93775] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-26 03:05:10.472519+0000 HandyTools[33858:93779] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-26 03:05:10.486650+0000 HandyTools[33858:93779] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-26 03:05:10.490197+0000 HandyTools[33858:93779] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-26 03:05:10.494553+0000 HandyTools[33858:93779] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-26 03:05:10.543052+0000 HandyTools[33858:93779] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-26 03:05:10.543769+0000 HandyTools[33858:93779] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-Test Case '-[HandyToolsTests.SmartContactsTests testEveryContactIsReadBackFromTheCopy]' started.
-Test Case '-[HandyToolsTests.SmartContactsTests testEveryContactIsReadBackFromTheCopy]' passed (0.033 seconds).
-Test Case '-[HandyToolsTests.SmartContactsTests testRestoredContactsStopWaiting]' started.
-Test Case '-[HandyToolsTests.SmartContactsTests testRestoredContactsStopWaiting]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.SmartContactsTests testWhoIsGoneAndWhoIsNew]' started.
-Test Case '-[HandyToolsTests.SmartContactsTests testWhoIsGoneAndWhoIsNew]' passed (0.001 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.034 (0.039) seconds
-Test Case '-[HandyToolsTests.SmartRunsTests testAHabitBecomesAForYouOffer]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testAHabitBecomesAForYouOffer]' passed (0.023 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testASmallerVideoMustSaveRealSpace]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testASmallerVideoMustSaveRealSpace]' passed (0.053 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testDueOnlyOncePerChosenTime]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testDueOnlyOncePerChosenTime]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testHabitsSuggestTheRightAutorun]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testHabitsSuggestTheRightAutorun]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testItComesBackAtTheNextChosenTime]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testItComesBackAtTheNextChosenTime]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testItLooksAtWhatsNewButNeverAWeekAtOnce]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testItLooksAtWhatsNewButNeverAWeekAtOnce]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testOnlyHeavyVideosAreResaved]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testOnlyHeavyVideosAreResaved]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testPostPicksAreRealClipsNewestFirst]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testPostPicksAreRealClipsNewestFirst]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testSharpClipsRankAboveBlurryOnes]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testSharpClipsRankAboveBlurryOnes]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageFavoursLittleOnesAndSpreadsAcrossTheDay]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageFavoursLittleOnesAndSpreadsAcrossTheDay]' passed (0.008 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageKeepsOnePerMomentAndOnlyPeople]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageKeepsOnePerMomentAndOnlyPeople]' passed (3.049 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testTheSamePictureBar]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testTheSamePictureBar]' passed (0.023 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testTidyKeepsTheRightCopyAndTheUsefulScreenshots]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testTidyKeepsTheRightCopyAndTheUsefulScreenshots]' passed (0.025 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testToolDaysCountDaysNotOpens]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testToolDaysCountDaysNotOpens]' passed (0.013 seconds).
-Test Case '-[HandyToolsTests.SmartRunsTests testTwiceADayIsTwelveHoursApart]' started.
-Test Case '-[HandyToolsTests.SmartRunsTests testTwiceADayIsTwelveHoursApart]' passed (0.306 seconds).
-	 Executed 15 tests, with 0 failures (0 unexpected) in 3.514 (3.592) seconds
-Test Case '-[HandyToolsTests.SmartVoiceTests testAMemoIsCalledByWhatItSaysUnlessThePersonNamedIt]' started.
-Test Case '-[HandyToolsTests.SmartVoiceTests testAMemoIsCalledByWhatItSaysUnlessThePersonNamedIt]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.SmartVoiceTests testOnlyTodaysNewSoundFilesAreWrittenUp]' started.
-Test Case '-[HandyToolsTests.SmartVoiceTests testOnlyTodaysNewSoundFilesAreWrittenUp]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.SmartVoiceTests testTheNotesReadWellAsText]' started.
-Test Case '-[HandyToolsTests.SmartVoiceTests testTheNotesReadWellAsText]' passed (0.004 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.006 (0.072) seconds
+2026-11-26 03:29:02.338792+0000 HandyTools[26705:78221] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-11-26 03:29:03.792442+0000 HandyTools[26705:78713] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+2026-11-26 03:29:03.897293+0000 HandyTools[26705:78222] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 03:29:03.901978+0000 HandyTools[26705:78222] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 03:29:03.902339+0000 HandyTools[26705:78222] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 03:29:03.902532+0000 HandyTools[26705:78222] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 03:29:03.927299+0000 HandyTools[26705:78222] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 03:29:03.928496+0000 HandyTools[26705:78222] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
 Test Case '-[HandyToolsTests.SmartWeekTests testItComesBackOnSundayEvening]' started.
-Test Case '-[HandyToolsTests.SmartWeekTests testItComesBackOnSundayEvening]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.SmartWeekTests testItComesBackOnSundayEvening]' passed (0.013 seconds).
 Test Case '-[HandyToolsTests.SmartWeekTests testTheFilmIsReallyMade]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/SmartWeekTests.swift:112: error: -[HandyToolsTests.SmartWeekTests testTheFilmIsReallyMade] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("60.0") - the film opens on black, not on its title
-Test Case '-[HandyToolsTests.SmartWeekTests testTheFilmIsReallyMade]' failed (60.677 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/SmartWeekTests.swift:127: error: -[HandyToolsTests.SmartWeekTests testTheFilmIsReallyMade] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("60.0") - the film opens on black, not on its title — card 136, picture 180, glide [0.0s=0 0.2s=73 0.6s=123 1.5s=123 3.0s=93], film [0.0s=0 0.2s=73 0.6s=123 1.5s=123 3.0s=93]
+Test Case '-[HandyToolsTests.SmartWeekTests testTheFilmIsReallyMade]' failed (57.011 seconds).
 Test Case '-[HandyToolsTests.SmartWeekTests testTheTitleNamesTheWeek]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/SmartWeekTests.swift:48: error: -[HandyToolsTests.SmartWeekTests testTheTitleNamesTheWeek] : XCTAssertTrue failed - same month: the month once — My week · Nov 20 – 27
-Test Case '-[HandyToolsTests.SmartWeekTests testTheTitleNamesTheWeek]' failed (0.007 seconds).
+Test Case '-[HandyToolsTests.SmartWeekTests testTheTitleNamesTheWeek]' passed (0.017 seconds).
 Test Case '-[HandyToolsTests.SmartWeekTests testTheWeekIsToldDayByDay]' started.
-Test Case '-[HandyToolsTests.SmartWeekTests testTheWeekIsToldDayByDay]' passed (0.002 seconds).
-	 Executed 4 tests, with 2 failures (0 unexpected) in 60.687 (60.692) seconds
-	 Executed 25 tests, with 2 failures (0 unexpected) in 64.241 (64.398) seconds
-	 Executed 25 tests, with 2 failures (0 unexpected) in 64.241 (64.400) seconds
+Test Case '-[HandyToolsTests.SmartWeekTests testTheWeekIsToldDayByDay]' passed (0.004 seconds).
+	 Executed 4 tests, with 1 failure (0 unexpected) in 57.045 (57.051) seconds
+	 Executed 4 tests, with 1 failure (0 unexpected) in 57.045 (57.057) seconds
+	 Executed 4 tests, with 1 failure (0 unexpected) in 57.045 (57.059) seconds
 Test Case '-[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:786: error: -[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages] : XCTAssertTrue failed - no PDF was made: Test run worked: no photos of letters, bills or forms from the last 24 hours. [2 photos in the window | doc 0.0 rec 0.0 card -1.0 · 0 words · outdoor/night sky/sky | doc 0.0 rec 0.0 card -1.0 · 0 words · outdoor/night sky/sky]
-    t =    41.22s         Requesting snapshot of accessibility hierarchy for app with pid 38025
-    t =    41.44s     Requesting snapshot of accessibility hierarchy for app with pid 38025
-    t =    41.63s     Requesting snapshot of accessibility hierarchy for app with pid 38025
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:787: error: -[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages] : Failed to get matching snapshot: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"smartrun-check-paperPDFs" IN identifiers'`, given input App element pid: 38025
-Test Case '-[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages]' failed (42.098 seconds).
-	 Executed 1 test, with 2 failures (0 unexpected) in 42.098 (42.144) seconds
-	 Executed 1 test, with 2 failures (0 unexpected) in 42.098 (42.144) seconds
-	 Executed 1 test, with 2 failures (0 unexpected) in 42.098 (42.146) seconds
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:786: error: -[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages] : XCTAssertTrue failed - no PDF was made: Test run worked: no photos of letters, bills or forms from the last 24 hours. [seeded 1400x1900@1.0 mean 197, 1400x1900@1.0 mean 198 | 2 photos in the window | 1400x1900 72s ago | doc 0.0 rec 0.0 card -1.0 · 0 words · outdoor/night sky/sky | 1400x1900 53s ago | doc 0.0 rec 0.0 card -1.0 · 0 words · outdoor/night sky/sky]
+    t =    35.20s         Requesting snapshot of accessibility hierarchy for app with pid 30323
+    t =    35.37s     Requesting snapshot of accessibility hierarchy for app with pid 30323
+    t =    35.56s     Requesting snapshot of accessibility hierarchy for app with pid 30323
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:787: error: -[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages] : Failed to get matching snapshot: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"smartrun-check-paperPDFs" IN identifiers'`, given input App element pid: 30323
+Test Case '-[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages]' failed (35.998 seconds).
+	 Executed 1 test, with 2 failures (0 unexpected) in 35.998 (36.023) seconds
+	 Executed 1 test, with 2 failures (0 unexpected) in 35.998 (36.033) seconds
+	 Executed 1 test, with 2 failures (0 unexpected) in 35.998 (36.035) seconds
 == crash reports
