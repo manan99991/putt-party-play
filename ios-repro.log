@@ -1,6 +1,67 @@
-Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' passed (425.830 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 425.830 (425.890) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 425.830 (425.896) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 425.830 (425.898) seconds
+2026-11-26 01:50:16.289637+0000 HandyTools[38410:106308] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-26 01:50:19.703144+0000 HandyTools[38410:106303] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 01:50:19.766416+0000 HandyTools[38410:106303] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 01:50:19.767027+0000 HandyTools[38410:106303] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 01:50:19.780834+0000 HandyTools[38410:106303] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 01:50:19.789703+0000 HandyTools[38410:106303] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 01:50:19.842773+0000 HandyTools[38410:106303] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+Test Case '-[HandyToolsTests.SmartCollageTests testAFaceNearTheEdgeIsBroughtIntoTheFrame]' started.
+Test Case '-[HandyToolsTests.SmartCollageTests testAFaceNearTheEdgeIsBroughtIntoTheFrame]' passed (0.007 seconds).
+Test Case '-[HandyToolsTests.SmartCollageTests testRealPhotosKeepEveryFaceInItsTile]' started.
+Test Case '-[HandyToolsTests.SmartCollageTests testRealPhotosKeepEveryFaceInItsTile]' passed (8.464 seconds).
+Test Case '-[HandyToolsTests.SmartCollageTests testTheCollageIsFullSizeWithTheDateUnderneath]' started.
+Test Case '-[HandyToolsTests.SmartCollageTests testTheCollageIsFullSizeWithTheDateUnderneath]' passed (0.197 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 8.668 (8.674) seconds
+Test Case '-[HandyToolsTests.SmartReceiptsTests testAddingTheSameRunAgainAddsNothing]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testAddingTheSameRunAgainAddsNothing]' passed (0.035 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testALabelAndItsAmountAcrossAGapStayTogether]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testALabelAndItsAmountAcrossAGapStayTogether]' passed (2.326 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testAShopNameWithACommaStaysInOneCell]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testAShopNameWithACommaStaysInOneCell]' passed (0.014 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testCategories]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testCategories]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testEachReceiptIsOneExactRow]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testEachReceiptIsOneExactRow]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testHeldBackWhenTheNumbersDontAddUp]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testHeldBackWhenTheNumbersDontAddUp]' passed (0.023 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testOldAndNewSheetsTakeEachOthersRows]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testOldAndNewSheetsTakeEachOthersRows]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testTheSameReceiptTwiceCountsOnce]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testTheSameReceiptTwiceCountsOnce]' passed (0.002 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 2.410 (2.638) seconds
+Test Case '-[HandyToolsTests.SmartRunsTests testASmallerVideoMustSaveRealSpace]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testASmallerVideoMustSaveRealSpace]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testDueOnlyOncePerChosenTime]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testDueOnlyOncePerChosenTime]' passed (0.334 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testHabitsSuggestTheRightAutorun]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testHabitsSuggestTheRightAutorun]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testItComesBackAtTheNextChosenTime]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testItComesBackAtTheNextChosenTime]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testItLooksAtWhatsNewButNeverAWeekAtOnce]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testItLooksAtWhatsNewButNeverAWeekAtOnce]' passed (0.000 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testOnlyHeavyVideosAreResaved]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testOnlyHeavyVideosAreResaved]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testPostPicksAreRealClipsNewestFirst]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testPostPicksAreRealClipsNewestFirst]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testSharpClipsRankAboveBlurryOnes]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testSharpClipsRankAboveBlurryOnes]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageFavoursLittleOnesAndSpreadsAcrossTheDay]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageFavoursLittleOnesAndSpreadsAcrossTheDay]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageKeepsOnePerMomentAndOnlyPeople]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageKeepsOnePerMomentAndOnlyPeople]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testTheSamePictureBar]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testTheSamePictureBar]' passed (0.018 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testTwiceADayIsTwelveHoursApart]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testTwiceADayIsTwelveHoursApart]' passed (0.002 seconds).
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.369 (2.330) seconds
+	 Executed 23 tests, with 0 failures (0 unexpected) in 11.447 (13.649) seconds
+	 Executed 23 tests, with 0 failures (0 unexpected) in 11.447 (13.651) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact]' started.
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact]' passed (51.235 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' started.
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:730: error: -[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt] : XCTAssertEqual failed: ("0") is not equal to ("2") - clip size unknown: 1,080x1,920
+Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' failed (120.589 seconds).
+	 Executed 2 tests, with 1 failure (0 unexpected) in 171.824 (171.831) seconds
+	 Executed 2 tests, with 1 failure (0 unexpected) in 171.824 (171.834) seconds
+	 Executed 2 tests, with 1 failure (0 unexpected) in 171.824 (171.836) seconds
 == crash reports
