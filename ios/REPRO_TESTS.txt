@@ -1,5 +1,6 @@
-# 26 Nov (2nd): only the UI test remains — its button is "guide-tool-scrub". Unit tests (copies only, planner) passed.
-# as duplicates). Strict same-picture check + the real-library test; plus the ask-box helper and the scrubber handover.
-HandyToolsTests/CleanerDuplicatesTests
-HandyToolsTests/SmartDescribeTests/testItSaysWhenItIsOnlyAGuess
-HandyToolsUITests/MultiPhotoTests/testAPhotoHandedToTheScrubberShowsUp
+# 26 Nov (3rd): the TestFlight gate failed once on Ready to post (no clip after Check), and the second how-to film froze
+# at the end of a receipts Test run. Both again — failures now say what was on screen, and the workflow samples the app
+# every 20 s and prints where its main thread is stuck, if it ever is.
+HandyToolsUITests/PromiseTests/testReceiptTestRunKeepsTheAppAnswering
+HandyToolsUITests/PromiseTests/testReceiptsAutorunReadsTodaysReceiptIntoTheSheet
+HandyToolsUITests/PromiseTests/testReadyToPostMakesATallClipAndSavesIt

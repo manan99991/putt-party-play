@@ -603,6 +603,42 @@ final class PromiseTests: XCTestCase {
         }
     }
 
+    /// What a failing step saw: which page (by its identifier), and its first lines of text.
+    static func onScreen(_ app: XCUIApplication) -> String {
+        let pages = ["smartruns", "smartposts", "smartreceipts", "smartrun-working"].filter { app.descendants(matching: .any)[$0].firstMatch.exists }
+        let words = app.staticTexts.allElementsBoundByIndex.prefix(14).map(\.label).joined(separator: " / ")
+        return "on screen: \(pages.isEmpty ? "no known page" : pages.joined(separator: ", ")) — \(words)"
+    }
+
+    /// 26 Nov: the second how-to film froze — the app stopped answering at the end of a receipts Test run, with the
+    /// switch tapped but not on. The same steps as the film: the app must keep answering and the receipt must be found.
+    func testReceiptTestRunKeepsTheAppAnswering() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "smartruns", "-uitest", "-seedreceipt"]
+        addUIInterruptionMonitor(withDescription: "permission") { alert in
+            for b in ["Allow", "Allow While Using App", "OK", "Allow Full Access"] where alert.buttons[b].exists { alert.buttons[b].tap(); return true }
+            return false
+        }
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let on = any["smartrun-on-receipts"].firstMatch
+        XCTAssertTrue(on.waitForExistence(timeout: 30), "the autoruns page didn't open")
+        sleep(4)
+        if (on.value as? String) != "1" { on.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap() }
+        sleep(1)
+        app.staticTexts["Smart autoruns"].firstMatch.tap()
+        sleep(2)
+        print("RECEIPTRUN| switch \(on.value as? String ?? "?") before Test run")
+        let test = any["smartrun-test-receipts"].firstMatch
+        XCTAssertTrue(test.waitForExistence(timeout: 10))
+        test.tap()
+        let check = any["smartrun-check-receipts"].firstMatch
+        XCTAssertTrue(check.waitForExistence(timeout: 120), "Test run didn't finish — \(Self.onScreen(app))")
+        check.tap()
+        XCTAssertTrue(any["smartreceipt-card"].firstMatch.waitForExistence(timeout: 10), "the review page shows no receipt — \(Self.onScreen(app))")
+        XCTAssertEqual(app.state, .runningForeground)
+    }
+
     /// Smart autorun, receipts (25 Nov): switched on and Test run on a real receipt photo taken today, it finds and reads
     /// it — shop, total — waits for a look, and Add puts exactly one correct row into this month's expense sheet.
     func testReceiptsAutorunReadsTodaysReceiptIntoTheSheet() {
@@ -725,7 +761,8 @@ final class PromiseTests: XCTestCase {
         while !check.isHittable { app.swipeUp() }
         check.tap()
         let player = any["smartpost-player"].firstMatch
-        XCTAssertTrue(player.waitForExistence(timeout: 10), "the clip isn't shown to watch")
+        // 26 Nov: once, after Check, no clip within 10 s. Say what was on screen instead of only that it wasn't there.
+        XCTAssertTrue(player.waitForExistence(timeout: 10), "the clip isn't shown to watch — \(Self.onScreen(app))")
         let wh = (player.value as? String ?? "").split(separator: "x").compactMap { Double($0) }
         XCTAssertEqual(wh.count, 2, "clip size unknown: \(player.value ?? "")")
         if wh.count == 2 { XCTAssertEqual(wh[1] / wh[0], 16.0 / 9.0, accuracy: 0.02, "not tall 9:16: \(wh)") }
