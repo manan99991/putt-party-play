@@ -1,10 +1,10 @@
-2026-11-26 23:02:07.440604+0000 HandyTools[34887:95616] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-26 23:29:59.470779+0000 HandyTools[28943:84531] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
 Test Case '-[HandyToolsTests.FaceFunTests testAFaceIsReadFromItsPoints]' started.
-Test Case '-[HandyToolsTests.FaceFunTests testAFaceIsReadFromItsPoints]' passed (0.010 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testAFaceIsReadFromItsPoints]' passed (0.006 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testAShakyFinderIsSteadied]' started.
-Test Case '-[HandyToolsTests.FaceFunTests testAShakyFinderIsSteadied]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testAShakyFinderIsSteadied]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testATiltedHeadKeepsItsOwnUp]' started.
-Test Case '-[HandyToolsTests.FaceFunTests testATiltedHeadKeepsItsOwnUp]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testATiltedHeadKeepsItsOwnUp]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectChangesTheFaceAndStickersLandWhereTheyBelong]' started.
 VIDEOFX|facefun-drawn|bald|head=16.3|corner=0.0
 VIDEOFX|facefun-drawn|cone|head=11.5|corner=0.0
@@ -43,119 +43,131 @@ VIDEOFX|facefun-drawn|tacky|head=38.3|corner=29.6
 VIDEOFX|facefun-drawn|wholesome|head=12.9|corner=3.9
 VIDEOFX|facefun-drawn|longlegs|head=52.4|corner=2.1
 VIDEOFX|facefun-drawn|tinybody|head=35.6|corner=9.4
-Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectChangesTheFaceAndStickersLandWhereTheyBelong]' passed (26.117 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectChangesTheFaceAndStickersLandWhereTheyBelong]' passed (25.696 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces]' started.
 VIDEOFX|facefun-real|photo1|frame 900×900|faces 1|width 172|height 128|eyes 59|roll 0.84
-VIDEOFX|facefun-real|photo1|bald|faces=1|head=5.2|corner=0.0|876ms
-VIDEOFX|facefun-real|photo1|cone|faces=1|head=5.9|corner=0.0|113ms
-VIDEOFX|facefun-real|photo1|egg|faces=1|head=8.0|corner=0.0|85ms
-VIDEOFX|facefun-real|photo1|alien|faces=1|head=42.1|corner=0.0|167ms
-VIDEOFX|facefun-real|photo1|balloon|faces=1|head=41.6|corner=0.0|111ms
-VIDEOFX|facefun-real|photo1|bighead|faces=1|head=49.1|corner=0.0|78ms
-VIDEOFX|facefun-real|photo1|tinyhead|faces=1|head=72.8|corner=0.0|152ms
-VIDEOFX|facefun-real|photo1|bigmouth|faces=1|head=29.9|corner=14.0|88ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:265: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("13.993333333333334") is not less than ("1.0") - photo 1: bigmouth changed the far corner
-VIDEOFX|facefun-real|photo1|bigeyes|faces=1|head=28.2|corner=0.0|187ms
-VIDEOFX|facefun-real|photo1|tinyface|faces=1|head=126.0|corner=76.8|120ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:265: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("76.78277777777778") is not less than ("1.0") - photo 1: tinyface changed the far corner
-VIDEOFX|facefun-real|photo1|squish|faces=1|head=108.5|corner=157.8|96ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:265: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("157.77935185185186") is not less than ("1.0") - photo 1: squish changed the far corner
-VIDEOFX|facefun-real|photo1|pinch|faces=1|head=126.1|corner=76.3|89ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:265: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("76.30972222222222") is not less than ("1.0") - photo 1: pinch changed the far corner
-VIDEOFX|facefun-real|photo1|longchin|faces=1|head=0.0|corner=0.0|104ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:264: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: longchin did nothing to the face
-VIDEOFX|facefun-real|photo1|chipmunk|faces=1|head=126.1|corner=76.3|152ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:265: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("76.30972222222222") is not less than ("1.0") - photo 1: chipmunk changed the far corner
-VIDEOFX|facefun-real|photo1|stretchy|faces=1|head=126.1|corner=76.3|86ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:265: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("76.30972222222222") is not less than ("1.0") - photo 1: stretchy changed the far corner
-2026-11-26 23:02:46.940010+0000 HandyTools[34887:94859] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] No need to render
-VIDEOFX|facefun-real|photo1|wobbly|faces=1|head=127.6|corner=177.1|106ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:265: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("177.1089814814815") is not less than ("1.0") - photo 1: wobbly changed the far corner
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:269: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: wobbly left see-through holes
-VIDEOFX|facefun-real|photo1|sunglasses|faces=1|head=117.6|corner=167.1|182ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:265: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("167.1089814814815") is not less than ("1.0") - photo 1: sunglasses changed the far corner
-VIDEOFX|facefun-real|photo1|heartglasses|faces=1|head=0.0|corner=0.0|121ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:264: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: heartglasses did nothing to the face
-VIDEOFX|facefun-real|photo1|crown|faces=1|head=0.0|corner=0.0|79ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:264: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: crown did nothing to the face
-VIDEOFX|facefun-real|photo1|moustache|faces=1|head=0.0|corner=0.0|83ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:264: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: moustache did nothing to the face
-VIDEOFX|facefun-real|photo1|dog|faces=1|head=0.0|corner=0.0|98ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:264: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: dog did nothing to the face
-VIDEOFX|facefun-real|photo1|bunny|faces=1|head=0.0|corner=0.0|105ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:264: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: bunny did nothing to the face
-VIDEOFX|facefun-real|photo1|clown|faces=1|head=0.0|corner=0.0|134ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:264: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: clown did nothing to the face
-VIDEOFX|facefun-real|photo1|halo|faces=1|head=0.0|corner=0.0|124ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:264: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: halo did nothing to the face
-VIDEOFX|facefun-real|photo1|devil|faces=1|head=0.0|corner=0.0|116ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:264: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: devil did nothing to the face
-VIDEOFX|facefun-real|photo1|partyhat|faces=1|head=0.0|corner=0.0|106ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:264: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: partyhat did nothing to the face
-VIDEOFX|facefun-real|photo1|flowers|faces=1|head=0.0|corner=0.0|97ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:264: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: flowers did nothing to the face
-2026-11-26 23:02:49.335507+0000 HandyTools[34887:94859] [render] Failed to render 810000 pixels
-2026-11-26 23:02:49.338557+0000 HandyTools[34887:94859] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] Failed to render part of the image because memory requirement of 100069855 too big (tile 8x8)
-VIDEOFX|facefun-real|photo1|zombie|faces=1|head=127.6|corner=177.1|152ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:265: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("177.1089814814815") is not less than ("1.0") - photo 1: zombie changed the far corner
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:269: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: zombie left see-through holes
-2026-11-26 23:02:49.579721+0000 HandyTools[34887:94859] [render] Failed to render 810000 pixels
-2026-11-26 23:02:49.579878+0000 HandyTools[34887:94859] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] Failed to render part of the image because memory requirement of 100069855 too big (tile 8x8)
-VIDEOFX|facefun-real|photo1|robot|faces=1|head=127.6|corner=177.1|123ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:265: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("177.1089814814815") is not less than ("1.0") - photo 1: robot changed the far corner
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:269: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: robot left see-through holes
-VIDEOFX|facefun-real|photo1|cartoon|faces=1|head=62.4|corner=150.7|235ms
-2026-11-26 23:02:50.157515+0000 HandyTools[34887:94859] [render] Failed to render 810000 pixels
-2026-11-26 23:02:50.157730+0000 HandyTools[34887:94859] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] Failed to render part of the image because memory requirement of 100069855 too big (tile 8x8)
-VIDEOFX|facefun-real|photo1|glow|faces=1|head=127.6|corner=177.1|167ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:269: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: glow left see-through holes
-2026-11-26 23:02:50.420868+0000 HandyTools[34887:94859] [render] Failed to render 810000 pixels
-2026-11-26 23:02:50.421023+0000 HandyTools[34887:94859] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] Failed to render part of the image because memory requirement of 100069855 too big (tile 8x8)
-VIDEOFX|facefun-real|photo1|beautiful|faces=1|head=127.6|corner=177.1|166ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:269: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: beautiful left see-through holes
-VIDEOFX|facefun-real|photo1|sunny|faces=1|head=28.3|corner=10.1|123ms
-VIDEOFX|facefun-real|photo1|tacky|faces=1|head=25.8|corner=11.6|127ms
-2026-11-26 23:02:50.970495+0000 HandyTools[34887:94859] [render] Failed to render 810000 pixels
-2026-11-26 23:02:50.970716+0000 HandyTools[34887:94859] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] Failed to render part of the image because memory requirement of 100069855 too big (tile 8x8)
-VIDEOFX|facefun-real|photo1|wholesome|faces=1|head=127.6|corner=177.1|98ms
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:269: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: wholesome left see-through holes
-VIDEOFX|facefun-real|photo1|longlegs|faces=1|head=0.0|corner=0.0|335ms
-VIDEOFX|facefun-real|photo1|tinybody|faces=1|head=108.5|corner=157.8|116ms
+VIDEOFX|facefun-diag|bald|eyes 398,561 452,622 d80|mouth 507,541 w57|nose 487,545|brow 419,606|chin 539,501|cheeks 311,521 469,679|w222 h160|up -0.75,0.66|pts 17/14/6|avg [209, 203, 202, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=2.4 corner=0.0
+VIDEOFX|facefun-real|photo1|bald|faces=1|head=5.2|corner=0.0|1085ms
+VIDEOFX|facefun-diag|cone|eyes 374,547 457,586 d95|mouth 466,489 w74|nose 462,498|brow 421,584|chin 481,451|cheeks 258,551 471,631|w241 h157|up -0.47,0.88|pts 17/14/6|avg [208, 201, 201, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=11.4 corner=0.0
+VIDEOFX|facefun-real|photo1|cone|faces=1|head=5.9|corner=0.0|202ms
+VIDEOFX|facefun-diag|egg|eyes 372,548 488,584 d124|mouth 460,476 w110|nose 464,490|brow 433,591|chin 446,409|cheeks 231,526 523,604|w309 h186|up -0.34,0.94|pts 17/14/6|avg [207, 201, 200, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=8.3 corner=0.0
+VIDEOFX|facefun-real|photo1|egg|faces=1|head=8.0|corner=0.0|83ms
+VIDEOFX|facefun-diag|alien|eyes 377,548 503,540 d133|mouth 428,468 w144|nose 455,457|brow 446,558|chin 407,383|cheeks 238,603 547,544|w337 h186|up 0.01,1.00|pts 17/14/6|avg [204, 202, 200, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=13.1 corner=0.0
+VIDEOFX|facefun-real|photo1|alien|faces=1|head=42.1|corner=0.0|210ms
+VIDEOFX|facefun-diag|balloon|eyes 364,585 518,553 d161|mouth 425,483 w170|nose 461,456|brow 446,583|chin 365,397|cheeks 209,664 565,528|w390 h204|up 0.16,0.99|pts 17/14/6|avg [204, 196, 195, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=16.3 corner=0.0
+VIDEOFX|facefun-real|photo1|balloon|faces=1|head=41.6|corner=0.0|157ms
+VIDEOFX|facefun-diag|bighead|eyes 367,608 543,574 d180|mouth 435,463 w211|nose 470,435|brow 455,594|chin 367,368|cheeks 171,725 613,539|w474 h241|up 0.17,0.98|pts 17/14/6|avg [201, 193, 191, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=17.1 corner=0.0
+VIDEOFX|facefun-real|photo1|bighead|faces=1|head=49.1|corner=0.0|118ms
+VIDEOFX|facefun-diag|tinyhead|eyes 375,608 606,538 d242|mouth 448,403 w292|nose 482,353|brow 489,560|chin 369,309|cheeks 159,823 738,567|w630 h276|up 0.27,0.96|pts 17/14/6|avg [220, 216, 217, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=19.1 corner=0.0
+VIDEOFX|facefun-real|photo1|tinyhead|faces=1|head=72.8|corner=0.0|124ms
+VIDEOFX|facefun-diag|bigmouth|eyes 436,640 799,442 d417|mouth 473,249 w500|nose 542,159|brow 620,474|chin 345,100|cheeks 101,1038 988,438|w1072 h464|up 0.42,0.91|pts 17/14/6|avg [198, 191, 191, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=0.6 corner=0.0
+VIDEOFX|facefun-real|photo1|bigmouth|faces=1|head=29.9|corner=14.0|110ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:277: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("13.993333333333334") is not less than ("1.0") - photo 1: bigmouth changed the far corner
+VIDEOFX|facefun-diag|bigeyes|eyes 674,683 1207,184 d738|mouth 601,-117 w871|nose 514,-98|brow 938,232|chin 435,-541|cheeks -109,1516 1135,-489|w2338 h895|up 0.61,0.79|pts 17/14/6|avg [211, 205, 205, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=0.2 corner=0.0
+VIDEOFX|facefun-real|photo1|bigeyes|faces=1|head=28.2|corner=0.0|215ms
+VIDEOFX|facefun-diag|tinyface|eyes 1335,812 2803,-735 d2138|mouth 1051,-1377 w1984|nose 687,-1317|brow 2026,-615|chin -197,-1389|cheeks -676,3308 2402,-2824|w6598 h2208|up 0.68,0.73|pts 17/14/6|avg [253, 253, 252, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=6.2 corner=0.0
+VIDEOFX|facefun-real|photo1|tinyface|faces=1|head=126.0|corner=76.8|100ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:277: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("76.78277777777778") is not less than ("1.0") - photo 1: tinyface changed the far corner
+VIDEOFX|facefun-diag|squish|eyes 3014,943 7656,-3821 d6654|mouth 2667,-5648 w6032|nose 1723,-5304|brow 5132,-3123|chin 1545,-8703|cheeks -3534,8822 6177,-10072|w20325 h6686|up 0.70,0.71|pts 17/14/6|avg [18, 17, 23, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=14.2 corner=0.0
+VIDEOFX|facefun-real|photo1|squish|faces=1|head=108.5|corner=157.8|144ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:277: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("157.77935185185186") is not less than ("1.0") - photo 1: squish changed the far corner
+VIDEOFX|facefun-diag|pinch|eyes 8863,943 21588,-13020 d18895|mouth 7302,-17894 w20130|nose 3870,-17361|brow 14610,-10754|chin 5255,-30778|cheeks -9062,19016 17412,-33494|w56645 h20478|up 0.72,0.69|pts 17/14/6|avg [254, 254, 252, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=8.5 corner=0.0
+VIDEOFX|facefun-real|photo1|pinch|faces=1|head=126.1|corner=76.3|132ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:277: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("76.30972222222222") is not less than ("1.0") - photo 1: pinch changed the far corner
+VIDEOFX|facefun-diag|longchin|eyes 17275,4457 50885,-28655 d47198|mouth 17881,-43057 w50154|nose 6001,-40395|brow 31358,-26800|chin -7811,-57050|cheeks -24837,36976 45354,-78244|w130990 h48760|up 0.71,0.71|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=2.0 corner=0.0
+VIDEOFX|facefun-real|photo1|longchin|faces=1|head=0.0|corner=0.0|145ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:276: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: longchin did nothing to the face
+VIDEOFX|facefun-diag|chipmunk|eyes 66395,-1695 161029,-102321 d138159|mouth 58739,-146024 w147868|nose 34716,-143090|brow 105945,-88926|chin -44054,-161149|cheeks -100599,130576 141163,-245767|w439786 h158853|up 0.72,0.69|pts 17/14/6|avg [254, 254, 252, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=1.9 corner=0.0
+VIDEOFX|facefun-real|photo1|chipmunk|faces=1|head=126.1|corner=76.3|112ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:277: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("76.30972222222222") is not less than ("1.0") - photo 1: chipmunk changed the far corner
+VIDEOFX|facefun-diag|stretchy|eyes 179471,3855 480300,-328624 d448400|mouth 178070,-431747 w463714|nose 77931,-423883|brow 304292,-275355|chin -86392,-500807|cheeks -221719,331076 434280,-785548|w1268168 h457712|up 0.73,0.68|pts 17/14/6|avg [254, 254, 252, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=12.6 corner=0.0
+VIDEOFX|facefun-real|photo1|stretchy|faces=1|head=126.1|corner=76.3|81ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:277: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("76.30972222222222") is not less than ("1.0") - photo 1: stretchy changed the far corner
+2026-11-26 23:30:37.936039+0000 HandyTools[28943:83415] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] No need to render
+VIDEOFX|facefun-diag|wobbly|eyes 558447,100244 1409284,-778636 d1223404|mouth 475717,-1174861 w1328909|nose 226098,-1090217|brow 971493,-748443|chin -412960,-1247716|cheeks -758966,1170099 1116679,-2002038|w3583172 h1347338|up 0.72,0.69|pts 17/14/6|avg [0, 0, 0, 0]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=10.5 corner=0.0
+VIDEOFX|facefun-real|photo1|wobbly|faces=1|head=127.6|corner=177.1|100ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:277: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("177.1089814814815") is not less than ("1.0") - photo 1: wobbly changed the far corner
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:281: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: wobbly left see-through holes
+VIDEOFX|facefun-diag|sunglasses|eyes 1494866,-59504 4244863,-2837304 d3908899|mouth 1816596,-3813374 w4036922|nose 928657,-3821377|brow 2502578,-2399905|chin -388434,-4203055|cheeks -2087803,2990213 4073304,-6497211|w11077568 h3964669|up 0.72,0.70|pts 17/14/6|avg [10, 10, 10, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=2.2 corner=0.0
+VIDEOFX|facefun-real|photo1|sunglasses|faces=1|head=117.6|corner=167.1|164ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:277: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("167.1089814814815") is not less than ("1.0") - photo 1: sunglasses changed the far corner
+VIDEOFX|facefun-diag|heartglasses|eyes 4992529,-422505 12946274,-7880369 d10904791|mouth 4524523,-11607447 w12325682|nose 3046017,-11099433|brow 8803449,-7175921|chin -3303533,-12682375|cheeks -7560041,9309382 10683471,-19534072|w33026195 h12566690|up 0.70,0.72|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=2.5 corner=0.0
+VIDEOFX|facefun-real|photo1|heartglasses|faces=1|head=0.0|corner=0.0|96ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:276: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: heartglasses did nothing to the face
+VIDEOFX|facefun-diag|crown|eyes 12450956,1747166 35933764,-21109091 d32771340|mouth 13131722,-31283467 w35966454|nose 6340944,-29566233|brow 23426525,-19044542|chin -8013881,-35337456|cheeks -18760172,23939458 30415507,-51889352|w88108075 h33713381|up 0.70,0.72|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=7.1 corner=0.0
+VIDEOFX|facefun-real|photo1|crown|faces=1|head=0.0|corner=0.0|224ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:276: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: crown did nothing to the face
+VIDEOFX|facefun-diag|moustache|eyes 39266592,-158546 114748044,-78185706 d108570390|mouth 47064089,-104633648 w96862668|nose 26392458,-106977995|brow 67153630,-64204681|chin 11420194,-139768318|cheeks -55920936,96070388 108453285,-179238398|w312204654 h108994309|up 0.71,0.70|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=0.6 corner=0.0
+VIDEOFX|facefun-real|photo1|moustache|faces=1|head=0.0|corner=0.0|196ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:276: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: moustache did nothing to the face
+VIDEOFX|facefun-diag|dog|eyes 105336980,9012183 316618111,-199313208 d296734117|mouth 116312876,-279994332 w296504752|nose 50696695,-269481966|brow 198498612,-176944909|chin -41762112,-333006846|cheeks -156605962,209426547 283113024,-485696671|w801295154 h296924881|up 0.70,0.71|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=5.3 corner=0.0
+VIDEOFX|facefun-real|photo1|dog|faces=1|head=0.0|corner=0.0|169ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:276: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: dog did nothing to the face
+VIDEOFX|facefun-diag|bunny|eyes 333432764,77780764 980841889,-534216642 d890930774|mouth 349491229,-801881847 w950293958|nose 154741031,-754215448|brow 652012900,-488425055|chin -231719728,-897980468|cheeks -498439599,730661510 806159774,-1374010521|w2393744333 h911784577|up 0.69,0.72|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=8.1 corner=0.0
+VIDEOFX|facefun-real|photo1|bunny|faces=1|head=0.0|corner=0.0|100ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:276: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: bunny did nothing to the face
+VIDEOFX|facefun-diag|clown|eyes 974459900,-78128436 2978379557,-2258986445 d2962895417|mouth 1274210147,-2745050109 w2580735713|nose 569775266,-2853895174|brow 1668423629,-1734567789|chin -205044316,-3024311577|cheeks -1218010215,2247461539 2992601732,-4932841249|w8135303722 h2972279629|up 0.72,0.69|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=0.5 corner=0.0
+VIDEOFX|facefun-real|photo1|clown|faces=1|head=0.0|corner=0.0|102ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:276: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: clown did nothing to the face
+VIDEOFX|facefun-diag|halo|eyes 2878995284,167015555 8369930630,-5278340819 d7735453016|mouth 3130124494,-7440375157 w7547273801|nose 1415475777,-7122101990|brow 5414230389,-4778852278|chin -1392917507,-8153166385|cheeks -4305655030,5667028110 7440474507,-12439106723|w21094265120 h7739675911|up 0.71,0.71|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=1.9 corner=0.0
+VIDEOFX|facefun-real|photo1|halo|faces=1|head=0.0|corner=0.0|158ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:276: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: halo did nothing to the face
+VIDEOFX|facefun-diag|devil|eyes 8585994307,951462392 23637553537,-13733278102 d21029494945|mouth 8792014731,-20666844657 w22728873995|nose 4506025358,-19493036183|brow 15136242749,-12650898081|chin -6110765093,-23206444728|cheeks -14335371869,17450734886 20174938868,-34843183620|w61221060945 h22638808902|up 0.70,0.71|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=3.4 corner=0.0
+VIDEOFX|facefun-real|photo1|devil|faces=1|head=0.0|corner=0.0|195ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:276: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: devil did nothing to the face
+VIDEOFX|facefun-diag|partyhat|eyes 30666726717,-5909459496 77847018785,-56724507932 d69354710413|mouth 28507072511,-72351245938 w70584131394|nose 19398497971,-73649803635|brow 48509093468,-45216758673|chin -17232577165,-82465107715|cheeks -37202574142,56808423333 69675394574,-128997128416|w208956404799 h73581020627|up 0.72,0.69|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=6.6 corner=0.0
+VIDEOFX|facefun-real|photo1|partyhat|faces=1|head=0.0|corner=0.0|158ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:276: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: partyhat did nothing to the face
+VIDEOFX|facefun-diag|flowers|eyes 72641418608,16842940232 213676752376,-127980019852 d202166803681|mouth 78753921388,-181162228659 w191973415840|nose 27590983623,-173322653425|brow 136120224726,-116602551655|chin -37960079239,-208229438954|cheeks -95174558762,146067784061 190357838691,-313211120647|w528413009276 h204068643278|up 0.72,0.70|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=5.8 corner=0.0
+VIDEOFX|facefun-real|photo1|flowers|faces=1|head=0.0|corner=0.0|125ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:276: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertGreaterThan failed: ("0.0") is not greater than ("0.6") - photo 1: flowers did nothing to the face
+2026-11-26 23:30:42.745909+0000 HandyTools[28943:83415] [render] Failed to render 810000 pixels
+2026-11-26 23:30:42.750220+0000 HandyTools[28943:83415] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] Failed to render part of the image because memory requirement of 100069855 too big (tile 8x8)
+VIDEOFX|facefun-diag|zombie|eyes 245999730782,10620071466 654374398284,-390856466840 d572705195798|mouth 267436366002,-573670445167 w575653447354|nose 152278389876,-562780412805|brow 406260307231,-347989380232|chin -141269331924,-620153858415|cheeks -397154850900,549009376592 588803558726,-966539468063|w1765468454663 h584727787753|up 0.71,0.71|pts 17/14/6|avg [0, 0, 0, 0]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=8.5 corner=0.0
+VIDEOFX|facefun-real|photo1|zombie|faces=1|head=127.6|corner=177.1|143ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:277: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("177.1089814814815") is not less than ("1.0") - photo 1: zombie changed the far corner
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:281: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: zombie left see-through holes
+2026-11-26 23:30:43.287296+0000 HandyTools[28943:83415] [render] Failed to render 810000 pixels
+2026-11-26 23:30:43.287471+0000 HandyTools[28943:83415] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] Failed to render part of the image because memory requirement of 100069855 too big (tile 8x8)
+VIDEOFX|facefun-diag|robot|eyes 671433142422,-25393760028 1950741448345,-1364145628592 d1851886003415|mouth 741683445080,-1743215500861 w1760261235925|nose 361846700509,-1735273799703|brow 1173271438991,-1096239090816|chin -279980242855,-2030498857451|cheeks -836625063524,1314038863063 1807409427266,-3176406372552|w5073236627308 h1857296169795|up 0.72,0.70|pts 17/14/6|avg [0, 0, 0, 0]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=13.7 corner=0.0
+VIDEOFX|facefun-real|photo1|robot|faces=1|head=127.6|corner=177.1|175ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:277: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("177.1089814814815") is not less than ("1.0") - photo 1: robot changed the far corner
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:281: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: robot left see-through holes
+VIDEOFX|facefun-diag|cartoon|eyes 1548014320024,553274459883 5254798626685,-3136309378588 d5230418951789|mouth 2116113535741,-4459253588928 w4670277557939|nose 613860539569,-4277348702009|brow 3215665798517,-2860408327708|chin -611858727639,-5049556909011|cheeks -2475154064615,3783704117511 5113270742439,-7597889393142|w13411524723140 h5232853526660|up 0.71,0.71|pts 17/14/6|avg [158, 150, 147, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=62.4 corner=150.7
+VIDEOFX|facefun-real|photo1|cartoon|faces=1|head=62.4|corner=150.7|275ms
+2026-11-26 23:30:44.352941+0000 HandyTools[28943:83415] [render] Failed to render 810000 pixels
+2026-11-26 23:30:44.353309+0000 HandyTools[28943:83415] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] Failed to render part of the image because memory requirement of 100069855 too big (tile 8x8)
+VIDEOFX|facefun-diag|glow|eyes 6050056800440,744368016361 17561545509069,-10992162264645 d16439972209954|mouth 6900977764200,-15596337428744 w15615506309569|nose 3553648574994,-15462905477278|brow 10126914409650,-9508476942928|chin 644586846944,-20688387148627|cheeks -9468554736524,16739660434158 16116916511717,-27086533894860|w49214097768808 h16441067768646|up 0.71,0.70|pts 17/14/6|avg [0, 0, 0, 0]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=2.7 corner=5.1
+VIDEOFX|facefun-real|photo1|glow|faces=1|head=127.6|corner=177.1|197ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:281: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: glow left see-through holes
+2026-11-26 23:30:45.039737+0000 HandyTools[28943:83415] [render] Failed to render 810000 pixels
+2026-11-26 23:30:45.039929+0000 HandyTools[28943:83415] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] Failed to render part of the image because memory requirement of 100069855 too big (tile 8x8)
+VIDEOFX|facefun-diag|beautiful|eyes 17329050210146,339596588133 50278740454132,-33668530980301 d47352573171917|mouth 17967395184829,-44187284303985 w46351450487151|nose 8540119241855,-42912887805005|brow 31976342288459,-28010503479059|chin -5826032395758,-53164342005141|cheeks -21221703398326,31466629337332 43874041696517,-79389996555285|w124911931072176 h47353066173328|up 0.72,0.70|pts 17/14/6|avg [0, 0, 0, 0]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=2.8 corner=4.6
+VIDEOFX|facefun-real|photo1|beautiful|faces=1|head=127.6|corner=177.1|254ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:281: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: beautiful left see-through holes
+VIDEOFX|facefun-diag|sunny|eyes 40810097202693,12502155551577 142766826096868,-81863174599641 d138961855567459|mouth 54970111829276,-122522015338029 w128277881609921|nose 17098839869890,-117335721231563|brow 89335548135231,-75823199345995|chin -23877115711357,-139223208003711|cheeks -76710924118047,103135322183299 133769828457759,-205096458052845|w363996797497149 h138962077418094|up 0.69,0.72|pts 17/14/6|avg [223, 209, 182, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=29.5 corner=10.1
+VIDEOFX|facefun-real|photo1|sunny|faces=1|head=28.3|corner=10.1|174ms
+VIDEOFX|facefun-diag|tacky|eyes 147510862288987,6515133773858 475820229705119,-311927294250694 d457412464861462|mouth 189711550947879,-434043406238502 w430768470394546|nose 104511945972208,-437576775257704|brow 257555789081468,-254313683402634|chin 131161512908847,-685778772785120|cheeks -263437751268324,438159613543693 440941012928344,-747713010148989|w1331703070999282 h457412564694248|up 0.70,0.72|pts 17/14/6|avg [213, 198, 194, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=31.8 corner=11.6
+VIDEOFX|facefun-real|photo1|tacky|faces=1|head=25.8|corner=11.6|217ms
+2026-11-26 23:30:46.566275+0000 HandyTools[28943:83415] [render] Failed to render 810000 pixels
+2026-11-26 23:30:46.566652+0000 HandyTools[28943:83415] [api] -[CIContext(CIRenderDestination) _startTaskToRender:toDestination:forPrepareRender:forClear:error:] Failed to render part of the image because memory requirement of 100069855 too big (tile 8x8)
+VIDEOFX|facefun-diag|wholesome|eyes 414938940165973,29272586648432 1313324622228642,-834796473047037 d1246498601447024|mouth 497653183334509,-1137117793511611 w1194306164674850|nose 216307725960043,-1092045734869947|brow 826822718685512,-735728125687684|chin -68863989373392,-1373701308680600|cheeks -670959552720724,845566336896650 1174995520519716,-1950911749322009|w3269401412357962 h1246498646371778|up 0.69,0.72|pts 17/14/6|avg [0, 0, 0, 0]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=10.4 corner=6.0
+VIDEOFX|facefun-real|photo1|wholesome|faces=1|head=127.6|corner=177.1|160ms
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:281: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThan failed: ("1.0") is not less than ("0.001") - photo 1: wholesome left see-through holes
+VIDEOFX|facefun-diag|longlegs|eyes 1266902075306952,276517129785204 4089733708318060,-2185030232516950 d3746136446370877|mouth 1452439318720971,-3459723550021187 w3755978445609422|nose 748727812315290,-3219519597474667|brow 2640228253076677,-2031598470694508|chin -970693521931614,-3742431308482119|cheeks -2378552769277605,3137316456691023 5887456440670914,-2731502149655098|w10117070764555722 h3746136466587016|up 0.67,0.74|pts 17/14/6|avg [210, 203, 203, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=0.0 corner=0.0
+VIDEOFX|facefun-real|photo1|longlegs|faces=1|head=0.0|corner=0.0|677ms
+VIDEOFX|facefun-diag|tinybody|eyes 4109536404313683,-247562808466668 12911814347987416,-8830970117471268 d12297892891048564|mouth 4952362733339060,-11987101048876550 w12475299518743412|nose 2953088357106128,-12036283501259612|brow 6862801724661164,-6968847612730912|chin 3493617134625730,-18879560336070208|cheeks -6801598139929692,11112920958034880 12899266118520660,-19348258320100412|w35493309947671336 h12297892900145828|up 0.69,0.72|pts 17/14/6|avg [18, 17, 23, 255]|extent (0.0, 0.0, 900.0, 900.0)|unsteadied head=20.2 corner=0.0
+VIDEOFX|facefun-real|photo1|tinybody|faces=1|head=108.5|corner=157.8|121ms
 VIDEOFX|studio-backdrop|photo1|behind=22500/22500|person=0/0
-Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces]' failed (13.116 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces]' failed (22.962 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testStickersTurnWithTheHead]' started.
-Test Case '-[HandyToolsTests.FaceFunTests testStickersTurnWithTheHead]' passed (0.665 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testStickersTurnWithTheHead]' passed (1.045 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testTheListHasEveryGroupAndNoDoubles]' started.
 Test Case '-[HandyToolsTests.FaceFunTests testTheListHasEveryGroupAndNoDoubles]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testTheWarpKernelsAreInTheApp]' started.
-Test Case '-[HandyToolsTests.FaceFunTests testTheWarpKernelsAreInTheApp]' passed (0.001 seconds).
-	 Executed 8 tests, with 27 failures (0 unexpected) in 39.915 (39.924) seconds
-Test Case '-[HandyToolsTests.VideoFunTests testABigHeadChangesTheFaceAndNothingFarFromIt]' started.
-Test Case '-[HandyToolsTests.VideoFunTests testABigHeadChangesTheFaceAndNothingFarFromIt]' passed (1.172 seconds).
-Test Case '-[HandyToolsTests.VideoFunTests testRealPeopleGetTheirBackgroundAndFunnyFace]' started.
-Test Case '-[HandyToolsTests.VideoFunTests testRealPeopleGetTheirBackgroundAndFunnyFace]' passed (3.033 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 4.206 (4.207) seconds
-Test Case '-[HandyToolsTests.VideoSoundTests testAShortSongIsRepeatedToTheEndOfTheVideo]' started.
-Test Case '-[HandyToolsTests.VideoSoundTests testAShortSongIsRepeatedToTheEndOfTheVideo]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.VideoSoundTests testEveryMusicChoiceHasAShortName]' started.
-Test Case '-[HandyToolsTests.VideoSoundTests testEveryMusicChoiceHasAShortName]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.VideoSoundTests testMusicIsUnderTheWholeVideoAndNoSoundHasNone]' started.
-VIDEOFX|studio-music|0.148 0.149 0.145 0.191 0.276 0.269 0.275 0.253 0.163
-Test Case '-[HandyToolsTests.VideoSoundTests testMusicIsUnderTheWholeVideoAndNoSoundHasNone]' passed (12.423 seconds).
-Test Case '-[HandyToolsTests.VideoSoundTests testOwnPhotoIsReadForTheBackdrop]' started.
-Test Case '-[HandyToolsTests.VideoSoundTests testOwnPhotoIsReadForTheBackdrop]' passed (0.022 seconds).
-Test Case '-[HandyToolsTests.VideoSoundTests testTheMixSliderIsBothFullInTheMiddle]' started.
-Test Case '-[HandyToolsTests.VideoSoundTests testTheMixSliderIsBothFullInTheMiddle]' passed (0.002 seconds).
-	 Executed 5 tests, with 0 failures (0 unexpected) in 12.451 (12.455) seconds
-	 Executed 15 tests, with 27 failures (0 unexpected) in 56.572 (56.587) seconds
-	 Executed 15 tests, with 27 failures (0 unexpected) in 56.572 (56.589) seconds
-Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' started.
-Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' passed (136.732 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 136.732 (136.769) seconds
-Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (82.486 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 82.486 (82.487) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 219.218 (219.259) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 219.218 (219.260) seconds
+Test Case '-[HandyToolsTests.FaceFunTests testTheWarpKernelsAreInTheApp]' passed (0.000 seconds).
+	 Executed 8 tests, with 27 failures (0 unexpected) in 49.713 (49.721) seconds
+	 Executed 8 tests, with 27 failures (0 unexpected) in 49.713 (49.721) seconds
+	 Executed 8 tests, with 27 failures (0 unexpected) in 49.713 (49.722) seconds
 == main thread when stuck
 == crash reports
