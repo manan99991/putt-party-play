@@ -142,11 +142,16 @@ enum FunnyMoment {
             }
         } catch { return nil }
         // The effect's own sound, on its own track, at the moment.
-        if let sfxURL = Synth.file(Synth.effect(k.sound), name: "sfx"),
-           let sfxTrack = try? await AVURLAsset(url: sfxURL).loadTracks(withMediaType: .audio).first,
-           let cs = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
-            let len = (try? await AVURLAsset(url: sfxURL).load(.duration)) ?? ts(1)
-            try? cs.insertTimeRange(CMTimeRange(start: .zero, duration: len), of: sfxTrack, at: ts(t))
+        // The sound's asset is kept until it's in (a track doesn't hold on to its asset), and a track that couldn't be
+        // filled is taken out: an empty sound track stops the whole export (Beat Reel, 26 Nov).
+        if let sfxURL = Synth.file(Synth.effect(k.sound), name: "sfx") {
+            let sfx = AVURLAsset(url: sfxURL)
+            if let sfxTrack = try? await sfx.loadTracks(withMediaType: .audio).first,
+               let cs = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
+                let len = (try? await sfx.load(.duration)) ?? ts(1)
+                if (try? cs.insertTimeRange(CMTimeRange(start: .zero, duration: len), of: sfxTrack, at: ts(t))) == nil { comp.removeTrack(cs) }
+            }
+            withExtendedLifetime(sfx) {}
         }
 
         // The picture: the look of each moment, from its time after the cut.

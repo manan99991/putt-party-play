@@ -124,11 +124,7 @@ enum BeatReel {
         // Where the picture really ends (the sum of rounded pieces), so the sound never runs past it.
         let pictureEnd = cv.timeRange.duration.seconds
         // The sound, as long as the picture.
-        if let mu = Synth.file(audio, name: "cut-sound"),
-           let mt = try? await AVURLAsset(url: mu).loadTracks(withMediaType: .audio).first,
-           let ca = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
-            try? ca.insertTimeRange(CMTimeRange(start: .zero, duration: ts(min(pictureEnd, Double(audio.count) / Synth.rate))), of: mt, at: .zero)
-        }
+        if let why = await addSound(audio, name: "cut-sound", to: comp, seconds: pictureEnd) { problem(why) }
 
         // Every clip upright and filling the tall frame.
         let layer = AVMutableVideoCompositionLayerInstruction(assetTrack: cv)
@@ -184,11 +180,8 @@ enum BeatReel {
         }
         let length = cursor.seconds
         guard length > 0 else { problem("nothing could be cut from \(srcs.count) clips"); return nil }
-        if let mu = Synth.file(track.samples, name: "reel-music"),
-           let mt = try? await AVURLAsset(url: mu).loadTracks(withMediaType: .audio).first,
-           let ca = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
-            try? ca.insertTimeRange(CMTimeRange(start: .zero, duration: ts(min(length, Double(track.samples.count) / Synth.rate))), of: mt, at: .zero)
-        }
+        if let why = await addSound(track.samples, name: "reel-music", to: comp, seconds: length) { problem(why) }
+        do { try cv.validateSegments(cv.segments) } catch { print("REEL| the cuts don't line up: \(error.localizedDescription)") }
 
         // The picture, frame by frame (the same way Funny Moments and the trailer make theirs): each clip upright and
         // filling the tall frame, then the style's look and light, and a punch on every beat of the music itself.
@@ -224,11 +217,43 @@ enum BeatReel {
         poll.cancel()
         if !ok {
             let pieces = cv.segments.map { $0.timeMapping.target.duration.seconds }
+            let sound = comp.tracks(withMediaType: .audio).map { $0.segments.count }
+            // Which half fails: the edit alone (no picture recipe), saved small and quick.
+            let bare = await probe(comp)
+            for (i, g) in cv.segments.enumerated() {
+                let m = g.timeMapping
+                print("REEL| piece \(i): \(m.source.start.value)+\(m.source.duration.value)/\(m.source.duration.timescale) → \(m.target.start.value)+\(m.target.duration.value)/\(m.target.duration.timescale)")
+            }
             problem("the reel didn't save: \(s.error?.localizedDescription ?? "no error given") (\((s.error as NSError?)?.code ?? 0)) — " +
-                    "\(pieces.count) pieces, shortest \(pieces.min() ?? 0)s, length \(length)s, clips \(srcs.map { "\(Int($0.natural.width))x\(Int($0.natural.height))" })")
+                    "\(pieces.count) pieces, shortest \(pieces.min() ?? 0)s, length \(length)s, sound pieces \(sound), the edit alone \(bare), " +
+                    "clips \(srcs.map { "\(Int($0.natural.width))x\(Int($0.natural.height))" })")
         }
         progress?(1)
         return ok ? out : nil
+    }
+
+    /// Lays `samples` (at Synth.rate) under the picture from the start, for up to `seconds`. nil when it's in, else why
+    /// not. The sound file's asset is kept until it's in — a track doesn't hold on to its asset, and when the asset went
+    /// first the insert failed silently and left an empty sound track behind, which stops the whole export (-11838) — and
+    /// a sound track that couldn't be filled is taken out again rather than left empty.
+    static func addSound(_ samples: [Float], name: String, to comp: AVMutableComposition, seconds: Double) async -> String? {
+        guard let url = Synth.file(samples, name: name) else { return "the music couldn't be written" }
+        let asset = AVURLAsset(url: url)
+        defer { withExtendedLifetime(asset) {} }
+        guard let mt = try? await asset.loadTracks(withMediaType: .audio).first else { return "the music file has no sound" }
+        guard let ca = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) else { return "no room for the music" }
+        let len = min(seconds, Double(samples.count) / Synth.rate)
+        do { try ca.insertTimeRange(CMTimeRange(start: .zero, duration: CMTime(seconds: len, preferredTimescale: 6000)), of: mt, at: .zero) }
+        catch { comp.removeTrack(ca); return "the music couldn't be laid in: \(error.localizedDescription)" }
+        return nil
+    }
+
+    /// For the failure report only: whether `comp` saves at all without a picture recipe ("ok" or the error's code).
+    private static func probe(_ comp: AVComposition) async -> String {
+        guard let s = AVAssetExportSession(asset: comp, presetName: AVAssetExportPresetLowQuality) else { return "no session" }
+        s.outputURL = VideoEngine.tempURL("mp4"); s.outputFileType = .mp4
+        await s.export()
+        return s.status == .completed ? "ok" : "\((s.error as NSError?)?.code ?? 0)"
     }
 
     /// Photos become 3-second clips (with a slow push-in) so they can sit in a reel with the videos.

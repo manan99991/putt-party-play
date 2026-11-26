@@ -1,6 +1,10 @@
-# 26 Nov, round 7. Round 6 showed why the in-app reel failed: its layer-instruction edit export stopped (-11838) on
-# a single recorded clip (12 contiguous pieces, nothing empty), while the same clip goes through the trailer and
-# Funny Moments fine — both make their picture frame by frame with Core Image. Beat Reel now does too, in one pass
-# (upright, filled, then the style's look and a punch on the music's own beats).
+# 26 Nov, round 8. Round 7's frame-by-frame reel stopped the same way (-11838) in the unit test too, so the picture
+# wasn't the cause. Common to every failing reel: the music went in from an asset made and dropped on the same line —
+# a track doesn't hold on to its asset, so the insert could fail silently and leave an empty sound track, which stops
+# the whole export (and explains passing one run and failing the next). The music's asset is now kept and a sound
+# track that can't be filled is taken out; Funny Moments' sound effect had the same pattern. A failure now also
+# reports the sound track's pieces, whether the edit saves without the picture recipe, and every piece's timing.
 HandyToolsTests/BeatReelTests
+HandyToolsTests/SynthTests
 HandyToolsUITests/CameraButtonTests/testBeatReelRecordsAClipAndCutsAReel
+HandyToolsUITests/CameraButtonTests/testFunnyMomentsRecordsAClipAndMakesTheJoke
