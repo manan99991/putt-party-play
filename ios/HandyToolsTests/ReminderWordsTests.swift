@@ -5,8 +5,9 @@ import XCTest
 /// the what, the when and whether it repeats are exactly right — a wrong reminder is worse than none.
 final class ReminderWordsTests: XCTestCase {
     private var cal: Calendar = { var c = Calendar(identifier: .gregorian); c.timeZone = TimeZone(identifier: "America/Chicago")!; return c }()
-    /// Wednesday 26 Nov 2026 at the given time, Chicago.
-    private func wed(_ h: Int, _ m: Int = 0) -> Date { cal.date(from: DateComponents(year: 2026, month: 11, day: 26, hour: h, minute: m))! }
+    /// Wednesday 25 Nov 2026 at the given time, Chicago. (It said 26 Nov, which is a Thursday, so "on Friday" was
+    /// tomorrow and the test expected the wrong day; the reader was right.)
+    private func wed(_ h: Int, _ m: Int = 0) -> Date { cal.date(from: DateComponents(year: 2026, month: 11, day: 25, hour: h, minute: m))! }
     private func parts(_ d: Date?) -> (day: Int, hour: Int, minute: Int) {
         guard let d else { return (-1, -1, -1) }
         let c = cal.dateComponents([.day, .hour, .minute], from: d)
@@ -26,38 +27,38 @@ final class ReminderWordsTests: XCTestCase {
         let a = r("Remind me to call Mum at 6", at: wed(10))!
         XCTAssertEqual(a.text, "Call Mum", "the person's own capitals are kept")
         XCTAssertTrue(a.once)
-        XCTAssertEqual(parts(a.onceAt).day, 26); XCTAssertEqual(parts(a.onceAt).hour, 18, "a bare 6 is the evening")
+        XCTAssertEqual(parts(a.onceAt).day, 25); XCTAssertEqual(parts(a.onceAt).hour, 18, "a bare 6 is the evening")
         let b = r("remind me to take the cake out at 7:45 pm.", at: wed(10))!
         XCTAssertEqual(b.text, "Take the cake out")
         XCTAssertEqual(parts(b.onceAt).hour, 19); XCTAssertEqual(parts(b.onceAt).minute, 45)
         // "at 9" said at 10 in the morning: 9 tonight, not tomorrow morning.
         let c = r("remind me at 9 to lock the back door", at: wed(10))!
         XCTAssertEqual(c.text, "Lock the back door")
-        XCTAssertEqual(parts(c.onceAt).day, 26); XCTAssertEqual(parts(c.onceAt).hour, 21)
+        XCTAssertEqual(parts(c.onceAt).day, 25); XCTAssertEqual(parts(c.onceAt).hour, 21)
         // "at 9am" said at 10: tomorrow at 9.
         let d = r("remind me at 9am to call the bank", at: wed(10))!
-        XCTAssertEqual(parts(d.onceAt).day, 27); XCTAssertEqual(parts(d.onceAt).hour, 9)
+        XCTAssertEqual(parts(d.onceAt).day, 26); XCTAssertEqual(parts(d.onceAt).hour, 9)
         XCTAssertEqual(r("remind me to have lunch at noon", at: wed(9))!.onceAt.map { parts($0).hour }, 12)
     }
 
     func testTomorrowTonightAndADay() {
         let a = r("tomorrow at 9 remind me to pay rent", at: wed(22))!
         XCTAssertEqual(a.text, "Pay rent")
-        XCTAssertEqual(parts(a.onceAt).day, 27); XCTAssertEqual(parts(a.onceAt).hour, 9, "tomorrow's 9 is the morning even late at night")
+        XCTAssertEqual(parts(a.onceAt).day, 26); XCTAssertEqual(parts(a.onceAt).hour, 9, "tomorrow's 9 is the morning even late at night")
         let b = r("remind me tonight to charge the car", at: wed(10))!
         XCTAssertEqual(b.text, "Charge the car")
-        XCTAssertEqual(parts(b.onceAt).day, 26); XCTAssertEqual(parts(b.onceAt).hour, 21)
+        XCTAssertEqual(parts(b.onceAt).day, 25); XCTAssertEqual(parts(b.onceAt).hour, 21)
         let c = r("remind me tonight at 8 to put the bins out", at: wed(10))!
         XCTAssertEqual(parts(c.onceAt).hour, 20)
         let d = r("remind me on Friday to send the invoice", at: wed(10))!
         XCTAssertEqual(d.text, "Send the invoice")
-        XCTAssertEqual(parts(d.onceAt).day, 28); XCTAssertEqual(parts(d.onceAt).hour, 9)
+        XCTAssertEqual(parts(d.onceAt).day, 27); XCTAssertEqual(parts(d.onceAt).hour, 9)
         let e = r("remind me tomorrow morning about the dentist", at: wed(10))!
         XCTAssertEqual(e.text, "The dentist")
-        XCTAssertEqual(parts(e.onceAt).day, 27); XCTAssertEqual(parts(e.onceAt).hour, 8)
+        XCTAssertEqual(parts(e.onceAt).day, 26); XCTAssertEqual(parts(e.onceAt).hour, 8)
         let f = r("remind me on friday evening to call bob", at: wed(10))!
         XCTAssertEqual(f.text, "Call bob")
-        XCTAssertEqual(parts(f.onceAt).day, 28); XCTAssertEqual(parts(f.onceAt).hour, 19)
+        XCTAssertEqual(parts(f.onceAt).day, 27); XCTAssertEqual(parts(f.onceAt).hour, 19)
     }
 
     func testInSomeMinutes() {
