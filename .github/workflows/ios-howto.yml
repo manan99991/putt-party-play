@@ -52,12 +52,15 @@ jobs:
           run() {   # $1 test name, $2 film name. Records the whole test; the cut uses the times stamped in the test's marks.
             if [ -n "$ONLY" ] && ! echo " $ONLY " | grep -q " $2 "; then echo "skipping $2"; return 0; fi
             rm -f howto/$2.*
-            python3 -c 'import time; print(time.time() + 1)' > howto/$2.t0      # a guess, replaced below
             xcrun simctl io "$UDID" recordVideo --codec h264 --force howto/$2.raw.mov > howto/$2.reclog 2>&1 & echo $! > howto/$2.rec
-            # The recording's clock starts when it says so (take 6 began ~3 s after the command): wait for that, then note it.
+            # Wait until the recorder is running.
             for i in $(seq 1 150); do grep -q "Recording started" howto/$2.reclog 2>/dev/null && break; sleep 0.1; done
-            if grep -q "Recording started" howto/$2.reclog; then python3 -c 'import time; print(time.time())' > howto/$2.t0
-            else echo "::warning::$2: the recorder never said it started — the cut may be off by a few seconds"; fi
+            grep -q "Recording started" howto/$2.reclog || echo "::warning::$2: the recorder never said it started"
+            # The recording's clock begins at its first frame, and a frame is only written when the screen changes — the
+            # still Home screen before the test launches gave take 7 a 3 s offset. Change the status bar's clock for a
+            # moment, now: that change is the recording's first frame, and its time is the film's clock.
+            xcrun simctl status_bar "$UDID" override --time 9:42 && python3 -c 'import time; print(time.time())' > howto/$2.t0
+            sleep 1; xcrun simctl status_bar "$UDID" override --time 9:41 || true
             script -q /dev/null env TEST_RUNNER_HOWTO_FILM=1 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools \
               -destination "id=$UDID" -derivedDataPath build -only-testing:HandyToolsUITests/HowToFilmTests/$1 CODE_SIGNING_ALLOWED=NO 2>&1 \
               | while IFS= read -r line; do
