@@ -21,7 +21,6 @@ REALINPUT what-is-this: result (run-result)
 REALINPUT scan-to-pdf: result (run-result)
 REALINPUT sign-and-send: result (run-result)
 REALINPUT receipt-run: result (run-result)
-REALINPUT whatsapp-no-save: handed off to another app from the result
 REALINPUT whatsapp-no-save: result (run-result)
 REALINPUT contact-qr: result (run-result)
 REALINPUT video-email: result (run-result)
@@ -46,7 +45,7 @@ REALINPUT pdf-join: result (run-result)
 REALINPUT pdf-first-page: result (run-result)
 REALINPUT video-story: result (run-result)
 REALINPUT video-gif: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (1044.090 seconds).
+Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (1095.203 seconds).
 Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' started.
 REALINPUT video-words: result (run-result)
 REALINPUT photo-collage: result (run-result)
@@ -54,3 +53,109 @@ REALINPUT where-i-am: result (run-result)
 REALINPUT photos-gif: result (run-result)
 REALINPUT photos-flipbook: result (run-result)
 REALINPUT sticker-maker: message — Make a sticker couldn't find a person, pet or object to cut out. Try a photo where it stands clear of the background.
+REALINPUT emoji-faces: message — Emoji over faces didn't find a face in that photo. Try one where the face is clear and turned to the camera.
+REALINPUT meme: result (run-result)
+REALINPUT emoji-mosaic: result (run-result)
+REALINPUT video-celebrate: result (run-result)
+REALINPUT video-post: result (run-result)
+REALINPUT video-boomerang: result (run-result)
+REALINPUT video-slowmo: result (run-result)
+REALINPUT video-fast: result (run-result)
+REALINPUT photo-sketch: result (run-result)
+REALINPUT photo-comic: result (run-result)
+REALINPUT voice-chipmunk: result (run-result)
+REALINPUT voice-deep: result (run-result)
+REALINPUT voice-helium: result (run-result)
+REALINPUT voice-giant: result (run-result)
+REALINPUT voice-robot: result (run-result)
+REALINPUT voice-alien: result (run-result)
+REALINPUT voice-monster: result (run-result)
+REALINPUT voice-walkie: result (run-result)
+REALINPUT voice-cave: result (run-result)
+REALINPUT voice-ghost: result (run-result)
+REALINPUT video-voice: result (run-result)
+REALINPUT before-after: result (run-result)
+REALINPUT photo-sell: result (run-result)
+REALINPUT letter-listen: result (run-result)
+REALINPUT lecture-summary: result (run-steplog)
+REALINPUT meeting-email: result (run-steplog)
+REALINPUT voice-spanish: result (run-steplog)
+REALINPUT form-portal: result (run-result)
+REALINPUT doc-portal: result (run-result)
+REALINPUT id-portal: result (run-result)
+REALINPUT reel-captions: result (run-result)
+REALINPUT video-minute-email: result (run-result)
+REALINPUT pdf-summary: result (run-result)
+REALINPUT pdf-english: result (run-result)
+REALINPUT pdf-listen: result (run-result)
+REALINPUT page-listen: result (run-steplog)
+REALINPUT whiteboard-email: result (run-result)
+REALINPUT chat-scam: result (run-result)
+REALINPUT rewrite-clear: result (run-result)
+REALINPUT signature-contact: result (run-result)
+Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (999.926 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 2095.129 (2095.139) seconds
+Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' started.
+TOOLINPUT studio: ok 30s
+TOOLINPUT procam: ok 31s
+TOOLINPUT video: ok 30s
+TOOLINPUT formatfix: ok 30s
+TOOLINPUT fitit: ok 31s
+TOOLINPUT scrub: ok 31s
+TOOLINPUT identify: ok 30s
+TOOLINPUT stitch: ok 29s
+TOOLINPUT qrwifi: ok 28s
+TOOLINPUT cleaner: ok 29s
+TOOLINPUT scan: ok 31s
+TOOLINPUT datagrab: ok 30s
+TOOLINPUT pdfredact: ok 28s
+TOOLINPUT sorted: ok 29s
+TOOLINPUT memory: ok 29s
+TOOLINPUT warranty: ok 30s
+TOOLINPUT textstudio: ok 29s
+TOOLINPUT thinking: ok 33s
+TOOLINPUT medreminder: ok 30s
+TOOLINPUT pricewatch: ok 29s
+TOOLINPUT planner: ok 29s
+TOOLINPUT brief: ok 30s
+TOOLINPUT daydiary: ok 28s
+TOOLINPUT untangle: ok 29s
+TOOLINPUT menu: ok 29s
+TOOLINPUT cards: ok 29s
+TOOLINPUT pdfannotate: ok 28s
+TOOLINPUT pdfconvert: ok 33s
+TOOLINPUT pdfpages: ok 31s
+TOOLINPUT pdfsign: ok 29s
+TOOLINPUT pdfprotect: ok 31s
+TOOLINPUT pdfsearchable: ok 28s
+TOOLINPUT pdfform: ok 28s
+TOOLINPUT zipmaker: ok 28s
+TOOLINPUT celebrate: ok 31s
+TOOLINPUT animate: ok 28s
+TOOLINPUT collage: ok 28s
+TOOLINPUT faceemoji: ok 28s
+TOOLINPUT comicstrip: ok 28s
+TOOLINPUT sticker: ok 28s
+TOOLINPUT audioconvert: ok 28s
+TOOLINPUT audiocompress: ok 28s
+TOOLINPUT ringtone: ok 29s
+TOOLINPUT audioedit: ok 28s
+TOOLINPUT audiomix: ok 28s
+TOOLINPUT audiotags: ok 28s
+TOOLINPUT audioclean: ok 29s
+TOOLINPUT meetingnotes: ok 28s
+TOOLINPUT soundboard: ok 28s
+TOOLINPUT translate: ok 31s
+TOOLINPUT voicenotes: ok 29s
+TOOLINPUT shield: ok 35s
+TOOLINPUT contacts: ok 30s
+TOOLINPUT light: ok 35s
+TOOLINPUT measure: ok 30s
+TOOLINPUT gpsdash: ok 36s
+TOOLINPUT audiolab: ok 29s
+TOOLINPUT rest: ok 36s
+TOOLINPUT seeread: ok 30s
+TOOLINPUT colorvision: ok 30s
+TOOLINPUT fileviewer: ok 28s
+TOOLINPUT pricecheck: ok 29s
+TOOLINPUT vault: ok 29s
