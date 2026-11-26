@@ -55,7 +55,9 @@ class AutorunsOnDeviceTest {
     @Test fun aHeavyVideoIsFoundMadeSmallerAndLooksTheSame() {
         val clip = runBlocking { Reels.photoClip(ctx, picture()) } ?: throw AssertionError("no clip")
         // A wasteful copy, the way a phone camera saves: a high bitrate for what's in it.
-        val heavy = runBlocking { HeavyVideos.encode(ctx, Uri.fromFile(clip), 24_000_000, MimeTypes.VIDEO_H264, constant = true) } ?: throw AssertionError("no heavy copy")
+        // Constant rate where the encoder allows it (so the copy really is wasteful), its usual rate otherwise.
+        val heavy = runBlocking { HeavyVideos.encode(ctx, Uri.fromFile(clip), 24_000_000, MimeTypes.VIDEO_H264, constant = true)
+            ?: HeavyVideos.encode(ctx, Uri.fromFile(clip), 24_000_000, MimeTypes.VIDEO_H264) } ?: throw AssertionError("no heavy copy")
         // Into the phone's videos, so the autorun finds it the way it finds a real one.
         val v = ContentValues().apply {
             put(MediaStore.Video.Media.DISPLAY_NAME, "autorun-test-${System.nanoTime()}.mp4"); put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
@@ -127,8 +129,11 @@ class AutorunsOnDeviceTest {
         assertTrue("no wide clip", runBlocking { Reels.export(ctx, androidx.media3.transformer.Composition.Builder(listOf(androidx.media3.transformer.EditedMediaItemSequence(listOf(edited)))).build(), wide) { } })
         val out = runBlocking { ReadyToPost.make(ctx, Uri.fromFile(wide)) } ?: throw AssertionError("it wasn't made ready")
         val r = android.media.MediaMetadataRetriever().apply { setDataSource(out.absolutePath) }
-        val w = r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)!!.toInt()
-        val h = r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)!!.toInt()
+        // Stored sideways with a turn in its header is the same tall video (the encoder's choice), as the studio tests count it.
+        val rot = r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION)?.toIntOrNull() ?: 0
+        val sw = r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)!!.toInt()
+        val sh = r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)!!.toInt()
+        val w = if (rot % 180 != 0) sh else sw; val h = if (rot % 180 != 0) sw else sh
         val f = r.getFrameAtTime(1_500_000, android.media.MediaMetadataRetriever.OPTION_CLOSEST)!!; r.release()
         assertTrue("tall 1080×1920 (${w}×$h)", w == ReadyToPost.W && h == ReadyToPost.H)
         fun lum(y0: Int, y1: Int): Double { var s = 0.0; var n = 0
@@ -147,8 +152,10 @@ class AutorunsOnDeviceTest {
         fun shell(cmd: String) = android.os.ParcelFileDescriptor.AutoCloseInputStream(ui.executeShellCommand(cmd))
         val names = shell("ls /data/local/tmp/real").bufferedReader().readText().lines().map { it.trim() }
             .filter { n -> listOf(".jpg", ".jpeg", ".png").any { n.lowercase().endsWith(it) } }.sorted().take(max)
-        return names.mapNotNull { n ->
+        val start = System.currentTimeMillis() - names.size * 60_000L
+        return names.mapIndexedNotNull { i, n ->
             val v = ContentValues().apply {
+                put(MediaStore.Images.Media.DATE_TAKEN, start + i * 60_000L)   // a minute apart: separate moments, as if taken through a day
                 put(MediaStore.Images.Media.DISPLAY_NAME, "autorun-test-${System.nanoTime()}." + n.substringAfterLast('.'))
                 put(MediaStore.Images.Media.MIME_TYPE, if (n.lowercase().endsWith(".png")) "image/png" else "image/jpeg")
                 if (Build.VERSION.SDK_INT >= 29) put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/TenzyTest")
