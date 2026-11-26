@@ -1,6 +1,88 @@
-Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' passed (247.436 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 247.436 (247.482) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 247.436 (247.491) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 247.436 (247.493) seconds
+2026-11-26 02:46:11.774697+0000 HandyTools[37217:102552] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-26 02:46:15.188881+0000 HandyTools[37217:102525] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 02:46:15.203128+0000 HandyTools[37217:102525] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 02:46:15.203341+0000 HandyTools[37217:102525] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 02:46:15.203966+0000 HandyTools[37217:102525] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 02:46:15.676178+0000 HandyTools[37217:102525] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 02:46:15.677080+0000 HandyTools[37217:102525] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+Test Case '-[HandyToolsTests.SmartInvoicesTests testEveryTranslationHasTheSameBlanks]' started.
+Test Case '-[HandyToolsTests.SmartInvoicesTests testEveryTranslationHasTheSameBlanks]' passed (0.094 seconds).
+Test Case '-[HandyToolsTests.SmartInvoicesTests testHowLateAndWhichTone]' started.
+Test Case '-[HandyToolsTests.SmartInvoicesTests testHowLateAndWhichTone]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.SmartInvoicesTests testTheClientsEmailIsFound]' started.
+Test Case '-[HandyToolsTests.SmartInvoicesTests testTheClientsEmailIsFound]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.SmartInvoicesTests testTheReminderQuotesTheInvoiceExactly]' started.
+Test Case '-[HandyToolsTests.SmartInvoicesTests testTheReminderQuotesTheInvoiceExactly]' passed (0.050 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.149 (0.155) seconds
+Test Case '-[HandyToolsTests.SmartPapersTests testFileNamesAreSafeForFiles]' started.
+Test Case '-[HandyToolsTests.SmartPapersTests testFileNamesAreSafeForFiles]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartPapersTests testLettersAreKeptButReceiptsCardsAndScreenshotsAreLeftToTheirOwnAutoruns]' started.
+Test Case '-[HandyToolsTests.SmartPapersTests testLettersAreKeptButReceiptsCardsAndScreenshotsAreLeftToTheirOwnAutoruns]' passed (0.010 seconds).
+Test Case '-[HandyToolsTests.SmartPapersTests testPagesTakenTogetherAreOneDocument]' started.
+Test Case '-[HandyToolsTests.SmartPapersTests testPagesTakenTogetherAreOneDocument]' passed (0.054 seconds).
+Test Case '-[HandyToolsTests.SmartPapersTests testTheNameComesFromWhatThePageIsNeverTheAddressDateOrGreeting]' started.
+Test Case '-[HandyToolsTests.SmartPapersTests testTheNameComesFromWhatThePageIsNeverTheAddressDateOrGreeting]' passed (0.110 seconds).
+Test Case '-[HandyToolsTests.SmartPapersTests testThePDFIsSearchable]' started.
+2026-11-26 02:46:22.784345+0000 HandyTools[37217:103378] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109c94e60> connection from pid 37217 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109c94e60> connection from pid 37217 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 02:46:22.787983+0000 HandyTools[37217:103378] [UAFAssetManager] Failed to grant sandbox extension: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109c94e60> connection from pid 37217 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109c94e60> connection from pid 37217 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+Test Case '-[HandyToolsTests.SmartPapersTests testThePDFIsSearchable]' passed (11.631 seconds).
+	 Executed 5 tests, with 0 failures (0 unexpected) in 11.806 (11.809) seconds
+Test Case '-[HandyToolsTests.SmartReceiptsTests testAddingTheSameRunAgainAddsNothing]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testAddingTheSameRunAgainAddsNothing]' passed (0.022 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testALabelAndItsAmountAcrossAGapStayTogether]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testALabelAndItsAmountAcrossAGapStayTogether]' passed (0.070 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testAShopNameWithACommaStaysInOneCell]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testAShopNameWithACommaStaysInOneCell]' passed (0.007 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testCategories]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testCategories]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testEachReceiptIsOneExactRow]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testEachReceiptIsOneExactRow]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testHeldBackWhenTheNumbersDontAddUp]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testHeldBackWhenTheNumbersDontAddUp]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testOldAndNewSheetsTakeEachOthersRows]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testOldAndNewSheetsTakeEachOthersRows]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testPurchasesWorthKeepingAreOfferedForWarranty]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testPurchasesWorthKeepingAreOfferedForWarranty]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.SmartReceiptsTests testTheSameReceiptTwiceCountsOnce]' started.
+Test Case '-[HandyToolsTests.SmartReceiptsTests testTheSameReceiptTwiceCountsOnce]' passed (0.005 seconds).
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.120 (0.125) seconds
+Test Case '-[HandyToolsTests.SmartRunsTests testASmallerVideoMustSaveRealSpace]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testASmallerVideoMustSaveRealSpace]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testDueOnlyOncePerChosenTime]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testDueOnlyOncePerChosenTime]' passed (0.025 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testHabitsSuggestTheRightAutorun]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testHabitsSuggestTheRightAutorun]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testItComesBackAtTheNextChosenTime]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testItComesBackAtTheNextChosenTime]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testItLooksAtWhatsNewButNeverAWeekAtOnce]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testItLooksAtWhatsNewButNeverAWeekAtOnce]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testOnlyHeavyVideosAreResaved]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testOnlyHeavyVideosAreResaved]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testPostPicksAreRealClipsNewestFirst]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testPostPicksAreRealClipsNewestFirst]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testSharpClipsRankAboveBlurryOnes]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testSharpClipsRankAboveBlurryOnes]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageFavoursLittleOnesAndSpreadsAcrossTheDay]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageFavoursLittleOnesAndSpreadsAcrossTheDay]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageKeepsOnePerMomentAndOnlyPeople]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testTheCollageKeepsOnePerMomentAndOnlyPeople]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testTheSamePictureBar]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testTheSamePictureBar]' passed (0.016 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testTidyKeepsTheRightCopyAndTheUsefulScreenshots]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testTidyKeepsTheRightCopyAndTheUsefulScreenshots]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.SmartRunsTests testTwiceADayIsTwelveHoursApart]' started.
+Test Case '-[HandyToolsTests.SmartRunsTests testTwiceADayIsTwelveHoursApart]' passed (0.001 seconds).
+	 Executed 13 tests, with 0 failures (0 unexpected) in 0.063 (0.069) seconds
+	 Executed 31 tests, with 0 failures (0 unexpected) in 12.138 (12.161) seconds
+	 Executed 31 tests, with 0 failures (0 unexpected) in 12.138 (12.163) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages]' started.
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:786: error: -[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages] : XCTAssertTrue failed - no PDF was made: Test run worked: no photos of letters, bills or forms from the last 24 hours.
+    t =    32.91s         Requesting snapshot of accessibility hierarchy for app with pid 38446
+    t =    33.03s     Requesting snapshot of accessibility hierarchy for app with pid 38446
+    t =    33.18s     Requesting snapshot of accessibility hierarchy for app with pid 38446
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:787: error: -[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages] : Failed to get matching snapshot: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"smartrun-check-paperPDFs" IN identifiers'`, given input App element pid: 38446
+Test Case '-[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages]' failed (33.638 seconds).
+	 Executed 1 test, with 2 failures (0 unexpected) in 33.638 (33.732) seconds
+	 Executed 1 test, with 2 failures (0 unexpected) in 33.638 (33.732) seconds
+	 Executed 1 test, with 2 failures (0 unexpected) in 33.638 (33.734) seconds
 == crash reports
