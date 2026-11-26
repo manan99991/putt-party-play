@@ -55,7 +55,9 @@ jobs:
               -destination "id=$UDID" -derivedDataPath build -only-testing:HandyToolsUITests/HowToFilmTests/$1 CODE_SIGNING_ALLOWED=NO 2>&1 \
               | while IFS= read -r line; do
                   case "$line" in
-                    *FILM-START*) if [ ! -f howto/$2.rec ]; then xcrun simctl io "$UDID" recordVideo --codec h264 --force howto/$2.raw.mov & echo $! > howto/$2.rec; fi ;;
+                    *FILM-START*) if [ ! -f howto/$2.rec ]; then xcrun simctl io "$UDID" recordVideo --codec h264 --force howto/$2.raw.mov & echo $! > howto/$2.rec; date +%s > howto/$2.t0; fi ;;
+                    # A wait the viewer needn't sit through (a simulator is far slower than a phone): cut from PAUSE to RESUME.
+                    *FILM-PAUSE*|*FILM-RESUME*) [ -f howto/$2.t0 ] && echo "$(( $(date +%s) - $(cat howto/$2.t0) ))" >> howto/$2.cuts ;;
                     *FILM-END*) if [ -f howto/$2.rec ] && [ ! -f howto/$2.done ]; then kill -INT $(cat howto/$2.rec); touch howto/$2.done; fi ;;
                   esac
                   case "$line" in *error:*|*"Test Case"*|*TEST\ *) echo "$line";; esac
@@ -64,9 +66,18 @@ jobs:
             [ -f howto/$2.rec ] && { kill -INT $(cat howto/$2.rec) 2>/dev/null || true; }
             sleep 2
           }
+          # If the app stops answering mid-film (the autorun film froze on 26 Nov), where its main thread is stuck.
+          ( while sleep 20; do
+              for P in $(pgrep -x HandyTools); do
+                sudo sample "$P" 1 -mayDie -file "$RUNNER_TEMP/sample.txt" >/dev/null 2>&1 || continue
+                xcrun swift-demangle --simplified < "$RUNNER_TEMP/sample.txt" | python3 ../tools/main_stack.py >> howto/hang.txt || true
+              done
+            done ) & SAMPLER=$!
           run testFilmSayWhatYouNeed say-what-you-need
           run testFilmSetAnAutorun set-an-autorun
           run testFilmGotSomething got-something
+          kill $SAMPLER 2>/dev/null || true
+          head -100 howto/hang.txt 2>/dev/null || echo "main thread never stuck"
           ls -la howto
       - name: Cut and shrink
         run: |
@@ -75,11 +86,18 @@ jobs:
             [ -f $f.raw.mov ] || { echo "::warning::no film for $f"; continue; }
             # The autorun film waits on a real Test run; it plays 1.6x so the wait doesn't drag.
             SPEED=1; [ $f = set-an-autorun ] && SPEED=1.6
-            ffmpeg -y -v error -ss 0.8 -i $f.raw.mov -vf "setpts=PTS/$SPEED,scale=-2:1280,fps=30" -an -c:v libx264 -preset veryfast -crf 27 -pix_fmt yuv420p \
+            # Cuts: pairs of seconds from the start mark (PAUSE, RESUME); a second of each side is kept so nothing jumps mid-tap.
+            CUT=$( [ -f $f.cuts ] && paste -sd' ' $f.cuts | python3 -c '
+          import sys
+          t=[int(x) for x in sys.stdin.read().split()]
+          print("+".join(f"between(t,{a+1},{b-1})" for a,b in zip(t[0::2],t[1::2]) if b-a>2))' || true)
+            SEL=""; [ -n "$CUT" ] && SEL="select='not($CUT)',setpts=N/30/TB,"
+            ffmpeg -y -v error -ss 0.8 -i $f.raw.mov -vf "fps=30,${SEL}setpts=PTS/$SPEED,scale=-2:1280,fps=30" -an -c:v libx264 -preset veryfast -crf 27 -pix_fmt yuv420p \
               -movflags +faststart $f.mp4
+            [ -n "$CUT" ] && echo "$f: cut $CUT"
             D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 $f.mp4); echo "$f.mp4: ${D}s, $(du -k $f.mp4 | cut -f1) KB"
             for k in 1 2 3 4 5 6 7 8; do T=$(python3 -c "print(round(${D:-0}*($k-0.5)/8,2))"); ffmpeg -y -v error -ss $T -i $f.mp4 -frames:v 1 -vf scale=300:-1 $f-frame-$k.png || true; done
-            rm -f $f.raw.mov $f.rec $f.done
+            rm -f $f.raw.mov $f.rec $f.done $f.t0 $f.cuts
           done
           rm -rf scan
           ls -la

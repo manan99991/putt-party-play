@@ -73,7 +73,16 @@ final class HowToFilmTests: XCTestCase {
         sleep(3)
         let way = any.matching(NSPredicate(format: "identifier BEGINSWITH 'guide-' AND identifier != 'guide-more' AND identifier != 'guide-suggested'")).firstMatch
         if way.waitForExistence(timeout: 10) { way.tap() }
-        sleep(9)                                  // the job runs on the photo and shows the result
+        sleep(4)                                  // the photo arrives and the job starts looking at it
+        // A simulator finds faces and writing far slower than a phone: the film skips that wait and shows what was found.
+        let looking = any["scrub-detecting"].firstMatch
+        if looking.exists {
+            mark("FILM-PAUSE")
+            let until = Date().addingTimeInterval(90)
+            while looking.exists && Date() < until { sleep(1) }
+            mark("FILM-RESUME")
+        }
+        sleep(5)
         mark("FILM-END")
     }
 }

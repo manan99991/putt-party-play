@@ -125,7 +125,7 @@ struct ScrubView: View {
                     Rectangle().fill(Color.black.opacity(0.5)).overlay(Rectangle().stroke(HandyColor.accent, lineWidth: 1.5))
                         .frame(width: r.width, height: r.height).offset(x: r.minX, y: r.minY)
                 }
-                if detecting { BusySpinner().frame(maxWidth: .infinity, maxHeight: .infinity) }
+                if detecting { BusySpinner().frame(maxWidth: .infinity, maxHeight: .infinity).accessibilityIdentifier("scrub-detecting") }
             }
             .contentShape(Rectangle())
             .gesture(DragGesture(minimumDistance: 6)
