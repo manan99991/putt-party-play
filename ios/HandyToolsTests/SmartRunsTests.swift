@@ -98,6 +98,15 @@ final class SmartRunsTests: XCTestCase {
         XCTAssertEqual(picks.map(\.id), ["newest", "good"])
     }
 
+    func testSharpClipsRankAboveBlurryOnes() {
+        let w = 40, h = 30
+        let flat = Stitcher.Gray(rows: h, width: w, px: Array(repeating: 128, count: w * h))
+        let edges = Stitcher.Gray(rows: h, width: w, px: (0..<(w * h)).map { i in ((i % w) / 4 + (i / w) / 4) % 2 == 0 ? 20 : 235 })
+        let soft = Stitcher.Gray(rows: h, width: w, px: (0..<(w * h)).map { i in UInt8(100 + (i % w)) })
+        XCTAssertEqual(SmartPosts.sharpness(flat), 0, accuracy: 0.001)
+        XCTAssertGreaterThan(SmartPosts.sharpness(edges), SmartPosts.sharpness(soft) * 100, "crisp edges score far above a gentle gradient")
+    }
+
     func testHabitsSuggestTheRightAutorun() {
         // Receipts on 4 separate days; video shrink twice; lots of baby photos on the phone.
         let days: [String: Set<Int>] = ["receipts": [1, 3], "scan": [5, 8], "videoshrink": [2, 2, 9]]

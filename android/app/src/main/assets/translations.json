@@ -14808,5 +14808,185 @@
   "ja": "今日の大きな動画を見た目の変わらない小さい形式で保存し直し、1本ずつフレーム単位で確認して、空く容量を表示します。",
   "pt": "Volta a guardar os vídeos grandes de hoje num formato mais pequeno que parece igual, verifica cada um fotograma a fotograma e mostra quanto espaço recupera.",
   "zh": "把今天的大视频重新存为更小但看起来一样的格式，逐帧检查每一个，并显示能腾出多少空间。"
+ },
+ "Giving it your look…": {
+  "de": "Dein Look wird angewendet …",
+  "es": "Aplicando tu estilo…",
+  "fr": "Application de votre style…",
+  "hi": "आपका लुक लगाया जा रहा है…",
+  "it": "Applico il tuo stile…",
+  "ja": "スタイルを適用中…",
+  "pt": "A aplicar o seu visual…",
+  "zh": "正在套用你的风格…"
+ },
+ "In Photos — open the app to post it": {
+  "de": "In Fotos – öffne die App, um es zu posten",
+  "es": "En Fotos: abre la app para publicarlo",
+  "fr": "Dans Photos — ouvrez l'app pour le publier",
+  "hi": "फ़ोटो में है — पोस्ट करने के लिए ऐप खोलें",
+  "it": "In Foto: apri l'app per pubblicarlo",
+  "ja": "写真に保存済み — アプリを開いて投稿",
+  "pt": "Nas Fotos — abra a app para publicar",
+  "zh": "已在照片中——打开 App 发布"
+ },
+ "Not this one": {
+  "de": "Dieses nicht",
+  "es": "Este no",
+  "fr": "Pas celui-ci",
+  "hi": "यह नहीं",
+  "it": "Non questo",
+  "ja": "これは不要",
+  "pt": "Este não",
+  "zh": "不要这个"
+ },
+ "Ready to post": {
+  "de": "Bereit zum Posten",
+  "es": "Listo para publicar",
+  "fr": "Prêt à publier",
+  "hi": "पोस्ट के लिए तैयार",
+  "it": "Pronto da pubblicare",
+  "ja": "投稿の準備完了",
+  "pt": "Pronto a publicar",
+  "zh": "可以发布了"
+ },
+ "Save to Photos to post": {
+  "de": "In Fotos sichern zum Posten",
+  "es": "Guardar en Fotos para publicar",
+  "fr": "Enregistrer dans Photos pour publier",
+  "hi": "पोस्ट के लिए फ़ोटो में सहेजें",
+  "it": "Salva in Foto per pubblicare",
+  "ja": "投稿用に写真へ保存",
+  "pt": "Guardar nas Fotos para publicar",
+  "zh": "存入照片以便发布"
+ },
+ "Tall 9:16, your look, sound kept. Watch each one, then save it and post it from the app.": {
+  "de": "Hochformat 9:16, dein Look, Ton bleibt. Sieh dir jedes an, sichere es und poste es aus der App.",
+  "es": "Vertical 9:16, tu estilo, con sonido. Mira cada uno, guárdalo y publícalo desde la app.",
+  "fr": "Vertical 9:16, votre style, son conservé. Regardez chacun, enregistrez-le et publiez-le depuis l'app.",
+  "hi": "लंबा 9:16, आपका लुक, आवाज़ वही। हर एक देखें, फिर सहेजकर ऐप से पोस्ट करें।",
+  "it": "Verticale 9:16, il tuo stile, audio mantenuto. Guarda ognuno, salvalo e pubblicalo dall'app.",
+  "ja": "縦長9:16、あなたのスタイル、音声そのまま。確認して保存し、アプリから投稿。",
+  "pt": "Vertical 9:16, o seu visual, som mantido. Veja cada um, guarde-o e publique a partir da app.",
+  "zh": "竖屏 9:16、你的风格、保留声音。逐个观看后保存，再从 App 发布。"
+ },
+ "Tap Check to watch them.": {
+  "de": "Tippe auf Prüfen, um sie anzusehen.",
+  "es": "Toca Revisar para verlos.",
+  "fr": "Touchez Vérifier pour les regarder.",
+  "hi": "देखने के लिए जाँचें दबाएँ।",
+  "it": "Tocca Controlla per guardarli.",
+  "ja": "「確認」で再生できます。",
+  "pt": "Toque em Verificar para os ver.",
+  "zh": "点按“检查”观看。"
+ },
+ "Tap and Tenzy picks today's best clips and gets them ready to post.": {
+  "de": "Tippe, und Tenzy wählt die besten Clips von heute aus und macht sie bereit zum Posten.",
+  "es": "Toca y Tenzy elige los mejores clips de hoy y los prepara para publicar.",
+  "fr": "Touchez et Tenzy choisit les meilleurs clips du jour et les prépare pour la publication.",
+  "hi": "टैप करें, Tenzy आज की सबसे अच्छी क्लिप चुनकर पोस्ट के लिए तैयार करेगा।",
+  "it": "Tocca e Tenzy sceglie le clip migliori di oggi e le prepara da pubblicare.",
+  "ja": "タップすると、Tenzyが今日のベストクリップを選び投稿用に準備します。",
+  "pt": "Toque e o Tenzy escolhe os melhores clipes de hoje e prepara-os para publicar.",
+  "zh": "点按后，Tenzy 会挑出今天最好的片段并准备好发布。"
+ },
+ "Test run worked: no clips from the last 24 hours between 4 seconds and 3 minutes.": {
+  "de": "Testlauf hat funktioniert: keine Clips der letzten 24 Stunden zwischen 4 Sekunden und 3 Minuten.",
+  "es": "La prueba funcionó: no hay clips de las últimas 24 horas de entre 4 segundos y 3 minutos.",
+  "fr": "L'essai a fonctionné : aucun clip de 4 secondes à 3 minutes dans les dernières 24 heures.",
+  "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों में 4 सेकंड से 3 मिनट की कोई क्लिप नहीं।",
+  "it": "La prova ha funzionato: nessuna clip tra 4 secondi e 3 minuti nelle ultime 24 ore.",
+  "ja": "テスト成功：過去24時間に4秒〜3分のクリップはありません。",
+  "pt": "O teste funcionou: sem clipes de 4 segundos a 3 minutos nas últimas 24 horas.",
+  "zh": "试运行成功：过去 24 小时没有 4 秒到 3 分钟的片段。"
+ },
+ "Your look": {
+  "de": "Dein Look",
+  "es": "Tu estilo",
+  "fr": "Votre style",
+  "hi": "आपका लुक",
+  "it": "Il tuo stile",
+  "ja": "あなたのスタイル",
+  "pt": "O seu visual",
+  "zh": "你的风格"
+ },
+ "Clip": {
+  "de": "Clip",
+  "es": "Clip",
+  "fr": "Clip",
+  "hi": "क्लिप",
+  "it": "Clip",
+  "ja": "クリップ",
+  "pt": "Clipe",
+  "zh": "片段"
+ },
+ "clip ready to post": {
+  "de": "Clip bereit zum Posten",
+  "es": "clip listo para publicar",
+  "fr": "clip prêt à publier",
+  "hi": "क्लिप पोस्ट के लिए तैयार",
+  "it": "clip pronta da pubblicare",
+  "ja": "本のクリップを準備",
+  "pt": "clipe pronto a publicar",
+  "zh": "个片段可发布"
+ },
+ "clips ready to post": {
+  "de": "Clips bereit zum Posten",
+  "es": "clips listos para publicar",
+  "fr": "clips prêts à publier",
+  "hi": "क्लिप पोस्ट के लिए तैयार",
+  "it": "clip pronte da pubblicare",
+  "ja": "本のクリップを準備",
+  "pt": "clipes prontos a publicar",
+  "zh": "个片段可发布"
+ },
+ "clip is ready to post — watch it first.": {
+  "de": "Clip ist bereit zum Posten – sieh ihn dir zuerst an.",
+  "es": "clip listo para publicar: míralo primero.",
+  "fr": "clip est prêt à publier — regardez-le d'abord.",
+  "hi": "क्लिप पोस्ट के लिए तैयार है — पहले देख लें।",
+  "it": "clip è pronta da pubblicare: guardala prima.",
+  "ja": "本のクリップを投稿できます — まず確認を。",
+  "pt": "clipe está pronto a publicar — veja-o primeiro.",
+  "zh": "个片段可发布——先看一下。"
+ },
+ "clips are ready to post — watch them first.": {
+  "de": "Clips sind bereit zum Posten – sieh sie dir zuerst an.",
+  "es": "clips listos para publicar: míralos primero.",
+  "fr": "clips sont prêts à publier — regardez-les d'abord.",
+  "hi": "क्लिप पोस्ट के लिए तैयार हैं — पहले देख लें।",
+  "it": "clip sono pronte da pubblicare: guardale prima.",
+  "ja": "本のクリップを投稿できます — まず確認を。",
+  "pt": "clipes estão prontos a publicar — veja-os primeiro.",
+  "zh": "个片段可发布——先看一下。"
+ },
+ "Picking today's best clips…": {
+  "de": "Die besten Clips von heute werden ausgewählt …",
+  "es": "Eligiendo los mejores clips de hoy…",
+  "fr": "Choix des meilleurs clips du jour…",
+  "hi": "आज की सबसे अच्छी क्लिप चुन रहे हैं…",
+  "it": "Scelgo le clip migliori di oggi…",
+  "ja": "今日のベストクリップを選択中…",
+  "pt": "A escolher os melhores clipes de hoje…",
+  "zh": "正在挑选今天最好的片段…"
+ },
+ "Get today's best videos ready to post": {
+  "de": "Die besten Videos von heute zum Posten bereit machen",
+  "es": "Preparar los mejores vídeos de hoy para publicar",
+  "fr": "Préparer les meilleures vidéos du jour à publier",
+  "hi": "आज के सबसे अच्छे वीडियो पोस्ट के लिए तैयार करें",
+  "it": "Prepara i video migliori di oggi da pubblicare",
+  "ja": "今日のベスト動画を投稿用に準備",
+  "pt": "Preparar os melhores vídeos de hoje para publicar",
+  "zh": "把今天最好的视频准备好发布"
+ },
+ "Picks today's best clips, gives them your look and the tall size Reels, TikTok and Shorts want, ready for you to watch and post.": {
+  "de": "Wählt die besten Clips von heute, gibt ihnen deinen Look und das Hochformat für Reels, TikTok und Shorts – bereit zum Ansehen und Posten.",
+  "es": "Elige los mejores clips de hoy, les da tu estilo y el formato vertical que piden Reels, TikTok y Shorts, listos para ver y publicar.",
+  "fr": "Choisit les meilleurs clips du jour, leur donne votre style et le format vertical de Reels, TikTok et Shorts, prêts à regarder et publier.",
+  "hi": "आज की सबसे अच्छी क्लिप चुनता है, उन्हें आपका लुक और Reels, TikTok व Shorts वाला लंबा आकार देता है, देखने और पोस्ट करने के लिए तैयार।",
+  "it": "Sceglie le clip migliori di oggi, dà loro il tuo stile e il formato verticale di Reels, TikTok e Shorts, pronte da guardare e pubblicare.",
+  "ja": "今日のベストクリップを選び、あなたのスタイルとReels・TikTok・Shorts向けの縦長サイズに整えて、確認・投稿できる状態にします。",
+  "pt": "Escolhe os melhores clipes de hoje, dá-lhes o seu visual e o formato vertical que Reels, TikTok e Shorts pedem, prontos a ver e publicar.",
+  "zh": "挑选今天最好的片段，套用你的风格并做成 Reels、TikTok、Shorts 需要的竖屏尺寸，供你观看和发布。"
  }
 }

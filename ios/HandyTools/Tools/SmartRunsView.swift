@@ -192,6 +192,17 @@ struct SmartRunsView: View {
                 Text(L(AutoPark.isOn ? "Uses Find my car's drive detection, which is on." : "Uses Find my car's drive detection — switching this on turns it on."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }
+            if k == .readyToPost {
+                // The look every clip gets — shown as chips that wrap, never a sideways scroller.
+                Text(L("Your look")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                HandyFlow(spacing: 6) {
+                    ForEach(SmartPosts.looks, id: \.self) { id in
+                        let c = VideoFX.looks.first { $0.id == id }
+                        HChip(text: "\(c?.emoji ?? "") \(L(c?.name ?? id))", selected: (p.look ?? "vivid") == id) { var q = p; q.look = id; store.set(k, q) }
+                            .accessibilityIdentifier("smartpost-look-\(id)")
+                    }
+                }
+            }
             if k == .receipts {
                 Button { pickingFolder = true } label: {
                     Label(SmartReceipts.folder.map { "\(L("PDFs from")) \($0.lastPathComponent)" } ?? L("Also read PDFs from a folder…"), systemImage: "folder")
@@ -201,7 +212,7 @@ struct SmartRunsView: View {
                 Button { Task { await testRun(k) } } label: { Label(L("Test run"), systemImage: "play.circle").frame(maxWidth: .infinity) }
                     .secondaryButton().disabled(store.working != nil).accessibilityIdentifier("smartrun-test-\(k.rawValue)")
                 if store.waitingCount(k) > 0 {
-                    NavigationLink(value: k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : "smartreceipts") {
+                    NavigationLink(value: k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : "smartreceipts") {
                         Text("\(L("Check")) \(store.waitingCount(k))").frame(maxWidth: .infinity)
                     }.primaryButton().accessibilityIdentifier("smartrun-check-\(k.rawValue)")
                 }
@@ -244,7 +255,10 @@ struct SmartRunsView: View {
         let before = store.waitingCount(k)
         await store.run(k, test: true)
         let found = store.waitingCount(k) - before
-        if k == .heavyVideos {
+        if k == .readyToPost {
+            note = found > 0 ? "\(L("Test run made")) \(found) \(L(found == 1 ? "clip ready to post" : "clips ready to post")). \(L("Tap Check to watch them."))"
+                             : L("Test run worked: no clips from the last 24 hours between 4 seconds and 3 minutes.")
+        } else if k == .heavyVideos {
             note = found > 0 ? "\(L("Test run made")) \(found) \(L(found == 1 ? "video smaller" : "videos smaller")). \(L("Tap Check to compare before anything changes."))"
                              : L("Test run worked: no video from the last 24 hours could be made noticeably smaller without losing quality.")
                                + (Launch.uitest ? " [" + SmartVideos.trail.joined(separator: " | ") + "]" : "")
@@ -537,6 +551,74 @@ struct SmartVideosReview: View {
         }
         .cardStyle(padding: HandySpacing.s12)
         .accessibilityElement(children: .contain).accessibilityIdentifier("smartvideo-row")
+    }
+}
+
+/// The clips a run made ready to post: watch each, then save it to Photos and open the app to post it.
+struct SmartPostsReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
+    @State private var saving: String?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Ready to post")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                Text(L("Tall 9:16, your look, sound kept. Watch each one, then save it and post it from the app."))
+                    .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                if store.posts.isEmpty {
+                    EmptyState(icon: "sparkles.tv", line: "Nothing waiting", sub: "Today's best clips show up here after the next run.")
+                }
+                ForEach(store.posts) { r in card(r) }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartposts")
+    }
+
+    private func card(_ r: SmartPosts.Result) -> some View {
+        let url = SmartPosts.folder.appendingPathComponent(r.file)
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            // The finished clip itself, playing in place: what you see is what gets posted.
+            VideoPlayer(player: AVPlayer(url: url))
+                .aspectRatio(9.0 / 16.0, contentMode: .fit).frame(maxHeight: 420).frame(maxWidth: .infinity)
+                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous)).contentShape(Rectangle())
+                .accessibilityIdentifier("smartpost-player")
+                .accessibilityValue(Launch.uitest ? (r.size.map { "\($0[0])x\($0[1])" } ?? "unknown") : "")
+            HStack {
+                Text("\(SocialPost.clock(r.seconds)) · \(L(VideoFX.looks.first { $0.id == r.look }?.name ?? r.look))")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Spacer()
+                Button(role: .destructive) { store.dropPost(r.id) } label: { Image(systemName: "trash").foregroundStyle(HandyColor.textSecondary) }
+                    .accessibilityLabel(L("Not this one"))
+            }
+            if r.saved {
+                Label(L("In Photos — open the app to post it"), systemImage: "checkmark.circle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                HandyFlow(spacing: 6) {
+                    ForEach(["reels", "tiktok", "shorts"], id: \.self) { id in
+                        if let p = SocialPost.platform(id), let link = SocialPost.openURL(p, assetID: r.savedID) {
+                            Button { openURL(link) } label: { Label(p.name, systemImage: p.icon) }.secondaryButton()
+                        }
+                    }
+                }
+            } else {
+                Button {
+                    saving = r.id
+                    Task { _ = await store.savePost(r.id); saving = nil; HandyHaptics.success() }
+                } label: {
+                    Label(saving == r.id ? L("Saving…") : L("Save to Photos to post"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity)
+                }.primaryButton().disabled(saving != nil).accessibilityIdentifier("smartpost-save")
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain).accessibilityIdentifier("smartpost-card")
     }
 }
 

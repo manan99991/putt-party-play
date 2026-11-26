@@ -88,6 +88,8 @@ enum SmartRuns {
         var minute = 0
         /// Receipts only: a folder of PDFs to look in too (a saved bookmark), named for showing.
         var folderName: String?
+        /// Ready to post only: the look given to each clip.
+        var look: String?
 
         /// The times of day it comes back, first first.
         var times: [(hour: Int, minute: Int)] {

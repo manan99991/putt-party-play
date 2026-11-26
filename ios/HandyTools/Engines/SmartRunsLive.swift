@@ -8,11 +8,12 @@ import UserNotifications
 @MainActor final class SmartRunStore: ObservableObject {
     static let shared = SmartRunStore()
     /// The autoruns built so far. An autorun is only offered once it truly works end to end.
-    static let built: [SmartRuns.Kind] = [.receipts, .drives, .heavyVideos]
+    static let built: [SmartRuns.Kind] = [.receipts, .drives, .heavyVideos, .readyToPost]
 
     @Published private(set) var plans: [SmartRuns.Kind: SmartRuns.Plan] = [:]
     @Published private(set) var receipts: [SmartReceipts.Entry] = []      // found, waiting for a look
     @Published private(set) var videos: [SmartVideos.Result] = []          // smaller copies made, waiting for a look
+    @Published private(set) var posts: [SmartPosts.Result] = []            // clips made ready to post, waiting for a look
     @Published var working: SmartRuns.Kind?
     @Published var progress: (share: Double, what: String) = (0, "")
     @Published var started: Date?
@@ -26,6 +27,7 @@ import UserNotifications
     }
     private var receiptsURL: URL { folder.appendingPathComponent("receipts.json") }
     private var videosURL: URL { folder.appendingPathComponent("videos.json") }
+    private var postsURL: URL { folder.appendingPathComponent("posts.json") }
 
     init() {
         if let d = AppGroup.defaults.data(forKey: plansKey), let p = try? JSONDecoder().decode([String: SmartRuns.Plan].self, from: d) {
@@ -34,6 +36,9 @@ import UserNotifications
         if let d = try? Data(contentsOf: receiptsURL), let r = try? JSONDecoder().decode([SmartReceipts.Entry].self, from: d) { receipts = r }
         if let d = try? Data(contentsOf: videosURL), let r = try? JSONDecoder().decode([SmartVideos.Result].self, from: d) {
             videos = r.filter { FileManager.default.fileExists(atPath: SmartVideos.folder.appendingPathComponent($0.file).path) }
+        }
+        if let d = try? Data(contentsOf: postsURL), let r = try? JSONDecoder().decode([SmartPosts.Result].self, from: d) {
+            posts = r.filter { FileManager.default.fileExists(atPath: SmartPosts.folder.appendingPathComponent($0.file).path) }
         }
     }
 
@@ -55,6 +60,7 @@ import UserNotifications
         case .receipts: return receipts.count
         case .drives: return drives.count
         case .heavyVideos: return videos.count
+        case .readyToPost: return posts.filter { !$0.saved }.count
         default: return 0
         }
     }
@@ -114,6 +120,21 @@ import UserNotifications
                 }
             }
             progress = (1, "Done")
+        case .readyToPost:
+            progress = (0.02, "Picking today's best clips…")
+            let have = Set(posts.map(\.id))
+            let best = await SmartPosts.best(in: window).filter { !have.contains($0.0.id) }
+            let look = plan(.readyToPost).look ?? "vivid"
+            for (i, (f, a)) in best.enumerated() {
+                if Task.isCancelled { break }
+                let base = Double(i) / Double(max(1, best.count))
+                progress = (base + 0.05, "\(L("Clip")) \(i + 1)/\(best.count)")
+                if let r = await SmartPosts.make(f, a, look: look, progress: { what in Task { @MainActor in
+                    self.progress = (base + 0.5 / Double(max(1, best.count)), "\(L("Clip")) \(i + 1)/\(best.count) · \(what)") } }) {
+                    posts.append(r); savePosts()
+                }
+            }
+            progress = (1, "Done")
         default: break
         }
         if !test { AppGroup.defaults.set(now.timeIntervalSince1970, forKey: lastKey(k)) }
@@ -169,6 +190,23 @@ import UserNotifications
         videos.removeAll(); saveVideos()
     }
 
+    /// One ready clip into Photos (for posting from Instagram, TikTok or YouTube). Returns the new id.
+    func savePost(_ id: String) async -> String? {
+        guard let i = posts.firstIndex(where: { $0.id == id }) else { return nil }
+        let r = await SocialPost.saveToPhotos(SmartPosts.folder.appendingPathComponent(posts[i].file))
+        guard r.ok else { return nil }
+        posts[i].saved = true; posts[i].savedID = r.id; savePosts()
+        Task { await SmartRunAlerts.ready(.readyToPost, count: waitingCount(.readyToPost)) }
+        return r.id ?? ""
+    }
+    func dropPost(_ id: String) {
+        if let r = posts.first(where: { $0.id == id }) { try? FileManager.default.removeItem(at: SmartPosts.folder.appendingPathComponent(r.file)) }
+        posts.removeAll { $0.id == id }; savePosts()
+    }
+    private func savePosts() {
+        if let d = try? JSONEncoder().encode(posts) { try? d.write(to: postsURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
+    }
+
     private func saveVideos() {
         if let d = try? JSONEncoder().encode(videos) { try? d.write(to: videosURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
     }
@@ -218,6 +256,9 @@ enum SmartRunAlerts {
             let body = UNMutableNotificationContent()
             body.title = L(k.title)
             switch k {
+            case .readyToPost:
+                body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "clip is ready to post — watch it first." : "clips are ready to post — watch them first."))"
+                                        : L("Tap and Tenzy picks today's best clips and gets them ready to post.")
             case .heavyVideos:
                 body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "video can be made smaller — it looks the same." : "videos can be made smaller — they look the same."))"
                                         : L("Tap and Tenzy finds today's heavy videos and makes them smaller without losing quality.")

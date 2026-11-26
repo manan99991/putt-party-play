@@ -705,6 +705,34 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1 smaller copy saved'")).firstMatch.exists)
     }
 
+    /// Smart autorun, ready to post (25 Nov): today's clip comes out tall 9:16 with the chosen look, plays in place, and
+    /// Save puts it in Photos with the apps to post from one tap away.
+    func testReadyToPostMakesATallClipAndSavesIt() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "smartruns", "-uitest", "-seedheavyvideo"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let test = any["smartrun-test-readyToPost"].firstMatch
+        XCTAssertTrue(test.waitForExistence(timeout: 60), "the autoruns page didn't open")
+        XCTAssertTrue(any["seed-done"].firstMatch.waitForExistence(timeout: 180), "the test clip never reached the photo library")
+        while !test.isHittable { app.swipeUp() }
+        test.tap()
+        let check = any["smartrun-check-readyToPost"].firstMatch
+        let note = any["smartruns-note"].firstMatch
+        let deadline = Date().addingTimeInterval(600)
+        while Date() < deadline, !check.exists, !(note.exists && note.label.contains("Test run")) { sleep(5) }
+        XCTAssertTrue(check.exists, "no clip was made ready: \(note.exists ? note.label : "no message")")
+        while !check.isHittable { app.swipeUp() }
+        check.tap()
+        let player = any["smartpost-player"].firstMatch
+        XCTAssertTrue(player.waitForExistence(timeout: 10), "the clip isn't shown to watch")
+        let wh = (player.value as? String ?? "").split(separator: "x").compactMap { Double($0) }
+        XCTAssertEqual(wh.count, 2, "clip size unknown: \(player.value ?? "")")
+        if wh.count == 2 { XCTAssertEqual(wh[1] / wh[0], 16.0 / 9.0, accuracy: 0.02, "not tall 9:16: \(wh)") }
+        any["smartpost-save"].firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["In Photos — open the app to post it"].waitForExistence(timeout: 30), "it wasn't saved to Photos")
+    }
+
     /// "Just swiping the finger lets select multiple files" (Manan, 22 Nov): Home › Photo opens Tenzy's own grid, and a
     /// sideways swipe across the first row ticks every photo it passes over.
     func testSwipeAcrossPhotosPicksSeveral() {
