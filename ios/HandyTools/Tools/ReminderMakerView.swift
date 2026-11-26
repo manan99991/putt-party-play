@@ -23,6 +23,7 @@ struct OwnReminder: Codable, Identifiable, Equatable {
 enum OwnReminders {
     static let prefix = "own-"
     private static let key = "tenzy.ownReminders"
+    static var storeKey: String { key }
     /// Room left after the app's other reminders (iOS holds 64 at most).
     static let limit = 16
 

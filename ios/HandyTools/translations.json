@@ -51488,5 +51488,45 @@
   "ja": "声をささやき声にする",
   "pt": "Transformar uma voz em sussurro",
   "zh": "把声音变成耳语"
+ },
+ "See all my reminders": {
+  "de": "Alle meine Erinnerungen",
+  "es": "Ver todos mis recordatorios",
+  "fr": "Voir tous mes rappels",
+  "hi": "मेरे सभी रिमाइंडर देखें",
+  "it": "Vedi tutti i miei promemoria",
+  "ja": "リマインダーをすべて見る",
+  "pt": "Ver todos os meus lembretes",
+  "zh": "查看我的所有提醒"
+ },
+ "Test it": {
+  "de": "Testen",
+  "es": "Probarlo",
+  "fr": "Tester",
+  "hi": "टेस्ट करें",
+  "it": "Provalo",
+  "ja": "試す",
+  "pt": "Testar",
+  "zh": "试一下"
+ },
+ "Reminder set": {
+  "de": "Erinnerung gesetzt",
+  "es": "Recordatorio listo",
+  "fr": "Rappel programmé",
+  "hi": "रिमाइंडर सेट हो गया",
+  "it": "Promemoria impostato",
+  "ja": "リマインダーを設定しました",
+  "pt": "Lembrete definido",
+  "zh": "提醒已设置"
+ },
+ "Saved, but notifications are off": {
+  "de": "Gespeichert, aber Mitteilungen sind aus",
+  "es": "Guardado, pero las notificaciones están desactivadas",
+  "fr": "Enregistré, mais les notifications sont désactivées",
+  "hi": "सेव हो गया, पर नोटिफ़िकेशन बंद हैं",
+  "it": "Salvato, ma le notifiche sono disattivate",
+  "ja": "保存しましたが、通知がオフです",
+  "pt": "Salvo, mas as notificações estão desligadas",
+  "zh": "已保存，但通知已关闭"
  }
 }

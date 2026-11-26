@@ -8,6 +8,7 @@ import WidgetKit
 import PDFKit
 import AVKit
 import Speech
+import UserNotifications
 
 /// Audio types the recording pickers accept. `.audio` covers m4a/mp3/wav/caf and friends; the explicit
 /// opus/ogg extensions also admit WhatsApp & Telegram voice notes (Ogg-Opus), which iOS does not map to
@@ -486,6 +487,9 @@ struct BuilderView: View {
     @State private var editAsk = ""
     /// Describe it found a full Tenzy tool that already does the job; the plan waits behind it.
     @State private var builtIn: PlanCheck.BuiltIn?
+    /// A remind-me sentence, already set (26 Nov): shown exactly as it will arrive, with Test and Undo.
+    @State private var setReminder: OwnReminder?
+    @State private var reminderBlocked = false
     @State private var pendingPlan: ChainPlanner.Plan?
     @State private var renaming: Chain?
     /// "Put on Home Screen": the tool whose how-to is showing.
@@ -954,6 +958,7 @@ struct BuilderView: View {
             brandHero
             readyNow
             if let b = builtIn { builtInCard(b) }
+            if let r = setReminder { reminderCard(r) }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             haveRow
             gettingReadyRow
@@ -1341,6 +1346,7 @@ struct BuilderView: View {
                 SectionLabel(text: "Or just say it", icon: "sparkles")
                 hero
                 if let b = builtIn { builtInCard(b) }
+                if let r = setReminder { reminderCard(r) }
                 if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             }
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
@@ -1537,7 +1543,17 @@ struct BuilderView: View {
     }
 
     private func buildFromAsk() {
-        planning = true; builtIn = nil; note = nil
+        builtIn = nil; note = nil; setReminder = nil; reminderBlocked = false
+        // "Remind me to call Mum at 6": set it now — one tap — and show exactly what was set, with Undo.
+        if let r = ReminderWords.parse(ask) {
+            var all = OwnReminders.load(); all.append(r)
+            if let d = try? JSONEncoder().encode(all) { UserDefaults.standard.set(d, forKey: OwnReminders.storeKey) }
+            OwnReminders.sync(all) { ok in DispatchQueue.main.async { reminderBlocked = !ok } }
+            withAnimation { setReminder = r }
+            ask = ""; HandyHaptics.success()
+            return
+        }
+        planning = true
         let request = ask
         Task {
             let p = await ChainPlanner.plan(request)
@@ -1644,6 +1660,48 @@ struct BuilderView: View {
         editHint = p.guessed ? "That wasn't much to go on, so this is my best guess. Change, add or remove any step before you save." : nil
         builtIn = nil
         editing = p.chain
+    }
+
+    /// A reminder said in the ask box, set: what, when, and how to check or take it back.
+    private func reminderCard(_ r: OwnReminder) -> some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L(reminderBlocked ? "Saved, but notifications are off" : "Reminder set"), systemImage: reminderBlocked ? "bell.slash.fill" : "bell.badge.fill")
+                .font(HandyFont.bodyStrong).foregroundStyle(reminderBlocked ? HandyColor.danger : HandyColor.accent)
+            Text(r.text).font(HandyFont.cardTitle).lineLimit(2).accessibilityIdentifier("reminder-set-text")
+            Text(r.label(uses24h: ToolSchedules.uses24h)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                .lineLimit(1).accessibilityIdentifier("reminder-set-when")
+            if reminderBlocked {
+                Button { Permission.openSettings() } label: { Label(L("Turn on notifications"), systemImage: "gearshape").frame(maxWidth: .infinity) }
+                    .primaryButton().accessibilityIdentifier("reminder-set-settings")
+            }
+            HStack(spacing: HandySpacing.s8) {
+                Button { testReminder(r) } label: { Label(L("Test it"), systemImage: "play.circle").frame(maxWidth: .infinity) }
+                    .secondaryButton().accessibilityIdentifier("reminder-set-test")
+                Button {
+                    let rest = OwnReminders.load().filter { $0.id != r.id }
+                    OwnReminders.save(rest)
+                    withAnimation { setReminder = nil }
+                    note = "Undone — that reminder is gone."
+                } label: { Label(L("Undo"), systemImage: "arrow.uturn.backward").frame(maxWidth: .infinity) }
+                    .secondaryButton().accessibilityIdentifier("reminder-set-undo")
+            }
+            NavigationLink(value: "myreminders") { Text(L("See all my reminders")).font(HandyFont.caption) }.textButton()
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain).accessibilityIdentifier("reminder-set")
+    }
+
+    /// The reminder as it will arrive, in 5 seconds.
+    private func testReminder(_ r: OwnReminder) {
+        let c = OwnReminders.content(r)
+        c.title = "\(L("Test")) · \(c.title)"
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { ok, _ in
+            DispatchQueue.main.async { reminderBlocked = !ok }
+            guard ok else { return }
+            UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "own-test-\(UUID().uuidString)", content: c,
+                                                                         trigger: UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)))
+            DispatchQueue.main.async { note = "Sent — check the top of the screen in 5 seconds." }
+        }
     }
 
     /// "Tenzy already has this": the full tool first, building a custom one second.
