@@ -6,6 +6,8 @@ import PhotosUI
 /// ready to post. On device.
 struct CollageView: View {
     @State private var photos: [UIImage] = []
+    /// Where each photo's faces are, so every crop keeps them in frame (25 Nov, same as the daily collage).
+    @State private var focus: [CGPoint?] = []
     @State private var picks: [PhotosPickerItem] = []
     @State private var loading = false
     @State private var layout: CollageLayout = .grid
@@ -33,6 +35,13 @@ struct CollageView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .onChange(of: picks) { _, items in load(items) }
+        // Whenever the photos change, find their faces (off the main thread), then redraw with every face in frame.
+        .task(id: photos.count) {
+            let p = photos
+            focus = []
+            let found = await Task.detached(priority: .userInitiated) { p.map { SmartCollage.faceFocus($0) } }.value
+            if p.count == photos.count { focus = found; refresh() }
+        }
         .handoffPhotos("collage") { imgs in
             let p = imgs.prefix(12).map { $0.resized(maxDimension: 1600).normalizedUp() }
             photos = p; layout = p.count >= 5 ? .mosaic : (p.count == 3 ? .hero : .grid); refresh()
@@ -144,15 +153,17 @@ struct CollageView: View {
         resultURL = nil
         guard !photos.isEmpty else { return }
         let small = CGSize(width: format.size.width / 3, height: format.size.height / 3)
-        preview = CollageLayout.render(photos, layout: layout, canvas: small, gapRatio: gap, cornerRatio: corner, background: backgrounds[bgIndex].1)
+        preview = CollageLayout.render(photos, layout: layout, canvas: small, gapRatio: gap, cornerRatio: corner, background: backgrounds[bgIndex].1,
+                                       focus: focus.count == photos.count ? focus : nil)
     }
 
     private func make() {
         working = true; errorText = nil
         let imgs = photos, l = layout, size = format.size, g = gap, c = corner, bg = backgrounds[bgIndex].1, name = format.ratio
+        let fx = focus.count == photos.count ? focus : nil
         Task {
             let url: URL? = await Task.detached(priority: .userInitiated) {
-                let img = CollageLayout.render(imgs, layout: l, canvas: size, gapRatio: g, cornerRatio: c, background: bg)
+                let img = CollageLayout.render(imgs, layout: l, canvas: size, gapRatio: g, cornerRatio: c, background: bg, focus: fx)
                 guard let data = img.jpegData(compressionQuality: 0.92) else { return nil }
                 let u = FileManager.default.temporaryDirectory
                     .appendingPathComponent("Tenzy collage \(name.replacingOccurrences(of: ":", with: "x")).jpg")
