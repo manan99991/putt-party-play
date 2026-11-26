@@ -1,0 +1,8 @@
+Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' started.
+REALINPUT receipt-to-row: result (run-result)
+REALINPUT photo-under-2mb: result (run-result)
+REALINPUT safe-to-share: result (run-result)
+REALINPUT card-to-contact: result (run-result)
+REALINPUT poster-to-event: result (run-result)
+REALINPUT whiteboard-to-tasks: result (run-result)
+REALINPUT passport-photo: message — Passport photo works best with a clear, close photo. Try a clearer or closer photo.
