@@ -1,10 +1,10 @@
 == setup.log
 [32m==>[0m [1mDownloading bottle manifests[0m
-✔︎ Bottle Manifest xcodegen (2.46.0)
+✔︎ Bottle Manifest xcodegen (2.48.0)
 [32m==>[0m [1mFetching downloads for: [32mxcodegen[39m[0m
-✔︎ Bottle xcodegen (2.46.0)
-[34m==>[0m [1mPouring xcodegen--2.46.0.arm64_golden_gate.bottle.1.tar.gz[0m
-🍺  /opt/homebrew/Cellar/xcodegen/2.46.0: 38 files, 7.5MB
+✔︎ Bottle xcodegen (2.48.0)
+[34m==>[0m [1mPouring xcodegen--2.48.0.arm64_golden_gate.bottle.tar.gz[0m
+🍺  /opt/homebrew/Cellar/xcodegen/2.48.0: 38 files, 9.8MB
 ⚙️  Generating plists...
 ⚙️  Generating project...
 ⚙️  Writing project...
@@ -16,76 +16,6 @@ Resolve Package Graph
 
 Fetching from https://github.com/element-hq/swift-ogg
 
-2026-11-26 01:19:45.183 xcodebuild[1656:8251] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7899c4b000>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x100ea8d60>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-26 01:19:45.183 xcodebuild[1656:8251] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7899c4b200>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x100ea8d60>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-26 01:19:45.185 xcodebuild[1656:8251] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7899c4b000>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x100ea8d60>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-26 01:19:45.186 xcodebuild[1656:8251] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7899c4b000>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x100ea8d60>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-26 01:19:45.186 xcodebuild[1656:8251] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7899c4b200>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x100ea8d60>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-26 01:19:45.186 xcodebuild[1656:8251] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7899c4b200>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x100ea8d60>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-26 01:19:45.205 xcodebuild[1656:8251] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7899c4b000>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x100ea8d60>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-26 01:19:45.205 xcodebuild[1656:8251] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (AA1A4436-9426-4301-8D39-5E909CAF9C42) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K: SimDeviceType : Apple TV 4K (3rd generation) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7899c4b000>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x100ea8d60>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-26 01:19:45.205 xcodebuild[1656:8251] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7899c4b200>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x100ea8d60>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-26 01:19:45.205 xcodebuild[1656:8251] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple TV 4K (3rd generation) (at 1080p) (B9E4D366-604B-4F2F-8C77-5D95AD648816) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p: SimDeviceType : Apple TV 4K (3rd generation) (at 1080p) (com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-1080p) } runtime={ com.apple.CoreSimulator.SimRuntime.tvOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7899c4b200>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x100ea8d60>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
 Fetching from https://github.com/tsolomko/SWCompression
 
 Fetching from https://github.com/tsolomko/BitByteData
@@ -94,35 +24,35 @@ Fetching from https://github.com/vector-im/ogg-swift.git
 
 Fetching from https://github.com/vector-im/opus-swift
 
-Creating working copy of package ‘BitByteData’
-
-Checking out 2.0.4 of package ‘BitByteData’
-
-Creating working copy of package ‘swift-ogg’
-
-Checking out main (a00a22b) of package ‘swift-ogg’
-
 Creating working copy of package ‘SWCompression’
 
 Checking out 4.8.6 of package ‘SWCompression’
-
-Creating working copy of package ‘ogg-swift’
-
-Checking out 0.8.3 of package ‘ogg-swift’
 
 Creating working copy of package ‘opus-swift’
 
 Checking out 0.8.4 of package ‘opus-swift’
 
+Creating working copy of package ‘BitByteData’
+
+Checking out 2.0.4 of package ‘BitByteData’
+
+Creating working copy of package ‘ogg-swift’
+
+Checking out 0.8.3 of package ‘ogg-swift’
+
+Creating working copy of package ‘swift-ogg’
+
+Checking out main (a00a22b) of package ‘swift-ogg’
+
 
 Resolved source packages:
   YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
-  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
   SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
   StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
   BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
-  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
   SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
+  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
 
-resolved source packages: YbridOgg, Unrar, SWCompression, StbVorbis, BitByteData, YbridOpus, SwiftOGG
+resolved source packages: YbridOgg, SWCompression, StbVorbis, BitByteData, SwiftOGG, YbridOpus, Unrar
 == build.log (errors)
