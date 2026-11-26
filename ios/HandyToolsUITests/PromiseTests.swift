@@ -767,6 +767,40 @@ final class PromiseTests: XCTestCase {
                       "the contact wasn't saved")
     }
 
+    /// Paper into PDFs (26 Nov): a two-page lease photographed on a desk, seconds apart, becomes ONE two-page searchable
+    /// PDF named "Residential Lease Agreement", and every page can be looked through before saving.
+    func testPaperAutorunMakesOneSearchablePDFFromTwoPages() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "smartruns", "-uitest", "-seedpaper"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let test = any["smartrun-test-paperPDFs"].firstMatch
+        XCTAssertTrue(test.waitForExistence(timeout: 60), "the autoruns page didn't open")
+        XCTAssertTrue(any["seed-done"].firstMatch.waitForExistence(timeout: 60), "the test pages never reached the photo library")
+        while !test.isHittable { app.swipeUp() }
+        test.tap()
+        let check = any["smartrun-check-paperPDFs"].firstMatch
+        let note = any["smartruns-note"].firstMatch
+        let deadline = Date().addingTimeInterval(300)
+        while Date() < deadline, !check.exists, !(note.exists && note.label.contains("Test run")) { sleep(3) }
+        XCTAssertTrue(check.exists, "no PDF was made: \(note.exists ? note.label : "no message")")
+        XCTAssertEqual(check.label, "Check 1", "the two pages should be one document")
+        while !check.isHittable { app.swipeUp() }
+        check.tap()
+        let title = app.textFields.matching(identifier: "smartpaper-title").firstMatch
+        XCTAssertTrue(title.waitForExistence(timeout: 10))
+        XCTAssertEqual(title.value as? String, "Residential Lease Agreement")
+        let facts = any["smartpaper-facts"].firstMatch
+        XCTAssertTrue(facts.label.hasPrefix("2 pages"), "pages: \(facts.label)")
+        let words = Int(facts.label.components(separatedBy: " · ").last?.split(separator: " ").first ?? "") ?? 0
+        XCTAssertGreaterThan(words, 80, "the text layer is thin: \(facts.label)")
+        XCTAssertTrue(any["smartpaper-split"].firstMatch.exists, "a two-page PDF can be split")
+        any["smartpaper-look"].firstMatch.tap()
+        XCTAssertTrue(any["paperlook"].firstMatch.waitForExistence(timeout: 10), "the pages didn't open")
+        any["paperlook-done"].firstMatch.tap()
+        XCTAssertTrue(any["smartpaper-save"].firstMatch.waitForExistence(timeout: 10))
+    }
+
     /// "Just swiping the finger lets select multiple files" (Manan, 22 Nov): Home › Photo opens Tenzy's own grid, and a
     /// sideways swipe across the first row ticks every photo it passes over.
     func testSwipeAcrossPhotosPicksSeveral() {

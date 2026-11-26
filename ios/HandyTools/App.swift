@@ -663,6 +663,7 @@ struct HomeView: View {
                 case "smartposts": SmartPostsReview()                 // today's best clips, ready to post
                 case "smartcollage": SmartCollageReview()             // the day's collage
                 case "smartcards": SmartCardsReview()                 // today's business cards, waiting for a look
+                case "smartpapers": SmartPapersReview()               // today's paper, made into searchable PDFs
                 case "smartinvoices": SmartInvoicesReview()           // overdue invoices, a reminder ready for each
                 case "smarttidy": SmartTidyReview()                   // old screenshots, duplicates and burst frames, for a look
                 // Home › See all: every helper on one map, with the ready-made flows of each section.

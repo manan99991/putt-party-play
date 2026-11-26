@@ -4,6 +4,7 @@ import Photos
 import UserNotifications
 import AVKit
 import MessageUI
+import PDFKit
 
 /// Smart autoruns (25 Nov): the end-of-day jobs a personal assistant would do. Switch one on, pick once or twice a
 /// day and the time, and Test run shows exactly what it would do right now. What it finds waits here for a look —
@@ -56,6 +57,7 @@ struct SmartRunsView: View {
             Self.seedDrives()
             if Launch.uitest, Launch.args.contains("-seedheavyvideo") { await Self.seedHeavyVideo(); seeded = true }
             if Launch.uitest, Launch.args.contains("-seedcard") { await Self.seedCard(); seeded = true }
+            if Launch.uitest, Launch.args.contains("-seedpaper") { await Self.seedPaper(); seeded = true }
             await store.runDue()
         }
         .fileImporter(isPresented: $pickingFolder, allowedContentTypes: [.folder]) { r in
@@ -136,6 +138,41 @@ struct SmartRunsView: View {
         }
         do {
             try await PHPhotoLibrary.shared().performChanges { PHAssetChangeRequest.creationRequestForAsset(from: img).creationDate = Date() }
+            UserDefaults.standard.set(true, forKey: key)
+        } catch {}
+    }
+
+    /// UI tests: a two-page letter photographed a few seconds apart (taken now), so a Test run makes one two-page PDF.
+    static func seedPaper() async {
+        let key = "uitest.seededPaper"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+        let pages: [[String]] = [
+            ["RESIDENTIAL LEASE AGREEMENT", "", "This Lease Agreement is made on November 26, 2026 between", "Maple Grove Properties LLC (the Landlord) and",
+             "Jordan Ellis (the Tenant) for the apartment at", "218 Cedar Lane, Unit 4B, Naperville, Illinois.", "",
+             "1. Term. The lease begins on December 1, 2026 and ends on", "November 30, 2027.", "2. Rent. The monthly rent is $1,850, due on the first",
+             "day of each month. A late fee of $75 applies after the fifth.", "3. Deposit. A security deposit of $1,850 is held by the Landlord.", "",
+             "Page 1 of 2"],
+            ["4. Utilities. The Tenant pays electricity and internet.", "The Landlord pays water, sewer and trash collection.",
+             "5. Pets. One cat or small dog is allowed with written consent.", "6. Notice. Either party gives sixty days written notice",
+             "before the end of the term.", "", "Signed by the Landlord and the Tenant on the date above.", "", "Page 2 of 2"]]
+        let f = UIGraphicsImageRendererFormat(); f.scale = 1
+        var images: [UIImage] = []
+        for lines in pages {
+            images.append(UIGraphicsImageRenderer(size: CGSize(width: 1400, height: 1900), format: f).image { ctx in
+                UIColor(red: 0.42, green: 0.36, blue: 0.30, alpha: 1).setFill(); ctx.fill(CGRect(x: 0, y: 0, width: 1400, height: 1900))   // a desk
+                UIColor(white: 0.96, alpha: 1).setFill(); ctx.fill(CGRect(x: 120, y: 110, width: 1160, height: 1640))                     // the page
+                for (i, t) in lines.enumerated() {
+                    let head = i == 0
+                    (t as NSString).draw(at: CGPoint(x: head ? 330 : 190, y: 200 + CGFloat(i) * 92),
+                                         withAttributes: [.font: UIFont.systemFont(ofSize: head ? 50 : 36, weight: head ? .bold : .regular), .foregroundColor: UIColor(white: 0.1, alpha: 1)])
+                }
+            })
+        }
+        do {
+            let now = Date()
+            try await PHPhotoLibrary.shared().performChanges {
+                for (i, img) in images.enumerated() { PHAssetChangeRequest.creationRequestForAsset(from: img).creationDate = now.addingTimeInterval(Double(i) * 20 - 60) }
+            }
             UserDefaults.standard.set(true, forKey: key)
         } catch {}
     }
@@ -237,7 +274,7 @@ struct SmartRunsView: View {
                 Button { Task { await testRun(k) } } label: { Label(L("Test run"), systemImage: "play.circle").frame(maxWidth: .infinity) }
                     .secondaryButton().disabled(store.working != nil).accessibilityIdentifier("smartrun-test-\(k.rawValue)")
                 if store.waitingCount(k) > 0 {
-                    NavigationLink(value: k == .tidyPhotos ? "smarttidy" : k == .overdueInvoices ? "smartinvoices" : k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : k == .dayCollage ? "smartcollage" : k == .businessCards ? "smartcards" : "smartreceipts") {
+                    NavigationLink(value: k == .tidyPhotos ? "smarttidy" : k == .overdueInvoices ? "smartinvoices" : k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : k == .dayCollage ? "smartcollage" : k == .businessCards ? "smartcards" : k == .paperPDFs ? "smartpapers" : "smartreceipts") {
                         Text("\(L("Check")) \(store.waitingCount(k))").frame(maxWidth: .infinity)
                     }.primaryButton().accessibilityIdentifier("smartrun-check-\(k.rawValue)")
                 }
@@ -295,6 +332,9 @@ struct SmartRunsView: View {
         } else if k == .businessCards {
             note = found > 0 ? "\(L("Test run found")) \(found) \(L(found == 1 ? "business card" : "business cards")). \(L("Check them before they're saved."))"
                              : L("Test run worked: no business cards in your photos from the last 24 hours.")
+        } else if k == .paperPDFs {
+            note = found > 0 ? "\(L("Test run made")) \(found) \(L(found == 1 ? "searchable PDF" : "searchable PDFs")). \(L("Tap Check to look through them."))"
+                             : L("Test run worked: no photos of letters, bills or forms from the last 24 hours.")
         } else if k == .dayCollage {
             note = found > 0 ? L("Test run made today's collage. Tap Check to see it.")
                              : L("Test run worked: fewer than three good photos of people from the last 24 hours, so no collage yet.")
@@ -978,5 +1018,149 @@ private struct VideoThumb: View {
     var body: some View {
         ZStack { HandyColor.surface; if let img { Image(uiImage: img).resizable().scaledToFill() } }
             .task(id: url) { img = await VideoEngine.thumbnail(url, at: 0.5, maxDim: 300) }
+    }
+}
+
+/// Today's paper, made into PDFs: each document with its first page, its name (from what it says — change it if you
+/// like), how many pages and searchable words; look through every page before saving it where you want.
+struct SmartPapersReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var looking: SmartPapers.Entry?
+    @State private var exporting: [URL] = []
+    @State private var exportIDs: [String] = []
+    @State private var busy: String?
+    @State private var done: String?
+
+    private var waiting: [SmartPapers.Entry] { store.papers.filter { !$0.saved && !$0.file.isEmpty } }
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Today's paper, as PDFs")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                Text(L("Each page was found in the photo, flattened and cleaned, and its words can be searched, selected and copied."))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                if let done { Label(done, systemImage: "checkmark.seal.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true) }
+                if waiting.isEmpty && done == nil {
+                    EmptyState(icon: "doc.viewfinder", line: "Nothing waiting", sub: "Photos of letters, bills and forms show up here as PDFs after the next run.")
+                }
+                ForEach(Array(waiting.enumerated()), id: \.element.id) { i, e in card(e, next: i + 1 < waiting.count ? waiting[i + 1] : nil) }
+                if waiting.count > 1 {
+                    Button { saveAll() } label: { Label("\(L("Save all to Files")) (\(waiting.count))", systemImage: "folder").frame(maxWidth: .infinity) }
+                        .primaryButton().accessibilityIdentifier("smartpapers-saveall")
+                }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartpapers")
+        .sheet(item: $looking) { e in PaperLook(entry: e) }
+        .sheet(isPresented: Binding(get: { !exporting.isEmpty }, set: { if !$0 { exporting = [] } })) {
+            FilesExporter(urls: exporting) { ok in
+                if ok {
+                    for id in exportIDs { store.markPaperSaved(id) }
+                    done = exportIDs.count == 1 ? L("Saved to Files.") : "\(exportIDs.count) \(L("PDFs saved to Files."))"
+                    HandyHaptics.success()
+                }
+                exporting = []; exportIDs = []
+            }.ignoresSafeArea()
+        }
+    }
+
+    private func saveAll() {
+        let list = waiting
+        exporting = list.compactMap(SmartPapers.named); exportIDs = list.map(\.id)
+    }
+
+    private func card(_ e: SmartPapers.Entry, next: SmartPapers.Entry?) -> some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack(alignment: .top, spacing: HandySpacing.s12) {
+                Button { looking = e } label: {
+                    PaperThumb(file: e.file).frame(width: 92, height: 120)
+                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        .contentShape(Rectangle())
+                        .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                }
+                .buttonStyle(.plain).accessibilityLabel(L("Look through every page"))
+                VStack(alignment: .leading, spacing: 4) {
+                    TextField(L("Name"), text: Binding(get: { e.title }, set: { store.renamePaper(e.id, $0) }))
+                        .font(HandyFont.cardTitle).accessibilityIdentifier("smartpaper-title")
+                    Text(verbatim: "\(e.pages.count) \(L(e.pages.count == 1 ? "page" : "pages")) · \(e.words) \(L("words you can search"))")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).accessibilityIdentifier("smartpaper-facts")
+                    Text(e.fileName).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
+                }
+                Spacer(minLength: 0)
+                Button(role: .destructive) { store.dropPaper(e.id) } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(HandyColor.textSecondary) }
+                    .frame(width: 44, height: 44).accessibilityLabel(L("Leave this one out"))
+            }
+            HStack(spacing: HandySpacing.s8) {
+                Button { looking = e } label: { Label(L("Look through"), systemImage: "doc.text.magnifyingglass").frame(maxWidth: .infinity) }
+                    .secondaryButton().accessibilityIdentifier("smartpaper-look")
+                Button { if let u = SmartPapers.named(e) { exporting = [u]; exportIDs = [e.id] } } label: {
+                    Label(L("Save to Files"), systemImage: "folder").frame(maxWidth: .infinity)
+                }.primaryButton().accessibilityIdentifier("smartpaper-save")
+            }
+            HStack(spacing: HandySpacing.s16) {
+                if let u = SmartPapers.named(e) {
+                    ShareLink(item: u) { Label(L("Share"), systemImage: "square.and.arrow.up") }.font(HandyFont.caption)
+                }
+                if let n = next {
+                    Button { Task { busy = e.id; _ = await store.joinPaper(e.id, with: n.id); busy = nil } } label: {
+                        Label(L("Join with the next one"), systemImage: "arrow.down.doc")
+                    }.font(HandyFont.caption).accessibilityIdentifier("smartpaper-join")
+                }
+                if e.pages.count > 1 {
+                    Button { Task { busy = e.id; _ = await store.splitPaper(e.id); busy = nil } } label: {
+                        Label(L("One PDF per page"), systemImage: "rectangle.split.1x2")
+                    }.font(HandyFont.caption).accessibilityIdentifier("smartpaper-split")
+                }
+                if busy == e.id { ProgressView() }
+            }
+            .disabled(busy != nil)
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain).accessibilityIdentifier("smartpaper-card")
+    }
+}
+
+/// The first page of a made PDF, drawn small.
+private struct PaperThumb: View {
+    let file: String
+    @State private var img: UIImage?
+    var body: some View {
+        ZStack {
+            HandyColor.surface
+            if let img { Image(uiImage: img).resizable().scaledToFill() }
+        }
+        .clipped()
+        .contentShape(Rectangle())
+        .task(id: file) {
+            let url = SmartPapers.folder.appendingPathComponent(file)
+            img = await Task.detached(priority: .userInitiated) {
+                PDFDocument(url: url)?.page(at: 0)?.thumbnail(of: CGSize(width: 276, height: 360), for: .mediaBox)
+            }.value
+        }
+    }
+}
+
+/// Every page of a made PDF, full size, before it's saved — with its words selectable.
+private struct PaperLook: View {
+    let entry: SmartPapers.Entry
+    @Environment(\.dismiss) private var dismiss
+    var body: some View {
+        NavigationStack {
+            Group {
+                if let d = try? Data(contentsOf: SmartPapers.folder.appendingPathComponent(entry.file)) { PDFPreview(data: d) }
+                else { EmptyState(icon: "doc", line: "This PDF is gone", sub: "Run the autorun again to make it.") }
+            }
+            .navigationTitle(entry.title).navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() }.accessibilityIdentifier("paperlook-done") } }
+        }
+        .accessibilityIdentifier("paperlook")
     }
 }

@@ -1,2 +1,7 @@
-# 25 Nov: ready to post — the clip was right (1080x1920) but its size was written "1,080x1,920"; now plain digits.
-HandyToolsUITests/PromiseTests/testReadyToPostMakesATallClipAndSavesIt
+# 26 Nov: paper into PDFs (new), plus the autoruns built since the last run — overdue invoices (with the guard that
+# every translated sentence keeps its blanks), tidy up, and warranty inside receipts.
+HandyToolsTests/SmartPapersTests
+HandyToolsTests/SmartInvoicesTests
+HandyToolsTests/SmartRunsTests
+HandyToolsTests/SmartReceiptsTests
+HandyToolsUITests/PromiseTests/testPaperAutorunMakesOneSearchablePDFFromTwoPages

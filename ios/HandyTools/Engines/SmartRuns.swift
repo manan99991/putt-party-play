@@ -11,7 +11,7 @@ import Foundation
 /// This file is the pure part (what to look at, when, and in what order), so it is unit-tested.
 enum SmartRuns {
     enum Kind: String, CaseIterable, Codable, Identifiable {
-        case receipts, drives, overdueInvoices, heavyVideos, tidyPhotos, readyToPost, dayCollage, businessCards
+        case receipts, drives, overdueInvoices, heavyVideos, tidyPhotos, readyToPost, dayCollage, businessCards, paperPDFs
         var id: String { rawValue }
 
         var title: String {
@@ -24,6 +24,7 @@ enum SmartRuns {
             case .readyToPost: return "Get today's best videos ready to post"
             case .dayCollage: return "Today's photos as one collage"
             case .businessCards: return "Business cards into my contacts"
+            case .paperPDFs: return "Today's paper into searchable PDFs"
             }
         }
         /// What it does, in one plain line.
@@ -37,6 +38,7 @@ enum SmartRuns {
             case .readyToPost: return "Picks today's best clips, gives them your look and the tall size Reels, TikTok and Shorts want, ready for you to watch and post."
             case .dayCollage: return "Picks the best photos of the people you took today — sharp, no repeats — and lays them out as one beautiful picture to keep or send."
             case .businessCards: return "Reads the business cards you photographed today and turns each into a contact, skipping anyone you already have."
+            case .paperPDFs: return "Turns the letters, bills and forms you photographed today into clean, flat PDFs you can search — pages taken together become one file, named from what it says."
             }
         }
         var icon: String {
@@ -49,6 +51,7 @@ enum SmartRuns {
             case .readyToPost: return "sparkles.tv"
             case .dayCollage: return "square.grid.3x3.fill"
             case .businessCards: return "person.text.rectangle"
+            case .paperPDFs: return "doc.viewfinder"
             }
         }
         var hex: UInt32 {
@@ -61,6 +64,7 @@ enum SmartRuns {
             case .readyToPost: return 0xEC4899
             case .dayCollage: return 0xF59E0B
             case .businessCards: return 0x3B82F6
+            case .paperPDFs: return 0x6366F1
             }
         }
         /// What it looks through.
@@ -70,7 +74,7 @@ enum SmartRuns {
             case .drives, .overdueInvoices: return .records
             case .heavyVideos, .readyToPost: return .videos
             case .tidyPhotos: return .photos
-            case .dayCollage, .businessCards: return .photos
+            case .dayCollage, .businessCards, .paperPDFs: return .photos
             }
         }
         /// The tools whose use suggests this autorun would help (Habit offers).
@@ -84,6 +88,7 @@ enum SmartRuns {
             case .readyToPost: return ["celebrate", "videofx", "socialpost", "vertical", "captions"]
             case .dayCollage: return ["collage", "photogrid", "animate"]
             case .businessCards: return ["bizcard", "contacts", "businesscards"]
+            case .paperPDFs: return ["scan", "pdf", "imgpdf", "ocr", "docscan"]
             }
         }
     }
@@ -249,6 +254,7 @@ enum SmartRuns {
         case .readyToPost: return 10
         case .dayCollage: return 30
         case .businessCards: return 5
+        case .paperPDFs: return 6
         }
     }
 }

@@ -49728,5 +49728,225 @@
   "ja": "実行後、古いスクショ・重複・バースト写真がここに表示されます。",
   "pt": "Capturas antigas, duplicados e rajadas aparecem aqui após uma execução.",
   "zh": "运行后，旧截图、重复照片和多余连拍会显示在这里。"
+ },
+ "Today's paper into searchable PDFs": {
+  "de": "Papier von heute als durchsuchbare PDFs",
+  "es": "El papel de hoy en PDF con búsqueda",
+  "fr": "Les papiers du jour en PDF consultables",
+  "hi": "आज के कागज़ खोजने लायक PDF में",
+  "it": "La carta di oggi in PDF ricercabili",
+  "ja": "今日の書類を検索できるPDFに",
+  "pt": "O papel de hoje em PDFs pesquisáveis",
+  "zh": "把今天的纸质文件变成可搜索的 PDF"
+ },
+ "Turns the letters, bills and forms you photographed today into clean, flat PDFs you can search — pages taken together become one file, named from what it says.": {
+  "de": "Macht aus den Briefen, Rechnungen und Formularen, die du heute fotografiert hast, saubere, gerade PDFs, die du durchsuchen kannst – zusammen aufgenommene Seiten werden eine Datei, benannt nach ihrem Inhalt.",
+  "es": "Convierte las cartas, facturas y formularios que fotografiaste hoy en PDF limpios y planos con búsqueda: las páginas tomadas juntas forman un solo archivo, con el nombre de lo que dicen.",
+  "fr": "Transforme les lettres, factures et formulaires photographiés aujourd'hui en PDF nets et bien à plat, consultables — les pages prises à la suite forment un seul fichier, nommé d'après son contenu.",
+  "hi": "आज आपने जिन पत्रों, बिलों और फ़ॉर्म की फ़ोटो लीं, उन्हें साफ़, सीधे PDF में बदलता है जिनमें खोज सकते हैं — साथ ली गई पेज एक फ़ाइल बनती हैं, जिसका नाम उसमें लिखी बात से रखा जाता है।",
+  "it": "Trasforma lettere, bollette e moduli che hai fotografato oggi in PDF puliti e dritti in cui cercare: le pagine scattate insieme diventano un unico file, chiamato come dice il testo.",
+  "ja": "今日撮った手紙・請求書・書類を、まっすぐできれいな検索できるPDFにします。続けて撮ったページは1つのファイルにまとめ、書かれている内容から名前を付けます。",
+  "pt": "Transforma as cartas, contas e formulários que você fotografou hoje em PDFs limpos e retos, pesquisáveis — páginas tiradas juntas viram um só arquivo, com o nome do que dizem.",
+  "zh": "把你今天拍的信件、账单和表格变成干净平整、可搜索的 PDF——连着拍的几页合成一个文件，并按内容命名。"
+ },
+ "searchable PDF": {
+  "de": "durchsuchbares PDF",
+  "es": "PDF con búsqueda",
+  "fr": "PDF consultable",
+  "hi": "खोजने लायक PDF",
+  "it": "PDF ricercabile",
+  "ja": "件の検索できるPDF",
+  "pt": "PDF pesquisável",
+  "zh": "个可搜索的 PDF"
+ },
+ "searchable PDFs": {
+  "de": "durchsuchbare PDFs",
+  "es": "PDF con búsqueda",
+  "fr": "PDF consultables",
+  "hi": "खोजने लायक PDF",
+  "it": "PDF ricercabili",
+  "ja": "件の検索できるPDF",
+  "pt": "PDFs pesquisáveis",
+  "zh": "个可搜索的 PDF"
+ },
+ "document made into a searchable PDF — have a look.": {
+  "de": "Dokument wurde ein durchsuchbares PDF – sieh es dir an.",
+  "es": "documento convertido en PDF con búsqueda: échale un vistazo.",
+  "fr": "document transformé en PDF consultable — jetez-y un œil.",
+  "hi": "दस्तावेज़ खोजने लायक PDF बन गया — एक नज़र डालें।",
+  "it": "documento trasformato in PDF ricercabile: dagli un'occhiata.",
+  "ja": "件の書類を検索できるPDFにしました。確認してください。",
+  "pt": "documento virou PDF pesquisável — dê uma olhada.",
+  "zh": "份文件已变成可搜索的 PDF——来看看。"
+ },
+ "documents made into searchable PDFs — have a look.": {
+  "de": "Dokumente wurden durchsuchbare PDFs – sieh sie dir an.",
+  "es": "documentos convertidos en PDF con búsqueda: échales un vistazo.",
+  "fr": "documents transformés en PDF consultables — jetez-y un œil.",
+  "hi": "दस्तावेज़ खोजने लायक PDF बन गए — एक नज़र डालें।",
+  "it": "documenti trasformati in PDF ricercabili: dagli un'occhiata.",
+  "ja": "件の書類を検索できるPDFにしました。確認してください。",
+  "pt": "documentos viraram PDFs pesquisáveis — dê uma olhada.",
+  "zh": "份文件已变成可搜索的 PDF——来看看。"
+ },
+ "Tap and Tenzy turns today's photos of paper into clean, searchable PDFs.": {
+  "de": "Tippe, und Tenzy macht aus den heutigen Fotos von Papier saubere, durchsuchbare PDFs.",
+  "es": "Toca y Tenzy convierte las fotos de papeles de hoy en PDF limpios con búsqueda.",
+  "fr": "Touchez et Tenzy transforme les photos de papiers du jour en PDF nets et consultables.",
+  "hi": "टैप करें, Tenzy आज की कागज़ों की फ़ोटो को साफ़, खोजने लायक PDF बना देगा।",
+  "it": "Tocca e Tenzy trasforma le foto di fogli di oggi in PDF puliti e ricercabili.",
+  "ja": "タップすると、今日撮った書類の写真をきれいな検索できるPDFにします。",
+  "pt": "Toque e o Tenzy transforma as fotos de papéis de hoje em PDFs limpos e pesquisáveis.",
+  "zh": "点一下，Tenzy 会把今天拍的纸质文件照片变成干净、可搜索的 PDF。"
+ },
+ "Photos of letters, bills and forms show up here as PDFs after the next run.": {
+  "de": "Fotos von Briefen, Rechnungen und Formularen erscheinen nach dem nächsten Lauf hier als PDFs.",
+  "es": "Las fotos de cartas, facturas y formularios aparecen aquí como PDF después de la próxima ejecución.",
+  "fr": "Les photos de lettres, factures et formulaires apparaissent ici en PDF après le prochain passage.",
+  "hi": "पत्रों, बिलों और फ़ॉर्म की फ़ोटो अगली बार चलने के बाद यहाँ PDF के रूप में दिखेंगी।",
+  "it": "Le foto di lettere, bollette e moduli compaiono qui come PDF dopo il prossimo avvio.",
+  "ja": "手紙・請求書・書類の写真は、次の実行後にここにPDFとして表示されます。",
+  "pt": "Fotos de cartas, contas e formulários aparecem aqui como PDFs depois da próxima execução.",
+  "zh": "信件、账单和表格的照片会在下次运行后以 PDF 显示在这里。"
+ },
+ "This PDF is gone": {
+  "de": "Dieses PDF ist nicht mehr da",
+  "es": "Este PDF ya no está",
+  "fr": "Ce PDF n'existe plus",
+  "hi": "यह PDF अब नहीं है",
+  "it": "Questo PDF non c'è più",
+  "ja": "このPDFはありません",
+  "pt": "Este PDF não existe mais",
+  "zh": "这个 PDF 已不在了"
+ },
+ "Run the autorun again to make it.": {
+  "de": "Starte die Automatik erneut, um es zu erstellen.",
+  "es": "Vuelve a ejecutar la automatización para crearlo.",
+  "fr": "Relancez l'automatisme pour le créer.",
+  "hi": "इसे बनाने के लिए ऑटोरन फिर चलाएँ।",
+  "it": "Avvia di nuovo l'automatismo per crearlo.",
+  "ja": "もう一度オートランを実行すると作成されます。",
+  "pt": "Rode a automação de novo para criá-lo.",
+  "zh": "再运行一次自动任务即可生成。"
+ },
+ "Each page was found in the photo, flattened and cleaned, and its words can be searched, selected and copied.": {
+  "de": "Jede Seite wurde im Foto gefunden, begradigt und gesäubert; ihre Wörter lassen sich suchen, markieren und kopieren.",
+  "es": "Cada página se encontró en la foto, se enderezó y se limpió; sus palabras se pueden buscar, seleccionar y copiar.",
+  "fr": "Chaque page a été repérée sur la photo, redressée et nettoyée ; ses mots peuvent être recherchés, sélectionnés et copiés.",
+  "hi": "हर पेज फ़ोटो में ढूँढा गया, सीधा और साफ़ किया गया; उसके शब्द खोजे, चुने और कॉपी किए जा सकते हैं।",
+  "it": "Ogni pagina è stata trovata nella foto, raddrizzata e pulita; le sue parole si possono cercare, selezionare e copiare.",
+  "ja": "各ページを写真から見つけ、まっすぐにしてきれいにしました。文字は検索・選択・コピーできます。",
+  "pt": "Cada página foi encontrada na foto, endireitada e limpa; suas palavras podem ser pesquisadas, selecionadas e copiadas.",
+  "zh": "每一页都从照片中找出、拉平并清理过，上面的文字可以搜索、选中和复制。"
+ },
+ "Join with the next one": {
+  "de": "Mit dem nächsten verbinden",
+  "es": "Unir con el siguiente",
+  "fr": "Fusionner avec le suivant",
+  "hi": "अगले के साथ जोड़ें",
+  "it": "Unisci al successivo",
+  "ja": "次のものとまとめる",
+  "pt": "Juntar com o próximo",
+  "zh": "与下一份合并"
+ },
+ "Look through": {
+  "de": "Durchsehen",
+  "es": "Revisar",
+  "fr": "Parcourir",
+  "hi": "देखें",
+  "it": "Sfoglia",
+  "ja": "中を見る",
+  "pt": "Ver",
+  "zh": "查看"
+ },
+ "Look through every page": {
+  "de": "Jede Seite durchsehen",
+  "es": "Revisar todas las páginas",
+  "fr": "Parcourir chaque page",
+  "hi": "हर पेज देखें",
+  "it": "Sfoglia ogni pagina",
+  "ja": "全ページを見る",
+  "pt": "Ver todas as páginas",
+  "zh": "查看每一页"
+ },
+ "Making PDF": {
+  "de": "PDF wird erstellt",
+  "es": "Creando PDF",
+  "fr": "Création du PDF",
+  "hi": "PDF बन रहा है",
+  "it": "Creazione PDF",
+  "ja": "PDFを作成中",
+  "pt": "Criando PDF",
+  "zh": "正在生成 PDF"
+ },
+ "One PDF per page": {
+  "de": "Ein PDF pro Seite",
+  "es": "Un PDF por página",
+  "fr": "Un PDF par page",
+  "hi": "हर पेज का अलग PDF",
+  "it": "Un PDF per pagina",
+  "ja": "1ページずつPDFに",
+  "pt": "Um PDF por página",
+  "zh": "每页一个 PDF"
+ },
+ "PDFs saved to Files.": {
+  "de": "PDFs in Dateien gesichert.",
+  "es": "PDF guardados en Archivos.",
+  "fr": "PDF enregistrés dans Fichiers.",
+  "hi": "PDF फ़ाइलें में सहेजे गए।",
+  "it": "PDF salvati in File.",
+  "ja": "件のPDFを「ファイル」に保存しました。",
+  "pt": "PDFs salvos em Arquivos.",
+  "zh": "个 PDF 已存入“文件”。"
+ },
+ "Saved to Files.": {
+  "de": "In Dateien gesichert.",
+  "es": "Guardado en Archivos.",
+  "fr": "Enregistré dans Fichiers.",
+  "hi": "फ़ाइलें में सहेजा गया।",
+  "it": "Salvato in File.",
+  "ja": "「ファイル」に保存しました。",
+  "pt": "Salvo em Arquivos.",
+  "zh": "已存入“文件”。"
+ },
+ "Tap Check to look through them.": {
+  "de": "Tippe auf Prüfen, um sie durchzusehen.",
+  "es": "Toca Revisar para verlos.",
+  "fr": "Touchez Vérifier pour les parcourir.",
+  "hi": "उन्हें देखने के लिए जाँचें पर टैप करें।",
+  "it": "Tocca Controlla per sfogliarli.",
+  "ja": "「確認」をタップして中を見てください。",
+  "pt": "Toque em Conferir para vê-los.",
+  "zh": "点“查看”逐一浏览。"
+ },
+ "Test run worked: no photos of letters, bills or forms from the last 24 hours.": {
+  "de": "Testlauf hat funktioniert: keine Fotos von Briefen, Rechnungen oder Formularen aus den letzten 24 Stunden.",
+  "es": "La prueba funcionó: no hay fotos de cartas, facturas ni formularios de las últimas 24 horas.",
+  "fr": "Le test a marché : aucune photo de lettre, facture ou formulaire des dernières 24 heures.",
+  "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों में पत्रों, बिलों या फ़ॉर्म की कोई फ़ोटो नहीं।",
+  "it": "Il test ha funzionato: nessuna foto di lettere, bollette o moduli nelle ultime 24 ore.",
+  "ja": "テスト実行は成功しました。この24時間に手紙・請求書・書類の写真はありません。",
+  "pt": "O teste funcionou: nenhuma foto de cartas, contas ou formulários nas últimas 24 horas.",
+  "zh": "试运行成功：过去 24 小时内没有信件、账单或表格的照片。"
+ },
+ "Today's paper, as PDFs": {
+  "de": "Das Papier von heute als PDFs",
+  "es": "El papel de hoy, en PDF",
+  "fr": "Les papiers du jour, en PDF",
+  "hi": "आज के कागज़, PDF में",
+  "it": "La carta di oggi, in PDF",
+  "ja": "今日の書類をPDFで",
+  "pt": "O papel de hoje, em PDFs",
+  "zh": "今天的纸质文件，PDF 版"
+ },
+ "words you can search": {
+  "de": "durchsuchbare Wörter",
+  "es": "palabras que puedes buscar",
+  "fr": "mots consultables",
+  "hi": "खोजे जा सकने वाले शब्द",
+  "it": "parole ricercabili",
+  "ja": "語を検索できます",
+  "pt": "palavras pesquisáveis",
+  "zh": "个可搜索的字词"
  }
 }

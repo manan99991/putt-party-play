@@ -9,7 +9,7 @@ import Photos
 @MainActor final class SmartRunStore: ObservableObject {
     static let shared = SmartRunStore()
     /// The autoruns built so far. An autorun is only offered once it truly works end to end.
-    static let built: [SmartRuns.Kind] = [.receipts, .drives, .overdueInvoices, .heavyVideos, .tidyPhotos, .readyToPost, .dayCollage, .businessCards]
+    static let built: [SmartRuns.Kind] = [.receipts, .paperPDFs, .drives, .overdueInvoices, .heavyVideos, .tidyPhotos, .readyToPost, .dayCollage, .businessCards]
 
     @Published private(set) var plans: [SmartRuns.Kind: SmartRuns.Plan] = [:]
     @Published private(set) var receipts: [SmartReceipts.Entry] = []      // found, waiting for a look
@@ -17,6 +17,7 @@ import Photos
     @Published private(set) var posts: [SmartPosts.Result] = []            // clips made ready to post, waiting for a look
     @Published private(set) var collages: [SmartCollage.Result] = []       // the day's collages, waiting for a look
     @Published private(set) var cards: [SmartCards.Entry] = []             // business cards read, waiting for a look
+    @Published private(set) var papers: [SmartPapers.Entry] = []           // paper made into PDFs, waiting for a look
     @Published var tidy: [SmartTidy.Group] = []                             // what could go, waiting for a look
     @Published var working: SmartRuns.Kind?
     @Published var progress: (share: Double, what: String) = (0, "")
@@ -34,6 +35,7 @@ import Photos
     private var postsURL: URL { folder.appendingPathComponent("posts.json") }
     private var collagesURL: URL { folder.appendingPathComponent("collages.json") }
     private var cardsURL: URL { folder.appendingPathComponent("cards.json") }
+    private var papersURL: URL { folder.appendingPathComponent("papers.json") }
     private var tidyURL: URL { folder.appendingPathComponent("tidy.json") }
 
     init() {
@@ -46,6 +48,12 @@ import Photos
         }
         if let d = try? Data(contentsOf: tidyURL), let r = try? JSONDecoder().decode([SmartTidy.Group].self, from: d) { tidy = r }
         if let d = try? Data(contentsOf: cardsURL), let r = try? JSONDecoder().decode([SmartCards.Entry].self, from: d) { cards = r }
+        if let d = try? Data(contentsOf: papersURL), let r = try? JSONDecoder().decode([SmartPapers.Entry].self, from: d) {
+            // Saved or left out two weeks ago: forgotten, and Tenzy's own copy of the PDF goes.
+            let old = Date().addingTimeInterval(-14 * 86_400)
+            for e in r where e.saved && e.taken < old && !e.file.isEmpty { try? FileManager.default.removeItem(at: SmartPapers.folder.appendingPathComponent(e.file)) }
+            papers = r.filter { !($0.saved && $0.taken < old) }
+        }
         if let d = try? Data(contentsOf: collagesURL), let r = try? JSONDecoder().decode([SmartCollage.Result].self, from: d) {
             collages = r.filter { FileManager.default.fileExists(atPath: SmartCollage.folder.appendingPathComponent($0.file).path) }
         }
@@ -76,6 +84,7 @@ import Photos
         case .readyToPost: return posts.filter { !$0.saved }.count
         case .dayCollage: return collages.filter { !$0.saved }.count
         case .businessCards: return cards.count
+        case .paperPDFs: return papers.filter { !$0.saved }.count
         case .tidyPhotos: return tidy.reduce(0) { $0 + $1.ids.count }
         default: return 0
         }
@@ -146,6 +155,11 @@ import Photos
             let found = await SmartCards.gather(in: window) { share, what in Task { @MainActor in self.progress = (share, what) } }
             let have = Set(cards.map(\.id))
             cards = SmartCards.deduped(cards + found.filter { !have.contains($0.id) }); persistCards()
+        case .paperPDFs:
+            // Pages already made into a PDF (waiting or saved) are never made twice.
+            let made = Set(papers.flatMap(\.pages))
+            let found = await SmartPapers.gather(in: window, skip: made) { share, what in Task { @MainActor in self.progress = (share, what) } }
+            papers = found + papers; persistPapers()
         case .dayCollage:
             if let r = await SmartCollage.make(in: window, progress: { share, what in Task { @MainActor in self.progress = (share, what) } }) {
                 collages.removeAll { $0.id == r.id }; collages.insert(r, at: 0); saveCollages()
@@ -277,6 +291,47 @@ import Photos
         if let d = try? JSONEncoder().encode(tidy) { try? d.write(to: tidyURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
     }
 
+    func renamePaper(_ id: String, _ title: String) {
+        if let i = papers.firstIndex(where: { $0.id == id }) { papers[i].title = title; persistPapers() }
+    }
+    func markPaperSaved(_ id: String) {
+        if let i = papers.firstIndex(where: { $0.id == id }) { papers[i].saved = true; persistPapers() }
+        Task { await SmartRunAlerts.ready(.paperPDFs, count: waitingCount(.paperPDFs)) }
+    }
+    /// Leaves it out: the PDF goes; its photos stay in Photos and aren't made again.
+    func dropPaper(_ id: String) {
+        guard let i = papers.firstIndex(where: { $0.id == id }) else { return }
+        try? FileManager.default.removeItem(at: SmartPapers.folder.appendingPathComponent(papers[i].file))
+        papers[i].saved = true; papers[i].file = ""; persistPapers()
+        Task { await SmartRunAlerts.ready(.paperPDFs, count: waitingCount(.paperPDFs)) }
+    }
+    /// Two documents that are really one (pages photographed a while apart): the next one's pages join this one.
+    func joinPaper(_ id: String, with next: String) async -> Bool {
+        guard let a = papers.first(where: { $0.id == id }), let b = papers.first(where: { $0.id == next }),
+              let e = await SmartPapers.remake(a.pages + b.pages, title: a.title) else { return false }
+        for f in [a.file, b.file] where !f.isEmpty { try? FileManager.default.removeItem(at: SmartPapers.folder.appendingPathComponent(f)) }
+        papers.removeAll { $0.id == next }
+        if let i = papers.firstIndex(where: { $0.id == id }) { papers[i] = e }
+        persistPapers(); return true
+    }
+    /// One document that is really several: every page becomes its own PDF, each named from what it says.
+    func splitPaper(_ id: String) async -> Bool {
+        guard let i = papers.firstIndex(where: { $0.id == id }), papers[i].pages.count > 1 else { return false }
+        let old = papers[i]
+        var made: [SmartPapers.Entry] = []
+        for p in old.pages { if let e = await SmartPapers.remake([p], title: nil) { made.append(e) } }
+        guard made.count == old.pages.count else {
+            for e in made { try? FileManager.default.removeItem(at: SmartPapers.folder.appendingPathComponent(e.file)) }
+            return false
+        }
+        try? FileManager.default.removeItem(at: SmartPapers.folder.appendingPathComponent(old.file))
+        if let j = papers.firstIndex(where: { $0.id == id }) { papers.replaceSubrange(j...j, with: made) }
+        persistPapers(); return true
+    }
+    private func persistPapers() {
+        if let d = try? JSONEncoder().encode(papers) { try? d.write(to: papersURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
+    }
+
     private func persistCards() {
         if let d = try? JSONEncoder().encode(cards) { try? d.write(to: cardsURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
     }
@@ -347,6 +402,9 @@ enum SmartRunAlerts {
             case .businessCards:
                 body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "business card read — save it to Contacts?" : "business cards read — save them to Contacts?"))"
                                         : L("Tap and Tenzy reads today's business cards into contacts.")
+            case .paperPDFs:
+                body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "document made into a searchable PDF — have a look." : "documents made into searchable PDFs — have a look."))"
+                                        : L("Tap and Tenzy turns today's photos of paper into clean, searchable PDFs.")
             case .dayCollage:
                 body.body = waiting > 0 ? L("Today's collage is ready — have a look.") : L("Tap and Tenzy makes one collage of the best photos of your day.")
             case .readyToPost:
