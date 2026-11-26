@@ -21,7 +21,7 @@ enum VideoSound {
     /// Where each copy of a `length`-second song starts and how much of it plays, to cover `seconds` of video. Pure.
     static func loops(song length: Double, video seconds: Double) -> [(at: Double, play: Double)] {
         guard length > 0.2, seconds > 0 else { return [] }
-        var out: [(Double, Double)] = [], t = 0.0
+        var out: [(at: Double, play: Double)] = [], t = 0.0
         while t < seconds - 0.01, out.count < 400 {
             let play = min(length, seconds - t)
             out.append((t, play)); t += play
