@@ -20,10 +20,8 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.effect.BitmapOverlay
 import androidx.media3.effect.MatrixTransformation
 import androidx.media3.effect.OverlayEffect
-import androidx.media3.effect.OverlaySettings
 import androidx.media3.effect.Presentation
 import androidx.media3.effect.SpeedChangeEffect
-import androidx.media3.effect.StaticOverlaySettings
 import androidx.media3.effect.TextureOverlay
 import androidx.media3.transformer.Composition
 import androidx.media3.transformer.EditedMediaItem
@@ -155,18 +153,6 @@ object TrailerMaker {
         return bmp
     }
 
-    /** One picture laid over the video, changing with time: [pick] gives the picture and how see-through, [scaleAt] how big. */
-    private class Timed(private val pick: (Double) -> Pair<Bitmap, Float>?, private val scaleAt: (Double) -> Float = { 1f }) : BitmapOverlay() {
-        private val clear = Bitmap.createBitmap(2, 2, Bitmap.Config.ARGB_8888)
-        override fun getBitmap(presentationTimeUs: Long): Bitmap = pick(presentationTimeUs / 1e6)?.first ?: clear
-        override fun getOverlaySettings(presentationTimeUs: Long): OverlaySettings {
-            val t = presentationTimeUs / 1e6
-            val a = pick(t)?.second ?: 0f
-            val s = scaleAt(t)
-            return StaticOverlaySettings.Builder().setAlphaScale(a.coerceIn(0f, 1f)).setScale(s, s).build()
-        }
-    }
-
     private fun solid(color: Int): Bitmap = Bitmap.createBitmap(Reels.W, Reels.H, Bitmap.Config.ARGB_8888).apply { eraseColor(color) }
 
     /** Black frames the length of the longest card, to sit under the cards (the cards are drawn over them). */
@@ -247,14 +233,14 @@ object TrailerMaker {
         val layers = mutableListOf<TextureOverlay>()
         Reels.lightPicture("vignette")?.let { layers += BitmapOverlay.createStaticBitmapOverlay(it) }
         layers += BitmapOverlay.createStaticBitmapOverlay(Reels.barsPicture())
-        layers += Timed({ t -> if (cardAt(t) != null) blackFrame to 1f else null })
-        layers += Timed({ t ->
+        layers += TimedOverlay({ t -> if (cardAt(t) != null) blackFrame to 1f else null })
+        layers += TimedOverlay({ t ->
             cardAt(t)?.let { p ->
                 val l = TrailerPlan.cardLook(t - p.start, p.length, p.kind == TrailerPlan.Kind.TITLE, p.kind == TrailerPlan.Kind.END)
                 pictures.getValue(p) to l.first.toFloat()
             }
         }, { t -> cardAt(t)?.let { p -> TrailerPlan.cardLook(t - p.start, p.length, p.kind == TrailerPlan.Kind.TITLE, p.kind == TrailerPlan.Kind.END).second.toFloat() } ?: 1f })
-        layers += Timed({ t -> TrailerPlan.flash(t, hits, titleAt).takeIf { it > 0 }?.let { white to it.toFloat() } })
+        layers += TimedOverlay({ t -> TrailerPlan.flash(t, hits, titleAt).takeIf { it > 0 }?.let { white to it.toFloat() } })
 
         val composition = Composition.Builder(listOf(
             EditedMediaItemSequence(items),

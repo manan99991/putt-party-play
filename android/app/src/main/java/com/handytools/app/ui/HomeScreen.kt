@@ -32,6 +32,7 @@ import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Movie
 import androidx.compose.material.icons.outlined.MusicNote
+import androidx.compose.material.icons.outlined.TheaterComedy
 import androidx.compose.material.icons.outlined.DirectionsCar
 import androidx.compose.material.icons.outlined.DocumentScanner
 import androidx.compose.material.icons.outlined.Gif
@@ -168,6 +169,10 @@ val TOOLS = listOf(
         listOf("trailer","movie trailer","film trailer","in a world","coming soon","epic","cinematic","narrator","voiceover","movie","film","teaser","intro video"),
         about = "Pick a few clips and photos and name your film: Tenzy makes a half-minute trailer with title cards, a deep narrator and its own score — all on your phone.",
         tint = Color(0xFFF59E0B), vicon = Icons.Outlined.Movie),
+    HTool("funny", "Funny Moments", "Record scratch, dramatic zoom, crickets…", 0, 0,
+        listOf("funny","funny moment","joke","comedy","record scratch","freeze frame","that's me","dramatic zoom","crickets","awkward","air horn","boing","ba dum tss","rimshot","meme video","prank","laugh"),
+        about = "Pick a video and a classic joke — a record-scratch freeze, a dramatic zoom, crickets, air horns — and Tenzy finds the funniest moment and puts it in with its sound.",
+        tint = Color(0xFFF59E0B), vicon = Icons.Outlined.TheaterComedy),
     HTool("texttools", "Text Tools", "Clean & change text", 0, 0,
         listOf("text","case","uppercase","lowercase","title case","trim","spaces","line breaks","reverse","word count","character count","clean","format"),
         about = "Paste text and fix it fast — change the case, strip extra spaces and line breaks, reverse it, or just count the words and characters.",

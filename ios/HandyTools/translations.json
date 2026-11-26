@@ -52208,5 +52208,25 @@
   "ja": "リールを作れませんでした。別のクリップでお試しください。",
   "pt": "Não foi possível fazer o reel — tente outros clipes.",
   "zh": "无法生成视频——换些片段试试。"
+ },
+ "That video didn't load — try another.": {
+  "de": "Das Video wurde nicht geladen – versuch ein anderes.",
+  "es": "Ese vídeo no se cargó: prueba otro.",
+  "fr": "Cette vidéo ne s'est pas chargée — essaie-en une autre.",
+  "hi": "वह वीडियो लोड नहीं हुआ — कोई दूसरा आज़माएँ।",
+  "it": "Quel video non si è caricato: provane un altro.",
+  "ja": "その動画は読み込めませんでした。別の動画でお試しください。",
+  "pt": "Esse vídeo não carregou — tente outro.",
+  "zh": "那段视频没能载入——换一段试试。"
+ },
+ "Couldn't make it — try another moment or video.": {
+  "de": "Das hat nicht geklappt – versuch einen anderen Moment oder ein anderes Video.",
+  "es": "No se pudo hacer: prueba otro momento u otro vídeo.",
+  "fr": "Impossible de le faire — essaie un autre moment ou une autre vidéo.",
+  "hi": "नहीं बन पाया — कोई दूसरा पल या वीडियो आज़माएँ।",
+  "it": "Non è stato possibile: prova un altro momento o un altro video.",
+  "ja": "作成できませんでした。別の瞬間か別の動画でお試しください。",
+  "pt": "Não deu para fazer — tente outro momento ou vídeo.",
+  "zh": "没能做出来——换个瞬间或换段视频试试。"
  }
 }
