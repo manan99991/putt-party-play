@@ -30,6 +30,7 @@ import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Movie
 import androidx.compose.material.icons.outlined.MusicNote
 import androidx.compose.material.icons.outlined.DirectionsCar
 import androidx.compose.material.icons.outlined.DocumentScanner
@@ -163,6 +164,10 @@ val TOOLS = listOf(
         listOf("reel","reels","beat","music video","montage","tiktok","shorts","highlights","slideshow","music","combine videos","join videos","edit"),
         about = "Pick a few clips and photos, pick the music, and Tenzy cuts them into a tall reel — every cut on the beat. The music is Tenzy's own, made on your phone.",
         tint = Color(0xFF8B5CF6), vicon = Icons.Outlined.MusicNote),
+    HTool("trailer", "Movie Trailer", "Your clips as an epic trailer", 0, 0,
+        listOf("trailer","movie trailer","film trailer","in a world","coming soon","epic","cinematic","narrator","voiceover","movie","film","teaser","intro video"),
+        about = "Pick a few clips and photos and name your film: Tenzy makes a half-minute trailer with title cards, a deep narrator and its own score — all on your phone.",
+        tint = Color(0xFFF59E0B), vicon = Icons.Outlined.Movie),
     HTool("texttools", "Text Tools", "Clean & change text", 0, 0,
         listOf("text","case","uppercase","lowercase","title case","trim","spaces","line breaks","reverse","word count","character count","clean","format"),
         about = "Paste text and fix it fast — change the case, strip extra spaces and line breaks, reverse it, or just count the words and characters.",
