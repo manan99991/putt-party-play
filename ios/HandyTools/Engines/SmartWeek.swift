@@ -59,8 +59,11 @@ enum SmartWeek {
     /// "My week · Nov 20 – 26" (or "Nov 28 – Dec 4" across a month), in the phone's language.
     static func title(from start: Date, to end: Date, cal: Calendar = .current) -> String {
         let sameMonth = cal.component(.month, from: start) == cal.component(.month, from: end)
-        let a = start.formatted(.dateTime.month(.abbreviated).day())
-        let b = sameMonth ? end.formatted(.dateTime.day()) : end.formatted(.dateTime.month(.abbreviated).day())
+        // Days as the calendar counts them (its time zone), so "26" never prints as the 27th somewhere else.
+        var md = Date.FormatStyle.dateTime.month(.abbreviated).day(); md.timeZone = cal.timeZone
+        var d = Date.FormatStyle.dateTime.day(); d.timeZone = cal.timeZone
+        let a = start.formatted(md)
+        let b = sameMonth ? end.formatted(d) : end.formatted(md)
         return "\(L("My week")) · \(a) – \(b)"
     }
 

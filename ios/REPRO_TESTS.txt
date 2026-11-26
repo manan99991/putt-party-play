@@ -1,8 +1,8 @@
-# 26 Nov: the paper UI test found no page in the seeded photos ("no photos of letters…"); the run now prints what it saw
-# for each photo (scores, words, labels) so the cause is read, not guessed. Plus the new autoruns' tests: the week's
-# film (a real film is made), the weekly schedule, the contacts copy and its diff, voice memos, tool days and the offer.
+# 26 Nov, second look. Contacts, voice memos, tool days and the offer card passed. Still failing, with what each run said:
+#  • paper: the 2 photos in the window read as "outdoor / night sky", 0 words — the drawn pages arrive dark. The run now
+#    reports the drawing's own size and brightness before saving, and each photo's pixel size and age.
+#  • the week film's first frame is black (mean 0): the test now reports the title card's and a picture's brightness and
+#    frames at 0/0.2/0.6/1.5/3 s of the photo stretch and of the joined film, so where it goes dark is known.
+#  • the week title printed the 27th for the 26th: dates now follow the calendar's own time zone (fixed).
 HandyToolsUITests/PromiseTests/testPaperAutorunMakesOneSearchablePDFFromTwoPages
 HandyToolsTests/SmartWeekTests
-HandyToolsTests/SmartContactsTests
-HandyToolsTests/SmartVoiceTests
-HandyToolsTests/SmartRunsTests

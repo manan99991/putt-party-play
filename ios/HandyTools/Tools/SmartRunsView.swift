@@ -175,13 +175,19 @@ struct SmartRunsView: View {
                 }
             })
         }
+        // What was drawn, said in the run's message: the page's brightness and size (a black or empty drawing shows here).
+        let means = images.map { img -> String in
+            let px = Stitcher.grayscale(img, width: 40).px
+            return "\(Int(img.size.width))x\(Int(img.size.height))@\(img.scale) mean \(px.reduce(0) { $0 + Int($1) } / max(1, px.count))"
+        }
         do {
             let now = Date()
             try await PHPhotoLibrary.shared().performChanges {
                 for (i, img) in images.enumerated() { PHAssetChangeRequest.creationRequestForAsset(from: img).creationDate = now.addingTimeInterval(Double(i) * 20 - 60) }
             }
             UserDefaults.standard.set(true, forKey: key)
-        } catch {}
+            SmartPapers.seedNote = "seeded " + means.joined(separator: ", ")
+        } catch { SmartPapers.seedNote = "seeding failed: \(error.localizedDescription) (\(means.joined(separator: ", ")))" }
     }
 
     /// UI tests: two drives earlier today, about 4.2 and 1.3 miles.
@@ -400,7 +406,7 @@ struct SmartRunsView: View {
         } else if k == .paperPDFs {
             note = found > 0 ? "\(L("Test run made")) \(found) \(L(found == 1 ? "searchable PDF" : "searchable PDFs")). \(L("Tap Check to look through them."))"
                              : L("Test run worked: no photos of letters, bills or forms from the last 24 hours.")
-                               + (Launch.uitest ? " [" + SmartPapers.trail.joined(separator: " | ") + "]" : "")
+                               + (Launch.uitest ? " [" + ([SmartPapers.seedNote] + SmartPapers.trail).joined(separator: " | ") + "]" : "")
         } else if k == .dayCollage {
             note = found > 0 ? L("Test run made today's collage. Tap Check to see it.")
                              : L("Test run worked: fewer than three good photos of people from the last 24 hours, so no collage yet.")

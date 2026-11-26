@@ -90,8 +90,22 @@ final class SmartWeekTests: XCTestCase {
     func testTheFilmIsReallyMade() async throws {
         let card = SmartWeek.card("My week · Nov 20 – 26", size: CGSize(width: 1080, height: 1920))
         XCTAssertEqual(card.size, CGSize(width: 1080, height: 1920))
+        func mean(_ img: UIImage) -> Double { let px = Stitcher.grayscale(img, width: 40).px; return Double(px.reduce(0) { $0 + Int($1) }) / Double(max(1, px.count)) }
+        func frameMeans(_ u: URL) async -> String {
+            let g = AVAssetImageGenerator(asset: AVURLAsset(url: u)); g.appliesPreferredTrackTransform = true
+            g.requestedTimeToleranceBefore = .zero; g.requestedTimeToleranceAfter = .zero
+            var out: [String] = []
+            for t in [0.0, 0.2, 0.6, 1.5, 3.0] {
+                if let cg = try? await g.image(at: CMTime(seconds: t, preferredTimescale: 600)).image { out.append(String(format: "%.1fs=%.0f", t, mean(UIImage(cgImage: cg)))) }
+                else { out.append(String(format: "%.1fs=none", t)) }
+            }
+            return out.joined(separator: " ")
+        }
+        let cardMean = mean(card), pictureMean = mean(picture(0.1))
+        XCTAssertGreaterThan(cardMean, 60, "the title card itself is dark (\(cardMean))")
         let glided = await SmartWeek.glide([picture(0.1), picture(0.4), picture(0.7)], opening: card)
         let glide = try XCTUnwrap(glided, "the photos didn't become video")
+        let glideFrames = await frameMeans(glide)
         let clip = try await makeClip()
         let cut = await SmartWeek.moment(clip)
         let moment = try XCTUnwrap(cut, "the clip's moment wasn't cut")
@@ -109,7 +123,9 @@ final class SmartWeekTests: XCTestCase {
         let gen = AVAssetImageGenerator(asset: AVURLAsset(url: film)); gen.appliesPreferredTrackTransform = true
         let first = try await gen.image(at: CMTime(seconds: 0.2, preferredTimescale: 600)).image
         let px = Stitcher.grayscale(UIImage(cgImage: first), width: 40).px
-        XCTAssertGreaterThan(Double(px.reduce(0) { $0 + Int($1) }) / Double(px.count), 60, "the film opens on black, not on its title")
+        let filmFrames = await frameMeans(film)
+        XCTAssertGreaterThan(Double(px.reduce(0) { $0 + Int($1) }) / Double(px.count), 60,
+                             "the film opens on black, not on its title — card \(Int(cardMean)), picture \(Int(pictureMean)), glide [\(glideFrames)], film [\(filmFrames)]")
         for u in [glide, clip, moment, film] { try? FileManager.default.removeItem(at: u) }
     }
 }

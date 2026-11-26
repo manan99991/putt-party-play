@@ -23,6 +23,7 @@ enum SmartPapers {
 
     /// What the last run saw, photo by photo — shown under UI tests, so a miss says why instead of guessing.
     nonisolated(unsafe) static var trail: [String] = []
+    nonisolated(unsafe) static var seedNote = "not seeded"
 
     static var folder: URL {
         let d = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("SmartRuns/Papers", isDirectory: true)
@@ -130,6 +131,7 @@ enum SmartPapers {
             else { seen = await PhotoFinder.read(a); if let seen { cache[a.localIdentifier] = seen } }
             let taken = a.creationDate ?? window.end
             let after = found.last.map { taken.timeIntervalSince($0.taken) <= 180 } ?? false
+            trail.append("\(a.pixelWidth)x\(a.pixelHeight) \(Int(Date().timeIntervalSince(a.creationDate ?? .distantPast)))s ago")
             if let seen {
                 let words = seen.text.split { $0 == " " || $0 == "\n" }.count
                 trail.append(String(format: "doc %.1f rec %.1f card %.1f · %d words · %@%@", PhotoFinder.score(seen, for: .document),
