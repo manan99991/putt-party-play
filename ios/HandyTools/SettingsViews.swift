@@ -149,7 +149,7 @@ struct SettingsView: View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    TabHero(title: "Settings", line: "Language, theme, Pro, privacy — and how Tenzy works.", symbol: "gearshape.fill")
+                    TabHero(title: "Settings", line: "Language, look, Pro and privacy", symbol: "gearshape.fill")
                         .padding(.bottom, HandySpacing.s8)
                         .onTapGesture {
                             guard !devUnlocked else { return }
@@ -187,7 +187,7 @@ struct SettingsView: View {
                             }
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(store.isPremium ? "Tenzy Pro" : "Go Pro").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                Text(store.isPremium ? L("Every helper unlimited. No daily limits.") : String(format: L("%@ a month or %@ a year. Every tool, no daily limits."), store.monthlyPrice, store.yearlyPrice))
+                                Text(store.isPremium ? L("Every helper, no limits") : String(format: L("%@ a month or %@ a year"), store.monthlyPrice, store.yearlyPrice))
                                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.leading)
                             }
                             Spacer()
@@ -263,9 +263,8 @@ struct SettingsView: View {
                     Section(L("What Tenzy does")) {
                         NavigationLink(value: "myalerts") {
                             Label { VStack(alignment: .leading, spacing: 2) {
-                                Text(L("Looks after your phone, so you don't have to")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                    .multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
-                                Text(L("Screenshots piling up, space running low, big videos")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                Text(L("Looks after your phone")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).lineLimit(1)
+                                Text(L("Space, screenshots, big videos")).lineLimit(1).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                             } } icon: { Image(systemName: "bell.badge.fill").foregroundStyle(HandyColor.accent) }
                         }
                         NavigationLink(value: "alltools") {
@@ -276,7 +275,7 @@ struct SettingsView: View {
                                 }
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(L("Every helper")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                    Text(L("Everything Tenzy does, each with a tap to open")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                    Text(L("Everything Tenzy does, one tap away")).lineLimit(1).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                                 }
                                 Spacer()
                                 Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
@@ -286,13 +285,13 @@ struct SettingsView: View {
                     }
 
                     Section(L("Everything stays on your phone. Nothing is collected.")) {
-                        SettingsRow(icon: "slider.horizontal.3", title: "Permissions", sub: "Camera, microphone, speech, location, Photos") { showSetup = true }
-                        SettingsRow(icon: "lock", title: "Privacy", sub: "What stays on your phone (everything)") { showPrivacy = true }
+                        SettingsRow(icon: "slider.horizontal.3", title: L("Permissions"), sub: L("Camera, mic, location, photos")) { showSetup = true }
+                        SettingsRow(icon: "lock", title: L("Privacy"), sub: L("Everything stays on your phone")) { showPrivacy = true }
                     }
                     Section(L("Help")) {
-                        SettingsRow(icon: "book", title: L("How Tenzy works"), sub: L("Build a helper that does the whole job, in three steps")) { showGuide = true }
+                        SettingsRow(icon: "book", title: L("How Tenzy works"), sub: L("A helper in three steps")) { showGuide = true }
                         if !HowToVideo.available.isEmpty {
-                            SettingsRow(icon: "play.rectangle.fill", title: L("Watch how"), sub: L("Three short videos: say what you need, set an autorun, hand Tenzy a photo")) { showHowTo = true }
+                            SettingsRow(icon: "play.rectangle.fill", title: L("Watch how"), sub: L("Three short videos")) { showHowTo = true }
                         }
                         SettingsRow(icon: "envelope", title: "Send feedback", sub: SUPPORT_EMAIL) {
                             UIApplication.shared.open(URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20iOS%20\(version)")!)
@@ -361,8 +360,8 @@ private struct SettingsRow: View {
                 HStack(spacing: HandySpacing.s16) {
                     Image(systemName: icon).font(.system(size: 20)).foregroundStyle(HandyColor.accent).frame(width: 24)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(title).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary)
-                        Text(sub).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        Text(title).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary).lineLimit(1)
+                        Text(sub).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.85)   // one line (Manan, 26 Nov)
                     }
                     Spacer()
                     Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
@@ -523,7 +522,7 @@ struct BusinessSwitch: View {
         Toggle(isOn: $on) {
             VStack(alignment: .leading, spacing: 3) {
                 Text(L("I run a small business")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                Text(L("Adds a Business section to Home: expenses, product photos, customers, contracts and QR codes."))
+                Text(L("Adds a Business section to Home"))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }
         }

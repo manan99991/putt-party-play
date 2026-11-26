@@ -51108,5 +51108,125 @@
   "ja": "ホームにビジネスのセクションを追加：経費、商品写真、顧客、契約、QRコード。",
   "pt": "Adiciona uma seção Negócios ao Início: despesas, fotos de produtos, clientes, contratos e códigos QR.",
   "zh": "在首页添加商务分区：支出、产品照片、客户、合同和二维码。"
+ },
+ "Language, look, Pro and privacy": {
+  "de": "Sprache, Look, Pro und Datenschutz",
+  "es": "Idioma, aspecto, Pro y privacidad",
+  "fr": "Langue, style, Pro et confidentialité",
+  "hi": "भाषा, लुक, Pro और प्राइवेसी",
+  "it": "Lingua, aspetto, Pro e privacy",
+  "ja": "言語、見た目、Pro、プライバシー",
+  "pt": "Idioma, visual, Pro e privacidade",
+  "zh": "语言、外观、Pro 和隐私"
+ },
+ "%@ a month or %@ a year": {
+  "de": "%@ im Monat oder %@ im Jahr",
+  "es": "%@ al mes o %@ al año",
+  "fr": "%@ par mois ou %@ par an",
+  "hi": "%@ महीना या %@ साल",
+  "it": "%@ al mese o %@ all'anno",
+  "ja": "月額 %@ または年額 %@",
+  "pt": "%@ por mês ou %@ por ano",
+  "zh": "每月 %@ 或每年 %@"
+ },
+ "Every helper, no limits": {
+  "de": "Jeder Helfer, ohne Limits",
+  "es": "Todos los asistentes, sin límites",
+  "fr": "Tous les assistants, sans limite",
+  "hi": "हर हेल्पर, बिना सीमा",
+  "it": "Ogni aiutante, senza limiti",
+  "ja": "すべてのヘルパー、制限なし",
+  "pt": "Todos os ajudantes, sem limites",
+  "zh": "所有助手，不限次数"
+ },
+ "Looks after your phone": {
+  "de": "Kümmert sich um dein Handy",
+  "es": "Cuida de tu teléfono",
+  "fr": "Veille sur ton téléphone",
+  "hi": "आपके फ़ोन का ध्यान रखता है",
+  "it": "Si prende cura del telefono",
+  "ja": "スマホをお手入れ",
+  "pt": "Cuida do seu celular",
+  "zh": "照看你的手机"
+ },
+ "Space, screenshots, big videos": {
+  "de": "Speicher, Screenshots, große Videos",
+  "es": "Espacio, capturas, videos grandes",
+  "fr": "Espace, captures, grosses vidéos",
+  "hi": "जगह, स्क्रीनशॉट, बड़े वीडियो",
+  "it": "Spazio, screenshot, video grandi",
+  "ja": "空き容量、スクショ、大きな動画",
+  "pt": "Espaço, capturas, vídeos grandes",
+  "zh": "空间、截图、大视频"
+ },
+ "Everything Tenzy does, one tap away": {
+  "de": "Alles, was Tenzy kann, mit einem Tipp",
+  "es": "Todo lo que hace Tenzy, a un toque",
+  "fr": "Tout ce que fait Tenzy, en un geste",
+  "hi": "Tenzy का हर काम, एक टैप पर",
+  "it": "Tutto ciò che fa Tenzy, a un tocco",
+  "ja": "Tenzy のすべてをワンタップで",
+  "pt": "Tudo o que o Tenzy faz, a um toque",
+  "zh": "Tenzy 的一切，一点即达"
+ },
+ "Permissions": {
+  "de": "Berechtigungen",
+  "es": "Permisos",
+  "fr": "Autorisations",
+  "hi": "अनुमतियाँ",
+  "it": "Autorizzazioni",
+  "ja": "アクセス許可",
+  "pt": "Permissões",
+  "zh": "权限"
+ },
+ "Camera, mic, location, photos": {
+  "de": "Kamera, Mikro, Standort, Fotos",
+  "es": "Cámara, micro, ubicación, fotos",
+  "fr": "Caméra, micro, position, photos",
+  "hi": "कैमरा, माइक, लोकेशन, फ़ोटो",
+  "it": "Fotocamera, microfono, posizione, foto",
+  "ja": "カメラ、マイク、位置情報、写真",
+  "pt": "Câmera, microfone, localização, fotos",
+  "zh": "相机、麦克风、位置、照片"
+ },
+ "Everything stays on your phone": {
+  "de": "Alles bleibt auf deinem Handy",
+  "es": "Todo se queda en tu teléfono",
+  "fr": "Tout reste sur ton téléphone",
+  "hi": "सब कुछ आपके फ़ोन पर रहता है",
+  "it": "Tutto resta sul telefono",
+  "ja": "すべてスマホの中に",
+  "pt": "Tudo fica no seu celular",
+  "zh": "一切都留在你的手机上"
+ },
+ "A helper in three steps": {
+  "de": "Ein Helfer in drei Schritten",
+  "es": "Un asistente en tres pasos",
+  "fr": "Un assistant en trois étapes",
+  "hi": "तीन स्टेप में एक हेल्पर",
+  "it": "Un aiutante in tre passaggi",
+  "ja": "3ステップでヘルパー",
+  "pt": "Um ajudante em três passos",
+  "zh": "三步做一个助手"
+ },
+ "Three short videos": {
+  "de": "Drei kurze Videos",
+  "es": "Tres videos cortos",
+  "fr": "Trois courtes vidéos",
+  "hi": "तीन छोटे वीडियो",
+  "it": "Tre brevi video",
+  "ja": "3本の短い動画",
+  "pt": "Três vídeos curtos",
+  "zh": "三个短视频"
+ },
+ "Adds a Business section to Home": {
+  "de": "Fügt einen Business-Bereich zum Start hinzu",
+  "es": "Añade una sección Negocio a Inicio",
+  "fr": "Ajoute une section Pro à l'accueil",
+  "hi": "होम में बिज़नेस सेक्शन जोड़ता है",
+  "it": "Aggiunge una sezione Lavoro alla Home",
+  "ja": "ホームにビジネスを追加",
+  "pt": "Adiciona uma seção Negócios ao Início",
+  "zh": "在首页添加商务分区"
  }
 }
