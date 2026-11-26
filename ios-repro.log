@@ -1,12 +1,25 @@
-Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' passed (198.015 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet]' started.
-Test Case '-[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet]' passed (53.780 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testReceiptTestRunKeepsTheAppAnswering]' started.
-RECEIPTRUN| switch 1 before Test run
-Test Case '-[HandyToolsUITests.PromiseTests testReceiptTestRunKeepsTheAppAnswering]' passed (31.158 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 282.953 (282.972) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 282.953 (282.981) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 282.953 (282.983) seconds
+2026-11-26 13:48:04.762960+0000 HandyTools[33008:91669] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-26 13:48:06.006249+0000 HandyTools[33008:91663] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-11-26 13:48:06.716193+0000 HandyTools[33008:91866] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+Test Case '-[HandyToolsTests.HowToVideosTests testAllThreeFilmsShipAndPlay]' started.
+Test Case '-[HandyToolsTests.HowToVideosTests testAllThreeFilmsShipAndPlay]' passed (0.309 seconds).
+Test Case '-[HandyToolsTests.HowToVideosTests testEachLineIsShort]' started.
+Test Case '-[HandyToolsTests.HowToVideosTests testEachLineIsShort]' passed (0.001 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.310 (0.316) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.310 (0.317) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.310 (0.318) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' started.
+    t =    36.23s     Requesting snapshot of accessibility hierarchy for app with pid 33172
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:618: error: -[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms] : XCTAssertTrue failed - the say-what-you-need film isn't listed
+    t =    47.57s     Requesting snapshot of accessibility hierarchy for app with pid 33172
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:618: error: -[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms] : XCTAssertTrue failed - the set-an-autorun film isn't listed
+    t =    57.99s     Requesting snapshot of accessibility hierarchy for app with pid 33172
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:618: error: -[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms] : XCTAssertTrue failed - the got-something film isn't listed
+    t =    61.05s Requesting snapshot of accessibility hierarchy for app with pid 33172
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:620: error: -[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms] : Failed to tap "howto-set-an-autorun" Button: No matches found for Elements matching predicate '"howto-set-an-autorun" IN identifiers' from input {(
+Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' failed (61.852 seconds).
+	 Executed 1 test, with 4 failures (0 unexpected) in 61.852 (61.875) seconds
+	 Executed 1 test, with 4 failures (0 unexpected) in 61.852 (61.881) seconds
+	 Executed 1 test, with 4 failures (0 unexpected) in 61.852 (61.882) seconds
 == main thread when stuck
 == crash reports
