@@ -9,6 +9,9 @@ enum BeatReel {
     static let size = CGSize(width: 1080, height: 1920)
     /// How long the last shot holds after the final beat, while the music's last hit rings.
     static let ringOut = 0.8
+    /** Why the last reel or trailer couldn't be made, for the tests (shown on screen only under -uitest). */
+    nonisolated(unsafe) static var lastProblem: String?
+    static func problem(_ s: String) { print("REEL| " + s); lastProblem = s }
 
     /// One piece of the reel: which clip, where in it, how long it lasts in the clip and in the reel.
     struct Cut: Equatable {
@@ -105,17 +108,19 @@ enum BeatReel {
             let lasts = c.lasts + (i == cuts.count - 1 ? hold : 0)
             let piece = ts(c.length)
             do { try cv.insertTimeRange(CMTimeRange(start: ts(c.from), duration: piece), of: src.track, at: cursor) }
-            catch { print("REEL| cut \(c.clip) at \(c.from)s couldn't be inserted: \(error.localizedDescription)"); continue }
+            catch { problem("cut \(c.clip) at \(c.from)s couldn't be inserted: \(error.localizedDescription)"); continue }
             var placed = piece
             if abs(lasts - c.length) > 0.01 {
                 placed = ts(lasts)
                 cv.scaleTimeRange(CMTimeRange(start: cursor, duration: piece), toDuration: placed)
             }
             shapes.append((cursor, fill(natural: src.natural, transform: src.transform)))
-            cursor = CMTimeAdd(cursor, placed)
+            // Carry on from where the track really ends now, not from a sum: if a stretch lands a hair off, the next
+            // piece still goes exactly at the end instead of splitting the one before.
+            cursor = CMTimeAdd(cv.timeRange.start, cv.timeRange.duration)
         }
         let at = cursor.seconds
-        guard at > 0 else { print("REEL| nothing could be cut from \(srcs.count) clips"); return nil }
+        guard at > 0 else { problem("nothing could be cut from \(srcs.count) clips"); return nil }
         // Where the picture really ends (the sum of rounded pieces), so the sound never runs past it.
         let pictureEnd = cv.timeRange.duration.seconds
         // The sound, as long as the picture.
@@ -144,7 +149,7 @@ enum BeatReel {
         poll.cancel()
         if !ok {
             let pieces = cv.segments.map { $0.timeMapping.target.duration.seconds }
-            print("REEL| the edit didn't save: \(s.error?.localizedDescription ?? "no error given") (\((s.error as NSError?)?.code ?? 0)) — " +
+            problem("the edit didn't save: \(s.error?.localizedDescription ?? "no error given") (\((s.error as NSError?)?.code ?? 0)) — " +
                   "\(pieces.count) pieces, shortest \(pieces.min() ?? 0)s, empty \(cv.segments.filter(\.isEmpty).count), picture \(pictureEnd)s, " +
                   "whole \(comp.duration.seconds)s, clips \(srcs.map { "\(Int($0.natural.width))x\(Int($0.natural.height))" })")
         }
@@ -154,8 +159,9 @@ enum BeatReel {
     /// The reel from `sources` (videos; photos become short clips first). nil if the phone couldn't make it.
     static func make(_ sources: [URL], style styleID: String, seconds: Double? = nil, progress: ((Double) -> Void)? = nil) async -> URL? {
         let st = Synth.style(styleID)
+        lastProblem = nil
         let srcs = await load(sources)
-        guard !srcs.isEmpty else { return nil }
+        guard !srcs.isEmpty else { problem("none of the \(sources.count) clips loaded"); return nil }
         let (cuts, total) = plan(lengths: srcs.map(\.length), style: st, seconds: seconds)
         guard !cuts.isEmpty else { return nil }
         progress?(0.05)
@@ -167,7 +173,7 @@ enum BeatReel {
         var r = VideoFX.Recipe(look: st.look, light: st.light, motion: "pulse", texture: st.id == "epic" ? "bars" : "none")
         r.amount = 0.55
         let out = await VideoFX.export(cut, recipe: r, caption: nil)
-        if out == nil { print("REEL| the style pass didn't save") }
+        if out == nil { problem("the style pass didn't save") }
         try? FileManager.default.removeItem(at: cut)
         progress?(1)
         return out

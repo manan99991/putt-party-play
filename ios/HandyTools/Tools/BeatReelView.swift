@@ -93,7 +93,11 @@ struct BeatReelView: View {
             await MainActor.run {
                 working = false
                 if Task.isCancelled { errorText = "Stopped."; return }
-                guard let out else { errorText = "Couldn't make the reel — try other clips."; return }
+                guard let out else {
+                    errorText = "Couldn't make the reel — try other clips."
+                    if Launch.uitest, let why = BeatReel.lastProblem { errorText = (errorText ?? "") + " [\(why)]" }   // for the test's report
+                    return
+                }
                 result = out; HandyHaptics.success()
             }
         }

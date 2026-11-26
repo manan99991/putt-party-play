@@ -348,7 +348,7 @@ enum Trailer {
         let poll = Task { while !Task.isCancelled { progress?(0.5 + 0.5 * Double(s.progress)); try? await Task.sleep(nanoseconds: 300_000_000) } }
         let ok = await VideoEngine.run(s, seconds: duration)
         poll.cancel()
-        if !ok { print("REEL| the trailer's picture pass didn't save: \(s.error?.localizedDescription ?? "no error given")") }
+        if !ok { BeatReel.problem("the trailer's picture pass didn't save: \(s.error?.localizedDescription ?? "no error given")") }
         try? FileManager.default.removeItem(at: cut.url)
         progress?(1)
         return ok ? out : nil

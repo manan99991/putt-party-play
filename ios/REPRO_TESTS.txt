@@ -1,6 +1,7 @@
-# 26 Nov, round 5. Round 4: Beat Reel now works end to end in the app (a recorded clip became a finished reel), but
-# the unit reel (two clips, Party, 126 BPM) stopped with -11838. The trailer (96 BPM, beats on the clock's grid)
-# works, so the theory is rounding: pieces placed at summed, rounded seconds left hairline gaps/overlaps. The
-# timeline is now kept in exact clock ticks; REEL| says pieces, shortest, empties and lengths if it fails again.
+# 26 Nov, round 6. Round 5: the unit reel (two clips, 126 BPM) is now made for real — exact clock ticks fixed it —
+# but the in-app reel (one recorded clip) that passed in round 4 failed, with no reason visible (the app's prints
+# don't reach the log in a UI test). Each piece now goes at the track's real end, read back after every insert and
+# stretch; under -uitest the reason is shown on screen, so the test's report carries it.
 HandyToolsTests/BeatReelTests
 HandyToolsUITests/CameraButtonTests/testBeatReelRecordsAClipAndCutsAReel
+HandyToolsUITests/CameraButtonTests/testMovieTrailerRecordsAClipAndMakesATrailer
