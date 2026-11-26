@@ -16,13 +16,17 @@ Resolve Package Graph
 
 Fetching from https://github.com/element-hq/swift-ogg
 
-Fetching from https://github.com/tsolomko/SWCompression
-
 Fetching from https://github.com/tsolomko/BitByteData
+
+Fetching from https://github.com/tsolomko/SWCompression
 
 Fetching from https://github.com/vector-im/ogg-swift.git
 
 Fetching from https://github.com/vector-im/opus-swift
+
+Creating working copy of package ‘SWCompression’
+
+Checking out 4.8.6 of package ‘SWCompression’
 
 Creating working copy of package ‘ogg-swift’
 
@@ -32,28 +36,26 @@ Creating working copy of package ‘BitByteData’
 
 Checking out 2.0.4 of package ‘BitByteData’
 
-Creating working copy of package ‘SWCompression’
+Creating working copy of package ‘swift-ogg’
 
-Checking out 4.8.6 of package ‘SWCompression’
+Checking out main (a00a22b) of package ‘swift-ogg’
 
 Creating working copy of package ‘opus-swift’
 
 Checking out 0.8.4 of package ‘opus-swift’
 
-Creating working copy of package ‘swift-ogg’
-
-Checking out main (a00a22b) of package ‘swift-ogg’
-
 
 Resolved source packages:
-  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
-  BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
-  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
   YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
-  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
-  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
   SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
+  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
+  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
+  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
+  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
+  BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
 
-resolved source packages: Unrar, BitByteData, YbridOgg, YbridOpus, StbVorbis, SwiftOGG, SWCompression
+resolved source packages: YbridOpus, SWCompression, SwiftOGG, Unrar, YbridOgg, StbVorbis, BitByteData
 == build.log (errors)
-2026-11-26 21:59:40.391822+0000 HandyTools[16069:53834] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
+2026-11-26 22:17:05.975495+0000 HandyTools[12469:40917] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
+2026-11-26 22:23:24.456075+0000 HandyTools[12469:64426] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109b928a0> connection from pid 12469 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109b928a0> connection from pid 12469 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 22:23:24.503337+0000 HandyTools[12469:71507] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109b929e0> connection from pid 12469 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109b929e0> connection from pid 12469 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
