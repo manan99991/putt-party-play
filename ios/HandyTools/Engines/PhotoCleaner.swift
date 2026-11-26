@@ -123,9 +123,17 @@ enum PhotoCleaner {
         let mgr = PHImageManager.default()
         let req = PHImageRequestOptions()
         req.isSynchronous = true; req.deliveryMode = .fastFormat; req.resizeMode = .fast; req.isNetworkAccessAllowed = false
+        // A photo just saved (or one Photos hasn't made a small preview of yet) has no cached preview, and the fast
+        // request finds nothing — 26 Nov on the build machine every item came back "not checked". Then the preview is
+        // made from the photo itself on the phone; only a photo that isn't on the phone at all (iCloud only) is left out.
+        let full = PHImageRequestOptions()
+        full.isSynchronous = true; full.deliveryMode = .highQualityFormat; full.resizeMode = .fast; full.isNetworkAccessAllowed = false
         func thumb(_ a: PHAsset) -> CGImage? {
             var image: UIImage?
             mgr.requestImage(for: a, targetSize: CGSize(width: 160, height: 160), contentMode: .aspectFit, options: req) { im, _ in image = im }
+            if image == nil {
+                mgr.requestImage(for: a, targetSize: CGSize(width: 160, height: 160), contentMode: .aspectFit, options: full) { im, _ in image = im }
+            }
             return image?.cgImage
         }
         func featurePrint(_ cg: CGImage) -> VNFeaturePrintObservation? {

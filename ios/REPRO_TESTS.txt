@@ -1,4 +1,4 @@
-# 26 Nov: Cleaner finds copies anywhere in the library (two copies of an older clip behind 520 newer photos), and
+# 26 Nov (2nd run): the first run skipped every item — no cached preview for new photos; now the preview is made from the photo itself.
 # Home › See all lists every ready-made flow under one section.
 HandyToolsTests/CleanerDuplicatesTests
 HandyToolsTests/HomeShelvesTests/testEveryReadyMadeFlowSitsUnderOneSection
