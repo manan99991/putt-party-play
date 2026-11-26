@@ -114,7 +114,7 @@ struct BusinessCardsView: View {
             for (i, img) in imgs.enumerated() {
                 // Read row by row, so a two-column card's sides stay apart ("Name    Company") and stacked lines line up.
                 let box = UncheckedImage(img)
-                let t = await Task.detached(priority: .userInitiated) { ChainRunner.rows(DocEngine.recognize(box.image.normalizedUp())) }.value
+                let t = await Task.detached(priority: .userInitiated) { ChainText.documentText(DocEngine.recognize(box.image.normalizedUp())) }.value
                 texts.append((img, t))
                 await MainActor.run { progress = Double(i + 1) / Double(imgs.count) }
             }

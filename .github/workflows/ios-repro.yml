@@ -54,7 +54,7 @@ jobs:
           echo "simulator=$DEV $UDID tests=$ONLY"
           # Boot and settle the simulator first: a cold one makes the UI test runner stall before any test starts.
           xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
-          for p in camera microphone photos location; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
+          for p in camera microphone photos location contacts; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
           xcodebuild build-for-testing -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation 2>&1 | tail -3
           TEST_RUNNER_MENU_DUMP="$RUNNER_TEMP/menu-dump.json" TEST_RUNNER_REAL_PHOTOS="$RUNNER_TEMP/real" TEST_RUNNER_GOLDEN="$PWD/RealPhotos/golden.json" xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \

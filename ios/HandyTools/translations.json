@@ -48938,5 +48938,225 @@
   "ja": "今日撮った人物写真から鮮明で重複のないベストを選び、残したり送ったりできる1枚の美しい写真にまとめます。",
   "pt": "Escolhe as melhores fotos das pessoas tiradas hoje — nítidas, sem repetições — e junta-as numa imagem bonita para guardar ou enviar.",
   "zh": "挑出今天拍的人物照中最好的——清晰、不重复——排成一张漂亮的图，可保存或发送。"
+ },
+ "Already in Contacts as": {
+  "de": "Schon in Kontakten als",
+  "es": "Ya está en Contactos como",
+  "fr": "Déjà dans Contacts sous",
+  "hi": "संपर्कों में पहले से इस नाम से:",
+  "it": "Già nei Contatti come",
+  "ja": "連絡先に登録済み：",
+  "pt": "Já nos Contactos como",
+  "zh": "已在通讯录中，名为"
+ },
+ "Check them before they're saved.": {
+  "de": "Prüfe sie, bevor sie gesichert werden.",
+  "es": "Revísalos antes de guardarlos.",
+  "fr": "Vérifiez-les avant de les enregistrer.",
+  "hi": "सहेजने से पहले जाँच लें।",
+  "it": "Controllali prima di salvarli.",
+  "ja": "保存前に確認してください。",
+  "pt": "Verifique-os antes de guardar.",
+  "zh": "保存前请先检查。"
+ },
+ "Done — all already saved": {
+  "de": "Fertig – alle schon gesichert",
+  "es": "Listo: todos ya guardados",
+  "fr": "Terminé — tous déjà enregistrés",
+  "hi": "हो गया — सब पहले से सहेजे हैं",
+  "it": "Fatto: tutti già salvati",
+  "ja": "完了 — すべて登録済み",
+  "pt": "Concluído — todos já guardados",
+  "zh": "完成——都已保存"
+ },
+ "Everyone was already in your Contacts.": {
+  "de": "Alle waren schon in deinen Kontakten.",
+  "es": "Todos estaban ya en tus contactos.",
+  "fr": "Tout le monde était déjà dans vos contacts.",
+  "hi": "सभी पहले से आपके संपर्कों में थे।",
+  "it": "Erano già tutti nei tuoi Contatti.",
+  "ja": "全員すでに連絡先にいました。",
+  "pt": "Todos já estavam nos seus contactos.",
+  "zh": "所有人都已在你的通讯录中。"
+ },
+ "Great to meet you": {
+  "de": "Schön, dich kennenzulernen",
+  "es": "Encantado de conocerte",
+  "fr": "Ravi de vous avoir rencontré",
+  "hi": "आपसे मिलकर अच्छा लगा",
+  "it": "Piacere di averti conosciuto",
+  "ja": "お会いできてうれしかったです",
+  "pt": "Foi um prazer conhecê-lo",
+  "zh": "很高兴认识你"
+ },
+ "I'd love to stay in touch.": {
+  "de": "Ich würde gern in Kontakt bleiben.",
+  "es": "Me encantaría seguir en contacto.",
+  "fr": "J'aimerais beaucoup rester en contact.",
+  "hi": "संपर्क में रहना अच्छा लगेगा।",
+  "it": "Mi piacerebbe restare in contatto.",
+  "ja": "今後ともよろしくお願いします。",
+  "pt": "Gostava muito de manter o contacto.",
+  "zh": "希望保持联系。"
+ },
+ "It was great to meet you on": {
+  "de": "Es war schön, dich am",
+  "es": "Fue un placer conocerte el",
+  "fr": "Ce fut un plaisir de vous rencontrer",
+  "hi": "आपसे मिलकर बहुत अच्छा लगा,",
+  "it": "È stato un piacere conoscerti",
+  "ja": "お会いできてよかったです：",
+  "pt": "Foi ótimo conhecê-lo na",
+  "zh": "很高兴在"
+ },
+ "Looking at photo": {
+  "de": "Foto wird angesehen",
+  "es": "Mirando la foto",
+  "fr": "Examen de la photo",
+  "hi": "फ़ोटो देख रहे हैं",
+  "it": "Guardo la foto",
+  "ja": "写真を確認中",
+  "pt": "A ver a foto",
+  "zh": "正在查看照片"
+ },
+ "Tap and Tenzy reads today's business cards into contacts.": {
+  "de": "Tippe, und Tenzy liest die heutigen Visitenkarten in Kontakte ein.",
+  "es": "Toca y Tenzy pasa las tarjetas de visita de hoy a tus contactos.",
+  "fr": "Touchez et Tenzy lit les cartes de visite du jour dans vos contacts.",
+  "hi": "टैप करें, Tenzy आज के बिज़नेस कार्ड संपर्कों में पढ़ लेगा।",
+  "it": "Tocca e Tenzy legge i biglietti da visita di oggi nei contatti.",
+  "ja": "タップすると、Tenzyが今日の名刺を連絡先に読み込みます。",
+  "pt": "Toque e o Tenzy lê os cartões de visita de hoje para os contactos.",
+  "zh": "点按后，Tenzy 会把今天的名片读进通讯录。"
+ },
+ "Tenzy needs Contacts access to save them — allow it in Settings.": {
+  "de": "Tenzy braucht Zugriff auf Kontakte, um sie zu sichern – erlaube ihn in den Einstellungen.",
+  "es": "Tenzy necesita acceso a Contactos para guardarlos: permítelo en Ajustes.",
+  "fr": "Tenzy a besoin d'accéder aux Contacts pour les enregistrer — autorisez-le dans Réglages.",
+  "hi": "इन्हें सहेजने के लिए Tenzy को संपर्कों की अनुमति चाहिए — सेटिंग्स में दें।",
+  "it": "Tenzy ha bisogno dell'accesso ai Contatti per salvarli: consentilo in Impostazioni.",
+  "ja": "保存するには連絡先へのアクセスが必要です — 設定で許可してください。",
+  "pt": "O Tenzy precisa de acesso aos Contactos para os guardar — permita nas Definições.",
+  "zh": "Tenzy 需要通讯录权限才能保存——请在设置中允许。"
+ },
+ "Test run worked: no business cards in your photos from the last 24 hours.": {
+  "de": "Testlauf hat funktioniert: keine Visitenkarten in deinen Fotos der letzten 24 Stunden.",
+  "es": "La prueba funcionó: no hay tarjetas de visita en tus fotos de las últimas 24 horas.",
+  "fr": "L'essai a fonctionné : aucune carte de visite dans vos photos des dernières 24 heures.",
+  "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों की फ़ोटो में कोई बिज़नेस कार्ड नहीं।",
+  "it": "La prova ha funzionato: nessun biglietto da visita nelle foto delle ultime 24 ore.",
+  "ja": "テスト成功：過去24時間の写真に名刺はありません。",
+  "pt": "O teste funcionou: sem cartões de visita nas fotos das últimas 24 horas.",
+  "zh": "试运行成功：过去 24 小时的照片中没有名片。"
+ },
+ "Today's business cards": {
+  "de": "Heutige Visitenkarten",
+  "es": "Tarjetas de visita de hoy",
+  "fr": "Cartes de visite du jour",
+  "hi": "आज के बिज़नेस कार्ड",
+  "it": "Biglietti da visita di oggi",
+  "ja": "今日の名刺",
+  "pt": "Cartões de visita de hoje",
+  "zh": "今天的名片"
+ },
+ "Write a nice-to-meet-you email": {
+  "de": "Eine Freut-mich-E-Mail schreiben",
+  "es": "Escribir un correo de encantado de conocerte",
+  "fr": "Écrire un e-mail « ravi de vous rencontrer »",
+  "hi": "'मिलकर अच्छा लगा' ईमेल लिखें",
+  "it": "Scrivi un'email di piacere di conoscerti",
+  "ja": "お礼のメールを書く",
+  "pt": "Escrever um e-mail de prazer em conhecer",
+  "zh": "写一封“很高兴认识你”的邮件"
+ },
+ "business card": {
+  "de": "Visitenkarte",
+  "es": "tarjeta de visita",
+  "fr": "carte de visite",
+  "hi": "बिज़नेस कार्ड",
+  "it": "biglietto da visita",
+  "ja": "枚の名刺",
+  "pt": "cartão de visita",
+  "zh": "张名片"
+ },
+ "business cards": {
+  "de": "Visitenkarten",
+  "es": "tarjetas de visita",
+  "fr": "cartes de visite",
+  "hi": "बिज़नेस कार्ड",
+  "it": "biglietti da visita",
+  "ja": "枚の名刺",
+  "pt": "cartões de visita",
+  "zh": "张名片"
+ },
+ "contact saved, with the day you met.": {
+  "de": "Kontakt gesichert, mit dem Tag, an dem ihr euch kennengelernt habt.",
+  "es": "contacto guardado, con el día en que os conocisteis.",
+  "fr": "contact enregistré, avec le jour de la rencontre.",
+  "hi": "संपर्क सहेजा गया, मिलने के दिन के साथ।",
+  "it": "contatto salvato, con il giorno in cui vi siete conosciuti.",
+  "ja": "件の連絡先を、出会った日付付きで保存しました。",
+  "pt": "contacto guardado, com o dia em que se conheceram.",
+  "zh": "位联系人已保存，附上相识的日期。"
+ },
+ "contacts saved, with the day you met.": {
+  "de": "Kontakte gesichert, mit dem Tag, an dem ihr euch kennengelernt habt.",
+  "es": "contactos guardados, con el día en que os conocisteis.",
+  "fr": "contacts enregistrés, avec le jour de la rencontre.",
+  "hi": "संपर्क सहेजे गए, मिलने के दिन के साथ।",
+  "it": "contatti salvati, con il giorno in cui vi siete conosciuti.",
+  "ja": "件の連絡先を、出会った日付付きで保存しました。",
+  "pt": "contactos guardados, com o dia em que se conheceram.",
+  "zh": "位联系人已保存，附上相识的日期。"
+ },
+ "new contact": {
+  "de": "neuen Kontakt",
+  "es": "contacto nuevo",
+  "fr": "nouveau contact",
+  "hi": "नया संपर्क",
+  "it": "nuovo contatto",
+  "ja": "件の新しい連絡先",
+  "pt": "contacto novo",
+  "zh": "位新联系人"
+ },
+ "new contacts": {
+  "de": "neue Kontakte",
+  "es": "contactos nuevos",
+  "fr": "nouveaux contacts",
+  "hi": "नए संपर्क",
+  "it": "nuovi contatti",
+  "ja": "件の新しい連絡先",
+  "pt": "contactos novos",
+  "zh": "位新联系人"
+ },
+ "Hi": {
+  "de": "Hallo",
+  "es": "Hola",
+  "fr": "Bonjour",
+  "hi": "नमस्ते",
+  "it": "Ciao",
+  "ja": "こんにちは",
+  "pt": "Olá",
+  "zh": "你好"
+ },
+ "Business cards into my contacts": {
+  "de": "Visitenkarten in meine Kontakte",
+  "es": "Tarjetas de visita a mis contactos",
+  "fr": "Cartes de visite dans mes contacts",
+  "hi": "बिज़नेस कार्ड मेरे संपर्कों में",
+  "it": "Biglietti da visita nei miei contatti",
+  "ja": "名刺を連絡先へ",
+  "pt": "Cartões de visita nos meus contactos",
+  "zh": "把名片存进通讯录"
+ },
+ "Reads the business cards you photographed today and turns each into a contact, skipping anyone you already have.": {
+  "de": "Liest die heute fotografierten Visitenkarten und macht aus jeder einen Kontakt – wer schon gespeichert ist, wird übersprungen.",
+  "es": "Lee las tarjetas de visita que fotografiaste hoy y convierte cada una en un contacto, sin repetir a quien ya tienes.",
+  "fr": "Lit les cartes de visite photographiées aujourd'hui et crée un contact pour chacune, sans doublon.",
+  "hi": "आज ली गई बिज़नेस कार्ड की फ़ोटो पढ़कर हर एक को संपर्क बनाता है, जो पहले से हैं उन्हें छोड़कर।",
+  "it": "Legge i biglietti da visita fotografati oggi e crea un contatto per ciascuno, saltando chi hai già.",
+  "ja": "今日撮った名刺を読み取り、1枚ずつ連絡先にします（登録済みの人は除外）。",
+  "pt": "Lê os cartões de visita fotografados hoje e cria um contacto para cada um, sem repetir quem já tem.",
+  "zh": "读取你今天拍的名片，为每张创建联系人，已存在的会跳过。"
  }
 }

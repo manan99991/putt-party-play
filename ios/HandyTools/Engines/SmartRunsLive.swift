@@ -8,13 +8,14 @@ import UserNotifications
 @MainActor final class SmartRunStore: ObservableObject {
     static let shared = SmartRunStore()
     /// The autoruns built so far. An autorun is only offered once it truly works end to end.
-    static let built: [SmartRuns.Kind] = [.receipts, .drives, .heavyVideos, .readyToPost, .dayCollage]
+    static let built: [SmartRuns.Kind] = [.receipts, .drives, .heavyVideos, .readyToPost, .dayCollage, .businessCards]
 
     @Published private(set) var plans: [SmartRuns.Kind: SmartRuns.Plan] = [:]
     @Published private(set) var receipts: [SmartReceipts.Entry] = []      // found, waiting for a look
     @Published private(set) var videos: [SmartVideos.Result] = []          // smaller copies made, waiting for a look
     @Published private(set) var posts: [SmartPosts.Result] = []            // clips made ready to post, waiting for a look
     @Published private(set) var collages: [SmartCollage.Result] = []       // the day's collages, waiting for a look
+    @Published private(set) var cards: [SmartCards.Entry] = []             // business cards read, waiting for a look
     @Published var working: SmartRuns.Kind?
     @Published var progress: (share: Double, what: String) = (0, "")
     @Published var started: Date?
@@ -30,6 +31,7 @@ import UserNotifications
     private var videosURL: URL { folder.appendingPathComponent("videos.json") }
     private var postsURL: URL { folder.appendingPathComponent("posts.json") }
     private var collagesURL: URL { folder.appendingPathComponent("collages.json") }
+    private var cardsURL: URL { folder.appendingPathComponent("cards.json") }
 
     init() {
         if let d = AppGroup.defaults.data(forKey: plansKey), let p = try? JSONDecoder().decode([String: SmartRuns.Plan].self, from: d) {
@@ -39,6 +41,7 @@ import UserNotifications
         if let d = try? Data(contentsOf: videosURL), let r = try? JSONDecoder().decode([SmartVideos.Result].self, from: d) {
             videos = r.filter { FileManager.default.fileExists(atPath: SmartVideos.folder.appendingPathComponent($0.file).path) }
         }
+        if let d = try? Data(contentsOf: cardsURL), let r = try? JSONDecoder().decode([SmartCards.Entry].self, from: d) { cards = r }
         if let d = try? Data(contentsOf: collagesURL), let r = try? JSONDecoder().decode([SmartCollage.Result].self, from: d) {
             collages = r.filter { FileManager.default.fileExists(atPath: SmartCollage.folder.appendingPathComponent($0.file).path) }
         }
@@ -67,6 +70,7 @@ import UserNotifications
         case .heavyVideos: return videos.count
         case .readyToPost: return posts.filter { !$0.saved }.count
         case .dayCollage: return collages.filter { !$0.saved }.count
+        case .businessCards: return cards.count
         default: return 0
         }
     }
@@ -126,6 +130,10 @@ import UserNotifications
                 }
             }
             progress = (1, "Done")
+        case .businessCards:
+            let found = await SmartCards.gather(in: window) { share, what in Task { @MainActor in self.progress = (share, what) } }
+            let have = Set(cards.map(\.id))
+            cards = SmartCards.deduped(cards + found.filter { !have.contains($0.id) }); persistCards()
         case .dayCollage:
             if let r = await SmartCollage.make(in: window, progress: { share, what in Task { @MainActor in self.progress = (share, what) } }) {
                 collages.removeAll { $0.id == r.id }; collages.insert(r, at: 0); saveCollages()
@@ -228,6 +236,21 @@ import UserNotifications
         Task { await SmartRunAlerts.ready(.dayCollage, count: waitingCount(.dayCollage)) }
         return true
     }
+    func updateCard(_ e: SmartCards.Entry) {
+        if let i = cards.firstIndex(where: { $0.id == e.id }) { cards[i] = e; persistCards() }
+    }
+    func dropCard(_ id: String) { cards.removeAll { $0.id == id }; persistCards() }
+    /// Saves the new contacts; the list clears. nil when Contacts access was refused.
+    func saveCards() async -> Int? {
+        guard let n = await SmartCards.save(cards) else { return nil }
+        cards.removeAll(); persistCards()
+        Task { await SmartRunAlerts.ready(.businessCards, count: 0) }
+        return n
+    }
+    private func persistCards() {
+        if let d = try? JSONEncoder().encode(cards) { try? d.write(to: cardsURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
+    }
+
     private func saveCollages() {
         if let d = try? JSONEncoder().encode(collages) { try? d.write(to: collagesURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
     }
@@ -285,6 +308,9 @@ enum SmartRunAlerts {
             let body = UNMutableNotificationContent()
             body.title = L(k.title)
             switch k {
+            case .businessCards:
+                body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "business card read — save it to Contacts?" : "business cards read — save them to Contacts?"))"
+                                        : L("Tap and Tenzy reads today's business cards into contacts.")
             case .dayCollage:
                 body.body = waiting > 0 ? L("Today's collage is ready — have a look.") : L("Tap and Tenzy makes one collage of the best photos of your day.")
             case .readyToPost:

@@ -3,6 +3,7 @@ import UniformTypeIdentifiers
 import Photos
 import UserNotifications
 import AVKit
+import MessageUI
 
 /// Smart autoruns (25 Nov): the end-of-day jobs a personal assistant would do. Switch one on, pick once or twice a
 /// day and the time, and Test run shows exactly what it would do right now. What it finds waits here for a look —
@@ -54,6 +55,7 @@ struct SmartRunsView: View {
             if Launch.uitest, Launch.args.contains("-seedreceipt") { await Self.seedReceipt() }
             Self.seedDrives()
             if Launch.uitest, Launch.args.contains("-seedheavyvideo") { await Self.seedHeavyVideo(); seeded = true }
+            if Launch.uitest, Launch.args.contains("-seedcard") { await Self.seedCard(); seeded = true }
             await store.runDue()
         }
         .fileImporter(isPresented: $pickingFolder, allowedContentTypes: [.folder]) { r in
@@ -113,6 +115,29 @@ struct SmartRunsView: View {
             }
             UserDefaults.standard.set(true, forKey: key)
         } catch { SmartVideos.note("test clip not saved: \(error.localizedDescription)") }
+    }
+
+    /// UI tests: a business card photographed today.
+    static func seedCard() async {
+        let key = "uitest.seededCard"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+        let f = UIGraphicsImageRendererFormat(); f.scale = 1
+        let img = UIGraphicsImageRenderer(size: CGSize(width: 1400, height: 800), format: f).image { ctx in
+            UIColor(white: 0.97, alpha: 1).setFill(); ctx.fill(CGRect(x: 0, y: 0, width: 1400, height: 800))
+            func line(_ t: String, _ y: CGFloat, _ size: CGFloat, _ w: UIFont.Weight) {
+                (t as NSString).draw(at: CGPoint(x: 110, y: y), withAttributes: [.font: UIFont.systemFont(ofSize: size, weight: w), .foregroundColor: UIColor.black])
+            }
+            line("Priya Raman", 110, 76, .bold)
+            line("Director of Sales", 210, 46, .regular)
+            line("Northwind Analytics LLC", 280, 46, .medium)
+            line("+1 (630) 555-0142", 450, 44, .regular)
+            line("priya.raman@northwind-analytics.com", 520, 44, .regular)
+            line("www.northwind-analytics.com", 590, 44, .regular)
+        }
+        do {
+            try await PHPhotoLibrary.shared().performChanges { PHAssetChangeRequest.creationRequestForAsset(from: img).creationDate = Date() }
+            UserDefaults.standard.set(true, forKey: key)
+        } catch {}
     }
 
     /// UI tests: two drives earlier today, about 4.2 and 1.3 miles.
@@ -212,7 +237,7 @@ struct SmartRunsView: View {
                 Button { Task { await testRun(k) } } label: { Label(L("Test run"), systemImage: "play.circle").frame(maxWidth: .infinity) }
                     .secondaryButton().disabled(store.working != nil).accessibilityIdentifier("smartrun-test-\(k.rawValue)")
                 if store.waitingCount(k) > 0 {
-                    NavigationLink(value: k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : k == .dayCollage ? "smartcollage" : "smartreceipts") {
+                    NavigationLink(value: k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : k == .dayCollage ? "smartcollage" : k == .businessCards ? "smartcards" : "smartreceipts") {
                         Text("\(L("Check")) \(store.waitingCount(k))").frame(maxWidth: .infinity)
                     }.primaryButton().accessibilityIdentifier("smartrun-check-\(k.rawValue)")
                 }
@@ -255,7 +280,10 @@ struct SmartRunsView: View {
         let before = store.waitingCount(k)
         await store.run(k, test: true)
         let found = store.waitingCount(k) - before
-        if k == .dayCollage {
+        if k == .businessCards {
+            note = found > 0 ? "\(L("Test run found")) \(found) \(L(found == 1 ? "business card" : "business cards")). \(L("Check them before they're saved."))"
+                             : L("Test run worked: no business cards in your photos from the last 24 hours.")
+        } else if k == .dayCollage {
             note = found > 0 ? L("Test run made today's collage. Tap Check to see it.")
                              : L("Test run worked: fewer than three good photos of people from the last 24 hours, so no collage yet.")
         } else if k == .readyToPost {
@@ -554,6 +582,97 @@ struct SmartVideosReview: View {
         }
         .cardStyle(padding: HandySpacing.s12)
         .accessibilityElement(children: .contain).accessibilityIdentifier("smartvideo-row")
+    }
+}
+
+/// The business cards a run read: each as the contact it will become. Anyone already in Contacts is shown, not
+/// added again. Save adds the new ones; each has a ready "nice to meet you" email.
+struct SmartCardsReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var done: String?
+    @State private var mail: SmartCards.Entry?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Today's business cards")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                if let done { Label(done, systemImage: "checkmark.seal.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true) }
+                if store.cards.isEmpty && done == nil {
+                    EmptyState(icon: "person.text.rectangle", line: "Nothing waiting", sub: "Business cards show up here after the next run.")
+                }
+                ForEach(store.cards) { e in card(e) }
+                let new = store.cards.filter { $0.already == nil }.count
+                if !store.cards.isEmpty {
+                    Button {
+                        Task {
+                            if let n = await store.saveCards() {
+                                done = n == 0 ? L("Everyone was already in your Contacts.") : "\(n) \(L(n == 1 ? "contact saved, with the day you met." : "contacts saved, with the day you met."))"
+                                HandyHaptics.success()
+                            } else { done = L("Tenzy needs Contacts access to save them — allow it in Settings.") }
+                        }
+                    } label: { Text(new == 0 ? L("Done — all already saved") : "\(L("Save")) \(new) \(L(new == 1 ? "new contact" : "new contacts"))").frame(maxWidth: .infinity) }
+                        .primaryButton().accessibilityIdentifier("smartcards-save")
+                }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartcards")
+        .sheet(item: $mail) { e in
+            let m = SmartCards.niceToMeetYou(e, on: e.taken)
+            MailDraft(to: e.emails.first ?? "", subject: m.subject, body: m.body).ignoresSafeArea()
+        }
+    }
+
+    private func card(_ e: SmartCards.Entry) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                TextField(L("Name"), text: Binding(get: { e.name }, set: { var x = e; x.name = $0; store.updateCard(x) }))
+                    .font(HandyFont.cardTitle).accessibilityIdentifier("smartcard-name")
+                Button(role: .destructive) { store.dropCard(e.id) } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(HandyColor.textSecondary) }
+                    .accessibilityLabel(L("Leave this one out"))
+            }
+            let line = [e.title, e.company].filter { !$0.isEmpty }.joined(separator: " · ")
+            if !line.isEmpty { Text(line).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            ForEach(e.phones, id: \.self) { Label($0, systemImage: "phone").font(HandyFont.caption) }
+            ForEach(e.emails, id: \.self) { Label($0, systemImage: "envelope").font(HandyFont.caption) }
+            if !e.website.isEmpty { Label(e.website, systemImage: "globe").font(HandyFont.caption) }
+            if let a = e.already {
+                Label("\(L("Already in Contacts as")) \(a)", systemImage: "person.crop.circle.badge.checkmark").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
+            }
+            if !e.emails.isEmpty, MailDraft.canSend {
+                Button { mail = e } label: { Label(L("Write a nice-to-meet-you email"), systemImage: "envelope.open") }.textButton()
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain).accessibilityIdentifier("smartcard-card")
+    }
+}
+
+/// Apple's mail sheet with the address, subject and words filled in; the person edits and sends.
+struct MailDraft: UIViewControllerRepresentable {
+    static var canSend: Bool { MFMailComposeViewController.canSendMail() }
+    let to: String, subject: String, body: String
+    @Environment(\.dismiss) private var dismiss
+    func makeCoordinator() -> Coord { Coord(dismiss: { dismiss() }) }
+    func makeUIViewController(context: Context) -> MFMailComposeViewController {
+        let vc = MFMailComposeViewController()
+        vc.mailComposeDelegate = context.coordinator
+        if !to.isEmpty { vc.setToRecipients([to]) }
+        vc.setSubject(subject); vc.setMessageBody(body, isHTML: false)
+        return vc
+    }
+    func updateUIViewController(_ vc: MFMailComposeViewController, context: Context) {}
+    final class Coord: NSObject, MFMailComposeViewControllerDelegate {
+        let dismiss: () -> Void
+        init(dismiss: @escaping () -> Void) { self.dismiss = dismiss }
+        func mailComposeController(_ c: MFMailComposeViewController, didFinishWith r: MFMailComposeResult, error: Error?) { dismiss() }
     }
 }
 

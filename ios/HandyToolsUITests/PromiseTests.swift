@@ -733,6 +733,40 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(app.staticTexts["In Photos — open the app to post it"].waitForExistence(timeout: 30), "it wasn't saved to Photos")
     }
 
+    /// Smart autorun, business cards (25 Nov): a card photographed today is read into a contact (name, company, phone,
+    /// email) and Save adds exactly that one to Contacts.
+    func testBusinessCardsAutorunSavesTheContact() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "smartruns", "-uitest", "-seedcard"]
+        addUIInterruptionMonitor(withDescription: "contacts") { alert in
+            for b in ["Allow", "OK", "Allow Full Access"] where alert.buttons[b].exists { alert.buttons[b].tap(); return true }
+            return false
+        }
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let test = any["smartrun-test-businessCards"].firstMatch
+        XCTAssertTrue(test.waitForExistence(timeout: 60), "the autoruns page didn't open")
+        XCTAssertTrue(any["seed-done"].firstMatch.waitForExistence(timeout: 60), "the test card never reached the photo library")
+        while !test.isHittable { app.swipeUp() }
+        test.tap()
+        let check = any["smartrun-check-businessCards"].firstMatch
+        let note = any["smartruns-note"].firstMatch
+        let deadline = Date().addingTimeInterval(240)
+        while Date() < deadline, !check.exists, !(note.exists && note.label.contains("Test run")) { sleep(3) }
+        XCTAssertTrue(check.exists, "the card wasn't read: \(note.exists ? note.label : "no message")")
+        while !check.isHittable { app.swipeUp() }
+        check.tap()
+        let name = app.textFields.matching(identifier: "smartcard-name").firstMatch
+        XCTAssertTrue(name.waitForExistence(timeout: 10))
+        XCTAssertEqual(name.value as? String, "Priya Raman")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'Northwind Analytics'")).firstMatch.exists, "company not read")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'priya.raman@northwind-analytics.com'")).firstMatch.exists, "email not read")
+        any["smartcards-save"].firstMatch.tap()
+        app.staticTexts["Today's business cards"].firstMatch.tap()   // lets the monitor answer a Contacts prompt
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1 contact saved'")).firstMatch.waitForExistence(timeout: 15),
+                      "the contact wasn't saved")
+    }
+
     /// "Just swiping the finger lets select multiple files" (Manan, 22 Nov): Home › Photo opens Tenzy's own grid, and a
     /// sideways swipe across the first row ticks every photo it passes over.
     func testSwipeAcrossPhotosPicksSeveral() {
