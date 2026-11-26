@@ -18978,5 +18978,25 @@
   "ja": "ぐにゃぐにゃ顔",
   "pt": "Cara trêmula",
   "zh": "晃晃脸"
+ },
+ "Build it for me": {
+  "de": "Für mich bauen",
+  "es": "Créalo por mí",
+  "fr": "Construis-le pour moi",
+  "hi": "मेरे लिए बनाओ",
+  "it": "Crealo per me",
+  "ja": "作ってもらう",
+  "pt": "Cria isto por mim",
+  "zh": "帮我做出来"
+ },
+ "Set this reminder": {
+  "de": "Diese Erinnerung stellen",
+  "es": "Poner este recordatorio",
+  "fr": "Créer ce rappel",
+  "hi": "यह रिमाइंडर सेट करें",
+  "it": "Imposta questo promemoria",
+  "ja": "このリマインダーを設定",
+  "pt": "Definir este lembrete",
+  "zh": "设置这个提醒"
  }
 }

@@ -39,6 +39,8 @@ import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.GraphicEq
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Lightbulb
+import androidx.compose.material.icons.outlined.Mic
+import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.material.icons.outlined.Medication
 import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.material.icons.outlined.PhoneAndroid
@@ -52,7 +54,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,6 +81,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.handytools.app.I18n
+import com.handytools.app.tools.builder.OwnReminders
+import com.handytools.app.tools.builder.ReminderSetCard
+import com.handytools.app.tools.builder.ReminderWords
+import androidx.compose.ui.text.input.ImeAction
 import java.util.Calendar
 
 /**
@@ -160,7 +171,7 @@ private fun greeting(): String = when (Calendar.getInstance().get(Calendar.HOUR_
  * sideways. The Business tab appears only for people who said they run one.
  */
 @Composable
-fun HomeTabsScreen(onOpen: (String) -> Unit) {
+fun HomeTabsScreen(onOpen: (String) -> Unit, onBuild: (String) -> Unit = {}) {
     val ctx = LocalContext.current
     val prefs = remember { ctx.getSharedPreferences(HomeShelves.PREFS, 0) }
     val business = remember { HomeShelves.businessOn(ctx) }
@@ -175,11 +186,34 @@ fun HomeTabsScreen(onOpen: (String) -> Unit) {
         Text(I18n.t(greeting()), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground)
         Spacer(Modifier.height(HandyTokens.Space8))
+        // The ask box (the iPhone's): type or say what you want — the tools that do it show below, "Build it for me"
+        // makes a tool of the whole sentence, and "remind me…" is set right here in one tap.
+        var reminderSet by remember { mutableStateOf<OwnReminders.Reminder?>(null) }
+        fun build() {
+            val said = query.trim()
+            if (said.isEmpty()) return
+            ReminderWords.parse(said)?.let { r ->
+                val set = OwnReminders.from(r); OwnReminders.add(ctx, set); reminderSet = set; query = ""; return
+            }
+            onBuild(said)
+        }
+        val voice = remember { AskDictation(ctx) { words -> query = words } }
+        DisposableEffect(Unit) { onDispose { voice.stop() } }
+        val mic = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> if (ok) { query = ""; voice.start() } }
         TextField(
             value = query, onValueChange = { query = it },
-            placeholder = { Text(I18n.t("What do you want to do?")) },
+            placeholder = { Text(I18n.t("What do you want to do?"), maxLines = 1, overflow = TextOverflow.Ellipsis) },
             leadingIcon = { Icon(Icons.Outlined.Search, null, tint = Handy.palette.textSecondary) },
-            trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Close, I18n.t("Clear")) } },
+            trailingIcon = {
+                when {
+                    voice.running -> IconButton(onClick = { voice.stop() }, Modifier.testTag("home-mic")) { Icon(Icons.Outlined.Stop, I18n.t("Stop listening"), tint = MaterialTheme.colorScheme.error) }
+                    query.isNotEmpty() -> IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Close, I18n.t("Clear")) }
+                    voice.available -> IconButton(onClick = { mic.launch(android.Manifest.permission.RECORD_AUDIO) }, Modifier.testTag("home-mic")) {
+                        Icon(Icons.Outlined.Mic, I18n.t("Speak"), tint = MaterialTheme.colorScheme.primary)
+                    }
+                }
+            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go), keyboardActions = KeyboardActions(onGo = { build() }),
             singleLine = true, shape = RoundedCornerShape(50),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.surface, unfocusedContainerColor = MaterialTheme.colorScheme.surface,
@@ -189,10 +223,26 @@ fun HomeTabsScreen(onOpen: (String) -> Unit) {
         )
         Spacer(Modifier.height(HandyTokens.Space12))
 
+        reminderSet?.let { r -> ReminderSetCard(r) { reminderSet = null }; Spacer(Modifier.height(HandyTokens.Space12)) }
+
         if (query.isNotBlank()) {
             val results = searchTools(query)
+            val remind = ReminderWords.parse(query) != null
+            // First, the whole sentence: set it as a reminder, or build a tool that does it.
+            Row(
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f))
+                    .clickable { build() }.padding(horizontal = 12.dp, vertical = 12.dp).testTag("home-build"),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(if (remind) Icons.Outlined.Alarm else Icons.Outlined.AutoAwesome, null, tint = MaterialTheme.colorScheme.primary)
+                Spacer(Modifier.width(12.dp))
+                Text(I18n.t(if (remind) "Set this reminder" else "Build it for me"), Modifier.weight(1f), fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onBackground, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Icon(Icons.Outlined.ChevronRight, null, tint = Handy.palette.textSecondary)
+            }
+            Spacer(Modifier.height(HandyTokens.Space8))
             if (results.isEmpty()) {
-                Text(I18n.t("No tool does that yet."), color = Handy.palette.textSecondary, modifier = Modifier.padding(top = HandyTokens.Space24))
+                Text(I18n.t("No tool does that yet."), color = Handy.palette.textSecondary, modifier = Modifier.padding(top = HandyTokens.Space12))
             } else {
                 LazyColumn(Modifier.fillMaxSize()) {
                     items(results, key = { it.route }) { t -> ResultRow(t) { onOpen(t.route) } }

@@ -168,6 +168,28 @@ fun BuilderScreen() {
     val havePhoto = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? -> give(uri) }
     val haveFile = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? -> give(uri) }
 
+    // Describe it: a remind-me sentence is set right away (as on the iPhone), anything else becomes a tool to look over.
+    fun describe() {
+        // "Remind me to call Mum at 6": that's a reminder, set right away (as on the iPhone), not a tool.
+        ReminderWords.parse(ask)?.let { said ->
+            val r = OwnReminders.from(said)
+            OwnReminders.add(ctx, r)
+            reminderSet = r; ask = ""; note = null
+            return
+        }
+        val g = ChainPlanner.guess(ask)
+        if (g != null) {
+            editHint = if (g.second) null else "That wasn't much to go on, so this is my best guess. Change, add or remove any step before you save."
+            editing = g.first; note = null
+        }
+        else note = "I couldn't tell what you'd like done. Say what you have (a photo, a PDF, a video, a recording, a link or some text) and what should happen to it."
+    }
+    // Said on Home's ask box: built here straight away.
+    val handed = BuilderHandoff.ask
+    LaunchedEffect(handed) {
+        if (handed != null) { BuilderHandoff.ask = null; ask = handed; describe() }
+    }
+
     // A tapped reminder lands here: open that tool ready to run.
     val reminded = ToolReminders.pending
     LaunchedEffect(reminded) {
@@ -238,9 +260,10 @@ fun BuilderScreen() {
                 }
             }
             Text(com.handytools.app.I18n.t("Start from a template"), style = MaterialTheme.typography.headlineSmall)
-            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+            // Wraps onto a second line on a narrow phone rather than scrolling sideways.
+            com.handytools.app.ui.ChipRow {
                 listOf<Pair<String, Kind?>>("All" to null, "Photo" to Kind.IMAGE, "Text" to Kind.TEXT, "Video" to Kind.VIDEO, "Sound" to Kind.AUDIO, "PDF" to Kind.PDF).forEach { (label, k) ->
-                    if (have == k) Button({ have = k }) { Text(label) } else OutlinedButton({ have = k }) { Text(label) }
+                    if (have == k) Button({ have = k }) { Text(com.handytools.app.I18n.t(label)) } else OutlinedButton({ have = k }) { Text(com.handytools.app.I18n.t(label)) }
                 }
             }
             BuilderIntro.starters(have).filter { ExtraSteps.unavailable(ctx, it) == null }.forEach { c ->
@@ -278,21 +301,7 @@ fun BuilderScreen() {
             Column(Modifier.padding(HandyTokens.Space16), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
                 Text(com.handytools.app.I18n.t("Describe it"), style = MaterialTheme.typography.titleMedium)
                 OutlinedTextField(ask, { ask = it }, Modifier.fillMaxWidth(), placeholder = { Text(com.handytools.app.I18n.t("e.g. shrink a photo under 1 MB and hide where it was taken")) }, minLines = 1, maxLines = 2)
-                HPrimaryButton("Build it for me", enabled = ask.isNotBlank()) {
-                    // "Remind me to call Mum at 6": that's a reminder, set right away (as on the iPhone), not a tool.
-                    ReminderWords.parse(ask)?.let { said ->
-                        val r = OwnReminders.from(said)
-                        OwnReminders.add(ctx, r)
-                        reminderSet = r; ask = ""; note = null
-                        return@HPrimaryButton
-                    }
-                    val g = ChainPlanner.guess(ask)
-                    if (g != null) {
-                        editHint = if (g.second) null else "That wasn't much to go on, so this is my best guess. Change, add or remove any step before you save."
-                        editing = g.first; note = null
-                    }
-                    else note = "I couldn't tell what you'd like done. Say what you have (a photo, a PDF, a video, a recording, a link or some text) and what should happen to it."
-                }
+                HPrimaryButton("Build it for me", enabled = ask.isNotBlank()) { describe() }
             }
         }
 
@@ -619,7 +628,7 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
                 TextButton({ set("country", id) }) { Text(if ((s.settings["country"] ?: "us") == id) "● $label" else label) }
             }
         }
-        Block.VIDEO_SHRINK -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+        Block.VIDEO_SHRINK -> com.handytools.app.ui.ChipRow {
             val mb = TextTidy.videoLimit(s.settings["mb"])
             TextTidy.VIDEO_LIMITS.forEach { m -> TextButton({ set("mb", m.toString()) }) { Text(if (m == mb) "● $m MB" else "$m MB") } }
         }
@@ -632,7 +641,7 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
                 TextButton({ set("size", value) }) { Text(if ((s.settings["size"] ?: "413x531") == value) "● $label" else label) }
             }
         }
-        Block.CLEAN_TEXT -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+        Block.CLEAN_TEXT -> com.handytools.app.ui.ChipRow {
             val shape = s.settings["shape"] ?: "lines"
             listOf("lines" to "Keep lines", "paragraph" to "One paragraph").forEach { (id, label) ->
                 TextButton({ set("shape", id) }) { Text(if (id == shape) "● $label" else label) }
@@ -658,7 +667,7 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
                     TextButton({ set("side", id) }) { Text(if ((if (s.settings["side"] == "last") "last" else "first") == id) "● $label" else label) }
                 }
             }
-            Row(Modifier.horizontalScroll(rememberScrollState())) {
+            com.handytools.app.ui.ChipRow {
                 val secs = s.settings["secs"]?.toIntOrNull() ?: 30
                 TextTidy.TRIM_LENGTHS.forEach { n -> TextButton({ set("secs", n.toString()) }) { Text(if (n == secs) "● $n sec" else "$n sec") } }
             }
@@ -677,19 +686,19 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             }
             Text(com.handytools.app.I18n.t("The first time you use a language, the phone downloads it and needs a connection."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
-        Block.PHOTO_PDF -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+        Block.PHOTO_PDF -> com.handytools.app.ui.ChipRow {
             val size = s.settings["pagesize"] ?: "auto"
             listOf("auto" to "Fit photo", "a4" to "A4", "letter" to "US Letter").forEach { (id, label) ->
                 TextButton({ set("pagesize", id) }) { Text(if (id == size) "● $label" else label) }
             }
         }
-        Block.READ_ALOUD -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+        Block.READ_ALOUD -> com.handytools.app.ui.ChipRow {
             val speed = s.settings["speed"] ?: "normal"
             listOf("slow" to "Slow", "normal" to "Normal", "fast" to "Fast").forEach { (id, label) ->
                 TextButton({ set("speed", id) }) { Text(if (id == speed) "● $label" else label) }
             }
         }
-        Block.MAKE_QR -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+        Block.MAKE_QR -> com.handytools.app.ui.ChipRow {
             val st = s.settings["sturdiness"] ?: "normal"
             listOf("normal" to "Normal", "high" to "High (survives a logo)").forEach { (id, label) ->
                 TextButton({ set("sturdiness", id) }) { Text(if (id == st) "● $label" else label) }
@@ -706,11 +715,11 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             }
             Text(com.handytools.app.I18n.t("Set this to the language spoken in the recording."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
-        Block.REWRITE -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+        Block.REWRITE -> com.handytools.app.ui.ChipRow {
             val style = TextTidy.rewriteStyle(s.settings["style"])
             TextTidy.REWRITE_STYLES.forEach { (id, label) -> TextButton({ set("style", id) }) { Text(if (id == style) "● $label" else label) } }
         }
-        Block.PDF_SHRINK -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+        Block.PDF_SHRINK -> com.handytools.app.ui.ChipRow {
             val mb = TextTidy.pdfLimit(s.settings["mb"])
             TextTidy.PDF_LIMITS.forEach { m -> TextButton({ set("mb", m.toString()) }) { Text(if (m == mb) "● $m MB" else "$m MB") } }
         }
@@ -721,7 +730,7 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
         }
         Block.PDF_PAGES ->
             OutlinedTextField(s.settings["pages"] ?: "", { v -> set("pages", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("Pages, e.g. 1-3, 5 (empty keeps all)")) })
-        Block.EMOJI_FACES -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+        Block.EMOJI_FACES -> com.handytools.app.ui.ChipRow {
             val now = TextTidy.faceEmoji(s.settings["emoji"])
             TextTidy.FACE_EMOJIS.forEach { e -> TextButton({ set("emoji", e) }) { Text(if (e == now) "● $e" else e) } }
         }
@@ -1061,7 +1070,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
             HPrimaryButton(if (chain.combine) "Choose PDFs" else "Choose a PDF", enabled = !busy) { pdfFiles.launch("application/pdf") }
             Text(if (chain.combine) "Pick the PDFs to join. They go into one PDF in the order the phone lists them." else "Pick one, or several at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         } else if (chain.start == Kind.TEXT) {
-            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.SpaceBetween) {
+            com.handytools.app.ui.ChipRow {
                 TextButton({
                     val c = paste(ctx)
                     if (c.isBlank()) message = "There is nothing copied to paste." else text = TextTidy.joined(text, c)
@@ -1211,4 +1220,9 @@ private fun ChoiceChips(options: List<Pair<String, String>>, now: String, onPick
     ) {
         options.forEach { (id, label) -> com.handytools.app.ui.HChip(com.handytools.app.I18n.t(label), selected = id == now) { onPick(id) } }
     }
+}
+
+/** Words typed or said in Home's ask box, waiting for the Build page to make them into a tool (iPhone: Home builds in place). */
+object BuilderHandoff {
+    var ask: String? by mutableStateOf(null)
 }
