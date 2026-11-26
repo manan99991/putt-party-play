@@ -35,7 +35,7 @@ object Autoruns {
 
     /** The autoruns Android does so far, in the page's order; the others stay iPhone-only until they're built here. */
     val available: List<SmartRuns.Kind> = listOf(SmartRuns.Kind.OVERDUE_INVOICES, SmartRuns.Kind.DAY_COLLAGE, SmartRuns.Kind.WEEK_FILM, SmartRuns.Kind.READY_TO_POST,
-        SmartRuns.Kind.HEAVY_VIDEOS, SmartRuns.Kind.CONTACTS_BACKUP)
+        SmartRuns.Kind.HEAVY_VIDEOS, SmartRuns.Kind.TIDY_PHOTOS, SmartRuns.Kind.CONTACTS_BACKUP)
 
     /** Set when a notification is tapped; the page opens that autorun and clears it. */
     var pending by mutableStateOf<String?>(null)
@@ -118,6 +118,10 @@ object Autoruns {
             }
             SmartRuns.Kind.WEEK_FILM -> PhotoDays.find(ctx, weekWindow(now)).count { !it.screenshot }.let { n ->
                 if (n < 8) null else I18n.fmt("%d photos this week — tap to make them into one short film.", n)
+            }
+            // A quick count of old screenshots; the full look (copies, look-alikes) happens when it's opened.
+            SmartRuns.Kind.TIDY_PHOTOS -> TidyPhotos.oldScreenshotCount(ctx, now).let { n ->
+                if (n < 20) null else I18n.fmt("%d screenshots are over a week old — tap to tidy them up.", n)
             }
             // The week's copy is made right here; a word only when someone has disappeared since the last one.
             SmartRuns.Kind.CONTACTS_BACKUP -> ContactsBackup.make(ctx, now)?.gone?.size?.let { n ->

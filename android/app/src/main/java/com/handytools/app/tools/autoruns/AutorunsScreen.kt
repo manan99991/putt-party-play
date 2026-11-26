@@ -157,6 +157,7 @@ fun AutorunRun(k: SmartRuns.Kind, onClose: () -> Unit) {
         SmartRuns.Kind.READY_TO_POST -> ReadyToPostRun(onClose)
         SmartRuns.Kind.DAY_COLLAGE -> DayCollageRun(onClose)
         SmartRuns.Kind.WEEK_FILM -> WeekFilmRun(onClose)
+        SmartRuns.Kind.TIDY_PHOTOS -> TidyPhotosRun(onClose)
         else -> LaunchedEffect(k) { onClose() }
     }
 }
@@ -506,6 +507,76 @@ private fun WeekFilmRun(onClose: () -> Unit) {
                 saved = ReadyToPost.saveVideo(ctx, f, "My week " + System.currentTimeMillis() + ".mp4", System.currentTimeMillis()) != null
             }
             HPrimaryButton(I18n.t("Share"), Modifier.weight(1f)) { com.handytools.app.tools.Share.file(ctx, f, "video/mp4") }
+        }
+        Spacer(Modifier.height(HandyTokens.Space24))
+    }
+}
+
+/** What could be tidied, grouped with what's kept and why; pick the groups, then the phone confirms the move to the bin. */
+@Composable
+private fun TidyPhotosRun(onClose: () -> Unit) {
+    val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val k = SmartRuns.Kind.TIDY_PHOTOS
+    var allowed by remember { mutableStateOf(canReadPhotos(ctx)) }
+    val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> allowed = ok }
+    var progress by remember { mutableStateOf(0.0) }
+    var groups by remember { mutableStateOf<List<TidyPhotos.Group>?>(null) }
+    val picked = remember { mutableStateListOf<String>() }
+    var done by remember { mutableStateOf<String?>(null) }
+    var sure by remember { mutableStateOf(false) }
+    var job by remember { mutableStateOf<Job?>(null) }
+    val bin = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { res ->
+        if (res.resultCode == android.app.Activity.RESULT_OK) {
+            done = I18n.t("Moved to the bin — you can bring them back from there for 30 days.")
+            groups = groups?.filterNot { it.id in picked }; picked.clear()
+        }
+    }
+    LaunchedEffect(allowed) {
+        if (!allowed) { ask.launch(if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE); return@LaunchedEffect }
+        job = scope.launch {
+            val now = System.currentTimeMillis()
+            val found = TidyPhotos.scan(ctx, now) { p -> progress = p }
+            groups = found; picked.clear(); picked.addAll(found.map { it.id })
+            Autoruns.markRun(ctx, k, now); Autoruns.clearReady(ctx, k)
+        }
+    }
+    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter),
+        verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+        HTextButton(I18n.t("‹ Back")) { job?.cancel(); onClose() }
+        Text(I18n.t("Tidy up"), style = MaterialTheme.typography.headlineSmall)
+        if (!allowed) { Text(I18n.t("Tenzy needs to see your photos to tidy them."), color = Handy.palette.textSecondary); return@Column }
+        val g = groups
+        if (g == null) {
+            Text(I18n.t("Looking through your photos…"), style = MaterialTheme.typography.bodyMedium)
+            LinearProgressIndicator(progress = { progress.toFloat().coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth().testTag("autorun-progress"))
+            return@Column
+        }
+        done?.let { Text(it, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary) }
+        if (g.isEmpty() && done == null) Text(I18n.t("Nothing to tidy — no old screenshots, copies or look-alikes."), color = Handy.palette.textSecondary)
+        g.forEach { grp ->
+            HCard(Modifier.fillMaxWidth().testTag("tidy-${grp.id}"), onClick = { if (grp.id in picked) picked.remove(grp.id) else picked.add(grp.id); sure = false }) {
+                Row(Modifier.padding(HandyTokens.Space12), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text(I18n.fmt(grp.title, grp.remove.size), style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text("${HeavyVideos.human(grp.bytes)} · ${I18n.t(grp.why)}", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, maxLines = 2)
+                    }
+                    androidx.compose.material3.Checkbox(grp.id in picked, { on -> if (on) picked.add(grp.id) else picked.remove(grp.id); sure = false })
+                }
+            }
+        }
+        val chosen = g.filter { it.id in picked }
+        if (chosen.isNotEmpty()) {
+            val uris = chosen.flatMap { it.remove }
+            val label = I18n.fmt("Move %d to the bin · frees %@", uris.size, HeavyVideos.human(chosen.sumOf { it.bytes }))
+            HPrimaryButton(label, Modifier.fillMaxWidth().testTag("tidy-delete")) {
+                val sender = com.handytools.app.tools.spaceclean.SpaceCleanerEngine.trashRequest(ctx, uris)
+                if (sender != null) bin.launch(IntentSenderRequest.Builder(sender).build())
+                else if (!sure) sure = true
+                else { com.handytools.app.tools.spaceclean.SpaceCleanerEngine.deleteLegacy(ctx, uris); done = I18n.t("Deleted."); groups = g.filterNot { it.id in picked }; picked.clear(); sure = false }
+            }
+            if (sure) Text(I18n.t("This phone has no bin: tap again to delete them for good."), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+            Text(I18n.t("Your phone asks before anything is deleted."), style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
         }
         Spacer(Modifier.height(HandyTokens.Space24))
     }

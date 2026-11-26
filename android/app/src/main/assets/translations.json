@@ -19508,5 +19508,155 @@
   "ja": "今週の写真 %d 枚。タップすると 1 本の短い映像にできます。",
   "pt": "%d fotos nesta semana — toque para transformá-las em um filme curto.",
   "zh": "本周有 %d 张照片——点按即可做成一个短片。"
+ },
+ "%d old screenshots": {
+  "de": "%d alte Screenshots",
+  "es": "%d capturas antiguas",
+  "fr": "%d anciennes captures d'écran",
+  "hi": "%d पुराने स्क्रीनशॉट",
+  "it": "%d screenshot vecchi",
+  "ja": "古いスクリーンショット %d 枚",
+  "pt": "%d capturas de tela antigas",
+  "zh": "%d 张旧截图"
+ },
+ "%d copies of the same photo": {
+  "de": "%d Kopien desselben Fotos",
+  "es": "%d copias de la misma foto",
+  "fr": "%d copies de la même photo",
+  "hi": "एक ही फ़ोटो की %d कॉपी",
+  "it": "%d copie della stessa foto",
+  "ja": "同じ写真のコピー %d 枚",
+  "pt": "%d cópias da mesma foto",
+  "zh": "同一张照片的 %d 份副本"
+ },
+ "%d look-alikes": {
+  "de": "%d fast gleiche Fotos",
+  "es": "%d fotos casi iguales",
+  "fr": "%d photos presque identiques",
+  "hi": "%d मिलती-जुलती फ़ोटो",
+  "it": "%d foto quasi uguali",
+  "ja": "ほぼ同じ写真 %d 枚",
+  "pt": "%d fotos quase iguais",
+  "zh": "%d 张几乎相同的照片"
+ },
+ "Older than a week.": {
+  "de": "Älter als eine Woche.",
+  "es": "De hace más de una semana.",
+  "fr": "De plus d'une semaine.",
+  "hi": "एक हफ़्ते से पुराने।",
+  "it": "Più vecchi di una settimana.",
+  "ja": "1 週間以上前のもの。",
+  "pt": "Com mais de uma semana.",
+  "zh": "超过一周。"
+ },
+ "Older than a week. Ones with a code, ticket, booking or receipt are kept.": {
+  "de": "Älter als eine Woche. Solche mit Code, Ticket, Buchung oder Beleg bleiben.",
+  "es": "De hace más de una semana. Se quedan las que tienen un código, billete, reserva o recibo.",
+  "fr": "De plus d'une semaine. Celles avec un code, un billet, une réservation ou un reçu restent.",
+  "hi": "एक हफ़्ते से पुराने। कोड, टिकट, बुकिंग या रसीद वाले रखे जाते हैं।",
+  "it": "Più vecchi di una settimana. Quelli con un codice, un biglietto, una prenotazione o una ricevuta restano.",
+  "ja": "1 週間以上前のもの。コード・チケット・予約・レシートが写ったものは残します。",
+  "pt": "Com mais de uma semana. As que têm código, ingresso, reserva ou recibo ficam.",
+  "zh": "超过一周。带二维码、票、预订或收据的会保留。"
+ },
+ "The same to the byte — one is kept.": {
+  "de": "Byte für Byte gleich – eine bleibt.",
+  "es": "Idénticas byte a byte: se queda una.",
+  "fr": "Identiques à l'octet près — une est gardée.",
+  "hi": "हर बाइट में एक जैसी — एक रखी जाती है।",
+  "it": "Identiche byte per byte: ne resta una.",
+  "ja": "バイト単位で同じ — 1 枚は残します。",
+  "pt": "Idênticas byte a byte — uma fica.",
+  "zh": "逐字节相同——保留一份。"
+ },
+ "Almost the same picture — the newest is kept.": {
+  "de": "Fast dasselbe Bild – das neueste bleibt.",
+  "es": "Casi la misma imagen: se queda la más reciente.",
+  "fr": "Presque la même image — la plus récente est gardée.",
+  "hi": "लगभग एक जैसी तस्वीर — सबसे नई रखी जाती है।",
+  "it": "Quasi la stessa immagine: resta la più recente.",
+  "ja": "ほぼ同じ写真 — いちばん新しいものを残します。",
+  "pt": "Quase a mesma imagem — a mais recente fica.",
+  "zh": "几乎相同的画面——保留最新的一张。"
+ },
+ "%d photos could go to the bin and free %@ — you choose.": {
+  "de": "%d Fotos könnten in den Papierkorb und %@ freigeben – du entscheidest.",
+  "es": "%d fotos podrían ir a la papelera y liberar %@: tú eliges.",
+  "fr": "%d photos pourraient aller à la corbeille et libérer %@ — à vous de choisir.",
+  "hi": "%d फ़ोटो बिन में जाकर %@ खाली कर सकती हैं — आप चुनें।",
+  "it": "%d foto potrebbero finire nel cestino e liberare %@: scegli tu.",
+  "ja": "%d 枚をゴミ箱に移すと %@ 空きます。選ぶのはあなたです。",
+  "pt": "%d fotos poderiam ir para a lixeira e liberar %@ — você escolhe.",
+  "zh": "%d 张照片可以移到回收站，腾出 %@——由你决定。"
+ },
+ "%d screenshots are over a week old — tap to tidy them up.": {
+  "de": "%d Screenshots sind über eine Woche alt – tippe zum Aufräumen.",
+  "es": "%d capturas tienen más de una semana: toca para ordenarlas.",
+  "fr": "%d captures ont plus d'une semaine — touchez pour faire le tri.",
+  "hi": "%d स्क्रीनशॉट एक हफ़्ते से पुराने हैं — साफ़ करने के लिए टैप करें।",
+  "it": "%d screenshot hanno più di una settimana: tocca per riordinarli.",
+  "ja": "%d 枚のスクリーンショットが 1 週間以上前のものです。タップして整理できます。",
+  "pt": "%d capturas de tela têm mais de uma semana — toque para organizar.",
+  "zh": "%d 张截图已超过一周——点按即可整理。"
+ },
+ "Moved to the bin — you can bring them back from there for 30 days.": {
+  "de": "In den Papierkorb verschoben – dort kannst du sie 30 Tage lang zurückholen.",
+  "es": "Movidas a la papelera: puedes recuperarlas desde allí durante 30 días.",
+  "fr": "Déplacées dans la corbeille — vous pouvez les récupérer pendant 30 jours.",
+  "hi": "बिन में भेज दी गईं — 30 दिन तक वहाँ से वापस ला सकते हैं।",
+  "it": "Spostate nel cestino: puoi recuperarle da lì per 30 giorni.",
+  "ja": "ゴミ箱に移しました。30 日間はそこから戻せます。",
+  "pt": "Movidas para a lixeira — você pode recuperá-las de lá por 30 dias.",
+  "zh": "已移到回收站——30 天内可以从那里找回。"
+ },
+ "Tenzy needs to see your photos to tidy them.": {
+  "de": "Tenzy muss deine Fotos sehen, um aufzuräumen.",
+  "es": "Tenzy necesita ver tus fotos para ordenarlas.",
+  "fr": "Tenzy doit voir vos photos pour faire le tri.",
+  "hi": "फ़ोटो साफ़ करने के लिए Tenzy को उन्हें देखना होगा।",
+  "it": "Tenzy deve vedere le tue foto per riordinarle.",
+  "ja": "整理するには、Tenzy が写真を見られる必要があります。",
+  "pt": "O Tenzy precisa ver suas fotos para organizá-las.",
+  "zh": "Tenzy 需要查看你的照片才能整理。"
+ },
+ "Nothing to tidy — no old screenshots, copies or look-alikes.": {
+  "de": "Nichts aufzuräumen – keine alten Screenshots, Kopien oder fast gleichen Fotos.",
+  "es": "Nada que ordenar: no hay capturas antiguas, copias ni fotos casi iguales.",
+  "fr": "Rien à trier — pas d'anciennes captures, de copies ni de photos presque identiques.",
+  "hi": "साफ़ करने को कुछ नहीं — न पुराने स्क्रीनशॉट, न कॉपी, न मिलती-जुलती फ़ोटो।",
+  "it": "Niente da riordinare: nessuno screenshot vecchio, copia o foto quasi uguale.",
+  "ja": "整理するものはありません。古いスクリーンショットもコピーも似た写真もありません。",
+  "pt": "Nada para organizar — sem capturas antigas, cópias ou fotos quase iguais.",
+  "zh": "没有要整理的——没有旧截图、副本或相似照片。"
+ },
+ "Move %d to the bin · frees %@": {
+  "de": "%d in den Papierkorb · gibt %@ frei",
+  "es": "Mover %d a la papelera · libera %@",
+  "fr": "Mettre %d à la corbeille · libère %@",
+  "hi": "%d को बिन में भेजें · %@ खाली",
+  "it": "Sposta %d nel cestino · libera %@",
+  "ja": "%d 枚をゴミ箱へ · %@ 空く",
+  "pt": "Mover %d para a lixeira · libera %@",
+  "zh": "将 %d 张移到回收站 · 腾出 %@"
+ },
+ "This phone has no bin: tap again to delete them for good.": {
+  "de": "Dieses Handy hat keinen Papierkorb: Tippe noch einmal, um sie endgültig zu löschen.",
+  "es": "Este teléfono no tiene papelera: toca otra vez para borrarlas para siempre.",
+  "fr": "Ce téléphone n'a pas de corbeille : touchez à nouveau pour les supprimer définitivement.",
+  "hi": "इस फ़ोन में बिन नहीं है: हमेशा के लिए मिटाने को फिर टैप करें।",
+  "it": "Questo telefono non ha un cestino: tocca di nuovo per eliminarle per sempre.",
+  "ja": "このスマホにはゴミ箱がありません。もう一度タップすると完全に削除します。",
+  "pt": "Este celular não tem lixeira: toque de novo para apagá-las de vez.",
+  "zh": "这部手机没有回收站：再点一次即可永久删除。"
+ },
+ "Deleted.": {
+  "de": "Gelöscht.",
+  "es": "Borradas.",
+  "fr": "Supprimées.",
+  "hi": "मिटा दी गईं।",
+  "it": "Eliminate.",
+  "ja": "削除しました。",
+  "pt": "Apagadas.",
+  "zh": "已删除。"
  }
 }
