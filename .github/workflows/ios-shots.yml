@@ -70,7 +70,11 @@ jobs:
           for p in camera microphone photos location contacts; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
           xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
           mkdir -p shots
-          ROUTES="${{ inputs.routes }}"; [ -n "$ROUTES" ] || ROUTES="home onboarding settings paywall qrwifi translate scan studio shield"
+          # Routes: the dispatch input, else ios/.shots-routes (one per line, # for notes), else the standard set.
+          ROUTES="${{ inputs.routes }}"
+          [ -n "$ROUTES" ] || ROUTES="$(grep -v '^#' .shots-routes 2>/dev/null | tr '\n' ' ' | xargs)"
+          [ -n "$ROUTES" ] || ROUTES="home onboarding settings paywall qrwifi translate scan studio shield"
+          echo "routes: $ROUTES"
           for mode in light dark; do
             xcrun simctl ui "$UDID" appearance $mode
             TEST_RUNNER_SHOTS_DIR="$PWD/shots" TEST_RUNNER_SHOTS_MODE=$mode TEST_RUNNER_SHOTS_ROUTES="$ROUTES" \
