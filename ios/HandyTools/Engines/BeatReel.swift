@@ -163,20 +163,72 @@ enum BeatReel {
         let srcs = await load(sources)
         guard !srcs.isEmpty else { problem("none of the \(sources.count) clips loaded"); return nil }
         let (cuts, total) = plan(lengths: srcs.map(\.length), style: st, seconds: seconds)
-        guard !cuts.isEmpty else { return nil }
+        guard !cuts.isEmpty else { problem("no cuts for \(srcs.count) clips"); return nil }
         progress?(0.05)
-        let music = Synth.track(st.id, seconds: total).samples
-        guard let cut = await assemble(srcs, cuts: cuts, hold: ringOut, audio: music, progress: { p in progress?(0.05 + 0.45 * p) })?.url else { return nil }
-        progress?(0.5)
+        let track = Synth.track(st.id, seconds: total)
 
-        // The style over it all: its look and light, a punch on every beat (found in the music itself).
+        // The edit: every cut in turn on one track (the slow moment stretched, the last shot slowing into the ring).
+        let comp = AVMutableComposition()
+        guard let cv = comp.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
+        let ts: (Double) -> CMTime = { CMTime(seconds: $0, preferredTimescale: 6000) }
+        var marks: [(at: Double, clip: Int)] = []
+        var cursor = CMTime.zero
+        for (i, c) in cuts.enumerated() {
+            let lasts = c.lasts + (i == cuts.count - 1 ? ringOut : 0)
+            let piece = ts(c.length)
+            do { try cv.insertTimeRange(CMTimeRange(start: ts(c.from), duration: piece), of: srcs[c.clip].track, at: cursor) }
+            catch { problem("cut \(c.clip) at \(c.from)s couldn't be inserted: \(error.localizedDescription)"); continue }
+            if abs(lasts - c.length) > 0.01 { cv.scaleTimeRange(CMTimeRange(start: cursor, duration: piece), toDuration: ts(lasts)) }
+            marks.append((cursor.seconds, c.clip))
+            cursor = CMTimeAdd(cv.timeRange.start, cv.timeRange.duration)
+        }
+        let length = cursor.seconds
+        guard length > 0 else { problem("nothing could be cut from \(srcs.count) clips"); return nil }
+        if let mu = Synth.file(track.samples, name: "reel-music"),
+           let mt = try? await AVURLAsset(url: mu).loadTracks(withMediaType: .audio).first,
+           let ca = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
+            try? ca.insertTimeRange(CMTimeRange(start: .zero, duration: ts(min(length, Double(track.samples.count) / Synth.rate))), of: mt, at: .zero)
+        }
+
+        // The picture, frame by frame (the same way Funny Moments and the trailer make theirs): each clip upright and
+        // filling the tall frame, then the style's look and light, and a punch on every beat of the music itself.
+        // Round 6 (26 Nov): the layer-instruction export stopped (-11838) on a single recorded clip; this path didn't.
         var r = VideoFX.Recipe(look: st.look, light: st.light, motion: "pulse", texture: st.id == "epic" ? "bars" : "none")
         r.amount = 0.55
-        let out = await VideoFX.export(cut, recipe: r, caption: nil)
-        if out == nil { problem("the style pass didn't save") }
-        try? FileManager.default.removeItem(at: cut)
+        let kit = VideoFX.Kit(r)
+        let beats = track.beats
+        let turns = srcs.map { FunnyMoment.orientation($0.transform) }
+        let starts = marks
+        let rect = CGRect(origin: .zero, size: size)
+        guard let vc = try? await AVMutableVideoComposition.videoComposition(with: comp, applyingCIFiltersWithHandler: { request in
+            let t = request.compositionTime.seconds
+            let clip = starts.last(where: { $0.at <= t + 0.0005 })?.clip ?? 0
+            var img = request.sourceImage
+            if turns.indices.contains(clip), turns[clip] != .up { img = img.oriented(turns[clip]) }
+            img = img.transformed(by: CGAffineTransform(translationX: -img.extent.minX, y: -img.extent.minY))
+            let w = max(1, img.extent.width), h = max(1, img.extent.height)
+            let k = max(size.width / w, size.height / h)
+            img = img.transformed(by: CGAffineTransform(scaleX: k, y: k))
+                .transformed(by: CGAffineTransform(translationX: (size.width - w * k) / 2, y: (size.height - h * k) / 2))
+                .cropped(to: rect)
+            request.finish(with: VideoFX.frame(img, t: t, duration: length, size: size, kit: kit, beats: beats, caption: nil), context: nil)
+        }) else { problem("the reel's picture couldn't be set up"); return nil }
+        vc.renderSize = size
+        vc.frameDuration = CMTime(value: 1, timescale: 30)
+
+        guard let s = AVAssetExportSession(asset: comp, presetName: AVAssetExportPresetHighestQuality) else { problem("no export session"); return nil }
+        let out = VideoEngine.tempURL("mp4")
+        s.outputURL = out; s.outputFileType = .mp4; s.videoComposition = vc; s.metadata = []
+        let poll = Task { while !Task.isCancelled { progress?(0.05 + 0.95 * Double(s.progress)); try? await Task.sleep(nanoseconds: 300_000_000) } }
+        let ok = await VideoEngine.run(s, seconds: length)
+        poll.cancel()
+        if !ok {
+            let pieces = cv.segments.map { $0.timeMapping.target.duration.seconds }
+            problem("the reel didn't save: \(s.error?.localizedDescription ?? "no error given") (\((s.error as NSError?)?.code ?? 0)) — " +
+                    "\(pieces.count) pieces, shortest \(pieces.min() ?? 0)s, length \(length)s, clips \(srcs.map { "\(Int($0.natural.width))x\(Int($0.natural.height))" })")
+        }
         progress?(1)
-        return out
+        return ok ? out : nil
     }
 
     /// Photos become 3-second clips (with a slow push-in) so they can sit in a reel with the videos.

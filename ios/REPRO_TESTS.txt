@@ -1,7 +1,6 @@
-# 26 Nov, round 6. Round 5: the unit reel (two clips, 126 BPM) is now made for real — exact clock ticks fixed it —
-# but the in-app reel (one recorded clip) that passed in round 4 failed, with no reason visible (the app's prints
-# don't reach the log in a UI test). Each piece now goes at the track's real end, read back after every insert and
-# stretch; under -uitest the reason is shown on screen, so the test's report carries it.
+# 26 Nov, round 7. Round 6 showed why the in-app reel failed: its layer-instruction edit export stopped (-11838) on
+# a single recorded clip (12 contiguous pieces, nothing empty), while the same clip goes through the trailer and
+# Funny Moments fine — both make their picture frame by frame with Core Image. Beat Reel now does too, in one pass
+# (upright, filled, then the style's look and a punch on the music's own beats).
 HandyToolsTests/BeatReelTests
 HandyToolsUITests/CameraButtonTests/testBeatReelRecordsAClipAndCutsAReel
-HandyToolsUITests/CameraButtonTests/testMovieTrailerRecordsAClipAndMakesATrailer
