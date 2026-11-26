@@ -94,6 +94,17 @@ final class SmartReceiptsTests: XCTestCase {
         XCTAssertNil(DataGrab.entryProblems(r).block, "this receipt adds up")
     }
 
+    /// Warranty and returns, inside the receipts autorun: a TV from Best Buy with a 15-day return policy is offered for
+    /// Warranty with its return date and a 1-year reminder; groceries aren't offered at all.
+    func testPurchasesWorthKeepingAreOfferedForWarranty() {
+        var tv = entry("tv", receipt("BEST BUY #1462", 549.99, tax: 41.25))
+        tv.readKeeping("BEST BUY #1462\nSamsung 55 inch TV 549.99\nTOTAL 591.24\nReturns accepted within 15 days with receipt")
+        XCTAssertEqual(tv.keep, true); XCTAssertEqual(tv.returnDays, 15); XCTAssertEqual(tv.warrantyMonths, 12)
+        var milk = entry("milk", receipt("Jewel-Osco", 7.12))
+        milk.readKeeping("JEWEL-OSCO\nMilk 4.29\nBread 2.83\nTOTAL 7.12")
+        XCTAssertNil(milk.keep, "groceries: Warranty isn't offered")
+    }
+
     func testAddingTheSameRunAgainAddsNothing() {
         let csv = SmartReceipts.rows([entry("a", receipt("Shell", 40, tax: 2)), entry("b", receipt("Jewel", 23.1))], header: nil)
         let once = RunningList.merged(existing: "", incoming: csv)

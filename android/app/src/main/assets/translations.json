@@ -15348,5 +15348,35 @@
   "ja": "今日撮った名刺を読み取り、1枚ずつ連絡先にします（登録済みの人は除外）。",
   "pt": "Lê os cartões de visita fotografados hoje e cria um contacto para cada um, sem repetir quem já tem.",
   "zh": "读取你今天拍的名片，为每张创建联系人，已存在的会跳过。"
+ },
+ "Also keep it in Warranty": {
+  "de": "Auch in Garantie aufbewahren",
+  "es": "Guardarlo también en Garantía",
+  "fr": "Le garder aussi dans Garantie",
+  "hi": "इसे वारंटी में भी रखें",
+  "it": "Tienilo anche in Garanzia",
+  "ja": "保証にも保存",
+  "pt": "Guardar também na Garantia",
+  "zh": "同时存入保修"
+ },
+ "With its photo, to find it again": {
+  "de": "Mit Foto, um es wiederzufinden",
+  "es": "Con su foto, para encontrarlo luego",
+  "fr": "Avec sa photo, pour le retrouver",
+  "hi": "फ़ोटो के साथ, ताकि फिर मिल सके",
+  "it": "Con la foto, per ritrovarlo",
+  "ja": "写真付きで、後から探せます",
+  "pt": "Com a foto, para o encontrar",
+  "zh": "附照片，方便再找"
+ },
+ "a reminder before the 1-year warranty ends": {
+  "de": "eine Erinnerung, bevor die einjährige Garantie endet",
+  "es": "un aviso antes de que termine la garantía de 1 año",
+  "fr": "un rappel avant la fin de la garantie d'un an",
+  "hi": "1 साल की वारंटी खत्म होने से पहले याद दिलाना",
+  "it": "un promemoria prima della fine della garanzia di 1 anno",
+  "ja": "1年保証が切れる前にお知らせ",
+  "pt": "um lembrete antes do fim da garantia de 1 ano",
+  "zh": "1 年保修到期前提醒"
  }
 }

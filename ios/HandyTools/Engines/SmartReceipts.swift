@@ -35,6 +35,12 @@ enum SmartReceipts {
         var unsure: [String]         // fields to look at again
         /// The person looked and says the receipt really reads this way (a misread line can't be typed over).
         var confirmed = false
+        /// Also file it in Warranty (with its photo), for a purchase worth keeping: on by default when it is.
+        var keep: Bool? = nil
+        /// The store's return window read off the small print, in days.
+        var returnDays: Int? = nil
+        /// Electronics and appliances get a one-year warranty reminder by default.
+        var warrantyMonths: Int? = nil
 
         var ready: Bool { block == nil || confirmed }
 
@@ -47,6 +53,13 @@ enum SmartReceipts {
             amounts = r.lines.map(\.amount); subtotal = r.subtotal; tip = r.tip
             let p = DataGrab.entryProblems(r)
             block = p.block; unsure = Array(p.unsure).sorted()
+        }
+
+        /// Adds what the small print says about returns and warranty (from the whole text read).
+        mutating func readKeeping(_ text: String) {
+            returnDays = ReceiptScan.guessReturnDays(text, purchase: date)
+            warrantyMonths = SmartReceipts.lastsYears(text, merchant: merchant) ? 12 : nil
+            keep = (returnDays != nil || warrantyMonths != nil) ? true : nil   // only offered when it applies
         }
 
         /// Back to a receipt, after the person fixed a field on the review card.
@@ -89,6 +102,20 @@ enum SmartReceipts {
         if has(["apple", "best buy", "verizon", "at&t", "t-mobile", "comcast", "xfinity", "software", "subscription", "internet", "phone bill"]) { return "Phone, internet & software" }
         if has(["pharmacy", "walgreens", "cvs", "clinic", "medical", "dental", "optical"]) { return "Health" }
         return "Other"
+    }
+
+    /// A purchase that's worth keeping the receipt for: electronics, appliances, tools, furniture — the things with a
+    /// warranty — or anything sold at an electronics or home store. Whole words only.
+    static func lastsYears(_ text: String, merchant: String) -> Bool {
+        let t = (merchant + " " + text).lowercased()
+        let words = ["best buy", "apple store", "apple", "micro center", "b&h", "costco", "home depot", "lowe's", "lowes", "ikea", "wayfair",
+                     "laptop", "macbook", "ipad", "iphone", "tablet", "television", "tv", "monitor", "headphones", "airpods", "camera", "printer",
+                     "router", "console", "playstation", "xbox", "nintendo", "speaker", "soundbar", "smartwatch", "watch",
+                     "refrigerator", "fridge", "washer", "dryer", "dishwasher", "microwave", "vacuum", "blender", "air fryer", "mixer",
+                     "drill", "saw", "mower", "sofa", "mattress", "warranty", "serial", "s/n", "applecare", "protection plan"]
+        return words.contains { w in
+            t.range(of: "(^|[^\\p{L}])" + NSRegularExpression.escapedPattern(for: w) + "($|[^\\p{L}])", options: .regularExpression) != nil
+        }
     }
 
     /// One CSV cell.
@@ -176,7 +203,9 @@ enum SmartReceipts {
             guard DataGrab.looksLikeReceipt(text) else { continue }
             let r = DataGrab.receipt(text)
             guard r.total != nil || !r.lines.isEmpty else { continue }
-            out.append(Entry(id: a.localIdentifier, from: seen.screenshot ? "Screenshot" : "Photo", taken: a.creationDate ?? window.end, receipt: r))
+            var e = Entry(id: a.localIdentifier, from: seen.screenshot ? "Screenshot" : "Photo", taken: a.creationDate ?? window.end, receipt: r)
+            e.readKeeping(text)
+            out.append(e)
         }
         PhotoFinder.saveCache(cache)
         for p in pdfs {
@@ -230,14 +259,48 @@ enum SmartReceipts {
             guard DataGrab.looksLikeReceipt(t) else { return nil }
             let r = DataGrab.receipt(t)
             guard r.total != nil else { return nil }
-            return Entry(id: url.path + "#\(i)", from: "PDF: \(name)" + (pages.count > 1 ? " p\(i + 1)" : ""), taken: taken, receipt: r)
+            var e = Entry(id: url.path + "#\(i)", from: "PDF: \(name)" + (pages.count > 1 ? " p\(i + 1)" : ""), taken: taken, receipt: r)
+            e.readKeeping(t)
+            return e
         }
         if !each.isEmpty { return each }
         let whole = pages.joined(separator: "\n")
         guard DataGrab.looksLikeReceipt(whole) else { return [] }
         let r = DataGrab.receipt(whole)
         guard r.total != nil || !r.lines.isEmpty else { return [] }
-        return [Entry(id: url.path, from: "PDF: \(name)", taken: taken, receipt: r)]
+        var e = Entry(id: url.path, from: "PDF: \(name)", taken: taken, receipt: r)
+        e.readKeeping(whole)
+        return [e]
+    }
+
+    /// The picture of a found receipt, for filing in Warranty: the photo, or the PDF's page.
+    static func picture(_ e: Entry) async -> UIImage? {
+        if e.from.hasPrefix("PDF") {
+            guard let root = folder else { return nil }
+            let ok = root.startAccessingSecurityScopedResource(); defer { if ok { root.stopAccessingSecurityScopedResource() } }
+            let parts = e.id.split(separator: "#")
+            guard let doc = PDFDocument(url: URL(fileURLWithPath: String(parts[0]))),
+                  let page = doc.page(at: parts.count > 1 ? Int(parts[1]) ?? 0 : 0) else { return nil }
+            let size = page.bounds(for: .mediaBox).size, k = 2000 / max(size.width, size.height, 1)
+            return page.thumbnail(of: CGSize(width: size.width * k, height: size.height * k), for: .mediaBox)
+        }
+        guard let a = PHAsset.fetchAssets(withLocalIdentifiers: [e.id], options: nil).firstObject else { return nil }
+        return await PhotoFinder.image(a, side: 2400)
+    }
+
+    /// Files the kept ones in Warranty, with their return window and warranty reminders. Returns how many.
+    @MainActor static func file(_ entries: [Entry]) async -> Int {
+        let store = ReceiptStore()
+        var n = 0
+        for e in entries where e.ready && e.keep == true {
+            guard let img = await picture(e) else { continue }
+            let f = NumberFormatter(); f.numberStyle = .currency; f.currencySymbol = e.currency.isEmpty ? "$" : e.currency
+            let scan = ReceiptScan.Result(store: e.merchant, date: e.date ?? e.taken, total: e.total.flatMap { f.string(from: NSNumber(value: $0)) } ?? "",
+                                          items: e.lines, rawText: ([e.merchant] + e.lines).joined(separator: "\n"))
+            _ = store.add(image: img, scan: scan, warrantyMonths: e.warrantyMonths, returnDays: e.returnDays)
+            n += 1
+        }
+        return n
     }
 
     /// Adds the ready entries the person kept to the period's expense sheet. Returns the sheet's name, how many were

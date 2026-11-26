@@ -49,10 +49,10 @@ enum ReceiptScan {
     struct Result { let store: String; let date: Date?; let total: String; let items: [String]; let rawText: String }
 
     static func read(_ image: UIImage) async -> Result {
-        guard let cg = image.normalizedUp().cgImage else { return Result(store: "Receipt", date: nil, total: "", items: [], rawText: "") }
-        let req = VNRecognizeTextRequest(); req.recognitionLevel = .accurate; req.usesLanguageCorrection = true
-        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
-        let lines = (req.results as? [VNRecognizedTextObservation] ?? []).compactMap { $0.topCandidates(1).first?.string }
+        guard image.normalizedUp().cgImage != nil else { return Result(store: "Receipt", date: nil, total: "", items: [], rawText: "") }
+        // The shared reader (25 Nov): each label stays on one line with its amount ("TOTAL 12.37"), the same as the
+        // receipt tool and the receipts autorun — this one used to read them apart.
+        let lines = ChainText.documentText(image.normalizedUp()).components(separatedBy: .newlines)
             .map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
         return Result(store: guessStore(lines), date: guessDate(lines.joined(separator: " ")),
                       total: guessTotal(lines), items: guessItems(lines), rawText: lines.joined(separator: "\n"))

@@ -382,6 +382,14 @@ private struct ReceiptEntryCard: View {
                 Text(entry.lines.prefix(4).joined(separator: " · ") + (entry.lines.count > 4 ? " …" : ""))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
             }
+            if entry.keep != nil {
+                Toggle(isOn: Binding(get: { entry.keep == true }, set: { var e = entry; e.keep = $0; store.update(e) })) {
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(L("Also keep it in Warranty")).font(HandyFont.caption.weight(.semibold))
+                        Text(keepLine).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    }
+                }.tint(HandyColor.accent).accessibilityIdentifier("smartreceipt-keep")
+            }
             if let b = entry.block {
                 Label(L(b), systemImage: "exclamationmark.triangle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.amber).fixedSize(horizontal: false, vertical: true)
                 Toggle(isOn: Binding(get: { entry.confirmed }, set: { var e = entry; e.confirmed = $0; store.update(e) })) {
@@ -395,6 +403,16 @@ private struct ReceiptEntryCard: View {
         .onChange(of: shop) { _, _ in save() }
         .onChange(of: total) { _, _ in save() }
         .accessibilityElement(children: .contain).accessibilityIdentifier("smartreceipt-card")
+    }
+
+    /// "Return by Dec 25 · 1-year warranty reminder", from what the small print said.
+    private var keepLine: String {
+        var parts: [String] = []
+        if let d = entry.returnDays, let by = Calendar.current.date(byAdding: .day, value: d, to: entry.date ?? entry.taken) {
+            parts.append("\(L("Return by")) \(by.formatted(date: .abbreviated, time: .omitted))")
+        }
+        if entry.warrantyMonths != nil { parts.append(L("a reminder before the 1-year warranty ends")) }
+        return parts.isEmpty ? L("With its photo, to find it again") : parts.joined(separator: " · ")
     }
 
     private func save() {

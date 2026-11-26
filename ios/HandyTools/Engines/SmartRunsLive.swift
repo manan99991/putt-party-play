@@ -178,6 +178,8 @@ import UserNotifications
     /// Adds the ready ones to the expense sheet and keeps any that still need a fix.
     func addReady() -> (sheet: String, added: Int, already: Int) {
         let r = SmartReceipts.add(receipts)
+        let kept = receipts.filter { $0.ready && $0.keep == true }
+        if !kept.isEmpty { Task { _ = await SmartReceipts.file(kept) } }   // and into Warranty, with their photos
         receipts.removeAll(where: \.ready); saveReceipts()
         Task { await SmartRunAlerts.ready(.receipts, count: receipts.count) }
         return r
