@@ -698,7 +698,7 @@ struct SmartCollageReview: View {
                             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous)).contentShape(Rectangle())
                             .shadow(color: .black.opacity(0.15), radius: 10, y: 4)
                             .accessibilityLabel("\(L("Collage of")) \(r.count) \(L("photos"))")
-                            .accessibilityValue(Launch.uitest ? "\(Int(img.size.width))x\(Int(img.size.height)) \(r.count)" : "")
+                            .accessibilityValue(Text(verbatim: Launch.uitest ? "\(Int(img.size.width))x\(Int(img.size.height)) \(r.count)" : ""))
                             .accessibilityIdentifier("smartcollage-image")
                     }
                     Text("\(r.count) \(L("photos — one per moment, sharpest first, faces kept in frame."))")
@@ -769,7 +769,7 @@ struct SmartPostsReview: View {
                 .aspectRatio(9.0 / 16.0, contentMode: .fit).frame(maxHeight: 420).frame(maxWidth: .infinity)
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous)).contentShape(Rectangle())
                 .accessibilityIdentifier("smartpost-player")
-                .accessibilityValue(Launch.uitest ? (r.size.map { "\($0[0])x\($0[1])" } ?? "unknown") : "")
+                .accessibilityValue(Text(verbatim: Launch.uitest ? (r.size.map { "\($0[0])x\($0[1])" } ?? "unknown") : ""))
             HStack {
                 Text("\(SocialPost.clock(r.seconds)) · \(L(VideoFX.looks.first { $0.id == r.look }?.name ?? r.look))")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)

@@ -1,7 +1,2 @@
-# 25 Nov: smart autoruns 4–6 — ready to post (tall 9:16, look, saved), today's collage (faces kept in every tile, on
-# the real photos), business cards into contacts (read, saved once).
+# 25 Nov: ready to post — the clip was right (1080x1920) but its size was written "1,080x1,920"; now plain digits.
 HandyToolsUITests/PromiseTests/testReadyToPostMakesATallClipAndSavesIt
-HandyToolsUITests/PromiseTests/testBusinessCardsAutorunSavesTheContact
-HandyToolsTests/SmartCollageTests
-HandyToolsTests/SmartRunsTests
-HandyToolsTests/SmartReceiptsTests
