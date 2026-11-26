@@ -101,7 +101,7 @@ fun VideoEffectsScreen() {
         preview?.takeIf { it.first == recipe }?.let { (_, f) -> ResultPlayer(f, "fx-preview"); Spacer(Modifier.height(HandyTokens.Space8)) }
 
         FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            listOf("look" to "Look", "light" to "Light", "motion" to "Motion", "texture" to "Texture", "words" to "Words").forEach { (id, name) ->
+            listOf("look" to "Look", "light" to "Light", "motion" to "Motion", "texture" to "Texture", "background" to "Background", "funny" to "Funny", "words" to "Words").forEach { (id, name) ->
                 Box(Modifier.testTag("fx-tab-$id").semantics { selected = tab == id }) { HChip(I18n.t(name), selected = tab == id) { tab = id } }
             }
         }
@@ -118,6 +118,8 @@ fun VideoEffectsScreen() {
                 "light" -> VideoEffects.lights to recipe.light
                 "motion" -> VideoEffects.motions to recipe.motion
                 "texture" -> VideoEffects.textures to recipe.texture
+                "background" -> VideoEffects.backgrounds to recipe.background
+                "funny" -> VideoEffects.funnies to recipe.funny
                 else -> VideoEffects.looks to recipe.look
             }
             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -126,7 +128,8 @@ fun VideoEffectsScreen() {
                         HChip("${c.emoji} ${I18n.t(c.name)}", selected = now == c.id) {
                             recipe = when (tab) {
                                 "light" -> recipe.copy(light = c.id); "motion" -> recipe.copy(motion = c.id)
-                                "texture" -> recipe.copy(texture = c.id); else -> recipe.copy(look = c.id)
+                                "texture" -> recipe.copy(texture = c.id); "background" -> recipe.copy(background = c.id)
+                                "funny" -> recipe.copy(funny = c.id); else -> recipe.copy(look = c.id)
                             }
                         }
                     }

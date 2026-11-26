@@ -187,7 +187,10 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   wobbly) find faces with Vision and warp that area like a fairground mirror. Describe them as playful effects only, never
   as "AI", "deepfake", "face swap" or "face animator", and never claim they make a face talk or move. Nothing new is
   collected or sent; no new permission (recording uses the camera button's strings). App Privacy / Data safety unchanged.
-  Android has none of these yet: keep them out of the Play listing and screenshots until the Android build ships them.
+  Android (26 Nov) has them too — Beat Reel, Movie Trailer, Funny Moments, and Video Effects' Background and Funny tabs — the
+  narrator is the phone's own TextToSpeech, the person is found with ML Kit selfie segmentation and faces with ML Kit face
+  detection, both bundled and run on the phone (nothing sent, no new permission). Keep them out of the Play listing and
+  screenshots until a Play build with them has shipped and Manan has said yes to the listing change.
 - "Change the voice" changes speed, pitch and tone (echo, radio, whisper, a sung auto-tune, a stadium announcer). Do not
   describe it as voice cloning or as sounding like a real person.
 - Build your own, Pro steps: only the 10 basic steps are free (`Block.freeStepIDs` / `FREE_STEP_IDS`, matched on both

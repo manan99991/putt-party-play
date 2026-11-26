@@ -68,10 +68,20 @@ object VideoEffects {
     )
     val textures = listOf(Choice("none", "Clean", "⚪️"), Choice("grain", "Film grain", "🎞️"), Choice("vhs", "VHS", "📼"), Choice("bars", "Cinema bars", "🎬"))
     val wordStyles = listOf(Choice("pop", "Pop", "💥"), Choice("slide", "Slide up", "⬆️"), Choice("fade", "Fade", "🌫️"), Choice("bounce", "Bounce", "🏀"))
+    /** What goes behind the person (the iPhone's list): the person stays, the rest is swapped. */
+    val backgrounds = listOf(
+        Choice("none", "As filmed", "⚪️"), Choice("blur", "Portrait blur", "🌫️"), Choice("colorpop", "Colour pop", "🎨"), Choice("studio", "Studio", "🤍"),
+        Choice("sunset", "Sunset", "🌇"), Choice("night", "Night city", "🌃"), Choice("pastel", "Pastel", "🩵"),
+    )
+    val funnies = listOf(
+        Choice("none", "Off", "⚪️"), Choice("bighead", "Big head", "🎈"), Choice("tinyhead", "Tiny head", "🐜"), Choice("bigeyes", "Big eyes", "👀"),
+        Choice("stretchy", "Stretchy face", "🫠"), Choice("wobbly", "Wobbly face", "🌀"),
+    )
 
     data class Recipe(val look: String = "none", val light: String = "none", val motion: String = "none", val texture: String = "none",
-                      val words: String = "", val wordStyle: String = "pop") {
-        val isPlain: Boolean get() = look == "none" && light == "none" && motion == "none" && texture == "none" && words.isBlank()
+                      val words: String = "", val wordStyle: String = "pop", val background: String = "none", val funny: String = "none") {
+        val isPlain: Boolean get() = look == "none" && light == "none" && motion == "none" && texture == "none" && words.isBlank() &&
+            background == "none" && funny == "none"
     }
 
     // MARK: pure timings (the iPhone's)
@@ -226,6 +236,14 @@ object VideoEffects {
             if (preview) setClippingConfiguration(MediaItem.ClippingConfiguration.Builder().setEndPositionMs((length * 1000).toLong()).build())
         }.build()
         val video = mutableListOf<Effect>(Presentation.createForWidthAndHeight(w, h, Presentation.LAYOUT_SCALE_TO_FIT_WITH_CROP))
+        // Behind the person and funny faces first, on the clean picture (the iPhone's order): the people are found
+        // once, a few times a second, then the GPU follows them frame by frame.
+        val people = r.background != "none" || r.funny != "none"
+        val share = if (people) 0.3 else 0.0
+        if (people) {
+            val found = People.find(ctx, uri, length, masks = r.background != "none", faces = r.funny != "none") { p -> progress(p * share) }
+            if (found != null) video += PeopleEffect(found, r.background, r.funny)
+        }
         video += look(r.look)
         if (r.texture == "vhs") video += HslAdjustment.Builder().adjustSaturation(-12f).build()
         if (r.motion != "none") video += MatrixTransformation { us ->
@@ -252,7 +270,7 @@ object VideoEffects {
 
         val edited = EditedMediaItem.Builder(item).setEffects(Effects(emptyList(), video)).build()
         val out = File(File(ctx.cacheDir, "effects").also { it.mkdirs() }, (if (preview) "preview-" else "Tenzy video ") + System.currentTimeMillis() + ".mp4")
-        val ok = Reels.export(ctx, Composition.Builder(listOf(EditedMediaItemSequence(listOf(edited)))).build(), out, progress)
+        val ok = Reels.export(ctx, Composition.Builder(listOf(EditedMediaItemSequence(listOf(edited)))).build(), out) { p -> progress(share + (1 - share) * p) }
         return if (ok && out.length() > 0) out else { out.delete(); null }
     }
 

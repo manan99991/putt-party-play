@@ -18858,5 +18858,125 @@
   "ja": "エフェクトを変える",
   "pt": "Mudar os efeitos",
   "zh": "修改效果"
+ },
+ "Funny": {
+  "de": "Lustig",
+  "es": "Divertido",
+  "fr": "Drôle",
+  "hi": "मज़ेदार",
+  "it": "Divertente",
+  "ja": "おもしろ",
+  "pt": "Engraçado",
+  "zh": "搞笑"
+ },
+ "As filmed": {
+  "de": "Wie gefilmt",
+  "es": "Tal cual",
+  "fr": "Tel que filmé",
+  "hi": "जैसा फ़िल्माया",
+  "it": "Com'è",
+  "ja": "撮影したまま",
+  "pt": "Como foi gravado",
+  "zh": "原样"
+ },
+ "Portrait blur": {
+  "de": "Porträt-Unschärfe",
+  "es": "Desenfoque retrato",
+  "fr": "Flou portrait",
+  "hi": "पोर्ट्रेट ब्लर",
+  "it": "Sfocatura ritratto",
+  "ja": "ポートレートぼかし",
+  "pt": "Desfoque retrato",
+  "zh": "人像虚化"
+ },
+ "Colour pop": {
+  "de": "Farbakzent",
+  "es": "Toque de color",
+  "fr": "Touche de couleur",
+  "hi": "कलर पॉप",
+  "it": "Tocco di colore",
+  "ja": "カラーポップ",
+  "pt": "Toque de cor",
+  "zh": "局部彩色"
+ },
+ "Sunset": {
+  "de": "Sonnenuntergang",
+  "es": "Atardecer",
+  "fr": "Coucher de soleil",
+  "hi": "सूर्यास्त",
+  "it": "Tramonto",
+  "ja": "夕焼け",
+  "pt": "Pôr do sol",
+  "zh": "日落"
+ },
+ "Night city": {
+  "de": "Stadt bei Nacht",
+  "es": "Ciudad de noche",
+  "fr": "Ville de nuit",
+  "hi": "रात का शहर",
+  "it": "Città di notte",
+  "ja": "夜の街",
+  "pt": "Cidade à noite",
+  "zh": "城市夜景"
+ },
+ "Pastel": {
+  "de": "Pastell",
+  "es": "Pastel",
+  "fr": "Pastel",
+  "hi": "पेस्टल",
+  "it": "Pastello",
+  "ja": "パステル",
+  "pt": "Pastel",
+  "zh": "马卡龙色"
+ },
+ "Big head": {
+  "de": "Großer Kopf",
+  "es": "Cabezón",
+  "fr": "Grosse tête",
+  "hi": "बड़ा सिर",
+  "it": "Testone",
+  "ja": "大きな頭",
+  "pt": "Cabeção",
+  "zh": "大头"
+ },
+ "Tiny head": {
+  "de": "Winziger Kopf",
+  "es": "Cabeza diminuta",
+  "fr": "Toute petite tête",
+  "hi": "छोटा सा सिर",
+  "it": "Testa minuscola",
+  "ja": "小さな頭",
+  "pt": "Cabeça minúscula",
+  "zh": "小头"
+ },
+ "Big eyes": {
+  "de": "Große Augen",
+  "es": "Ojos grandes",
+  "fr": "Grands yeux",
+  "hi": "बड़ी आँखें",
+  "it": "Occhioni",
+  "ja": "大きな目",
+  "pt": "Olhos grandes",
+  "zh": "大眼睛"
+ },
+ "Stretchy face": {
+  "de": "Langes Gesicht",
+  "es": "Cara estirada",
+  "fr": "Visage étiré",
+  "hi": "खिंचा चेहरा",
+  "it": "Faccia allungata",
+  "ja": "のびる顔",
+  "pt": "Cara esticada",
+  "zh": "拉长脸"
+ },
+ "Wobbly face": {
+  "de": "Wackelgesicht",
+  "es": "Cara temblorosa",
+  "fr": "Visage tout mou",
+  "hi": "हिलता चेहरा",
+  "it": "Faccia tremolante",
+  "ja": "ぐにゃぐにゃ顔",
+  "pt": "Cara trêmula",
+  "zh": "晃晃脸"
  }
 }

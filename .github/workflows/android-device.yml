@@ -39,6 +39,7 @@ jobs:
           sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
 
       - name: Boot an emulator and run the studio tests
+        env: { TEST_PHOTOS_KEY: "${{ secrets.TEST_PHOTOS_KEY }}" }
         run: |
           set -o pipefail
           export ANDROID_HOME="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
@@ -56,11 +57,27 @@ jobs:
           sleep 30
           adb install -r -g android/app/build/outputs/apk/debug/app-debug.apk
           adb install -r -g android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          # The private test photos (people), for the backgrounds and funny faces: decrypted here only, pushed to the
+          # emulator under plain numbered names, and the decrypted copies removed. Nothing about them is printed but counts.
+          if [ -n "$TEST_PHOTOS_KEY" ]; then
+            mkdir -p "$RUNNER_TEMP/real"
+            openssl enc -d -aes-256-cbc -pbkdf2 -iter 100000 -md sha256 -in ios/RealPhotos/private.zip.enc -out "$RUNNER_TEMP/private.zip" -pass env:TEST_PHOTOS_KEY \
+              && unzip -q -o "$RUNNER_TEMP/private.zip" -d "$RUNNER_TEMP/real" && rm -f "$RUNNER_TEMP/private.zip"
+            adb shell mkdir -p /data/local/tmp/real
+            n=0
+            while IFS= read -r f; do
+              n=$((n+1)); ext="${f##*.}"; adb push "$f" "/data/local/tmp/real/$n.$(echo "$ext" | tr 'A-Z' 'a-z')" >/dev/null
+            done < <(find "$RUNNER_TEMP/real" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.heic' \) | sort | head -40)
+            echo "private photos pushed: $n"
+            rm -rf "${RUNNER_TEMP:?}/real"
+          fi
           adb logcat -c || true
           adb shell am instrument -w -r -e class com.handytools.app.StudioOnDeviceTest \
             com.tenzy.toolkit.test/androidx.test.runner.AndroidJUnitRunner 2>&1 | tee device-tests.log
           # What each test said, and why any failed (test names and assertion messages only).
           grep -E "INSTRUMENTATION_STATUS: test=|INSTRUMENTATION_STATUS_CODE|AssertionError|Exception:|^OK \(|FAILURES|Tests run" device-tests.log | head -80 || true
+          echo "---- What the people tests measured (numbers only)"
+          adb logcat -d -v brief 2>/dev/null | grep -o "PEOPLE|.*" | head -20 || true
           echo "---- Media3 / app errors from the device log"
           adb logcat -d -v brief '*:E' 2>/dev/null | grep -E "Transformer|ExportException|media3|AndroidRuntime|com.tenzy" | head -60 || true
           grep -q "^OK (" device-tests.log || exit 1
