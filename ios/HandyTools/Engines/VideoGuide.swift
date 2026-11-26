@@ -34,6 +34,7 @@ extension Guide {
             case "post": return "post"
             case "celebrate", "videofx": return "stunning"
             case "funny": return "fun"
+            case "beatreel": return "post"
             case "audiomix": return "speed"
             case "audioconvert", "ringtone", "audioclean", "audioedit", "audiocompress": return "sound"
             case "meetingnotes": return "words"

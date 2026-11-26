@@ -51908,5 +51908,135 @@
   "ja": "そう、これが僕。",
   "pt": "Pois é. Sou eu.",
   "zh": "没错，就是我。"
+ },
+ "Beat Reel": {
+  "de": "Beat-Reel",
+  "es": "Reel al ritmo",
+  "fr": "Reel au rythme",
+  "hi": "बीट रील",
+  "it": "Reel a ritmo",
+  "ja": "ビートリール",
+  "pt": "Reel no ritmo",
+  "zh": "卡点视频"
+ },
+ "Your clips cut to the beat of our music": {
+  "de": "Deine Clips im Takt unserer Musik geschnitten",
+  "es": "Tus clips cortados al ritmo de nuestra música",
+  "fr": "Tes clips coupés au rythme de notre musique",
+  "hi": "आपकी क्लिप्स हमारे संगीत की बीट पर कटी हुई",
+  "it": "Le tue clip tagliate a ritmo della nostra musica",
+  "ja": "あなたのクリップを音楽のビートに合わせて編集",
+  "pt": "Seus clipes cortados no ritmo da nossa música",
+  "zh": "把你的片段卡在我们音乐的节拍上"
+ },
+ "Your clips, cut to the beat of a song made for them.": {
+  "de": "Deine Clips, im Takt eines Songs, der für sie gemacht ist.",
+  "es": "Tus clips, cortados al ritmo de una canción hecha para ellos.",
+  "fr": "Tes clips, coupés au rythme d'un morceau fait pour eux.",
+  "hi": "आपकी क्लिप्स, उनके लिए बने गाने की बीट पर कटी हुई।",
+  "it": "Le tue clip, tagliate a ritmo di un brano fatto per loro.",
+  "ja": "あなたのクリップを、そのために作った曲のビートに合わせて。",
+  "pt": "Seus clipes, cortados no ritmo de uma música feita para eles.",
+  "zh": "你的片段，卡在为它们而作的音乐节拍上。"
+ },
+ "Make a reel to the beat": {
+  "de": "Ein Reel im Takt machen",
+  "es": "Hacer un reel al ritmo",
+  "fr": "Faire un reel au rythme",
+  "hi": "बीट पर रील बनाएँ",
+  "it": "Crea un reel a ritmo",
+  "ja": "ビートに合わせてリールを作る",
+  "pt": "Fazer um reel no ritmo",
+  "zh": "做一个卡点视频"
+ },
+ "Your clips and photos": {
+  "de": "Deine Clips und Fotos",
+  "es": "Tus clips y fotos",
+  "fr": "Tes clips et photos",
+  "hi": "आपकी क्लिप्स और फ़ोटो",
+  "it": "Le tue clip e foto",
+  "ja": "あなたのクリップと写真",
+  "pt": "Seus clipes e fotos",
+  "zh": "你的片段和照片"
+ },
+ "Choose": {
+  "de": "Auswählen",
+  "es": "Elegir",
+  "fr": "Choisir",
+  "hi": "चुनें",
+  "it": "Scegli",
+  "ja": "選ぶ",
+  "pt": "Escolher",
+  "zh": "选择"
+ },
+ "Getting them ready…": {
+  "de": "Wird vorbereitet…",
+  "es": "Preparándolos…",
+  "fr": "Préparation…",
+  "hi": "तैयार किया जा रहा है…",
+  "it": "Li sto preparando…",
+  "ja": "準備しています…",
+  "pt": "Preparando…",
+  "zh": "正在准备…"
+ },
+ "The music": {
+  "de": "Die Musik",
+  "es": "La música",
+  "fr": "La musique",
+  "hi": "संगीत",
+  "it": "La musica",
+  "ja": "音楽",
+  "pt": "A música",
+  "zh": "音乐"
+ },
+ "Make my reel": {
+  "de": "Mein Reel machen",
+  "es": "Hacer mi reel",
+  "fr": "Créer mon reel",
+  "hi": "मेरी रील बनाएँ",
+  "it": "Crea il mio reel",
+  "ja": "リールを作る",
+  "pt": "Fazer meu reel",
+  "zh": "生成我的视频"
+ },
+ "Cutting to the beat…": {
+  "de": "Wird im Takt geschnitten…",
+  "es": "Cortando al ritmo…",
+  "fr": "Montage au rythme…",
+  "hi": "बीट पर काटा जा रहा है…",
+  "it": "Taglio a ritmo…",
+  "ja": "ビートに合わせて編集中…",
+  "pt": "Cortando no ritmo…",
+  "zh": "正在卡点剪辑…"
+ },
+ "Change the music or length": {
+  "de": "Musik oder Länge ändern",
+  "es": "Cambiar la música o la duración",
+  "fr": "Changer la musique ou la durée",
+  "hi": "संगीत या लंबाई बदलें",
+  "it": "Cambia musica o durata",
+  "ja": "音楽や長さを変える",
+  "pt": "Mudar a música ou a duração",
+  "zh": "换音乐或时长"
+ },
+ "Upbeat": {
+  "de": "Beschwingt",
+  "es": "Animada",
+  "fr": "Entraînante",
+  "hi": "जोशीला",
+  "it": "Allegra",
+  "ja": "アップビート",
+  "pt": "Animada",
+  "zh": "欢快"
+ },
+ "Chill": {
+  "de": "Entspannt",
+  "es": "Relajada",
+  "fr": "Calme",
+  "hi": "सुकून भरा",
+  "it": "Rilassata",
+  "ja": "チル",
+  "pt": "Tranquila",
+  "zh": "轻松"
  }
 }

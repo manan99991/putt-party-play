@@ -88,6 +88,27 @@ final class CameraButtonTests: XCTestCase {
                       "the recorded clip didn't open in Video — \(PromiseTests.onScreen(app))")
     }
 
+    /// Funny Moments: film a clip, keep the record scratch it suggests, and a finished video comes out to watch.
+    func testFunnyMomentsRecordsAClipAndMakesTheJoke() {
+        let app = open("funny")
+        tap(app, "tool-record")
+        XCTAssertTrue(appears(app.buttons["funny-kind-scratch"].firstMatch, within: 60), "the recorded clip didn't open in Funny Moments — \(PromiseTests.onScreen(app))")
+        tap(app, "funny-make")
+        XCTAssertTrue(appears(app.descendants(matching: .any)["funny-result"].firstMatch, within: 240),
+                      "no finished funny moment — \(PromiseTests.onScreen(app))")
+    }
+
+    /// Beat Reel: film a clip, and a reel cut to the music comes out to watch.
+    func testBeatReelRecordsAClipAndCutsAReel() {
+        let app = open("beatreel")
+        tap(app, "tool-record")
+        XCTAssertTrue(appears(app.buttons["reel-make"].firstMatch, within: 60), "the recorded clip didn't reach Beat Reel — \(PromiseTests.onScreen(app))")
+        tap(app, "reel-style-party")
+        tap(app, "reel-make")
+        XCTAssertTrue(appears(app.descendants(matching: .any)["reel-result"].firstMatch, within: 300),
+                      "no finished reel — \(PromiseTests.onScreen(app))")
+    }
+
     func testPostItRecordsAClip() {
         let app = open("post")
         tap(app, "tool-record")
