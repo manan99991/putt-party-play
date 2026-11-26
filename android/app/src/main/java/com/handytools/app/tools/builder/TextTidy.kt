@@ -457,8 +457,17 @@ object TextTidy {
         else -> (0 until count).toList() + (if (count > 2) (1 until count - 1).reversed().toList() else emptyList())
     }
 
-    /** Voices "Change the voice" offers, and how much faster (and so higher) each plays the recording. */
-    val VOICES = listOf(Triple("chipmunk", "Chipmunk", 1.5), Triple("deep", "Deep", 0.75), Triple("giant", "Giant", 0.6))
+    /**
+     * Voices "Change the voice" offers (the iPhone's nineteen, rendered by tools.studio.Voices: pitch moves, speed
+     * doesn't), and the faster-or-slower playback each falls back to if a recording can't be rendered.
+     */
+    val VOICES = listOf(
+        Triple("chipmunk", "Chipmunk", 1.5), Triple("helium", "Helium", 1.9), Triple("deep", "Deep", 0.75), Triple("giant", "Giant", 0.6),
+        Triple("robot", "Robot", 0.9), Triple("alien", "Alien", 1.7), Triple("monster", "Monster", 0.6), Triple("walkie", "Walkie-talkie", 1.0),
+        Triple("cave", "Echo cave", 0.95), Triple("ghost", "Ghost", 1.1), Triple("baby", "Baby", 1.4), Triple("oldman", "Old man", 0.9),
+        Triple("underwater", "Underwater", 0.95), Triple("megaphone", "Megaphone", 1.0), Triple("villain", "Villain", 0.7),
+        Triple("autotune", "Auto-tune singer", 1.0), Triple("announcer", "Stadium announcer", 0.9), Triple("radio", "Old radio", 1.0), Triple("whisper", "Whisper", 1.0),
+    )
     fun voiceRate(setting: String?): Double = VOICES.firstOrNull { it.first == setting }?.third ?: 1.5
 
     /** The 44 bytes that start a .wav file of plain 16-bit sound. */

@@ -71,7 +71,8 @@ object FunSteps {
             b == Block.VOICE_CHANGE && input is Payload.Doc -> {
                 val src = java.io.File(java.io.File(ctx.cacheDir, "extra-steps").also { it.mkdirs() }, "voice-${System.nanoTime()}.${input.ext.lowercase().ifEmpty { "m4a" }}").also { it.writeBytes(input.bytes) }
                 try {
-                    val wav = withContext(Dispatchers.IO) { revoice(src, TextTidy.voiceRate(step.settings["voice"])) }
+                    val voice = step.settings["voice"] ?: "chipmunk"
+                    val wav = withContext(Dispatchers.Default) { revoiceIn(src, voice) ?: revoice(src, TextTidy.voiceRate(voice)) }
                     if (wav == null) stop("Change the voice couldn't read that recording. Try another one.") else Outcome.Done(Payload.Doc(wav, "wav"))
                 } finally { src.delete() }
             }
@@ -186,6 +187,26 @@ object FunSteps {
     }
 
     // ------------------------------------------------------------------ voices
+
+    /**
+     * The recording in one of the nineteen voices (pitch moved, words kept at their pace, the voice's room and
+     * character), as the bytes of a .wav file. At most the first ten minutes. Null if it can't be read or rendered,
+     * so the caller falls back to plain faster-or-slower playback.
+     */
+    fun revoiceIn(src: java.io.File, voice: String): ByteArray? {
+        if (com.handytools.app.tools.studio.Voices.characters[voice] == null) return null
+        val (pcm, sampleRate) = com.handytools.app.tools.power.FileTranscriber.monoPcm(src) ?: return null
+        return try {
+            val keep = minOf(pcm.length(), sampleRate.toLong() * 2L * 600L).toInt() / 2 * 2
+            if (keep <= 0) return null
+            val raw = ByteArray(keep)
+            pcm.inputStream().use { ins -> var at = 0; while (at < keep) { val n = ins.read(raw, at, keep - at); if (n < 0) break; at += n } }
+            val bb = java.nio.ByteBuffer.wrap(raw).order(java.nio.ByteOrder.LITTLE_ENDIAN)
+            val x = FloatArray(keep / 2) { bb.getShort(it * 2) / 32768f }
+            val y = com.handytools.app.tools.studio.Voices.render(voice, x, sampleRate.toDouble())
+            com.handytools.app.tools.studio.Dsp.wav(y, sampleRate)
+        } catch (_: Throwable) { null } finally { pcm.delete() }
+    }
 
     /** The recording played faster (higher, like a chipmunk) or slower (deeper), as the bytes of a .wav file. At most the first ten minutes. */
     fun revoice(src: java.io.File, rate: Double): ByteArray? {

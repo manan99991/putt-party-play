@@ -17568,5 +17568,195 @@
   "ja": "ここで写真を撮るには、設定で Tenzy のカメラをオンにしてください。スマホから写真を選ぶこともできます。",
   "pt": "Ative a câmera para o Tenzy nos Ajustes para tirar uma foto aqui. Você ainda pode escolher uma do celular.",
   "zh": "在设置中为 Tenzy 打开相机，即可在这里拍照。你也可以从手机里选一张。"
+ },
+ "Walkie-talkie": {
+  "de": "Funkgerät",
+  "es": "Walkie-talkie",
+  "fr": "Talkie-walkie",
+  "hi": "वॉकी-टॉकी",
+  "it": "Walkie-talkie",
+  "ja": "トランシーバー",
+  "pt": "Walkie-talkie",
+  "zh": "对讲机"
+ },
+ "Echo cave": {
+  "de": "Echohöhle",
+  "es": "Cueva con eco",
+  "fr": "Grotte à écho",
+  "hi": "गूँजती गुफा",
+  "it": "Grotta con eco",
+  "ja": "洞窟エコー",
+  "pt": "Gruta com eco",
+  "zh": "山洞回声"
+ },
+ "Ghost": {
+  "de": "Geist",
+  "es": "Fantasma",
+  "fr": "Fantôme",
+  "hi": "भूत",
+  "it": "Fantasma",
+  "ja": "おばけ",
+  "pt": "Fantasma",
+  "zh": "幽灵"
+ },
+ "Baby": {
+  "de": "Baby",
+  "es": "Bebé",
+  "fr": "Bébé",
+  "hi": "बच्चा",
+  "it": "Bebè",
+  "ja": "赤ちゃん",
+  "pt": "Bebé",
+  "zh": "宝宝"
+ },
+ "Old man": {
+  "de": "Opa",
+  "es": "Anciano",
+  "fr": "Vieil homme",
+  "hi": "बूढ़ा आदमी",
+  "it": "Vecchietto",
+  "ja": "おじいさん",
+  "pt": "Velhote",
+  "zh": "老爷爷"
+ },
+ "Underwater": {
+  "de": "Unter Wasser",
+  "es": "Bajo el agua",
+  "fr": "Sous l’eau",
+  "hi": "पानी के अंदर",
+  "it": "Sott’acqua",
+  "ja": "水中",
+  "pt": "Debaixo de água",
+  "zh": "水下"
+ },
+ "Megaphone": {
+  "de": "Megafon",
+  "es": "Megáfono",
+  "fr": "Mégaphone",
+  "hi": "मेगाफ़ोन",
+  "it": "Megafono",
+  "ja": "メガホン",
+  "pt": "Megafone",
+  "zh": "扩音器"
+ },
+ "Villain": {
+  "de": "Bösewicht",
+  "es": "Villano",
+  "fr": "Méchant",
+  "hi": "खलनायक",
+  "it": "Cattivo",
+  "ja": "悪役",
+  "pt": "Vilão",
+  "zh": "反派"
+ },
+ "Auto-tune singer": {
+  "de": "Auto-Tune-Sänger",
+  "es": "Cantante con autotune",
+  "fr": "Chanteur autotune",
+  "hi": "ऑटो-ट्यून सिंगर",
+  "it": "Cantante con autotune",
+  "ja": "オートチューン歌手",
+  "pt": "Cantor com autotune",
+  "zh": "自动修音歌手"
+ },
+ "Stadium announcer": {
+  "de": "Stadionsprecher",
+  "es": "Locutor de estadio",
+  "fr": "Speaker de stade",
+  "hi": "स्टेडियम उद्घोषक",
+  "it": "Speaker dello stadio",
+  "ja": "スタジアムのアナウンサー",
+  "pt": "Locutor de estádio",
+  "zh": "体育场播报员"
+ },
+ "Old radio": {
+  "de": "Altes Radio",
+  "es": "Radio antigua",
+  "fr": "Vieille radio",
+  "hi": "पुराना रेडियो",
+  "it": "Vecchia radio",
+  "ja": "古いラジオ",
+  "pt": "Rádio antigo",
+  "zh": "老式收音机"
+ },
+ "Whisper": {
+  "de": "Flüstern",
+  "es": "Susurro",
+  "fr": "Chuchotement",
+  "hi": "फुसफुसाहट",
+  "it": "Sussurro",
+  "ja": "ささやき",
+  "pt": "Sussurro",
+  "zh": "耳语"
+ },
+ "Comic": {
+  "de": "Comic",
+  "es": "Cómic",
+  "fr": "BD",
+  "hi": "कॉमिक",
+  "it": "Fumetto",
+  "ja": "コミック",
+  "pt": "Quadrinhos",
+  "zh": "漫画"
+ },
+ "Pop art": {
+  "de": "Pop-Art",
+  "es": "Pop art",
+  "fr": "Pop art",
+  "hi": "पॉप आर्ट",
+  "it": "Pop art",
+  "ja": "ポップアート",
+  "pt": "Pop art",
+  "zh": "波普艺术"
+ },
+ "Slow motion": {
+  "de": "Zeitlupe",
+  "es": "Cámara lenta",
+  "fr": "Ralenti",
+  "hi": "स्लो मोशन",
+  "it": "Rallentatore",
+  "ja": "スローモーション",
+  "pt": "Câmera lenta",
+  "zh": "慢动作"
+ },
+ "2x faster": {
+  "de": "2× schneller",
+  "es": "2× más rápido",
+  "fr": "2× plus rapide",
+  "hi": "2× तेज़",
+  "it": "2× più veloce",
+  "ja": "2倍速",
+  "pt": "2× mais rápido",
+  "zh": "2 倍速"
+ },
+ "4x faster": {
+  "de": "4× schneller",
+  "es": "4× más rápido",
+  "fr": "4× plus rapide",
+  "hi": "4× तेज़",
+  "it": "4× più veloce",
+  "ja": "4倍速",
+  "pt": "4× mais rápido",
+  "zh": "4 倍速"
+ },
+ "Pencil sketch": {
+  "de": "Bleistiftskizze",
+  "es": "Boceto a lápiz",
+  "fr": "Croquis au crayon",
+  "hi": "पेंसिल स्केच",
+  "it": "Schizzo a matita",
+  "ja": "鉛筆スケッチ",
+  "pt": "Esboço a lápis",
+  "zh": "铅笔素描"
+ },
+ "Black and white": {
+  "de": "Schwarz-Weiß",
+  "es": "Blanco y negro",
+  "fr": "Noir et blanc",
+  "hi": "ब्लैक एंड व्हाइट",
+  "it": "Bianco e nero",
+  "ja": "白黒",
+  "pt": "Preto e branco",
+  "zh": "黑白"
  }
 }

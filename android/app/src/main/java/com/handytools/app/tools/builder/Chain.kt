@@ -564,8 +564,22 @@ object ChainPlanner {
         if (has("mosaic") || (has("emoji") && has("made of", "out of", "made from", "rebuild", " art "))) return made(listOf(Step(Block.EMOJI_MOSAIC)))
         if (has("emoji", "smiley")) return made(listOf(Step(Block.EMOJI_FACES, mapOf("emoji" to TextTidy.FACE_EMOJIS[0]))))
         if (has("before and after", "before/after", "before after", "side by side")) return made(listOf(Step(Block.STRIP_LOCATION)))?.copy(versus = true)
-        if (has("chipmunk", "helium", "voice changer", "funny voice", "deep voice", "change my voice", "change the voice")) {
-            return made((if (film) listOf(Step(Block.VIDEO_AUDIO)) else emptyList()) + Step(Block.VOICE_CHANGE, mapOf("voice" to if (has("deep", "giant", "low voice")) "deep" else "chipmunk")))
+        // The iPhone's voice words, in the same order: the first voice named wins; a plain "funny voice" is the chipmunk.
+        val voiceWords = listOf(
+            "autotune" to listOf("auto-tune", "autotune", "auto tune", "sing in tune", "singing voice", "make me sing", "make it sing"),
+            "announcer" to listOf("announcer", "stadium", "commentator", "ringmaster", "boxing ring"),
+            "radio" to listOf("old radio", "vintage radio", "1940s", "old-time radio", "wireless set"),
+            "whisper" to listOf("whisper"),
+            "robot" to listOf("robot"), "alien" to listOf("alien"), "monster" to listOf("monster"), "giant" to listOf("giant"),
+            "walkie" to listOf("walkie", "radio voice"), "ghost" to listOf("ghost", "spooky"), "cave" to listOf("cave", "echo voice"),
+            "baby" to listOf("baby voice", "like a baby"), "oldman" to listOf("old man voice", "like an old man", "grandpa voice"),
+            "underwater" to listOf("underwater"), "megaphone" to listOf("megaphone", "loudspeaker"), "villain" to listOf("villain", "evil voice"),
+            "deep" to listOf("deep voice", "low voice"), "helium" to listOf("helium", "high voice", "squeaky"), "chipmunk" to listOf("chipmunk"),
+        )
+        val voice = voiceWords.firstOrNull { (_, w) -> has(*w.toTypedArray()) }?.first
+            ?: if (has("voice changer", "funny voice", "change my voice", "change the voice")) "chipmunk" else null
+        if (voice != null) {
+            return made((if (film) listOf(Step(Block.VIDEO_AUDIO)) else emptyList()) + Step(Block.VOICE_CHANGE, mapOf("voice" to voice)))
         }
         if (has("sketch", "pencil", "drawing", "cartoon", "comic", "pop art", "black and white", "noir")) {
             val style = if (has("cartoon", "comic")) "comic" else if (has("pop art")) "pop" else if (has("black and white", "noir")) "noir" else "sketch"

@@ -730,18 +730,12 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             OutlinedTextField(s.settings["bottom"] ?: "", { v -> set("bottom", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("Bottom line")) })
             Text(com.handytools.app.I18n.t("Leave them empty to type new words every time you run the tool."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
-        Block.VIDEO_SPEED -> Row(Modifier.horizontalScroll(rememberScrollState())) {
-            val now = TextTidy.SPEEDS.firstOrNull { it.first == s.settings["speed"] }?.first ?: "slow"
-            TextTidy.SPEEDS.forEach { (id, label, _) -> TextButton({ set("speed", id) }) { Text(if (id == now) "● $label" else label) } }
-        }
-        Block.ART_FILTER -> Row(Modifier.horizontalScroll(rememberScrollState())) {
-            val now = PixelArt.style(s.settings["style"])
-            PixelArt.STYLES.forEach { (id, label) -> TextButton({ set("style", id) }) { Text(if (id == now) "● $label" else label) } }
-        }
-        Block.VOICE_CHANGE -> Row(Modifier.horizontalScroll(rememberScrollState())) {
-            val now = TextTidy.VOICES.firstOrNull { it.first == s.settings["voice"] }?.first ?: "chipmunk"
-            TextTidy.VOICES.forEach { (id, label, _) -> TextButton({ set("voice", id) }) { Text(if (id == now) "● $label" else label) } }
-        }
+        // Every choice on the page at once, wrapping onto more lines — never a sideways scroll.
+        Block.VIDEO_SPEED -> ChoiceChips(TextTidy.SPEEDS.map { it.first to it.second },
+            TextTidy.SPEEDS.firstOrNull { it.first == s.settings["speed"] }?.first ?: "slow") { set("speed", it) }
+        Block.ART_FILTER -> ChoiceChips(PixelArt.STYLES.map { it.first to it.second }, PixelArt.style(s.settings["style"])) { set("style", it) }
+        Block.VOICE_CHANGE -> ChoiceChips(TextTidy.VOICES.map { it.first to it.second },
+            TextTidy.VOICES.firstOrNull { it.first == s.settings["voice"] }?.first ?: "chipmunk") { set("voice", it) }
         Block.VIDEO_LOOP -> Row {
             listOf("boomerang" to "Forwards and back", "reverse" to "Backwards").forEach { (id, label) ->
                 TextButton({ set("style", id) }) { Text(if ((if (s.settings["style"] == "reverse") "reverse" else "boomerang") == id) "● $label" else label) }
@@ -1203,5 +1197,18 @@ internal class BatchItem(val n: Int, val file: File? = null, val text: String? =
                 is Payload.Doc -> File(dir, "Tenzy-$n.${p.ext}").also { it.writeBytes(p.bytes) }.let { BatchItem(n, file = it, summary = "${p.bytes.size / 1024} KB · ${p.ext.uppercase()}") }
             }
         } catch (_: Exception) { BatchItem(n, note = "Couldn't save this result.") }
+    }
+}
+
+/** A step's choices as chips that wrap onto as many lines as they need (no sideways scrolling), the current one picked. */
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@Composable
+private fun ChoiceChips(options: List<Pair<String, String>>, now: String, onPick: (String) -> Unit) {
+    androidx.compose.foundation.layout.FlowRow(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        options.forEach { (id, label) -> com.handytools.app.ui.HChip(com.handytools.app.I18n.t(label), selected = id == now) { onPick(id) } }
     }
 }
