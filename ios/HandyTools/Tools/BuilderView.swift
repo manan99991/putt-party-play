@@ -1611,7 +1611,7 @@ struct BuilderView: View {
                             .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(onBrand || askVoice.running ? Color.clear : HandyColor.border, lineWidth: 1))
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(L(askVoice.running ? "Stop listening" : "Say it"))
+                    .accessibilityLabel(L(askVoice.running ? "Stop listening" : "Speak"))   // "Say it" reads as "read aloud" in translation
                     .accessibilityIdentifier("describe-mic")
                 }
                 Button { buildFromAsk() } label: {
