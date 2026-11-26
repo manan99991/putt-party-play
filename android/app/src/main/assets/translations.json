@@ -18428,5 +18428,435 @@
   "ja": "停止しました。",
   "pt": "Parado.",
   "zh": "已停止。"
+ },
+ "Video Effects": {
+  "de": "Videoeffekte",
+  "es": "Efectos de vídeo",
+  "fr": "Effets vidéo",
+  "hi": "वीडियो इफ़ेक्ट",
+  "it": "Effetti video",
+  "ja": "動画エフェクト",
+  "pt": "Efeitos de vídeo",
+  "zh": "视频特效"
+ },
+ "Add effects to a video": {
+  "de": "Effekte zum Video",
+  "es": "Efectos para un vídeo",
+  "fr": "Effets sur une vidéo",
+  "hi": "वीडियो में इफ़ेक्ट जोड़ें",
+  "it": "Effetti su un video",
+  "ja": "動画にエフェクト",
+  "pt": "Efeitos no vídeo",
+  "zh": "给视频加特效"
+ },
+ "Original": {
+  "de": "Original",
+  "es": "Original",
+  "fr": "Original",
+  "hi": "मूल",
+  "it": "Originale",
+  "ja": "オリジナル",
+  "pt": "Original",
+  "zh": "原图"
+ },
+ "Vivid": {
+  "de": "Lebendig",
+  "es": "Vívido",
+  "fr": "Éclatant",
+  "hi": "चटकीला",
+  "it": "Vivido",
+  "ja": "鮮やか",
+  "pt": "Vívido",
+  "zh": "鲜艳"
+ },
+ "Cinematic": {
+  "de": "Kino-Look",
+  "es": "Cinematográfico",
+  "fr": "Cinéma",
+  "hi": "सिनेमैटिक",
+  "it": "Cinematografico",
+  "ja": "シネマ",
+  "pt": "Cinematográfico",
+  "zh": "电影感"
+ },
+ "Golden": {
+  "de": "Golden",
+  "es": "Dorado",
+  "fr": "Doré",
+  "hi": "सुनहरा",
+  "it": "Dorato",
+  "ja": "ゴールデン",
+  "pt": "Dourado",
+  "zh": "金色"
+ },
+ "Dreamy": {
+  "de": "Verträumt",
+  "es": "Soñador",
+  "fr": "Rêveur",
+  "hi": "सपनीला",
+  "it": "Sognante",
+  "ja": "ドリーミー",
+  "pt": "Sonhador",
+  "zh": "梦幻"
+ },
+ "Retro film": {
+  "de": "Retro-Film",
+  "es": "Película retro",
+  "fr": "Film rétro",
+  "hi": "रेट्रो फ़िल्म",
+  "it": "Pellicola retro",
+  "ja": "レトロフィルム",
+  "pt": "Filme retrô",
+  "zh": "复古胶片"
+ },
+ "Black & white": {
+  "de": "Schwarzweiß",
+  "es": "Blanco y negro",
+  "fr": "Noir et blanc",
+  "hi": "ब्लैक एंड व्हाइट",
+  "it": "Bianco e nero",
+  "ja": "モノクロ",
+  "pt": "Preto e branco",
+  "zh": "黑白"
+ },
+ "Moonlight": {
+  "de": "Mondlicht",
+  "es": "Luz de luna",
+  "fr": "Clair de lune",
+  "hi": "चाँदनी",
+  "it": "Chiaro di luna",
+  "ja": "月明かり",
+  "pt": "Luar",
+  "zh": "月光"
+ },
+ "Neon": {
+  "de": "Neon",
+  "es": "Neón",
+  "fr": "Néon",
+  "hi": "नियॉन",
+  "it": "Neon",
+  "ja": "ネオン",
+  "pt": "Neon",
+  "zh": "霓虹"
+ },
+ "Vintage": {
+  "de": "Vintage",
+  "es": "Vintage",
+  "fr": "Vintage",
+  "hi": "विंटेज",
+  "it": "Vintage",
+  "ja": "ヴィンテージ",
+  "pt": "Vintage",
+  "zh": "怀旧"
+ },
+ "None": {
+  "de": "Keine",
+  "es": "Ninguna",
+  "fr": "Aucune",
+  "hi": "कोई नहीं",
+  "it": "Nessuna",
+  "ja": "なし",
+  "pt": "Nenhuma",
+  "zh": "无"
+ },
+ "Glow": {
+  "de": "Leuchten",
+  "es": "Resplandor",
+  "fr": "Halo",
+  "hi": "चमक",
+  "it": "Bagliore soft",
+  "ja": "グロー",
+  "pt": "Brilho",
+  "zh": "柔光"
+ },
+ "Light leaks": {
+  "de": "Lichtlecks",
+  "es": "Fugas de luz",
+  "fr": "Fuites de lumière",
+  "hi": "लाइट लीक",
+  "it": "Infiltrazioni di luce",
+  "ja": "光漏れ",
+  "pt": "Vazamentos de luz",
+  "zh": "漏光"
+ },
+ "Golden sun": {
+  "de": "Goldene Sonne",
+  "es": "Sol dorado",
+  "fr": "Soleil doré",
+  "hi": "सुनहरा सूरज",
+  "it": "Sole dorato",
+  "ja": "黄金の太陽",
+  "pt": "Sol dourado",
+  "zh": "金色阳光"
+ },
+ "Flare sweep": {
+  "de": "Lichtstreif",
+  "es": "Destello",
+  "fr": "Balayage lumineux",
+  "hi": "चमक की लकीर",
+  "it": "Bagliore",
+  "ja": "フレアスイープ",
+  "pt": "Clarão",
+  "zh": "光晕扫过"
+ },
+ "Vignette": {
+  "de": "Vignette",
+  "es": "Viñeta",
+  "fr": "Vignettage",
+  "hi": "विनेट",
+  "it": "Vignettatura",
+  "ja": "ビネット",
+  "pt": "Vinheta",
+  "zh": "暗角"
+ },
+ "Still": {
+  "de": "Ruhig",
+  "es": "Quieto",
+  "fr": "Fixe",
+  "hi": "स्थिर",
+  "it": "Fermo",
+  "ja": "固定",
+  "pt": "Parado",
+  "zh": "静止"
+ },
+ "Slow zoom": {
+  "de": "Langsamer Zoom",
+  "es": "Zoom lento",
+  "fr": "Zoom lent",
+  "hi": "धीमा ज़ूम",
+  "it": "Zoom lento",
+  "ja": "スローズーム",
+  "pt": "Zoom lento",
+  "zh": "慢推"
+ },
+ "Beat punch": {
+  "de": "Beat-Stoß",
+  "es": "Golpe al ritmo",
+  "fr": "Coup sur le beat",
+  "hi": "बीट पर झटका",
+  "it": "Colpo a ritmo",
+  "ja": "ビートでズン",
+  "pt": "Batida",
+  "zh": "踩点冲击"
+ },
+ "Handheld": {
+  "de": "Handkamera",
+  "es": "Cámara en mano",
+  "fr": "Caméra à l'épaule",
+  "hi": "हाथ में कैमरा",
+  "it": "Camera a mano",
+  "ja": "手持ち",
+  "pt": "Câmera na mão",
+  "zh": "手持晃动"
+ },
+ "Drift": {
+  "de": "Gleiten",
+  "es": "Deriva",
+  "fr": "Dérive",
+  "hi": "धीमा खिसकना",
+  "it": "Deriva",
+  "ja": "ドリフト",
+  "pt": "Deriva",
+  "zh": "缓移"
+ },
+ "Clean": {
+  "de": "Schlicht",
+  "es": "Limpio",
+  "fr": "Épuré",
+  "hi": "सादा",
+  "it": "Pulito",
+  "ja": "シンプル",
+  "pt": "Limpo",
+  "zh": "简洁"
+ },
+ "Film grain": {
+  "de": "Filmkorn",
+  "es": "Grano de película",
+  "fr": "Grain de film",
+  "hi": "फ़िल्म ग्रेन",
+  "it": "Grana pellicola",
+  "ja": "フィルム粒子",
+  "pt": "Granulado",
+  "zh": "胶片颗粒"
+ },
+ "VHS": {
+  "de": "VHS",
+  "es": "VHS",
+  "fr": "VHS",
+  "hi": "VHS",
+  "it": "VHS",
+  "ja": "VHS",
+  "pt": "VHS",
+  "zh": "VHS"
+ },
+ "Cinema bars": {
+  "de": "Kinobalken",
+  "es": "Barras de cine",
+  "fr": "Bandes cinéma",
+  "hi": "सिनेमा पट्टियाँ",
+  "it": "Bande cinema",
+  "ja": "シネマバー",
+  "pt": "Barras de cinema",
+  "zh": "电影黑边"
+ },
+ "Pop": {
+  "de": "Pop",
+  "es": "Pop",
+  "fr": "Pop",
+  "hi": "पॉप",
+  "it": "Pop",
+  "ja": "ポップ",
+  "pt": "Pop",
+  "zh": "波普"
+ },
+ "Slide up": {
+  "de": "Hochgleiten",
+  "es": "Deslizar arriba",
+  "fr": "Glisser vers le haut",
+  "hi": "ऊपर सरकना",
+  "it": "Scorri su",
+  "ja": "スライドアップ",
+  "pt": "Deslizar para cima",
+  "zh": "上滑"
+ },
+ "Fade": {
+  "de": "Einblenden",
+  "es": "Fundido",
+  "fr": "Fondu",
+  "hi": "धीरे उभरना",
+  "it": "Dissolvenza",
+  "ja": "フェード",
+  "pt": "Esmaecer",
+  "zh": "淡入"
+ },
+ "Bounce": {
+  "de": "Hüpfen",
+  "es": "Rebote",
+  "fr": "Rebond",
+  "hi": "उछाल",
+  "it": "Rimbalzo",
+  "ja": "バウンド",
+  "pt": "Quicar",
+  "zh": "弹跳"
+ },
+ "Look": {
+  "de": "Stil",
+  "es": "Estilo",
+  "fr": "Style",
+  "hi": "लुक",
+  "it": "Stile",
+  "ja": "ルック",
+  "pt": "Visual",
+  "zh": "风格"
+ },
+ "Light": {
+  "de": "Licht",
+  "es": "Luz",
+  "fr": "Lumière",
+  "hi": "रोशनी",
+  "it": "Luce",
+  "ja": "明るさ",
+  "pt": "Luz",
+  "zh": "光照"
+ },
+ "Motion": {
+  "de": "Bewegung",
+  "es": "Movimiento",
+  "fr": "Mouvement",
+  "hi": "मूवमेंट",
+  "it": "Movimento",
+  "ja": "動き",
+  "pt": "Movimento",
+  "zh": "动感"
+ },
+ "Texture": {
+  "de": "Textur",
+  "es": "Textura",
+  "fr": "Texture",
+  "hi": "टेक्सचर",
+  "it": "Texture",
+  "ja": "質感",
+  "pt": "Textura",
+  "zh": "质感"
+ },
+ "Pick a video and give it a look, light, motion and words.": {
+  "de": "Wähle ein Video und gib ihm einen Look, Licht, Bewegung und Worte.",
+  "es": "Elige un vídeo y dale un estilo, luz, movimiento y palabras.",
+  "fr": "Choisis une vidéo et donne-lui un style, de la lumière, du mouvement et des mots.",
+  "hi": "एक वीडियो चुनें और उसे लुक, रोशनी, हलचल और शब्द दें।",
+  "it": "Scegli un video e dagli un look, luce, movimento e parole.",
+  "ja": "動画を選んで、ルック・光・動き・文字を付けましょう。",
+  "pt": "Escolha um vídeo e dê a ele um visual, luz, movimento e palavras.",
+  "zh": "选一段视频，给它加上风格、光效、动感和文字。"
+ },
+ "Words on the video (optional)": {
+  "de": "Worte im Video (optional)",
+  "es": "Palabras en el vídeo (opcional)",
+  "fr": "Mots sur la vidéo (facultatif)",
+  "hi": "वीडियो पर शब्द (वैकल्पिक)",
+  "it": "Parole sul video (facoltativo)",
+  "ja": "動画に入れる文字（任意）",
+  "pt": "Palavras no vídeo (opcional)",
+  "zh": "视频上的文字（可选）"
+ },
+ "Putting the effects on…": {
+  "de": "Effekte werden angewendet…",
+  "es": "Aplicando los efectos…",
+  "fr": "Application des effets…",
+  "hi": "इफ़ेक्ट लगाए जा रहे हैं…",
+  "it": "Applico gli effetti…",
+  "ja": "エフェクトを適用中…",
+  "pt": "Aplicando os efeitos…",
+  "zh": "正在添加效果…"
+ },
+ "Couldn't put the effects on this video — try another.": {
+  "de": "Die Effekte ließen sich nicht anwenden – versuch ein anderes Video.",
+  "es": "No se pudieron aplicar los efectos a este vídeo: prueba otro.",
+  "fr": "Impossible d'appliquer les effets à cette vidéo — essaie-en une autre.",
+  "hi": "इस वीडियो पर इफ़ेक्ट नहीं लग पाए — कोई दूसरा आज़माएँ।",
+  "it": "Impossibile applicare gli effetti a questo video: provane un altro.",
+  "ja": "この動画にはエフェクトを適用できませんでした。別の動画でお試しください。",
+  "pt": "Não foi possível aplicar os efeitos neste vídeo — tente outro.",
+  "zh": "无法给这段视频加效果——换一段试试。"
+ },
+ "Give any video a look, a light, a little motion, a film texture and words that pop in — watch a preview, then save it. All made on your phone.": {
+  "de": "Gib jedem Video einen Look, Licht, etwas Bewegung, eine Filmtextur und Worte, die hereinploppen – sieh dir eine Vorschau an und speichere es. Alles auf deinem Handy.",
+  "es": "Dale a cualquier vídeo un estilo, una luz, algo de movimiento, una textura de película y palabras que aparecen; mira una vista previa y guárdalo. Todo en tu teléfono.",
+  "fr": "Donne à n'importe quelle vidéo un style, une lumière, un peu de mouvement, une texture film et des mots qui apparaissent — regarde un aperçu, puis enregistre. Tout sur ton téléphone.",
+  "hi": "किसी भी वीडियो को लुक, रोशनी, थोड़ी हलचल, फ़िल्म टेक्सचर और उभरते शब्द दें — प्रीव्यू देखें, फिर सेव करें। सब आपके फ़ोन पर।",
+  "it": "Dai a qualsiasi video un look, una luce, un po' di movimento, una texture da pellicola e parole che compaiono: guarda l'anteprima e salvalo. Tutto sul telefono.",
+  "ja": "どんな動画にもルック、光、動き、フィルムの質感、飛び出す文字を。プレビューを見てから保存できます。すべてスマホ上で。",
+  "pt": "Dê a qualquer vídeo um visual, uma luz, um pouco de movimento, uma textura de filme e palavras que surgem — veja a prévia e salve. Tudo no seu celular.",
+  "zh": "给任何视频加上风格、光效、一点动感、胶片质感和弹出的文字——先看预览，再保存。全在你的手机上完成。"
+ },
+ "Looks, light, motion and words on any video": {
+  "de": "Looks, Licht, Bewegung und Worte für jedes Video",
+  "es": "Estilos, luz, movimiento y palabras en cualquier vídeo",
+  "fr": "Styles, lumière, mouvement et mots sur n'importe quelle vidéo",
+  "hi": "किसी भी वीडियो पर लुक, रोशनी, हलचल और शब्द",
+  "it": "Look, luce, movimento e parole su qualsiasi video",
+  "ja": "どんな動画にもルック・光・動き・文字",
+  "pt": "Visuais, luz, movimento e palavras em qualquer vídeo",
+  "zh": "为任何视频加风格、光效、动感和文字"
+ },
+ "Save the video": {
+  "de": "Video speichern",
+  "es": "Guardar el vídeo",
+  "fr": "Enregistrer la vidéo",
+  "hi": "वीडियो सेव करें",
+  "it": "Salva il video",
+  "ja": "動画を保存",
+  "pt": "Salvar o vídeo",
+  "zh": "保存视频"
+ },
+ "Change the effects": {
+  "de": "Effekte ändern",
+  "es": "Cambiar los efectos",
+  "fr": "Changer les effets",
+  "hi": "इफ़ेक्ट बदलें",
+  "it": "Cambia gli effetti",
+  "ja": "エフェクトを変える",
+  "pt": "Mudar os efeitos",
+  "zh": "修改效果"
  }
 }

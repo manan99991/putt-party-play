@@ -10,13 +10,20 @@ import androidx.media3.effect.OverlaySettings
  * [pick] gives the picture and how see-through it is at a time in seconds (null: nothing), [scaleAt] how big.
  */
 @androidx.annotation.OptIn(UnstableApi::class)
-class TimedOverlay(private val pick: (Double) -> Pair<Bitmap, Float>?, private val scaleAt: (Double) -> Float = { 1f }) : BitmapOverlay() {
+class TimedOverlay(
+    private val pick: (Double) -> Pair<Bitmap, Float>?,
+    private val scaleAt: (Double) -> Float = { 1f },
+    /** Where its middle sits on the frame, -1…1 across and up (0, 0 is the middle). */
+    private val anchorAt: (Double) -> Pair<Float, Float> = { 0f to 0f },
+) : BitmapOverlay() {
     private val clear = Bitmap.createBitmap(2, 2, Bitmap.Config.ARGB_8888)
     override fun getBitmap(presentationTimeUs: Long): Bitmap = pick(presentationTimeUs / 1e6)?.first ?: clear
     override fun getOverlaySettings(presentationTimeUs: Long): OverlaySettings {
         val t = presentationTimeUs / 1e6
         val a = pick(t)?.second ?: 0f
         val s = scaleAt(t)
-        return OverlaySettings.Builder().setAlphaScale(a.coerceIn(0f, 1f)).setScale(s, s).build()   // Media3 1.5: OverlaySettings is the class
+        val (x, y) = anchorAt(t)
+        // Media3 1.5: OverlaySettings is the class with the builder.
+        return OverlaySettings.Builder().setAlphaScale(a.coerceIn(0f, 1f)).setScale(s, s).setBackgroundFrameAnchor(x, y).build()
     }
 }
