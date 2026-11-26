@@ -163,6 +163,7 @@ struct WarrantyView: View {
                         Spacer()
                         Text(warrantyPhrase(r)).font(HandyFont.caption).foregroundStyle(HandyColor.danger)
                     }
+                    .contentShape(Rectangle())   // the whole row answers a tap, not only its drawn parts
                 }.buttonStyle(.plain)
             }
         }.cardStyle(padding: HandySpacing.s12)
@@ -180,6 +181,7 @@ struct WarrantyView: View {
                         Spacer()
                         Text(Self.returnPhrase(r)).font(HandyFont.caption).foregroundStyle((r.daysLeftToReturn ?? 99) <= 7 ? HandyColor.amber : HandyColor.textSecondary)
                     }
+                    .contentShape(Rectangle())
                 }.buttonStyle(.plain)
             }
             if stillReturnable.count > 8 { Text("+\(stillReturnable.count - 8) \(L("more"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }

@@ -370,6 +370,9 @@ private struct SettingsRow: View {
                 .padding(.vertical, HandySpacing.s12)
                 Rectangle().fill(HandyColor.border).frame(height: 1)
             }
+            // The whole row is the button (26 Nov): a plain button only answers on its drawn parts, so on a short row
+            // ("Watch how") a tap in the empty middle did nothing.
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }

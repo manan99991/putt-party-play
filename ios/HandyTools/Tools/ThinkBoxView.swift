@@ -365,6 +365,7 @@ struct ThinkBoxView: View {
                 Spacer(minLength: 4)
                 HStack(spacing: 3) { ForEach(1...3, id: \.self) { i in Circle().fill(i <= p.weight ? HandyColor.accent : HandyColor.border).frame(width: 7, height: 7) } }
             }
+            .contentShape(Rectangle())   // the whole row answers a tap, not only its drawn parts
         }
         .buttonStyle(.plain)
         .accessibilityLabel("\(pro ? L("Pro") : L("Con")): \(p.text), \(L("matters")) \(p.weight) \(L("of 3"))")

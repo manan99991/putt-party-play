@@ -1,5 +1,5 @@
-# 26 Nov (5th): Watch how — the films ship and play (unit tests passed), but after tapping the Settings row none of the
-# three showed. Again, now saying what was on screen. Plus the real-file run's first half, whose "crash" on the WhatsApp
-# helper was it handing off to WhatsApp when it finished (only "not running" counts as a crash now).
+# 26 Nov (6th): Watch how — the tap landed in the empty middle of the Settings row ("Watch how" is short), and a plain
+# button only answers on its drawn parts: Settings stayed put. Every Settings row (and four like it elsewhere) is now
+# tappable edge to edge. Plus the real-file first half again: its log was cut off before the end last time.
 HandyToolsUITests/PromiseTests/testWatchHowOpensTheFilms
 HandyToolsUITests/RealInputTests/testFirstHalfOfFlowsRunOnRealFiles

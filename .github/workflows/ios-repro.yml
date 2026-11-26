@@ -78,7 +78,7 @@ jobs:
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
-          { grep -E "error:|Test Case|Executed|TEST (SUCCEEDED|FAILED)|crashed|failed -|XCTAssert|BISECT|REALINPUT|TOOLINPUT|SMOKE|MENU\||IDENTIFY\||VIDEOFX\||STICKER\||RECEIPTRUN\||Failed to|accessibility|Elapsed" ios/repro.log | grep -v "MENUREAD" | head -300; echo "== main thread when stuck"; head -200 "$RUNNER_TEMP/hang.txt" 2>/dev/null || echo "never stuck"; echo "== crash reports"; cat ios/crashes.txt 2>/dev/null; } > ios-repro.log
+          { grep -E "error:|Test Case|Executed|TEST (SUCCEEDED|FAILED)|crashed|failed -|XCTAssert|BISECT|REALINPUT|TOOLINPUT|SMOKE|MENU\||IDENTIFY\||VIDEOFX\||STICKER\||RECEIPTRUN\||Failed to|accessibility|Elapsed" ios/repro.log | grep -v "MENUREAD" | grep -v "Requesting snapshot" | head -400; echo "== main thread when stuck"; head -200 "$RUNNER_TEMP/hang.txt" 2>/dev/null || echo "never stuck"; echo "== crash reports"; cat ios/crashes.txt 2>/dev/null; } > ios-repro.log
           bash .github/publish-log.sh ios-repro ios-repro.log || true
       - name: Publish what the camera read on the private menus (encrypted)
         if: always()

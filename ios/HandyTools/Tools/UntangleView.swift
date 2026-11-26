@@ -218,6 +218,7 @@ struct UntangleView: View {
                             Spacer()
                             Image(systemName: "arrow.triangle.turn.up.right.circle").foregroundStyle(HandyColor.accent)
                         }
+                        .contentShape(Rectangle())   // the whole row answers a tap, not only its drawn parts
                     }.buttonStyle(.plain)
                     let key = ArrivalAlert.id(pl.name, step: s.id)
                     Button { toggleArrival(pl, step: s) } label: {
