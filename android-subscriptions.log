@@ -1,0 +1,37 @@
+[07:13:46]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[07:13:46]: fastlane 2.242.0 (Ruby 3.3.14, gem)
+[07:13:47]: Sending anonymous analytics information
+[07:13:47]: Learn more at https://docs.fastlane.tools/#metrics
+[07:13:47]: No personal or sensitive data is sent.
+[07:13:47]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[07:13:47]: [32m------------------------------[0m
+[07:13:47]: [32m--- Step: default_platform ---[0m
+[07:13:47]: [32m------------------------------[0m
+[07:13:47]: [32mDriving the lane 'android subscriptions' 🚀[0m
+[07:13:47]: [32m----------------------------------------------------------[0m
+[07:13:47]: [32m--- tenzy_pro_yearly: $29.99 every P1Y, P7D free trial ---[0m
+[07:13:47]: [32m----------------------------------------------------------[0m
+[07:13:48]:   Play's prices for 174 countries (US {"currencyCode":"USD","units":"29","nanos":990000000})
+[07:13:49]: [32m  price now $29.99 (Play's conversion in 175 places); existing subscribers keep theirs[0m
+[07:13:50]:   P3D trial offer trial3d switched off (200)
+[07:13:50]: [32m  7-day free trial created[0m
+[07:13:51]: [32m  7-day free trial switched on[0m
+[07:13:51]: [32m--------------------------------------------------------[0m
+[07:13:51]: [32m--- tenzy_pro_month: $2.99 every P1M, P7D free trial ---[0m
+[07:13:51]: [32m--------------------------------------------------------[0m
+[07:13:51]:   Play's prices for 174 countries (US {"currencyCode":"USD","units":"2","nanos":990000000})
+[07:13:52]: [32m  created tenzy_pro_month with base plan monthly-p1m[0m
+[07:13:52]:   price already $2.99
+[07:13:53]: [32m  base plan monthly-p1m switched on[0m
+[07:13:54]: [32m  7-day free trial created[0m
+[07:13:54]: [32m  7-day free trial switched on[0m
+
++---------------------------------------+
+|           [32mfastlane summary[0m            |
++------+------------------+-------------+
+| Step | Action           | Time (in s) |
++------+------------------+-------------+
+| 1    | default_platform | 0           |
++------+------------------+-------------+
+
+[07:13:54]: [32mfastlane.tools finished successfully 🎉[0m
