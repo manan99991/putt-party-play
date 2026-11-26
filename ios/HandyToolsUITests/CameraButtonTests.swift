@@ -91,7 +91,10 @@ final class CameraButtonTests: XCTestCase {
     /// Brings a button on screen whichever way it lies (the Studio's page is long), then returns it.
     private func bring(_ app: XCUIApplication, _ id: String, _ file: StaticString = #filePath, _ line: UInt = #line) -> XCUIElement {
         let b = app.buttons[id].firstMatch
-        XCTAssertTrue(b.waitForExistence(timeout: 30), "no \(id) button — \(PromiseTests.onScreen(app))", file: file, line: line)
+        // A grid further down the page isn't made until it's scrolled to.
+        var looks = 0
+        while !b.waitForExistence(timeout: 4) && looks < 8 { app.swipeUp(); looks += 1 }
+        XCTAssertTrue(b.exists, "no \(id) button — \(PromiseTests.onScreen(app))", file: file, line: line)
         var swipes = 0
         while b.exists && !b.isHittable && swipes < 12 {
             if b.frame.midY < app.windows.firstMatch.frame.midY { app.swipeDown() } else { app.swipeUp() }

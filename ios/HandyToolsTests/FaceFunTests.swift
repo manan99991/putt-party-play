@@ -180,7 +180,8 @@ final class FaceFunTests: XCTestCase {
         // Stickers sit where they belong.
         for id in ["sunglasses", "heartglasses"] {
             let a = try XCTUnwrap(at[id])
-            XCTAssertGreaterThan(a.eyes, 40, "\(id) isn't on the eyes"); XCTAssertLessThan(a.mouth, 3, "\(id) reaches the mouth")
+            // Hearts cover less of the band across the eyes than square lenses do.
+            XCTAssertGreaterThan(a.eyes, id == "sunglasses" ? 40 : 25, "\(id) isn't on the eyes"); XCTAssertLessThan(a.mouth, 3, "\(id) reaches the mouth")
         }
         for id in ["crown", "partyhat", "bunny", "halo"] {
             let a = try XCTUnwrap(at[id])
@@ -232,8 +233,13 @@ final class FaceFunTests: XCTestCase {
             let k = min(1, 900 / max(src.extent.width, src.extent.height))
             src = src.transformed(by: CGAffineTransform(scaleX: k, y: k))
             src = src.transformed(by: CGAffineTransform(translationX: -src.extent.minX, y: -src.extent.minY)).cropped(to: CGRect(x: 0, y: 0, width: floor(src.extent.width), height: floor(src.extent.height)))
+            // The small picture itself, not a recipe that re-reads the full-size photo on every render (that ran the
+            // build machine out of room: its renderer gave up part-way and left blank pictures).
+            guard let small = ctx.createCGImage(src, from: src.extent) else { continue }
+            src = CIImage(cgImage: small)
             let found = FaceFun.faces(in: src)
             guard let f = found.first, f.width > src.extent.width * 0.12 else { continue }
+            print("VIDEOFX|facefun-real|photo\(tried + 1)|frame \(Int(src.extent.width))×\(Int(src.extent.height))|faces \(found.count)|width \(Int(f.width))|height \(Int(f.height))|eyes \(Int(f.eyeDistance))|roll \(String(format: "%.2f", f.roll))")
             tried += 1
             let frame = src.extent, before = pixels(src)
             XCTAssertGreaterThan(f.up.dy, 0.5, "photo \(tried): an upright face read as lying down")
@@ -252,7 +258,7 @@ final class FaceFunTests: XCTestCase {
                 let after = pixels(out)
                 let ms = Int(Date().timeIntervalSince(started) * 1000)
                 let onHead = change(before, after, in: head), far = change(before, after, in: corner)
-                print("VIDEOFX|facefun-real|photo\(tried)|\(e.id)|head=\(String(format: "%.1f", onHead))|corner=\(String(format: "%.1f", far))|\(ms)ms")
+                print("VIDEOFX|facefun-real|photo\(tried)|\(e.id)|faces=\(scene.faces.count)|head=\(String(format: "%.1f", onHead))|corner=\(String(format: "%.1f", far))|\(ms)ms")
                 XCTAssertEqual(out.extent, frame, "\(e.id) changed the picture's size")
                 if e.id == "longlegs" { continue }                 // needs a whole body in the shot; proved on the drawing
                 XCTAssertGreaterThan(onHead, 0.6, "photo \(tried): \(e.id) did nothing to the face")

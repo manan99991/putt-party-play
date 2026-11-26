@@ -218,13 +218,19 @@ enum FaceFun {
 
     /// The head drawn up taller above the brows, and narrowed to a point when `point` > 0.
     static func cone(_ img: CIImage, _ f: Face, stretch: CGFloat, point: CGFloat) -> CIImage {
-        let extent = img.extent
-        guard let k = coneKernel else {
+        guard coneKernel != nil else {
             return bulge(img, at: f.point(f.brow, up: f.height * 0.7), radii: CGSize(width: f.width * 0.6, height: f.height), angle: f.roll,
                          strength: CGVector(dx: -0.2, dy: stretch * 0.5))
         }
+        return drawnUp(img, from: f.brow, up: f.up, height: f.height * 0.98, halfWidth: f.width * 0.56, stretch: stretch, point: point)
+    }
+
+    /// The band `height` tall above `base` (along `up`, `halfWidth` either side) drawn `1 + stretch` times as tall.
+    static func drawnUp(_ img: CIImage, from base: CGPoint, up: CGVector, height: CGFloat, halfWidth: CGFloat, stretch: CGFloat, point: CGFloat = 0) -> CIImage {
+        let extent = img.extent
+        guard let k = coneKernel else { return img }
         return k.apply(extent: extent, roiCallback: { _, _ in extent }, image: img.clampedToExtent(), arguments: [
-            CIVector(cgPoint: f.brow), CIVector(x: f.up.dx, y: f.up.dy), f.height * 0.98, f.width * 0.56, stretch, point,
+            CIVector(cgPoint: base), CIVector(x: up.dx, y: up.dy), height, halfWidth, stretch, point,
         ])?.cropped(to: extent) ?? img
     }
 

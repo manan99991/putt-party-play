@@ -99,16 +99,16 @@ extension FaceFun {
                     let pulse = 0.75 + 0.25 * sin(tt * 4)
                     out = glow(out, at: e, radius: f.eyeDistance * 0.36, colour: CIColor(red: 0.2, green: 0.95, blue: 1), strength: pulse * s(0.6, 0.95))
                 }
-            case "glow": out = smoothSkin(out, f, s(0.4, 0.75))
+            case "glow": out = smoothSkin(out, f, s(0.3, 0.55))
             case "beautiful":
-                out = smoothSkin(out, f, s(0.35, 0.7))
+                out = smoothSkin(out, f, s(0.25, 0.5))
                 // Brighter eyes, a touch more colour on the lips.
                 let eyes = polyMask([f.eyePtsA, f.eyePtsB], grow: 1.25, feather: f.eyeDistance * 0.03, rect: around(f, rect))
                 out = blend(out.applyingFilter("CIExposureAdjust", parameters: [kCIInputEVKey: s(0.2, 0.42)]), over: out, mask: eyes)
                 let lips = polyMask([f.lips], grow: 1.0, feather: f.eyeDistance * 0.03, rect: around(f, rect))
                 out = blend(out.applyingFilter("CIColorControls", parameters: [kCIInputSaturationKey: s(1.25, 1.6)]), over: out, mask: dim(lips, 0.8))
             case "wholesome":
-                out = smoothSkin(out, f, s(0.25, 0.5))
+                out = smoothSkin(out, f, s(0.2, 0.4))
                 for c in [f.cheekA, f.cheekB] {
                     let p = CGPoint(x: c.x * 0.62 + f.nose.x * 0.38, y: c.y * 0.62 + f.nose.y * 0.38)
                     out = tint(out, at: p, radius: f.width * 0.2, colour: CIColor(red: 1, green: 0.42, blue: 0.5), strength: s(0.3, 0.5))
@@ -170,12 +170,12 @@ extension FaceFun {
         }
         // 3. The whole picture's mood, under the stickers.
         switch id {
-        case "glow": out = out.applyingFilter("CIBloom", parameters: [kCIInputRadiusKey: min(rect.width, rect.height) * 0.02, kCIInputIntensityKey: s(0.25, 0.6)]).cropped(to: rect)
+        case "glow": out = out.applyingFilter("CIBloom", parameters: [kCIInputRadiusKey: min(rect.width, rect.height) * 0.012, kCIInputIntensityKey: s(0.12, 0.3)]).cropped(to: rect)
         case "beautiful":
-            out = out.applyingFilter("CIBloom", parameters: [kCIInputRadiusKey: min(rect.width, rect.height) * 0.015, kCIInputIntensityKey: s(0.15, 0.35)]).cropped(to: rect)
+            out = out.applyingFilter("CIBloom", parameters: [kCIInputRadiusKey: min(rect.width, rect.height) * 0.01, kCIInputIntensityKey: s(0.06, 0.15)]).cropped(to: rect)
                 .applyingFilter("CIColorMatrix", parameters: warm(s(0.3, 0.6)))
         case "wholesome":
-            out = out.applyingFilter("CIBloom", parameters: [kCIInputRadiusKey: min(rect.width, rect.height) * 0.02, kCIInputIntensityKey: s(0.2, 0.45)]).cropped(to: rect)
+            out = out.applyingFilter("CIBloom", parameters: [kCIInputRadiusKey: min(rect.width, rect.height) * 0.01, kCIInputIntensityKey: s(0.08, 0.2)]).cropped(to: rect)
                 .applyingFilter("CIColorMatrix", parameters: warm(s(0.4, 0.8)))
         case "sunny":
             out = out.applyingFilter("CIColorMatrix", parameters: warm(s(0.9, 1.6)))
@@ -324,7 +324,7 @@ extension FaceFun {
     /// Smoother skin on one face: the skin's fine detail softened, its shape, eyes and mouth kept.
     static func smoothSkin(_ img: CIImage, _ f: Face, _ k: CGFloat) -> CIImage {
         let skin = faceMask(f, rect: around(f, img.extent), forehead: 0.5, holes: true, feather: 0.05)
-        let soft = img.clampedToExtent().applyingGaussianBlur(sigma: Double(max(1, f.width * 0.022))).cropped(to: img.extent)
+        let soft = img.clampedToExtent().applyingGaussianBlur(sigma: Double(max(1, f.width * 0.015))).cropped(to: img.extent)
         return blend(soft, over: img, mask: dim(skin, k))
     }
 
@@ -354,35 +354,20 @@ extension FaceFun {
         return band(img, line: CGPoint(x: rect.midX, y: floor), dir: CGVector(dx: 0, dy: 1), length: legs, k: k)
     }
 
-    /// A bald head: the hair that stands out round the head filled in from what's behind the person, then the top of
-    /// the head painted in the forehead's own colour, lit like a head and blended into the real forehead.
+    /// A bald head: the hair that stands out round the head is filled in from what's behind the person, then the
+    /// forehead's own skin is drawn up over the crown (real skin, with its own light), rounded off with a little shade.
     static func bald(_ img: CIImage, _ f: Face, person: CIImage?, index: Int, memory: Memory?) -> CIImage {
         let rect = img.extent, local = around(f, rect)
-        // The skin's colour on each side of the forehead, steadied over time so the head doesn't flicker.
-        func patch(_ across: CGFloat) -> CGRect {
-            let p = f.point(f.brow, up: f.height * 0.2, across: f.width * across), r = f.width * 0.07
-            return CGRect(x: p.x - r, y: p.y - r, width: 2 * r, height: 2 * r)
-        }
-        var left = average(img, in: patch(-0.16)), right = average(img, in: patch(0.16))
-        if let m = memory {
-            m.lock.lock()
-            if m.skin.count > index * 2 + 1 {
-                func l(_ o: CIColor, _ n: CIColor) -> CIColor { CIColor(red: n.red + (o.red - n.red) * 0.8, green: n.green + (o.green - n.green) * 0.8, blue: n.blue + (o.blue - n.blue) * 0.8) }
-                left = l(m.skin[index * 2], left); right = l(m.skin[index * 2 + 1], right)
-                m.skin[index * 2] = left; m.skin[index * 2 + 1] = right
-            } else if m.skin.count == index * 2 { m.skin += [left, right] }
-            m.lock.unlock()
-        }
         // The head's own shape (brow line at y = 0): an oval from the temples up over the crown.
         let rx = f.width * 0.54, cy = f.height * 0.1, ry = f.height * 0.72
         var out = img
         if let person {
-            // What's behind the person, spread in over where the person is.
+            // What's behind the person, spread in over the hair that stands out beyond the head.
             let behind = img.applyingFilter("CIBlendWithMask", parameters: [kCIInputBackgroundImageKey: CIImage.empty(), kCIInputMaskImageKey: person.applyingFilter("CIColorInvert")])
                 .cropped(to: rect)
             let spread = behind.applyingGaussianBlur(sigma: Double(f.width * 0.22)).cropped(to: rect).unpremultiplyingAlpha().settingAlphaOne(in: rect)
             let hair = faceShape(f, rect: local, feather: f.width * 0.03) { ctx in
-                ctx.clip(to: CGRect(x: -f.width * 2, y: f.height * 0.12, width: f.width * 4, height: f.height * 3))
+                ctx.clip(to: CGRect(x: -f.width * 2, y: -f.height * 0.25, width: f.width * 4, height: f.height * 3.5))
                 ctx.addEllipse(in: CGRect(x: -f.width * 1.0, y: cy - f.height * 1.25, width: f.width * 2.0, height: f.height * 2.5))
                 ctx.addEllipse(in: CGRect(x: -rx, y: cy - ry, width: 2 * rx, height: 2 * ry))
                 ctx.fillPath(using: .evenOdd)
@@ -390,18 +375,18 @@ extension FaceFun {
             let hairOnPerson = hair.applyingFilter("CIMultiplyCompositing", parameters: [kCIInputBackgroundImageKey: person]).cropped(to: rect)
             out = blend(spread, over: out, mask: hairOnPerson)
         }
-        // The dome: skin from one side's colour to the other's, a soft highlight, darker toward the rim.
-        let a0 = f.point(f.brow, across: -rx), a1 = f.point(f.brow, across: rx)
-        var dome = CIFilter(name: "CILinearGradient", parameters: ["inputPoint0": CIVector(cgPoint: a0), "inputPoint1": CIVector(cgPoint: a1),
-                                                                  "inputColor0": left, "inputColor1": right])?.outputImage?.cropped(to: rect) ?? CIImage(color: left).cropped(to: rect)
-        let crown = f.point(f.brow, up: cy + ry * 0.45, across: -rx * 0.25)
-        dome = glow(dome, at: crown, radius: rx * 0.9, colour: CIColor(red: 1, green: 0.97, blue: 0.92), strength: 0.2)
-        let rim = CIFilter(name: "CIRadialGradient", parameters: ["inputCenter": CIVector(cgPoint: f.point(f.brow, up: cy)), "inputRadius0": rx * 0.55, "inputRadius1": ry * 1.08,
-                                                                 "inputColor0": CIColor(red: 1, green: 1, blue: 1), "inputColor1": CIColor(red: 0.74, green: 0.72, blue: 0.72)])?.outputImage?.cropped(to: rect)
-        if let rim { dome = rim.applyingFilter("CIMultiplyCompositing", parameters: [kCIInputBackgroundImageKey: dome]).cropped(to: rect) }
-        let cap = faceShape(f, rect: local, feather: f.width * 0.035) { ctx in
-            // From a little above the brows (so the real forehead shows) up over the crown.
-            ctx.clip(to: CGRect(x: -f.width * 2, y: f.height * 0.3, width: f.width * 4, height: f.height * 3))
+        // The strip of forehead just above the brows, drawn up to the top of the head.
+        let strip = f.height * 0.2, from = f.height * 0.05
+        let skin = drawnUp(out, from: f.point(f.brow, up: from), up: f.up, height: strip, halfWidth: rx * 1.1, stretch: (cy + ry - from) / strip - 1)
+        // Rounder: a touch darker toward the rim, a soft highlight on the crown.
+        var dome = skin
+        if let rim = CIFilter(name: "CIRadialGradient", parameters: ["inputCenter": CIVector(cgPoint: f.point(f.brow, up: cy + ry * 0.2)), "inputRadius0": rx * 0.5, "inputRadius1": ry * 1.05,
+                                                                    "inputColor0": CIColor(red: 1, green: 1, blue: 1), "inputColor1": CIColor(red: 0.8, green: 0.78, blue: 0.78)])?.outputImage?.cropped(to: rect) {
+            dome = rim.applyingFilter("CIMultiplyCompositing", parameters: [kCIInputBackgroundImageKey: dome]).cropped(to: rect)
+        }
+        dome = glow(dome, at: f.point(f.brow, up: cy + ry * 0.5, across: -rx * 0.25), radius: rx * 0.7, colour: CIColor(red: 1, green: 0.98, blue: 0.95), strength: 0.16)
+        let cap = faceShape(f, rect: local, feather: f.width * 0.025) { ctx in
+            ctx.clip(to: CGRect(x: -f.width * 2, y: from + strip * 0.5, width: f.width * 4, height: f.height * 3))
             ctx.fillEllipse(in: CGRect(x: -rx, y: cy - ry, width: 2 * rx, height: 2 * ry))
         }
         return blend(dome, over: out, mask: cap)
