@@ -20,224 +20,79 @@ Fetching from https://github.com/tsolomko/SWCompression
 
 Fetching from https://github.com/tsolomko/BitByteData
 
-Fetching from https://github.com/vector-im/ogg-swift.git
-
 Fetching from https://github.com/vector-im/opus-swift
 
-Creating working copy of package ‘opus-swift’
-
-Checking out 0.8.4 of package ‘opus-swift’
+Fetching from https://github.com/vector-im/ogg-swift.git
 
 Creating working copy of package ‘ogg-swift’
 
 Checking out 0.8.3 of package ‘ogg-swift’
 
+Creating working copy of package ‘opus-swift’
+
+Checking out 0.8.4 of package ‘opus-swift’
+
 Creating working copy of package ‘swift-ogg’
 
 Checking out main (a00a22b) of package ‘swift-ogg’
-
-Creating working copy of package ‘SWCompression’
-
-Checking out 4.8.6 of package ‘SWCompression’
 
 Creating working copy of package ‘BitByteData’
 
 Checking out 2.0.4 of package ‘BitByteData’
 
-2026-11-25 22:38:56.964 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (40mm) (59D98431-6DC6-4BA6-90DE-5EA5F59715D1) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm: SimDeviceType : Apple Watch SE 3 (40mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bca030000>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.964 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (40mm) (59D98431-6DC6-4BA6-90DE-5EA5F59715D1) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm: SimDeviceType : Apple Watch SE 3 (40mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bca030000>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.964 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (44mm) (9DC4C83D-BC52-420A-AAA0-35DBBCE62ECA) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm: SimDeviceType : Apple Watch SE 3 (44mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23e00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.964 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (44mm) (9DC4C83D-BC52-420A-AAA0-35DBBCE62ECA) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm: SimDeviceType : Apple Watch SE 3 (44mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23e00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.964 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (42mm) (0F2F315B-5869-49D4-A5C9-42A5585869D7) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm: SimDeviceType : Apple Watch Series 12 (42mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23a00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.964 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (42mm) (0F2F315B-5869-49D4-A5C9-42A5585869D7) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm: SimDeviceType : Apple Watch Series 12 (42mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23a00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.965 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (46mm) (CD8A490F-5B2C-485E-8F11-CD8596FA4AAE) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm: SimDeviceType : Apple Watch Series 12 (46mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23800>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.965 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (46mm) (CD8A490F-5B2C-485E-8F11-CD8596FA4AAE) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm: SimDeviceType : Apple Watch Series 12 (46mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23800>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.965 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Ultra 4 (49mm) (BCB3C139-0F79-47D8-BCF2-5D39AA0D1C00) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm: SimDeviceType : Apple Watch Ultra 4 (49mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23c00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.965 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Ultra 4 (49mm) (BCB3C139-0F79-47D8-BCF2-5D39AA0D1C00) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm: SimDeviceType : Apple Watch Ultra 4 (49mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23c00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.972 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (40mm) (59D98431-6DC6-4BA6-90DE-5EA5F59715D1) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm: SimDeviceType : Apple Watch SE 3 (40mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bca030000>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.972 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (40mm) (59D98431-6DC6-4BA6-90DE-5EA5F59715D1) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm: SimDeviceType : Apple Watch SE 3 (40mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bca030000>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.972 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (44mm) (9DC4C83D-BC52-420A-AAA0-35DBBCE62ECA) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm: SimDeviceType : Apple Watch SE 3 (44mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23e00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.972 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (44mm) (9DC4C83D-BC52-420A-AAA0-35DBBCE62ECA) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm: SimDeviceType : Apple Watch SE 3 (44mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23e00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.972 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (42mm) (0F2F315B-5869-49D4-A5C9-42A5585869D7) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm: SimDeviceType : Apple Watch Series 12 (42mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23a00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.972 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (42mm) (0F2F315B-5869-49D4-A5C9-42A5585869D7) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm: SimDeviceType : Apple Watch Series 12 (42mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23a00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.972 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (46mm) (CD8A490F-5B2C-485E-8F11-CD8596FA4AAE) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm: SimDeviceType : Apple Watch Series 12 (46mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23800>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.972 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (46mm) (CD8A490F-5B2C-485E-8F11-CD8596FA4AAE) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm: SimDeviceType : Apple Watch Series 12 (46mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23800>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.973 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Ultra 4 (49mm) (BCB3C139-0F79-47D8-BCF2-5D39AA0D1C00) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm: SimDeviceType : Apple Watch Ultra 4 (49mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23c00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
-2026-11-25 22:38:56.973 xcodebuild[2426:10950] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
-Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Ultra 4 (49mm) (BCB3C139-0F79-47D8-BCF2-5D39AA0D1C00) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm: SimDeviceType : Apple Watch Ultra 4 (49mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
-)
-Object:   <DVTiPhoneSimulator: 0x7bc9a23c00>
-Method:   -nativeArchitecture
-Thread:   <_NSMainThread: 0x101744df0>{number = 1, name = main}
-Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+Creating working copy of package ‘SWCompression’
+
+Checking out 4.8.6 of package ‘SWCompression’
+
 
 Resolved source packages:
-  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
-  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
-  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
-  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
-  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
   BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
+  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
+  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
   YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
+  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
+  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
 
-resolved source packages: StbVorbis, YbridOpus, Unrar, SWCompression, SwiftOGG, BitByteData, YbridOgg
+resolved source packages: BitByteData, SwiftOGG, StbVorbis, YbridOgg, Unrar, YbridOpus, SWCompression
 == build.log (errors)
-2026-11-25 22:50:02.682356+0000 HandyTools[14268:45856] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
-2026-11-25 22:52:56.025003+0000 HandyTools[14268:59442] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10982a300> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10982a300> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-25 22:53:48.427838+0000 HandyTools[14268:59600] [Context] [PREFLIGHTING] context 0x1297cdb60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
-2026-11-25 22:53:48.587992+0000 HandyTools[14268:59441] [Context] [PREFLIGHTING] context 0x1297cdb60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-25 22:55:16.110344+0000 HandyTools[14268:62441] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109a3f980> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109a3f980> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-25 22:55:18.601273+0000 HandyTools[14268:64068] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109a3f840> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109a3f840> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-25 22:55:18.790945+0000 HandyTools[14268:64068] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109a3ff20> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109a3ff20> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-25 22:55:18.845225+0000 HandyTools[14268:64067] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109a3ff20> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109a3ff20> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-25 22:55:18.899452+0000 HandyTools[14268:64067] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109a3fd40> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109a3fd40> connection from pid 14268 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-25 22:55:21.680187+0000 HandyTools[14268:64068] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 22:55:21.710495+0000 HandyTools[14268:59600] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 22:55:21.752340+0000 HandyTools[14268:60748] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequest2026-11-25 22:55:22.051375+0000 HandyTools[14268:64067] Lexicon creation for es_ES failed: Error Domain=com.apple.Lexicon.ErrorDomain Code=0 "Could not determine the location of the base unigrams file, or one was not provided." UserInfo={NSLocalizedDescription=Could not determine the location of the base unigrams file, or one was not provided.}
-2026-11-25 22:55:22.463944+0000 HandyTools[14268:64067] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:3400: error: -[HandyToolsTests.EngineTests testRingtoneClampsToThirtySecondsAndCutsFromStart] : failed - ringtone export failed
-2026-11-25 22:58:39.586461+0000 HandyTools[14268:76117] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 22:59:37.785905+0000 HandyTools[14268:77153] [Context] [PREFLIGHTING] context 0x1297cdb60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-25 22:59:38.064911+0000 HandyTools[14268:70950] [Context] [PREFLIGHTING] context 0x1297cdb60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-25 22:59:38.427597+0000 HandyTools[14268:76117] [Context] [PREFLIGHTING] context 0x1297cdb60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-25 22:59:38.679796+0000 HandyTools[14268:77049] [Context] [PREFLIGHTING] context 0x1297cdb60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-25 22:59:39.063613+0000 HandyTools[14268:75157] [Context] [PREFLIGHTING] context 0x1297cdb60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-25 22:59:39.355744+0000 HandyTools[14268:75157] [Context] [PREFLIGHTING] context 0x1297cdb60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-25 22:59:39.758146+0000 HandyTools[14268:76117] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 22:59:39.773658+0000 HandyTools[14268:76117] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAsTest Case '-[HandyToolsTests.EngineTests testTextToolsFixSummarizeActionsStats]' passed (0.258 seconds).
-ith error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.500397+0000 HandyTools[14268:84427] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.663776+0000 HandyTools[14268:78737] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.681516+0000 HandyTools[14268:77049] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.761756+0000 HandyTools[14268:77049] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.772228+0000 HandyTools[14268:84427] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.793772+0000 HandyTools[14268:84391] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.811810+0000 HandyTools[14268:84427] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.827313+0000 HandyTools[14268:77049] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.851452+0000 HandyTools[14268:84391] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.879976+0000 HandyTools[14268:77049] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.895875+0000 HandyTools[14268:84427] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.914897+0000 HandyTools[14268:84391] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.944224+0000 HandyTools[14268:78737] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.974189+0000 HandyTools[14268:77049] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:39.991685+0000 HandyTools[14268:77049] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:40.024001+0000 HandyTools[14268:84391] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:40.027550+0000 HandyTools[14268:78737] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:40.030906+0000 HandyTools[14268:84391] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-25 23:00:45.804298+0000 HandyTools[14268:77153] [Context] [PREFLIGHTING] context 0x1297cdb60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-25 23:00:45.981005+0000 HandyTools[14268:84391] [Context] [PREFLIGHTING] context 0x1297cdb60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-25 23:01:15.809261+0000 HandyTools[14268:84568] [Context] [PREFLIGHTING] context 0x1297cdb60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:13:26.012094+0000 HandyTools[14602:50272] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
+2026-11-25 23:15:52.613952+0000 HandyTools[14602:62939] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e05a0> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e05a0> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-25 23:15:52.636200+0000 HandyTools[14602:63059] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e0000> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e0000> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-25 23:19:23.330482+0000 HandyTools[14602:71724] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
+2026-11-25 23:19:23.403095+0000 HandyTools[14602:68946] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:21:16.859685+0000 HandyTools[14602:71723] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10613fde0> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10613fde0> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-25 23:21:19.129421+0000 HandyTools[14602:73045] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e1a40> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e1a40> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-25 23:21:19.267579+0000 HandyTools[14602:73074] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e3520> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e3520> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-25 23:21:19.295845+0000 HandyTools[14602:73074] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e01e0> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e01e0> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-25 23:21:19.395014+0000 HandyTools[14602:73074] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e3520> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1097e3520> connection from pid 14602 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-25 23:21:20.640911+0000 HandyTools[14602:73058] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-25 23:21:20.691211+0000 HandyTools[14602:63111] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-25 23:21:20.703112+0000 HandyTools[14602:77233] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-25 23:22:52.815624+0000 HandyTools[14602:81546] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:22:53.136670+0000 HandyTools[14602:84516] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:22:53.444889+0000 HandyTools[14602:63111] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:22:53.748577+0000 HandyTools[14602:63111] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:22:54.186646+0000 HandyTools[14602:84516] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:22:54.479907+0000 HandyTools[14602:63111] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:23:32.439120+0000 HandyTools[14602:84894] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:23:32.746819+0000 HandyTools[14602:88092] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:24:04.990194+0000 HandyTools[14602:88091] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:24:31.610943+0000 HandyTools[14602:96456] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-25 23:25:36.909016+0000 HandyTools[14602:97347] [Context] [PREFLIGHTING] context 0x13037aca0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:492: error: -[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses] : XCTAssertTrue failed - Contacts finder didn't show (is contacts access granted?)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:493: error: -[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses] : Failed to tap "find-hasPhone" Button: No matches found for Elements matching predicate '"find-hasPhone" IN identifiers' from input {(
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:688: error: -[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame] : XCTAssertTrue failed - the test clip never reached the photo library
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:696: error: -[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame] : XCTAssertTrue failed - no smaller copy was made: no message
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:698: error: -[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame] : Failed to tap "smartrun-check-heavyVideos" Any: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"smartrun-check-heavyVideos" IN identifiers'`, given input App element pid: 71109
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:622: error: -[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet] : XCTAssertTrue failed - the receipts autorun didn't switch on
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:627: error: -[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet] : XCTAssertTrue failed - Test run didn't find today's receipt photo
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:628: error: -[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet] : Failed to tap "smartrun-check-receipts" Any: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"smartrun-check-receipts" IN identifiers'`, given input App element pid: 40845
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:718: error: -[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral] : XCTAssertTrue failed - the photo grid didn't open
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:579: error: -[HandyToolsUITests.PromiseTests testTappingNearAPhotosEdgePicksThatPhoto] : XCTAssertTrue failed - the photo grid didn't open
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:582: error: -[HandyToolsUITests.PromiseTests testTappingNearAPhotosEdgePicksThatPhoto] : XCTAssertGreaterThanOrEqual failed: ("0") is less than ("6") - the six tall pictures should be on screen
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolFlowTests.swift:48: error: -[HandyToolsUITests.ToolFlowTests testDataGrabberParsesSampleReceipt] : XCTAssertTrue failed - csv export never appeared
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolFlowTests.swift:48: error: -[HandyToolsUITests.ToolFlowTests testRestPlaysSoundsSetsTimerAndShowsRecorder] : XCTAssertTrue failed - recorder never appeared
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolFlowTests.swift:48: error: -[HandyToolsUITests.ToolFlowTests testSortedExtractsBillDetails] : XCTAssertTrue failed - amount extracted never appeared
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolFlowTests.swift:48: error: -[HandyToolsUITests.ToolFlowTests testStudioCutsOutResizesAndConverts] : XCTAssertTrue failed - cut out button never appeared
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolFlowTests.swift:110: error: -[HandyToolsUITests.ToolFlowTests testVideoTrimsAndShrinksSampleClip] : XCTAssertTrue failed - trim sliders
