@@ -95,28 +95,26 @@ enum BeatReel {
         let ts: (Double) -> CMTime = { CMTime(seconds: $0, preferredTimescale: 6000) }
         var at = 0.0
         var shapes: [(at: Double, transform: CGAffineTransform)] = []
-        for c in cuts where srcs.indices.contains(c.clip) {
+        for (i, c) in cuts.enumerated() {
+            guard srcs.indices.contains(c.clip) else { continue }
             let src = srcs[c.clip]
+            // The last shot carries on, slowing, while the final hit rings (as on Android). A single held frame
+            // stretched to the ring-out left the reel empty on the test machine (26 Nov).
+            let lasts = c.lasts + (i == cuts.count - 1 ? hold : 0)
             do { try cv.insertTimeRange(CMTimeRange(start: ts(c.from), duration: ts(c.length)), of: src.track, at: ts(at)) }
             catch { print("REEL| cut \(c.clip) at \(c.from)s couldn't be inserted: \(error.localizedDescription)"); continue }
-            if abs(c.lasts - c.length) > 0.01 { cv.scaleTimeRange(CMTimeRange(start: ts(at), duration: ts(c.length)), toDuration: ts(c.lasts)) }
+            if abs(lasts - c.length) > 0.01 { cv.scaleTimeRange(CMTimeRange(start: ts(at), duration: ts(c.length)), toDuration: ts(lasts)) }
             shapes.append((at, fill(natural: src.natural, transform: src.transform)))
-            at += c.lasts
+            at += lasts
         }
         guard at > 0 else { print("REEL| nothing could be cut from \(srcs.count) clips"); return nil }
-        // The last shot holds while the music's final hit rings out.
-        if hold > 0, let last = cuts.last, srcs.indices.contains(last.clip) {
-            let src = srcs[last.clip], end = max(0, last.from + last.length - 1.0 / 30)
-            if (try? cv.insertTimeRange(CMTimeRange(start: ts(end), duration: ts(1.0 / 30)), of: src.track, at: ts(at))) != nil {
-                cv.scaleTimeRange(CMTimeRange(start: ts(at), duration: ts(1.0 / 30)), toDuration: ts(hold))
-                at += hold
-            }
-        }
+        // Where the picture really ends (the sum of rounded pieces), so the sound never runs past it.
+        let pictureEnd = cv.timeRange.duration.seconds
         // The sound, as long as the picture.
         if let mu = Synth.file(audio, name: "cut-sound"),
            let mt = try? await AVURLAsset(url: mu).loadTracks(withMediaType: .audio).first,
            let ca = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
-            try? ca.insertTimeRange(CMTimeRange(start: .zero, duration: ts(min(at, Double(audio.count) / Synth.rate))), of: mt, at: .zero)
+            try? ca.insertTimeRange(CMTimeRange(start: .zero, duration: ts(min(pictureEnd, Double(audio.count) / Synth.rate))), of: mt, at: .zero)
         }
 
         // Every clip upright and filling the tall frame.

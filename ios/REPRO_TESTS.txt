@@ -1,10 +1,6 @@
-# 26 Nov, before the TestFlight build, round 3. Round 2 passed the music and sound effects, Funny Moments end to end,
-# the reminder sentences, the how-to films, the catalog, the trailer's timing/score/cards and its narrator, and the
-# real-photo background test. It failed Beat Reel and the trailer (both empty: a track doesn't keep its asset, and the
-# edit dropped the asset — now kept, with REEL| lines at every failure point) and the stretchy face (it bent a band
-# across the whole frame — now kept to a circle round the face). Those, again, unit and end to end.
+# 26 Nov, before the TestFlight build, round 4. Round 3 passed the trailer (made for real, and end to end from a
+# recorded clip) and the stretchy face. Beat Reel still came out empty — the one thing it did that the trailer
+# didn't was hold a single last frame stretched to the ring-out; the last shot now slows into it instead (as on
+# Android, where it works on the device). REEL| lines now reach the published log.
 HandyToolsTests/BeatReelTests
-HandyToolsTests/TrailerTests
-HandyToolsTests/VideoFunTests
 HandyToolsUITests/CameraButtonTests/testBeatReelRecordsAClipAndCutsAReel
-HandyToolsUITests/CameraButtonTests/testMovieTrailerRecordsAClipAndMakesATrailer
