@@ -45,19 +45,12 @@ struct CleanerView: View {
     }
 
     private var all: [PhotoCleaner.Item] { cat == .duplicates ? groups.flatMap { $0 } : items }
-    /// What a delete would remove. In Duplicates one copy of every picture always stays, even if every copy is ticked
-    /// (26 Nov: "Select all" ticked both copies and "Delete 2" would have removed the picture altogether).
-    private var selectedItems: [PhotoCleaner.Item] {
-        let picked = all.filter { selected.contains($0.id) }
-        guard cat == .duplicates else { return picked }
-        let kept = Set(groups.filter { g in g.allSatisfy { selected.contains($0.id) } }.compactMap { $0.first?.id })
-        return picked.filter { !kept.contains($0.id) }
-    }
-    /// Every extra copy (the first of each group is the one kept).
-    private var dupExtraIDs: Set<String> { Set(groups.flatMap { $0.dropFirst() }.map(\.id)) }
+    /// What a delete removes: exactly what's ticked. Tenzy suggests the extra copies; ticking every copy of a picture
+    /// deletes every copy (Manan, 26 Nov: "they can delete every copy if they decide to choose all the copies").
+    private var selectedItems: [PhotoCleaner.Item] { all.filter { selected.contains($0.id) } }
     private var reclaim: Int64 { selectedItems.reduce(Int64(0)) { $0 + $1.bytes } }
     private var totalBytes: Int64 { all.reduce(Int64(0)) { $0 + $1.bytes } }
-    private var allSelected: Bool { cat == .duplicates ? (!groups.isEmpty && dupExtraIDs.isSubset(of: selected)) : (!all.isEmpty && selected.count == all.count) }
+    private var allSelected: Bool { !all.isEmpty && selected.count == all.count }
 
     // MARK: body
 
@@ -306,7 +299,7 @@ struct CleanerView: View {
                 if cat == .duplicates {
                     Text(checkedLine).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
                     ForEach(Array(sortedGroups.enumerated()), id: \.offset) { _, g in
-                        Text(String(format: L("%d copies · one is kept"), g.count)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+                        Text(String(format: L("%d copies · keep one"), g.count)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
                         grid(g)
                     }
                 } else {
@@ -328,17 +321,13 @@ struct CleanerView: View {
             HStack(spacing: HandySpacing.s16) {
                 Button(selecting ? "Done" : "Select") { selecting.toggle() }.textButton()
                 Button(allSelected ? "Deselect all" : "Select all") {
-                    selected = allSelected ? [] : (cat == .duplicates ? dupExtraIDs : Set(all.map { $0.id }))
+                    selected = allSelected ? [] : Set(all.map { $0.id })
                 }.textButton()
                 Spacer()
                 Text("\(selectedItems.count) \(L("selected"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
             if selecting {
                 Text(L("Drag across photos to select or deselect a whole run."))
-                    .font(HandyFont.micro).foregroundStyle(HandyColor.accent).frame(maxWidth: .infinity, alignment: .leading)
-            }
-            if cat == .duplicates, groups.contains(where: { g in g.allSatisfy { selected.contains($0.id) } }) {
-                Text(L("One copy of each picture is always kept."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.accent).frame(maxWidth: .infinity, alignment: .leading)
             }
             Button { deleteSelected() } label: {

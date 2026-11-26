@@ -51258,5 +51258,15 @@
   "ja": "重複したコピーは見つかりませんでした。",
   "pt": "Nenhuma cópia duplicada encontrada.",
   "zh": "未发现重复的副本。"
+ },
+ "%d copies · keep one": {
+  "de": "%d Kopien · eine behalten",
+  "es": "%d copias · conserva una",
+  "fr": "%d copies · gardez-en une",
+  "hi": "%d कॉपियाँ · एक रखें",
+  "it": "%d copie · tienine una",
+  "ja": "%d 件のコピー・1件を残す",
+  "pt": "%d cópias · fique com uma",
+  "zh": "%d 份副本 · 保留一份"
  }
 }
