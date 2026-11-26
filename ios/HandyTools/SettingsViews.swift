@@ -139,6 +139,7 @@ struct SettingsView: View {
     @State private var showAbout = false
     @State private var showDiagnostics = false
     @State private var showGuide = false
+    @State private var showHowTo = false
     @State private var themesOpen = false
     @State private var devTaps = 0
     @AppStorage("tenzy.devUnlocked") private var devUnlocked = false
@@ -288,7 +289,10 @@ struct SettingsView: View {
                         SettingsRow(icon: "lock", title: "Privacy", sub: "What stays on your phone (everything)") { showPrivacy = true }
                     }
                     Section(L("Help")) {
-                        SettingsRow(icon: "book", title: "How Tenzy works", sub: "Build a tool that does the whole job, in three steps") { showGuide = true }
+                        SettingsRow(icon: "book", title: L("How Tenzy works"), sub: L("Build a helper that does the whole job, in three steps")) { showGuide = true }
+                        if !HowToVideo.available.isEmpty {
+                            SettingsRow(icon: "play.rectangle.fill", title: L("Watch how"), sub: L("Three short videos: say what you need, set an autorun, hand Tenzy a photo")) { showHowTo = true }
+                        }
                         SettingsRow(icon: "envelope", title: "Send feedback", sub: SUPPORT_EMAIL) {
                             UIApplication.shared.open(URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20iOS%20\(version)")!)
                         }
@@ -323,6 +327,7 @@ struct SettingsView: View {
         .sheet(isPresented: $showSetup) { SetupView(onDone: { showSetup = false }).sheetCloseButton { showSetup = false } }
         .sheet(isPresented: $showPrivacy) { PrivacyView().sheetCloseButton { showPrivacy = false } }
         .sheet(isPresented: $showAbout) { AboutView().sheetCloseButton { showAbout = false } }
+        .sheet(isPresented: $showHowTo) { HowToVideosView() }
         .sheet(isPresented: $showGuide) {
             NavigationStack {
                 ScrollView {

@@ -50838,5 +50838,195 @@
   "ja": "すべて無制限。1日の上限なし。",
   "pt": "Tudo ilimitado. Sem limites diários.",
   "zh": "全部无限使用，没有每日限制。"
+ },
+ "Helpers": {
+  "de": "Helfer",
+  "es": "Asistentes",
+  "fr": "Assistants",
+  "hi": "हेल्पर",
+  "it": "Aiutanti",
+  "ja": "ヘルパー",
+  "pt": "Ajudantes",
+  "zh": "助手"
+ },
+ "1 helper": {
+  "de": "1 Helfer",
+  "es": "1 asistente",
+  "fr": "1 assistant",
+  "hi": "1 हेल्पर",
+  "it": "1 aiutante",
+  "ja": "ヘルパー1個",
+  "pt": "1 ajudante",
+  "zh": "1 个助手"
+ },
+ "%d helpers": {
+  "de": "%d Helfer",
+  "es": "%d asistentes",
+  "fr": "%d assistants",
+  "hi": "%d हेल्पर",
+  "it": "%d aiutanti",
+  "ja": "ヘルパー%d個",
+  "pt": "%d ajudantes",
+  "zh": "%d 个助手"
+ },
+ "Every helper, by what it works on. All on your phone.": {
+  "de": "Jeder Helfer, sortiert nach dem, womit er arbeitet. Alles auf deinem Handy.",
+  "es": "Cada asistente, según con qué trabaja. Todo en tu teléfono.",
+  "fr": "Chaque assistant, selon ce sur quoi il travaille. Tout sur ton téléphone.",
+  "hi": "हर हेल्पर, जिस चीज़ पर वह काम करता है उसके हिसाब से। सब आपके फ़ोन पर।",
+  "it": "Ogni aiutante, in base a ciò su cui lavora. Tutto sul telefono.",
+  "ja": "扱うものごとに、すべてのヘルパー。すべてスマホの中で。",
+  "pt": "Cada ajudante, pelo que ele trabalha. Tudo no seu celular.",
+  "zh": "按处理对象排列的全部助手，全部在手机上完成。"
+ },
+ "Find a helper — e.g. sign, shrink, translate": {
+  "de": "Helfer finden – z. B. unterschreiben, verkleinern, übersetzen",
+  "es": "Buscar un asistente: p. ej. firmar, reducir, traducir",
+  "fr": "Trouver un assistant — ex. signer, réduire, traduire",
+  "hi": "हेल्पर खोजें — जैसे साइन, छोटा करें, अनुवाद",
+  "it": "Trova un aiutante — es. firma, riduci, traduci",
+  "ja": "ヘルパーを探す（例：署名、縮小、翻訳）",
+  "pt": "Encontre um ajudante — ex.: assinar, reduzir, traduzir",
+  "zh": "查找助手——例如签名、压缩、翻译"
+ },
+ "No helper by that name. Try a word for what you want done — shrink, sign, scan, translate — or make your own below.": {
+  "de": "Kein Helfer mit diesem Namen. Versuch ein Wort für das, was erledigt werden soll – verkleinern, unterschreiben, scannen, übersetzen – oder bau unten deinen eigenen.",
+  "es": "Ningún asistente con ese nombre. Prueba con lo que quieres hacer (reducir, firmar, escanear, traducir) o crea el tuyo abajo.",
+  "fr": "Aucun assistant de ce nom. Essaie un mot pour ce que tu veux faire — réduire, signer, scanner, traduire — ou crée le tien ci-dessous.",
+  "hi": "इस नाम का कोई हेल्पर नहीं। जो काम करना है उसका शब्द लिखें — छोटा करें, साइन, स्कैन, अनुवाद — या नीचे अपना बनाएँ।",
+  "it": "Nessun aiutante con questo nome. Prova una parola per ciò che vuoi fare — riduci, firma, scansiona, traduci — o creane uno qui sotto.",
+  "ja": "その名前のヘルパーはありません。したいことの言葉（縮小、署名、スキャン、翻訳など）で探すか、下で自分で作りましょう。",
+  "pt": "Nenhum ajudante com esse nome. Tente uma palavra para o que quer fazer — reduzir, assinar, digitalizar, traduzir — ou crie o seu abaixo.",
+  "zh": "没有这个名称的助手。试试描述你想做的事——压缩、签名、扫描、翻译——或在下方自己创建一个。"
+ },
+ "Ready-made helpers": {
+  "de": "Fertige Helfer",
+  "es": "Asistentes ya hechos",
+  "fr": "Assistants prêts à l'emploi",
+  "hi": "तैयार हेल्पर",
+  "it": "Aiutanti già pronti",
+  "ja": "既製のヘルパー",
+  "pt": "Ajudantes prontos",
+  "zh": "现成助手"
+ },
+ "Done in one tap — pick a section to see them.": {
+  "de": "Mit einem Tipp erledigt – wähl einen Bereich, um sie zu sehen.",
+  "es": "Listos con un toque: elige una sección para verlos.",
+  "fr": "Faits en un geste — choisis une section pour les voir.",
+  "hi": "एक टैप में काम — देखने के लिए कोई सेक्शन चुनें।",
+  "it": "Fatto con un tocco — scegli una sezione per vederli.",
+  "ja": "ワンタップで完了。セクションを選ぶと表示されます。",
+  "pt": "Feito com um toque — escolha uma seção para vê-los.",
+  "zh": "一键完成——选择一个分区查看。"
+ },
+ "Make your own": {
+  "de": "Eigenen bauen",
+  "es": "Crea el tuyo",
+  "fr": "Crée le tien",
+  "hi": "अपना बनाएँ",
+  "it": "Crea il tuo",
+  "ja": "自分で作る",
+  "pt": "Crie o seu",
+  "zh": "自己创建"
+ },
+ "Didn't find it? Say what you need and Tenzy puts the steps together.": {
+  "de": "Nicht gefunden? Sag, was du brauchst, und Tenzy stellt die Schritte zusammen.",
+  "es": "¿No lo encontraste? Di lo que necesitas y Tenzy arma los pasos.",
+  "fr": "Pas trouvé ? Dis ce dont tu as besoin et Tenzy assemble les étapes.",
+  "hi": "नहीं मिला? बताइए आपको क्या चाहिए, Tenzy सारे स्टेप जोड़ देगा।",
+  "it": "Non l'hai trovato? Di' cosa ti serve e Tenzy mette insieme i passaggi.",
+  "ja": "見つからない？必要なことを言えば、Tenzyが手順を組み立てます。",
+  "pt": "Não encontrou? Diga o que precisa e o Tenzy monta as etapas.",
+  "zh": "没找到？说出你的需要，Tenzy 会帮你组好步骤。"
+ },
+ "Watch how": {
+  "de": "So geht's",
+  "es": "Mira cómo",
+  "fr": "Voir comment",
+  "hi": "देखें कैसे",
+  "it": "Guarda come",
+  "ja": "使い方を見る",
+  "pt": "Veja como",
+  "zh": "观看演示"
+ },
+ "Three short videos: say what you need, set an autorun, hand Tenzy a photo": {
+  "de": "Drei kurze Videos: sag, was du brauchst, richte einen Autorun ein, gib Tenzy ein Foto",
+  "es": "Tres videos cortos: di lo que necesitas, configura un autorun, dale una foto a Tenzy",
+  "fr": "Trois courtes vidéos : dis ce dont tu as besoin, règle un autorun, donne une photo à Tenzy",
+  "hi": "तीन छोटे वीडियो: बताइए क्या चाहिए, ऑटोरन सेट करें, Tenzy को एक फ़ोटो दें",
+  "it": "Tre brevi video: di' cosa ti serve, imposta un autorun, dai una foto a Tenzy",
+  "ja": "3本の短い動画：必要なことを言う、オートランを設定、Tenzyに写真を渡す",
+  "pt": "Três vídeos curtos: diga o que precisa, defina um autorun, dê uma foto ao Tenzy",
+  "zh": "三个短视频：说出需求、设置自动运行、把照片交给 Tenzy"
+ },
+ "Three short videos, filmed in Tenzy itself. Tap one to watch.": {
+  "de": "Drei kurze Videos, direkt in Tenzy gefilmt. Tippe eins an, um es anzusehen.",
+  "es": "Tres videos cortos, grabados en el propio Tenzy. Toca uno para verlo.",
+  "fr": "Trois courtes vidéos, filmées dans Tenzy. Touche-en une pour la regarder.",
+  "hi": "तीन छोटे वीडियो, Tenzy में ही रिकॉर्ड किए गए। देखने के लिए किसी पर टैप करें।",
+  "it": "Tre brevi video, girati dentro Tenzy. Toccane uno per guardarlo.",
+  "ja": "Tenzyの中で撮影した3本の短い動画です。タップして再生します。",
+  "pt": "Três vídeos curtos, gravados no próprio Tenzy. Toque em um para assistir.",
+  "zh": "三个在 Tenzy 中录制的短视频。点按即可观看。"
+ },
+ "Build a helper that does the whole job, in three steps": {
+  "de": "Bau in drei Schritten einen Helfer, der die ganze Arbeit erledigt",
+  "es": "Crea en tres pasos un asistente que haga todo el trabajo",
+  "fr": "Crée en trois étapes un assistant qui fait tout le travail",
+  "hi": "तीन स्टेप में ऐसा हेल्पर बनाएँ जो पूरा काम करे",
+  "it": "Crea in tre passaggi un aiutante che fa tutto il lavoro",
+  "ja": "3ステップで、仕事をまるごとこなすヘルパーを作る",
+  "pt": "Crie em três passos um ajudante que faz o trabalho todo",
+  "zh": "三步创建一个能完成整件事的助手"
+ },
+ "Say what you need": {
+  "de": "Sag, was du brauchst",
+  "es": "Di lo que necesitas",
+  "fr": "Dis ce dont tu as besoin",
+  "hi": "बताइए क्या चाहिए",
+  "it": "Di' cosa ti serve",
+  "ja": "必要なことを言う",
+  "pt": "Diga o que precisa",
+  "zh": "说出你的需要"
+ },
+ "One sentence in the ask box becomes a helper that does the whole job.": {
+  "de": "Ein Satz im Frage-Feld wird zu einem Helfer, der die ganze Arbeit erledigt.",
+  "es": "Una frase en el cuadro de preguntas se convierte en un asistente que hace todo el trabajo.",
+  "fr": "Une phrase dans la zone de demande devient un assistant qui fait tout le travail.",
+  "hi": "आस्क बॉक्स में एक वाक्य, पूरा काम करने वाला हेल्पर बन जाता है।",
+  "it": "Una frase nella casella delle richieste diventa un aiutante che fa tutto il lavoro.",
+  "ja": "入力欄の一文が、仕事をまるごとこなすヘルパーになります。",
+  "pt": "Uma frase na caixa de pedidos vira um ajudante que faz o trabalho todo.",
+  "zh": "在提问框里说一句话，就能变成完成整件事的助手。"
+ },
+ "Switch one on, tap Test run, and see what it found for you.": {
+  "de": "Schalte einen ein, tippe auf Probelauf und sieh, was er für dich gefunden hat.",
+  "es": "Activa uno, toca Prueba y mira lo que encontró para ti.",
+  "fr": "Active-en un, touche Essai et vois ce qu'il a trouvé pour toi.",
+  "hi": "एक चालू करें, टेस्ट रन पर टैप करें, और देखें उसने आपके लिए क्या ढूँढा।",
+  "it": "Attivane uno, tocca Prova e guarda cosa ha trovato per te.",
+  "ja": "オンにして「テスト実行」をタップすると、見つけたものが表示されます。",
+  "pt": "Ative um, toque em Teste e veja o que ele encontrou para você.",
+  "zh": "打开一个，点按“测试”，看看它为你找到了什么。"
+ },
+ "Got something? Hand it over": {
+  "de": "Etwas dabei? Gib es Tenzy",
+  "es": "¿Tienes algo? Dáselo",
+  "fr": "Tu as quelque chose ? Donne-le",
+  "hi": "कुछ है? Tenzy को दें",
+  "it": "Hai qualcosa? Passalo a Tenzy",
+  "ja": "何かある？Tenzyに渡そう",
+  "pt": "Tem algo? Entregue ao Tenzy",
+  "zh": "有东西？交给 Tenzy"
+ },
+ "Give Tenzy a photo and pick what you want done.": {
+  "de": "Gib Tenzy ein Foto und wähle, was damit passieren soll.",
+  "es": "Dale una foto a Tenzy y elige qué quieres hacer.",
+  "fr": "Donne une photo à Tenzy et choisis ce que tu veux en faire.",
+  "hi": "Tenzy को एक फ़ोटो दें और चुनें कि क्या करना है।",
+  "it": "Dai una foto a Tenzy e scegli cosa vuoi fare.",
+  "ja": "Tenzyに写真を渡して、やりたいことを選びます。",
+  "pt": "Dê uma foto ao Tenzy e escolha o que quer fazer.",
+  "zh": "给 Tenzy 一张照片，选择你想做的事。"
  }
 }

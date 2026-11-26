@@ -455,6 +455,7 @@ struct BuilderView: View {
     @State private var mine: [Chain] = ChainStore.load()
     @State private var editing: Chain?
     @State private var running: Chain?
+    @State private var flowSection: String?   // Home › See all: the section whose ready-made flows are showing
     @State private var note: String?
     /// Feedback shown inside the Templates sheet itself (the main `note` sits behind the sheet, unseen).
     @State private var pasteNote: String?
@@ -1110,10 +1111,10 @@ struct BuilderView: View {
                 }
                 .buttonStyle(.plain).accessibilityIdentifier("page-back")
             }
-            TabHero(title: "Tools", line: "Every tool, by what it works on. All on your phone.", symbol: "square.grid.2x2.fill") {
+            TabHero(title: "Helpers", line: "Every helper, by what it works on. All on your phone.", symbol: "square.grid.2x2.fill") {
                 HStack(spacing: 8) {
                     Image(systemName: "magnifyingglass").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.textSecondary).accessibilityHidden(true)
-                    TextField(L("Find a tool — e.g. sign, shrink, translate"), text: $findTool)
+                    TextField(L("Find a helper — e.g. sign, shrink, translate"), text: $findTool)
                         .font(HandyFont.body).autocorrectionDisabled().accessibilityIdentifier("tools-find")
                     if !findTool.isEmpty {
                         Button { findTool = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(HandyColor.textSecondary) }
@@ -1125,11 +1126,13 @@ struct BuilderView: View {
             }
             if q.isEmpty {
                 categoryGrid
+                readyMadeBySection
+                makeYourOwnBox
             } else {
                 let found = searchTools(q)
-                SectionLabel(text: found.count == 1 ? "1 tool" : "\(found.count) tools", icon: "magnifyingglass")
+                SectionLabel(text: found.count == 1 ? L("1 helper") : String(format: L("%d helpers"), found.count), icon: "magnifyingglass")
                 if found.isEmpty {
-                    Text(L("No tool by that name. Try a word for what you want done — shrink, sign, scan, translate — or build your own in Build."))
+                    Text(L("No helper by that name. Try a word for what you want done — shrink, sign, scan, translate — or make your own below."))
                         .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).cardStyle()
                 }
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
@@ -1158,7 +1161,7 @@ struct BuilderView: View {
         return VStack(alignment: .leading, spacing: HandySpacing.s16) {
             // Always a way back (the page has no bar of its own: Home's bar is hidden).
             Button { dismissPage() } label: {
-                Label(L("Tools"), systemImage: "chevron.left").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+                Label(L("Helpers"), systemImage: "chevron.left").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
                     .frame(minHeight: 44).contentShape(Rectangle())
             }
             .buttonStyle(.plain).accessibilityIdentifier("category-back")
@@ -1202,7 +1205,7 @@ struct BuilderView: View {
                         VStack(alignment: .leading, spacing: 1) {
                             Text(L(sh.title)).font(.system(size: 15, weight: .bold)).foregroundStyle(HandyColor.textPrimary)
                                 .lineLimit(1).minimumScaleFactor(0.75)
-                            Text("\(n) \(L(n == 1 ? "tool" : "tools"))").font(.system(size: 11, weight: .semibold)).foregroundStyle(HandyColor.textSecondary)
+                            Text(n == 1 ? L("1 helper") : String(format: L("%d helpers"), n)).font(.system(size: 11, weight: .semibold)).foregroundStyle(HandyColor.textSecondary)
                         }
                         Spacer(minLength: 0)
                     }
@@ -1217,6 +1220,68 @@ struct BuilderView: View {
                 .accessibilityHint(L(sh.line))
             }
         }
+    }
+
+    /// The ready-made flows, a section at a time: every section with its count on one wrapping row (all in view, nothing
+    /// sideways), and tapping one shows its flows — a long list never opens by itself (Manan's standing rule).
+    @ViewBuilder private var readyMadeBySection: some View {
+        let sections = homeTabs.filter { !HomeShelves.flows($0.id).isEmpty }
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            SectionLabel(text: L("Ready-made helpers"), icon: "square.stack.3d.up.fill")
+            Text(L("Done in one tap — pick a section to see them.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HandyFlow {
+                ForEach(sections) { sh in
+                    let on = flowSection == sh.id
+                    Button { withAnimation(.snappy) { flowSection = on ? nil : sh.id } } label: {
+                        Text("\(L(sh.title)) · \(HomeShelves.flows(sh.id).count)")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(on ? .white : HandyColor.textPrimary)
+                            .padding(.horizontal, 12).frame(minHeight: 40)
+                            .background(on ? AnyShapeStyle(Color(hex: sh.hex).gradient) : AnyShapeStyle(.ultraThinMaterial), in: Capsule())
+                            .overlay(Capsule().stroke(Color(hex: sh.hex).opacity(0.45), lineWidth: 1))
+                    }
+                    .buttonStyle(.plain).accessibilityIdentifier("flows-\(sh.id)").accessibilityAddTraits(on ? .isSelected : [])
+                }
+            }
+            if let id = flowSection, let sh = sections.first(where: { $0.id == id }) {
+                VStack(spacing: 0) {
+                    ForEach(HomeShelves.flows(id)) { c in
+                        Button { running = c } label: {
+                            HStack(spacing: 10) {
+                                Image(systemName: "bolt.fill").font(.system(size: 13, weight: .bold)).foregroundStyle(Color(hex: sh.hex)).accessibilityHidden(true)
+                                Text(L(c.name)).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary).multilineTextAlignment(.leading)
+                                Spacer(minLength: 0)
+                                Image(systemName: "chevron.right").font(.system(size: 12, weight: .semibold)).foregroundStyle(HandyColor.textSecondary).accessibilityHidden(true)
+                            }
+                            .padding(.vertical, 10).contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain).accessibilityIdentifier("flow-\(c.id)")
+                        if c.id != HomeShelves.flows(id).last?.id { Divider() }
+                    }
+                }
+                .cardStyle()
+            }
+        }
+    }
+
+    /// Didn't find it? Say it, and Tenzy puts the steps together (My stuff › Build a helper).
+    private var makeYourOwnBox: some View {
+        Button { NotificationCenter.default.post(name: .openTool, object: "buildhelper", userInfo: ["from": "allhelpers"]) } label: {
+            HStack(spacing: HandySpacing.s12) {
+                Image(systemName: "wand.and.stars").font(.system(size: 20, weight: .bold)).foregroundStyle(.white)
+                    .frame(width: 44, height: 44).background(HandyColor.accent.gradient, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(L("Make your own")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                    Text(L("Didn't find it? Say what you need and Tenzy puts the steps together.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        .multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary).accessibilityHidden(true)
+            }
+            .cardStyle()
+        }
+        .buttonStyle(.plain).accessibilityIdentifier("make-your-own")
     }
 
     /// Every one of a category's tools as a tile, three across.

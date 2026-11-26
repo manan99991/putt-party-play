@@ -1,0 +1,111 @@
+name: iOS how-to videos
+
+# Films the three short how-to videos in Settings › Help from the real app: builds for a 6.9-inch simulator, records
+# the screen while each HowToFilmTests test walks one job (say what you need, set an autorun, got something?), cuts
+# each to the app's own screens and shrinks it to play inside Tenzy (H.264, about 1280 tall, no sound). Publishes the
+# films and a few frames from each to ci-logs (ios-howto/) for review. Run by hand; it never deploys anything.
+on:
+  push:
+    branches: [handytools]
+    paths: ["ios/.howto"]   # touch this file to film them again
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  film:
+    runs-on: xcode-27
+    timeout-minutes: 90
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select newest Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)" && xcodebuild -version
+      - name: Build for testing (6.9-inch)
+        run: |
+          set -o pipefail
+          brew install xcodegen ffmpeg && xcodegen generate
+          python3 -m pip install --break-system-packages pillow >/dev/null 2>&1 || python3 -m pip install pillow >/dev/null 2>&1 || true
+          xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          allv=[x for k,v in d.items() if "iOS" in k for x in v]
+          c=[x for x in allv if "Pro Max" in x["name"]]
+          c.sort(key=lambda x:(not x["name"].startswith("iPhone 17"), x["name"]))
+          print(c[0]["udid"])')
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+          xcodebuild build-for-testing -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee build.log | grep -E "error:|TEST BUILD|BUILD" || true
+          grep -qE "TEST BUILD SUCCEEDED|BUILD SUCCEEDED" build.log
+      - name: Film
+        timeout-minutes: 60
+        run: |
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b || true
+          xcrun simctl ui "$UDID" appearance dark
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
+          for p in photos contacts location; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
+          mkdir -p howto
+          run() {   # $1 test name, $2 film name
+            rm -f howto/$2.*.t
+            xcrun simctl io "$UDID" recordVideo --codec h264 --force howto/$2.raw.mov &
+            REC=$!
+            sleep 2
+            script -q /dev/null env TEST_RUNNER_HOWTO_FILM=1 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools \
+              -destination "id=$UDID" -derivedDataPath build -only-testing:HandyToolsUITests/HowToFilmTests/$1 CODE_SIGNING_ALLOWED=NO 2>&1 \
+              | while IFS= read -r line; do
+                  for m in FILM-START FILM-END; do
+                    case "$line" in *"$m"*) [ -f "howto/$2.$m.t" ] || python3 -c 'import time;print(time.time())' > "howto/$2.$m.t" ;; esac
+                  done
+                  case "$line" in *error:*|*"Test Case"*|*TEST\ *) echo "$line";; esac
+                done
+            sleep 3
+            kill -INT $REC; wait $REC || true
+          }
+          run testFilmSayWhatYouNeed say-what-you-need
+          run testFilmSetAnAutorun set-an-autorun
+          run testFilmGotSomething got-something
+          ls -la howto
+      - name: Cut and shrink
+        run: |
+          cd howto
+          for f in say-what-you-need set-an-autorun got-something; do
+            [ -f $f.raw.mov ] || { echo "::warning::no film for $f"; continue; }
+            mkdir -p scan; rm -f scan/*
+            ffmpeg -v error -i $f.raw.mov -vf "fps=4,scale=24:52" scan/%05d.png
+            CUT=$(python3 - "$f" <<'PY'
+          import os, glob, sys
+          from PIL import Image
+          f=sys.argv[1]
+          files=sorted(glob.glob("scan/*.png"))
+          def app_like(p):
+              im=Image.open(p).convert("RGB"); px=list(im.getdata()); n=len(px)
+              r=sum(q[0] for q in px)/n; g=sum(q[1] for q in px)/n; b=sum(q[2] for q in px)/n
+              return b < 70 and (r+g+b)/3 > 3      # Tenzy's dark screens; not the home screen, not black
+          last=max((i for i,p in enumerate(files) if app_like(p)), default=len(files)-1)
+          e=(last+1)/4.0
+          def t(m):
+              p=f"{f}.{m}.t"; return float(open(p).read()) if os.path.exists(p) else None
+          s0, s1 = t("FILM-START"), t("FILM-END")
+          start = max(0.0, e - (s1 - s0) - 0.6) if s0 and s1 else max(0.0, e - 25)
+          print(f"{start:.2f} {e:.2f}")
+          PY
+            )
+            read A B <<< "$CUT"; echo "$f: $A → $B s"
+            ffmpeg -y -v error -ss $A -to $B -i $f.raw.mov -vf "scale=-2:1280,fps=30" -an -c:v libx264 -preset veryfast -crf 27 -pix_fmt yuv420p \
+              -movflags +faststart $f.mp4
+            D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 $f.mp4); echo "$f.mp4: ${D}s, $(du -k $f.mp4 | cut -f1) KB"
+            for k in 1 2 3 4 5 6; do T=$(python3 -c "print(round(${D:-0}*$k/7,2))"); ffmpeg -y -v error -ss $T -i $f.mp4 -frames:v 1 -vf scale=300:-1 $f-frame-$k.png || true; done
+            rm -f $f.raw.mov
+          done
+          rm -rf scan
+          ls -la
+      - name: Publish
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh ios-howto ios/howto

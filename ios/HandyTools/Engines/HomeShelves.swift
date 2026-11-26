@@ -56,6 +56,34 @@ enum HomeShelves {
               tools: ["contacts", "light", "cleaner", "gpsdash", "vault"]),
     ]
 
+    /// Which section a ready-made flow sits under on Home › See all (Manan, 25 Nov: the map, then the ready-made flows of
+    /// each section). By what the flow starts from — a camera shot of paper, a photo, a video, a document, words, sound —
+    /// and, for a few, by what it's for (a receipt is the day's money, not the camera). Every flow lands in exactly one
+    /// section; a unit test holds that. Pure.
+    static func shelf(ofFlow c: Chain) -> String {
+        if let s = flowFor[c.id] { return s }
+        guard let b = c.steps.first?.block else { return "words" }
+        switch b {
+        case .readText, .identify, .readCode, .businessCard, .wifiQr: return "camera"
+        case .photoPdf, .stamp, .watermark, .pdfShrink, .pdfLock, .pdfPages, .pdfText, .textPdf: return "pdf"
+        case .speechText, .summarize, .cleanText, .rewrite, .translate, .scamCheck, .cleanLinks, .pullDetails, .readAloud, .makeQr, .pageText: return "words"
+        case .voiceChange: return "audio"
+        case .chatLink, .contactQr: return "phone"
+        case .pullReceipt, .expenseRow, .addToList, .returnBy, .priceCompare: return "day"
+        case .videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions,
+             .videoSpeed, .videoLoop, .videoCelebrate, .postTo: return "video"
+        default: return "photos"
+        }
+    }
+    /// Flows that belong with what they're for rather than what they start from.
+    static let flowFor: [String: String] = [
+        "receipt-to-row": "day", "receipt-run": "day", "return-by": "day", "shelf-best-deal": "day",
+        "chat-scam": "words", "letter-listen": "words",
+        "where-i-am": "phone", "signature-contact": "phone", "card-to-contact": "phone",
+    ]
+    /// The ready-made flows of one section, in the order they're listed.
+    static func flows(_ shelf: String) -> [Chain] { ChainTemplates.all.filter { Self.shelf(ofFlow: $0) == shelf } }
+
     /// Tools Home opens straight from their own tile (no shelf needed).
     static let ownTiles: Set<String> = []
 

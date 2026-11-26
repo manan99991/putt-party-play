@@ -112,4 +112,22 @@ final class HomeShelvesTests: XCTestCase {
             XCTAssertFalse(s.title.contains("&"), "\(s.title) joins two names")
         }
     }
+    /// Home › See all lists the ready-made flows section by section (Manan, 25 Nov). Every flow is under exactly one
+    /// section that exists, and the obvious ones are where a person would look for them.
+    func testEveryReadyMadeFlowSitsUnderOneSection() {
+        let ids = Set(HomeShelves.all.map(\.id))
+        for c in ChainTemplates.all {
+            XCTAssertTrue(ids.contains(HomeShelves.shelf(ofFlow: c)), "\(c.id) → \(HomeShelves.shelf(ofFlow: c)) isn't a section")
+        }
+        XCTAssertEqual(HomeShelves.all.map { HomeShelves.flows($0.id).count }.reduce(0, +), ChainTemplates.all.count, "none listed twice or left out")
+        func at(_ id: String) -> String? { ChainTemplates.all.first { $0.id == id }.map(HomeShelves.shelf(ofFlow:)) }
+        XCTAssertEqual(at("receipt-run"), "day", "a receipt is the day's money, not the camera")
+        XCTAssertEqual(at("video-email"), "video")
+        XCTAssertEqual(at("voice-robot"), "audio")
+        XCTAssertEqual(at("pdf-join"), "pdf")
+        XCTAssertEqual(at("card-to-contact"), "phone")
+        XCTAssertEqual(at("poster-to-event"), "camera")
+        XCTAssertEqual(at("passport-photo"), "photos")
+        XCTAssertEqual(at("short-summary"), "words")
+    }
 }
