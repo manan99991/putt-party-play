@@ -1,30 +1,56 @@
-2026-11-26 20:13:34.597847+0000 HandyTools[23768:70007] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-26 20:13:36.149668+0000 HandyTools[23768:69996] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
-2026-11-26 20:13:36.752846+0000 HandyTools[23768:70017] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
-Test Case '-[HandyToolsTests.BeatReelTests testAPortraitAndALandscapeClipBothFillTheTallFrame]' started.
-Test Case '-[HandyToolsTests.BeatReelTests testAPortraitAndALandscapeClipBothFillTheTallFrame]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.BeatReelTests testAReelIsReallyMade]' started.
-Test Case '-[HandyToolsTests.BeatReelTests testAReelIsReallyMade]' passed (41.359 seconds).
-Test Case '-[HandyToolsTests.BeatReelTests testThePlanCutsOnTheBeat]' started.
-Test Case '-[HandyToolsTests.BeatReelTests testThePlanCutsOnTheBeat]' passed (0.005 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 41.367 (41.376) seconds
-Test Case '-[HandyToolsTests.SynthTests testARecordScratchFreezeIsReallyMade]' started.
-Test Case '-[HandyToolsTests.SynthTests testARecordScratchFreezeIsReallyMade]' passed (6.024 seconds).
-Test Case '-[HandyToolsTests.SynthTests testEveryEffectIsItsOwnSound]' started.
-Test Case '-[HandyToolsTests.SynthTests testEveryEffectIsItsOwnSound]' passed (1.048 seconds).
-Test Case '-[HandyToolsTests.SynthTests testEveryStyleHitsItsBarsAndNeverClips]' started.
-Test Case '-[HandyToolsTests.SynthTests testEveryStyleHitsItsBarsAndNeverClips]' passed (12.621 seconds).
-Test Case '-[HandyToolsTests.SynthTests testTheMomentIsTheLaughAndTheLooksArriveOnTime]' started.
-Test Case '-[HandyToolsTests.SynthTests testTheMomentIsTheLaughAndTheLooksArriveOnTime]' passed (0.003 seconds).
-	 Executed 4 tests, with 0 failures (0 unexpected) in 19.695 (19.700) seconds
-	 Executed 7 tests, with 0 failures (0 unexpected) in 61.062 (61.083) seconds
-	 Executed 7 tests, with 0 failures (0 unexpected) in 61.062 (61.084) seconds
-Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' started.
-Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' passed (54.162 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testFunnyMomentsRecordsAClipAndMakesTheJoke]' started.
-Test Case '-[HandyToolsUITests.CameraButtonTests testFunnyMomentsRecordsAClipAndMakesTheJoke]' passed (22.396 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 76.558 (76.563) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 76.558 (76.567) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 76.558 (76.568) seconds
+2026-11-26 21:52:00.366183+0000 HandyTools[30003:83917] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+Test Case '-[HandyToolsTests.ChainTemplateTests testCardAndTaskBlocks]' started.
+Test Case '-[HandyToolsTests.ChainTemplateTests testCardAndTaskBlocks]' passed (0.177 seconds).
+Test Case '-[HandyToolsTests.ChainTemplateTests testShareRoundTripAndRejectsJunk]' started.
+Test Case '-[HandyToolsTests.ChainTemplateTests testShareRoundTripAndRejectsJunk]' passed (0.035 seconds).
+Test Case '-[HandyToolsTests.ChainTemplateTests testTwentyEightTemplatesAllValidAndUnique]' started.
+Test Case '-[HandyToolsTests.ChainTemplateTests testTwentyEightTemplatesAllValidAndUnique]' passed (0.001 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.214 (0.219) seconds
+Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' started.
+Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' passed (0.064 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.064 (0.735) seconds
+Test Case '-[HandyToolsTests.FinishFactsTests testAutoTranscriptionTriesEachOfThePersonsLanguages]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testAutoTranscriptionTriesEachOfThePersonsLanguages]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testBusiestMomentIsWhereTheFramesChangeMost]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testBusiestMomentIsWhereTheFramesChangeMost]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testEachFinishedScreenIsWhereItsJobLands]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testEachFinishedScreenIsWhereItsJobLands]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testFinishedJobNotificationSaysWhatCameOut]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testFinishedJobNotificationSaysWhatCameOut]' passed (0.075 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testGIFFactsReadFramesAndLoop]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testGIFFactsReadFramesAndLoop]' passed (0.138 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testIDCopyFactsSeeNoLocationInARedrawnPhotoAndCheckTheLimit]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testIDCopyFactsSeeNoLocationInARedrawnPhotoAndCheckTheLimit]' passed (0.056 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testMutingAVideoIsQuickAndKeepsThePicture]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testMutingAVideoIsQuickAndKeepsThePicture]' passed (11.296 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testPDFFactsCountPagesAndSearchableWords]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testPDFFactsCountPagesAndSearchableWords]' passed (0.086 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testSampleToneIsAPlayableWav]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testSampleToneIsAPlayableWav]' passed (0.026 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testSpeedingUpKeepsTheVideoAndHalvesTheLength]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testSpeedingUpKeepsTheVideoAndHalvesTheLength]' passed (1.758 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoJoinTurnsClipsUprightAndKeepsThemVideos]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoJoinTurnsClipsUprightAndKeepsThemVideos]' passed (3.102 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoListIsEveryVideoJobNamedAsOne]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoListIsEveryVideoJobNamedAsOne]' passed (0.058 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoPromiseReadsWhatEachToolPromised]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoPromiseReadsWhatEachToolPromised]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoShrinkReportsProgressThatOnlyMovesForward]' started.
+Test Case '-[HandyToolsTests.FinishFactsTests testVideoShrinkReportsProgressThatOnlyMovesForward]' passed (3.739 seconds).
+	 Executed 14 tests, with 0 failures (0 unexpected) in 20.346 (22.058) seconds
+Test Case '-[HandyToolsTests.IntroTests testStartersCanBeNarrowedToWhatYouHave]' started.
+Test Case '-[HandyToolsTests.IntroTests testStartersCanBeNarrowedToWhatYouHave]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.IntroTests testTemplatesAreSentencesInSectionsWithFullJobsFirst]' started.
+Test Case '-[HandyToolsTests.IntroTests testTemplatesAreSentencesInSectionsWithFullJobsFirst]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.IntroTests testTheDemoStarterExistsAndTheIntroIsThreeIdeas]' started.
+Test Case '-[HandyToolsTests.IntroTests testTheDemoStarterExistsAndTheIntroIsThreeIdeas]' passed (0.025 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.028 (0.030) seconds
+	 Executed 21 tests, with 0 failures (0 unexpected) in 20.651 (23.045) seconds
+	 Executed 21 tests, with 0 failures (0 unexpected) in 20.651 (23.046) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' started.
+Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' passed (154.912 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 154.912 (154.924) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 154.912 (154.931) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 154.912 (154.934) seconds
 == main thread when stuck
 == crash reports
