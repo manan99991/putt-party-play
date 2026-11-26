@@ -54,7 +54,15 @@ final class RealInputTests: XCTestCase {
                 if !busy.exists, finishes.contains(where: { app.descendants(matching: .any)[$0].exists }) || app.descendants(matching: .any)["run-message"].exists { break }
                 sleep(2)
             }
-            guard app.state == .runningForeground else { crashed.append(id); print("REALINPUT \(id): CRASHED"); continue }
+            // A helper that ends by opening its link (WhatsApp a number) hands off the moment it finishes, so the app can
+            // be in the background here too (26 Nov: counted as a crash once). Only "not running" is a crash.
+            if app.state == .notRunning { crashed.append(id); print("REALINPUT \(id): CRASHED"); continue }
+            if app.state != .runningForeground {
+                print("REALINPUT \(id): handed off to another app when it finished")
+                app.activate()
+                guard app.wait(for: .runningForeground, timeout: 10) else { crashed.append("\(id) (didn't come back)"); continue }
+                sleep(1)
+            }
             if busy.exists { stuck.append(id); print("REALINPUT \(id): STILL WORKING after 150 s"); app.terminate(); continue }
             // The finished screen, top to bottom, read in full.
             _ = app.debugDescription
