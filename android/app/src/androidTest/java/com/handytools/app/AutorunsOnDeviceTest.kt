@@ -160,7 +160,7 @@ class AutorunsOnDeviceTest {
                 put(MediaStore.Images.Media.MIME_TYPE, if (n.lowercase().endsWith(".png")) "image/png" else "image/jpeg")
                 if (Build.VERSION.SDK_INT >= 29) put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/TenzyTest")
             }
-            val uri = ctx.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, v) ?: return@mapNotNull null
+            val uri = ctx.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, v) ?: return@mapIndexedNotNull null
             ctx.contentResolver.openOutputStream(uri)?.use { o -> shell("cat /data/local/tmp/real/$n").use { it.copyTo(o) } }
             uri
         }
