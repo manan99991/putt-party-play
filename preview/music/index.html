@@ -1,0 +1,104 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Our Own Soundtrack</title><style>
+:root{--bg:#f4f1ea;--card:#fffdf8;--ink:#1f2a24;--mute:#5d6b63;--line:#e2ddd2;--acc:#2f7d55;--acc2:#e7f2ea}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121815;--card:#1b231f;--ink:#e9efe9;--mute:#9db0a5;--line:#2a352f;--acc:#6fcf97;--acc2:#1f3328}}
+:root[data-theme="dark"]{--bg:#121815;--card:#1b231f;--ink:#e9efe9;--mute:#9db0a5;--line:#2a352f;--acc:#6fcf97;--acc2:#1f3328}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:640px;margin:0 auto;padding:24px 16px 48px}h1{font-size:24px;margin:0 0 6px}p.sub{margin:0 0 18px;color:var(--mute);font-size:15px}
+.note{background:var(--acc2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;margin:0 0 18px}
+ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.trk{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.play{flex:none;width:48px;height:48px;border-radius:50%;border:0;background:var(--acc);color:#fff;display:grid;place-items:center;cursor:pointer}
+.play svg{fill:currentColor}.play .iz{display:none}.trk.on .play .iz{display:inline}.trk.on .play .ip{display:none}
+.meta{flex:1;min-width:0}.w{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}.t{font-weight:650}
+.d{font-size:13px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.len{flex:none;font-variant-numeric:tabular-nums;color:var(--mute);font-size:14px}
+.bar{height:4px;background:var(--line);border-radius:2px;margin-top:8px;overflow:hidden;cursor:pointer}.bar i{display:block;height:100%;width:0;background:var(--acc)}
+footer{margin-top:22px;color:var(--mute);font-size:13px}
+</style></head><body><main>
+<h1>Our own soundtrack</h1>
+<p class="sub">23 tracks · 47:07 in all · one menu theme + two per world</p>
+<div class="note">Every track was composed and played by our own code, so no one else can own it or claim it. Calm, no beats. Each one loops seamlessly in the game. Tap a track to listen; tap again to pause.</div>
+<ul><li class="trk" data-i="0"><button class="play" aria-label="Play Welcome Home"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Menu</div><div class="t">Welcome Home</div><div class="d">felt piano · celesta · violins · strings</div><div class="bar"><i></i></div></div><div class="len">2:04</div>
+<audio preload="none"><source src="../../sounds/music/menu.mp3" type="audio/mpeg"><source src="sounds/music/menu.mp3" type="audio/mpeg"><source src="menu.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="1"><button class="play" aria-label="Play Clover Morning"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Meadow · track 1</div><div class="t">Clover Morning</div><div class="d">nylon guitar · flute</div><div class="bar"><i></i></div></div><div class="len">2:00</div>
+<audio preload="none"><source src="../../sounds/music/w1-1.mp3" type="audio/mpeg"><source src="sounds/music/w1-1.mp3" type="audio/mpeg"><source src="w1-1.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="2"><button class="play" aria-label="Play Dandelion Drift"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Meadow · track 2</div><div class="t">Dandelion Drift</div><div class="d">nylon guitar · flute</div><div class="bar"><i></i></div></div><div class="len">2:05</div>
+<audio preload="none"><source src="../../sounds/music/w1-2.mp3" type="audio/mpeg"><source src="sounds/music/w1-2.mp3" type="audio/mpeg"><source src="w1-2.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="3"><button class="play" aria-label="Play Harbour Waltz"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Windward Bluffs · track 1</div><div class="t">Harbour Waltz</div><div class="d">concertina · soft bass</div><div class="bar"><i></i></div></div><div class="len">1:48</div>
+<audio preload="none"><source src="../../sounds/music/w2-1.mp3" type="audio/mpeg"><source src="sounds/music/w2-1.mp3" type="audio/mpeg"><source src="w2-1.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="4"><button class="play" aria-label="Play Gull Song"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Windward Bluffs · track 2</div><div class="t">Gull Song</div><div class="d">concertina · soft bass</div><div class="bar"><i></i></div></div><div class="len">2:05</div>
+<audio preload="none"><source src="../../sounds/music/w2-2.mp3" type="audio/mpeg"><source src="sounds/music/w2-2.mp3" type="audio/mpeg"><source src="w2-2.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="5"><button class="play" aria-label="Play Mesa Light"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Copper Canyon · track 1</div><div class="t">Mesa Light</div><div class="d">steel guitar · slide guitar</div><div class="bar"><i></i></div></div><div class="len">2:14</div>
+<audio preload="none"><source src="../../sounds/music/w3-1.mp3" type="audio/mpeg"><source src="sounds/music/w3-1.mp3" type="audio/mpeg"><source src="w3-1.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="6"><button class="play" aria-label="Play Dust Devil Lullaby"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Copper Canyon · track 2</div><div class="t">Dust Devil Lullaby</div><div class="d">steel guitar · slide guitar</div><div class="bar"><i></i></div></div><div class="len">1:59</div>
+<audio preload="none"><source src="../../sounds/music/w3-2.mp3" type="audio/mpeg"><source src="sounds/music/w3-2.mp3" type="audio/mpeg"><source src="w3-2.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="7"><button class="play" aria-label="Play Mossy Steps"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Jade Cascades · track 1</div><div class="t">Mossy Steps</div><div class="d">marimba · kalimba</div><div class="bar"><i></i></div></div><div class="len">2:14</div>
+<audio preload="none"><source src="../../sounds/music/w4-1.mp3" type="audio/mpeg"><source src="sounds/music/w4-1.mp3" type="audio/mpeg"><source src="w4-1.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="8"><button class="play" aria-label="Play Pebble Pools"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Jade Cascades · track 2</div><div class="t">Pebble Pools</div><div class="d">kalimba · marimba</div><div class="bar"><i></i></div></div><div class="len">1:55</div>
+<audio preload="none"><source src="../../sounds/music/w4-2.mp3" type="audio/mpeg"><source src="sounds/music/w4-2.mp3" type="audio/mpeg"><source src="w4-2.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="9"><button class="play" aria-label="Play Petal Stream"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Sakura Vale · track 1</div><div class="t">Petal Stream</div><div class="d">koto · shakuhachi</div><div class="bar"><i></i></div></div><div class="len">1:53</div>
+<audio preload="none"><source src="../../sounds/music/w5-1.mp3" type="audio/mpeg"><source src="sounds/music/w5-1.mp3" type="audio/mpeg"><source src="w5-1.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="10"><button class="play" aria-label="Play Lantern Bridge"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Sakura Vale · track 2</div><div class="t">Lantern Bridge</div><div class="d">koto · shakuhachi</div><div class="bar"><i></i></div></div><div class="len">2:10</div>
+<audio preload="none"><source src="../../sounds/music/w5-2.mp3" type="audio/mpeg"><source src="sounds/music/w5-2.mp3" type="audio/mpeg"><source src="w5-2.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="11"><button class="play" aria-label="Play Hearth Leaves"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Emberfall Woods · track 1</div><div class="t">Hearth Leaves</div><div class="d">harp · cello · strings</div><div class="bar"><i></i></div></div><div class="len">2:07</div>
+<audio preload="none"><source src="../../sounds/music/w6-1.mp3" type="audio/mpeg"><source src="sounds/music/w6-1.mp3" type="audio/mpeg"><source src="w6-1.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="12"><button class="play" aria-label="Play Amber Path"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Emberfall Woods · track 2</div><div class="t">Amber Path</div><div class="d">harp · cello</div><div class="bar"><i></i></div></div><div class="len">1:49</div>
+<audio preload="none"><source src="../../sounds/music/w6-2.mp3" type="audio/mpeg"><source src="sounds/music/w6-2.mp3" type="audio/mpeg"><source src="w6-2.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="13"><button class="play" aria-label="Play Glowcap Hollow"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Lumen Grotto · track 1</div><div class="t">Glowcap Hollow</div><div class="d">celesta · glass pad · glass harmonica</div><div class="bar"><i></i></div></div><div class="len">1:52</div>
+<audio preload="none"><source src="../../sounds/music/w7-1.mp3" type="audio/mpeg"><source src="sounds/music/w7-1.mp3" type="audio/mpeg"><source src="w7-1.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="14"><button class="play" aria-label="Play Crystal Echoes"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Lumen Grotto · track 2</div><div class="t">Crystal Echoes</div><div class="d">celesta · glass harmonica · glass pad</div><div class="bar"><i></i></div></div><div class="len">1:59</div>
+<audio preload="none"><source src="../../sounds/music/w7-2.mp3" type="audio/mpeg"><source src="sounds/music/w7-2.mp3" type="audio/mpeg"><source src="w7-2.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="15"><button class="play" aria-label="Play Ember Hall"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Obsidian Rise · track 1</div><div class="t">Ember Hall</div><div class="d">low strings · warm pad · frame drum · strings · drum swells · cello</div><div class="bar"><i></i></div></div><div class="len">1:56</div>
+<audio preload="none"><source src="../../sounds/music/w8-1.mp3" type="audio/mpeg"><source src="sounds/music/w8-1.mp3" type="audio/mpeg"><source src="w8-1.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="16"><button class="play" aria-label="Play Basalt Vigil"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Obsidian Rise · track 2</div><div class="t">Basalt Vigil</div><div class="d">low strings · warm pad · drum swells · strings · cello · frame drum</div><div class="bar"><i></i></div></div><div class="len">2:03</div>
+<audio preload="none"><source src="../../sounds/music/w8-2.mp3" type="audio/mpeg"><source src="sounds/music/w8-2.mp3" type="audio/mpeg"><source src="w8-2.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="17"><button class="play" aria-label="Play Northern Hush"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Aurora Fjord · track 1</div><div class="t">Northern Hush</div><div class="d">glass pad · air pad · crystal bells · glass harmonica</div><div class="bar"><i></i></div></div><div class="len">2:15</div>
+<audio preload="none"><source src="../../sounds/music/w9-1.mp3" type="audio/mpeg"><source src="sounds/music/w9-1.mp3" type="audio/mpeg"><source src="w9-1.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="18"><button class="play" aria-label="Play Polar Lights"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Aurora Fjord · track 2</div><div class="t">Polar Lights</div><div class="d">glass pad · air pad · glass harmonica · crystal bells</div><div class="bar"><i></i></div></div><div class="len">2:05</div>
+<audio preload="none"><source src="../../sounds/music/w9-2.mp3" type="audio/mpeg"><source src="sounds/music/w9-2.mp3" type="audio/mpeg"><source src="w9-2.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="19"><button class="play" aria-label="Play Acacia Evening"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Serengeti Dusk · track 1</div><div class="t">Acacia Evening</div><div class="d">mbira · kalimba · soft shaker · warm pad</div><div class="bar"><i></i></div></div><div class="len">2:11</div>
+<audio preload="none"><source src="../../sounds/music/w10-1.mp3" type="audio/mpeg"><source src="sounds/music/w10-1.mp3" type="audio/mpeg"><source src="w10-1.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="20"><button class="play" aria-label="Play Baobab Glow"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Serengeti Dusk · track 2</div><div class="t">Baobab Glow</div><div class="d">mbira · kalimba · soft shaker</div><div class="bar"><i></i></div></div><div class="len">2:15</div>
+<audio preload="none"><source src="../../sounds/music/w10-2.mp3" type="audio/mpeg"><source src="sounds/music/w10-2.mp3" type="audio/mpeg"><source src="w10-2.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="21"><button class="play" aria-label="Play Summit Waltz"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Frostpine Peaks · track 1</div><div class="t">Summit Waltz</div><div class="d">strings · handbells · violins</div><div class="bar"><i></i></div></div><div class="len">2:00</div>
+<audio preload="none"><source src="../../sounds/music/w11-1.mp3" type="audio/mpeg"><source src="sounds/music/w11-1.mp3" type="audio/mpeg"><source src="w11-1.mp3" type="audio/mpeg"></audio></li>
+<li class="trk" data-i="22"><button class="play" aria-label="Play Snowlight Morning"><svg viewBox="0 0 24 24" width="22" height="22"><path class="ip" d="M8 5v14l11-7z"/><g class="iz"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="13" y="5" width="4" height="14" rx="1"/></g></svg></button>
+<div class="meta"><div class="w">Frostpine Peaks · track 2</div><div class="t">Snowlight Morning</div><div class="d">strings · handbells · harp · violins</div><div class="bar"><i></i></div></div><div class="len">2:08</div>
+<audio preload="none"><source src="../../sounds/music/w11-2.mp3" type="audio/mpeg"><source src="sounds/music/w11-2.mp3" type="audio/mpeg"><source src="w11-2.mp3" type="audio/mpeg"></audio></li></ul>
+<section id="ingame" hidden><h2 style="font-size:17px;margin:26px 0 8px">Hear it in the game</h2><p class="sub" style="margin-bottom:10px">The real holes, unchanged — only the music is new.</p><ul id="glinks"></ul></section>
+<footer>Made by tools/compose-music.mjs · MP3 128 kbps · loudness −18 LUFS</footer>
+</main><script>
+const items=[...document.querySelectorAll('.trk')];let cur=null;
+function stop(li){const a=li.querySelector('audio');a.pause();li.classList.remove('on');}
+items.forEach((li,i)=>{const a=li.querySelector('audio'),bar=li.querySelector('.bar i');
+li.querySelector('.play').onclick=()=>{if(cur&&cur!==li)stop(cur);if(a.paused){a.play();li.classList.add('on');cur=li;}else stop(li);};
+a.ontimeupdate=()=>{if(a.duration)bar.style.width=(a.currentTime/a.duration*100)+'%';};
+a.onended=()=>{li.classList.remove('on');bar.style.width='0';const nx=items[i+1];if(nx)nx.querySelector('.play').click();};
+li.querySelector('.bar').onclick=e=>{const r=e.currentTarget.getBoundingClientRect();if(a.duration)a.currentTime=(e.clientX-r.left)/r.width*a.duration;};});
+/* preview holes (tools/build-music-preview.mjs) sit next to this page when it is deployed; show links only if they exist */
+const WN={"0":"Menu","1":"Meadow","2":"Windward Bluffs","3":"Copper Canyon","4":"Jade Cascades","5":"Sakura Vale","6":"Emberfall Woods","7":"Lumen Grotto","8":"Obsidian Rise","9":"Aurora Fjord","10":"Serengeti Dusk","11":"Frostpine Peaks"};
+Promise.all(Object.keys(WN).filter(w=>+w>0).map(w=>fetch('w'+w+'/1/index.html',{method:'HEAD'}).then(r=>r.ok?w:null).catch(()=>null))).then(ws=>{ws=ws.filter(Boolean);if(!ws.length)return;
+const ul=document.getElementById('glinks');ws.forEach(w=>{const li=document.createElement('li');li.className='trk';li.innerHTML='<a class="play" style="text-decoration:none" href="w'+w+'/1/index.html" aria-label="Play World '+w+'">&#9654;</a><div class="meta"><div class="w">World '+w+'</div><div class="t">'+WN[w]+'</div></div>';ul.appendChild(li);});document.getElementById('ingame').hidden=false;});
+</script></body></html>
