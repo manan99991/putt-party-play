@@ -49188,5 +49188,315 @@
   "ja": "1年保証が切れる前にお知らせ",
   "pt": "um lembrete antes do fim da garantia de 1 ano",
   "zh": "1 年保修到期前提醒"
+ },
+ "Friendly reminder: invoice %@": {
+  "de": "Freundliche Erinnerung: Rechnung %@",
+  "es": "Recordatorio amable: factura %@",
+  "fr": "Petit rappel : facture %@",
+  "hi": "विनम्र याद दिलाना: इनवॉइस %@",
+  "it": "Promemoria: fattura %@",
+  "ja": "ご確認のお願い：請求書 %@",
+  "pt": "Lembrete amigável: fatura %@",
+  "zh": "温馨提醒：发票 %@"
+ },
+ "Just a quick reminder that invoice %@ for %@ was due on %@. I've attached it again for convenience.": {
+  "de": "Nur eine kurze Erinnerung, dass Rechnung %1$@ über %2$@ am %3$@ fällig war. Ich habe sie der Einfachheit halber noch einmal angehängt.",
+  "es": "Solo un breve recordatorio de que la factura %1$@ por %2$@ vencía el %3$@. La adjunto de nuevo por comodidad.",
+  "fr": "Un petit rappel : la facture %1$@ de %2$@ était due le %3$@. Je la joins de nouveau pour plus de commodité.",
+  "hi": "बस याद दिला रहा हूँ कि इनवॉइस %1$@ (%2$@) की देय तिथि %3$@ थी। सुविधा के लिए इसे फिर से संलग्न किया है।",
+  "it": "Solo un promemoria: la fattura %1$@ di %2$@ era in scadenza il %3$@. La allego di nuovo per comodità.",
+  "ja": "請求書 %1$@（%2$@）のお支払い期日は %3$@ でした。念のため再度添付いたします。",
+  "pt": "Só um lembrete de que a fatura %1$@ de %2$@ venceu em %3$@. Volto a anexá-la por conveniência.",
+  "zh": "提醒一下，发票 %1$@（%2$@）已于 %3$@ 到期。为方便起见，再次附上。"
+ },
+ "If it's already on its way, thank you — please ignore this.": {
+  "de": "Falls die Zahlung schon unterwegs ist, vielen Dank – dann ignoriere diese Nachricht bitte.",
+  "es": "Si ya está en camino, gracias; ignora este mensaje.",
+  "fr": "Si le paiement est déjà en route, merci — ignorez ce message.",
+  "hi": "अगर भुगतान पहले ही भेज दिया है, तो धन्यवाद — कृपया इसे अनदेखा करें।",
+  "it": "Se il pagamento è già in arrivo, grazie: ignora pure questo messaggio.",
+  "ja": "すでにお手続き済みでしたら、ありがとうございます。本メールは破棄してください。",
+  "pt": "Se o pagamento já estiver a caminho, obrigado — ignore esta mensagem.",
+  "zh": "如已在付款中，谢谢——请忽略此邮件。"
+ },
+ "Invoice %@ is %d days overdue": {
+  "de": "Rechnung %1$@ ist %2$d Tage überfällig",
+  "es": "La factura %1$@ lleva %2$d días vencida",
+  "fr": "La facture %1$@ est en retard de %2$d jours",
+  "hi": "इनवॉइस %1$@ %2$d दिन से बकाया है",
+  "it": "La fattura %1$@ è scaduta da %2$d giorni",
+  "ja": "請求書 %1$@ は期日を %2$d 日過ぎています",
+  "pt": "A fatura %1$@ está em atraso há %2$d dias",
+  "zh": "发票 %1$@ 已逾期 %2$d 天"
+ },
+ "Invoice %@ for %@ was due on %@ and is now %d days overdue. Could you let me know when I can expect payment?": {
+  "de": "Rechnung %1$@ über %2$@ war am %3$@ fällig und ist jetzt %4$d Tage überfällig. Kannst du mir sagen, wann ich mit der Zahlung rechnen kann?",
+  "es": "La factura %1$@ por %2$@ vencía el %3$@ y ya lleva %4$d días vencida. ¿Podrías decirme cuándo puedo esperar el pago?",
+  "fr": "La facture %1$@ de %2$@ était due le %3$@ et est maintenant en retard de %4$d jours. Pouvez-vous m'indiquer quand je peux attendre le paiement ?",
+  "hi": "इनवॉइस %1$@ (%2$@) की देय तिथि %3$@ थी और अब यह %4$d दिन से बकाया है। क्या आप बता सकते हैं कि भुगतान कब तक मिलेगा?",
+  "it": "La fattura %1$@ di %2$@ era in scadenza il %3$@ ed è ora scaduta da %4$d giorni. Potresti dirmi quando posso aspettarmi il pagamento?",
+  "ja": "請求書 %1$@（%2$@）は %3$@ が期日で、現在 %4$d 日過ぎています。お支払いの見込みをお知らせいただけますか。",
+  "pt": "A fatura %1$@ de %2$@ venceu em %3$@ e está agora em atraso há %4$d dias. Pode dizer-me quando posso contar com o pagamento?",
+  "zh": "发票 %1$@（%2$@）已于 %3$@ 到期，现已逾期 %4$d 天。能否告知预计何时付款？"
+ },
+ "The invoice is attached.": {
+  "de": "Die Rechnung ist angehängt.",
+  "es": "Adjunto la factura.",
+  "fr": "La facture est jointe.",
+  "hi": "इनवॉइस संलग्न है।",
+  "it": "La fattura è allegata.",
+  "ja": "請求書を添付しています。",
+  "pt": "A fatura vai em anexo.",
+  "zh": "发票已附上。"
+ },
+ "Final notice: invoice %@": {
+  "de": "Letzte Mahnung: Rechnung %@",
+  "es": "Último aviso: factura %@",
+  "fr": "Dernier rappel : facture %@",
+  "hi": "अंतिम सूचना: इनवॉइस %@",
+  "it": "Ultimo avviso: fattura %@",
+  "ja": "最終のご案内：請求書 %@",
+  "pt": "Último aviso: fatura %@",
+  "zh": "最后通知：发票 %@"
+ },
+ "This is a final reminder that invoice %@ for %@, due on %@, is still unpaid after %d days. Please arrange payment this week, or reply to let me know if there's a problem.": {
+  "de": "Dies ist eine letzte Erinnerung: Rechnung %1$@ über %2$@, fällig am %3$@, ist nach %4$d Tagen noch unbezahlt. Bitte veranlasse die Zahlung diese Woche oder antworte, falls es ein Problem gibt.",
+  "es": "Este es un último recordatorio: la factura %1$@ por %2$@, con vencimiento el %3$@, sigue sin pagar tras %4$d días. Por favor, realiza el pago esta semana o responde si hay algún problema.",
+  "fr": "Ceci est un dernier rappel : la facture %1$@ de %2$@, due le %3$@, reste impayée après %4$d jours. Merci de régler cette semaine ou de me répondre en cas de problème.",
+  "hi": "यह अंतिम याद दिलाना है कि इनवॉइस %1$@ (%2$@), जिसकी देय तिथि %3$@ थी, %4$d दिन बाद भी बकाया है। कृपया इस हफ़्ते भुगतान करें, या कोई समस्या हो तो जवाब दें।",
+  "it": "Questo è un ultimo promemoria: la fattura %1$@ di %2$@, in scadenza il %3$@, è ancora da pagare dopo %4$d giorni. Ti chiedo di saldare entro questa settimana o di rispondermi se c'è un problema.",
+  "ja": "請求書 %1$@（%2$@、期日 %3$@）は %4$d 日経過してもお支払いが確認できておりません。今週中のお支払い、または問題がある場合はご返信をお願いいたします。",
+  "pt": "Este é um último lembrete: a fatura %1$@ de %2$@, com vencimento em %3$@, continua por pagar após %4$d dias. Por favor, efetue o pagamento esta semana ou responda se houver algum problema.",
+  "zh": "这是最后一次提醒：发票 %1$@（%2$@，%3$@ 到期）已过 %4$d 天仍未付款。请在本周内安排付款，如有问题请回复告知。"
+ },
+ "Hello,": {
+  "de": "Hallo,",
+  "es": "Hola:",
+  "fr": "Bonjour,",
+  "hi": "नमस्ते,",
+  "it": "Ciao,",
+  "ja": "こんにちは。",
+  "pt": "Olá,",
+  "zh": "你好，"
+ },
+ "Hi %@,": {
+  "de": "Hallo %@,",
+  "es": "Hola, %@:",
+  "fr": "Bonjour %@,",
+  "hi": "नमस्ते %@,",
+  "it": "Ciao %@,",
+  "ja": "%@ さん",
+  "pt": "Olá %@,",
+  "zh": "%@，你好："
+ },
+ "It was great to meet you on %@. I'd love to stay in touch.": {
+  "de": "Es war schön, dich am %@ kennenzulernen. Ich würde gern in Kontakt bleiben.",
+  "es": "Fue un placer conocerte el %@. Me encantaría seguir en contacto.",
+  "fr": "Ce fut un plaisir de vous rencontrer %@. J'aimerais beaucoup rester en contact.",
+  "hi": "%@ को आपसे मिलकर बहुत अच्छा लगा। संपर्क में रहना अच्छा लगेगा।",
+  "it": "È stato un piacere conoscerti %@. Mi piacerebbe restare in contatto.",
+  "ja": "%@ はお会いできてうれしかったです。今後ともよろしくお願いします。",
+  "pt": "Foi ótimo conhecê-lo na %@. Gostava muito de manter o contacto.",
+  "zh": "很高兴%@与你相识，希望保持联系。"
+ },
+ "Mark paid": {
+  "de": "Als bezahlt markieren",
+  "es": "Marcar como pagada",
+  "fr": "Marquer comme payée",
+  "hi": "भुगतान हुआ चिह्नित करें",
+  "it": "Segna come pagata",
+  "ja": "支払い済みにする",
+  "pt": "Marcar como paga",
+  "zh": "标记为已付"
+ },
+ "Overdue invoices": {
+  "de": "Überfällige Rechnungen",
+  "es": "Facturas vencidas",
+  "fr": "Factures en retard",
+  "hi": "बकाया इनवॉइस",
+  "it": "Fatture scadute",
+  "ja": "期日超過の請求書",
+  "pt": "Faturas em atraso",
+  "zh": "逾期发票"
+ },
+ "Send the reminder": {
+  "de": "Erinnerung senden",
+  "es": "Enviar el recordatorio",
+  "fr": "Envoyer le rappel",
+  "hi": "रिमाइंडर भेजें",
+  "it": "Invia il promemoria",
+  "ja": "リマインダーを送る",
+  "pt": "Enviar o lembrete",
+  "zh": "发送提醒"
+ },
+ "Share the reminder": {
+  "de": "Erinnerung teilen",
+  "es": "Compartir el recordatorio",
+  "fr": "Partager le rappel",
+  "hi": "रिमाइंडर शेयर करें",
+  "it": "Condividi il promemoria",
+  "ja": "リマインダーを共有",
+  "pt": "Partilhar o lembrete",
+  "zh": "分享提醒"
+ },
+ "Tap Check to send the reminders.": {
+  "de": "Tippe auf Prüfen, um die Erinnerungen zu senden.",
+  "es": "Toca Revisar para enviar los recordatorios.",
+  "fr": "Touchez Vérifier pour envoyer les rappels.",
+  "hi": "रिमाइंडर भेजने के लिए जाँचें दबाएँ।",
+  "it": "Tocca Controlla per inviare i promemoria.",
+  "ja": "「確認」でリマインダーを送れます。",
+  "pt": "Toque em Verificar para enviar os lembretes.",
+  "zh": "点按“检查”发送提醒。"
+ },
+ "Test run worked: no invoices are overdue.": {
+  "de": "Testlauf hat funktioniert: keine Rechnung ist überfällig.",
+  "es": "La prueba funcionó: no hay facturas vencidas.",
+  "fr": "L'essai a fonctionné : aucune facture en retard.",
+  "hi": "टेस्ट रन ठीक चला: कोई इनवॉइस बकाया नहीं।",
+  "it": "La prova ha funzionato: nessuna fattura scaduta.",
+  "ja": "テスト成功：期日超過の請求書はありません。",
+  "pt": "O teste funcionou: nenhuma fatura em atraso.",
+  "zh": "试运行成功：没有逾期发票。"
+ },
+ "Nothing overdue": {
+  "de": "Nichts überfällig",
+  "es": "Nada vencido",
+  "fr": "Rien en retard",
+  "hi": "कुछ बकाया नहीं",
+  "it": "Niente di scaduto",
+  "ja": "期日超過なし",
+  "pt": "Nada em atraso",
+  "zh": "没有逾期"
+ },
+ "Invoices show up here the day after their pay-by date.": {
+  "de": "Rechnungen erscheinen hier am Tag nach ihrem Zahlungsziel.",
+  "es": "Las facturas aparecen aquí el día después de su vencimiento.",
+  "fr": "Les factures apparaissent ici le lendemain de leur échéance.",
+  "hi": "देय तिथि के अगले दिन इनवॉइस यहाँ दिखते हैं।",
+  "it": "Le fatture compaiono qui il giorno dopo la scadenza.",
+  "ja": "支払期日の翌日にここに表示されます。",
+  "pt": "As faturas aparecem aqui no dia seguinte ao vencimento.",
+  "zh": "发票会在付款截止日的次日显示在这里。"
+ },
+ "A friendly reminder is ready.": {
+  "de": "Eine freundliche Erinnerung ist bereit.",
+  "es": "Hay un recordatorio amable listo.",
+  "fr": "Un rappel cordial est prêt.",
+  "hi": "एक विनम्र रिमाइंडर तैयार है।",
+  "it": "Un promemoria cordiale è pronto.",
+  "ja": "やさしいリマインダーを用意しました。",
+  "pt": "Um lembrete amigável está pronto.",
+  "zh": "已备好一封温和的提醒。"
+ },
+ "A firm reminder is ready.": {
+  "de": "Eine bestimmte Erinnerung ist bereit.",
+  "es": "Hay un recordatorio firme listo.",
+  "fr": "Un rappel ferme est prêt.",
+  "hi": "एक सख़्त रिमाइंडर तैयार है।",
+  "it": "Un promemoria deciso è pronto.",
+  "ja": "はっきりしたリマインダーを用意しました。",
+  "pt": "Um lembrete firme está pronto.",
+  "zh": "已备好一封正式的提醒。"
+ },
+ "A final notice is ready.": {
+  "de": "Eine letzte Mahnung ist bereit.",
+  "es": "Hay un último aviso listo.",
+  "fr": "Un dernier rappel est prêt.",
+  "hi": "अंतिम सूचना तैयार है।",
+  "it": "Un ultimo avviso è pronto.",
+  "ja": "最終のご案内を用意しました。",
+  "pt": "Um último aviso está pronto.",
+  "zh": "已备好最后通知。"
+ },
+ "day late": {
+  "de": "Tag zu spät",
+  "es": "día de retraso",
+  "fr": "jour de retard",
+  "hi": "दिन देर",
+  "it": "giorno di ritardo",
+  "ja": "日遅れ",
+  "pt": "dia de atraso",
+  "zh": "天逾期"
+ },
+ "days late": {
+  "de": "Tage zu spät",
+  "es": "días de retraso",
+  "fr": "jours de retard",
+  "hi": "दिन देर",
+  "it": "giorni di ritardo",
+  "ja": "日遅れ",
+  "pt": "dias de atraso",
+  "zh": "天逾期"
+ },
+ "marked paid.": {
+  "de": "als bezahlt markiert.",
+  "es": "marcada como pagada.",
+  "fr": "marquée comme payée.",
+  "hi": "भुगतान हुआ चिह्नित।",
+  "it": "segnata come pagata.",
+  "ja": "を支払い済みにしました。",
+  "pt": "marcada como paga.",
+  "zh": "已标记为已付。"
+ },
+ "overdue invoice": {
+  "de": "überfällige Rechnung",
+  "es": "factura vencida",
+  "fr": "facture en retard",
+  "hi": "बकाया इनवॉइस",
+  "it": "fattura scaduta",
+  "ja": "件の期日超過請求書",
+  "pt": "fatura em atraso",
+  "zh": "张逾期发票"
+ },
+ "overdue invoices": {
+  "de": "überfällige Rechnungen",
+  "es": "facturas vencidas",
+  "fr": "factures en retard",
+  "hi": "बकाया इनवॉइस",
+  "it": "fatture scadute",
+  "ja": "件の期日超過請求書",
+  "pt": "faturas em atraso",
+  "zh": "张逾期发票"
+ },
+ "invoice is overdue — a reminder is ready to send.": {
+  "de": "Rechnung ist überfällig – eine Erinnerung ist versandbereit.",
+  "es": "factura vencida: el recordatorio está listo para enviar.",
+  "fr": "facture en retard — un rappel est prêt à envoyer.",
+  "hi": "इनवॉइस बकाया है — रिमाइंडर भेजने के लिए तैयार है।",
+  "it": "fattura scaduta: il promemoria è pronto da inviare.",
+  "ja": "件の請求書が期日超過 — リマインダーを送れます。",
+  "pt": "fatura em atraso — um lembrete está pronto a enviar.",
+  "zh": "张发票已逾期——提醒已备好，可发送。"
+ },
+ "invoices are overdue — reminders are ready to send.": {
+  "de": "Rechnungen sind überfällig – Erinnerungen sind versandbereit.",
+  "es": "facturas vencidas: los recordatorios están listos para enviar.",
+  "fr": "factures en retard — des rappels sont prêts à envoyer.",
+  "hi": "इनवॉइस बकाया हैं — रिमाइंडर भेजने के लिए तैयार हैं।",
+  "it": "fatture scadute: i promemoria sono pronti da inviare.",
+  "ja": "件の請求書が期日超過 — リマインダーを送れます。",
+  "pt": "faturas em atraso — os lembretes estão prontos a enviar.",
+  "zh": "张发票已逾期——提醒已备好，可发送。"
+ },
+ "Nudge me about overdue invoices": {
+  "de": "Erinnere mich an überfällige Rechnungen",
+  "es": "Avísame de las facturas vencidas",
+  "fr": "Me prévenir des factures en retard",
+  "hi": "बकाया इनवॉइस की याद दिलाएँ",
+  "it": "Avvisami delle fatture scadute",
+  "ja": "期日超過の請求書を知らせる",
+  "pt": "Avisar-me de faturas em atraso",
+  "zh": "提醒我逾期发票"
+ },
+ "When an invoice passes its pay-by day, a reminder email is ready — the invoice attached, the right tone for how late it is. You read it and tap Send.": {
+  "de": "Wenn eine Rechnung ihr Zahlungsziel überschreitet, ist eine Erinnerungs-E-Mail bereit – Rechnung angehängt, im passenden Ton. Du liest sie und tippst auf Senden.",
+  "es": "Cuando una factura pasa su vencimiento, hay un correo de recordatorio listo, con la factura adjunta y el tono adecuado al retraso. Lo lees y tocas Enviar.",
+  "fr": "Quand une facture dépasse son échéance, un e-mail de rappel est prêt — facture jointe, ton adapté au retard. Vous le lisez et touchez Envoyer.",
+  "hi": "जब इनवॉइस की देय तिथि निकल जाती है, एक रिमाइंडर ईमेल तैयार होता है — इनवॉइस संलग्न, देरी के हिसाब से सही लहजा। आप पढ़कर भेजें दबाएँ।",
+  "it": "Quando una fattura supera la scadenza, è pronta un'email di promemoria, con la fattura allegata e il tono giusto per il ritardo. La leggi e tocchi Invia.",
+  "ja": "請求書の期日を過ぎると、請求書を添付し遅れに合った文面のリマインダーメールを用意します。確認して送信するだけ。",
+  "pt": "Quando uma fatura passa o vencimento, fica pronto um e-mail de lembrete — fatura anexada, no tom certo para o atraso. Lê e toca em Enviar.",
+  "zh": "发票过了付款截止日，就会备好提醒邮件——附上发票，语气与逾期程度相符。你看一遍，点发送即可。"
  }
 }

@@ -237,7 +237,7 @@ struct SmartRunsView: View {
                 Button { Task { await testRun(k) } } label: { Label(L("Test run"), systemImage: "play.circle").frame(maxWidth: .infinity) }
                     .secondaryButton().disabled(store.working != nil).accessibilityIdentifier("smartrun-test-\(k.rawValue)")
                 if store.waitingCount(k) > 0 {
-                    NavigationLink(value: k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : k == .dayCollage ? "smartcollage" : k == .businessCards ? "smartcards" : "smartreceipts") {
+                    NavigationLink(value: k == .overdueInvoices ? "smartinvoices" : k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : k == .dayCollage ? "smartcollage" : k == .businessCards ? "smartcards" : "smartreceipts") {
                         Text("\(L("Check")) \(store.waitingCount(k))").frame(maxWidth: .infinity)
                     }.primaryButton().accessibilityIdentifier("smartrun-check-\(k.rawValue)")
                 }
@@ -255,7 +255,9 @@ struct SmartRunsView: View {
 
     private func turn(_ k: SmartRuns.Kind, on: Bool) async {
         var p = store.plan(k)
-        if on, k == .drives {
+        if on, k == .overdueInvoices {
+            // Nothing to read on the phone: the invoices are Tenzy's own.
+        } else if on, k == .drives {
             // Drives come from Find my car's drive detection: switching this on switches that on too.
             if !AutoPark.isOn { AutoPark.shared.turnOn() }
         } else if on {
@@ -269,6 +271,12 @@ struct SmartRunsView: View {
     }
 
     private func testRun(_ k: SmartRuns.Kind) async {
+        if k == .overdueInvoices {
+            let n = store.waitingCount(.overdueInvoices)
+            note = n > 0 ? "\(L("Test run found")) \(n) \(L(n == 1 ? "overdue invoice" : "overdue invoices")). \(L("Tap Check to send the reminders."))"
+                         : L("Test run worked: no invoices are overdue.")
+            HandyHaptics.success(); return
+        }
         if k == .drives {
             let n = store.waitingCount(.drives)
             note = n > 0 ? "\(L("Test run found")) \(n) \(L(n == 1 ? "drive" : "drives")). \(L("Tap Check to log the ones for work."))"
@@ -603,6 +611,73 @@ struct SmartVideosReview: View {
     }
 }
 
+/// Overdue invoices: how late each is, a reminder email ready (invoice attached, the right tone), Mark paid.
+struct SmartInvoicesReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @ObservedObject private var invoices = InvoiceStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var mail: Invoice.Doc?
+    @State private var note: String?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Overdue invoices")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true) }
+                let list = store.overdue
+                if list.isEmpty {
+                    EmptyState(icon: "checkmark.seal", line: "Nothing overdue", sub: "Invoices show up here the day after their pay-by date.")
+                }
+                ForEach(list) { d in row(d) }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartinvoices")
+        .sheet(item: $mail) { d in
+            let m = SmartInvoices.reminder(d)
+            MailDraft(to: SmartInvoices.email(d.to) ?? "", subject: m.subject, body: m.body,
+                      attachment: (Invoice.pdf(d), "\(d.number).pdf", "application/pdf")).ignoresSafeArea()
+        }
+    }
+
+    private func row(_ d: Invoice.Doc) -> some View {
+        let late = SmartInvoices.daysLate(d)
+        let f = NumberFormatter(); f.numberStyle = .currency; f.currencyCode = d.currency
+        return VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(d.who.isEmpty ? d.number : d.who).font(HandyFont.cardTitle)
+                Spacer()
+                Text(f.string(from: NSNumber(value: d.total)) ?? "").font(HandyFont.cardTitle.monospacedDigit())
+            }
+            Text("\(d.number) · \(late) \(L(late == 1 ? "day late" : "days late"))")
+                .font(HandyFont.caption).foregroundStyle(late > 30 ? HandyColor.danger : HandyColor.amber)
+            let tone = SmartInvoices.tone(daysLate: late)
+            Text(L(tone == .friendly ? "A friendly reminder is ready." : tone == .firm ? "A firm reminder is ready." : "A final notice is ready."))
+                .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            HStack(spacing: HandySpacing.s8) {
+                if MailDraft.canSend {
+                    Button { mail = d } label: { Label(L("Send the reminder"), systemImage: "paperplane").frame(maxWidth: .infinity) }
+                        .primaryButton().accessibilityIdentifier("smartinvoice-send")
+                } else {
+                    ShareLink(item: SmartInvoices.reminder(d).body) { Label(L("Share the reminder"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
+                        .primaryButton()
+                }
+                Button { invoices.setPaid(d.id, true); note = "\(d.number) \(L("marked paid."))"; store.objectWillChange.send() } label: {
+                    Label(L("Mark paid"), systemImage: "checkmark.circle").frame(maxWidth: .infinity)
+                }.secondaryButton().accessibilityIdentifier("smartinvoice-paid")
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain).accessibilityIdentifier("smartinvoice-card")
+    }
+}
+
 /// The business cards a run read: each as the contact it will become. Anyone already in Contacts is shown, not
 /// added again. Save adds the new ones; each has a ready "nice to meet you" email.
 struct SmartCardsReview: View {
@@ -677,6 +752,7 @@ struct SmartCardsReview: View {
 struct MailDraft: UIViewControllerRepresentable {
     static var canSend: Bool { MFMailComposeViewController.canSendMail() }
     let to: String, subject: String, body: String
+    var attachment: (data: Data, name: String, mime: String)? = nil
     @Environment(\.dismiss) private var dismiss
     func makeCoordinator() -> Coord { Coord(dismiss: { dismiss() }) }
     func makeUIViewController(context: Context) -> MFMailComposeViewController {
@@ -684,6 +760,7 @@ struct MailDraft: UIViewControllerRepresentable {
         vc.mailComposeDelegate = context.coordinator
         if !to.isEmpty { vc.setToRecipients([to]) }
         vc.setSubject(subject); vc.setMessageBody(body, isHTML: false)
+        if let a = attachment { vc.addAttachmentData(a.data, mimeType: a.mime, fileName: a.name) }
         return vc
     }
     func updateUIViewController(_ vc: MFMailComposeViewController, context: Context) {}

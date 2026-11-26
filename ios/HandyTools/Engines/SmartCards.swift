@@ -44,7 +44,8 @@ enum SmartCards {
         let first = e.name.split(separator: " ").first.map(String.init) ?? ""
         let when = day.formatted(.dateTime.weekday(.wide))
         return ("\(L("Great to meet you"))\(e.company.isEmpty ? "" : " — \(e.company)")",
-                "\(L("Hi")) \(first.isEmpty ? "" : first + ",")\n\n\(L("It was great to meet you on")) \(when). \(L("I'd love to stay in touch."))\n\n")
+                (first.isEmpty ? L("Hello,") : String(format: L("Hi %@,"), first)) + "\n\n"
+                + String(format: L("It was great to meet you on %@. I'd love to stay in touch."), when) + "\n\n")
     }
 
     /// Today's business cards, read and checked against Contacts.

@@ -8,7 +8,7 @@ import UserNotifications
 @MainActor final class SmartRunStore: ObservableObject {
     static let shared = SmartRunStore()
     /// The autoruns built so far. An autorun is only offered once it truly works end to end.
-    static let built: [SmartRuns.Kind] = [.receipts, .drives, .heavyVideos, .readyToPost, .dayCollage, .businessCards]
+    static let built: [SmartRuns.Kind] = [.receipts, .drives, .overdueInvoices, .heavyVideos, .readyToPost, .dayCollage, .businessCards]
 
     @Published private(set) var plans: [SmartRuns.Kind: SmartRuns.Plan] = [:]
     @Published private(set) var receipts: [SmartReceipts.Entry] = []      // found, waiting for a look
@@ -67,6 +67,7 @@ import UserNotifications
         switch k {
         case .receipts: return receipts.count
         case .drives: return drives.count
+        case .overdueInvoices: return overdue.count
         case .heavyVideos: return videos.count
         case .readyToPost: return posts.filter { !$0.saved }.count
         case .dayCollage: return collages.filter { !$0.saved }.count
@@ -74,6 +75,9 @@ import UserNotifications
         default: return 0
         }
     }
+
+    /// Unpaid invoices past their pay-by day, latest first.
+    var overdue: [Invoice.Doc] { InvoiceStore.shared.docs.filter { $0.overdue() }.sorted { ($0.due ?? .distantPast) < ($1.due ?? .distantPast) } }
 
     /// Drives from the last week not yet looked at (a missed evening doesn't lose them).
     var drives: [DriveStore.Drive] {
@@ -112,8 +116,8 @@ import UserNotifications
             let have = Set(receipts.map(\.id))
             receipts = SmartReceipts.deduped(receipts + found.filter { !have.contains($0.id) })
             saveReceipts()
-        case .drives:
-            progress = (1, "Done")   // drives are recorded as they happen; the run only gathers them for a look
+        case .drives, .overdueInvoices:
+            progress = (1, "Done")   // drives and invoices are Tenzy's own records; the run only gathers them for a look
         case .heavyVideos:
             let have = Set(videos.map(\.id))
             SmartVideos.trail = []
@@ -304,12 +308,14 @@ enum SmartRunAlerts {
         let c = UNUserNotificationCenter.current()
         c.removePendingNotificationRequests(withIdentifiers: (0..<2).map { id(k, $0) })
         guard p.on else { return }
-        // Drives are known as they happen: no drives, no notification.
-        if k == .drives && waiting == 0 { return }
+        // Drives and invoices are known as they happen: nothing waiting, no notification.
+        if (k == .drives || k == .overdueInvoices) && waiting == 0 { return }
         for (n, t) in p.times.enumerated() {
             let body = UNMutableNotificationContent()
             body.title = L(k.title)
             switch k {
+            case .overdueInvoices:
+                body.body = "\(waiting) \(L(waiting == 1 ? "invoice is overdue — a reminder is ready to send." : "invoices are overdue — reminders are ready to send."))"
             case .businessCards:
                 body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "business card read — save it to Contacts?" : "business cards read — save them to Contacts?"))"
                                         : L("Tap and Tenzy reads today's business cards into contacts.")
