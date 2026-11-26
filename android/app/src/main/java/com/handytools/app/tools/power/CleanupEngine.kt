@@ -40,11 +40,13 @@ internal object CleanupEngine {
     fun scan(ctx: Context, onPhase: (String, Float) -> Unit): CleanScan {
         onPhase("Measuring storage…", 0.08f)
         val storage = runCatching { StorageEngine.scan(ctx) }.getOrNull()
-        onPhase("Finding duplicates & look-alikes…", 0.2f)
+        onPhase("Finding duplicate copies…", 0.2f)
         val report = SpaceCleanerEngine.scan(ctx)
         val dupes = ArrayList<CleanItem>()
         var g = 0
-        (report.exactDupes + report.similar).forEach { grp ->
+        // Exact copies only (26 Nov, Manan: "people will delete non-duplicates because the app said so"). Look-alikes —
+        // two shots of the same scene, two screenshots of the same app with a different number — are never offered.
+        report.exactDupes.forEach { grp ->
             grp.items.sortedByDescending { it.size }.forEach { dupes.add(CleanItem(it.uri, it.name, it.size, false, g)) }
             g++
         }
@@ -55,7 +57,7 @@ internal object CleanupEngine {
         val blurry = blurryOrDark(ctx, skip)
         onPhase("Done", 1f)
         val cats = listOf(
-            CleanCategory("dupes", "Duplicate & look-alike photos", true, dupes),
+            CleanCategory("dupes", "Duplicate copies", true, dupes),
             CleanCategory("videos", "Large videos", false, videos),
             CleanCategory("shots", "Screenshots", false, report.screenshots?.items?.map { CleanItem(it.uri, it.name, it.size, false) } ?: emptyList()),
             CleanCategory("blurry", "Blurry & dark shots", false, blurry),

@@ -52,6 +52,27 @@ final class CleanerDuplicatesTests: XCTestCase {
         XCTAssertTrue(P.seededGroups(count: 3, matches: []).isEmpty)
     }
 
+    /// Manan, 26 Nov: two calculator screenshots — "0" and "96699" — were offered as duplicates, and "people will delete
+    /// non-duplicates because the app said so". Copies must be the same picture in every patch; a re-saved copy still is.
+    func testOnlyTheSamePictureCountsAsACopy() {
+        let w = PhotoCleaner.checkWidth, h = 278
+        func screen(_ number: String) -> [UInt8] {
+            var px = [UInt8](repeating: 8, count: w * h)                  // a black calculator
+            for y in 150..<h { for x in 0..<w where (x / 32 + y / 32) % 2 == 0 { px[y * w + x] = 90 } }   // its keys
+            // the number at the top right: about 6 px per digit, light on black
+            let width = number.count * 6
+            for y in 40..<48 { for x in (w - 6 - width)..<(w - 6) where (x + y) % 3 != 0 { px[y * w + x] = 235 } }
+            return px
+        }
+        let zero = screen("0"), big = screen("96699")
+        XCTAssertFalse(PhotoCleaner.sameContent(zero, big, w: w, h: h), "a different number on the same screen is a different picture")
+        var again = zero; for i in again.indices { again[i] = UInt8(clamping: Int(again[i]) + (i % 5) - 2) }   // re-saved: ±2 everywhere
+        XCTAssertTrue(PhotoCleaner.sameContent(zero, again, w: w, h: h), "a re-saved copy is still a copy")
+        var clock = zero; for y in 2..<9 { for x in 10..<26 { clock[y * w + x] = 230 } }   // the time in the corner changed
+        XCTAssertFalse(PhotoCleaner.sameContent(zero, clock, w: w, h: h), "a changed clock is a different screenshot")
+        XCTAssertFalse(PhotoCleaner.sameContent(zero, Array(zero.prefix(10)), w: w, h: h), "unreadable is never a copy")
+    }
+
     func testTheSavedIndexOnlyTrustsAnUneditedPhoto() {
         var i = P.DupHashIndex()
         i.set("a", modified: 100, hash: (1, 2))

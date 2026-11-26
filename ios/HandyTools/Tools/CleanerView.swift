@@ -45,10 +45,19 @@ struct CleanerView: View {
     }
 
     private var all: [PhotoCleaner.Item] { cat == .duplicates ? groups.flatMap { $0 } : items }
-    private var selectedItems: [PhotoCleaner.Item] { all.filter { selected.contains($0.id) } }
+    /// What a delete would remove. In Duplicates one copy of every picture always stays, even if every copy is ticked
+    /// (26 Nov: "Select all" ticked both copies and "Delete 2" would have removed the picture altogether).
+    private var selectedItems: [PhotoCleaner.Item] {
+        let picked = all.filter { selected.contains($0.id) }
+        guard cat == .duplicates else { return picked }
+        let kept = Set(groups.filter { g in g.allSatisfy { selected.contains($0.id) } }.compactMap { $0.first?.id })
+        return picked.filter { !kept.contains($0.id) }
+    }
+    /// Every extra copy (the first of each group is the one kept).
+    private var dupExtraIDs: Set<String> { Set(groups.flatMap { $0.dropFirst() }.map(\.id)) }
     private var reclaim: Int64 { selectedItems.reduce(Int64(0)) { $0 + $1.bytes } }
     private var totalBytes: Int64 { all.reduce(Int64(0)) { $0 + $1.bytes } }
-    private var allSelected: Bool { !all.isEmpty && selected.count == all.count }
+    private var allSelected: Bool { cat == .duplicates ? (!groups.isEmpty && dupExtraIDs.isSubset(of: selected)) : (!all.isEmpty && selected.count == all.count) }
 
     // MARK: body
 
@@ -104,7 +113,7 @@ struct CleanerView: View {
 
     // MARK: hero — the safe win, done for you
 
-    /// Duplicate copies that are safe to clear automatically: every look-alike except the one we keep.
+    /// Duplicate copies that are safe to clear automatically: every copy except the one we keep.
     private var safeDupExtras: [PhotoCleaner.Item] { (index.duplicates ?? []).flatMap { $0.dropFirst() } }
     private var safeReclaim: Int64 { safeDupExtras.reduce(Int64(0)) { $0 + $1.bytes } }
 
@@ -257,7 +266,7 @@ struct CleanerView: View {
     private var checkedLine: String {
         var line = index.photosChecked + index.videosChecked > 0
             ? String(format: L("Checked all %@ photos and %@ videos for copies."), index.photosChecked.formatted(), index.videosChecked.formatted())
-            : L("No look-alike photos or videos found.")
+            : L("No duplicate copies found.")
         if index.skippedInCloud > 0 {
             line += " " + String(format: L("%@ in iCloud only couldn't be checked — download them in Photos to include them."), index.skippedInCloud.formatted())
         }
@@ -297,7 +306,7 @@ struct CleanerView: View {
                 if cat == .duplicates {
                     Text(checkedLine).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
                     ForEach(Array(sortedGroups.enumerated()), id: \.offset) { _, g in
-                        Text("\(g.count) look-alikes · keep one").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+                        Text(String(format: L("%d copies · one is kept"), g.count)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
                         grid(g)
                     }
                 } else {
@@ -319,13 +328,17 @@ struct CleanerView: View {
             HStack(spacing: HandySpacing.s16) {
                 Button(selecting ? "Done" : "Select") { selecting.toggle() }.textButton()
                 Button(allSelected ? "Deselect all" : "Select all") {
-                    selected = allSelected ? [] : Set(all.map { $0.id })
+                    selected = allSelected ? [] : (cat == .duplicates ? dupExtraIDs : Set(all.map { $0.id }))
                 }.textButton()
                 Spacer()
-                Text("\(selected.count) selected").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text("\(selectedItems.count) \(L("selected"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
             if selecting {
                 Text(L("Drag across photos to select or deselect a whole run."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.accent).frame(maxWidth: .infinity, alignment: .leading)
+            }
+            if cat == .duplicates, groups.contains(where: { g in g.allSatisfy { selected.contains($0.id) } }) {
+                Text(L("One copy of each picture is always kept."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.accent).frame(maxWidth: .infinity, alignment: .leading)
             }
             Button { deleteSelected() } label: {

@@ -1,4 +1,5 @@
 import Photos
+import AVFoundation
 import Vision
 import UIKit
 import SwiftUI
@@ -105,12 +106,10 @@ enum PhotoCleaner {
     /// newest 500 items, so two copies of an older clip were never compared — Manan found two 31.1 MB copies by eye).
     /// `scanLimit` keeps only the newest N (the daily tidy autorun looks at recent photos only).
     ///
-    /// Photos: two photos are copies when Vision's feature print is close (< 0.28) AND the 128-bit difference hash
-    /// is near-identical (≤ 10 bits) — the hash stops all white document screenshots grouping as one. The hash is the
-    /// cheap half, so every photo gets one (kept on the phone between checks, so a photo is read once), and the feature
-    /// print is worked out only for photos whose hash has a near-twin.
-    /// Videos: a copy is the same length, so only clips with a same-length partner are looked at; their poster frames
-    /// must then be very close (< 0.22). Photos and videos are never grouped with each other.
+    /// Copies only, never look-alikes. Every photo gets a cheap difference hash (kept on the phone between checks, so a
+    /// photo is read once); only photos whose hash has a near-twin are compared properly — the same shape, and every
+    /// small patch of the picture the same (`sameContent`). Videos: the same length, the same shape, and the first and
+    /// middle frames the same picture. Photos and videos are never grouped with each other.
     static func duplicates(scanLimit: Int? = nil, progress: @escaping (Double) -> Void) async -> DupScan {
         let o = PHFetchOptions()
         o.predicate = NSPredicate(format: "mediaType == %d OR mediaType == %d", PHAssetMediaType.image.rawValue, PHAssetMediaType.video.rawValue)
@@ -136,14 +135,6 @@ enum PhotoCleaner {
             }
             return image?.cgImage
         }
-        func featurePrint(_ cg: CGImage) -> VNFeaturePrintObservation? {
-            let r = VNGenerateImageFeaturePrintRequest()
-            try? VNImageRequestHandler(cgImage: cg, options: [:]).perform([r])
-            return r.results?.first as? VNFeaturePrintObservation
-        }
-        func distance(_ a: VNFeaturePrintObservation, _ b: VNFeaturePrintObservation) -> Float {
-            var d = Float.greatestFiniteMagnitude; try? a.computeDistance(&d, to: b); return d
-        }
 
         // 1. A difference hash for every photo (most come straight from the saved index).
         var index = DupHashIndex.load()
@@ -165,35 +156,93 @@ enum PhotoCleaner {
         if Task.isCancelled { return DupScan(groups: [], skipped: skipped, photos: 0, videos: 0) }
 
         var groups: [[Item]] = []
-        // 2. Photos with a near-twin hash: feature prints, then the same rule as always.
+        // Copies, never look-alikes (26 Nov, Manan: two calculator screenshots showing "0" and "96699" were offered as
+        // duplicates — "people will delete non-duplicates because the app said so"). The hash only finds candidates;
+        // two items are copies when they're the same shape and every small patch of the picture matches (`sameContent`).
+        // When a picture can't be read, it isn't called a copy: unsure means no.
+        func grey(_ a: PHAsset, rows: Int) -> [UInt8]? {
+            var image: UIImage?
+            mgr.requestImage(for: a, targetSize: CGSize(width: 320, height: 320), contentMode: .aspectFit, options: full) { im, _ in image = im }
+            guard let cg = image?.cgImage else { return nil }
+            return GrayPixels.read(cg, w: Self.checkWidth, h: rows)
+        }
+        // 2. Photos with a near-twin hash.
         let hashed = hashes.indices.filter { hashes[$0] != nil }
         let photoPairs = nearHashPairs(hashed.map { hashes[$0]! }, within: 10).map { (hashed[$0.0], hashed[$0.1]) }
-        var photoPrints: [Int: VNFeaturePrintObservation] = [:]
-        for k in Set(photoPairs.flatMap { [$0.0, $0.1] }).sorted() {
-            if let cg = thumb(photos[k]), let p = featurePrint(cg) { photoPrints[k] = p }
+        var photoMatches: [(Int, Int)] = []
+        for p in photoPairs {
+            if Task.isCancelled { break }
+            let a = photos[p.0], b = photos[p.1]
+            guard sameShape(a, b) else { continue }
+            let rows = checkRows(a)
+            guard let ga = grey(a, rows: rows), let gb = grey(b, rows: rows), sameContent(ga, gb, w: Self.checkWidth, h: rows) else { continue }
+            photoMatches.append(p)
         }
         progress(0.92)
-        let photoMatches = photoPairs.filter { p in
-            guard let a = photoPrints[p.0], let b = photoPrints[p.1] else { return false }
-            return distance(a, b) < 0.28
-        }
         groups += seededGroups(count: photos.count, matches: photoMatches).map { $0.map { Item(asset: photos[$0], bytes: estimatedBytes(of: photos[$0])) } }
 
-        // 3. Videos the same length: poster-frame prints, held to the stricter rule.
-        let videoPairs = sameLengthPairs(videos.map(\.duration))
-        var videoPrints: [Int: VNFeaturePrintObservation] = [:]
-        for k in Set(videoPairs.flatMap { [$0.0, $0.1] }).sorted() {
+        // 3. Videos: the same length to a quarter of a second, the same shape, and both the first frame and the middle
+        // frame the same picture. A clip that isn't on the phone (iCloud only) can't be checked, so it isn't grouped.
+        var videoMatches: [(Int, Int)] = []
+        for p in sameLengthPairs(videos.map(\.duration)) {
             if Task.isCancelled { break }
-            guard let cg = thumb(videos[k]) else { skipped += 1; continue }
-            if let p = featurePrint(cg) { videoPrints[k] = p }
-        }
-        let videoMatches = videoPairs.filter { p in
-            guard let a = videoPrints[p.0], let b = videoPrints[p.1] else { return false }
-            return distance(a, b) < 0.22
+            let a = videos[p.0], b = videos[p.1]
+            guard abs(a.duration - b.duration) < 0.25, sameShape(a, b) else { continue }
+            let rows = checkRows(a)
+            guard let pa = grey(a, rows: rows), let pb = grey(b, rows: rows), sameContent(pa, pb, w: Self.checkWidth, h: rows) else { continue }
+            guard let ma = await middleFrame(a, mgr: mgr), let mb = await middleFrame(b, mgr: mgr),
+                  let ga = GrayPixels.read(ma, w: Self.checkWidth, h: rows), let gb = GrayPixels.read(mb, w: Self.checkWidth, h: rows),
+                  sameContent(ga, gb, w: Self.checkWidth, h: rows) else { skipped += 1; continue }
+            videoMatches.append(p)
         }
         groups += seededGroups(count: videos.count, matches: videoMatches).map { $0.map { Item(asset: videos[$0], bytes: estimatedBytes(of: videos[$0])) } }
         progress(1)
         return DupScan(groups: groups, skipped: skipped, photos: photos.count, videos: videos.count)
+    }
+
+    /// The width both pictures are read at to be compared, in grey; the height follows the picture's shape.
+    static let checkWidth = 128
+    static func checkRows(_ a: PHAsset) -> Int {
+        guard a.pixelWidth > 0 else { return checkWidth }
+        return max(16, min(400, Int((Double(checkWidth) * Double(a.pixelHeight) / Double(a.pixelWidth)).rounded())))
+    }
+    /// The same shape: a copy keeps its proportions (a crop or a different photo usually doesn't).
+    static func sameShape(_ a: PHAsset, _ b: PHAsset) -> Bool {
+        guard a.pixelWidth > 0, a.pixelHeight > 0, b.pixelWidth > 0, b.pixelHeight > 0 else { return false }
+        return abs(Double(a.pixelWidth) / Double(a.pixelHeight) - Double(b.pixelWidth) / Double(b.pixelHeight)) < 0.01
+    }
+
+    /// Two grey pictures are the same picture: overall they differ by no more than re-saving a photo changes, and so
+    /// does every 8×8 patch — so a different number on a calculator, a changed clock or a line of text added in one
+    /// corner makes them different, while a re-saved or re-sized copy still matches. Pure, unit-tested.
+    static func sameContent(_ a: [UInt8], _ b: [UInt8], w: Int, h: Int, patch: Int = 8, patchLimit: Int = 10, meanLimit: Double = 3.5) -> Bool {
+        guard w > 0, h > 0, a.count == w * h, b.count == w * h else { return false }
+        var total = 0
+        for i in 0..<(w * h) { total += abs(Int(a[i]) - Int(b[i])) }
+        if Double(total) / Double(w * h) > meanLimit { return false }
+        var y = 0
+        while y < h {
+            var x = 0
+            while x < w {
+                var sum = 0, n = 0
+                for yy in y..<min(y + patch, h) { for xx in x..<min(x + patch, w) { sum += abs(Int(a[yy * w + xx]) - Int(b[yy * w + xx])); n += 1 } }
+                if sum > patchLimit * n { return false }
+                x += patch
+            }
+            y += patch
+        }
+        return true
+    }
+
+    /// The frame halfway through a clip that's on the phone (never downloaded for this), or nil.
+    static func middleFrame(_ a: PHAsset, mgr: PHImageManager) async -> CGImage? {
+        let o = PHVideoRequestOptions(); o.isNetworkAccessAllowed = false; o.deliveryMode = .highQualityFormat
+        let asset: AVAsset? = await withCheckedContinuation { c in mgr.requestAVAsset(forVideo: a, options: o) { av, _, _ in c.resume(returning: av) } }
+        guard let asset else { return nil }
+        let g = AVAssetImageGenerator(asset: asset)
+        g.appliesPreferredTrackTransform = true
+        g.maximumSize = CGSize(width: 320, height: 320)
+        return try? await g.image(at: CMTime(seconds: max(0, a.duration / 2), preferredTimescale: 600)).image
     }
 
     /// Every pair of hashes at most `within` bits apart, without comparing every photo with every other: split the

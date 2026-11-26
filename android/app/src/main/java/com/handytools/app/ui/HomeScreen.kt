@@ -110,7 +110,7 @@ val TOOLS = listOf(
         about = "Shrink photos and videos to a target size, cut out backgrounds, make passport photos, and strip location and metadata — all before you share."),
     HTool("cleanup", "Clean Up", "Free space & tidy", R.drawable.tool_cleanup, R.drawable.card_cleanup,
         listOf("clean","cleaner","space","storage","duplicate","duplicates","photos","screenshots","videos","large","big","free up","full","contacts","merge","declutter"),
-        about = "Find genuine duplicate and look-alike photos, big files and old screenshots to free up space, and tidy duplicate contacts — with a recoverable trash so nothing is lost by accident."),
+        about = "Find exact duplicate photos and videos, big files and old screenshots to free up space, and tidy duplicate contacts — with a recoverable trash so nothing is lost by accident."),
     HTool("converter", "Converter", "Convert anything", R.drawable.ic_converter, R.drawable.card_converter,
         listOf("convert","converter","change","format","image","png","jpg","jpeg","webp","heic","pdf","audio","video","transcode","compress","mp4","m4a","aac"),
         about = "Convert images, PDFs, audio and video between formats. Pick one file or several at once, choose the output format, and it all runs on-device."),

@@ -1,5 +1,5 @@
-# 26 Nov: the how-to films caught two bugs. The ask box's own example built "Shrink a photo to under 2 MB" (now: Email
-# today's screenshots to myself, sent as they are), and a photo handed to the Privacy Scrubber didn't show (detection
-# held the screen). Planner test checks the steps now; the UI test checks the photo arrives.
+# 26 Nov: Duplicates must be copies, never look-alikes (Manan: two calculator screenshots "0" and "96699" were offered
+# as duplicates). Strict same-picture check + the real-library test; plus the ask-box helper and the scrubber handover.
+HandyToolsTests/CleanerDuplicatesTests
 HandyToolsTests/SmartDescribeTests/testItSaysWhenItIsOnlyAGuess
 HandyToolsUITests/MultiPhotoTests/testAPhotoHandedToTheScrubberShowsUp
