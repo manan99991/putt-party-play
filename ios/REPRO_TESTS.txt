@@ -1,3 +1,4 @@
-# 26 Nov: the TestFlight run's reachability check failed with "No matches found for Element at index 15" — a button
-# appeared or went between reading the list and reading its frame. Now each tool's screen is read once, in one snapshot.
-HandyToolsUITests/ToolControlsReachableTests/testNoToolControlIsCutOffAtTheRightEdge
+# 26 Nov: Cleaner finds copies anywhere in the library (two copies of an older clip behind 520 newer photos), and
+# Home › See all lists every ready-made flow under one section.
+HandyToolsTests/CleanerDuplicatesTests
+HandyToolsTests/HomeShelvesTests/testEveryReadyMadeFlowSitsUnderOneSection
