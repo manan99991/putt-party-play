@@ -1074,7 +1074,7 @@ enum ChainTemplates {
         Chain(id: "voice-cave", name: "Make a voice echo like in a cave", steps: [ChainStep(block: .voiceChange, settings: ["voice": "cave"])]),
         Chain(id: "voice-ghost", name: "Make a voice sound like a ghost", steps: [ChainStep(block: .voiceChange, settings: ["voice": "ghost"])]),
         Chain(id: "voice-autotune", name: "Make a voice sing in tune", steps: [ChainStep(block: .voiceChange, settings: ["voice": "autotune"])]),
-        Chain(id: "voice-announcer", name: "Make a voice sound like a stadium announcer", steps: [ChainStep(block: .voiceChange, settings: ["voice": "announcer"])]),
+        Chain(id: "voice-announcer", name: "Make a voice sound like an announcer", steps: [ChainStep(block: .voiceChange, settings: ["voice": "announcer"])]),
         Chain(id: "voice-radio", name: "Make a voice sound like an old radio", steps: [ChainStep(block: .voiceChange, settings: ["voice": "radio"])]),
         Chain(id: "voice-whisper", name: "Turn a voice into a whisper", steps: [ChainStep(block: .voiceChange, settings: ["voice": "whisper"])]),
         Chain(id: "video-voice", name: "Give a video a funny voice", steps: [ChainStep(block: .videoAudio), ChainStep(block: .voiceChange, settings: ["voice": "chipmunk"])]),

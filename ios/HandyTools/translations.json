@@ -51459,7 +51459,7 @@
   "pt": "Fazer uma voz cantar afinada",
   "zh": "让声音唱得准"
  },
- "Make a voice sound like a stadium announcer": {
+ "Make a voice sound like an announcer": {
   "de": "Eine Stimme wie einen Stadionsprecher klingen lassen",
   "es": "Hacer que una voz suene como un locutor de estadio",
   "fr": "Faire sonner une voix comme un speaker de stade",
@@ -51719,15 +51719,15 @@
   "pt": "Momentos engraçados",
   "zh": "搞笑时刻"
  },
- "Record scratch, dramatic zoom, crickets…": {
-  "de": "Plattenkratzer, dramatischer Zoom, Grillen…",
-  "es": "Disco rayado, zoom dramático, grillos…",
-  "fr": "Disque rayé, zoom dramatique, grillons…",
-  "hi": "रिकॉर्ड स्क्रैच, ड्रामैटिक ज़ूम, झींगुर…",
-  "it": "Disco graffiato, zoom drammatico, grilli…",
-  "ja": "レコードスクラッチ、ドラマチックズーム、コオロギ…",
-  "pt": "Disco arranhado, zoom dramático, grilos…",
-  "zh": "唱片刮擦、戏剧性推近、蟋蟀声…"
+ "Record scratch, dramatic zoom, crickets": {
+  "de": "Plattenkratzer, dramatischer Zoom, Grillen",
+  "es": "Disco rayado, zoom dramático, grillos",
+  "fr": "Disque rayé, zoom dramatique, grillons",
+  "hi": "रिकॉर्ड स्क्रैच, ड्रामैटिक ज़ूम, झींगुर",
+  "it": "Disco graffiato, zoom drammatico, grilli",
+  "ja": "レコードスクラッチ、ドラマチックズーム、コオロギ",
+  "pt": "Disco arranhado, zoom dramático, grilos",
+  "zh": "唱片刮擦、戏剧性推近、蟋蟀声"
  },
  "One moment, one classic joke — with its sound.": {
   "de": "Ein Moment, ein klassischer Gag — mit Sound.",
@@ -52228,5 +52228,55 @@
   "ja": "作成できませんでした。別の瞬間か別の動画でお試しください。",
   "pt": "Não deu para fazer — tente outro momento ou vídeo.",
   "zh": "没能做出来——换个瞬间或换段视频试试。"
+ },
+ "Cut it to the beat": {
+  "de": "Im Takt schneiden",
+  "es": "Córtalo al ritmo",
+  "fr": "Montez-le en rythme",
+  "hi": "बीट पर काटें",
+  "it": "Montalo a ritmo",
+  "ja": "ビートに合わせてカット",
+  "pt": "Corte no ritmo",
+  "zh": "踩点剪辑"
+ },
+ "Your clips cut on the beat of music Tenzy makes": {
+  "de": "Deine Clips, im Takt von Tenzys eigener Musik geschnitten",
+  "es": "Tus clips cortados al ritmo de música creada por Tenzy",
+  "fr": "Vos clips montés au rythme d'une musique créée par Tenzy",
+  "hi": "आपके क्लिप, Tenzy के बनाए संगीत की बीट पर कटे हुए",
+  "it": "Le tue clip montate a ritmo di musica creata da Tenzy",
+  "ja": "Tenzyが作る音楽のビートに合わせてクリップをカット",
+  "pt": "Seus clipes cortados no ritmo da música criada pelo Tenzy",
+  "zh": "你的片段，踩着 Tenzy 制作的音乐节拍剪辑"
+ },
+ "Make it a movie trailer": {
+  "de": "Einen Kinotrailer daraus machen",
+  "es": "Conviértelo en un tráiler de cine",
+  "fr": "En faire une bande-annonce",
+  "hi": "इसे मूवी ट्रेलर बनाएँ",
+  "it": "Trasformalo in un trailer",
+  "ja": "映画の予告編にする",
+  "pt": "Transforme em trailer de cinema",
+  "zh": "做成电影预告片"
+ },
+ "Your clips as an epic trailer, with titles and music": {
+  "de": "Deine Clips als epischer Trailer, mit Titeln und Musik",
+  "es": "Tus clips como un tráiler épico, con títulos y música",
+  "fr": "Vos clips en bande-annonce épique, avec titres et musique",
+  "hi": "आपके क्लिप एक शानदार ट्रेलर के रूप में, टाइटल और संगीत के साथ",
+  "it": "Le tue clip come un trailer epico, con titoli e musica",
+  "ja": "クリップをタイトルと音楽つきの壮大な予告編に",
+  "pt": "Seus clipes como um trailer épico, com títulos e música",
+  "zh": "把你的片段做成史诗级预告片，配上标题和音乐"
+ },
+ "A record scratch, a dramatic zoom or crickets, right where you want it": {
+  "de": "Plattenkratzer, dramatischer Zoom oder Grillenzirpen, genau an der richtigen Stelle",
+  "es": "Un rayón de disco, un zoom dramático o grillos, justo donde quieras",
+  "fr": "Un scratch de vinyle, un zoom dramatique ou des grillons, pile où vous voulez",
+  "hi": "रिकॉर्ड स्क्रैच, ड्रामैटिक ज़ूम या झींगुरों की आवाज़, ठीक वहीं जहाँ आप चाहें",
+  "it": "Uno scratch, uno zoom drammatico o i grilli, proprio dove vuoi tu",
+  "ja": "レコードスクラッチ、ドラマチックなズーム、虫の音を好きな場所に",
+  "pt": "Um arranhão de disco, um zoom dramático ou grilos, bem onde você quiser",
+  "zh": "唱片刮擦声、戏剧性推近或蟋蟀声，想放哪里就放哪里"
  }
 }

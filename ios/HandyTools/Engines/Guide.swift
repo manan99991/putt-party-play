@@ -314,6 +314,9 @@ enum Guide {
         "meetingnotes": ("Notes from a video call or talk", "Who said what, a summary and the to-dos"),
         "audiomix": ("Join videos or change their speed", "One video, or faster / slower with natural voices"),
         "celebrate": ("Make it stunning", "A whole vibe in one tap, or looks, light, motion, sparkle, words and any festival — as subtle or as wild as you like"),
+        "beatreel": ("Cut it to the beat", "Your clips cut on the beat of music Tenzy makes"),
+        "trailer": ("Make it a movie trailer", "Your clips as an epic trailer, with titles and music"),
+        "funny": ("Add a funny moment", "A record scratch, a dramatic zoom or crickets, right where you want it"),
     ]
 
     @MainActor static func title(_ o: Option, count: Int, kind: ChainKind? = nil) -> String {

@@ -59,7 +59,8 @@ final class PromiseTests: XCTestCase {
         seeAll.tap()
         // 25 Nov: the jobs that lived inside other tools got their own tiles (Photos +1, Documents +1, Audio 6 → 10 in place
         // of the Audio Editor menu, Words 6 → 7 in place of the Notes from speech menu).
-        let tabs = ["camera": 9, "photos": 9, "video": 5, "pdf": 10, "audio": 10, "words": 7, "day": 9, "phone": 5]
+        // 26 Nov: Video 5 → 8 (Beat Reel, Movie Trailer, Funny Moments).
+        let tabs = ["camera": 9, "photos": 9, "video": 8, "pdf": 10, "audio": 10, "words": 7, "day": 9, "phone": 5]
         for (tab, count) in tabs.sorted(by: { $0.key < $1.key }) {
             let t = any["tab-\(tab)"].firstMatch
             XCTAssertTrue(t.waitForExistence(timeout: 10) && t.isHittable, "category \(tab) isn't on the Tools page without scrolling")
