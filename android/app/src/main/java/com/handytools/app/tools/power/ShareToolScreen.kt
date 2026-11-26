@@ -293,7 +293,7 @@ private fun shareSheet(ctx: Context, uri: Uri?, mime: String) {
 private fun ShareQrPanel(st: ShareQrState) {
     val ctx = LocalContext.current
 
-    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+    com.handytools.app.ui.ChipRow {
         HChip("Text / link", st.kind == 0) { st.kind = 0 }
         HChip("Wi-Fi login", st.kind == 1) { st.kind = 1 }
         HChip("Contact", st.kind == 2) { st.kind = 2 }

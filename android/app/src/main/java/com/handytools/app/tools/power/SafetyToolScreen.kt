@@ -199,7 +199,7 @@ fun SafetyToolScreen() {
                     placeholder = { Text(com.handytools.app.I18n.t("Paste a suspicious text, email, link or number…")) },
                 )
                 Spacer(Modifier.height(HandyTokens.Space8))
-                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                com.handytools.app.ui.ChipRow {
                     MESSAGE_SAMPLES.forEach { (name, text) -> HChip(name, selected = false) { message = text; show(SafetyEngine.checkMessage(text)) } }
                 }
                 Spacer(Modifier.height(HandyTokens.Space12))

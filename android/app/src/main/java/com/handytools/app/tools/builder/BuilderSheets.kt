@@ -109,7 +109,7 @@ fun SheetsScreen(onBack: () -> Unit) {
                             TextButton({ SheetStore.delete(s); note = "Deleted ${s.name}."; deleting = null; reload() }) { Text("Delete ${s.name}", color = MaterialTheme.colorScheme.error) }
                             TextButton({ deleting = null }) { Text(com.handytools.app.I18n.t("Keep it")) }
                         }
-                    } else Row(Modifier.horizontalScroll(rememberScrollState())) {
+                    } else com.handytools.app.ui.ChipRow {
                         TextButton({ Share.file(ctx, s.file, "text/csv") }) { Text(com.handytools.app.I18n.t("Send")) }
                         TextButton({ newName = s.name; renaming = key }) { Text(com.handytools.app.I18n.t("Rename")) }
                         if (s.rows > 0) TextButton({ if (SheetStore.removeLastRow(s)) { note = "Removed the last entry from ${s.name}."; reload() } }) { Text(com.handytools.app.I18n.t("Undo last")) }

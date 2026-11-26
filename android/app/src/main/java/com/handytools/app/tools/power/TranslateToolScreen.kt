@@ -327,7 +327,7 @@ fun TranslateToolScreen() {
                 OutlinedTextField(value = input, onValueChange = { input = it }, placeholder = { Text(com.handytools.app.I18n.t("Type or paste…")) },
                     modifier = Modifier.fillMaxWidth(), minLines = 3)
                 Spacer(Modifier.height(8.dp))
-                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                com.handytools.app.ui.ChipRow {
                     QUICK.forEach { (label, phrase) -> HChip(label, input == phrase) { input = phrase; translateText() } }
                 }
                 Spacer(Modifier.height(10.dp))

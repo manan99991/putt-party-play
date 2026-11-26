@@ -277,7 +277,7 @@ fun ScrubberToolScreen() {
         if (shot != null) {
             Spacer(Modifier.height(HandyTokens.Space12))
             if (shots.size > 1) {
-                Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                com.handytools.app.ui.ChipRow {
                     shots.forEachIndexed { i, _ -> HChip("Photo ${i + 1}", i == current) { current = i } }
                 }
                 Spacer(Modifier.height(HandyTokens.Space8))

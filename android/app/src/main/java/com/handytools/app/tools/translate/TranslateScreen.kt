@@ -80,7 +80,7 @@ fun TranslateScreen() {
             HChip(if (enToX) "English → " + name(other) else name(other) + " → English", true) { enToX = !enToX }
         }
         Spacer(Modifier.size(8.dp))
-        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        com.handytools.app.ui.ChipRow {
             LANGS.forEach { (code, nm) -> HChip(nm, other == code) { other = code } }
         }
         Spacer(Modifier.size(12.dp))

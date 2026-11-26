@@ -173,7 +173,7 @@ internal fun DocMergePanel(st: DocMergeState) {
 
     Spacer(Modifier.height(10.dp))
     val canChip = st.files.isNotEmpty() && !st.working && hasRoom
-    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+    com.handytools.app.ui.ChipRow {
         HChip("Compress", false) {
             if (!canChip) st.status = "Pick a PDF first." else runOp("Compressing", "application/pdf") { st.files.mapNotNull { DocEngine.compress(ctx, it.uri) } }
         }
@@ -279,7 +279,7 @@ internal fun DocFinderPanel(st: DocFinderState) {
         trailingIcon = { if (st.query.isNotEmpty()) IconButton(onClick = { st.query = "" }) { Icon(Icons.Outlined.Close, "Clear") } }
     )
     Spacer(Modifier.height(8.dp))
-    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+    com.handytools.app.ui.ChipRow {
         HChip("＋ Add folder", false) { folderPicker.launch(null) }
         HChip("＋ Add files", false) { filePicker.launch(arrayOf("*/*")) }
         if (st.sources.isNotEmpty()) HChip("↻ Re-index", false) { reindex(force = true) }
@@ -355,7 +355,7 @@ internal fun DocFinderPanel(st: DocFinderState) {
     // Indexed sources, removable.
     if (st.sources.isNotEmpty()) {
         SectionLabel("Indexed")
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+        com.handytools.app.ui.ChipRow {
             st.sources.forEach { s ->
                 HChip("${if (s.tree) "📁 " else ""}${s.label.ifBlank { "Source" }}  ✕", false) {
                     st.sources.remove(s)

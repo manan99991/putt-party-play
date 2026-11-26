@@ -239,7 +239,7 @@ internal fun DocScanPanel(st: DocScanState) {
     }
 
     Spacer(Modifier.height(10.dp))
-    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+    com.handytools.app.ui.ChipRow {
         DocScanFilter.values().forEach { f -> HChip(f.label, st.filter == f) { st.filter = f } }
         HChip("↻ Rotate", false) {
             val i = st.current
@@ -392,7 +392,7 @@ internal fun DocSignPanel(st: DocSignState) {
         }
         if (st.pageCount > 1) {
             Spacer(Modifier.height(8.dp))
-            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+            com.handytools.app.ui.ChipRow {
                 for (i in 0 until minOf(st.pageCount, 60)) HChip("Page ${i + 1}", st.pageIndex == i) { if (!st.loading) loadPage(i) }
             }
         }
@@ -468,7 +468,7 @@ internal fun DocSignPanel(st: DocSignState) {
         st.pending = SignPlaced(0L, false, 0.5f, 0.5f, 0f, 0.022f, text, null); st.status = null
     }
     val pendingText = st.pending?.takeIf { !it.isSignature }?.text
-    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+    com.handytools.app.ui.ChipRow {
         HChip("Name", pendingText != null && pendingText == st.name.trim() && st.name.isNotBlank()) {
             if (st.name.isBlank()) st.status = "Type your name above first." else field(st.name.trim())
         }

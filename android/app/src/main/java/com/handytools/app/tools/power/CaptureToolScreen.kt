@@ -438,7 +438,7 @@ private fun InlineTranslate(text: String) {
     SectionLabel("Translate")
     ChipRow { HChip(if (enToX) "English → $otherName" else "$otherName → English", true) { enToX = !enToX } }
     Spacer(Modifier.height(HandyTokens.Space8))
-    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+    com.handytools.app.ui.ChipRow {
         TRANSLATE_LANGS.forEach { (code, nm) -> HChip(nm, other == code) { other = code; output = "" } }
     }
     if (overQuota) Text("You've used today's ${Limits.FREE_TRANSLATE_PER_DAY} free translations. Go Pro for unlimited — or copy the text into any translator.",

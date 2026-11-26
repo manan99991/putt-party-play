@@ -413,10 +413,8 @@ private fun SqliteRenderer(uri: Uri) {
     if (tl == null) { CircularProgressIndicator(color = HandyColors.Accent); return }
     if (tl.isEmpty()) { NoteText(com.handytools.app.I18n.t("No readable tables (the file may be encrypted or not a database).")); return }
     SectionLabel("${tl.size} table${if (tl.size == 1) "" else "s"}")
-    Box(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            tl.forEach { (name, n) -> HChip("$name · $n", selected == name) { selected = name } }
-        }
+    com.handytools.app.ui.ChipRow {
+        tl.forEach { (name, n) -> HChip("$name · $n", selected == name) { selected = name } }
     }
     val sel = selected; val f = dbFile
     if (sel != null && f != null) {

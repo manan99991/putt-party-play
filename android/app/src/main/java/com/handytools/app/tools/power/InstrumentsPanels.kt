@@ -351,7 +351,7 @@ internal fun RulerPanel() {
             }
         } else {
             Spacer(Modifier.height(10.dp))
-            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            com.handytools.app.ui.ChipRow {
                 HChip("cm", unit == 0) { unit = 0 }
                 HChip("inches", unit == 1) { unit = 1 }
                 HChip("Calibrate with a card", false) { calibrating = true }
