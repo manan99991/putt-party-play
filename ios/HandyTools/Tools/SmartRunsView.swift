@@ -42,7 +42,14 @@ struct SmartRunsView: View {
                     }.cardStyle(padding: HandySpacing.s12)
                 }
                 if let k = store.working { workingCard(k) }
-                ForEach(SmartRunStore.built) { k in card(k) }
+                // In sections, so twelve autoruns read as three short lists.
+                ForEach(SmartRuns.Kind.Section.allCases, id: \.self) { sec in
+                    let kinds = SmartRunStore.built.filter { $0.section == sec }
+                    if !kinds.isEmpty {
+                        Text(L(sec.rawValue)).font(HandyFont.cardTitle).padding(.top, HandySpacing.s8).accessibilityAddTraits(.isHeader)
+                        ForEach(kinds) { k in card(k) }
+                    }
+                }
                 NavigationLink(value: "myreminders") {
                     Label(L("Or a simple reminder at a time you pick"), systemImage: "bell.badge").frame(maxWidth: .infinity, alignment: .leading)
                 }.secondaryButton().accessibilityIdentifier("smartruns-reminder")

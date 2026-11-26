@@ -16908,5 +16908,25 @@
   "ja": "聞き取りを止める",
   "pt": "Parar de ouvir",
   "zh": "停止聆听"
+ },
+ "Money & paperwork": {
+  "de": "Geld & Papierkram",
+  "es": "Dinero y papeleo",
+  "fr": "Argent et paperasse",
+  "hi": "पैसा और कागज़ी काम",
+  "it": "Soldi e scartoffie",
+  "ja": "お金と書類",
+  "pt": "Dinheiro e papelada",
+  "zh": "钱和文书"
+ },
+ "Looking after your phone": {
+  "de": "Dein Telefon in Ordnung halten",
+  "es": "Cuidar de tu teléfono",
+  "fr": "Prendre soin de votre téléphone",
+  "hi": "आपके फ़ोन की देखभाल",
+  "it": "Prendersi cura del telefono",
+  "ja": "スマホのお手入れ",
+  "pt": "Cuidando do seu celular",
+  "zh": "照看你的手机"
  }
 }

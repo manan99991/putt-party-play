@@ -47,6 +47,16 @@ enum SmartRuns {
             case .paperPDFs: return "Turns the letters, bills and forms you photographed today into clean, flat PDFs you can search — pages taken together become one file, named from what it says."
             }
         }
+        /// Where it's listed on the autoruns page.
+        enum Section: String, CaseIterable { case money = "Money & paperwork", media = "Photos & videos", care = "Looking after your phone" }
+        var section: Section {
+            switch self {
+            case .receipts, .overdueInvoices, .drives, .businessCards, .paperPDFs, .voiceNotes: return .money
+            case .dayCollage, .weekFilm, .readyToPost, .heavyVideos: return .media
+            case .tidyPhotos, .contactsBackup: return .care
+            }
+        }
+
         /// Comes back once a week, not every day.
         var weekly: Bool { self == .weekFilm || self == .contactsBackup }
 
