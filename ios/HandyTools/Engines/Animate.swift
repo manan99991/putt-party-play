@@ -144,6 +144,9 @@ enum Animate {
         var pace: Pace = .normal
         /// Seconds between the music's beats — each new photo lands on a beat and every beat gives a small push.
         var beat: Double? = nil
+        /// Fade up from black at the start. Off when the first frame must show (a film's title card: it's the
+        /// picture Photos shows for the whole video).
+        var fadeIn = true
     }
 
     /// Smart default for how many photos were picked.
@@ -243,6 +246,7 @@ enum Animate {
         let size = evenSize(CGSize(width: settings.format.size.width * scale, height: settings.format.size.height * scale))
         let tl = timeline(count: images.count, settings: settings, fps: fps)
         let painter = Painter(images: images, size: size, framing: settings.framing)
+        painter.fadesIn = settings.fadeIn
         let style = settings.style
         let bitRate = Int(size.width * size.height * 4)               // ~8 Mbps at 1080×1920
         // One more try if the encoder fails to start or stalls (seen on a busy device): a slideshow is never lost to a hiccup.
@@ -348,6 +352,8 @@ enum Animate {
         private let ci = CIContext(options: [.useSoftwareRenderer: false])
         /// The frame being drawn (seconds) and its timeline — every photo keeps moving through its whole time on screen.
         private var now = 0.0
+        /// Whether the video fades up from black (Settings.fadeIn).
+        var fadesIn = true
         private var line: Timeline?
         /// Whether photos drift (styles with their own camera move — Ken Burns, film strip, Polaroids, carousel,
         /// boomerang — don't get a second one).
@@ -913,7 +919,7 @@ enum Animate {
         /// the finish costs one plain draw per frame however long the video.
         private func finish(_ i: Int, _ tl: Timeline, _ ctx: CGContext) {
             if !finishes.isEmpty { ctx.draw(finishes[(i / 2) % finishes.count], in: full) }
-            let fadeIn = max(0, 1 - now / 0.35), fadeOut = max(0, 1 - (tl.seconds - now) / 0.3)
+            let fadeIn = fadesIn ? max(0, 1 - now / 0.35) : 0, fadeOut = max(0, 1 - (tl.seconds - now) / 0.3)
             let black = CGFloat(min(1, max(fadeIn, fadeOut)))
             if black > 0.004 { ctx.setFillColor(UIColor(white: 0, alpha: black).cgColor); ctx.fill(full) }
         }

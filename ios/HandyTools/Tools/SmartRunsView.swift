@@ -169,7 +169,7 @@ struct SmartRunsView: View {
             ["4. Utilities. The Tenant pays electricity and internet.", "The Landlord pays water, sewer and trash collection.",
              "5. Pets. One cat or small dog is allowed with written consent.", "6. Notice. Either party gives sixty days written notice",
              "before the end of the term.", "", "Signed by the Landlord and the Tenant on the date above.", "", "Page 2 of 2"]]
-        let f = UIGraphicsImageRendererFormat(); f.scale = 1
+        let f = UIGraphicsImageRendererFormat(); f.scale = 1; f.preferredRange = .standard; f.opaque = true
         var images: [UIImage] = []
         for lines in pages {
             images.append(UIGraphicsImageRenderer(size: CGSize(width: 1400, height: 1900), format: f).image { ctx in

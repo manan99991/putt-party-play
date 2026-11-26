@@ -122,6 +122,7 @@ enum SmartWeek {
     /// opening on the title card when there is one.
     static func glide(_ photos: [UIImage], opening: UIImage? = nil) async -> URL? {
         var s = Animate.Settings(); s.style = .kenBurns; s.framing = .fit; s.pace = .normal
+        s.fadeIn = opening == nil   // the film opens on its title, which is also the picture Photos shows for it
         if let f = VideoFormat.preset("reels") { s.format = f }
         return await Animate.render((opening.map { [$0] } ?? []) + photos, settings: s)
     }

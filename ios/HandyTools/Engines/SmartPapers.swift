@@ -131,7 +131,12 @@ enum SmartPapers {
             else { seen = await PhotoFinder.read(a); if let seen { cache[a.localIdentifier] = seen } }
             let taken = a.creationDate ?? window.end
             let after = found.last.map { taken.timeIntervalSince($0.taken) <= 180 } ?? false
-            trail.append("\(a.pixelWidth)x\(a.pixelHeight) \(Int(Date().timeIntervalSince(a.creationDate ?? .distantPast)))s ago")
+            var looked = ""
+            if let small = await PhotoFinder.image(a, side: 720), let cg = small.cgImage {
+                let px = Stitcher.grayscale(small, width: 40).px
+                looked = " · read back \(cg.width)x\(cg.height) \(cg.bitsPerComponent)bpc \(cg.colorSpace?.name.map { $0 as String } ?? "?") mean \(px.reduce(0) { $0 + Int($1) } / max(1, px.count))"
+            }
+            trail.append("\(a.pixelWidth)x\(a.pixelHeight) \(Int(Date().timeIntervalSince(a.creationDate ?? .distantPast)))s ago" + looked)
             if let seen {
                 let words = seen.text.split { $0 == " " || $0 == "\n" }.count
                 trail.append(String(format: "doc %.1f rec %.1f card %.1f · %d words · %@%@", PhotoFinder.score(seen, for: .document),

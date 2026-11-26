@@ -1,8 +1,9 @@
-# 26 Nov, second look. Contacts, voice memos, tool days and the offer card passed. Still failing, with what each run said:
-#  • paper: the 2 photos in the window read as "outdoor / night sky", 0 words — the drawn pages arrive dark. The run now
-#    reports the drawing's own size and brightness before saving, and each photo's pixel size and age.
-#  • the week film's first frame is black (mean 0): the test now reports the title card's and a picture's brightness and
-#    frames at 0/0.2/0.6/1.5/3 s of the photo stretch and of the joined film, so where it goes dark is known.
-#  • the week title printed the 27th for the 26th: dates now follow the calendar's own time zone (fixed).
+# 26 Nov, third look — read from the second run's report:
+#  • week film: the title card (136) and photos (180) are bright and the film is fine from 0.2 s, but frame 0 is black:
+#    Animate fades up from black, so the film's first frame — the picture Photos shows for it — was black. The film now
+#    opens straight on its title (Settings.fadeIn = false for the opening stretch only).
+#  • paper: the drawn pages are bright (mean 197) and the right size (1400x1900), yet read back as "night sky", 0 words.
+#    The seed now draws in standard range, opaque; and the run reports what the reader actually got back (size, bits,
+#    colour space, brightness), so if it's still dark the cause is in the read, and it's shown.
 HandyToolsUITests/PromiseTests/testPaperAutorunMakesOneSearchablePDFFromTwoPages
 HandyToolsTests/SmartWeekTests
