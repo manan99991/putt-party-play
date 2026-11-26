@@ -198,6 +198,18 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   narrator is the phone's own TextToSpeech, the person is found with ML Kit selfie segmentation and faces with ML Kit face
   detection, both bundled and run on the phone (nothing sent, no new permission). Keep them out of the Play listing and
   screenshots until a Play build with them has shipped and Manan has said yes to the listing change.
+- Video Studio (26 Nov, iPhone first; was "Video Effects"): one tool for face and body effects, what's behind the person,
+  the music, looks and words, ending in Save or a tap on where it's being posted. Faces (`FaceFun`): the phone's own face
+  landmarks and body pose (Vision, on the device) place every effect; heads and warps are fairground-mirror bends, skin and
+  mood effects recolour or soften the face, and every sticker (shades, crown, moustache, ears, hats…) is drawn by Tenzy from
+  plain shapes in `FaceStickers` — never add emoji glyphs, artwork, characters or brand looks from anywhere else. Same wording
+  rule as above: playful effects, never "AI", "deepfake", "face swap" or "face animator"; "Beautiful" is a soft-skin look,
+  never described as slimming, medical or making anyone "better". Music: Tenzy's own (`Synth`) or the person's own sound
+  file picked in Files (no Music-library permission here; the file is copied to Tenzy's temporary folder, never uploaded);
+  the screen says to post their own song only where they have the right to it. Their own photo behind them comes from the
+  system photo picker (no permission). Posting only makes the file ready, saves it and opens the other app: Tenzy never
+  posts for anyone. Nothing new is collected or sent, no new permission: App Privacy / Data safety unchanged. Keep "Video
+  Studio" and these effects out of the store listings and screenshots until Manan has said yes to a listing change.
 - "Change the voice" changes speed, pitch and tone (echo, radio, whisper, a sung auto-tune, a stadium announcer). Do not
   describe it as voice cloning or as sounding like a real person.
 - Build your own, Pro steps: only the 10 basic steps are free (`Block.freeStepIDs` / `FREE_STEP_IDS`, matched on both

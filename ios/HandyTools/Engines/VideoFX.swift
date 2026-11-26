@@ -30,8 +30,18 @@ enum VideoFX {
         var background = "none"
         /// Funny faces (26 Nov): a big head, a tiny head, big eyes, a stretchy or wobbly face — found on every frame.
         var funny = "none"
+        /// The person's own photo behind them, when `background` is "photo".
+        var backdrop: URL?
+        /// The sound (26 Nov, Engines/VideoSound.swift): "original", "none", "synth:<style>" for music Tenzy makes, or
+        /// "file" for the person's own song (`song`).
+        var music = "original"
+        var song: URL?
+        /// With music on: 0 = just the music … 1 = just the video's own sound.
+        var keep = 0.25
 
-        var isPlain: Bool { look == "none" && light == "none" && motion == "none" && texture == "none" && sparkle == "none" && background == "none" && funny == "none" }
+        var isPlain: Bool {
+            look == "none" && light == "none" && motion == "none" && texture == "none" && sparkle == "none" && background == "none" && funny == "none" && music == "original"
+        }
     }
 
     static let looks: [Choice] = [
@@ -67,7 +77,7 @@ enum VideoFX {
         Choice(id: "none", name: "As filmed", emoji: "⚪️"), Choice(id: "blur", name: "Portrait blur", emoji: "🌫️"),
         Choice(id: "colorpop", name: "Colour pop", emoji: "🎨"), Choice(id: "studio", name: "Studio", emoji: "🤍"),
         Choice(id: "sunset", name: "Sunset", emoji: "🌇"), Choice(id: "night", name: "Night city", emoji: "🌃"),
-        Choice(id: "pastel", name: "Pastel", emoji: "🩵"),
+        Choice(id: "pastel", name: "Pastel", emoji: "🩵"), Choice(id: "photo", name: "Your photo", emoji: "🖼️"),
     ]
     /// Every face and body effect (Engines/FaceFun.swift), with "Off" first.
     static let funnies: [Choice] = [Choice(id: "none", name: "Off", emoji: "⚪️")] + FaceFun.effects.map { Choice(id: $0.id, name: $0.name, emoji: $0.emoji) }
@@ -291,9 +301,12 @@ enum VideoFX {
         var words: (image: CIImage, size: CGSize)?
         /// The faces last found, so the face effects sit still and a frame where the finder blinks keeps them on.
         let fun = FaceFun.Memory()
+        /// The person's own photo for behind them, upright.
+        let backdrop: CIImage?
         let lock = NSLock()
         init(_ r: Recipe) {
             recipe = r
+            backdrop = r.background == "photo" ? r.backdrop.flatMap { CIImage(contentsOf: $0, options: [.applyOrientationProperty: true]) } : nil
             cube = r.look == "none" ? nil : CIFilter(name: "CIColorCubeWithColorSpace", parameters: [
                 "inputCubeDimension": 24, "inputCubeData": VideoFX.cube(r.look, amount: min(1, 0.25 + r.amount), size: 24),
                 "inputColorSpace": CGColorSpace(name: CGColorSpace.sRGB) as Any,
@@ -434,7 +447,13 @@ enum VideoFX {
         var base = src
         let mask = r.background != "none" ? personMask(src) : nil
         if let mask {
-            let bg = backdrop(r.background, src: src, rect: rect, t: t, a: a)
+            var bg = backdrop(r.background == "photo" ? "blur" : r.background, src: src, rect: rect, t: t, a: a)
+            if r.background == "photo", let photo = kit.backdrop, photo.extent.width > 1, photo.extent.height > 1 {
+                // Their photo, filling the frame (cropped evenly, never stretched).
+                let k = max(W / photo.extent.width, H / photo.extent.height)
+                let scaled = photo.transformed(by: CGAffineTransform(scaleX: k, y: k))
+                bg = scaled.transformed(by: CGAffineTransform(translationX: rect.midX - scaled.extent.midX, y: rect.midY - scaled.extent.midY)).cropped(to: rect)
+            }
             let soft = mask.clampedToExtent().applyingGaussianBlur(sigma: 1.5).cropped(to: rect)
             base = src.applyingFilter("CIBlendWithMask", parameters: [kCIInputBackgroundImageKey: bg, kCIInputMaskImageKey: soft]).cropped(to: rect)
         }
@@ -597,27 +616,28 @@ enum VideoFX {
         }
     }
 
-    /// Saves the video with the recipe on it (sound kept), with live progress. nil if the phone couldn't make it.
+    /// Saves the video with the recipe on it — picture and sound — with live progress. nil if the phone couldn't make it.
     static func export(_ source: URL, recipe: Recipe, caption: Celebrate.Caption?) async -> URL? {
-        let asset = AVURLAsset(url: source)
-        var b: [Double] = []
-        if recipe.motion == "pulse" { b = await beats(source) }
-        guard let comp = await composition(for: asset, recipe: recipe, caption: caption, beats: b),
-              let s = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else { return nil }
+        let built = await VideoSound.build(source, music: recipe.music, song: recipe.song, keep: recipe.keep)
+        var b = built.beats
+        if recipe.motion == "pulse", b.isEmpty { b = await beats(source) }
+        guard let comp = await composition(for: built.asset, recipe: recipe, caption: caption, beats: b),
+              let s = AVAssetExportSession(asset: built.asset, presetName: AVAssetExportPresetHighestQuality) else { return nil }
         let out = VideoEngine.tempURL("mp4")
-        s.outputURL = out; s.outputFileType = .mp4; s.videoComposition = comp; s.metadata = []
-        let secs = (try? await asset.load(.duration).seconds) ?? 0
+        s.outputURL = out; s.outputFileType = .mp4; s.videoComposition = comp; s.audioMix = built.mix; s.metadata = []
+        let secs = (try? await built.asset.load(.duration).seconds) ?? 0
         return await VideoEngine.run(s, seconds: secs) ? out : nil
     }
 
     /// A quick, smaller copy of the first seconds with the recipe on, for a player that can't run the effects live (the
     /// build machine's simulator fails any video composition in playback; export works). Plays in the preview box.
     static func previewClip(_ source: URL, recipe: Recipe, beats: [Double], seconds: Double = 8) async -> URL? {
-        let asset = AVURLAsset(url: source)
-        guard let comp = await composition(for: asset, recipe: recipe, caption: nil, beats: beats),
-              let s = AVAssetExportSession(asset: asset, presetName: AVAssetExportPreset1280x720) else { return nil }
-        let length = (try? await asset.load(.duration)) ?? .zero
+        let built = await VideoSound.build(source, music: recipe.music, song: recipe.song, keep: recipe.keep)
+        guard let comp = await composition(for: built.asset, recipe: recipe, caption: nil, beats: beats.isEmpty ? built.beats : beats),
+              let s = AVAssetExportSession(asset: built.asset, presetName: AVAssetExportPreset1280x720) else { return nil }
+        let length = (try? await built.asset.load(.duration)) ?? .zero
         s.videoComposition = comp
+        s.audioMix = built.mix
         s.metadata = []
         s.timeRange = CMTimeRange(start: .zero, duration: CMTimeMinimum(length, CMTime(seconds: seconds, preferredTimescale: 600)))
         let out = VideoEngine.tempURL("mp4")

@@ -3,6 +3,9 @@ import PhotosUI
 import AVKit
 import UniformTypeIdentifiers
 
+/// Video Studio (26 Nov: Video Effects grown into one place for everything on a video) — faces and bodies made funny or
+/// beautiful (Engines/FaceFun.swift), what's behind the person (or their own photo), the music under it (made by
+/// Tenzy, or their own song), then saved or posted straight to TikTok, Reels, Shorts and the rest.
 /// Video effects — "Make it stunning". A video (or photo) with a whole vibe in one tap (Cinematic, Golden hour,
 /// Party, Dreamy, Love, Retro VHS, Noir, Epic, Night sky), or built up piece by piece: a look, light, motion on the
 /// beat, texture, sparkle, animated words, or any festival from every part of the world. One "How much" slider takes
@@ -10,7 +13,7 @@ import UniformTypeIdentifiers
 /// plays with it on; the saved video keeps its sound and finishes even if you leave the app.
 struct CelebrateView: View {
     enum Tab: String, CaseIterable, Identifiable {
-        case vibes, look, light, motion, texture, sparkle, background, funny, words, celebrate
+        case vibes, funny, background, music, look, light, motion, texture, sparkle, words, celebrate
         var id: String { rawValue }
         var title: String {
             switch self {
@@ -21,7 +24,8 @@ struct CelebrateView: View {
             case .texture: return "Texture"
             case .sparkle: return "Sparkle"
             case .background: return "Background"
-            case .funny: return "Funny"
+            case .funny: return "Faces"
+            case .music: return "Music"
             case .words: return "Words"
             case .celebrate: return "Celebrate"
             }
@@ -36,6 +40,7 @@ struct CelebrateView: View {
             case .sparkle: return "wand.and.stars"
             case .background: return "person.crop.rectangle"
             case .funny: return "face.smiling"
+            case .music: return "music.note"
             case .words: return "textformat"
             case .celebrate: return "party.popper.fill"
             }
@@ -78,13 +83,19 @@ struct CelebrateView: View {
     @State private var errorText: String?
     @State private var dragStart: CGPoint?
     @State private var pinchStart: CGFloat?
+    /// Their own photo for behind the person, and their own song.
+    @State private var backdropPick: PhotosPickerItem?
+    @State private var pickingSong = false
+    @State private var songName: String?
+    /// Where the finished video is being posted (a platform's id), once they tap one.
+    @State private var postTo: String?
     @ObservedObject private var prog = RunProgress.shared
 
     private let cols = [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)]
 
     var body: some View {
-        ToolPage(title: "Video Effects",
-                 subtitle: "Make it stunning — looks, light, motion, sparkle and words, as subtle or as wild as you like.",
+        ToolPage(title: "Video Studio",
+                 subtitle: "Funny faces, a new background, music, looks and words — then save it or post it anywhere.",
                  working: working) {
             VStack(alignment: .leading, spacing: HandySpacing.s16) {
                 if let url = resultURL { result(url) }
@@ -116,7 +127,7 @@ struct CelebrateView: View {
         .onDisappear { player.pause(); previewTask?.cancel(); thumbTask?.cancel() }
         .handoff("celebrate") { p in adopt(p) }
         .onAppear { if Launch.sample, source == nil { sample() } }
-        .finishes(working, tool: "Video Effects")
+        .finishes(working, tool: "Video Studio")
     }
 
     // MARK: - Pick
@@ -169,8 +180,9 @@ struct CelebrateView: View {
                 case .motion: chips(VideoFX.motions, current: recipe.motion) { recipe.motion = $0; if $0 == "pulse", beats.isEmpty { loadBeats() } }
                 case .texture: pictures(VideoFX.textures, current: recipe.texture) { recipe.texture = $0 }
                 case .sparkle: chips(VideoFX.sparkles, current: recipe.sparkle) { recipe.sparkle = $0 }
-                case .background: pictures(VideoFX.backgrounds, current: recipe.background) { recipe.background = $0 }
-                case .funny: pictures(VideoFX.funnies, current: recipe.funny) { recipe.funny = $0 }
+                case .background: backgroundCard
+                case .funny: facesCard
+                case .music: musicCard
                 case .words: wordsCard
                 case .celebrate: celebrateCard
                 }
@@ -276,6 +288,108 @@ struct CelebrateView: View {
                 }
                 .buttonStyle(.plain).accessibilityIdentifier("fx-\(tab.rawValue)-\(c.id)")
             }
+        }
+    }
+
+    /// Every face and body effect, in its group, each shown on the person's own video.
+    private var facesCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            ForEach(FaceFun.Group.allCases) { g in
+                Text(L(g.rawValue)).font(HandyFont.bodyStrong)
+                HandyFlow(spacing: 10) {
+                    if g == FaceFun.Group.allCases.first {
+                        Button { recipe.funny = "none" } label: { card(key: "funny-none", emoji: "⚪️", name: "Off", on: recipe.funny == "none") }
+                            .buttonStyle(.plain).accessibilityIdentifier("fx-funny-none")
+                    }
+                    ForEach(FaceFun.effects.filter { $0.group == g }) { e in
+                        Button { recipe.funny = e.id } label: { card(key: "funny-\(e.id)", emoji: e.emoji, name: e.name, on: recipe.funny == e.id) }
+                            .buttonStyle(.plain).accessibilityIdentifier("fx-funny-\(e.id)")
+                    }
+                }
+            }
+            Text(L("Tenzy finds every face on every frame, right on your phone. \"How much\" takes each one from gentle to wild."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    /// What's behind the person: blurred, colour-popped, a backdrop — or their own photo.
+    private var backgroundCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HandyFlow(spacing: 10) {
+                ForEach(VideoFX.backgrounds.filter { $0.id != "photo" }) { c in
+                    Button { recipe.background = c.id } label: { card(key: "background-\(c.id)", emoji: c.emoji, name: c.name, on: recipe.background == c.id) }
+                        .buttonStyle(.plain).accessibilityIdentifier("fx-background-\(c.id)")
+                }
+                PhotosPicker(selection: $backdropPick, matching: .images) {
+                    card(key: "background-photo", emoji: "🖼️", name: "Your photo", on: recipe.background == "photo")
+                }
+                .buttonStyle(.plain).accessibilityIdentifier("fx-background-photo")
+            }
+            Text(L("Tenzy finds the person on every frame and changes only what's behind them."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+        }
+        .onChange(of: backdropPick) { _, item in if let item { loadBackdrop(item) } }
+    }
+
+    /// The sound: as filmed, none, music Tenzy makes, or their own song — and how much of the video's sound stays.
+    private var musicCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            LazyVGrid(columns: cols, spacing: 8) {
+                ForEach(VideoSound.choices) { c in
+                    Button { recipe.music = c.id } label: { chip(c.emoji, c.name, on: recipe.music == c.id) }
+                        .buttonStyle(.plain).accessibilityIdentifier("fx-music-\(c.id.replacingOccurrences(of: ":", with: "-"))")
+                        .accessibilityAddTraits(recipe.music == c.id ? .isSelected : [])
+                }
+                Button { pickingSong = true } label: { chip("🎵", songName ?? L("Your song"), on: recipe.music == "file", translate: false) }
+                    .buttonStyle(.plain).accessibilityIdentifier("fx-music-file")
+            }
+            if recipe.music.hasPrefix("synth:") || recipe.music == "file" {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(L("Music and the video's own sound")).font(HandyFont.bodyStrong)
+                    HStack(spacing: 8) {
+                        Text(L("Music")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                        Slider(value: $recipe.keep, in: 0...1).tint(HandyColor.accent).accessibilityIdentifier("fx-music-mix")
+                            .accessibilityLabel(L("Music and the video's own sound"))
+                        Text(L("Video")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    }
+                }
+                .cardStyle(padding: HandySpacing.s12)
+            }
+            Text(L(recipe.music == "file" ? "Your own song, from Files. Post it only where you have the right to use that music — apps can mute videos with music they recognise."
+                   : "Tenzy makes this music on your phone. It's yours to post anywhere."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+        }
+        .fileImporter(isPresented: $pickingSong, allowedContentTypes: [.audio]) { r in
+            guard case .success(let u) = r else { return }
+            Task {
+                let copy = await VideoSound.adopt(u)
+                await MainActor.run {
+                    if let copy { recipe.song = copy; recipe.music = "file"; songName = u.deletingPathExtension().lastPathComponent; errorText = nil }
+                    else { errorText = "That song can't be used — it may be protected. Try another file." }
+                }
+            }
+        }
+    }
+
+    private func chip(_ emoji: String, _ name: String, on: Bool, translate: Bool = true) -> some View {
+        VStack(spacing: 3) {
+            Text(emoji).font(.system(size: 24))
+            Text(translate ? L(name) : name).font(HandyFont.micro).lineLimit(1).minimumScaleFactor(0.7)
+        }
+        .frame(maxWidth: .infinity, minHeight: 64).padding(.vertical, 4).padding(.horizontal, 4)
+        .foregroundStyle(on ? HandyColor.accent : HandyColor.textPrimary)
+        .background(on ? HandyColor.accent.opacity(0.15) : HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(on ? HandyColor.accent : HandyColor.border, lineWidth: 1))
+    }
+
+    private func loadBackdrop(_ item: PhotosPickerItem) {
+        backdropPick = nil
+        Task {
+            guard let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d)?.normalizedUp(),
+                  let jpg = img.jpegData(compressionQuality: 0.9) else { await MainActor.run { errorText = "Couldn't open that photo — try another." }; return }
+            let u = FileManager.default.temporaryDirectory.appendingPathComponent("studio-backdrop-\(UUID().uuidString.prefix(8)).jpg")
+            guard (try? jpg.write(to: u)) != nil else { return }
+            await MainActor.run { recipe.backdrop = u; recipe.background = "photo"; errorText = nil; thumbs["background-photo"] = nil; scheduleThumbs() }
         }
     }
 
@@ -466,8 +580,20 @@ struct CelebrateView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Label(resultTitle, systemImage: "checkmark.circle.fill")
                 .font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
-            VideoFinishCard(url: url, source: source, tool: "Video Effects").id(url)
-            Button(L("Try another look")) { resultURL = nil; schedulePreview() }.textButton().frame(maxWidth: .infinity)
+            if let id = postTo, let p = SocialPost.platform(id) {
+                // Made the right shape, length and size for that app, then one tap into it.
+                PostReadyCard(source: url, platform: p) { postTo = nil }.id(url.path + id)
+            } else {
+                VideoFinishCard(url: url, source: source, tool: "Video Studio", offersPost: false).id(url)
+                VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                    Text(L("Post it")).font(HandyFont.title)
+                    Text(L("Tap where it's going: Tenzy makes it the right shape, length and size, then opens the app on it."))
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    PlatformGrid(selected: Binding(get: { postTo ?? "" }, set: { postTo = $0 }))
+                }
+                .accessibilityElement(children: .contain).accessibilityIdentifier("studio-post")
+            }
+            Button(L("Change the video")) { postTo = nil; resultURL = nil; schedulePreview() }.textButton().frame(maxWidth: .infinity)
         }
         .accessibilityElement(children: .contain).accessibilityIdentifier("celebrate-result")
     }
@@ -604,9 +730,10 @@ struct CelebrateView: View {
         case .texture:
             for c in VideoFX.textures { add("texture-\(c.id)") { r in r.texture = c.id; r.sparkle = "none" } }
         case .background:
-            for c in VideoFX.backgrounds { add("background-\(c.id)") { r in r.background = c.id; r.sparkle = "none" } }
+            for c in VideoFX.backgrounds where c.id != "photo" || base.backdrop != nil { add("background-\(c.id)") { r in r.background = c.id; r.sparkle = "none" } }
         case .funny:
-            for c in VideoFX.funnies { add("funny-\(c.id)") { r in r.funny = c.id; r.sparkle = "none" } }
+            // Each face effect on its own, on the plain picture, so it reads at a glance.
+            for c in VideoFX.funnies { add("funny-\(c.id)") { r in r.funny = c.id; r.sparkle = "none"; r.background = "none"; r.motion = "none" } }
         default: break
         }
         let work = jobs
@@ -629,7 +756,6 @@ struct CelebrateView: View {
         previewTask = Task {
             try? await Task.sleep(nanoseconds: 200_000_000)
             if Task.isCancelled { return }
-            let asset = AVURLAsset(url: url)
             if liveFails {
                 // The old clip keeps playing while the new one is made, so the box never goes blank.
                 guard let clip = await VideoFX.previewClip(url, recipe: r, beats: b), !Task.isCancelled else { return }
@@ -643,12 +769,16 @@ struct CelebrateView: View {
                 }
                 return
             }
-            let comp = await VideoFX.composition(for: asset, recipe: r, caption: nil, beats: b)
+            // Picture and sound together: the music (and how much of the video's own sound stays) plays in the preview too.
+            let built = await VideoSound.build(url, music: r.music, song: r.song, keep: r.keep)
+            let comp = await VideoFX.composition(for: built.asset, recipe: r, caption: nil, beats: b.isEmpty ? built.beats : b)
             await MainActor.run {
                 guard !Task.isCancelled else { return }
+                if let p = built.problem { errorText = p }
                 let at = player.currentTime()
-                let item = AVPlayerItem(asset: asset)
+                let item = AVPlayerItem(asset: built.asset)
                 item.videoComposition = comp
+                item.audioMix = built.mix
                 player.replaceCurrentItem(with: item)
                 player.isMuted = !soundOn
                 if at.isValid, at.seconds > 0 { player.seek(to: at, toleranceBefore: .zero, toleranceAfter: .zero) }
@@ -679,7 +809,7 @@ struct CelebrateView: View {
 
     private func reset() {
         previewTask?.cancel(); runTask?.cancel(); thumbTask?.cancel(); player.pause(); player.replaceCurrentItem(with: nil)
-        source = nil; resultURL = nil; errorText = nil; caption.text = ""; poster = nil; thumbs = [:]
+        source = nil; resultURL = nil; errorText = nil; caption.text = ""; poster = nil; thumbs = [:]; postTo = nil
         if let old = renderedClip { try? FileManager.default.removeItem(at: old) }
         renderedClip = nil
     }

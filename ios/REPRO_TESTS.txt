@@ -1,9 +1,8 @@
-# 26 Nov, round 9. The TestFlight run's gates stopped on five checks the new video tools and voices made out of date
-# (nothing wrong in the tools themselves): the announcer starter's sentence was one letter over the one-line limit
-# (now "Make a voice sound like an announcer"); Funny Moments' line ended in "…"; Beat Reel, Movie Trailer and Funny
-# Moments had no name of their own in a video's "what next" list; and two counts (96 starters, 8 video tools).
-HandyToolsTests/ChainTemplateTests
-HandyToolsTests/IntroTests
-HandyToolsTests/EngineTests/testCatalogIsConsistent
-HandyToolsTests/FinishFactsTests
-HandyToolsUITests/PromiseTests/testHomeAndToolsTabsReachEveryTool
+# 26 Nov, round 10. Video Studio: 37 face and body effects, music under the video, your own photo behind you, and
+# posting from the result. Each effect on a drawn face (pictures published to look at) and on real photos; the music
+# on the saved file; then the whole thing start to finish on the simulator.
+HandyToolsTests/FaceFunTests
+HandyToolsTests/VideoSoundTests
+HandyToolsTests/VideoFunTests
+HandyToolsUITests/CameraButtonTests/testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost
+HandyToolsUITests/PromiseTests/testCelebrateOffersEveryFestivalAndTypedOnes

@@ -262,6 +262,26 @@ final class FaceFunTests: XCTestCase {
                 for i in stride(from: 3, to: after.bytes.count, by: 4 * 97) { total += 1; if after.bytes[i] < 250 { holes += 1 } }
                 XCTAssertLessThan(Double(holes) / Double(max(1, total)), 0.001, "photo \(tried): \(e.id) left see-through holes")
             }
+            // Their own photo behind them (a plain red one here): red where the person isn't, the person untouched.
+            if let mask = VideoFX.personMask(src) {
+                let red = UIGraphicsImageRenderer(size: CGSize(width: 300, height: 200)).image { c in UIColor.red.setFill(); c.fill(CGRect(x: 0, y: 0, width: 300, height: 200)) }
+                let url = FileManager.default.temporaryDirectory.appendingPathComponent("facefun-backdrop.jpg")
+                try XCTUnwrap(red.jpegData(compressionQuality: 0.95)).write(to: url)
+                var r = VideoFX.Recipe(); r.background = "photo"; r.backdrop = url
+                let out = VideoFX.frame(src, t: 0.5, duration: 4, size: frame.size, kit: VideoFX.Kit(r), beats: [], caption: nil)
+                let m = pixels(mask.cropped(to: frame)), o = pixels(out)
+                var behind = 0, isRed = 0, person = 0, same = 0
+                for y in stride(from: 0, to: min(m.h, o.h), by: 6) {
+                    for x in stride(from: 0, to: min(m.w, o.w), by: 6) {
+                        let v = m.bytes[(y * m.w + x) * 4], i = (y * o.w + x) * 4
+                        if v < 15 { behind += 1; if o.bytes[i] > 190, o.bytes[i + 1] < 80, o.bytes[i + 2] < 80 { isRed += 1 } }
+                        if v > 240 { person += 1; if (0..<3).allSatisfy({ abs(Int(o.bytes[i + $0]) - Int(before.bytes[i + $0])) < 14 }) { same += 1 } }
+                    }
+                }
+                print("VIDEOFX|studio-backdrop|photo\(tried)|behind=\(isRed)/\(behind)|person=\(same)/\(person)")
+                if behind > 50 { XCTAssertGreaterThan(Double(isRed) / Double(behind), 0.95, "photo \(tried): their photo isn't behind the person") }
+                if person > 50 { XCTAssertGreaterThan(Double(same) / Double(person), 0.9, "photo \(tried): the person was painted over") }
+            }
         }
         if tried == 0 { throw XCTSkip("no real photo with a clear face") }
     }

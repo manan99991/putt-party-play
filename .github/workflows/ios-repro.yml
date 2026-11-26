@@ -65,7 +65,7 @@ jobs:
                 xcrun swift-demangle --simplified < "$RUNNER_TEMP/sample.txt" | python3 ../tools/main_stack.py >> "$RUNNER_TEMP/hang.txt" || true
               done
             done ) & SAMPLER=$!
-          TEST_RUNNER_MENU_DUMP="$RUNNER_TEMP/menu-dump.json" TEST_RUNNER_REAL_PHOTOS="$RUNNER_TEMP/real" TEST_RUNNER_GOLDEN="$PWD/RealPhotos/golden.json" xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
+          TEST_RUNNER_FACEFUN_OUT="$RUNNER_TEMP/facefun" TEST_RUNNER_MENU_DUMP="$RUNNER_TEMP/menu-dump.json" TEST_RUNNER_REAL_PHOTOS="$RUNNER_TEMP/real" TEST_RUNNER_GOLDEN="$PWD/RealPhotos/golden.json" xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
             $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD|REALINPUT|TOOLINPUT|SMOKE|MENU\||IDENTIFY\||VIDEOFX\||STICKER\||RECEIPTRUN\||REEL\||Failed to|accessibility" || true
           kill $SAMPLER 2>/dev/null || true
@@ -80,6 +80,12 @@ jobs:
         run: |
           { grep -E "error:|Test Case|Executed|TEST (SUCCEEDED|FAILED)|crashed|failed -|XCTAssert|BISECT|REALINPUT|TOOLINPUT|SMOKE|MENU\||IDENTIFY\||VIDEOFX\||STICKER\||RECEIPTRUN\||REEL\||Failed to|accessibility|Elapsed" ios/repro.log | grep -v "MENUREAD" | grep -v "Requesting snapshot" | head -400; echo "== main thread when stuck"; head -200 "$RUNNER_TEMP/hang.txt" 2>/dev/null || echo "never stuck"; echo "== crash reports"; cat ios/crashes.txt 2>/dev/null; } > ios-repro.log
           bash .github/publish-log.sh ios-repro ios-repro.log || true
+      - name: Publish the Face fun pictures (a drawn face only — never a real photo)
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          if [ -d "$RUNNER_TEMP/facefun" ]; then bash .github/publish-log.sh ios-repro-facefun "$RUNNER_TEMP/facefun" || true; fi
       - name: Publish what the camera read on the private menus (encrypted)
         if: always()
         working-directory: .

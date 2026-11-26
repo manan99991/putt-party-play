@@ -67,6 +67,8 @@ struct VideoFinishCard: View {
     var record = true
     var original: String? = nil
     var originalBytes = 0
+    /// False where the screen has its own way to post (the Video Studio lays every platform out below this card).
+    var offersPost = true
 
     @State private var facts: VideoFacts?
     @State private var before: VideoFacts?
@@ -89,7 +91,7 @@ struct VideoFinishCard: View {
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true) }
             KeepShare(url, lead: lead, tool: tool, original: original, originalBytes: originalBytes, record: record)
             // Straight on to TikTok, Reels, Shorts… made the right shape, length and size first.
-            Button { posting = true } label: {
+            if offersPost { Button { posting = true } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "paperplane.circle.fill").font(.system(size: 22)).foregroundStyle(HandyColor.accent)
                     VStack(alignment: .leading, spacing: 1) {
@@ -100,7 +102,7 @@ struct VideoFinishCard: View {
                     Image(systemName: "chevron.right").font(.caption).foregroundStyle(HandyColor.textSecondary)
                 }
                 .padding(10).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-            }.buttonStyle(.plain).accessibilityIdentifier("video-post")
+            }.buttonStyle(.plain).accessibilityIdentifier("video-post") }
         }
         .cardStyle(padding: HandySpacing.s12)
         .sheet(isPresented: $posting) {

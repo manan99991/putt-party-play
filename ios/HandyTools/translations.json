@@ -52278,5 +52278,505 @@
   "ja": "レコードスクラッチ、ドラマチックなズーム、虫の音を好きな場所に",
   "pt": "Um arranhão de disco, um zoom dramático ou grilos, bem onde você quiser",
   "zh": "唱片刮擦声、戏剧性推近或蟋蟀声，想放哪里就放哪里"
+ },
+ "Video Studio": {
+  "de": "Video-Studio",
+  "es": "Estudio de vídeo",
+  "fr": "Studio vidéo",
+  "hi": "वीडियो स्टूडियो",
+  "it": "Studio video",
+  "ja": "ビデオスタジオ",
+  "pt": "Estúdio de vídeo",
+  "zh": "视频工作室"
+ },
+ "Funny faces, backgrounds, music, looks": {
+  "de": "Lustige Gesichter, Hintergründe, Musik, Looks",
+  "es": "Caras divertidas, fondos, música, estilos",
+  "fr": "Visages drôles, fonds, musique, looks",
+  "hi": "मज़ेदार चेहरे, बैकग्राउंड, संगीत, लुक",
+  "it": "Facce buffe, sfondi, musica, look",
+  "ja": "おもしろ顔、背景、音楽、ルック",
+  "pt": "Caras divertidas, fundos, música, looks",
+  "zh": "搞笑脸、背景、音乐、风格"
+ },
+ "Funny faces, a new background, music, looks and words — then save it or post it anywhere.": {
+  "de": "Lustige Gesichter, neuer Hintergrund, Musik, Looks und Text – dann speichern oder überall posten.",
+  "es": "Caras divertidas, un fondo nuevo, música, estilos y texto: luego guárdalo o publícalo donde quieras.",
+  "fr": "Visages drôles, nouveau fond, musique, looks et texte — puis enregistrez ou publiez où vous voulez.",
+  "hi": "मज़ेदार चेहरे, नया बैकग्राउंड, संगीत, लुक और शब्द — फिर सेव करें या कहीं भी पोस्ट करें।",
+  "it": "Facce buffe, un nuovo sfondo, musica, look e testo — poi salvalo o pubblicalo ovunque.",
+  "ja": "おもしろ顔、新しい背景、音楽、ルック、文字。あとは保存するか、どこにでも投稿。",
+  "pt": "Caras divertidas, um fundo novo, música, looks e texto — depois salve ou publique onde quiser.",
+  "zh": "搞笑脸、新背景、音乐、风格和文字——然后保存或发布到任何地方。"
+ },
+ "Faces": {
+  "de": "Gesichter",
+  "es": "Caras",
+  "fr": "Visages",
+  "hi": "चेहरे",
+  "it": "Facce",
+  "ja": "顔",
+  "pt": "Rostos",
+  "zh": "脸部"
+ },
+ "Heads": {
+  "de": "Köpfe",
+  "es": "Cabezas",
+  "fr": "Têtes",
+  "hi": "सिर",
+  "it": "Teste",
+  "ja": "頭",
+  "pt": "Cabeças",
+  "zh": "头型"
+ },
+ "Warps": {
+  "de": "Verzerrungen",
+  "es": "Deformaciones",
+  "fr": "Déformations",
+  "hi": "टेढ़े-मेढ़े",
+  "it": "Deformazioni",
+  "ja": "ゆがみ",
+  "pt": "Distorções",
+  "zh": "变形"
+ },
+ "Stickers": {
+  "de": "Sticker",
+  "es": "Pegatinas",
+  "fr": "Autocollants",
+  "hi": "स्टिकर",
+  "it": "Adesivi",
+  "ja": "ステッカー",
+  "pt": "Adesivos",
+  "zh": "贴纸"
+ },
+ "Skin & colour": {
+  "de": "Haut & Farbe",
+  "es": "Piel y color",
+  "fr": "Peau et couleur",
+  "hi": "त्वचा और रंग",
+  "it": "Pelle e colore",
+  "ja": "肌と色",
+  "pt": "Pele e cor",
+  "zh": "皮肤与颜色"
+ },
+ "Moods": {
+  "de": "Stimmungen",
+  "es": "Estados de ánimo",
+  "fr": "Ambiances",
+  "hi": "मूड",
+  "it": "Atmosfere",
+  "ja": "ムード",
+  "pt": "Climas",
+  "zh": "氛围"
+ },
+ "Body": {
+  "de": "Körper",
+  "es": "Cuerpo",
+  "fr": "Corps",
+  "hi": "शरीर",
+  "it": "Corpo",
+  "ja": "体",
+  "pt": "Corpo",
+  "zh": "身体"
+ },
+ "Bald": {
+  "de": "Glatze",
+  "es": "Calvo",
+  "fr": "Chauve",
+  "hi": "गंजा",
+  "it": "Calvo",
+  "ja": "つるつる頭",
+  "pt": "Careca",
+  "zh": "光头"
+ },
+ "Cone head": {
+  "de": "Kegelkopf",
+  "es": "Cabeza de cono",
+  "fr": "Tête en cône",
+  "hi": "शंकु सिर",
+  "it": "Testa a cono",
+  "ja": "とんがり頭",
+  "pt": "Cabeça de cone",
+  "zh": "锥形头"
+ },
+ "Egg head": {
+  "de": "Eierkopf",
+  "es": "Cabeza de huevo",
+  "fr": "Tête d'œuf",
+  "hi": "अंडा सिर",
+  "it": "Testa a uovo",
+  "ja": "たまご頭",
+  "pt": "Cabeça de ovo",
+  "zh": "蛋形头"
+ },
+ "Balloon face": {
+  "de": "Ballongesicht",
+  "es": "Cara de globo",
+  "fr": "Visage ballon",
+  "hi": "गुब्बारा चेहरा",
+  "it": "Faccia a palloncino",
+  "ja": "風船顔",
+  "pt": "Cara de balão",
+  "zh": "气球脸"
+ },
+ "Big mouth": {
+  "de": "Großer Mund",
+  "es": "Boca grande",
+  "fr": "Grande bouche",
+  "hi": "बड़ा मुँह",
+  "it": "Bocca grande",
+  "ja": "でか口",
+  "pt": "Boca grande",
+  "zh": "大嘴"
+ },
+ "Tiny face": {
+  "de": "Winziges Gesicht",
+  "es": "Cara diminuta",
+  "fr": "Tout petit visage",
+  "hi": "छोटा चेहरा",
+  "it": "Faccina",
+  "ja": "ちび顔",
+  "pt": "Rosto minúsculo",
+  "zh": "小脸"
+ },
+ "Squished": {
+  "de": "Zerquetscht",
+  "es": "Aplastado",
+  "fr": "Écrasé",
+  "hi": "पिचका हुआ",
+  "it": "Schiacciato",
+  "ja": "ぺちゃんこ",
+  "pt": "Amassado",
+  "zh": "压扁"
+ },
+ "Pinched": {
+  "de": "Gequetscht",
+  "es": "Pellizcado",
+  "fr": "Pincé",
+  "hi": "दबा हुआ",
+  "it": "Pizzicato",
+  "ja": "つまみ顔",
+  "pt": "Apertado",
+  "zh": "捏脸"
+ },
+ "Long chin": {
+  "de": "Langes Kinn",
+  "es": "Barbilla larga",
+  "fr": "Long menton",
+  "hi": "लंबी ठुड्डी",
+  "it": "Mento lungo",
+  "ja": "長いあご",
+  "pt": "Queixo comprido",
+  "zh": "长下巴"
+ },
+ "Chipmunk cheeks": {
+  "de": "Hamsterbacken",
+  "es": "Mofletes de ardilla",
+  "fr": "Joues de hamster",
+  "hi": "गिलहरी गाल",
+  "it": "Guance da scoiattolo",
+  "ja": "リスのほっぺ",
+  "pt": "Bochechas de esquilo",
+  "zh": "花栗鼠脸颊"
+ },
+ "Cool shades": {
+  "de": "Coole Sonnenbrille",
+  "es": "Gafas de sol",
+  "fr": "Lunettes de soleil",
+  "hi": "कूल चश्मा",
+  "it": "Occhiali da sole",
+  "ja": "サングラス",
+  "pt": "Óculos escuros",
+  "zh": "酷墨镜"
+ },
+ "Heart glasses": {
+  "de": "Herzbrille",
+  "es": "Gafas de corazón",
+  "fr": "Lunettes cœur",
+  "hi": "दिल वाला चश्मा",
+  "it": "Occhiali a cuore",
+  "ja": "ハートめがね",
+  "pt": "Óculos de coração",
+  "zh": "爱心眼镜"
+ },
+ "Crown": {
+  "de": "Krone",
+  "es": "Corona",
+  "fr": "Couronne",
+  "hi": "मुकुट",
+  "it": "Corona",
+  "ja": "王冠",
+  "pt": "Coroa",
+  "zh": "皇冠"
+ },
+ "Moustache": {
+  "de": "Schnurrbart",
+  "es": "Bigote",
+  "fr": "Moustache",
+  "hi": "मूँछ",
+  "it": "Baffi",
+  "ja": "口ひげ",
+  "pt": "Bigode",
+  "zh": "小胡子"
+ },
+ "Puppy": {
+  "de": "Hündchen",
+  "es": "Perrito",
+  "fr": "Chiot",
+  "hi": "पिल्ला",
+  "it": "Cucciolo",
+  "ja": "子犬",
+  "pt": "Cachorrinho",
+  "zh": "小狗"
+ },
+ "Bunny": {
+  "de": "Häschen",
+  "es": "Conejito",
+  "fr": "Lapin",
+  "hi": "खरगोश",
+  "it": "Coniglietto",
+  "ja": "うさぎ",
+  "pt": "Coelhinho",
+  "zh": "小兔子"
+ },
+ "Clown nose": {
+  "de": "Clownsnase",
+  "es": "Nariz de payaso",
+  "fr": "Nez de clown",
+  "hi": "जोकर नाक",
+  "it": "Naso da clown",
+  "ja": "ピエロの鼻",
+  "pt": "Nariz de palhaço",
+  "zh": "小丑鼻子"
+ },
+ "Halo": {
+  "de": "Heiligenschein",
+  "es": "Aureola",
+  "fr": "Auréole",
+  "hi": "प्रभामंडल",
+  "it": "Aureola",
+  "ja": "天使の輪",
+  "pt": "Auréola",
+  "zh": "光环"
+ },
+ "Devil horns": {
+  "de": "Teufelshörner",
+  "es": "Cuernos de diablo",
+  "fr": "Cornes de diable",
+  "hi": "शैतान के सींग",
+  "it": "Corna da diavolo",
+  "ja": "悪魔のツノ",
+  "pt": "Chifres de diabo",
+  "zh": "恶魔角"
+ },
+ "Party hat": {
+  "de": "Partyhut",
+  "es": "Gorro de fiesta",
+  "fr": "Chapeau de fête",
+  "hi": "पार्टी टोपी",
+  "it": "Cappellino da festa",
+  "ja": "パーティーハット",
+  "pt": "Chapéu de festa",
+  "zh": "派对帽"
+ },
+ "Flower crown": {
+  "de": "Blumenkranz",
+  "es": "Corona de flores",
+  "fr": "Couronne de fleurs",
+  "hi": "फूलों का ताज",
+  "it": "Corona di fiori",
+  "ja": "花かんむり",
+  "pt": "Coroa de flores",
+  "zh": "花环"
+ },
+ "Zombie": {
+  "de": "Zombie",
+  "es": "Zombi",
+  "fr": "Zombie",
+  "hi": "ज़ॉम्बी",
+  "it": "Zombie",
+  "ja": "ゾンビ",
+  "pt": "Zumbi",
+  "zh": "僵尸"
+ },
+ "Beautiful": {
+  "de": "Wunderschön",
+  "es": "Belleza",
+  "fr": "Beauté",
+  "hi": "खूबसूरत",
+  "it": "Bellezza",
+  "ja": "ビューティー",
+  "pt": "Beleza",
+  "zh": "美颜"
+ },
+ "Seriously sunny": {
+  "de": "Richtig sonnig",
+  "es": "Sol a tope",
+  "fr": "Plein soleil",
+  "hi": "खूब धूप",
+  "it": "Sole pieno",
+  "ja": "ギラギラ太陽",
+  "pt": "Sol de verdade",
+  "zh": "阳光灿烂"
+ },
+ "Tacky": {
+  "de": "Kitschig",
+  "es": "Hortera",
+  "fr": "Kitsch",
+  "hi": "भड़कीला",
+  "it": "Kitsch",
+  "ja": "ド派手",
+  "pt": "Brega",
+  "zh": "土豪风"
+ },
+ "Wholesome": {
+  "de": "Herzlich",
+  "es": "Tierno",
+  "fr": "Tout doux",
+  "hi": "प्यारा",
+  "it": "Tenero",
+  "ja": "ほっこり",
+  "pt": "Fofo",
+  "zh": "暖心"
+ },
+ "Long legs": {
+  "de": "Lange Beine",
+  "es": "Piernas largas",
+  "fr": "Longues jambes",
+  "hi": "लंबी टाँगें",
+  "it": "Gambe lunghe",
+  "ja": "足長",
+  "pt": "Pernas longas",
+  "zh": "大长腿"
+ },
+ "Big head, tiny body": {
+  "de": "Großer Kopf, kleiner Körper",
+  "es": "Cabezón, cuerpo mini",
+  "fr": "Grosse tête, petit corps",
+  "hi": "बड़ा सिर, छोटा शरीर",
+  "it": "Testone, corpo mini",
+  "ja": "でか頭にちび体",
+  "pt": "Cabeção, corpo mini",
+  "zh": "大头小身"
+ },
+ "Tenzy finds every face on every frame, right on your phone. \"How much\" takes each one from gentle to wild.": {
+  "de": "Tenzy findet jedes Gesicht in jedem Bild, direkt auf deinem Handy. Mit „Wie viel“ geht jeder Effekt von sanft bis wild.",
+  "es": "Tenzy encuentra cada cara en cada fotograma, en tu teléfono. «Cuánto» lleva cada efecto de suave a salvaje.",
+  "fr": "Tenzy trouve chaque visage sur chaque image, directement sur votre téléphone. « Combien » fait passer chaque effet de doux à délirant.",
+  "hi": "Tenzy हर फ़्रेम में हर चेहरा आपके फ़ोन पर ही ढूँढ़ता है। \"कितना\" से हर इफ़ेक्ट हल्के से धमाकेदार तक जाता है।",
+  "it": "Tenzy trova ogni volto in ogni fotogramma, direttamente sul telefono. «Quanto» porta ogni effetto da delicato a scatenato.",
+  "ja": "Tenzyがスマホ上ですべてのフレームの顔を見つけます。「量」で控えめから大胆まで調整できます。",
+  "pt": "O Tenzy encontra cada rosto em cada quadro, direto no seu celular. \"Quanto\" leva cada efeito de suave a exagerado.",
+  "zh": "Tenzy 在你的手机上找到每一帧里的每张脸。“多少”可把每个效果从轻微调到夸张。"
+ },
+ "Tenzy finds the person on every frame and changes only what's behind them.": {
+  "de": "Tenzy findet die Person in jedem Bild und ändert nur, was hinter ihr ist.",
+  "es": "Tenzy encuentra a la persona en cada fotograma y cambia solo lo que hay detrás.",
+  "fr": "Tenzy trouve la personne sur chaque image et ne change que ce qui est derrière elle.",
+  "hi": "Tenzy हर फ़्रेम में व्यक्ति को ढूँढ़ता है और सिर्फ़ उसके पीछे का हिस्सा बदलता है।",
+  "it": "Tenzy trova la persona in ogni fotogramma e cambia solo ciò che c'è dietro.",
+  "ja": "Tenzyがすべてのフレームで人物を見つけ、その後ろだけを変えます。",
+  "pt": "O Tenzy encontra a pessoa em cada quadro e muda só o que está atrás dela.",
+  "zh": "Tenzy 在每一帧里找到人物，只改变其身后的部分。"
+ },
+ "Your song": {
+  "de": "Dein Song",
+  "es": "Tu canción",
+  "fr": "Votre chanson",
+  "hi": "आपका गाना",
+  "it": "La tua canzone",
+  "ja": "自分の曲",
+  "pt": "Sua música",
+  "zh": "你的歌曲"
+ },
+ "Music and the video's own sound": {
+  "de": "Musik und Originalton",
+  "es": "Música y sonido original",
+  "fr": "Musique et son d'origine",
+  "hi": "संगीत और वीडियो की अपनी आवाज़",
+  "it": "Musica e audio originale",
+  "ja": "音楽と動画の音",
+  "pt": "Música e som original",
+  "zh": "音乐与视频原声"
+ },
+ "Your own song, from Files. Post it only where you have the right to use that music — apps can mute videos with music they recognise.": {
+  "de": "Dein eigener Song aus Dateien. Poste ihn nur dort, wo du die Rechte an der Musik hast – Apps können Videos mit erkannter Musik stummschalten.",
+  "es": "Tu propia canción, desde Archivos. Publícalo solo donde tengas derecho a usar esa música: las apps pueden silenciar vídeos con música que reconocen.",
+  "fr": "Votre propre chanson, depuis Fichiers. Ne publiez que là où vous avez le droit d'utiliser cette musique — les apps peuvent couper le son des vidéos dont elles reconnaissent la musique.",
+  "hi": "फ़ाइल्स से आपका अपना गाना। वहीं पोस्ट करें जहाँ आपको उस संगीत के इस्तेमाल का अधिकार हो — ऐप पहचाने गए संगीत वाले वीडियो म्यूट कर सकते हैं।",
+  "it": "La tua canzone, da File. Pubblicala solo dove hai il diritto di usare quella musica: le app possono silenziare i video con musica che riconoscono.",
+  "ja": "「ファイル」にある自分の曲です。その音楽を使う権利がある場所にだけ投稿してください。アプリは認識した音楽入りの動画をミュートすることがあります。",
+  "pt": "Sua própria música, do app Arquivos. Publique só onde você tem o direito de usar essa música — os apps podem silenciar vídeos com músicas que reconhecem.",
+  "zh": "来自“文件”的你自己的歌曲。请只在你有权使用该音乐的地方发布——应用可能会将识别出音乐的视频静音。"
+ },
+ "Tenzy makes this music on your phone. It's yours to post anywhere.": {
+  "de": "Tenzy erzeugt diese Musik auf deinem Handy. Du darfst sie überall posten.",
+  "es": "Tenzy crea esta música en tu teléfono. Puedes publicarla donde quieras.",
+  "fr": "Tenzy crée cette musique sur votre téléphone. Vous pouvez la publier partout.",
+  "hi": "Tenzy यह संगीत आपके फ़ोन पर बनाता है। इसे आप कहीं भी पोस्ट कर सकते हैं।",
+  "it": "Tenzy crea questa musica sul tuo telefono. Puoi pubblicarla ovunque.",
+  "ja": "この音楽はTenzyがスマホ上で作ります。どこにでも投稿できます。",
+  "pt": "O Tenzy cria essa música no seu celular. Você pode publicá-la em qualquer lugar.",
+  "zh": "这段音乐由 Tenzy 在你的手机上生成，你可以发布到任何地方。"
+ },
+ "That song can't be used — it may be protected. Try another file.": {
+  "de": "Dieser Song lässt sich nicht verwenden – er ist vielleicht geschützt. Probiere eine andere Datei.",
+  "es": "Esa canción no se puede usar: puede estar protegida. Prueba con otro archivo.",
+  "fr": "Cette chanson ne peut pas être utilisée — elle est peut-être protégée. Essayez un autre fichier.",
+  "hi": "यह गाना इस्तेमाल नहीं हो सकता — शायद यह सुरक्षित है। कोई दूसरी फ़ाइल आज़माएँ।",
+  "it": "Questa canzone non si può usare: potrebbe essere protetta. Prova un altro file.",
+  "ja": "この曲は使えません。保護されている可能性があります。別のファイルをお試しください。",
+  "pt": "Essa música não pode ser usada — talvez esteja protegida. Tente outro arquivo.",
+  "zh": "这首歌无法使用——可能受保护。请换一个文件。"
+ },
+ "Couldn't open that photo — try another.": {
+  "de": "Das Foto ließ sich nicht öffnen – probiere ein anderes.",
+  "es": "No se pudo abrir esa foto: prueba con otra.",
+  "fr": "Impossible d'ouvrir cette photo — essayez-en une autre.",
+  "hi": "वह फ़ोटो नहीं खुल सकी — कोई दूसरी आज़माएँ।",
+  "it": "Impossibile aprire quella foto: provane un'altra.",
+  "ja": "その写真を開けませんでした。別の写真をお試しください。",
+  "pt": "Não foi possível abrir essa foto — tente outra.",
+  "zh": "无法打开那张照片——请换一张。"
+ },
+ "Choose a song first.": {
+  "de": "Wähle zuerst einen Song.",
+  "es": "Elige primero una canción.",
+  "fr": "Choisissez d'abord une chanson.",
+  "hi": "पहले एक गाना चुनें।",
+  "it": "Scegli prima una canzone.",
+  "ja": "先に曲を選んでください。",
+  "pt": "Escolha uma música primeiro.",
+  "zh": "请先选择一首歌曲。"
+ },
+ "The video couldn't be read.": {
+  "de": "Das Video konnte nicht gelesen werden.",
+  "es": "No se pudo leer el vídeo.",
+  "fr": "Impossible de lire la vidéo.",
+  "hi": "वीडियो पढ़ा नहीं जा सका।",
+  "it": "Impossibile leggere il video.",
+  "ja": "動画を読み込めませんでした。",
+  "pt": "Não foi possível ler o vídeo.",
+  "zh": "无法读取该视频。"
+ },
+ "Tap where it's going: Tenzy makes it the right shape, length and size, then opens the app on it.": {
+  "de": "Tippe, wohin es soll: Tenzy bringt es in die richtige Form, Länge und Größe und öffnet dann die App damit.",
+  "es": "Toca adónde va: Tenzy le da la forma, duración y tamaño correctos y luego abre la app con él.",
+  "fr": "Touchez sa destination : Tenzy lui donne la bonne forme, durée et taille, puis ouvre l'app dessus.",
+  "hi": "जहाँ भेजना है वहाँ टैप करें: Tenzy इसे सही आकार, लंबाई और साइज़ का बनाता है, फिर ऐप खोल देता है।",
+  "it": "Tocca dove va: Tenzy gli dà forma, durata e dimensione giuste, poi apre l'app.",
+  "ja": "投稿先をタップ：Tenzyがちょうどいい形・長さ・サイズにして、アプリを開きます。",
+  "pt": "Toque para onde vai: o Tenzy deixa no formato, duração e tamanho certos e abre o app com ele.",
+  "zh": "点选要发布的地方：Tenzy 会调整为合适的画幅、时长和大小，然后打开该应用。"
+ },
+ "Change the video": {
+  "de": "Video ändern",
+  "es": "Cambiar el vídeo",
+  "fr": "Modifier la vidéo",
+  "hi": "वीडियो बदलें",
+  "it": "Modifica il video",
+  "ja": "動画を変更",
+  "pt": "Alterar o vídeo",
+  "zh": "修改视频"
  }
 }

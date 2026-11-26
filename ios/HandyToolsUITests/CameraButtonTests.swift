@@ -88,6 +88,43 @@ final class CameraButtonTests: XCTestCase {
                       "the recorded clip didn't open in Video — \(PromiseTests.onScreen(app))")
     }
 
+    /// Brings a button on screen whichever way it lies (the Studio's page is long), then returns it.
+    private func bring(_ app: XCUIApplication, _ id: String, _ file: StaticString = #filePath, _ line: UInt = #line) -> XCUIElement {
+        let b = app.buttons[id].firstMatch
+        XCTAssertTrue(b.waitForExistence(timeout: 30), "no \(id) button — \(PromiseTests.onScreen(app))", file: file, line: line)
+        var swipes = 0
+        while b.exists && !b.isHittable && swipes < 12 {
+            if b.frame.midY < app.windows.firstMatch.frame.midY { app.swipeDown() } else { app.swipeUp() }
+            swipes += 1
+        }
+        sleep(1)
+        return b
+    }
+
+    /// Video Studio, start to finish: film a clip, put a face effect and Tenzy's own music on it, make the video, and
+    /// get it ready for TikTok — all in the one tool.
+    func testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost() {
+        let app = open("celebrate")
+        tap(app, "tool-record")
+        XCTAssertTrue(appears(app.buttons["fx-tab-funny"].firstMatch, within: 90), "the recorded clip didn't open in the Video Studio — \(PromiseTests.onScreen(app))")
+        bring(app, "fx-tab-funny").tap()
+        for id in ["fx-funny-bald", "fx-funny-balloon", "fx-funny-crown", "fx-funny-wholesome", "fx-funny-longlegs"] {
+            XCTAssertTrue(app.buttons[id].firstMatch.waitForExistence(timeout: 10), "no \(id) in Faces")
+        }
+        bring(app, "fx-funny-sunglasses").tap()
+        bring(app, "fx-tab-music").tap()
+        bring(app, "fx-music-synth-party").tap()
+        XCTAssertTrue(app.sliders["fx-music-mix"].firstMatch.waitForExistence(timeout: 10), "no way to mix the music with the video's sound")
+        XCTAssertTrue(app.buttons["fx-music-file"].firstMatch.exists, "no way to use your own song")
+        bring(app, "fx-tab-background").tap()
+        XCTAssertTrue(app.descendants(matching: .any)["fx-background-photo"].firstMatch.waitForExistence(timeout: 10), "no way to put your own photo behind you")
+        bring(app, "celebrate-make").tap()
+        XCTAssertTrue(appears(app.descendants(matching: .any)["studio-post"].firstMatch, within: 300), "no finished video with places to post it — \(PromiseTests.onScreen(app))")
+        XCTAssertTrue(app.descendants(matching: .any)["video-finish"].firstMatch.exists, "the finished video can't be saved or shared")
+        bring(app, "post-tiktok").tap()
+        XCTAssertTrue(appears(app.buttons["post-open"].firstMatch, within: 240), "it never got ready for TikTok — \(PromiseTests.onScreen(app))")
+    }
+
     /// Funny Moments: film a clip, keep the record scratch it suggests, and a finished video comes out to watch.
     func testFunnyMomentsRecordsAClipAndMakesTheJoke() {
         let app = open("funny")
