@@ -105,14 +105,26 @@ enum FaceFun {
 
     /// The faces in a frame, biggest first (at most three).
     static func faces(in img: CIImage) -> [Face] {
+        faces(in: img, boxes: nil)
+    }
+
+    /// The faces, and (for the tests) each one's box as the finder gave it, in the frame's points.
+    static func faces(in img: CIImage, boxes: ((CGRect) -> Void)?) -> [Face] {
         let req = VNDetectFaceLandmarksRequest()
         try? VNImageRequestHandler(ciImage: img, options: [:]).perform([req])
-        let size = img.extent.size, origin = img.extent.origin
+        let W = img.extent.width, H = img.extent.height, origin = img.extent.origin
+        let frame = img.extent
         return (req.results ?? []).filter { $0.confidence > 0.5 }
             .compactMap { o -> Face? in
                 guard let lm = o.landmarks else { return nil }
+                // Each landmark is placed from its share of the face's box (both from the finder, both 0…1), and the box
+                // from its share of the frame — never trusting a point that lands far outside the picture.
+                let box = CGRect(x: origin.x + o.boundingBox.minX * W, y: origin.y + o.boundingBox.minY * H,
+                                 width: o.boundingBox.width * W, height: o.boundingBox.height * H)
+                boxes?(box)
+                guard box.width > 2, box.height > 2, frame.insetBy(dx: -frame.width * 0.5, dy: -frame.height * 0.5).contains(box) else { return nil }
                 func pts(_ r: VNFaceLandmarkRegion2D?) -> [CGPoint] {
-                    (r?.pointsInImage(imageSize: size) ?? []).map { CGPoint(x: $0.x + origin.x, y: $0.y + origin.y) }
+                    (r?.normalizedPoints ?? []).map { CGPoint(x: box.minX + $0.x * box.width, y: box.minY + $0.y * box.height) }
                 }
                 return face(contour: pts(lm.faceContour), eyeA: pts(lm.leftEye), eyeB: pts(lm.rightEye),
                             brows: pts(lm.leftEyebrow) + pts(lm.rightEyebrow), nose: pts(lm.nose) + pts(lm.noseCrest), lips: pts(lm.outerLips))

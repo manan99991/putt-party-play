@@ -1,5 +1,8 @@
-# 26 Nov, round 13. Round 12 showed the cause is the face, not the picture: with the finder's own face every effect
-# works on the real photo (head 2–19, corner 0), but the face handed over grows on every call (eyes 80 apart, then 95,
-# 124 … up to 10^15). Averaging alone can't do that, so this round prints, per call, the finder's raw face, what the
-# memory held and the steadied result — to see which one runs away.
-HandyToolsTests/FaceFunTests/testEveryEffectOnRealFaces
+# 26 Nov, round 14. Round 13 found it: the phone's face finder itself handed back a bigger face every time it was
+# asked about the same picture (eyes 80 apart, then 147, 184 … ), read through pointsInImage. Faces are now placed from
+# the finder's own 0–1 box and points (the way the proven Funny tab always did), and a box far outside the picture is
+# dropped. The test asks six times and needs the same face each time.
+HandyToolsTests/FaceFunTests
+HandyToolsTests/VideoSoundTests
+HandyToolsTests/VideoFunTests
+HandyToolsUITests/CameraButtonTests/testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost

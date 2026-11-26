@@ -241,6 +241,16 @@ final class FaceFunTests: XCTestCase {
             guard let f = found.first, f.width > src.extent.width * 0.12 else { continue }
             print("VIDEOFX|facefun-real|photo\(tried + 1)|frame \(Int(src.extent.width))×\(Int(src.extent.height))|faces \(found.count)|width \(Int(f.width))|height \(Int(f.height))|eyes \(Int(f.eyeDistance))|roll \(String(format: "%.2f", f.roll))")
             tried += 1
+            // The finder gives the same face every time it's asked about the same picture (round 13: it was handing over
+            // a face that grew on every call, until stickers landed off-screen and warps tore the picture).
+            var widths: [Int] = []
+            for _ in 0..<6 {
+                var box = CGRect.zero
+                let w = FaceFun.faces(in: src, boxes: { box = $0 }).first.map { Int($0.width) } ?? -1
+                widths.append(w)
+                print("VIDEOFX|facefun-repeat|photo\(tried)|width \(w)|box \(Int(box.minX)),\(Int(box.minY)) \(Int(box.width))×\(Int(box.height))")
+            }
+            XCTAssertLessThanOrEqual((widths.max() ?? 0) - (widths.min() ?? 0), max(4, Int(f.width) / 20), "photo \(tried): the finder's face changes size when asked again: \(widths)")
             let frame = src.extent, before = pixels(src)
             XCTAssertGreaterThan(f.up.dy, 0.5, "photo \(tried): an upright face read as lying down")
             XCTAssertTrue(f.chin.y < f.mouth.y && f.mouth.y < f.nose.y + f.height * 0.1 && f.nose.y < f.brow.y, "photo \(tried): chin, mouth, nose and brows are out of order")
@@ -253,28 +263,10 @@ final class FaceFunTests: XCTestCase {
             let memory = FaceFun.Memory()
             for e in FaceFun.effects {
                 let started = Date()
-                // Round 13 (numbers only): the finder's raw face this time, what the memory held, and the steadied result.
-                let rawNow = FaceFun.faces(in: src).first
-                let held = memory.faces.first
-                let steadied = rawNow.map { FaceFun.smoothed([$0], previous: memory.faces).first }
-                func q(_ g: FaceFun.Face?) -> String { g.map { "d\(Int($0.eyeDistance)) eyeA \(Int($0.eyeA.x)),\(Int($0.eyeA.y)) w\(Int($0.width)) c\(Int($0.center.x)),\(Int($0.center.y))" } ?? "none" }
-                print("VIDEOFX|facefun-steady|\(e.id)|raw \(q(rawNow))|held \(q(held))|steadied \(q(steadied ?? nil))|memory.t \(memory.t)")
                 let scene = FaceFun.scene(src, for: e.id, t: 0.5, memory: memory, person: VideoFX.personMask(src))
                 let out = FaceFun.apply(e.id, to: src, scene: scene, t: 0.5, amount: 0.7, memory: memory)
                 let after = pixels(out)
                 let ms = Int(Date().timeIntervalSince(started) * 1000)
-                // Round 12 diagnostics (numbers only): the face the effect was given, the picture's average colour, and
-                // the same effect given the face straight from the finder (no steadying) — to tell a wrong face from a
-                // wrong picture.
-                if let g = scene.faces.first {
-                    func n(_ v: CGFloat) -> String { v.isFinite ? String(Int(v)) : "NOTFINITE" }
-                    func p(_ q: CGPoint) -> String { "\(n(q.x)),\(n(q.y))" }
-                    var sum = [0.0, 0.0, 0.0, 0.0]
-                    for i in stride(from: 0, to: after.bytes.count - 3, by: 4 * 53) { for c in 0..<4 { sum[c] += Double(after.bytes[i + c]) } }
-                    let cnt = Double(max(1, after.bytes.count / (4 * 53)))
-                    let plain = pixels(FaceFun.apply(e.id, to: src, scene: FaceFun.Scene(faces: [f]), t: 0.5, amount: 0.7))
-                    print("VIDEOFX|facefun-diag|\(e.id)|eyes \(p(g.eyeA)) \(p(g.eyeB)) d\(n(g.eyeDistance))|mouth \(p(g.mouth)) w\(n(g.mouthWidth))|nose \(p(g.nose))|brow \(p(g.brow))|chin \(p(g.chin))|cheeks \(p(g.cheekA)) \(p(g.cheekB))|w\(n(g.width)) h\(n(g.height))|up \(String(format: "%.2f,%.2f", g.up.dx, g.up.dy))|pts \(g.contour.count)/\(g.lips.count)/\(g.eyePtsA.count)|avg \(sum.map { Int($0 / cnt) })|extent \(out.extent)|unsteadied head=\(String(format: "%.1f", change(before, plain, in: head))) corner=\(String(format: "%.1f", change(before, plain, in: corner)))")
-                }
                 let onHead = change(before, after, in: head), far = change(before, after, in: corner)
                 print("VIDEOFX|facefun-real|photo\(tried)|\(e.id)|faces=\(scene.faces.count)|head=\(String(format: "%.1f", onHead))|corner=\(String(format: "%.1f", far))|\(ms)ms")
                 XCTAssertEqual(out.extent, frame, "\(e.id) changed the picture's size")
