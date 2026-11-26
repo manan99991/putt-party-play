@@ -11,7 +11,7 @@ import Foundation
 /// This file is the pure part (what to look at, when, and in what order), so it is unit-tested.
 enum SmartRuns {
     enum Kind: String, CaseIterable, Codable, Identifiable {
-        case receipts, drives, overdueInvoices, heavyVideos, tidyPhotos, readyToPost, dayCollage, businessCards, paperPDFs
+        case receipts, drives, overdueInvoices, heavyVideos, tidyPhotos, readyToPost, dayCollage, businessCards, paperPDFs, weekFilm, contactsBackup, voiceNotes
         var id: String { rawValue }
 
         var title: String {
@@ -25,6 +25,9 @@ enum SmartRuns {
             case .dayCollage: return "Today's photos as one collage"
             case .businessCards: return "Business cards into my contacts"
             case .paperPDFs: return "Today's paper into searchable PDFs"
+            case .weekFilm: return "My week, as one short film"
+            case .contactsBackup: return "Back up my contacts every week"
+            case .voiceNotes: return "Voice memos into written notes"
             }
         }
         /// What it does, in one plain line.
@@ -38,9 +41,15 @@ enum SmartRuns {
             case .readyToPost: return "Picks today's best clips, gives them your look and the tall size Reels, TikTok and Shorts want, ready for you to watch and post."
             case .dayCollage: return "Picks the best photos of the people you took today — sharp, no repeats — and lays them out as one beautiful picture to keep or send."
             case .businessCards: return "Reads the business cards you photographed today and turns each into a contact, skipping anyone you already have."
+            case .voiceNotes: return "Listens to the voice memos you saved today — on your phone, nothing sent anywhere — and writes each one up: what it's about, the key points, and the to-dos with who and when, ready for Reminders."
+            case .contactsBackup: return "Saves a copy of every contact to Files each week and tells you if anyone has disappeared since the last copy — one tap brings back a contact deleted by mistake."
+            case .weekFilm: return "Once a week, picks the best moments — sharp photos of your people, the liveliest seconds of your clips — and cuts them into one tall film, day by day, with a title. Watch it, add your music, keep it."
             case .paperPDFs: return "Turns the letters, bills and forms you photographed today into clean, flat PDFs you can search — pages taken together become one file, named from what it says."
             }
         }
+        /// Comes back once a week, not every day.
+        var weekly: Bool { self == .weekFilm || self == .contactsBackup }
+
         var icon: String {
             switch self {
             case .receipts: return "receipt"
@@ -52,6 +61,9 @@ enum SmartRuns {
             case .dayCollage: return "square.grid.3x3.fill"
             case .businessCards: return "person.text.rectangle"
             case .paperPDFs: return "doc.viewfinder"
+            case .weekFilm: return "film.stack"
+            case .contactsBackup: return "person.crop.circle.badge.checkmark"
+            case .voiceNotes: return "waveform.and.mic"
             }
         }
         var hex: UInt32 {
@@ -65,16 +77,20 @@ enum SmartRuns {
             case .dayCollage: return 0xF59E0B
             case .businessCards: return 0x3B82F6
             case .paperPDFs: return 0x6366F1
+            case .weekFilm: return 0xF97316
+            case .contactsBackup: return 0x0891B2
+            case .voiceNotes: return 0x7C3AED
             }
         }
         /// What it looks through.
         var looksAt: Media {
             switch self {
             case .receipts: return .photosAndPDFs
-            case .drives, .overdueInvoices: return .records
+            case .drives, .overdueInvoices, .contactsBackup: return .records
+            case .voiceNotes: return .audio
             case .heavyVideos, .readyToPost: return .videos
             case .tidyPhotos: return .photos
-            case .dayCollage, .businessCards, .paperPDFs: return .photos
+            case .dayCollage, .businessCards, .paperPDFs, .weekFilm: return .photos
             }
         }
         /// The tools whose use suggests this autorun would help (Habit offers).
@@ -89,11 +105,14 @@ enum SmartRuns {
             case .dayCollage: return ["collage", "photogrid", "animate"]
             case .businessCards: return ["bizcard", "contacts", "businesscards"]
             case .paperPDFs: return ["scan", "pdf", "imgpdf", "ocr", "docscan"]
+            case .weekFilm: return ["animate", "videojoin", "join", "celebrate", "memories"]
+            case .contactsBackup: return ["contacts", "contactsbackup", "contactclean"]
+            case .voiceNotes: return ["meeting", "transcribe", "voicenotes", "dictate"]
             }
         }
     }
 
-    enum Media: String, Codable { case photos, videos, photosAndPDFs, records }   // records: Tenzy's own (drives, invoices)
+    enum Media: String, Codable { case photos, videos, photosAndPDFs, records, audio }   // records: Tenzy's own (drives, invoices)
 
     /// One autorun as the person set it.
     struct Plan: Codable, Equatable {
@@ -106,11 +125,17 @@ enum SmartRuns {
         var folderName: String?
         /// Ready to post only: the look given to each clip.
         var look: String?
+        /// Weekly autoruns: the day of the week it comes back (1 = Sunday … 7 = Saturday, as Calendar counts).
+        var weekday: Int?
+
+        /// How a new autorun starts out: daily ones at 8 in the evening; the week's film on Sunday at 6, the contacts copy
+        /// on Sunday at 9.
+        static func start(_ k: Kind) -> Plan { k == .contactsBackup ? Plan(hour: 21, weekday: 1) : k.weekly ? Plan(hour: 18, weekday: 1) : Plan() }
 
         /// The times of day it comes back, first first.
         var times: [(hour: Int, minute: Int)] {
             let h = min(max(hour, 0), 23), m = min(max(minute, 0), 59)
-            return twice ? [(h, m), ((h + 12) % 24, m)].sorted { $0.0 * 60 + $0.1 < $1.0 * 60 + $1.1 } : [(h, m)]
+            return twice && weekday == nil ? [(h, m), ((h + 12) % 24, m)].sorted { $0.0 * 60 + $0.1 < $1.0 * 60 + $1.1 } : [(h, m)]
         }
     }
 
@@ -126,7 +151,9 @@ enum SmartRuns {
     static func nextDue(_ p: Plan, after now: Date, cal: Calendar = .current) -> Date? {
         guard p.on else { return nil }
         return p.times.compactMap { t in
-            cal.nextDate(after: now, matching: DateComponents(hour: t.hour, minute: t.minute), matchingPolicy: .nextTime)
+            var c = DateComponents(hour: t.hour, minute: t.minute)
+            if let w = p.weekday { c.weekday = min(max(w, 1), 7) }
+            return cal.nextDate(after: now, matching: c, matchingPolicy: .nextTime)
         }.min()
     }
 
@@ -255,6 +282,9 @@ enum SmartRuns {
         case .dayCollage: return 30
         case .businessCards: return 5
         case .paperPDFs: return 6
+        case .weekFilm: return 40
+        case .contactsBackup: return 1_000_000   // only offered from using the Contacts tool, never from a count
+        case .voiceNotes: return 1_000_000       // the same: offered from using Meeting notes or Transcribe
         }
     }
 }

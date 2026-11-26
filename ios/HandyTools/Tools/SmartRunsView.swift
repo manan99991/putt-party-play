@@ -4,6 +4,7 @@ import Photos
 import UserNotifications
 import AVKit
 import MessageUI
+import Speech
 import PDFKit
 
 /// Smart autoruns (25 Nov): the end-of-day jobs a personal assistant would do. Switch one on, pick once or twice a
@@ -13,6 +14,7 @@ struct SmartRunsView: View {
     @ObservedObject private var store = SmartRunStore.shared
     @Environment(\.dismiss) private var dismiss
     @State private var pickingFolder = false
+    @State private var pickingMemoFolder = false
     @State private var note: String?
     @State private var photosDenied = false
     @State private var seeded = false   // UI tests: the test media is in the library
@@ -59,6 +61,11 @@ struct SmartRunsView: View {
             if Launch.uitest, Launch.args.contains("-seedcard") { await Self.seedCard(); seeded = true }
             if Launch.uitest, Launch.args.contains("-seedpaper") { await Self.seedPaper(); seeded = true }
             await store.runDue()
+        }
+        .fileImporter(isPresented: $pickingMemoFolder, allowedContentTypes: [.folder]) { r in
+            if case .success(let u) = r {
+                note = SmartVoice.remember(folder: u) ? "\(L("Tenzy will write up the voice memos saved in")) \u{201C}\(u.lastPathComponent)\u{201D}." : L("That folder couldn't be opened. Try another one.")
+            }
         }
         .fileImporter(isPresented: $pickingFolder, allowedContentTypes: [.folder]) { r in
             if case .success(let u) = r {
@@ -240,14 +247,25 @@ struct SmartRunsView: View {
             Toggle(isOn: Binding(get: { p.on }, set: { on in Task { await turn(k, on: on) } })) { Text(L("Do this for me")).font(HandyFont.bodyStrong) }
                 .tint(HandyColor.accent).accessibilityIdentifier("smartrun-on-\(k.rawValue)")
             if p.on {
-                Picker(L("How often"), selection: Binding(get: { p.twice }, set: { var q = p; q.twice = $0; store.set(k, q) })) {
-                    Text(L("Once a day")).tag(false); Text(L("Twice a day")).tag(true)
-                }.pickerStyle(.segmented)
+                if k.weekly {
+                    // Which day of the week: seven chips that wrap, never a sideways scroller.
+                    HandyFlow(spacing: 6) {
+                        ForEach(1...7, id: \.self) { w in
+                            HChip(text: Calendar.current.shortWeekdaySymbols[w - 1], selected: (p.weekday ?? 1) == w) { var q = p; q.weekday = w; store.set(k, q) }
+                                .accessibilityIdentifier("smartrun-weekday-\(w)")
+                        }
+                    }
+                } else {
+                    Picker(L("How often"), selection: Binding(get: { p.twice }, set: { var q = p; q.twice = $0; store.set(k, q) })) {
+                        Text(L("Once a day")).tag(false); Text(L("Twice a day")).tag(true)
+                    }.pickerStyle(.segmented)
+                }
                 DatePicker(L(p.twice ? "First time" : "Time"), selection: Binding(get: {
                     Calendar.current.date(from: DateComponents(hour: p.hour, minute: p.minute)) ?? Date()
                 }, set: { d in var q = p; let c = Calendar.current.dateComponents([.hour, .minute], from: d); q.hour = c.hour ?? 20; q.minute = c.minute ?? 0; store.set(k, q) }),
                            displayedComponents: .hourAndMinute).font(HandyFont.body)
-                Text(p.times.map { ChainSchedule.clock(hour: $0.hour, minute: $0.minute, uses24h: false) }.joined(separator: " " + L("and") + " "))
+                Text((p.weekday.map { Calendar.current.weekdaySymbols[min(max($0, 1), 7) - 1] + " · " } ?? "")
+                     + p.times.map { ChainSchedule.clock(hour: $0.hour, minute: $0.minute, uses24h: false) }.joined(separator: " " + L("and") + " "))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.accent)
             }
             if k == .drives {
@@ -265,6 +283,13 @@ struct SmartRunsView: View {
                     }
                 }
             }
+            if k == .voiceNotes {
+                Button { pickingMemoFolder = true } label: {
+                    Label(SmartVoice.folder.map { "\(L("Memos from")) \($0.lastPathComponent)" } ?? L("Choose the folder your memos go in…"), systemImage: "folder")
+                }.textButton().accessibilityIdentifier("smartrun-memofolder")
+                Text(L("In Voice Memos, tap ••• › Share › Save to Files and pick this folder. Any recorder app that saves to Files works too."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            }
             if k == .receipts {
                 Button { pickingFolder = true } label: {
                     Label(SmartReceipts.folder.map { "\(L("PDFs from")) \($0.lastPathComponent)" } ?? L("Also read PDFs from a folder…"), systemImage: "folder")
@@ -273,8 +298,13 @@ struct SmartRunsView: View {
             HStack(spacing: HandySpacing.s8) {
                 Button { Task { await testRun(k) } } label: { Label(L("Test run"), systemImage: "play.circle").frame(maxWidth: .infinity) }
                     .secondaryButton().disabled(store.working != nil).accessibilityIdentifier("smartrun-test-\(k.rawValue)")
+                if k == .contactsBackup, store.contacts != nil, store.waitingCount(k) == 0 {
+                    // Nobody's gone: the latest copy is still worth seeing (and emailing to yourself).
+                    NavigationLink(value: "smartcontacts") { Text(L("See the backup")).frame(maxWidth: .infinity) }
+                        .primaryButton().accessibilityIdentifier("smartrun-check-\(k.rawValue)")
+                }
                 if store.waitingCount(k) > 0 {
-                    NavigationLink(value: k == .tidyPhotos ? "smarttidy" : k == .overdueInvoices ? "smartinvoices" : k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : k == .dayCollage ? "smartcollage" : k == .businessCards ? "smartcards" : k == .paperPDFs ? "smartpapers" : "smartreceipts") {
+                    NavigationLink(value: k == .tidyPhotos ? "smarttidy" : k == .overdueInvoices ? "smartinvoices" : k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : k == .dayCollage ? "smartcollage" : k == .businessCards ? "smartcards" : k == .paperPDFs ? "smartpapers" : k == .weekFilm ? "smartweek" : k == .contactsBackup ? "smartcontacts" : k == .voiceNotes ? "smartmemos" : "smartreceipts") {
                         Text("\(L("Check")) \(store.waitingCount(k))").frame(maxWidth: .infinity)
                     }.primaryButton().accessibilityIdentifier("smartrun-check-\(k.rawValue)")
                 }
@@ -294,6 +324,18 @@ struct SmartRunsView: View {
         var p = store.plan(k)
         if on, k == .overdueInvoices {
             // Nothing to read on the phone: the invoices are Tenzy's own.
+        } else if on, k == .voiceNotes {
+            if SmartVoice.folder == nil { pickingMemoFolder = true }
+            let asked = await withCheckedContinuation { c in Permission.speech { c.resume(returning: $0) } }
+            guard asked == .authorized else {
+                note = L("Tenzy needs Speech Recognition to write up memos — allow it in Settings › Apps › Tenzy. It runs on your phone."); return
+            }
+            let granted = (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])) ?? false
+            if !granted { note = L("Notifications are off for Tenzy, so it can't tell you when this is ready. Turn them on in Settings › Tenzy › Notifications.") }
+        } else if on, k == .contactsBackup {
+            guard await ContactsEngine.requestAccess() else {
+                note = L("Tenzy needs Contacts access to back them up — allow it in Settings › Apps › Tenzy › Contacts."); return
+            }
         } else if on, k == .drives {
             // Drives come from Find my car's drive detection: switching this on switches that on too.
             if !AutoPark.isOn { AutoPark.shared.turnOn() }
@@ -321,6 +363,26 @@ struct SmartRunsView: View {
                                           : L("Switch this on first — it uses Find my car's drive detection."))
             HandyHaptics.success(); return
         }
+        if k == .voiceNotes {
+            guard SmartVoice.folder != nil else { pickingMemoFolder = true; note = L("First choose the folder your voice memos are saved in."); return }
+            let before = store.waitingCount(k)
+            await store.run(k, test: true)
+            let found = store.waitingCount(k) - before
+            note = found > 0 ? "\(L("Test run wrote up")) \(found) \(L(found == 1 ? "voice memo" : "voice memos")). \(L("Tap Check to read them."))"
+                             : L("Test run worked: no new voice memos in that folder from the last 24 hours.")
+            HandyHaptics.success(); return
+        }
+        if k == .contactsBackup {
+            guard await ContactsEngine.requestAccess() else {
+                note = L("Tenzy needs Contacts access to back them up — allow it in Settings › Apps › Tenzy › Contacts."); return
+            }
+            await store.run(k, test: true)
+            if let r = store.contacts {
+                note = "\(L("Test run backed up")) \(r.total) \(L(r.total == 1 ? "contact" : "contacts")) \(L("to Files › Tenzy › Contact Backups."))"
+                    + (r.waiting.isEmpty ? "" : " \(r.waiting.count) \(L(r.waiting.count == 1 ? "is gone since the copy before — tap Check." : "are gone since the copy before — tap Check."))")
+            } else { note = L("The backup couldn't be made — check that Tenzy can use Contacts.") }
+            HandyHaptics.success(); return
+        }
         guard await photosOK() else { return }
         let before = store.waitingCount(k)
         await store.run(k, test: true)
@@ -332,6 +394,9 @@ struct SmartRunsView: View {
         } else if k == .businessCards {
             note = found > 0 ? "\(L("Test run found")) \(found) \(L(found == 1 ? "business card" : "business cards")). \(L("Check them before they're saved."))"
                              : L("Test run worked: no business cards in your photos from the last 24 hours.")
+        } else if k == .weekFilm {
+            note = found > 0 ? L("Test run made this week's film from the last seven days. Tap Check to watch it.")
+                             : L("Test run worked: the last seven days need at least five good moments — photos of people or clips — across two days.")
         } else if k == .paperPDFs {
             note = found > 0 ? "\(L("Test run made")) \(found) \(L(found == 1 ? "searchable PDF" : "searchable PDFs")). \(L("Tap Check to look through them."))"
                              : L("Test run worked: no photos of letters, bills or forms from the last 24 hours.")
@@ -1162,5 +1227,250 @@ private struct PaperLook: View {
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() }.accessibilityIdentifier("paperlook-done") } }
         }
         .accessibilityIdentifier("paperlook")
+    }
+}
+
+/// The week's film: watch it in place, lay one of your songs under it, keep it in Photos.
+struct SmartWeekReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var songs: [MusicTrack.Song] = []
+    @State private var busy: String?
+    @State private var note: String?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Your week's film")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                Text(L("The best moments of the week, day by day — the whole of every photo, the liveliest seconds of your clips."))
+                    .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }
+                if store.films.isEmpty {
+                    EmptyState(icon: "film.stack", line: "Nothing waiting", sub: "Your week's film shows up here after its next run.")
+                }
+                ForEach(store.films) { f in card(f) }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartweek")
+        .task { songs = await MusicTrack.filesInTenzy() }
+    }
+
+    private func card(_ f: SmartWeek.Result) -> some View {
+        let url = SmartWeek.folder.appendingPathComponent(f.file)
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text(f.title).font(HandyFont.cardTitle)
+            VideoPlayer(player: AVPlayer(url: url))
+                .aspectRatio(9.0 / 16.0, contentMode: .fit).frame(maxHeight: 460).frame(maxWidth: .infinity)
+                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous)).contentShape(Rectangle())
+                .accessibilityIdentifier("smartweek-player")
+            Text(verbatim: "\(SocialPost.clock(f.seconds)) · \(f.photos) \(L(f.photos == 1 ? "photo" : "photos")) · \(f.clips) \(L(f.clips == 1 ? "clip" : "clips")) · \(f.days) \(L(f.days == 1 ? "day" : "days"))")
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).accessibilityIdentifier("smartweek-facts")
+            if let s = f.song { Label("\(L("Music")): \(s)", systemImage: "music.note").font(HandyFont.caption) }
+            if !songs.isEmpty {
+                Text(L("Add music from your songs")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                HandyFlow(spacing: 6) {
+                    ForEach(songs.prefix(8)) { song in
+                        HChip(text: song.title, selected: f.song == song.title) {
+                            busy = f.id
+                            Task { if !(await store.addMusic(f.id, song: song)) { note = L("That song couldn't be added — try another one.") }; busy = nil }
+                        }
+                    }
+                }
+            }
+            if f.saved {
+                Label(L("Saved to Photos"), systemImage: "checkmark.circle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                    .accessibilityIdentifier("smartweek-saved")
+            } else {
+                Button {
+                    busy = f.id
+                    Task {
+                        if await store.saveFilm(f.id) { HandyHaptics.success() } else { note = L("Tenzy isn't allowed to add to Photos. Turn it on in Settings › Apps › Tenzy › Photos.") }
+                        busy = nil
+                    }
+                } label: {
+                    Label(busy == f.id ? L("Saving…") : L("Save to Photos"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity)
+                }.primaryButton().disabled(busy != nil).accessibilityIdentifier("smartweek-save")
+            }
+            ShareLink(item: url) { Label(L("Share"), systemImage: "square.and.arrow.up") }.font(HandyFont.caption)
+            if busy == f.id { ProgressView() }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain).accessibilityIdentifier("smartweek-card")
+    }
+}
+
+/// The latest contacts copy: where it is, who's new, and — the reason it exists — who's gone since the copy before,
+/// each one tap from coming back.
+struct SmartContactsReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var mail = false
+    @State private var done: String?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Your contacts, backed up")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                if let done { Label(done, systemImage: "checkmark.seal.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true) }
+                if let r = store.contacts { report(r) }
+                else { EmptyState(icon: "person.crop.circle.badge.checkmark", line: "No backup yet", sub: "Tap Test run on the autoruns page to make the first copy.") }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartcontacts")
+        .sheet(isPresented: $mail) {
+            if let r = store.contacts, let d = try? Data(contentsOf: SmartContacts.folder.appendingPathComponent(r.file)) {
+                MailDraft(to: "", subject: L("My contacts backup"), body: L("A copy of my contacts, to keep safe. Open the attachment on any phone or computer to bring them back."),
+                          attachment: (d, r.file, "text/vcard")).ignoresSafeArea()
+            }
+        }
+    }
+
+    @ViewBuilder private func report(_ r: SmartContacts.Report) -> some View {
+        let url = SmartContacts.folder.appendingPathComponent(r.file)
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label("\(r.total) \(L(r.total == 1 ? "contact" : "contacts")) · \(r.at.formatted(date: .abbreviated, time: .shortened))", systemImage: "checkmark.shield.fill")
+                .font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success).accessibilityIdentifier("smartcontacts-total")
+            Text(L("Saved in Files › On My iPhone › Tenzy › Contact Backups, and in iCloud Drive when it's on. The last eight copies are kept."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            HStack(spacing: HandySpacing.s8) {
+                if MailDraft.canSend {
+                    Button { mail = true } label: { Label(L("Email it to myself"), systemImage: "envelope").frame(maxWidth: .infinity) }.secondaryButton()
+                }
+                ShareLink(item: url) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        let waiting = r.waiting
+        if !waiting.isEmpty {
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                Text("\(waiting.count) \(L(waiting.count == 1 ? "contact is gone since the copy before" : "contacts are gone since the copy before"))")
+                    .font(HandyFont.cardTitle).accessibilityIdentifier("smartcontacts-gone")
+                Text(L("Deleted by mistake, or lost with an account? Bring them back exactly as they were."))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                ForEach(waiting, id: \.self) { p in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(p.name).font(HandyFont.bodyStrong)
+                            if let line = p.emails.first ?? p.phones.first { Text(line).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                        }
+                        Spacer()
+                        Button(L("Bring back")) {
+                            let n = store.restoreContacts([p])
+                            done = n == 1 ? "\(p.name) \(L("is back in Contacts."))" : L("Contacts wouldn't take it back — check that Tenzy can use Contacts.")
+                            if n == 1 { HandyHaptics.success() }
+                        }.secondaryButton().accessibilityIdentifier("smartcontacts-restore")
+                    }
+                }
+                HStack(spacing: HandySpacing.s8) {
+                    if waiting.count > 1 {
+                        Button {
+                            let n = store.restoreContacts(waiting)
+                            done = "\(n) \(L(n == 1 ? "contact is back in Contacts." : "contacts are back in Contacts."))"; HandyHaptics.success()
+                        } label: { Text(L("Bring them all back")).frame(maxWidth: .infinity) }.primaryButton()
+                    }
+                    Button { store.keepContactsGone() } label: { Text(L("They were meant to go")).frame(maxWidth: .infinity) }.secondaryButton()
+                }
+            }
+            .cardStyle(padding: HandySpacing.s12)
+        }
+        if !r.added.isEmpty {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("\(r.added.count) \(L(r.added.count == 1 ? "new since the copy before" : "new since the copy before"))").font(HandyFont.cardTitle)
+                Text(r.added.prefix(12).joined(separator: ", ") + (r.added.count > 12 ? " …" : ""))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            }
+            .cardStyle(padding: HandySpacing.s12)
+        }
+    }
+}
+
+/// Today's voice memos, written up: headline, key points, decisions and to-dos — the transcript one tap away.
+struct SmartMemosReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var notes: [String: String] = [:]
+    @State private var mail: SmartVoice.Entry?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Your voice memos, written up")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                Text(L("Heard on your phone — nothing was sent anywhere."))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                let shown = store.memos.filter { !$0.done }
+                if shown.isEmpty {
+                    EmptyState(icon: "waveform.and.mic", line: "Nothing waiting", sub: "Memos saved to your folder show up here, written up, after the next run.")
+                }
+                ForEach(shown) { e in card(e) }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartmemos")
+        .sheet(item: $mail) { e in
+            MailDraft(to: "", subject: e.headline, body: e.text).ignoresSafeArea()
+        }
+    }
+
+    private func card(_ e: SmartVoice.Entry) -> some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text(e.headline).font(HandyFont.cardTitle).fixedSize(horizontal: false, vertical: true).accessibilityIdentifier("smartmemo-headline")
+            Text("\(e.recorded.formatted(date: .abbreviated, time: .shortened)) · \(MeetingNotes.clock(e.seconds))\(e.byAI ? " · " + L("written by Apple Intelligence") : "")")
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            if !e.points.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    ForEach(e.points, id: \.self) { Text("• " + $0).font(HandyFont.body).fixedSize(horizontal: false, vertical: true) }
+                }
+            }
+            if !e.decisions.isEmpty {
+                Text(L("Decided")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                ForEach(e.decisions, id: \.self) { Text("• " + $0).font(HandyFont.body).fixedSize(horizontal: false, vertical: true) }
+            }
+            if !e.todos.isEmpty {
+                Text(L("To-dos")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                ForEach(e.todoLines, id: \.self) { Text("☐ " + $0).font(HandyFont.body).fixedSize(horizontal: false, vertical: true) }
+                Button {
+                    Task {
+                        let n = await SmartVoice.toReminders(e)
+                        notes[e.id] = n < 0 ? L("Allow Reminders for Tenzy in Settings, then tap again.") : "\(n) \(L(n == 1 ? "to-do added to Reminders." : "to-dos added to Reminders."))"
+                        if n > 0 { HandyHaptics.success() }
+                    }
+                } label: { Label(L("Put the to-dos in Reminders"), systemImage: "checklist").frame(maxWidth: .infinity) }
+                    .secondaryButton().accessibilityIdentifier("smartmemo-reminders")
+            }
+            if let n = notes[e.id] { Text(n).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }
+            DisclosureGroup(L("The whole transcript")) {
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(e.transcript, id: \.self) { Text($0).font(HandyFont.body).textSelection(.enabled).fixedSize(horizontal: false, vertical: true) }
+                }.padding(.top, 6)
+            }.font(HandyFont.caption)
+            HStack(spacing: HandySpacing.s16) {
+                ShareLink(item: e.text + "\n" + e.transcript.joined(separator: "\n\n")) { Label(L("Share"), systemImage: "square.and.arrow.up") }
+                if MailDraft.canSend { Button { mail = e } label: { Label(L("Email the notes"), systemImage: "envelope") } }
+                Spacer()
+                Button { store.memoDone(e.id) } label: { Label(L("Done"), systemImage: "checkmark") }.accessibilityIdentifier("smartmemo-done")
+            }.font(HandyFont.caption)
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain).accessibilityIdentifier("smartmemo-card")
     }
 }

@@ -9,7 +9,7 @@ import Photos
 @MainActor final class SmartRunStore: ObservableObject {
     static let shared = SmartRunStore()
     /// The autoruns built so far. An autorun is only offered once it truly works end to end.
-    static let built: [SmartRuns.Kind] = [.receipts, .paperPDFs, .drives, .overdueInvoices, .heavyVideos, .tidyPhotos, .readyToPost, .dayCollage, .businessCards]
+    static let built: [SmartRuns.Kind] = [.receipts, .paperPDFs, .drives, .overdueInvoices, .heavyVideos, .tidyPhotos, .readyToPost, .dayCollage, .weekFilm, .businessCards, .voiceNotes, .contactsBackup]
 
     @Published private(set) var plans: [SmartRuns.Kind: SmartRuns.Plan] = [:]
     @Published private(set) var receipts: [SmartReceipts.Entry] = []      // found, waiting for a look
@@ -18,6 +18,9 @@ import Photos
     @Published private(set) var collages: [SmartCollage.Result] = []       // the day's collages, waiting for a look
     @Published private(set) var cards: [SmartCards.Entry] = []             // business cards read, waiting for a look
     @Published private(set) var papers: [SmartPapers.Entry] = []           // paper made into PDFs, waiting for a look
+    @Published private(set) var films: [SmartWeek.Result] = []             // the week's films, newest first
+    @Published private(set) var contacts: SmartContacts.Report?            // the latest contacts copy, and who's gone since the one before
+    @Published private(set) var memos: [SmartVoice.Entry] = []             // voice memos written up, newest first
     @Published var tidy: [SmartTidy.Group] = []                             // what could go, waiting for a look
     @Published var working: SmartRuns.Kind?
     @Published var progress: (share: Double, what: String) = (0, "")
@@ -36,6 +39,9 @@ import Photos
     private var collagesURL: URL { folder.appendingPathComponent("collages.json") }
     private var cardsURL: URL { folder.appendingPathComponent("cards.json") }
     private var papersURL: URL { folder.appendingPathComponent("papers.json") }
+    private var filmsURL: URL { folder.appendingPathComponent("films.json") }
+    private var contactsURL: URL { folder.appendingPathComponent("contacts.json") }
+    private var memosURL: URL { folder.appendingPathComponent("memos.json") }
     private var tidyURL: URL { folder.appendingPathComponent("tidy.json") }
 
     init() {
@@ -48,6 +54,9 @@ import Photos
         }
         if let d = try? Data(contentsOf: tidyURL), let r = try? JSONDecoder().decode([SmartTidy.Group].self, from: d) { tidy = r }
         if let d = try? Data(contentsOf: cardsURL), let r = try? JSONDecoder().decode([SmartCards.Entry].self, from: d) { cards = r }
+        if let d = try? Data(contentsOf: filmsURL), let r = try? JSONDecoder().decode([SmartWeek.Result].self, from: d) { films = r }
+        if let d = try? Data(contentsOf: contactsURL), let r = try? JSONDecoder().decode(SmartContacts.Report.self, from: d) { contacts = r }
+        if let d = try? Data(contentsOf: memosURL), let r = try? JSONDecoder().decode([SmartVoice.Entry].self, from: d) { memos = r }
         if let d = try? Data(contentsOf: papersURL), let r = try? JSONDecoder().decode([SmartPapers.Entry].self, from: d) {
             // Saved or left out two weeks ago: forgotten, and Tenzy's own copy of the PDF goes.
             let old = Date().addingTimeInterval(-14 * 86_400)
@@ -62,7 +71,7 @@ import Photos
         }
     }
 
-    func plan(_ k: SmartRuns.Kind) -> SmartRuns.Plan { plans[k] ?? SmartRuns.Plan() }
+    func plan(_ k: SmartRuns.Kind) -> SmartRuns.Plan { plans[k] ?? SmartRuns.Plan.start(k) }
     func lastRun(_ k: SmartRuns.Kind) -> Date? {
         let t = AppGroup.defaults.double(forKey: lastKey(k)); return t > 0 ? Date(timeIntervalSince1970: t) : nil
     }
@@ -85,6 +94,9 @@ import Photos
         case .dayCollage: return collages.filter { !$0.saved }.count
         case .businessCards: return cards.count
         case .paperPDFs: return papers.filter { !$0.saved }.count
+        case .weekFilm: return films.filter { !$0.saved }.count
+        case .contactsBackup: return contacts?.waiting.count ?? 0
+        case .voiceNotes: return memos.filter { !$0.done }.count
         case .tidyPhotos: return tidy.reduce(0) { $0 + $1.ids.count }
         default: return 0
         }
@@ -122,7 +134,8 @@ import Photos
         working = k; started = Date(); progress = (0, "Starting…")
         defer { working = nil; started = nil }
         let now = Date()
-        let window = test ? DateInterval(start: now.addingTimeInterval(-24 * 3600), end: now) : SmartRuns.window(lastRun: lastRun(k), now: now)
+        let window = k.weekly ? DateInterval(start: Calendar.current.startOfDay(for: now.addingTimeInterval(-6 * 86_400)), end: now)
+                   : test ? DateInterval(start: now.addingTimeInterval(-24 * 3600), end: now) : SmartRuns.window(lastRun: lastRun(k), now: now)
         switch k {
         case .receipts:
             let found = await SmartReceipts.gather(in: window) { share, what in Task { @MainActor in self.progress = (share, what) } }
@@ -155,6 +168,19 @@ import Photos
             let found = await SmartCards.gather(in: window) { share, what in Task { @MainActor in self.progress = (share, what) } }
             let have = Set(cards.map(\.id))
             cards = SmartCards.deduped(cards + found.filter { !have.contains($0.id) }); persistCards()
+        case .voiceNotes:
+            let found = await SmartVoice.gather(in: window, done: Set(memos.map(\.id))) { share, what in Task { @MainActor in self.progress = (share, what) } }
+            memos = found.reversed() + memos; persistMemos()
+        case .contactsBackup:
+            progress = (0.3, "Backing up your contacts…")
+            if let r = await SmartContacts.backup() { contacts = r; persistContacts() }
+            progress = (1, "Done")
+        case .weekFilm:
+            if let r = await SmartWeek.make(in: window, progress: { share, what in Task { @MainActor in self.progress = (share, what) } }) {
+                for old in films where old.id == r.id { try? FileManager.default.removeItem(at: SmartWeek.folder.appendingPathComponent(old.file)) }
+                films.removeAll { $0.id == r.id }; films.insert(r, at: 0); persistFilms()
+            }
+            progress = (1, "Done")
         case .paperPDFs:
             // Pages already made into a PDF (waiting or saved) are never made twice.
             let made = Set(papers.flatMap(\.pages))
@@ -328,6 +354,56 @@ import Photos
         if let j = papers.firstIndex(where: { $0.id == id }) { papers.replaceSubrange(j...j, with: made) }
         persistPapers(); return true
     }
+    /// Lays one of the person's songs under the film; the version without music is replaced.
+    func addMusic(_ id: String, song: MusicTrack.Song) async -> Bool {
+        guard let i = films.firstIndex(where: { $0.id == id }), let file = await SmartWeek.addMusic(films[i], song: song) else { return false }
+        try? FileManager.default.removeItem(at: SmartWeek.folder.appendingPathComponent(films[i].file))
+        films[i].file = file; films[i].song = song.title; films[i].saved = false; persistFilms(); return true
+    }
+    func saveFilm(_ id: String) async -> Bool {
+        guard let i = films.firstIndex(where: { $0.id == id }), await SmartWeek.save(films[i]) else { return false }
+        films[i].saved = true; persistFilms()
+        Task { await SmartRunAlerts.ready(.weekFilm, count: waitingCount(.weekFilm)) }
+        return true
+    }
+    /// Brings back contacts that are gone since the copy before. Returns how many came back.
+    func restoreContacts(_ people: [SmartContacts.Person]) -> Int {
+        guard var r = contacts else { return 0 }
+        var n = 0
+        for p in people where SmartContacts.restore(p) { r.restored.append(p.name); n += 1 }
+        contacts = r; persistContacts()
+        Task { await SmartRunAlerts.ready(.contactsBackup, count: waitingCount(.contactsBackup)) }
+        return n
+    }
+    /// They were meant to go: nothing to bring back.
+    func keepContactsGone() {
+        guard var r = contacts else { return }
+        r.restored += r.waiting.map(\.name); contacts = r; persistContacts()
+        Task { await SmartRunAlerts.ready(.contactsBackup, count: 0) }
+    }
+    func memoDone(_ id: String) {
+        if let i = memos.firstIndex(where: { $0.id == id }) { memos[i].done = true; persistMemos() }
+        Task { await SmartRunAlerts.ready(.voiceNotes, count: waitingCount(.voiceNotes)) }
+    }
+    private func persistMemos() {
+        // A month of notes is kept; the memo itself stays in its folder.
+        let old = Date().addingTimeInterval(-31 * 86_400)
+        memos.removeAll { $0.done && $0.recorded < old }
+        if let d = try? JSONEncoder().encode(memos) { try? d.write(to: memosURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
+    }
+
+    private func persistContacts() {
+        if let d = try? JSONEncoder().encode(contacts) { try? d.write(to: contactsURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
+    }
+
+    private func persistFilms() {
+        // Kept a month; older films' files go (once saved, they're in Photos).
+        let old = Date().addingTimeInterval(-31 * 86_400)
+        for f in films where (DateFormatter.posixDay.date(from: f.id) ?? Date()) < old { try? FileManager.default.removeItem(at: SmartWeek.folder.appendingPathComponent(f.file)) }
+        films.removeAll { (DateFormatter.posixDay.date(from: $0.id) ?? Date()) < old }
+        if let d = try? JSONEncoder().encode(films) { try? d.write(to: filmsURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
+    }
+
     private func persistPapers() {
         if let d = try? JSONEncoder().encode(papers) { try? d.write(to: papersURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
     }
@@ -388,7 +464,7 @@ enum SmartRunAlerts {
         c.removePendingNotificationRequests(withIdentifiers: (0..<2).map { id(k, $0) })
         guard p.on else { return }
         // Drives and invoices are known as they happen: nothing waiting, no notification.
-        if (k == .drives || k == .overdueInvoices) && waiting == 0 { return }
+        if (k == .drives || k == .overdueInvoices || k == .contactsBackup) && waiting == 0 { return }
         for (n, t) in p.times.enumerated() {
             let body = UNMutableNotificationContent()
             body.title = L(k.title)
@@ -402,6 +478,13 @@ enum SmartRunAlerts {
             case .businessCards:
                 body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "business card read — save it to Contacts?" : "business cards read — save them to Contacts?"))"
                                         : L("Tap and Tenzy reads today's business cards into contacts.")
+            case .voiceNotes:
+                body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "voice memo written up — key points and to-dos inside." : "voice memos written up — key points and to-dos inside."))"
+                                        : L("Tap and Tenzy writes up today's voice memos — on your phone.")
+            case .contactsBackup:
+                body.body = "\(waiting) \(L(waiting == 1 ? "contact is gone since last week's backup — bring it back?" : "contacts are gone since last week's backup — bring them back?"))"
+            case .weekFilm:
+                body.body = waiting > 0 ? L("Your week's film is ready — have a look.") : L("Tap and Tenzy cuts the best moments of your week into one short film.")
             case .paperPDFs:
                 body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "document made into a searchable PDF — have a look." : "documents made into searchable PDFs — have a look."))"
                                         : L("Tap and Tenzy turns today's photos of paper into clean, searchable PDFs.")
@@ -422,7 +505,9 @@ enum SmartRunAlerts {
             }
             body.sound = .default
             body.userInfo = ["open": "smartruns"]
-            let trig = UNCalendarNotificationTrigger(dateMatching: DateComponents(hour: t.hour, minute: t.minute), repeats: true)
+            var when = DateComponents(hour: t.hour, minute: t.minute)
+            when.weekday = p.weekday
+            let trig = UNCalendarNotificationTrigger(dateMatching: when, repeats: true)
             try? await c.add(UNNotificationRequest(identifier: id(k, n), content: body, trigger: trig))
         }
     }

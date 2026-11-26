@@ -4784,7 +4784,7 @@
   "es": "Elige: baja de, sube de o cambia. Toca Comprobar ahora para ver el número que lee Tenzy.",
   "fr": "Choisissez : descend sous, passe au-dessus ou change. Touchez Vérifier pour voir le nombre lu.",
   "hi": "चुनें: नीचे गिरे, ऊपर जाए या बदले। Tenzy कौन-सा नंबर पढ़ता है, देखने के लिए अभी जाँचें दबाएँ।",
-  "it": "Scegli: scende sotto, supera o cambia. Tocca Controlla ora per vedere il numero letto.",
+  "it": "Scegli: scende sotto, supera o cambia. Tocca Verifica ora per vedere il numero letto.",
   "ja": "「下回る」「上回る」「変わったら」から選び、「今すぐ確認」で読み取る数値を確認。",
   "pt": "Escolha: cai abaixo, passa de ou muda. Toque em Verificar agora para ver o número lido.",
   "zh": "选择：低于、高于或变化。点“立即检查”查看 Tenzy 读到的数字。"
@@ -27540,14 +27540,14 @@
   "zh": "点按扫描以列出你 Wi-Fi 上的一切。请先加入 Wi-Fi 网络 — 这无法通过移动数据看到设备。"
  },
  "Tap Test run below, then lock your phone and wait 10 seconds.": {
-  "de": "Tippe unten auf Testlauf, sperre dann das Telefon und warte 10 Sekunden.",
+  "de": "Tippe unten auf Probelauf, sperre dann das Telefon und warte 10 Sekunden.",
   "es": "Toca Prueba abajo, bloquea el teléfono y espera 10 segundos.",
   "fr": "Touchez Essai ci-dessous, verrouillez le téléphone et attendez 10 secondes.",
   "hi": "नीचे टेस्ट रन दबाएँ, फिर फ़ोन लॉक करें और 10 सेकंड रुकें।",
   "it": "Tocca Prova qui sotto, poi blocca il telefono e aspetta 10 secondi.",
   "ja": "下の「テスト実行」をタップし、iPhoneをロックして10秒待ちます。",
   "pt": "Toque em Teste abaixo, depois bloqueie o telefone e espere 10 segundos.",
-  "zh": "点下方的“试运行”，然后锁屏并等待 10 秒。"
+  "zh": "点下方的“测试”，然后锁屏并等待 10 秒。"
  },
  "Tap Use sound as… → Standard Ringtone.": {
   "de": "Tippe auf „Ton verwenden als …“ → „Standardklingelton“.",
@@ -28310,14 +28310,14 @@
   "zh": "测试一下"
  },
  "Test run — hear the chime": {
-  "de": "Testlauf – Ton anhören",
+  "de": "Probelauf – Ton anhören",
   "es": "Prueba: oír el aviso",
   "fr": "Essai — écouter le son",
   "hi": "टेस्ट रन — आवाज़ सुनें",
   "it": "Prova: ascolta il suono",
   "ja": "テスト実行 — 音を聞く",
   "pt": "Teste — ouvir o aviso",
-  "zh": "试运行——听提示音"
+  "zh": "测试——听提示音"
  },
  "Test run — send me a dose alert and its follow-up now": {
   "de": "Probelauf – Dosis-Hinweis und Nachfrage jetzt senden",
@@ -37670,14 +37670,14 @@
   "zh": "正在查看已设置的内容…"
  },
  "Nothing is set yet. Pick one below — each takes a minute and has a Test run.": {
-  "de": "Noch nichts eingerichtet. Wähle unten etwas aus – jedes dauert eine Minute und hat einen Testlauf.",
+  "de": "Noch nichts eingerichtet. Wähle unten etwas aus – jedes dauert eine Minute und hat einen Probelauf.",
   "es": "Aún no hay nada configurado. Elige uno abajo: cada uno lleva un minuto y tiene una prueba.",
   "fr": "Rien n'est encore configuré. Choisissez-en un ci-dessous : chacun prend une minute et a un essai.",
   "hi": "अभी कुछ सेट नहीं है। नीचे से कोई चुनें — हर एक में एक मिनट लगता है और टेस्ट रन होता है।",
   "it": "Non è ancora impostato nulla. Scegline uno qui sotto: ognuno richiede un minuto e ha una prova.",
   "ja": "まだ何も設定されていません。下から選んでください。どれも1分ででき、テスト実行があります。",
   "pt": "Nada configurado ainda. Escolha um abaixo — cada um leva um minuto e tem um teste.",
-  "zh": "还没有设置任何内容。在下面选一个——每个只需一分钟，并且可以试运行。"
+  "zh": "还没有设置任何内容。在下面选一个——每个只需一分钟，并且可以测试。"
  },
  "Set one up": {
   "de": "Etwas einrichten",
@@ -38060,14 +38060,14 @@
   "zh": "自动化"
  },
  "Nothing is set yet. Tap New automation — each takes a minute and has a Test run.": {
-  "de": "Noch nichts eingerichtet. Tippe auf „Neue Automation“ – jede dauert eine Minute und hat einen Testlauf.",
+  "de": "Noch nichts eingerichtet. Tippe auf „Neue Automation“ – jede dauert eine Minute und hat einen Probelauf.",
   "es": "Aún no hay nada configurado. Toca Nueva automatización: cada una lleva un minuto y tiene una prueba.",
   "fr": "Rien n'est encore configuré. Touchez Nouvelle automatisation : chacune prend une minute et a un essai.",
   "hi": "अभी कुछ सेट नहीं है। ‘नया ऑटोमेशन’ पर टैप करें — हर एक में एक मिनट लगता है और टेस्ट रन होता है।",
   "it": "Non è ancora impostato nulla. Tocca Nuova automazione: ognuna richiede un minuto e ha una prova.",
   "ja": "まだ何も設定されていません。「新しいオートメーション」をタップ。どれも1分ででき、テスト実行があります。",
   "pt": "Nada configurado ainda. Toque em Nova automação — cada uma leva um minuto e tem um teste.",
-  "zh": "还没有设置任何内容。点“新建自动化”——每个只需一分钟，并且可以试运行。"
+  "zh": "还没有设置任何内容。点“新建自动化”——每个只需一分钟，并且可以测试。"
  },
  "New automation": {
   "de": "Neue Automation",
@@ -42530,14 +42530,14 @@
   "zh": "说出你想做什么、什么时候——到时提醒你，并直接打开可用。"
  },
  "Nothing is set yet. Switch one on above — each takes a minute and has a Test run.": {
-  "de": "Noch nichts eingerichtet. Schalte oben eine ein – jede dauert eine Minute und hat einen Testlauf.",
+  "de": "Noch nichts eingerichtet. Schalte oben eine ein – jede dauert eine Minute und hat einen Probelauf.",
   "es": "Aún no hay nada. Activa uno arriba: cada uno lleva un minuto y tiene una prueba.",
   "fr": "Rien n’est encore réglé. Activez-en un ci-dessus — une minute chacun, avec un essai.",
   "hi": "अभी कुछ सेट नहीं है। ऊपर कोई एक चालू करें — हर एक में एक मिनट लगता है और टेस्ट रन है।",
   "it": "Ancora niente. Attivane uno qui sopra — un minuto ciascuno, con prova.",
   "ja": "まだ何も設定されていません。上から1つオンにしましょう。各1分、テスト実行つき。",
   "pt": "Ainda nada definido. Ative um acima — cada um leva um minuto e tem um teste.",
-  "zh": "还没有设置。在上面打开一个——每个只需一分钟，并可试运行。"
+  "zh": "还没有设置。在上面打开一个——每个只需一分钟，并可测试。"
  },
  "Brown": {
   "de": "Braun",
@@ -46670,14 +46670,14 @@
   "zh": "已保存停车位置。随时可从这里步行导航回去。"
  },
  "Test run does exactly what the automation does: saves where you are now.": {
-  "de": "Der Testlauf macht genau das, was die Automation macht: Er speichert, wo du gerade bist.",
+  "de": "Der Probelauf macht genau das, was die Automation macht: Er speichert, wo du gerade bist.",
   "es": "La prueba hace exactamente lo que hará la automatización: guarda dónde estás ahora.",
   "fr": "Le test fait exactement ce que fera l'automatisation : il enregistre l'endroit où vous êtes.",
   "hi": "टेस्ट रन वही करता है जो ऑटोमेशन करेगा: अभी आप जहाँ हैं, उसे सेव करता है।",
   "it": "La prova fa esattamente ciò che fa l'automazione: salva dove sei adesso.",
   "ja": "テスト実行はオートメーションと同じことをします：今いる場所を保存します。",
   "pt": "O teste faz exatamente o que a automação faz: salva onde você está agora.",
-  "zh": "测试运行与自动化完全相同：保存你现在所在的位置。"
+  "zh": "测测试与自动化完全相同：保存你现在所在的位置。"
  },
  "Saving where you parked — getting a GPS fix…": {
   "de": "Parkplatz wird gespeichert – GPS wird gesucht …",
@@ -47770,14 +47770,14 @@
   "zh": "电话、网络与软件"
  },
  "Set. Tap Test run to see what it does right now.": {
-  "de": "Eingestellt. Tippe auf Testlauf, um zu sehen, was es jetzt tut.",
+  "de": "Eingestellt. Tippe auf Probelauf, um zu sehen, was es jetzt tut.",
   "es": "Listo. Toca Prueba para ver lo que hace ahora mismo.",
   "fr": "C'est réglé. Touchez Essai pour voir ce qu'il fait maintenant.",
   "hi": "सेट हो गया। अभी यह क्या करता है, देखने के लिए टेस्ट रन दबाएँ।",
   "it": "Impostato. Tocca Prova per vedere cosa fa adesso.",
   "ja": "設定しました。テスト実行で今すぐ動作を確認できます。",
   "pt": "Definido. Toque em Teste para ver o que faz agora.",
-  "zh": "已设置。点按“试运行”看看它现在会做什么。"
+  "zh": "已设置。点按“测试”看看它现在会做什么。"
  },
  "Smart autoruns": {
   "de": "Smarte Autoruns",
@@ -47830,24 +47830,24 @@
   "zh": "Tenzy 也会读取保存在以下位置的 PDF："
  },
  "Test run found": {
-  "de": "Testlauf hat gefunden:",
+  "de": "Probelauf hat gefunden:",
   "es": "La prueba encontró",
   "fr": "L'essai a trouvé",
   "hi": "टेस्ट रन में मिले:",
   "it": "La prova ha trovato",
   "ja": "テスト実行で見つかったもの：",
   "pt": "O teste encontrou",
-  "zh": "试运行找到了"
+  "zh": "测试找到了"
  },
  "Test run worked: no receipts in your photos or PDFs from the last 24 hours.": {
-  "de": "Testlauf hat funktioniert: keine Belege in deinen Fotos oder PDFs der letzten 24 Stunden.",
+  "de": "Probelauf hat funktioniert: keine Belege in deinen Fotos oder PDFs der letzten 24 Stunden.",
   "es": "La prueba funcionó: no hay recibos en tus fotos ni PDF de las últimas 24 horas.",
   "fr": "L'essai a fonctionné : aucun reçu dans vos photos ou PDF des dernières 24 heures.",
   "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों की फ़ोटो या PDF में कोई रसीद नहीं।",
   "it": "La prova ha funzionato: nessuno scontrino nelle foto o nei PDF delle ultime 24 ore.",
   "ja": "テスト実行は成功：過去24時間の写真やPDFにレシートはありません。",
   "pt": "O teste funcionou: não há recibos nas fotos nem nos PDFs das últimas 24 horas.",
-  "zh": "试运行成功：过去 24 小时的照片或 PDF 中没有收据。"
+  "zh": "测试成功：过去 24 小时的照片或 PDF 中没有收据。"
  },
  "That folder couldn't be opened. Try another one.": {
   "de": "Dieser Ordner ließ sich nicht öffnen. Versuche einen anderen.",
@@ -48121,13 +48121,13 @@
  },
  "Tap Check to log the ones for work.": {
   "de": "Tippe auf Prüfen, um die beruflichen einzutragen.",
-  "es": "Toca Revisar para registrar los de trabajo.",
+  "es": "Toca Comprobar para registrar los de trabajo.",
   "fr": "Touchez Vérifier pour enregistrer ceux du travail.",
   "hi": "काम वाली दर्ज करने के लिए जाँचें दबाएँ।",
-  "it": "Tocca Controlla per registrare quelli di lavoro.",
+  "it": "Tocca Verifica per registrare quelli di lavoro.",
   "ja": "「確認」をタップして仕事分を記録。",
   "pt": "Toque em Verificar para registar as de trabalho.",
-  "zh": "点按“检查”记录工作行程。"
+  "zh": "点按“验证”记录工作行程。"
  },
  "Tap to see today's drives and log the ones for work.": {
   "de": "Tippe, um die heutigen Fahrten zu sehen und die beruflichen einzutragen.",
@@ -48150,14 +48150,14 @@
   "zh": "点选每次行程的用途。私人行程不记入。"
  },
  "Test run worked: no drives yet this week. Your next drive shows up here once you park.": {
-  "de": "Testlauf hat funktioniert: diese Woche noch keine Fahrten. Deine nächste Fahrt erscheint hier, sobald du parkst.",
+  "de": "Probelauf hat funktioniert: diese Woche noch keine Fahrten. Deine nächste Fahrt erscheint hier, sobald du parkst.",
   "es": "La prueba funcionó: aún no hay trayectos esta semana. El próximo aparecerá aquí al aparcar.",
   "fr": "L'essai a fonctionné : aucun trajet cette semaine. Le prochain apparaîtra ici quand vous vous garerez.",
   "hi": "टेस्ट रन ठीक चला: इस हफ़्ते अभी कोई ड्राइव नहीं। पार्क करते ही अगली ड्राइव यहाँ दिखेगी।",
   "it": "La prova ha funzionato: nessun viaggio questa settimana. Il prossimo comparirà qui quando parcheggi.",
   "ja": "テスト成功：今週の運転はまだありません。駐車すると次の運転がここに表示されます。",
   "pt": "O teste funcionou: ainda sem viagens esta semana. A próxima aparece aqui quando estacionar.",
-  "zh": "试运行成功：本周还没有行程。停车后下一次行程会显示在这里。"
+  "zh": "测试成功：本周还没有行程。停车后下一次行程会显示在这里。"
  },
  "Today's drives": {
   "de": "Heutige Fahrten",
@@ -48330,34 +48330,34 @@
   "zh": "使用“找我的车”的驾驶检测——打开此项会同时打开它。"
  },
  "Test run made": {
-  "de": "Testlauf hat erstellt:",
+  "de": "Probelauf hat erstellt:",
   "es": "La prueba hizo",
   "fr": "L'essai a rendu",
   "hi": "टेस्ट रन ने छोटा किया:",
   "it": "La prova ha reso",
   "ja": "テスト実行で縮小：",
   "pt": "O teste tornou",
-  "zh": "试运行已处理"
+  "zh": "测试已处理"
  },
  "Tap Check to compare before anything changes.": {
   "de": "Tippe auf Prüfen, um zu vergleichen, bevor sich etwas ändert.",
-  "es": "Toca Revisar para comparar antes de que cambie nada.",
+  "es": "Toca Comprobar para comparar antes de que cambie nada.",
   "fr": "Touchez Vérifier pour comparer avant tout changement.",
   "hi": "कुछ बदलने से पहले तुलना करने के लिए जाँचें दबाएँ।",
-  "it": "Tocca Controlla per confrontare prima che cambi qualcosa.",
+  "it": "Tocca Verifica per confrontare prima che cambi qualcosa.",
   "ja": "何か変わる前に「確認」で比べてください。",
   "pt": "Toque em Verificar para comparar antes de mudar algo.",
-  "zh": "点按“检查”，在任何改动前先对比。"
+  "zh": "点按“验证”，在任何改动前先对比。"
  },
  "Test run worked: no video from the last 24 hours could be made noticeably smaller without losing quality.": {
-  "de": "Testlauf hat funktioniert: Kein Video der letzten 24 Stunden ließ sich ohne Qualitätsverlust deutlich verkleinern.",
+  "de": "Probelauf hat funktioniert: Kein Video der letzten 24 Stunden ließ sich ohne Qualitätsverlust deutlich verkleinern.",
   "es": "La prueba funcionó: ningún vídeo de las últimas 24 horas podía reducirse notablemente sin perder calidad.",
   "fr": "L'essai a fonctionné : aucune vidéo des dernières 24 heures ne pouvait être nettement réduite sans perte de qualité.",
   "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों का कोई वीडियो गुणवत्ता खोए बिना काफ़ी छोटा नहीं हो सकता था।",
   "it": "La prova ha funzionato: nessun video delle ultime 24 ore poteva ridursi molto senza perdere qualità.",
   "ja": "テスト成功：過去24時間の動画で、画質を落とさず大きく縮められるものはありませんでした。",
   "pt": "O teste funcionou: nenhum vídeo das últimas 24 horas podia ficar bem mais pequeno sem perder qualidade.",
-  "zh": "试运行成功：过去 24 小时没有能在不损失画质的情况下明显缩小的视频。"
+  "zh": "测试成功：过去 24 小时没有能在不损失画质的情况下明显缩小的视频。"
  },
  "Smaller videos": {
   "de": "Kleinere Videos",
@@ -48701,13 +48701,13 @@
  },
  "Tap Check to watch them.": {
   "de": "Tippe auf Prüfen, um sie anzusehen.",
-  "es": "Toca Revisar para verlos.",
+  "es": "Toca Comprobar para verlos.",
   "fr": "Touchez Vérifier pour les regarder.",
   "hi": "देखने के लिए जाँचें दबाएँ।",
-  "it": "Tocca Controlla per guardarli.",
+  "it": "Tocca Verifica per guardarli.",
   "ja": "「確認」で再生できます。",
   "pt": "Toque em Verificar para os ver.",
-  "zh": "点按“检查”观看。"
+  "zh": "点按“验证”观看。"
  },
  "Tap and Tenzy picks today's best clips and gets them ready to post.": {
   "de": "Tippe, und Tenzy wählt die besten Clips von heute aus und macht sie bereit zum Posten.",
@@ -48720,14 +48720,14 @@
   "zh": "点按后，Tenzy 会挑出今天最好的片段并准备好发布。"
  },
  "Test run worked: no clips from the last 24 hours between 4 seconds and 3 minutes.": {
-  "de": "Testlauf hat funktioniert: keine Clips der letzten 24 Stunden zwischen 4 Sekunden und 3 Minuten.",
+  "de": "Probelauf hat funktioniert: keine Clips der letzten 24 Stunden zwischen 4 Sekunden und 3 Minuten.",
   "es": "La prueba funcionó: no hay clips de las últimas 24 horas de entre 4 segundos y 3 minutos.",
   "fr": "L'essai a fonctionné : aucun clip de 4 secondes à 3 minutes dans les dernières 24 heures.",
   "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों में 4 सेकंड से 3 मिनट की कोई क्लिप नहीं।",
   "it": "La prova ha funzionato: nessuna clip tra 4 secondi e 3 minuti nelle ultime 24 ore.",
   "ja": "テスト成功：過去24時間に4秒〜3分のクリップはありません。",
   "pt": "O teste funcionou: sem clipes de 4 segundos a 3 minutos nas últimas 24 horas.",
-  "zh": "试运行成功：过去 24 小时没有 4 秒到 3 分钟的片段。"
+  "zh": "测试成功：过去 24 小时没有 4 秒到 3 分钟的片段。"
  },
  "Your look": {
   "de": "Dein Look",
@@ -48870,24 +48870,24 @@
   "zh": "点按后，Tenzy 会用今天最好的照片拼成一张。"
  },
  "Test run made today's collage. Tap Check to see it.": {
-  "de": "Testlauf hat die heutige Collage erstellt. Tippe auf Prüfen, um sie zu sehen.",
-  "es": "La prueba hizo el collage de hoy. Toca Revisar para verlo.",
+  "de": "Probelauf hat die heutige Collage erstellt. Tippe auf Prüfen, um sie zu sehen.",
+  "es": "La prueba hizo el collage de hoy. Toca Comprobar para verlo.",
   "fr": "L'essai a créé le collage du jour. Touchez Vérifier pour le voir.",
   "hi": "टेस्ट रन ने आज का कोलाज बनाया। देखने के लिए जाँचें दबाएँ।",
-  "it": "La prova ha creato il collage di oggi. Tocca Controlla per vederlo.",
+  "it": "La prova ha creato il collage di oggi. Tocca Verifica per vederlo.",
   "ja": "テスト実行で今日のコラージュを作りました。「確認」で表示。",
   "pt": "O teste fez a colagem de hoje. Toque em Verificar para a ver.",
-  "zh": "试运行已做好今天的拼贴。点按“检查”查看。"
+  "zh": "测试已做好今天的拼贴。点按“验证”查看。"
  },
  "Test run worked: fewer than three good photos of people from the last 24 hours, so no collage yet.": {
-  "de": "Testlauf hat funktioniert: weniger als drei gute Personenfotos der letzten 24 Stunden, daher noch keine Collage.",
+  "de": "Probelauf hat funktioniert: weniger als drei gute Personenfotos der letzten 24 Stunden, daher noch keine Collage.",
   "es": "La prueba funcionó: menos de tres buenas fotos de personas en las últimas 24 horas, así que aún no hay collage.",
   "fr": "L'essai a fonctionné : moins de trois bonnes photos de personnes ces dernières 24 heures, donc pas encore de collage.",
   "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों में लोगों की तीन से कम अच्छी फ़ोटो, इसलिए अभी कोलाज नहीं।",
   "it": "La prova ha funzionato: meno di tre buone foto di persone nelle ultime 24 ore, quindi ancora nessun collage.",
   "ja": "テスト成功：過去24時間の人物写真が3枚未満のため、まだコラージュはありません。",
   "pt": "O teste funcionou: menos de três boas fotos de pessoas nas últimas 24 horas, por isso ainda não há colagem.",
-  "zh": "试运行成功：过去 24 小时的人物好照片不到三张，暂不生成拼贴。"
+  "zh": "测试成功：过去 24 小时的人物好照片不到三张，暂不生成拼贴。"
  },
  "Today's collage": {
   "de": "Heutige Collage",
@@ -49040,14 +49040,14 @@
   "zh": "Tenzy 需要通讯录权限才能保存——请在设置中允许。"
  },
  "Test run worked: no business cards in your photos from the last 24 hours.": {
-  "de": "Testlauf hat funktioniert: keine Visitenkarten in deinen Fotos der letzten 24 Stunden.",
+  "de": "Probelauf hat funktioniert: keine Visitenkarten in deinen Fotos der letzten 24 Stunden.",
   "es": "La prueba funcionó: no hay tarjetas de visita en tus fotos de las últimas 24 horas.",
   "fr": "L'essai a fonctionné : aucune carte de visite dans vos photos des dernières 24 heures.",
   "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों की फ़ोटो में कोई बिज़नेस कार्ड नहीं।",
   "it": "La prova ha funzionato: nessun biglietto da visita nelle foto delle ultime 24 ore.",
   "ja": "テスト成功：過去24時間の写真に名刺はありません。",
   "pt": "O teste funcionou: sem cartões de visita nas fotos das últimas 24 horas.",
-  "zh": "试运行成功：过去 24 小时的照片中没有名片。"
+  "zh": "测试成功：过去 24 小时的照片中没有名片。"
  },
  "Today's business cards": {
   "de": "Heutige Visitenkarten",
@@ -49341,23 +49341,23 @@
  },
  "Tap Check to send the reminders.": {
   "de": "Tippe auf Prüfen, um die Erinnerungen zu senden.",
-  "es": "Toca Revisar para enviar los recordatorios.",
+  "es": "Toca Comprobar para enviar los recordatorios.",
   "fr": "Touchez Vérifier pour envoyer les rappels.",
   "hi": "रिमाइंडर भेजने के लिए जाँचें दबाएँ।",
-  "it": "Tocca Controlla per inviare i promemoria.",
+  "it": "Tocca Verifica per inviare i promemoria.",
   "ja": "「確認」でリマインダーを送れます。",
   "pt": "Toque em Verificar para enviar os lembretes.",
-  "zh": "点按“检查”发送提醒。"
+  "zh": "点按“验证”发送提醒。"
  },
  "Test run worked: no invoices are overdue.": {
-  "de": "Testlauf hat funktioniert: keine Rechnung ist überfällig.",
+  "de": "Probelauf hat funktioniert: keine Rechnung ist überfällig.",
   "es": "La prueba funcionó: no hay facturas vencidas.",
   "fr": "L'essai a fonctionné : aucune facture en retard.",
   "hi": "टेस्ट रन ठीक चला: कोई इनवॉइस बकाया नहीं।",
   "it": "La prova ha funzionato: nessuna fattura scaduta.",
   "ja": "テスト成功：期日超過の請求書はありません。",
   "pt": "O teste funcionou: nenhuma fatura em atraso.",
-  "zh": "试运行成功：没有逾期发票。"
+  "zh": "测试成功：没有逾期发票。"
  },
  "Nothing overdue": {
   "de": "Nichts überfällig",
@@ -49511,23 +49511,23 @@
  },
  "Tap Check — nothing goes until you say.": {
   "de": "Tippe auf Prüfen – nichts wird gelöscht, bevor du es sagst.",
-  "es": "Toca Revisar: no se borra nada hasta que lo digas.",
+  "es": "Toca Comprobar: no se borra nada hasta que lo digas.",
   "fr": "Touchez Vérifier — rien ne part sans votre accord.",
   "hi": "जाँचें दबाएँ — आपकी मर्ज़ी के बिना कुछ नहीं हटेगा।",
-  "it": "Tocca Controlla: non si elimina nulla finché non lo dici tu.",
+  "it": "Tocca Verifica: non si elimina nulla finché non lo dici tu.",
   "ja": "「確認」をタップ — あなたが決めるまで何も消えません。",
   "pt": "Toque em Verificar — nada é apagado sem a sua ordem.",
-  "zh": "点按“检查”——你同意前什么都不会删除。"
+  "zh": "点按“验证”——你同意前什么都不会删除。"
  },
  "Test run worked: nothing to tidy — no old screenshots, duplicates or extra burst frames.": {
-  "de": "Testlauf hat funktioniert: nichts aufzuräumen – keine alten Bildschirmfotos, Duplikate oder Serienbilder.",
+  "de": "Probelauf hat funktioniert: nichts aufzuräumen – keine alten Bildschirmfotos, Duplikate oder Serienbilder.",
   "es": "La prueba funcionó: nada que ordenar, sin capturas antiguas, duplicados ni fotos de ráfaga de más.",
   "fr": "L'essai a fonctionné : rien à ranger — pas de vieilles captures, doublons ni images de rafale en trop.",
   "hi": "टेस्ट रन ठीक चला: साफ़ करने को कुछ नहीं — न पुराने स्क्रीनशॉट, न डुप्लिकेट, न बर्स्ट की फ़ालतू फ़्रेम।",
   "it": "La prova ha funzionato: niente da riordinare, nessuno screenshot vecchio, duplicato o scatto a raffica in più.",
   "ja": "テスト成功：古いスクショ、重複、余分なバースト写真はありません。",
   "pt": "O teste funcionou: nada para arrumar — sem capturas antigas, duplicados nem fotos de rajada a mais.",
-  "zh": "试运行成功：没有需要整理的——无旧截图、重复或多余连拍。"
+  "zh": "测试成功：没有需要整理的——无旧截图、重复或多余连拍。"
  },
  "Deleted — frees": {
   "de": "Gelöscht – gibt frei:",
@@ -49911,23 +49911,23 @@
  },
  "Tap Check to look through them.": {
   "de": "Tippe auf Prüfen, um sie durchzusehen.",
-  "es": "Toca Revisar para verlos.",
+  "es": "Toca Comprobar para verlos.",
   "fr": "Touchez Vérifier pour les parcourir.",
   "hi": "उन्हें देखने के लिए जाँचें पर टैप करें।",
-  "it": "Tocca Controlla per sfogliarli.",
+  "it": "Tocca Verifica per sfogliarli.",
   "ja": "「確認」をタップして中を見てください。",
-  "pt": "Toque em Conferir para vê-los.",
-  "zh": "点“查看”逐一浏览。"
+  "pt": "Toque em Verificar para vê-los.",
+  "zh": "点“验证”逐一浏览。"
  },
  "Test run worked: no photos of letters, bills or forms from the last 24 hours.": {
-  "de": "Testlauf hat funktioniert: keine Fotos von Briefen, Rechnungen oder Formularen aus den letzten 24 Stunden.",
+  "de": "Probelauf hat funktioniert: keine Fotos von Briefen, Rechnungen oder Formularen aus den letzten 24 Stunden.",
   "es": "La prueba funcionó: no hay fotos de cartas, facturas ni formularios de las últimas 24 horas.",
-  "fr": "Le test a marché : aucune photo de lettre, facture ou formulaire des dernières 24 heures.",
+  "fr": "L'essai a marché : aucune photo de lettre, facture ou formulaire des dernières 24 heures.",
   "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों में पत्रों, बिलों या फ़ॉर्म की कोई फ़ोटो नहीं।",
   "it": "Il test ha funzionato: nessuna foto di lettere, bollette o moduli nelle ultime 24 ore.",
   "ja": "テスト実行は成功しました。この24時間に手紙・請求書・書類の写真はありません。",
   "pt": "O teste funcionou: nenhuma foto de cartas, contas ou formulários nas últimas 24 horas.",
-  "zh": "试运行成功：过去 24 小时内没有信件、账单或表格的照片。"
+  "zh": "测试成功：过去 24 小时内没有信件、账单或表格的照片。"
  },
  "Today's paper, as PDFs": {
   "de": "Das Papier von heute als PDFs",
@@ -49948,5 +49948,745 @@
   "ja": "語を検索できます",
   "pt": "palavras pesquisáveis",
   "zh": "个可搜索的字词"
+ },
+ "My week, as one short film": {
+  "de": "Meine Woche als kurzer Film",
+  "es": "Mi semana, en una película corta",
+  "fr": "Ma semaine en un court film",
+  "hi": "मेरा हफ़्ता, एक छोटी फ़िल्म में",
+  "it": "La mia settimana in un breve film",
+  "ja": "1週間を1本のショートフィルムに",
+  "pt": "Minha semana em um curta",
+  "zh": "把我的一周剪成一部短片"
+ },
+ "Once a week, picks the best moments — sharp photos of your people, the liveliest seconds of your clips — and cuts them into one tall film, day by day, with a title. Watch it, add your music, keep it.": {
+  "de": "Einmal pro Woche sucht es die schönsten Momente aus – scharfe Fotos deiner Leute, die lebendigsten Sekunden deiner Clips – und schneidet sie Tag für Tag zu einem hohen Film mit Titel. Ansehen, Musik dazu, behalten.",
+  "es": "Una vez por semana elige los mejores momentos —fotos nítidas de tu gente, los segundos más animados de tus clips— y los monta día a día en una película vertical con título. Mírala, añade tu música y guárdala.",
+  "fr": "Une fois par semaine, il choisit les meilleurs moments — photos nettes de vos proches, secondes les plus vivantes de vos vidéos — et les monte jour par jour en un film vertical avec un titre. Regardez, ajoutez votre musique, gardez-le.",
+  "hi": "हफ़्ते में एक बार सबसे अच्छे पल चुनता है — अपनों की साफ़ फ़ोटो, आपकी क्लिप के सबसे जीवंत सेकंड — और उन्हें दिन-ब-दिन एक लंबी खड़ी फ़िल्म में शीर्षक के साथ जोड़ता है। देखें, अपना संगीत जोड़ें, रख लें।",
+  "it": "Una volta a settimana sceglie i momenti migliori — foto nitide delle tue persone, i secondi più vivaci dei tuoi video — e li monta giorno per giorno in un film verticale con un titolo. Guardalo, aggiungi la tua musica, tienilo.",
+  "ja": "週に1回、いちばんいい瞬間を選びます。大切な人のくっきりした写真と、動画のいちばん盛り上がる数秒を、日ごとにタイトル付きの縦長フィルムにまとめます。見て、音楽を付けて、保存できます。",
+  "pt": "Uma vez por semana escolhe os melhores momentos — fotos nítidas da sua gente, os segundos mais animados dos seus vídeos — e monta tudo, dia a dia, num filme vertical com título. Assista, coloque sua música, guarde.",
+  "zh": "每周一次，挑出最好的瞬间——家人朋友的清晰照片、视频里最精彩的几秒——按天剪成一部带标题的竖屏短片。看一看、配上你的音乐、保存下来。"
+ },
+ "My week": {
+  "de": "Meine Woche",
+  "es": "Mi semana",
+  "fr": "Ma semaine",
+  "hi": "मेरा हफ़्ता",
+  "it": "La mia settimana",
+  "ja": "わたしの1週間",
+  "pt": "Minha semana",
+  "zh": "我的一周"
+ },
+ "Looking back over your week…": {
+  "de": "Deine Woche wird durchgesehen…",
+  "es": "Repasando tu semana…",
+  "fr": "Retour sur votre semaine…",
+  "hi": "आपके हफ़्ते पर नज़र…",
+  "it": "Ripercorro la tua settimana…",
+  "ja": "1週間をふり返っています…",
+  "pt": "Revendo sua semana…",
+  "zh": "正在回顾你的一周…"
+ },
+ "Finding the best clips…": {
+  "de": "Die besten Clips werden gesucht…",
+  "es": "Buscando los mejores clips…",
+  "fr": "Recherche des meilleures vidéos…",
+  "hi": "सबसे अच्छी क्लिप ढूँढ रहे हैं…",
+  "it": "Cerco i video migliori…",
+  "ja": "いちばんいい動画を探しています…",
+  "pt": "Procurando os melhores vídeos…",
+  "zh": "正在找最好的视频…"
+ },
+ "Cutting the film": {
+  "de": "Film wird geschnitten",
+  "es": "Montando la película",
+  "fr": "Montage du film",
+  "hi": "फ़िल्म जोड़ रहे हैं",
+  "it": "Montaggio del film",
+  "ja": "フィルムを編集中",
+  "pt": "Montando o filme",
+  "zh": "正在剪辑"
+ },
+ "Putting it together…": {
+  "de": "Alles wird zusammengefügt…",
+  "es": "Uniéndolo todo…",
+  "fr": "Assemblage…",
+  "hi": "सब जोड़ रहे हैं…",
+  "it": "Metto tutto insieme…",
+  "ja": "まとめています…",
+  "pt": "Juntando tudo…",
+  "zh": "正在合成…"
+ },
+ "Your week's film is ready — have a look.": {
+  "de": "Der Film deiner Woche ist fertig – sieh ihn dir an.",
+  "es": "La película de tu semana está lista: échale un vistazo.",
+  "fr": "Le film de votre semaine est prêt — jetez-y un œil.",
+  "hi": "आपके हफ़्ते की फ़िल्म तैयार है — एक नज़र डालें।",
+  "it": "Il film della tua settimana è pronto: dagli un'occhiata.",
+  "ja": "今週のフィルムができました。見てみてください。",
+  "pt": "O filme da sua semana está pronto — dê uma olhada.",
+  "zh": "你这一周的短片做好了——来看看。"
+ },
+ "Tap and Tenzy cuts the best moments of your week into one short film.": {
+  "de": "Tippe, und Tenzy schneidet die schönsten Momente deiner Woche zu einem kurzen Film.",
+  "es": "Toca y Tenzy monta los mejores momentos de tu semana en una película corta.",
+  "fr": "Touchez et Tenzy monte les meilleurs moments de votre semaine en un court film.",
+  "hi": "टैप करें, Tenzy आपके हफ़्ते के सबसे अच्छे पलों से एक छोटी फ़िल्म बना देगा।",
+  "it": "Tocca e Tenzy monta i momenti migliori della tua settimana in un breve film.",
+  "ja": "タップすると、1週間のいちばんいい瞬間を1本のショートフィルムにします。",
+  "pt": "Toque e o Tenzy monta os melhores momentos da sua semana num curta.",
+  "zh": "点一下，Tenzy 会把你这一周最好的瞬间剪成一部短片。"
+ },
+ "Test run made this week's film from the last seven days. Tap Check to watch it.": {
+  "de": "Der Probelauf hat aus den letzten sieben Tagen den Film dieser Woche gemacht. Tippe auf Prüfen, um ihn anzusehen.",
+  "es": "La prueba hizo la película de esta semana con los últimos siete días. Toca Comprobar para verla.",
+  "fr": "L'essai a fait le film de la semaine à partir des sept derniers jours. Touchez Vérifier pour le regarder.",
+  "hi": "टेस्ट रन ने पिछले सात दिनों से इस हफ़्ते की फ़िल्म बना दी। देखने के लिए जाँचें पर टैप करें।",
+  "it": "Il test ha creato il film di questa settimana dagli ultimi sette giorni. Tocca Verifica per guardarlo.",
+  "ja": "テスト実行で、この7日間から今週のフィルムを作りました。「確認」をタップして見てください。",
+  "pt": "O teste fez o filme desta semana com os últimos sete dias. Toque em Verificar para assistir.",
+  "zh": "测试已用过去七天做好本周短片。点“验证”观看。"
+ },
+ "Test run worked: the last seven days need at least five good moments — photos of people or clips — across two days.": {
+  "de": "Probelauf hat funktioniert: Die letzten sieben Tage brauchen mindestens fünf gute Momente – Fotos von Menschen oder Clips – an zwei Tagen.",
+  "es": "La prueba funcionó: los últimos siete días necesitan al menos cinco buenos momentos —fotos de personas o clips— en dos días distintos.",
+  "fr": "L'essai a marché : il faut au moins cinq bons moments — photos de personnes ou vidéos — sur deux jours dans les sept derniers jours.",
+  "hi": "टेस्ट रन ठीक चला: पिछले सात दिनों में दो अलग दिनों के कम से कम पाँच अच्छे पल — लोगों की फ़ोटो या क्लिप — चाहिए।",
+  "it": "Il test ha funzionato: negli ultimi sette giorni servono almeno cinque bei momenti — foto di persone o video — in due giorni diversi.",
+  "ja": "テスト実行は成功しました。この7日間に、2日以上にわたって5つ以上のいい瞬間（人の写真や動画）が必要です。",
+  "pt": "O teste funcionou: os últimos sete dias precisam de pelo menos cinco bons momentos — fotos de pessoas ou vídeos — em dois dias.",
+  "zh": "测试成功：过去七天需要至少五个好瞬间（人物照片或视频），且分布在两天以上。"
+ },
+ "Your week's film": {
+  "de": "Der Film deiner Woche",
+  "es": "La película de tu semana",
+  "fr": "Le film de votre semaine",
+  "hi": "आपके हफ़्ते की फ़िल्म",
+  "it": "Il film della tua settimana",
+  "ja": "今週のフィルム",
+  "pt": "O filme da sua semana",
+  "zh": "你这一周的短片"
+ },
+ "The best moments of the week, day by day — the whole of every photo, the liveliest seconds of your clips.": {
+  "de": "Die schönsten Momente der Woche, Tag für Tag – jedes Foto ganz, die lebendigsten Sekunden deiner Clips.",
+  "es": "Los mejores momentos de la semana, día a día: cada foto entera y los segundos más animados de tus clips.",
+  "fr": "Les meilleurs moments de la semaine, jour par jour — chaque photo en entier, les secondes les plus vivantes de vos vidéos.",
+  "hi": "हफ़्ते के सबसे अच्छे पल, दिन-ब-दिन — हर फ़ोटो पूरी, आपकी क्लिप के सबसे जीवंत सेकंड।",
+  "it": "I momenti migliori della settimana, giorno per giorno: ogni foto intera, i secondi più vivaci dei tuoi video.",
+  "ja": "1週間のいちばんいい瞬間を日ごとに。写真は切らずにまるごと、動画はいちばん盛り上がる数秒を。",
+  "pt": "Os melhores momentos da semana, dia a dia — cada foto inteira, os segundos mais animados dos seus vídeos.",
+  "zh": "一周最好的瞬间，按天排列——每张照片完整呈现，视频取最精彩的几秒。"
+ },
+ "Add music from your songs": {
+  "de": "Musik aus deinen Songs hinzufügen",
+  "es": "Añade música de tus canciones",
+  "fr": "Ajouter une de vos musiques",
+  "hi": "अपने गानों से संगीत जोड़ें",
+  "it": "Aggiungi musica dai tuoi brani",
+  "ja": "自分の曲から音楽を付ける",
+  "pt": "Adicione música das suas canções",
+  "zh": "从你的歌曲中加音乐"
+ },
+ "That song couldn't be added — try another one.": {
+  "de": "Dieser Song ließ sich nicht hinzufügen – versuch einen anderen.",
+  "es": "No se pudo añadir esa canción; prueba con otra.",
+  "fr": "Ce morceau n'a pas pu être ajouté — essayez-en un autre.",
+  "hi": "वह गाना नहीं जुड़ सका — कोई और आज़माएँ।",
+  "it": "Quel brano non si è potuto aggiungere: provane un altro.",
+  "ja": "その曲は付けられませんでした。別の曲を試してください。",
+  "pt": "Não deu para adicionar essa música — tente outra.",
+  "zh": "这首歌加不上——换一首试试。"
+ },
+ "Tenzy isn't allowed to add to Photos. Turn it on in Settings › Apps › Tenzy › Photos.": {
+  "de": "Tenzy darf nichts zu Fotos hinzufügen. Schalte es ein unter Einstellungen › Apps › Tenzy › Fotos.",
+  "es": "Tenzy no tiene permiso para añadir a Fotos. Actívalo en Ajustes › Apps › Tenzy › Fotos.",
+  "fr": "Tenzy n'a pas le droit d'ajouter à Photos. Activez-le dans Réglages › Apps › Tenzy › Photos.",
+  "hi": "Tenzy को फ़ोटो में जोड़ने की अनुमति नहीं है। सेटिंग्स › ऐप्स › Tenzy › फ़ोटो में चालू करें।",
+  "it": "Tenzy non può aggiungere a Foto. Attivalo in Impostazioni › App › Tenzy › Foto.",
+  "ja": "Tenzyは「写真」に追加できない設定です。設定 › アプリ › Tenzy › 写真 でオンにしてください。",
+  "pt": "O Tenzy não tem permissão para adicionar ao Fotos. Ative em Ajustes › Apps › Tenzy › Fotos.",
+  "zh": "Tenzy 没有添加到“照片”的权限。请在 设置 › App › Tenzy › 照片 中打开。"
+ },
+ "clip": {
+  "de": "Clip",
+  "es": "clip",
+  "fr": "vidéo",
+  "hi": "क्लिप",
+  "it": "video",
+  "ja": "本の動画",
+  "pt": "vídeo",
+  "zh": "段视频"
+ },
+ "clips": {
+  "de": "Clips",
+  "es": "clips",
+  "fr": "vidéos",
+  "hi": "क्लिप",
+  "it": "video",
+  "ja": "本の動画",
+  "pt": "vídeos",
+  "zh": "段视频"
+ },
+ "Back up my contacts every week": {
+  "de": "Meine Kontakte jede Woche sichern",
+  "es": "Copia de mis contactos cada semana",
+  "fr": "Sauvegarder mes contacts chaque semaine",
+  "hi": "हर हफ़्ते मेरे संपर्कों का बैकअप",
+  "it": "Backup dei miei contatti ogni settimana",
+  "ja": "毎週連絡先をバックアップ",
+  "pt": "Backup dos meus contatos toda semana",
+  "zh": "每周备份我的联系人"
+ },
+ "Saves a copy of every contact to Files each week and tells you if anyone has disappeared since the last copy — one tap brings back a contact deleted by mistake.": {
+  "de": "Speichert jede Woche eine Kopie aller Kontakte in Dateien und sagt dir, wenn seit der letzten Kopie jemand verschwunden ist – ein Tipp holt einen versehentlich gelöschten Kontakt zurück.",
+  "es": "Guarda cada semana una copia de todos tus contactos en Archivos y te avisa si alguien ha desaparecido desde la última copia: un toque recupera un contacto borrado por error.",
+  "fr": "Enregistre chaque semaine une copie de tous vos contacts dans Fichiers et vous prévient si quelqu'un a disparu depuis la dernière copie — un toucher restaure un contact supprimé par erreur.",
+  "hi": "हर हफ़्ते सभी संपर्कों की एक कॉपी फ़ाइलें में सहेजता है और बताता है अगर पिछली कॉपी के बाद कोई गायब हुआ — गलती से मिटा संपर्क एक टैप में वापस।",
+  "it": "Salva ogni settimana una copia di tutti i contatti in File e ti avvisa se qualcuno è sparito dall'ultima copia: un tocco recupera un contatto cancellato per errore.",
+  "ja": "毎週すべての連絡先のコピーを「ファイル」に保存し、前回のコピーから消えた人がいれば知らせます。誤って削除した連絡先もワンタップで戻せます。",
+  "pt": "Salva toda semana uma cópia de todos os contatos no Arquivos e avisa se alguém sumiu desde a última cópia — um toque traz de volta um contato apagado sem querer.",
+  "zh": "每周把所有联系人备份到“文件”，并告诉你自上次备份后有谁不见了——误删的联系人一点就能找回。"
+ },
+ "contact is gone since last week's backup — bring it back?": {
+  "de": "Kontakt fehlt seit der Sicherung letzte Woche – zurückholen?",
+  "es": "contacto ha desaparecido desde la copia de la semana pasada: ¿recuperarlo?",
+  "fr": "contact a disparu depuis la sauvegarde de la semaine dernière — le restaurer ?",
+  "hi": "संपर्क पिछले हफ़्ते के बैकअप के बाद गायब है — वापस लाएँ?",
+  "it": "contatto è sparito dal backup della settimana scorsa: recuperarlo?",
+  "ja": "件の連絡先が先週のバックアップから消えています。戻しますか？",
+  "pt": "contato sumiu desde o backup da semana passada — trazer de volta?",
+  "zh": "个联系人自上周备份后不见了——要找回吗？"
+ },
+ "contacts are gone since last week's backup — bring them back?": {
+  "de": "Kontakte fehlen seit der Sicherung letzte Woche – zurückholen?",
+  "es": "contactos han desaparecido desde la copia de la semana pasada: ¿recuperarlos?",
+  "fr": "contacts ont disparu depuis la sauvegarde de la semaine dernière — les restaurer ?",
+  "hi": "संपर्क पिछले हफ़्ते के बैकअप के बाद गायब हैं — वापस लाएँ?",
+  "it": "contatti sono spariti dal backup della settimana scorsa: recuperarli?",
+  "ja": "件の連絡先が先週のバックアップから消えています。戻しますか？",
+  "pt": "contatos sumiram desde o backup da semana passada — trazer de volta?",
+  "zh": "个联系人自上周备份后不见了——要找回吗？"
+ },
+ "Backing up your contacts…": {
+  "de": "Kontakte werden gesichert…",
+  "es": "Copiando tus contactos…",
+  "fr": "Sauvegarde de vos contacts…",
+  "hi": "आपके संपर्कों का बैकअप हो रहा है…",
+  "it": "Backup dei contatti in corso…",
+  "ja": "連絡先をバックアップしています…",
+  "pt": "Fazendo backup dos contatos…",
+  "zh": "正在备份你的联系人…"
+ },
+ "A copy of my contacts, to keep safe. Open the attachment on any phone or computer to bring them back.": {
+  "de": "Eine Kopie meiner Kontakte zur sicheren Aufbewahrung. Öffne den Anhang auf einem Telefon oder Computer, um sie zurückzuholen.",
+  "es": "Una copia de mis contactos, para guardarla. Abre el adjunto en cualquier teléfono u ordenador para recuperarlos.",
+  "fr": "Une copie de mes contacts, à garder en lieu sûr. Ouvrez la pièce jointe sur n'importe quel téléphone ou ordinateur pour les récupérer.",
+  "hi": "मेरे संपर्कों की एक कॉपी, सुरक्षित रखने के लिए। वापस लाने के लिए किसी भी फ़ोन या कंप्यूटर पर अटैचमेंट खोलें।",
+  "it": "Una copia dei miei contatti, da conservare. Apri l'allegato su qualsiasi telefono o computer per recuperarli.",
+  "ja": "大切に保管する連絡先のコピーです。どのスマホやパソコンでも添付ファイルを開けば戻せます。",
+  "pt": "Uma cópia dos meus contatos, para guardar. Abra o anexo em qualquer celular ou computador para recuperá-los.",
+  "zh": "我的联系人备份，妥善保存。在任何手机或电脑上打开附件即可恢复。"
+ },
+ "Bring back": {
+  "de": "Zurückholen",
+  "es": "Recuperar",
+  "fr": "Restaurer",
+  "hi": "वापस लाएँ",
+  "it": "Recupera",
+  "ja": "戻す",
+  "pt": "Trazer de volta",
+  "zh": "找回"
+ },
+ "Bring them all back": {
+  "de": "Alle zurückholen",
+  "es": "Recuperarlos todos",
+  "fr": "Tous les restaurer",
+  "hi": "सबको वापस लाएँ",
+  "it": "Recuperali tutti",
+  "ja": "すべて戻す",
+  "pt": "Trazer todos de volta",
+  "zh": "全部找回"
+ },
+ "Contacts wouldn't take it back — check that Tenzy can use Contacts.": {
+  "de": "Kontakte hat ihn nicht zurückgenommen – prüfe, ob Tenzy Kontakte verwenden darf.",
+  "es": "Contactos no lo aceptó: comprueba que Tenzy puede usar Contactos.",
+  "fr": "Contacts ne l'a pas repris — vérifiez que Tenzy peut utiliser Contacts.",
+  "hi": "संपर्क ऐप ने इसे वापस नहीं लिया — देखें कि Tenzy संपर्क इस्तेमाल कर सकता है।",
+  "it": "Contatti non l'ha ripreso: controlla che Tenzy possa usare Contatti.",
+  "ja": "「連絡先」に戻せませんでした。Tenzyが連絡先を使えるか確認してください。",
+  "pt": "O app Contatos não aceitou — confira se o Tenzy pode usar os Contatos.",
+  "zh": "“通讯录”没能恢复——请检查 Tenzy 是否有权使用通讯录。"
+ },
+ "Deleted by mistake, or lost with an account? Bring them back exactly as they were.": {
+  "de": "Aus Versehen gelöscht oder mit einem Konto verloren? Hol sie genau so zurück, wie sie waren.",
+  "es": "¿Borrados por error o perdidos con una cuenta? Recupéralos tal como estaban.",
+  "fr": "Supprimés par erreur ou perdus avec un compte ? Restaurez-les tels qu'ils étaient.",
+  "hi": "गलती से मिटे या किसी खाते के साथ खो गए? उन्हें बिल्कुल पहले जैसा वापस लाएँ।",
+  "it": "Cancellati per errore o persi con un account? Recuperali esattamente com'erano.",
+  "ja": "誤って削除した、またはアカウントごと消えた？ そのままの状態で戻せます。",
+  "pt": "Apagados sem querer ou perdidos com uma conta? Traga de volta exatamente como eram.",
+  "zh": "误删了，或随某个账户一起丢失？原样找回。"
+ },
+ "Email it to myself": {
+  "de": "An mich selbst mailen",
+  "es": "Enviármelo por correo",
+  "fr": "Me l'envoyer par e-mail",
+  "hi": "खुद को ईमेल करें",
+  "it": "Invialo a me",
+  "ja": "自分にメールする",
+  "pt": "Enviar para mim por e-mail",
+  "zh": "发邮件给自己"
+ },
+ "My contacts backup": {
+  "de": "Meine Kontaktsicherung",
+  "es": "Copia de mis contactos",
+  "fr": "Sauvegarde de mes contacts",
+  "hi": "मेरे संपर्कों का बैकअप",
+  "it": "Backup dei miei contatti",
+  "ja": "連絡先のバックアップ",
+  "pt": "Backup dos meus contatos",
+  "zh": "我的联系人备份"
+ },
+ "Saved in Files › On My iPhone › Tenzy › Contact Backups, and in iCloud Drive when it's on. The last eight copies are kept.": {
+  "de": "Gespeichert in Dateien › Auf meinem iPhone › Tenzy › Contact Backups und in iCloud Drive, wenn es an ist. Die letzten acht Kopien bleiben.",
+  "es": "Guardado en Archivos › En mi iPhone › Tenzy › Contact Backups, y en iCloud Drive si está activado. Se guardan las ocho últimas copias.",
+  "fr": "Enregistré dans Fichiers › Sur mon iPhone › Tenzy › Contact Backups, et dans iCloud Drive s'il est activé. Les huit dernières copies sont gardées.",
+  "hi": "फ़ाइलें › मेरे iPhone पर › Tenzy › Contact Backups में, और चालू हो तो iCloud Drive में सहेजा। आख़िरी आठ कॉपी रखी जाती हैं।",
+  "it": "Salvato in File › Sul mio iPhone › Tenzy › Contact Backups e in iCloud Drive se attivo. Si tengono le ultime otto copie.",
+  "ja": "「ファイル」›「このiPhone内」› Tenzy › Contact Backups と、オンならiCloud Driveに保存しました。最新8件のコピーを残します。",
+  "pt": "Salvo em Arquivos › No Meu iPhone › Tenzy › Contact Backups, e no iCloud Drive se estiver ligado. As oito últimas cópias ficam guardadas.",
+  "zh": "已保存到“文件 › 我的 iPhone › Tenzy › Contact Backups”，开启时也会存到 iCloud 云盘。保留最近八份。"
+ },
+ "See the backup": {
+  "de": "Sicherung ansehen",
+  "es": "Ver la copia",
+  "fr": "Voir la sauvegarde",
+  "hi": "बैकअप देखें",
+  "it": "Vedi il backup",
+  "ja": "バックアップを見る",
+  "pt": "Ver o backup",
+  "zh": "查看备份"
+ },
+ "Tenzy needs Contacts access to back them up — allow it in Settings › Apps › Tenzy › Contacts.": {
+  "de": "Tenzy braucht Zugriff auf Kontakte, um sie zu sichern – erlaube ihn unter Einstellungen › Apps › Tenzy › Kontakte.",
+  "es": "Tenzy necesita acceso a Contactos para copiarlos: permítelo en Ajustes › Apps › Tenzy › Contactos.",
+  "fr": "Tenzy a besoin d'accéder à Contacts pour les sauvegarder — autorisez-le dans Réglages › Apps › Tenzy › Contacts.",
+  "hi": "बैकअप के लिए Tenzy को संपर्कों की अनुमति चाहिए — सेटिंग्स › ऐप्स › Tenzy › संपर्क में दें।",
+  "it": "Tenzy ha bisogno di accedere a Contatti per salvarli: consentilo in Impostazioni › App › Tenzy › Contatti.",
+  "ja": "バックアップには連絡先へのアクセスが必要です。設定 › アプリ › Tenzy › 連絡先 で許可してください。",
+  "pt": "O Tenzy precisa de acesso aos Contatos para fazer o backup — permita em Ajustes › Apps › Tenzy › Contatos.",
+  "zh": "Tenzy 需要通讯录权限才能备份——请在 设置 › App › Tenzy › 通讯录 中允许。"
+ },
+ "Test run backed up": {
+  "de": "Der Probelauf hat gesichert:",
+  "es": "La prueba copió",
+  "fr": "L'essai a sauvegardé",
+  "hi": "टेस्ट रन ने बैकअप किया:",
+  "it": "Il test ha salvato",
+  "ja": "テスト実行でバックアップ：",
+  "pt": "O teste fez backup de",
+  "zh": "测试已备份"
+ },
+ "to Files › Tenzy › Contact Backups.": {
+  "de": "in Dateien › Tenzy › Contact Backups.",
+  "es": "en Archivos › Tenzy › Contact Backups.",
+  "fr": "dans Fichiers › Tenzy › Contact Backups.",
+  "hi": "फ़ाइलें › Tenzy › Contact Backups में।",
+  "it": "in File › Tenzy › Contact Backups.",
+  "ja": "→「ファイル」› Tenzy › Contact Backups",
+  "pt": "em Arquivos › Tenzy › Contact Backups.",
+  "zh": "到“文件 › Tenzy › Contact Backups”。"
+ },
+ "is gone since the copy before — tap Check.": {
+  "de": "fehlt seit der vorigen Kopie – tippe auf Prüfen.",
+  "es": "ha desaparecido desde la copia anterior: toca Comprobar.",
+  "fr": "a disparu depuis la copie précédente — touchez Vérifier.",
+  "hi": "पिछली कॉपी के बाद गायब है — जाँचें पर टैप करें।",
+  "it": "è sparito dalla copia precedente: tocca Verifica.",
+  "ja": "件が前回のコピーから消えています。「確認」をタップ。",
+  "pt": "sumiu desde a cópia anterior — toque em Verificar.",
+  "zh": "个自上次备份后不见了——点“验证”。"
+ },
+ "are gone since the copy before — tap Check.": {
+  "de": "fehlen seit der vorigen Kopie – tippe auf Prüfen.",
+  "es": "han desaparecido desde la copia anterior: toca Comprobar.",
+  "fr": "ont disparu depuis la copie précédente — touchez Vérifier.",
+  "hi": "पिछली कॉपी के बाद गायब हैं — जाँचें पर टैप करें।",
+  "it": "sono spariti dalla copia precedente: tocca Verifica.",
+  "ja": "件が前回のコピーから消えています。「確認」をタップ。",
+  "pt": "sumiram desde a cópia anterior — toque em Verificar.",
+  "zh": "个自上次备份后不见了——点“验证”。"
+ },
+ "The backup couldn't be made — check that Tenzy can use Contacts.": {
+  "de": "Die Sicherung ließ sich nicht erstellen – prüfe, ob Tenzy Kontakte verwenden darf.",
+  "es": "No se pudo hacer la copia: comprueba que Tenzy puede usar Contactos.",
+  "fr": "La sauvegarde n'a pas pu être faite — vérifiez que Tenzy peut utiliser Contacts.",
+  "hi": "बैकअप नहीं बन सका — देखें कि Tenzy संपर्क इस्तेमाल कर सकता है।",
+  "it": "Non è stato possibile fare il backup: controlla che Tenzy possa usare Contatti.",
+  "ja": "バックアップできませんでした。Tenzyが連絡先を使えるか確認してください。",
+  "pt": "Não foi possível fazer o backup — confira se o Tenzy pode usar os Contatos.",
+  "zh": "无法备份——请检查 Tenzy 是否有权使用通讯录。"
+ },
+ "They were meant to go": {
+  "de": "Die sollten weg",
+  "es": "Era a propósito",
+  "fr": "C'était voulu",
+  "hi": "इन्हें जाना ही था",
+  "it": "Era voluto",
+  "ja": "削除したままでいい",
+  "pt": "Era para sair mesmo",
+  "zh": "本来就要删"
+ },
+ "Your contacts, backed up": {
+  "de": "Deine Kontakte, gesichert",
+  "es": "Tus contactos, a salvo",
+  "fr": "Vos contacts, sauvegardés",
+  "hi": "आपके संपर्क, बैकअप में",
+  "it": "I tuoi contatti, al sicuro",
+  "ja": "連絡先をバックアップしました",
+  "pt": "Seus contatos, com backup",
+  "zh": "你的联系人，已备份"
+ },
+ "is back in Contacts.": {
+  "de": "ist wieder in Kontakte.",
+  "es": "vuelve a estar en Contactos.",
+  "fr": "est de retour dans Contacts.",
+  "hi": "संपर्कों में वापस आ गया।",
+  "it": "è di nuovo in Contatti.",
+  "ja": "を連絡先に戻しました。",
+  "pt": "voltou para os Contatos.",
+  "zh": "已回到通讯录。"
+ },
+ "contact is back in Contacts.": {
+  "de": "Kontakt ist wieder in Kontakte.",
+  "es": "contacto vuelve a estar en Contactos.",
+  "fr": "contact est de retour dans Contacts.",
+  "hi": "संपर्क वापस आ गया।",
+  "it": "contatto è di nuovo in Contatti.",
+  "ja": "件の連絡先を戻しました。",
+  "pt": "contato voltou para os Contatos.",
+  "zh": "个联系人已回到通讯录。"
+ },
+ "contacts are back in Contacts.": {
+  "de": "Kontakte sind wieder in Kontakte.",
+  "es": "contactos vuelven a estar en Contactos.",
+  "fr": "contacts sont de retour dans Contacts.",
+  "hi": "संपर्क वापस आ गए।",
+  "it": "contatti sono di nuovo in Contatti.",
+  "ja": "件の連絡先を戻しました。",
+  "pt": "contatos voltaram para os Contatos.",
+  "zh": "个联系人已回到通讯录。"
+ },
+ "contact is gone since the copy before": {
+  "de": "Kontakt fehlt seit der vorigen Kopie",
+  "es": "contacto ha desaparecido desde la copia anterior",
+  "fr": "contact a disparu depuis la copie précédente",
+  "hi": "संपर्क पिछली कॉपी के बाद गायब है",
+  "it": "contatto è sparito dalla copia precedente",
+  "ja": "件の連絡先が前回のコピーから消えています",
+  "pt": "contato sumiu desde a cópia anterior",
+  "zh": "个联系人自上次备份后不见了"
+ },
+ "contacts are gone since the copy before": {
+  "de": "Kontakte fehlen seit der vorigen Kopie",
+  "es": "contactos han desaparecido desde la copia anterior",
+  "fr": "contacts ont disparu depuis la copie précédente",
+  "hi": "संपर्क पिछली कॉपी के बाद गायब हैं",
+  "it": "contatti sono spariti dalla copia precedente",
+  "ja": "件の連絡先が前回のコピーから消えています",
+  "pt": "contatos sumiram desde a cópia anterior",
+  "zh": "个联系人自上次备份后不见了"
+ },
+ "new since the copy before": {
+  "de": "neu seit der vorigen Kopie",
+  "es": "nuevos desde la copia anterior",
+  "fr": "nouveaux depuis la copie précédente",
+  "hi": "पिछली कॉपी के बाद नए",
+  "it": "nuovi dalla copia precedente",
+  "ja": "件が前回のコピー以降に追加",
+  "pt": "novos desde a cópia anterior",
+  "zh": "个是上次备份后新增的"
+ },
+ "No backup yet": {
+  "de": "Noch keine Sicherung",
+  "es": "Aún no hay copia",
+  "fr": "Pas encore de sauvegarde",
+  "hi": "अभी कोई बैकअप नहीं",
+  "it": "Ancora nessun backup",
+  "ja": "まだバックアップはありません",
+  "pt": "Ainda não há backup",
+  "zh": "还没有备份"
+ },
+ "Tap Test run on the autoruns page to make the first copy.": {
+  "de": "Tippe auf der Automatik-Seite auf Probelauf, um die erste Kopie zu machen.",
+  "es": "Toca Prueba en la página de automatizaciones para hacer la primera copia.",
+  "fr": "Touchez Test sur la page des automatismes pour faire la première copie.",
+  "hi": "पहली कॉपी बनाने के लिए ऑटोरन पेज पर टेस्ट रन टैप करें।",
+  "it": "Tocca Prova nella pagina degli automatismi per fare la prima copia.",
+  "ja": "オートランのページで「テスト実行」をタップすると最初のコピーを作ります。",
+  "pt": "Toque em Testar na página de automações para fazer a primeira cópia.",
+  "zh": "在自动任务页点“测试”来做第一份备份。"
+ },
+ "Voice memos into written notes": {
+  "de": "Sprachmemos als schriftliche Notizen",
+  "es": "Notas de voz en notas escritas",
+  "fr": "Mémos vocaux en notes écrites",
+  "hi": "वॉइस मेमो से लिखे नोट्स",
+  "it": "Memo vocali in note scritte",
+  "ja": "ボイスメモを文字のメモに",
+  "pt": "Memorandos de voz em notas escritas",
+  "zh": "把语音备忘录写成笔记"
+ },
+ "Listens to the voice memos you saved today — on your phone, nothing sent anywhere — and writes each one up: what it's about, the key points, and the to-dos with who and when, ready for Reminders.": {
+  "de": "Hört die Sprachmemos, die du heute gespeichert hast – auf deinem Telefon, nichts wird verschickt – und schreibt jedes auf: worum es geht, die wichtigsten Punkte und die Aufgaben mit wer und wann, bereit für Erinnerungen.",
+  "es": "Escucha las notas de voz que guardaste hoy —en tu teléfono, sin enviar nada— y redacta cada una: de qué trata, los puntos clave y las tareas con quién y cuándo, listas para Recordatorios.",
+  "fr": "Écoute les mémos vocaux enregistrés aujourd'hui — sur votre téléphone, rien n'est envoyé — et rédige chacun : de quoi il parle, les points clés et les tâches avec qui et quand, prêtes pour Rappels.",
+  "hi": "आज सहेजे गए वॉइस मेमो सुनता है — आपके फ़ोन पर, कुछ भी कहीं नहीं भेजा जाता — और हर एक को लिखता है: किस बारे में है, मुख्य बातें, और काम किसका और कब तक, रिमाइंडर के लिए तैयार।",
+  "it": "Ascolta i memo vocali salvati oggi — sul telefono, senza inviare nulla — e li trascrive in note: di cosa parlano, i punti chiave e le cose da fare con chi e quando, pronte per Promemoria.",
+  "ja": "今日保存したボイスメモをiPhone上で聞き取り（どこにも送信しません）、内容・要点・誰がいつまでにやるかのToDoをまとめ、リマインダーに入れられる形にします。",
+  "pt": "Ouve os memorandos de voz que você salvou hoje — no seu celular, nada é enviado — e escreve cada um: do que se trata, os pontos principais e as tarefas com quem e quando, prontas para os Lembretes.",
+  "zh": "在手机上听你今天保存的语音备忘录（不发送到任何地方），逐条写成笔记：讲了什么、要点，以及谁在何时做的待办，可直接加入提醒事项。"
+ },
+ "voice memo": {
+  "de": "Sprachmemo",
+  "es": "nota de voz",
+  "fr": "mémo vocal",
+  "hi": "वॉइस मेमो",
+  "it": "memo vocale",
+  "ja": "件のボイスメモ",
+  "pt": "memorando de voz",
+  "zh": "条语音备忘录"
+ },
+ "voice memos": {
+  "de": "Sprachmemos",
+  "es": "notas de voz",
+  "fr": "mémos vocaux",
+  "hi": "वॉइस मेमो",
+  "it": "memo vocali",
+  "ja": "件のボイスメモ",
+  "pt": "memorandos de voz",
+  "zh": "条语音备忘录"
+ },
+ "to-do added to Reminders.": {
+  "de": "Aufgabe zu Erinnerungen hinzugefügt.",
+  "es": "tarea añadida a Recordatorios.",
+  "fr": "tâche ajoutée à Rappels.",
+  "hi": "काम रिमाइंडर में जोड़ा गया।",
+  "it": "cosa da fare aggiunta a Promemoria.",
+  "ja": "件のToDoをリマインダーに追加しました。",
+  "pt": "tarefa adicionada aos Lembretes.",
+  "zh": "条待办已加入提醒事项。"
+ },
+ "to-dos added to Reminders.": {
+  "de": "Aufgaben zu Erinnerungen hinzugefügt.",
+  "es": "tareas añadidas a Recordatorios.",
+  "fr": "tâches ajoutées à Rappels.",
+  "hi": "काम रिमाइंडर में जोड़े गए।",
+  "it": "cose da fare aggiunte a Promemoria.",
+  "ja": "件のToDoをリマインダーに追加しました。",
+  "pt": "tarefas adicionadas aos Lembretes.",
+  "zh": "条待办已加入提醒事项。"
+ },
+ "written by Apple Intelligence": {
+  "de": "geschrieben von Apple Intelligence",
+  "es": "escrito por Apple Intelligence",
+  "fr": "rédigé par Apple Intelligence",
+  "hi": "Apple Intelligence ने लिखा",
+  "it": "scritto da Apple Intelligence",
+  "ja": "Apple Intelligenceが作成",
+  "pt": "escrito pela Apple Intelligence",
+  "zh": "由 Apple 智能撰写"
+ },
+ "Your voice memos, written up": {
+  "de": "Deine Sprachmemos, aufgeschrieben",
+  "es": "Tus notas de voz, por escrito",
+  "fr": "Vos mémos vocaux, rédigés",
+  "hi": "आपके वॉइस मेमो, लिखे हुए",
+  "it": "I tuoi memo vocali, per iscritto",
+  "ja": "ボイスメモを文字にしました",
+  "pt": "Seus memorandos de voz, por escrito",
+  "zh": "你的语音备忘录，已写成笔记"
+ },
+ "Memos saved to your folder show up here, written up, after the next run.": {
+  "de": "In deinem Ordner gespeicherte Memos erscheinen nach dem nächsten Lauf hier, aufgeschrieben.",
+  "es": "Las notas guardadas en tu carpeta aparecen aquí, por escrito, después de la próxima ejecución.",
+  "fr": "Les mémos enregistrés dans votre dossier apparaissent ici, rédigés, après le prochain passage.",
+  "hi": "आपके फ़ोल्डर में सहेजे मेमो अगली बार चलने के बाद यहाँ लिखे हुए दिखेंगे।",
+  "it": "I memo salvati nella tua cartella compaiono qui, per iscritto, dopo il prossimo avvio.",
+  "ja": "フォルダに保存したメモは、次の実行後に文字にしてここに表示されます。",
+  "pt": "Os memorandos salvos na sua pasta aparecem aqui, por escrito, depois da próxima execução.",
+  "zh": "保存到文件夹的备忘录会在下次运行后写成笔记显示在这里。"
+ },
+ "voice memo written up — key points and to-dos inside.": {
+  "de": "Sprachmemo aufgeschrieben – Kernpunkte und Aufgaben drin.",
+  "es": "nota de voz redactada: dentro están los puntos clave y las tareas.",
+  "fr": "mémo vocal rédigé — points clés et tâches à l'intérieur.",
+  "hi": "वॉइस मेमो लिखा गया — मुख्य बातें और काम अंदर।",
+  "it": "memo vocale trascritto: dentro punti chiave e cose da fare.",
+  "ja": "件のボイスメモを文字にしました。要点とToDo付きです。",
+  "pt": "memorando de voz escrito — pontos principais e tarefas dentro.",
+  "zh": "条语音备忘录已写好——内含要点和待办。"
+ },
+ "voice memos written up — key points and to-dos inside.": {
+  "de": "Sprachmemos aufgeschrieben – Kernpunkte und Aufgaben drin.",
+  "es": "notas de voz redactadas: dentro están los puntos clave y las tareas.",
+  "fr": "mémos vocaux rédigés — points clés et tâches à l'intérieur.",
+  "hi": "वॉइस मेमो लिखे गए — मुख्य बातें और काम अंदर।",
+  "it": "memo vocali trascritti: dentro punti chiave e cose da fare.",
+  "ja": "件のボイスメモを文字にしました。要点とToDo付きです。",
+  "pt": "memorandos de voz escritos — pontos principais e tarefas dentro.",
+  "zh": "条语音备忘录已写好——内含要点和待办。"
+ },
+ "Choose the folder your memos go in…": {
+  "de": "Ordner für deine Memos wählen…",
+  "es": "Elige la carpeta de tus notas…",
+  "fr": "Choisir le dossier de vos mémos…",
+  "hi": "मेमो वाला फ़ोल्डर चुनें…",
+  "it": "Scegli la cartella dei memo…",
+  "ja": "メモを保存するフォルダを選ぶ…",
+  "pt": "Escolha a pasta dos seus memorandos…",
+  "zh": "选择存放备忘录的文件夹…"
+ },
+ "Decided": {
+  "de": "Beschlossen",
+  "es": "Decidido",
+  "fr": "Décidé",
+  "hi": "तय हुआ",
+  "it": "Deciso",
+  "ja": "決定事項",
+  "pt": "Decidido",
+  "zh": "已决定"
+ },
+ "Email the notes": {
+  "de": "Notizen mailen",
+  "es": "Enviar las notas por correo",
+  "fr": "Envoyer les notes par e-mail",
+  "hi": "नोट्स ईमेल करें",
+  "it": "Invia le note per email",
+  "ja": "メモをメールする",
+  "pt": "Enviar as notas por e-mail",
+  "zh": "用邮件发送笔记"
+ },
+ "First choose the folder your voice memos are saved in.": {
+  "de": "Wähle zuerst den Ordner, in dem deine Sprachmemos liegen.",
+  "es": "Primero elige la carpeta donde guardas tus notas de voz.",
+  "fr": "Choisissez d'abord le dossier où vos mémos vocaux sont enregistrés.",
+  "hi": "पहले वह फ़ोल्डर चुनें जिसमें आपके वॉइस मेमो सहेजे जाते हैं।",
+  "it": "Prima scegli la cartella in cui salvi i memo vocali.",
+  "ja": "まずボイスメモを保存するフォルダを選んでください。",
+  "pt": "Primeiro escolha a pasta onde seus memorandos de voz ficam salvos.",
+  "zh": "先选择保存语音备忘录的文件夹。"
+ },
+ "Heard on your phone — nothing was sent anywhere.": {
+  "de": "Auf deinem Telefon angehört – nichts wurde verschickt.",
+  "es": "Escuchado en tu teléfono: no se envió nada.",
+  "fr": "Écouté sur votre téléphone — rien n'a été envoyé.",
+  "hi": "आपके फ़ोन पर सुना गया — कुछ भी कहीं नहीं भेजा गया।",
+  "it": "Ascoltato sul telefono: non è stato inviato nulla.",
+  "ja": "iPhone上で聞き取りました。どこにも送信していません。",
+  "pt": "Ouvido no seu celular — nada foi enviado.",
+  "zh": "在手机上识别——没有发送到任何地方。"
+ },
+ "In Voice Memos, tap ••• › Share › Save to Files and pick this folder. Any recorder app that saves to Files works too.": {
+  "de": "Tippe in Sprachmemos auf ••• › Teilen › In Dateien sichern und wähle diesen Ordner. Jede Aufnahme-App, die in Dateien speichert, geht auch.",
+  "es": "En Notas de Voz, toca ••• › Compartir › Guardar en Archivos y elige esta carpeta. También sirve cualquier app de grabación que guarde en Archivos.",
+  "fr": "Dans Dictaphone, touchez ••• › Partager › Enregistrer dans Fichiers et choisissez ce dossier. Toute app d'enregistrement qui enregistre dans Fichiers marche aussi.",
+  "hi": "वॉइस मेमो में ••• › शेयर › फ़ाइलें में सहेजें दबाएँ और यह फ़ोल्डर चुनें। फ़ाइलें में सहेजने वाला कोई भी रिकॉर्डर ऐप भी चलेगा।",
+  "it": "In Memo Vocali tocca ••• › Condividi › Salva su File e scegli questa cartella. Va bene anche qualsiasi app di registrazione che salva su File.",
+  "ja": "ボイスメモで ••• › 共有 › “ファイル”に保存 を選び、このフォルダを指定します。「ファイル」に保存できる録音アプリでも使えます。",
+  "pt": "No Gravador, toque em ••• › Compartilhar › Salvar em Arquivos e escolha esta pasta. Qualquer app de gravação que salve em Arquivos também funciona.",
+  "zh": "在“语音备忘录”中点 ••• › 共享 › 存储到“文件”，选择这个文件夹。任何能存到“文件”的录音 App 都可以。"
+ },
+ "Listening to memo": {
+  "de": "Memo wird angehört",
+  "es": "Escuchando la nota",
+  "fr": "Écoute du mémo",
+  "hi": "मेमो सुन रहे हैं",
+  "it": "Ascolto del memo",
+  "ja": "メモを聞き取り中",
+  "pt": "Ouvindo o memorando",
+  "zh": "正在识别备忘录"
+ },
+ "Memos from": {
+  "de": "Memos aus",
+  "es": "Notas de",
+  "fr": "Mémos de",
+  "hi": "मेमो यहाँ से:",
+  "it": "Memo da",
+  "ja": "メモの場所：",
+  "pt": "Memorandos de",
+  "zh": "备忘录来自"
+ },
+ "Tap Check to read them.": {
+  "de": "Tippe auf Prüfen, um sie zu lesen.",
+  "es": "Toca Comprobar para leerlas.",
+  "fr": "Touchez Vérifier pour les lire.",
+  "hi": "पढ़ने के लिए जाँचें पर टैप करें।",
+  "it": "Tocca Verifica per leggerli.",
+  "ja": "「確認」をタップして読んでください。",
+  "pt": "Toque em Verificar para lê-los.",
+  "zh": "点“验证”阅读。"
+ },
+ "Tap and Tenzy writes up today's voice memos — on your phone.": {
+  "de": "Tippe, und Tenzy schreibt die heutigen Sprachmemos auf – auf deinem Telefon.",
+  "es": "Toca y Tenzy redacta las notas de voz de hoy, en tu teléfono.",
+  "fr": "Touchez et Tenzy rédige les mémos vocaux du jour — sur votre téléphone.",
+  "hi": "टैप करें, Tenzy आज के वॉइस मेमो लिख देगा — आपके फ़ोन पर।",
+  "it": "Tocca e Tenzy trascrive i memo vocali di oggi, sul telefono.",
+  "ja": "タップすると、今日のボイスメモをiPhone上で文字にします。",
+  "pt": "Toque e o Tenzy escreve os memorandos de voz de hoje — no seu celular.",
+  "zh": "点一下，Tenzy 会在手机上把今天的语音备忘录写成笔记。"
+ },
+ "Tenzy needs Speech Recognition to write up memos — allow it in Settings › Apps › Tenzy. It runs on your phone.": {
+  "de": "Tenzy braucht Spracherkennung, um Memos aufzuschreiben – erlaube sie unter Einstellungen › Apps › Tenzy. Sie läuft auf deinem Telefon.",
+  "es": "Tenzy necesita Reconocimiento de voz para redactar notas: permítelo en Ajustes › Apps › Tenzy. Funciona en tu teléfono.",
+  "fr": "Tenzy a besoin de la Reconnaissance vocale pour rédiger les mémos — autorisez-la dans Réglages › Apps › Tenzy. Elle fonctionne sur votre téléphone.",
+  "hi": "मेमो लिखने के लिए Tenzy को स्पीच रिकग्निशन चाहिए — सेटिंग्स › ऐप्स › Tenzy में दें। यह आपके फ़ोन पर चलता है।",
+  "it": "Tenzy ha bisogno del Riconoscimento vocale per trascrivere i memo: consentilo in Impostazioni › App › Tenzy. Funziona sul telefono.",
+  "ja": "メモを文字にするには音声認識が必要です。設定 › アプリ › Tenzy で許可してください。iPhone上で動きます。",
+  "pt": "O Tenzy precisa do Reconhecimento de Fala para escrever os memorandos — permita em Ajustes › Apps › Tenzy. Funciona no seu celular.",
+  "zh": "Tenzy 需要“语音识别”才能写笔记——请在 设置 › App › Tenzy 中允许。它在手机上运行。"
+ },
+ "Tenzy will write up the voice memos saved in": {
+  "de": "Tenzy schreibt die Sprachmemos auf, die gespeichert sind in",
+  "es": "Tenzy redactará las notas de voz guardadas en",
+  "fr": "Tenzy rédigera les mémos vocaux enregistrés dans",
+  "hi": "Tenzy इसमें सहेजे वॉइस मेमो लिखेगा:",
+  "it": "Tenzy trascriverà i memo vocali salvati in",
+  "ja": "Tenzyは次のフォルダのボイスメモを文字にします：",
+  "pt": "O Tenzy vai escrever os memorandos de voz salvos em",
+  "zh": "Tenzy 会把保存在以下位置的语音备忘录写成笔记："
+ },
+ "Test run worked: no new voice memos in that folder from the last 24 hours.": {
+  "de": "Probelauf hat funktioniert: keine neuen Sprachmemos in diesem Ordner aus den letzten 24 Stunden.",
+  "es": "La prueba funcionó: no hay notas de voz nuevas en esa carpeta de las últimas 24 horas.",
+  "fr": "L'essai a marché : aucun nouveau mémo vocal dans ce dossier depuis 24 heures.",
+  "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों में उस फ़ोल्डर में कोई नया वॉइस मेमो नहीं।",
+  "it": "Il test ha funzionato: nessun nuovo memo vocale in quella cartella nelle ultime 24 ore.",
+  "ja": "テスト実行は成功しました。この24時間、そのフォルダに新しいボイスメモはありません。",
+  "pt": "O teste funcionou: nenhum memorando de voz novo nessa pasta nas últimas 24 horas.",
+  "zh": "测试成功：过去 24 小时该文件夹中没有新的语音备忘录。"
+ },
+ "Test run wrote up": {
+  "de": "Der Probelauf hat aufgeschrieben:",
+  "es": "La prueba redactó",
+  "fr": "L'essai a rédigé",
+  "hi": "टेस्ट रन ने लिखा:",
+  "it": "Il test ha trascritto",
+  "ja": "テスト実行で文字にしたもの：",
+  "pt": "O teste escreveu",
+  "zh": "测试已写好"
+ },
+ "The whole transcript": {
+  "de": "Das ganze Transkript",
+  "es": "La transcripción completa",
+  "fr": "La transcription complète",
+  "hi": "पूरा ट्रांसक्रिप्ट",
+  "it": "La trascrizione completa",
+  "ja": "全文の書き起こし",
+  "pt": "A transcrição completa",
+  "zh": "完整文字记录"
  }
 }
