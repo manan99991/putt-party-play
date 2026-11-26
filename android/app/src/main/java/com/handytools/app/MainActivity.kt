@@ -119,6 +119,7 @@ class MainActivity : ComponentActivity() {
             com.handytools.app.tools.builder.ToolReminders.pendingPhoto = intent.getStringExtra("photo")?.let { android.net.Uri.parse(it) }?.takeIf { it.scheme == "content" }
             com.handytools.app.tools.builder.ToolReminders.pending = id
         }
+        intent.getStringExtra("autorun")?.let { com.handytools.app.tools.autoruns.Autoruns.pending = it }   // a tapped autorun notification
         importTool(intent)
         val routeExtra = intent.getStringExtra("route")
         // Pro-preview unlock exists ONLY for the CI screenshot capture and is compiled out of
@@ -136,6 +137,7 @@ class MainActivity : ComponentActivity() {
             // instead of the tool. One choke point so every path — grid, search, the Settings map,
             // group tiles and warm deep links — is covered.
             val openTool: (String) -> Unit = { r ->
+                com.handytools.app.tools.autoruns.ToolDays.note(this@MainActivity, r)   // which days each tool is used: the habit an autorun offer is built on
                 if (com.handytools.app.ui.ToolGate.locked(r)) nav.navigate("lock/$r") else nav.navigate(r)
             }
             HandyTheme {
@@ -196,6 +198,7 @@ class MainActivity : ComponentActivity() {
                     composable("scancsv") { ScanCsvScreen() }
                     composable("invoice") { QuickInvoiceScreen(onUpgrade = { nav.navigate("paywall") }) }
                     composable("receipts") { ReceiptKeeperScreen() }
+                    composable("autoruns") { com.handytools.app.tools.autoruns.AutorunsScreen() }
                     composable("gifmaker") { GifMakerScreen() }
                     composable("beatreel") { com.handytools.app.tools.studio.BeatReelScreen() }
                     composable("trailer") { com.handytools.app.tools.studio.TrailerScreen() }
@@ -293,6 +296,7 @@ class MainActivity : ComponentActivity() {
             com.handytools.app.tools.builder.ToolReminders.pendingPhoto = intent.getStringExtra("photo")?.let { android.net.Uri.parse(it) }?.takeIf { it.scheme == "content" }
             com.handytools.app.tools.builder.ToolReminders.pending = id
         }
+        intent.getStringExtra("autorun")?.let { com.handytools.app.tools.autoruns.Autoruns.pending = it }   // a tapped autorun notification
         importTool(intent)
         val routeExtra = intent.getStringExtra("route")
         if (routeExtra == "homepro" && com.handytools.app.BuildConfig.DEBUG) HandyApp.instance.billing.setPreviewPremium(true)

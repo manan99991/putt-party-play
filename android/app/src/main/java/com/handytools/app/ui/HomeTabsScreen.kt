@@ -179,7 +179,7 @@ fun HomeTabsScreen(onOpen: (String) -> Unit, onBuild: (String) -> Unit = {}, onS
     var tabId by remember { mutableStateOf(prefs.getString(HomeShelves.TAB_KEY, null)?.takeIf { id -> tabs.any { it.id == id } } ?: tabs.first().id) }
     var query by remember { mutableStateOf("") }
     var cards by remember { mutableStateOf(ForYouAndroid.cards(ForYouAndroid.parkedAt(ctx), System.currentTimeMillis(), ForYouAndroid.hidden(ctx),
-        com.handytools.app.tools.invoice.InvoiceStore.load(ctx), medDoses(ctx))) }
+        com.handytools.app.tools.invoice.InvoiceStore.load(ctx), medDoses(ctx)).ifEmpty { habitOffer(ctx) }) }
 
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(horizontal = HandyTokens.Gutter)) {
         Spacer(Modifier.height(HandyTokens.Space8))
@@ -253,7 +253,9 @@ fun HomeTabsScreen(onOpen: (String) -> Unit, onBuild: (String) -> Unit = {}, onS
 
         cards.forEach { c ->
             ForYouCard(c, onAct = { onOpen(c.route) }, onNotNow = {
-                ForYouAndroid.notNow(ctx, c)
+                // An autorun offer, put off, is never offered again (as on the iPhone).
+                if (c.kind == "autorun") com.handytools.app.tools.autoruns.SmartRuns.Kind.of(c.id.removePrefix("autorun-"))?.let { com.handytools.app.tools.autoruns.Autoruns.hide(ctx, it) }
+                else ForYouAndroid.notNow(ctx, c)
                 cards = cards - c
             })
             Spacer(Modifier.height(HandyTokens.Space12))
@@ -356,6 +358,13 @@ fun AllHelpersScreen(onOpen: (String) -> Unit, onBack: () -> Unit) {
             }
         }
     }
+}
+
+/** A tool used by hand on three or more days lately becomes one Home card offering the matching autorun (the iPhone's habit offer). */
+private fun habitOffer(ctx: Context): List<ForYouAndroid.Card> {
+    val (k, days) = com.handytools.app.tools.autoruns.Autoruns.offer(ctx) ?: return emptyList()
+    return listOf(ForYouAndroid.Card("autorun-${k.id}", k.title, I18n.t("You did this by hand on %d days lately. Tenzy can do it for you.").format(days),
+        "Set it up", "autoruns", "autorun"))
 }
 
 private fun askForMore(ctx: Context) {

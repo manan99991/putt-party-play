@@ -10,6 +10,7 @@ on:
     paths:
       - "android/app/src/androidTest/**"
       - "android/app/src/main/java/com/handytools/app/tools/studio/**"
+      - "android/app/src/main/java/com/handytools/app/tools/autoruns/**"
       - ".github/workflows/android-device.yml"
 
 concurrency:
@@ -72,12 +73,12 @@ jobs:
             rm -rf "${RUNNER_TEMP:?}/real"
           fi
           adb logcat -c || true
-          adb shell am instrument -w -r -e class com.handytools.app.StudioOnDeviceTest \
+          adb shell am instrument -w -r -e class com.handytools.app.StudioOnDeviceTest,com.handytools.app.AutorunsOnDeviceTest \
             com.tenzy.toolkit.test/androidx.test.runner.AndroidJUnitRunner 2>&1 | tee device-tests.log
           # What each test said, and why any failed (test names and assertion messages only).
           grep -E "INSTRUMENTATION_STATUS: test=|INSTRUMENTATION_STATUS_CODE|AssertionError|Exception:|^OK \(|FAILURES|Tests run" device-tests.log | head -80 || true
           echo "---- What the people tests measured (numbers only)"
-          adb logcat -d -v brief 2>/dev/null | grep -o "PEOPLE|.*" | head -20 || true
+          adb logcat -d -v brief 2>/dev/null | grep -o -E "(PEOPLE|AUTORUN)\|.*" | head -20 || true
           echo "---- Media3 / app errors from the device log"
           adb logcat -d -v brief '*:E' 2>/dev/null | grep -E "Transformer|ExportException|media3|AndroidRuntime|com.tenzy" | head -60 || true
           grep -q "^OK (" device-tests.log || exit 1

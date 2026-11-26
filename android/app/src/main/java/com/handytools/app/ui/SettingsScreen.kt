@@ -27,6 +27,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Autorenew
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Info
@@ -118,6 +119,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             Spacer(Modifier.height(HandyTokens.Space8))
             SettingsRow(Icons.Outlined.Apps, "All ${TOOLS.size} tools", "Browse every tool and open any one") { onOpen("alltools") }
+            SettingsRow(Icons.Outlined.Autorenew, com.handytools.app.I18n.t("Smart autoruns"), com.handytools.app.I18n.t("Jobs Tenzy does for you at the end of the day")) { onOpen("autoruns") }
 
             Spacer(Modifier.height(HandyTokens.Space24))
             SettingsSectionLabel("App")

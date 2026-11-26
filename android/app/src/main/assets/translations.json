@@ -19008,5 +19008,215 @@
   "ja": "すべて表示",
   "pt": "Ver todos",
   "zh": "查看全部"
+ },
+ "Jobs Tenzy does for you at the end of the day": {
+  "de": "Aufgaben, die Tenzy am Ende des Tages für dich erledigt",
+  "es": "Tareas que Tenzy hace por ti al final del día",
+  "fr": "Les tâches que Tenzy fait pour vous en fin de journée",
+  "hi": "दिन के आख़िर में Tenzy आपके लिए जो काम करता है",
+  "it": "Lavori che Tenzy fa per te a fine giornata",
+  "ja": "一日の終わりに Tenzy が代わりにする作業",
+  "pt": "Tarefas que o Tenzy faz por você no fim do dia",
+  "zh": "Tenzy 在一天结束时替你做的事"
+ },
+ "smaller copy saved to your videos, with its original date.": {
+  "de": "kleinere Kopie bei deinen Videos gespeichert, mit dem Originaldatum.",
+  "es": "copia más pequeña guardada en tus vídeos, con su fecha original.",
+  "fr": "copie plus légère enregistrée dans vos vidéos, avec sa date d'origine.",
+  "hi": "छोटी कॉपी आपके वीडियो में, मूल तारीख़ के साथ सेव हुई।",
+  "it": "copia più leggera salvata nei tuoi video, con la data originale.",
+  "ja": "件の小さいコピーを元の日付のままビデオに保存しました。",
+  "pt": "cópia menor salva nos seus vídeos, com a data original.",
+  "zh": "个较小的副本已存入你的视频，保留原日期。"
+ },
+ "smaller copies saved to your videos, with their original dates.": {
+  "de": "kleinere Kopien bei deinen Videos gespeichert, mit den Originaldaten.",
+  "es": "copias más pequeñas guardadas en tus vídeos, con sus fechas originales.",
+  "fr": "copies plus légères enregistrées dans vos vidéos, avec leurs dates d'origine.",
+  "hi": "छोटी कॉपियाँ आपके वीडियो में, मूल तारीख़ों के साथ सेव हुईं।",
+  "it": "copie più leggere salvate nei tuoi video, con le date originali.",
+  "ja": "件の小さいコピーを元の日付のままビデオに保存しました。",
+  "pt": "cópias menores salvas nos seus vídeos, com as datas originais.",
+  "zh": "个较小的副本已存入你的视频，保留原日期。"
+ },
+ "Your phone asks before anything is deleted.": {
+  "de": "Dein Handy fragt nach, bevor etwas gelöscht wird.",
+  "es": "Tu teléfono pregunta antes de borrar nada.",
+  "fr": "Votre téléphone demande avant de supprimer quoi que ce soit.",
+  "hi": "कुछ भी मिटाने से पहले आपका फ़ोन पूछता है।",
+  "it": "Il telefono chiede prima di eliminare qualsiasi cosa.",
+  "ja": "削除する前にスマホが確認します。",
+  "pt": "Seu celular pergunta antes de apagar qualquer coisa.",
+  "zh": "删除任何内容前，手机都会先问你。"
+ },
+ "Originals deleted.": {
+  "de": "Originale gelöscht.",
+  "es": "Originales borrados.",
+  "fr": "Originaux supprimés.",
+  "hi": "मूल फ़ाइलें मिटा दी गईं।",
+  "it": "Originali eliminati.",
+  "ja": "元のビデオを削除しました。",
+  "pt": "Originais apagados.",
+  "zh": "原视频已删除。"
+ },
+ "Looking at today's videos…": {
+  "de": "Die Videos von heute werden angesehen…",
+  "es": "Revisando los vídeos de hoy…",
+  "fr": "Examen des vidéos du jour…",
+  "hi": "आज के वीडियो देखे जा रहे हैं…",
+  "it": "Controllo i video di oggi…",
+  "ja": "今日のビデオを確認中…",
+  "pt": "Vendo os vídeos de hoje…",
+  "zh": "正在查看今天的视频…"
+ },
+ "Making it smaller": {
+  "de": "Wird verkleinert",
+  "es": "Haciéndolo más ligero",
+  "fr": "Allègement en cours",
+  "hi": "छोटा किया जा रहा है",
+  "it": "Lo rendo più leggero",
+  "ja": "小さくしています",
+  "pt": "Deixando menor",
+  "zh": "正在压缩"
+ },
+ "Tenzy needs to see your videos to find the heavy ones.": {
+  "de": "Tenzy muss deine Videos sehen, um die großen zu finden.",
+  "es": "Tenzy necesita ver tus vídeos para encontrar los pesados.",
+  "fr": "Tenzy doit voir vos vidéos pour trouver les plus lourdes.",
+  "hi": "भारी वीडियो ढूँढने के लिए Tenzy को आपके वीडियो देखने होंगे।",
+  "it": "Tenzy deve vedere i tuoi video per trovare quelli pesanti.",
+  "ja": "重いビデオを見つけるには、Tenzy がビデオを見られる必要があります。",
+  "pt": "O Tenzy precisa ver seus vídeos para achar os pesados.",
+  "zh": "Tenzy 需要查看你的视频才能找出大文件。"
+ },
+ "Nothing heavy today — every video is already a sensible size.": {
+  "de": "Heute nichts Großes – jedes Video hat schon eine vernünftige Größe.",
+  "es": "Nada pesado hoy: todos los vídeos ya tienen un tamaño razonable.",
+  "fr": "Rien de lourd aujourd'hui : chaque vidéo a déjà une taille raisonnable.",
+  "hi": "आज कुछ भारी नहीं — हर वीडियो पहले से ठीक साइज़ का है।",
+  "it": "Niente di pesante oggi: ogni video ha già una dimensione ragionevole.",
+  "ja": "今日は重いビデオはありません。どれも適切なサイズです。",
+  "pt": "Nada pesado hoje — todos os vídeos já têm um tamanho razoável.",
+  "zh": "今天没有大文件——每个视频大小都很合适。"
+ },
+ "This phone couldn't re-save it.": {
+  "de": "Dieses Handy konnte es nicht neu speichern.",
+  "es": "Este teléfono no pudo volver a guardarlo.",
+  "fr": "Ce téléphone n'a pas pu le réenregistrer.",
+  "hi": "यह फ़ोन इसे दोबारा सेव नहीं कर सका।",
+  "it": "Questo telefono non è riuscito a risalvarlo.",
+  "ja": "このスマホでは保存し直せませんでした。",
+  "pt": "Este celular não conseguiu salvá-lo de novo.",
+  "zh": "这部手机无法重新保存它。"
+ },
+ "It's already about as small as it can be.": {
+  "de": "Es ist schon fast so klein wie möglich.",
+  "es": "Ya es casi tan ligero como puede ser.",
+  "fr": "Elle est déjà presque aussi légère que possible.",
+  "hi": "यह पहले से लगभग जितना छोटा हो सकता है, उतना है।",
+  "it": "È già quasi il più leggero possibile.",
+  "ja": "すでにほぼ最小のサイズです。",
+  "pt": "Já está quase tão pequeno quanto pode.",
+  "zh": "它已经几乎压到最小了。"
+ },
+ "Smaller, it wouldn't look the same.": {
+  "de": "Kleiner sähe es nicht mehr gleich aus.",
+  "es": "Más pequeño, no se vería igual.",
+  "fr": "Plus légère, elle ne serait plus aussi belle.",
+  "hi": "छोटा करने पर यह वैसा नहीं दिखेगा।",
+  "it": "Più leggero non sembrerebbe uguale.",
+  "ja": "小さくすると見た目が変わってしまいます。",
+  "pt": "Menor, não ficaria igual.",
+  "zh": "压小后画面会不一样。"
+ },
+ "Sunday": {
+  "de": "Sonntag",
+  "es": "Domingo",
+  "fr": "Dimanche",
+  "hi": "रविवार",
+  "it": "Domenica",
+  "ja": "日曜日",
+  "pt": "Domingo",
+  "zh": "星期日"
+ },
+ "Monday": {
+  "de": "Montag",
+  "es": "Lunes",
+  "fr": "Lundi",
+  "hi": "सोमवार",
+  "it": "Lunedì",
+  "ja": "月曜日",
+  "pt": "Segunda-feira",
+  "zh": "星期一"
+ },
+ "Tuesday": {
+  "de": "Dienstag",
+  "es": "Martes",
+  "fr": "Mardi",
+  "hi": "मंगलवार",
+  "it": "Martedì",
+  "ja": "火曜日",
+  "pt": "Terça-feira",
+  "zh": "星期二"
+ },
+ "Wednesday": {
+  "de": "Mittwoch",
+  "es": "Miércoles",
+  "fr": "Mercredi",
+  "hi": "बुधवार",
+  "it": "Mercoledì",
+  "ja": "水曜日",
+  "pt": "Quarta-feira",
+  "zh": "星期三"
+ },
+ "Thursday": {
+  "de": "Donnerstag",
+  "es": "Jueves",
+  "fr": "Jeudi",
+  "hi": "गुरुवार",
+  "it": "Giovedì",
+  "ja": "木曜日",
+  "pt": "Quinta-feira",
+  "zh": "星期四"
+ },
+ "Friday": {
+  "de": "Freitag",
+  "es": "Viernes",
+  "fr": "Vendredi",
+  "hi": "शुक्रवार",
+  "it": "Venerdì",
+  "ja": "金曜日",
+  "pt": "Sexta-feira",
+  "zh": "星期五"
+ },
+ "Saturday": {
+  "de": "Samstag",
+  "es": "Sábado",
+  "fr": "Samedi",
+  "hi": "शनिवार",
+  "it": "Sabato",
+  "ja": "土曜日",
+  "pt": "Sábado",
+  "zh": "星期六"
+ },
+ "%d videos (%s) could be smaller and look the same.": {
+  "de": "%d Videos (%s) könnten kleiner sein und gleich aussehen.",
+  "es": "%d vídeos (%s) podrían ser más ligeros y verse igual.",
+  "fr": "%d vidéos (%s) pourraient être plus légères et rester identiques.",
+  "hi": "%d वीडियो (%s) छोटे होकर भी वैसे ही दिख सकते हैं।",
+  "it": "%d video (%s) potrebbero essere più leggeri e sembrare uguali.",
+  "ja": "%d 本のビデオ（%s）を、見た目そのままで小さくできます。",
+  "pt": "%d vídeos (%s) poderiam ser menores e ficar iguais.",
+  "zh": "%d 个视频（%s）可以变小，画面不变。"
+ },
+ "1 video (%s) could be smaller and look the same.": {
+  "de": "1 Video (%s) könnte kleiner sein und gleich aussehen.",
+  "es": "1 vídeo (%s) podría ser más ligero y verse igual.",
+  "fr": "1 vidéo (%s) pourrait être plus légère et rester identique.",
+  "hi": "1 वीडियो (%s) छोटा होकर भी वैसा ही दिख सकता है।",
+  "it": "1 video (%s) potrebbe essere più leggero e sembrare uguale.",
+  "ja": "1 本のビデオ（%s）を、見た目そのままで小さくできます。",
+  "pt": "1 vídeo (%s) poderia ser menor e ficar igual.",
+  "zh": "1 个视频（%s）可以变小，画面不变。"
  }
 }

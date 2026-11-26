@@ -107,6 +107,11 @@
             </intent-filter>
         </receiver>
 
+        <!-- Autoruns: at each chosen time, a quick look for something to do; re-armed after a restart by ToolReminderReceiver. -->
+        <receiver
+            android:name=".tools.autoruns.AutorunReceiver"
+            android:exported="false" />
+
         <!-- Medicine Reminders: dose alerts, follow-up nudges, and the Taken / Snooze buttons on each alert. -->
         <receiver
             android:name=".tools.meds.MedReceiver"
