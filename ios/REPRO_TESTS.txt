@@ -1,7 +1,15 @@
-# 27 Nov: before the TestFlight build — the camera buttons (each tool receives a taken picture or recorded clip under
-# -fakecamera), the four new voices proved on their output (auto-tune through the real render), and "remind me…"
-# read exactly right at fixed times. (Watch how and the real-file first half passed on 26 Nov.)
-HandyToolsUITests/CameraButtonTests
-HandyToolsTests/VoiceFXTests
+# 26 Nov, before the TestFlight build, round 2. Round 1 proved every camera button (10/10), the four new voices and
+# the ask box's sentences; its one failure was the reminder test calling 26 Nov a Wednesday (it's a Thursday — the
+# reader was right). Now: that test on a real Wednesday, the new engines on real output (Tenzy's own music and funny
+# moments, background swap and funny faces, Beat Reel, Movie Trailer with its narrator), the how-to films, every tool
+# reachable by the smoke test, and the three new video tools end to end from a recorded clip to a finished video.
 HandyToolsTests/ReminderWordsTests
-HandyToolsTests/SmartDescribeTests
+HandyToolsTests/SynthTests
+HandyToolsTests/VideoFunTests
+HandyToolsTests/BeatReelTests
+HandyToolsTests/TrailerTests
+HandyToolsTests/HowToVideosTests
+HandyToolsTests/ToolCatalogCoverageTests
+HandyToolsUITests/CameraButtonTests/testFunnyMomentsRecordsAClipAndMakesTheJoke
+HandyToolsUITests/CameraButtonTests/testBeatReelRecordsAClipAndCutsAReel
+HandyToolsUITests/CameraButtonTests/testMovieTrailerRecordsAClipAndMakesATrailer
