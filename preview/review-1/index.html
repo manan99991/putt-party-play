@@ -1,0 +1,119 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0d140b"><title>Mini Golf Guardians · Review</title>
+<script>try{if(window.parent!==window&&window.parent.__ppShell)location.replace(window.parent.__ppShell.menuUrl);}catch(e){}</script>
+<style>html,body{margin:0;width:100%;height:100%;background:#0d140b;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
+#ppf{position:fixed;inset:0}#ppf iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#0d140b}
+#ppf iframe.on{z-index:3}#ppf iframe.old{z-index:2}#ppf iframe.pre{z-index:1}
+#sai{position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}</style>
+</head><body><div id="sai"></div><div id="ppf"></div>
+<script>window.__ppShellCfg={"menu":"menu.html","menuMusic":"../../sounds/music/menu.mp3","vol":0.19,"preload":true,"start":null};</script>
+<script>(function () {
+'use strict';
+var C = window.__ppShellCfg || {}, box = document.getElementById('ppf'), sai = document.getElementById('sai');
+var S = window.__ppShell = { v: 1, menuUrl: new URL(C.menu || 'menu.html', location.href).href };
+var act = null, pre = null, bg = false, wait = false, xf = null, idleMs = 0, log = [];
+var note = function (e, x) { log.push([Math.round(performance.now()), e, x || '']); if (log.length > 300) log.splice(0, 100); };
+var quiet = function (p) { try { if (p && p.catch) p.catch(function () {}); } catch (e) {} };
+try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}   // iOS: heard with the ring/silent switch on silent
+// ------------------------------------------------------------------ safe areas (measured up here, handed to every frame)
+function insets() { try { var cs = getComputedStyle(sai); return { top: parseFloat(cs.paddingTop) || 0, right: parseFloat(cs.paddingRight) || 0, bottom: parseFloat(cs.paddingBottom) || 0, left: parseFloat(cs.paddingLeft) || 0 }; } catch (e) { return { top: 0, right: 0, bottom: 0, left: 0 }; } }
+S.insets = insets;
+var pushInsets = function () { var s = insets(); [act, pre].forEach(function (r) { try { r && r.el.contentWindow.__ppInsets && r.el.contentWindow.__ppInsets(s); } catch (e) {} }); };
+addEventListener('resize', pushInsets); addEventListener('orientationchange', function () { setTimeout(pushInsets, 300); });
+// ------------------------------------------------------------------ frames
+var winOf = function (r) { try { return r && r.el.contentWindow; } catch (e) { return null; } };
+var recOf = function (w) { var rs = [act, pre]; for (var i = 0; i < rs.length; i++) if (rs[i] && winOf(rs[i]) === w) return rs[i]; return null; };
+var bare = function (u) { return String(u || '').split('#')[0]; };
+var isHole = function (u) { return /\/w\d+\/\d+\/(index\.html)?$/.test(bare(u).split('?')[0]); };
+function frame(url, isPre) {
+var f = document.createElement('iframe'), r = { el: f, url: bare(url), pre: !!isPre, decl: null, want: true, duck: false, engine: false, ready: false, at: performance.now(), loads: 0 };
+f.setAttribute('allow', 'autoplay; fullscreen'); f.setAttribute('title', 'Mini Golf Guardians'); f.className = isPre ? 'pre' : 'on';
+f.addEventListener('load', function () { loaded(r); }); f.src = url; box.appendChild(f); note(isPre ? 'preload' : 'frame', r.url); return r;
+}
+function dispose(r, why) { if (!r || r.gone) return; r.gone = true; note('dispose', why); try { var w = winOf(r); if (w && w.__ppDispose) w.__ppDispose(); } catch (e) {}
+try { r.el.remove(); } catch (e) {} }
+function loaded(r) { r.loads++; var u = ''; try { u = bare(winOf(r).location.href); } catch (e) {}
+if (r === act) { if (r.loads > 1 && u !== r.url && pre) { dispose(pre, 'flow changed'); pre = null; }   // (a restart reloads the same page: the next hole stays lined up)
+r.url = u || r.url; setHash(r); }
+pushInsets(); }
+S.hello = function (w) { var r = recOf(w); if (r) r.duck = false; };   // a new page in the frame (the music carries on as it was until the page says what it wants)
+S.isPre = function (w) { var r = recOf(w); return !!(r && r.pre); };
+var busy = function () { try { var h = winOf(act) && winOf(act).__ppHole; return h ? !!h.busy() : false; } catch (e) { return false; } };
+S.mayWork = function (w) { var r = recOf(w); return !r || r === act || !busy(); };
+S.preReady = function (w) { var r = recOf(w); if (r) { r.ready = true; note('pre-ready', Math.round(performance.now() - r.at) + 'ms'); } };
+S.go = function (w, url) { var r = recOf(w); if (!r || r !== act) return false; var u = bare(new URL(url, w.location.href).href);
+if (!pre || pre.url !== u) { if (pre) { dispose(pre, 'not the next one'); pre = null; } return false; }
+var b = pre, a = act; pre = null; act = b; b.pre = false; b.el.className = 'on'; a.el.className = 'old'; note('swap', (b.ready ? 'ready' : b.engine ? 'warming' : 'cold') + ' ' + u);
+try { var bw = winOf(b); if (bw.__ppActivate) bw.__ppActivate(); if (bw.__ppRunEngine) bw.__ppRunEngine(); } catch (e) {}
+setHash(b); music(); setTimeout(function () { dispose(a, 'replaced'); }, 1500);   // after the new hole has faded in from its card
+return true; };
+S.menu = function () { go(S.menuUrl); };
+function go(url) { if (pre) { dispose(pre, 'menu'); pre = null; } try { winOf(act).location.href = url; } catch (e) { act.el.src = url; } }
+setInterval(function () { if (!act || C.preload === false) return; var w = winOf(act), h = null; try { h = w && w.__ppHole; } catch (e) {} if (!h) return;
+var nx = null; try { nx = h.finished() && h.next(); } catch (e) {}
+if (!pre && nx) { var u = new URL(nx, w.location.href).href; if (isHole(u)) pre = frame(u, true); }
+if (pre && !pre.engine) { var bw = winOf(pre), can = false; try { can = !!(bw && bw.__ppRunEngine && bw.document.readyState !== 'loading'); } catch (e) {}
+idleMs = can && !busy() ? idleMs + 250 : 0;
+if (idleMs >= 750) { pre.engine = true; note('pre-engine'); setTimeout(function () { try { bw.__ppRunEngine(); } catch (e) {} }, 0); } }
+}, 250);
+var setHash = function (r) { try { var m = /\/(w\d+\/\d+)\/(index\.html)?$/.exec(r.url); history.replaceState(history.state, '', m ? '#' + m[1] : location.pathname + location.search); } catch (e) {} };
+// ------------------------------------------------------------------ music (two elements: a cross-fade when the world changes)
+var A = [0, 1].map(function () { var a = new Audio(); a.preload = 'auto'; a.setAttribute('playsinline', ''); var errs = 0;
+a.addEventListener('ended', function () { if (a === A[cur]) { errs = 0; advance(a); } });
+a.addEventListener('playing', function () { errs = 0; });
+a.addEventListener('timeupdate', function () { if (a !== A[cur] || !(a.duration - a.currentTime < 12) || a.__ppWarm === a.currentSrc) return; a.__ppWarm = a.currentSrc;   // the next track into the cache before this one ends
+var d = decl(), L = d ? d.m : [], i = L.map(base).indexOf(base(a.getAttribute('src'))); if (L.length) { try { fetch(L[(i + 1) % L.length]).catch(function () {}); } catch (e) {} } });
+a.addEventListener('error', function () { if (a === A[cur] && a.getAttribute('src') && ++errs <= 3) setTimeout(function () { advance(a); }, 800); });
+return a; }), cur = 0;
+var canVol = (function () { try { var a = new Audio(); a.volume = 0.5; return Math.abs(a.volume - 0.5) < 0.01; } catch (e) { return false; } })();   // iOS: media volume is the user's alone (no fades there)
+var base = function (u) { return String(u || '').split('/').pop(); };
+var rec = function () { try { return JSON.parse(sessionStorage.getItem('pp_mus') || 'null') || {}; } catch (e) { return {}; } };
+function save() { var a = A[cur], f = base(a.getAttribute('src')); if (!f) return; try { var st = rec(), pos = st.pos || {}; pos[f] = [a.currentTime, Date.now()]; sessionStorage.setItem('pp_mus', JSON.stringify({ src: f, t: a.currentTime, pos: pos })); } catch (e) {} }
+function pick(list) { var st = rec(), pos = st.pos || {}, i, best = -1, at = 0;   // same rule as music-boot.js: the last track if it is one of these, else the last-played one of these, else the first
+for (i = 0; i < list.length; i++) if (base(list[i]) === st.src) return { src: list[i], t: +st.t || 0 };
+for (i = 0; i < list.length; i++) { var q = pos[base(list[i])]; if (q && q[1] > at) { at = q[1]; best = i; } }
+return best >= 0 ? { src: list[best], t: +pos[base(list[best])][0] || 0 } : { src: list[0], t: 0 }; }
+var decl = function () { return (act && act.decl) || (C.menuMusic && act && act.url === S.menuUrl ? { m: [new URL(C.menuMusic, location.href).href], v: C.vol || 0.19, menu: 1 } : null); };
+var target = function () { var d = decl(); return Math.min(1, ((d && d.v) || C.vol || 0.19) * (act && act.duck ? 0.55 : 1)); };
+var front = function () { return !document.hidden && !bg; };
+function play(a) { var p = a.play(); if (p && p.catch) p.catch(function (e) { if (e && e.name === 'NotAllowedError') wait = true; }); }
+function advance(a) { var d = decl(), L = d ? d.m : [a.src], i = L.map(base).indexOf(base(a.getAttribute('src'))); a.src = L[(i + 1) % L.length]; try { a.currentTime = 0; } catch (e) {} if (on()) play(a); }
+var on = function () { var d = decl(); return !!(d && d.m && d.m.length && act && act.want && front()); };
+function seek(a, t) { if (!(t > 0.05)) return; try { a.currentTime = t; } catch (e) {}
+a.addEventListener('loadedmetadata', function f() { a.removeEventListener('loadedmetadata', f); try { if (Math.abs(a.currentTime - t) > 0.5 && t < a.duration - 0.5) a.currentTime = t; } catch (e) {} }); }
+function stopFade() { if (xf) { clearInterval(xf); xf = null; var o = A[1 - cur]; try { o.pause(); o.removeAttribute('src'); o.load(); } catch (e) {} } }
+function music() { var d = decl(), a = A[cur];
+if (!on()) { stopFade(); if (!a.paused) { save(); a.pause(); note('music off'); } return; }
+var has = a.getAttribute('src') && d.m.map(base).indexOf(base(a.getAttribute('src'))) >= 0;
+if (!has) { var p = pick(d.m), o = a, nu = A[1 - cur]; save(); stopFade(); nu.src = p.src; seek(nu, p.t); cur = 1 - cur; note('track', base(p.src) + '@' + p.t.toFixed(1));
+if (canVol && o.getAttribute('src') && !o.paused) { nu.volume = 0; play(nu); var t0 = Date.now(), v0 = o.volume;   // another world: a 1.2 s cross-fade (by the clock: a long task never stalls it half-way)
+xf = setInterval(function () { var k = Math.min(1, (Date.now() - t0) / 1200); nu.volume = Math.min(1, target() * k); o.volume = Math.max(0, v0 * (1 - k)); if (k >= 1) { clearInterval(xf); xf = null; try { o.pause(); o.removeAttribute('src'); o.load(); } catch (e) {} } }, 40);
+} else { try { o.pause(); o.removeAttribute('src'); o.load(); } catch (e) {} nu.volume = target(); play(nu); }
+return; }
+if (!xf) a.volume = target();
+if (a.paused && !wait) { play(a); note('music on'); } }
+S.declare = function (w, d) { var r = recOf(w); if (!r) return; r.decl = d; if (d && d.want != null) r.want = !!d.want; if (r === act) music(); };
+S.want = function (w, v) { var r = recOf(w); if (!r) return; r.want = !!v; if (r === act) music(); };
+S.duck = function (w, v) { var r = recOf(w); if (!r) return; r.duck = !!v; if (r === act && !xf) { try { A[cur].volume = target(); } catch (e) {} } };
+S.gesture = function () { wait = false; music(); };   // a tap in the page: a tap-only browser can start the music now
+// ------------------------------------------------------------------ the app in the background: silence (and tell the page)
+var tell = function (ev) { [act, pre].forEach(function (r) { try { var d = winOf(r) && winOf(r).document; if (d) d.dispatchEvent(new Event(ev)); } catch (e) {} }); };
+document.addEventListener('visibilitychange', function () { if (!document.hidden) bg = false; music(); });
+addEventListener('pagehide', save); addEventListener('pageshow', function () { music(); });
+document.addEventListener('pause', function () { bg = true; music(); tell('pause'); });   // Capacitor: the app went to the background (the page in the frame hears it too)
+document.addEventListener('resume', function () { bg = false; music(); tell('resume'); });
+try { var App = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App;
+if (App && App.addListener) quiet(App.addListener('appStateChange', function (s) { bg = !(s && s.isActive); music(); tell(bg ? 'pause' : 'resume'); })); } catch (e) {}
+setInterval(function () { if (on()) { save(); if (A[cur].paused && !wait) music(); } }, 1000);   // heal: whatever the platform paused behind our back
+['pointerdown', 'touchend', 'click', 'keydown'].forEach(function (ev) { addEventListener(ev, function () { bg = false; S.gesture(); }, true); });
+// ------------------------------------------------------------------ start: a deep link (#w1/3 or ?hole=w1/3), else the menu
+var dl = (/^#(w\d+\/\d+)$/.exec(location.hash) || [])[1] || (/[?&]hole=(w\d+\/\d+)/.exec(location.search) || [])[1];
+var first = dl ? new URL(dl + '/index.html', location.href).href : (C.start ? new URL(C.start, location.href).href : S.menuUrl);
+act = frame(first, false);
+music();   // the menu's theme can start before the (big) menu page has loaded
+S.state = function () { var a = A[cur]; return { act: act && act.url, pre: pre && { url: pre.url, engine: pre.engine, ready: pre.ready }, frames: box.querySelectorAll('iframe').length,
+music: { src: base(a.getAttribute('src')), t: a.currentTime, paused: a.paused, vol: a.volume, fading: !!xf, wait: wait }, bg: bg, canVol: canVol, log: log.slice(-40) }; };
+})();</script>
+</body></html>
