@@ -1,1 +1,10 @@
 == smoke (results)
+Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (1177.326 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 1177.326 (1177.373) seconds
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1130.027 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (17.478 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (24.385 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1171.890 (1171.893) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 2349.217 (2349.272) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 2349.217 (2349.274) seconds
+** TEST SUCCEEDED **
