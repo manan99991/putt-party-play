@@ -613,9 +613,13 @@ final class PromiseTests: XCTestCase {
         var swipes = 0
         while !row.isHittable && swipes < 8 { app.swipeUp(); swipes += 1 }
         sleep(1)
+        let before = "row hittable \(row.isHittable) at \(row.frame) after \(swipes) swipes"
         row.tap()
-        for id in ["say-what-you-need", "set-an-autorun", "got-something"] {
-            XCTAssertTrue(app.buttons["howto-\(id)"].waitForExistence(timeout: 10), "the \(id) film isn't listed")
+        // 26 Nov: the first run found none of the three after the tap — say what was on screen instead.
+        XCTAssertTrue(app.buttons["howto-say-what-you-need"].waitForExistence(timeout: 10),
+                      "Watch how didn't show its films (\(before)) — \(Self.onScreen(app)) — buttons: \(Self.buttons(app))")
+        for id in ["set-an-autorun", "got-something"] {
+            XCTAssertTrue(app.buttons["howto-\(id)"].exists, "the \(id) film isn't listed")
         }
         app.buttons["howto-set-an-autorun"].tap()
         let done = app.buttons["howto-done"]
@@ -624,6 +628,11 @@ final class PromiseTests: XCTestCase {
         done.tap()
         XCTAssertTrue(app.buttons["howto-got-something"].waitForExistence(timeout: 5), "Done didn't come back to the list")
         XCTAssertEqual(app.state, .runningForeground)
+    }
+
+    /// The first buttons on screen, by identifier and label.
+    static func buttons(_ app: XCUIApplication) -> String {
+        app.buttons.allElementsBoundByIndex.prefix(24).map { "\($0.identifier)|\($0.label)" }.joined(separator: ", ")
     }
 
     /// What a failing step saw: which page (by its identifier), and its first lines of text.

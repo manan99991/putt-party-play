@@ -1,4 +1,5 @@
-# 26 Nov (4th): the three how-to films are in the app (Settings › Help › Watch how). Each ships, plays and is the
-# phone's tall shape; each list line fits one line; the row opens the list, a film opens full screen, Done comes back.
-HandyToolsTests/HowToVideosTests
+# 26 Nov (5th): Watch how — the films ship and play (unit tests passed), but after tapping the Settings row none of the
+# three showed. Again, now saying what was on screen. Plus the real-file run's first half, whose "crash" on the WhatsApp
+# helper was it handing off to WhatsApp when it finished (only "not running" counts as a crash now).
 HandyToolsUITests/PromiseTests/testWatchHowOpensTheFilms
+HandyToolsUITests/RealInputTests/testFirstHalfOfFlowsRunOnRealFiles
