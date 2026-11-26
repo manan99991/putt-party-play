@@ -1,20 +1,137 @@
-2026-11-26 18:25:49.414277+0000 HandyTools[29063:82054] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-26 18:25:51.076071+0000 HandyTools[29063:82066] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
-2026-11-26 18:25:51.607922+0000 HandyTools[29063:82060] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+2026-11-26 19:05:44.044093+0000 HandyTools[30943:87890] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
 Test Case '-[HandyToolsTests.BeatReelTests testAPortraitAndALandscapeClipBothFillTheTallFrame]' started.
 Test Case '-[HandyToolsTests.BeatReelTests testAPortraitAndALandscapeClipBothFillTheTallFrame]' passed (0.007 seconds).
 Test Case '-[HandyToolsTests.BeatReelTests testAReelIsReallyMade]' started.
-Test Case '-[HandyToolsTests.BeatReelTests testAReelIsReallyMade]' passed (54.392 seconds).
+Test Case '-[HandyToolsTests.BeatReelTests testAReelIsReallyMade]' passed (77.000 seconds).
 Test Case '-[HandyToolsTests.BeatReelTests testThePlanCutsOnTheBeat]' started.
-Test Case '-[HandyToolsTests.BeatReelTests testThePlanCutsOnTheBeat]' passed (0.003 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 54.401 (54.421) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 54.401 (54.430) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 54.401 (54.431) seconds
+Test Case '-[HandyToolsTests.BeatReelTests testThePlanCutsOnTheBeat]' passed (0.005 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 77.012 (77.037) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 77.012 (77.045) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 77.012 (77.054) seconds
 Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/CameraButtonTests.swift:108: error: -[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel] : XCTAssertTrue failed - no finished reel — on screen: no known page — Beat Reel, Your clips, cut to the beat of a song made for them. / Your clips and photos / The music / Length / Couldn't make the reel — try other clips. / Beat Reel / Your clips, cut to the beat of a song made for them. / Add more / Record / Make my reel / ☀️ / Upbeat / 118 BPM / 🪩
-Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' failed (397.452 seconds).
-	 Executed 1 test, with 1 failure (0 unexpected) in 397.452 (397.465) seconds
-	 Executed 1 test, with 1 failure (0 unexpected) in 397.452 (397.471) seconds
-	 Executed 1 test, with 1 failure (0 unexpected) in 397.452 (397.473) seconds
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/CameraButtonTests.swift:108: error: -[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel] : XCTAssertTrue failed - no finished reel — on screen: no known page — Beat Reel, Your clips, cut to the beat of a song made for them. / Your clips and photos / The music / Length / Couldn't make the reel — try other clips. [the edit didn't save: Operation Stopped (-11838) — 12 pieces, shortest 0.9523333333333334s, empty 0, picture 12.228s, whole 12.228s, clips ["640x360"]] / Beat Reel / Your clips, cut to the beat of a song made for them. / Add more / Record / Make my reel / ☀️ / Upbeat / 118 BPM / 🪩
+Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' failed (423.763 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testMovieTrailerRecordsAClipAndMakesATrailer]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testMovieTrailerRecordsAClipAndMakesATrailer]' passed (210.998 seconds).
+	 Executed 2 tests, with 1 failure (0 unexpected) in 634.761 (634.808) seconds
+	 Executed 2 tests, with 1 failure (0 unexpected) in 634.761 (634.811) seconds
+	 Executed 2 tests, with 1 failure (0 unexpected) in 634.761 (634.816) seconds
 == main thread when stuck
+HANG| 19:09:31 main thread busy in 246/407 samples
+HANG|     407 start  (in dyld)
+HANG|     407 start_sim  (in dyld_sim)
+HANG|     407 __debug_main_executable_dylib_entry_point  (in HandyTools.debug.dylib) + 12  App.swift:0
+HANG|     407 static TenzyApp.$main()  (in HandyTools.debug.dylib) + 40  /<compiler-generated>:0
+HANG|     407 static App.main()  (in SwiftUI)
+HANG|     407 runApp<A>(_:)  (in SwiftUI)
+HANG|     407 closure #1 in KitRendererCommon(_:)  (in SwiftUI)
+HANG|     407 UIApplicationMain  (in UIKitCore)
+HANG|     407 GSEventRunModal  (in GraphicsServices)
+HANG|     407 _CFRunLoopRunSpecificWithOptions  (in CoreFoundation)
+HANG|     268 __CFRunLoopRun  (in CoreFoundation)
+HANG|     268 __CFRunLoopDoBlocks  (in CoreFoundation)
+HANG|     268 __CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__  (in CoreFoundation)
+HANG|     267 __XCTPerformOnMainRunLoop_block_invoke  (in XCTAutomationSupport)
+HANG|     267 __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke  (in XCTAutomationSupport)
+HANG|     267 +[XCTRuntimeIssueContext captureIssuesWithContext:inScope:]  (in XCTAutomationSupport)
+HANG|     267 __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke_2  (in XCTAutomationSupport)
+HANG|     267 -[XCTElementQuery _firstMatchingSnapshotForInput:transformersSubarrays:relatedElements:noMatchesMessage:error:]  (in XCTAutomationSupport)
+HANG|     246 -[XCTElementQuery _firstMatchingSnapshotForInput:transformers:relatedElements:noMatchesMessage:error:]  (in XCTAutomationSupport)
+HANG| 19:10:06 main thread busy in 204/322 samples
+HANG|     322 start  (in dyld)
+HANG|     322 start_sim  (in dyld_sim)
+HANG|     322 __debug_main_executable_dylib_entry_point  (in HandyTools.debug.dylib) + 12  App.swift:0
+HANG|     322 static TenzyApp.$main()  (in HandyTools.debug.dylib) + 40  /<compiler-generated>:0
+HANG|     322 static App.main()  (in SwiftUI)
+HANG|     322 runApp<A>(_:)  (in SwiftUI)
+HANG|     322 closure #1 in KitRendererCommon(_:)  (in SwiftUI)
+HANG|     322 UIApplicationMain  (in UIKitCore)
+HANG|     322 GSEventRunModal  (in GraphicsServices)
+HANG|     322 _CFRunLoopRunSpecificWithOptions  (in CoreFoundation)
+HANG|     204 __CFRunLoopRun  (in CoreFoundation)
+HANG|     204 __CFRunLoopDoBlocks  (in CoreFoundation)
+HANG|     204 __CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__  (in CoreFoundation)
+HANG|     204 __XCTPerformOnMainRunLoop_block_invoke  (in XCTAutomationSupport)
+HANG|     204 __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke  (in XCTAutomationSupport)
+HANG|     204 +[XCTRuntimeIssueContext captureIssuesWithContext:inScope:]  (in XCTAutomationSupport)
+HANG|     204 __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke_2  (in XCTAutomationSupport)
+HANG|     204 -[XCTElementQuery _firstMatchingSnapshotForInput:transformersSubarrays:relatedElements:noMatchesMessage:error:]  (in XCTAutomationSupport)
+HANG| 19:11:09 main thread busy in 440/440 samples
+HANG|     440 start  (in dyld)
+HANG|     440 start_sim  (in dyld_sim)
+HANG|     440 __debug_main_executable_dylib_entry_point  (in HandyTools.debug.dylib) + 12  App.swift:0
+HANG|     440 static TenzyApp.$main()  (in HandyTools.debug.dylib) + 40  /<compiler-generated>:0
+HANG|     440 static App.main()  (in SwiftUI)
+HANG|     440 runApp<A>(_:)  (in SwiftUI)
+HANG|     440 closure #1 in KitRendererCommon(_:)  (in SwiftUI)
+HANG|     440 UIApplicationMain  (in UIKitCore)
+HANG|     440 GSEventRunModal  (in GraphicsServices)
+HANG|     440 _CFRunLoopRunSpecificWithOptions  (in CoreFoundation)
+HANG| 19:12:52 main thread busy in 400/400 samples
+HANG|     400 start  (in dyld)
+HANG|     400 start_sim  (in dyld_sim)
+HANG|     400 __debug_main_executable_dylib_entry_point  (in HandyTools.debug.dylib) + 12  App.swift:0
+HANG|     400 static TenzyApp.$main()  (in HandyTools.debug.dylib) + 40  /<compiler-generated>:0
+HANG|     400 static App.main()  (in SwiftUI)
+HANG|     400 runApp<A>(_:)  (in SwiftUI)
+HANG|     400 closure #1 in KitRendererCommon(_:)  (in SwiftUI)
+HANG|     400 UIApplicationMain  (in UIKitCore)
+HANG|     400 GSEventRunModal  (in GraphicsServices)
+HANG|     400 _CFRunLoopRunSpecificWithOptions  (in CoreFoundation)
+HANG| 19:16:07 main thread busy in 103/103 samples
+HANG|     103 start  (in dyld)
+HANG|     103 start_sim  (in dyld_sim)
+HANG|     103 __debug_main_executable_dylib_entry_point  (in HandyTools.debug.dylib) + 12  App.swift:0
+HANG|     103 static TenzyApp.$main()  (in HandyTools.debug.dylib) + 40  /<compiler-generated>:0
+HANG|     103 static App.main()  (in SwiftUI)
+HANG|     103 runApp<A>(_:)  (in SwiftUI)
+HANG|     103 closure #1 in KitRendererCommon(_:)  (in SwiftUI)
+HANG|     103 UIApplicationMain  (in UIKitCore)
+HANG|     103 GSEventRunModal  (in GraphicsServices)
+HANG|     103 _CFRunLoopRunSpecificWithOptions  (in CoreFoundation)
+HANG| 19:16:49 main thread busy in 97/137 samples
+HANG|     137 start  (in dyld)
+HANG|     137 start_sim  (in dyld_sim)
+HANG|     137 __debug_main_executable_dylib_entry_point  (in HandyTools.debug.dylib) + 12  App.swift:0
+HANG|     137 static TenzyApp.$main()  (in HandyTools.debug.dylib) + 40  /<compiler-generated>:0
+HANG|     137 static App.main()  (in SwiftUI)
+HANG|     137 runApp<A>(_:)  (in SwiftUI)
+HANG|     137 closure #1 in KitRendererCommon(_:)  (in SwiftUI)
+HANG|     137 UIApplicationMain  (in UIKitCore)
+HANG|     137 GSEventRunModal  (in GraphicsServices)
+HANG|     137 _CFRunLoopRunSpecificWithOptions  (in CoreFoundation)
+HANG|     106 __CFRunLoopRun  (in CoreFoundation)
+HANG|     106 __CFRunLoopDoBlocks  (in CoreFoundation)
+HANG|     106 __CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__  (in CoreFoundation)
+HANG|     106 __XCTPerformOnMainRunLoop_block_invoke  (in XCTAutomationSupport)
+HANG|     106 __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke  (in XCTAutomationSupport)
+HANG|     106 +[XCTRuntimeIssueContext captureIssuesWithContext:inScope:]  (in XCTAutomationSupport)
+HANG|     106 __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke_2  (in XCTAutomationSupport)
+HANG|     106 -[XCTElementQuery _firstMatchingSnapshotForInput:transformersSubarrays:relatedElements:noMatchesMessage:error:]  (in XCTAutomationSupport)
+HANG|      97 -[XCTElementQuery _firstMatchingSnapshotForInput:transformers:relatedElements:noMatchesMessage:error:]  (in XCTAutomationSupport)
+HANG| 19:17:28 main thread busy in 140/211 samples
+HANG|     211 start  (in dyld)
+HANG|     211 start_sim  (in dyld_sim)
+HANG|     211 __debug_main_executable_dylib_entry_point  (in HandyTools.debug.dylib) + 12  App.swift:0
+HANG|     211 static TenzyApp.$main()  (in HandyTools.debug.dylib) + 40  /<compiler-generated>:0
+HANG|     211 static App.main()  (in SwiftUI)
+HANG|     211 runApp<A>(_:)  (in SwiftUI)
+HANG|     211 closure #1 in KitRendererCommon(_:)  (in SwiftUI)
+HANG|     211 UIApplicationMain  (in UIKitCore)
+HANG|     211 GSEventRunModal  (in GraphicsServices)
+HANG|     211 _CFRunLoopRunSpecificWithOptions  (in CoreFoundation)
+HANG|     179 __CFRunLoopRun  (in CoreFoundation)
+HANG|     179 __CFRunLoopDoBlocks  (in CoreFoundation)
+HANG|     179 __CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__  (in CoreFoundation)
+HANG|     179 __XCTPerformOnMainRunLoop_block_invoke  (in XCTAutomationSupport)
+HANG|     179 __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke  (in XCTAutomationSupport)
+HANG|     179 +[XCTRuntimeIssueContext captureIssuesWithContext:inScope:]  (in XCTAutomationSupport)
+HANG|     179 __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke_2  (in XCTAutomationSupport)
+HANG|     179 -[XCTElementQuery _firstMatchingSnapshotForInput:transformersSubarrays:relatedElements:noMatchesMessage:error:]  (in XCTAutomationSupport)
+HANG|     157 -[XCTElementQuery _firstMatchingSnapshotForInput:transformers:relatedElements:noMatchesMessage:error:]  (in XCTAutomationSupport)
+HANG|     140 -[XCTFilteringTransformerIterator nextMatch]  (in XCTAutomationSupport)
+HANG|     140 -[NSComparisonPredicate evaluateWithObject:substitutionVariables:]  (in Foundation)
+HANG|     140 -[NSKeyPathExpression expressionValueWithObject:context:]  (in Foundation)
+HANG|     140 -[NSFunctionExpression expressionValueWithObject:context:]  (in Foundation)
+HANG|     140 -[NSObject(NSKeyValueCoding) valueForKey:]  (in Foundation)
 == crash reports
