@@ -14,7 +14,7 @@ extension Guide {
         case "post":     return Goal(id: id, title: "Post a Video", line: "TikTok, Reels, Shorts and more", icon: "play.square.stack.fill")
         case "cut":      return Goal(id: id, title: "Cut it shorter", line: "Keep just the best part", icon: "scissors")
         case "send":     return Goal(id: id, title: "Send it", line: "Small enough for any chat or email", icon: "paperplane.fill")
-        case "fun":      return Goal(id: id, title: "Make it funny", line: "Boomerang, GIF, silly voices", icon: "face.smiling.inverse")
+        case "fun":      return Goal(id: id, title: "Make it funny", line: "Funny moments, silly voices, GIFs", icon: "face.smiling.inverse")
         case "speed":    return Goal(id: id, title: "Slow-mo or fast", line: "Voices stay natural", icon: "gauge.with.dots.needle.67percent")
         case "sound":    return Goal(id: id, title: "Sound only, or none", line: "MP3, ringtone, or mute it", icon: "waveform")
         case "words":    return Goal(id: id, title: "Get the words", line: "Captions and notes", icon: "captions.bubble.fill")
@@ -33,6 +33,7 @@ extension Guide {
             case "fitit": return "send"
             case "post": return "post"
             case "celebrate", "videofx": return "stunning"
+            case "funny": return "fun"
             case "audiomix": return "speed"
             case "audioconvert", "ringtone", "audioclean", "audioedit", "audiocompress": return "sound"
             case "meetingnotes": return "words"

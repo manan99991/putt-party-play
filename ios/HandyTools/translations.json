@@ -51648,5 +51648,265 @@
   "ja": "ぐにゃぐにゃ顔",
   "pt": "Cara trêmula",
   "zh": "晃晃脸"
+ },
+ "Another video": {
+  "de": "Anderes Video",
+  "es": "Otro vídeo",
+  "fr": "Une autre vidéo",
+  "hi": "दूसरा वीडियो",
+  "it": "Un altro video",
+  "ja": "別の動画",
+  "pt": "Outro vídeo",
+  "zh": "换一个视频"
+ },
+ "Pick a video with a moment worth a laugh. Tenzy finds it for you.": {
+  "de": "Wähle ein Video mit einem lustigen Moment. Tenzy findet ihn für dich.",
+  "es": "Elige un vídeo con un momento gracioso. Tenzy lo encuentra por ti.",
+  "fr": "Choisis une vidéo avec un moment drôle. Tenzy le trouve pour toi.",
+  "hi": "हँसी वाले पल वाला वीडियो चुनें। Tenzy उसे ढूँढ लेगा।",
+  "it": "Scegli un video con un momento divertente. Tenzy lo trova per te.",
+  "ja": "笑える瞬間のある動画を選んでください。Tenzyがその瞬間を見つけます。",
+  "pt": "Escolha um vídeo com um momento engraçado. O Tenzy encontra para você.",
+  "zh": "选一段有笑点的视频，Tenzy 会帮你找到那一刻。"
+ },
+ "The moment": {
+  "de": "Der Moment",
+  "es": "El momento",
+  "fr": "Le moment",
+  "hi": "वह पल",
+  "it": "Il momento",
+  "ja": "その瞬間",
+  "pt": "O momento",
+  "zh": "那一刻"
+ },
+ "Try another joke": {
+  "de": "Anderen Gag probieren",
+  "es": "Probar otra broma",
+  "fr": "Essayer une autre blague",
+  "hi": "दूसरा जोक आज़माएँ",
+  "it": "Prova un'altra gag",
+  "ja": "別のネタにする",
+  "pt": "Tentar outra piada",
+  "zh": "换个笑点"
+ },
+ "Which joke?": {
+  "de": "Welcher Gag?",
+  "es": "¿Qué broma?",
+  "fr": "Quelle blague ?",
+  "hi": "कौन सा जोक?",
+  "it": "Quale gag?",
+  "ja": "どのネタ？",
+  "pt": "Qual piada?",
+  "zh": "选哪个笑点？"
+ },
+ "Words on the freeze (optional)": {
+  "de": "Text auf dem Standbild (optional)",
+  "es": "Texto en la pausa (opcional)",
+  "fr": "Texte sur l'arrêt sur image (facultatif)",
+  "hi": "रुके हुए फ़्रेम पर शब्द (वैकल्पिक)",
+  "it": "Testo sul fermo immagine (facoltativo)",
+  "ja": "止まった画面の文字（任意）",
+  "pt": "Texto no congelamento (opcional)",
+  "zh": "定格画面上的文字（可选）"
+ },
+ "Funny Moments": {
+  "de": "Lustige Momente",
+  "es": "Momentos divertidos",
+  "fr": "Moments drôles",
+  "hi": "मज़ेदार पल",
+  "it": "Momenti divertenti",
+  "ja": "おもしろシーン",
+  "pt": "Momentos engraçados",
+  "zh": "搞笑时刻"
+ },
+ "Record scratch, dramatic zoom, crickets…": {
+  "de": "Plattenkratzer, dramatischer Zoom, Grillen…",
+  "es": "Disco rayado, zoom dramático, grillos…",
+  "fr": "Disque rayé, zoom dramatique, grillons…",
+  "hi": "रिकॉर्ड स्क्रैच, ड्रामैटिक ज़ूम, झींगुर…",
+  "it": "Disco graffiato, zoom drammatico, grilli…",
+  "ja": "レコードスクラッチ、ドラマチックズーム、コオロギ…",
+  "pt": "Disco arranhado, zoom dramático, grilos…",
+  "zh": "唱片刮擦、戏剧性推近、蟋蟀声…"
+ },
+ "One moment, one classic joke — with its sound.": {
+  "de": "Ein Moment, ein klassischer Gag — mit Sound.",
+  "es": "Un momento, una broma clásica, con su sonido.",
+  "fr": "Un moment, une blague classique — avec le son.",
+  "hi": "एक पल, एक क्लासिक जोक — उसकी आवाज़ के साथ।",
+  "it": "Un momento, una gag classica — con il suo suono.",
+  "ja": "ひとつの瞬間に、定番のネタを効果音つきで。",
+  "pt": "Um momento, uma piada clássica — com o som.",
+  "zh": "一个瞬间，一个经典笑点，配上音效。"
+ },
+ "Add a funny moment": {
+  "de": "Einen lustigen Moment einbauen",
+  "es": "Añadir un momento divertido",
+  "fr": "Ajouter un moment drôle",
+  "hi": "मज़ेदार पल जोड़ें",
+  "it": "Aggiungi un momento divertente",
+  "ja": "おもしろシーンを入れる",
+  "pt": "Adicionar um momento engraçado",
+  "zh": "加一个搞笑时刻"
+ },
+ "Funny moments, silly voices, GIFs": {
+  "de": "Lustige Momente, witzige Stimmen, GIFs",
+  "es": "Momentos divertidos, voces graciosas, GIF",
+  "fr": "Moments drôles, voix rigolotes, GIF",
+  "hi": "मज़ेदार पल, मज़ेदार आवाज़ें, GIF",
+  "it": "Momenti divertenti, voci buffe, GIF",
+  "ja": "おもしろシーン、変な声、GIF",
+  "pt": "Momentos engraçados, vozes divertidas, GIFs",
+  "zh": "搞笑时刻、怪声音、动图"
+ },
+ "Found for you: the loudest moment. Slide to move it.": {
+  "de": "Für dich gefunden: der lauteste Moment. Zum Verschieben ziehen.",
+  "es": "Encontrado por ti: el momento más ruidoso. Desliza para moverlo.",
+  "fr": "Trouvé pour toi : le moment le plus fort. Glisse pour le déplacer.",
+  "hi": "आपके लिए ढूँढा: सबसे ऊँची आवाज़ वाला पल। खिसकाकर बदलें।",
+  "it": "Trovato per te: il momento più rumoroso. Scorri per spostarlo.",
+  "ja": "いちばん大きな音の瞬間を見つけました。スライドで動かせます。",
+  "pt": "Encontrado para você: o momento mais alto. Deslize para mudar.",
+  "zh": "已为你找到声音最大的那一刻，可拖动调整。"
+ },
+ "Your moment.": {
+  "de": "Dein Moment.",
+  "es": "Tu momento.",
+  "fr": "Ton moment.",
+  "hi": "आपका पल।",
+  "it": "Il tuo momento.",
+  "ja": "あなたが選んだ瞬間。",
+  "pt": "Seu momento.",
+  "zh": "你选的那一刻。"
+ },
+ "Putting the joke in…": {
+  "de": "Der Gag wird eingebaut…",
+  "es": "Poniendo la broma…",
+  "fr": "Ajout de la blague…",
+  "hi": "जोक जोड़ा जा रहा है…",
+  "it": "Sto inserendo la gag…",
+  "ja": "ネタを入れています…",
+  "pt": "Colocando a piada…",
+  "zh": "正在加入笑点…"
+ },
+ "Record scratch": {
+  "de": "Plattenkratzer",
+  "es": "Disco rayado",
+  "fr": "Disque rayé",
+  "hi": "रिकॉर्ड स्क्रैच",
+  "it": "Disco graffiato",
+  "ja": "レコードスクラッチ",
+  "pt": "Disco arranhado",
+  "zh": "唱片刮擦"
+ },
+ "Freeze! \"Yep. That's me.\"": {
+  "de": "Standbild! „Jep. Das bin ich.“",
+  "es": "¡Pausa! «Sí. Ese soy yo.»",
+  "fr": "Arrêt ! « Oui. C'est moi. »",
+  "hi": "फ़्रीज़! \"हाँ। ये मैं हूँ।\"",
+  "it": "Fermo! «Già. Quello sono io.»",
+  "ja": "ストップ！「そう、これが僕」",
+  "pt": "Congela! \"Pois é. Sou eu.\"",
+  "zh": "定格！“没错，就是我。”"
+ },
+ "Zooms in on a face — dun dun dun": {
+  "de": "Zoomt auf ein Gesicht — dun dun dun",
+  "es": "Zoom a una cara: dun dun dun",
+  "fr": "Zoome sur un visage — dun dun dun",
+  "hi": "चेहरे पर ज़ूम — डन डन डन",
+  "it": "Zoom su un volto — dun dun dun",
+  "ja": "顔にズーム — ダンダンダン",
+  "pt": "Zoom num rosto — dun dun dun",
+  "zh": "推近一张脸——当当当"
+ },
+ "Awkward silence": {
+  "de": "Peinliche Stille",
+  "es": "Silencio incómodo",
+  "fr": "Silence gênant",
+  "hi": "अजीब सी खामोशी",
+  "it": "Silenzio imbarazzante",
+  "ja": "気まずい沈黙",
+  "pt": "Silêncio constrangedor",
+  "zh": "尴尬的沉默"
+ },
+ "Everything stops. Crickets.": {
+  "de": "Alles hält an. Grillen.",
+  "es": "Todo se para. Grillos.",
+  "fr": "Tout s'arrête. Grillons.",
+  "hi": "सब रुक जाता है। झींगुर।",
+  "it": "Tutto si ferma. Grilli.",
+  "ja": "すべてが止まる。コオロギ。",
+  "pt": "Tudo para. Grilos.",
+  "zh": "一切静止。蟋蟀声。"
+ },
+ "Air horns": {
+  "de": "Drucklufthörner",
+  "es": "Bocinas",
+  "fr": "Cornes de brume",
+  "hi": "एयर हॉर्न",
+  "it": "Trombe",
+  "ja": "エアホーン",
+  "pt": "Buzinas",
+  "zh": "气笛"
+ },
+ "Horns, a flash and a shake": {
+  "de": "Hupen, ein Blitz und ein Wackeln",
+  "es": "Bocinas, un destello y un temblor",
+  "fr": "Des cornes, un flash et une secousse",
+  "hi": "हॉर्न, एक फ़्लैश और हिलना",
+  "it": "Trombe, un lampo e una scossa",
+  "ja": "ホーン、フラッシュ、揺れ",
+  "pt": "Buzinas, um flash e um tremor",
+  "zh": "气笛、闪光和抖动"
+ },
+ "Boing": {
+  "de": "Boing",
+  "es": "Boing",
+  "fr": "Boing",
+  "hi": "बोइंग",
+  "it": "Boing",
+  "ja": "ボヨーン",
+  "pt": "Boing",
+  "zh": "嘣"
+ },
+ "The picture bounces like a spring": {
+  "de": "Das Bild federt wie eine Sprungfeder",
+  "es": "La imagen rebota como un muelle",
+  "fr": "L'image rebondit comme un ressort",
+  "hi": "तस्वीर स्प्रिंग जैसी उछलती है",
+  "it": "L'immagine rimbalza come una molla",
+  "ja": "画面がバネみたいに弾む",
+  "pt": "A imagem pula como uma mola",
+  "zh": "画面像弹簧一样弹跳"
+ },
+ "Ba-dum-tss": {
+  "de": "Ba-dum-tss",
+  "es": "Ba-dum-tss",
+  "fr": "Ba-dum-tss",
+  "hi": "बा-डम-त्स",
+  "it": "Ba-dum-tss",
+  "ja": "バダムツー",
+  "pt": "Ba-dum-tss",
+  "zh": "咚咚嚓"
+ },
+ "The ending freezes on a drum hit": {
+  "de": "Das Ende friert auf einem Trommelschlag ein",
+  "es": "El final se congela con un golpe de batería",
+  "fr": "La fin se fige sur un coup de batterie",
+  "hi": "अंत ड्रम की थाप पर रुकता है",
+  "it": "Il finale si blocca su un colpo di batteria",
+  "ja": "最後がドラムの一打で止まる",
+  "pt": "O final congela numa batida",
+  "zh": "结尾定格在一记鼓声上"
+ },
+ "Yep. That's me.": {
+  "de": "Jep. Das bin ich.",
+  "es": "Sí. Ese soy yo.",
+  "fr": "Oui. C'est moi.",
+  "hi": "हाँ। ये मैं हूँ।",
+  "it": "Già. Quello sono io.",
+  "ja": "そう、これが僕。",
+  "pt": "Pois é. Sou eu.",
+  "zh": "没错，就是我。"
  }
 }
