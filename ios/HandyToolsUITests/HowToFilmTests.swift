@@ -38,24 +38,35 @@ final class HowToFilmTests: XCTestCase {
         mark("FILM-END")
     }
 
+    /// Looks now and then rather than continuously. In this Xcode every look runs inside the app, on its main thread:
+    /// a continuous wait over the whole screen starved the app (26 Nov) — the autorun film froze once and ran five
+    /// times slower the next time, and the sampler caught the app's main thread inside XCTest's query.
+    private func appears(_ e: XCUIElement, within seconds: Int) -> Bool {
+        for _ in 0..<max(1, seconds / 2) { if e.exists { return true }; sleep(2) }
+        return e.exists
+    }
+
     /// 2 · Set an autorun: switch one on, tap Test run, see what it found and add it.
     func testFilmSetAnAutorun() {
         app.launchArguments = ["-route", "smartruns", "-uitest", "-seedreceipt"]
         app.launch()
         let on = any["smartrun-on-receipts"].firstMatch
         XCTAssertTrue(on.waitForExistence(timeout: 30))
-        sleep(2); mark("FILM-START"); sleep(2)
-        if (on.value as? String) != "1" { on.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap() }
-        sleep(1)
-        app.staticTexts["Smart autoruns"].firstMatch.tap()   // lets the monitor answer the notifications prompt
+        let toggle = { on.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap() }
+        sleep(3)
+        // Off camera: switch it on once so iPhone's notifications question is answered, then off again.
+        if (on.value as? String) != "1" { toggle(); sleep(1); app.staticTexts["Smart autoruns"].firstMatch.tap(); sleep(3) }
+        if (on.value as? String) == "1" { toggle(); sleep(2) }
+        mark("FILM-START"); sleep(5)              // the recorder starts on this mark; give it a moment
+        toggle()
         sleep(2)
-        let test = any["smartrun-test-receipts"].firstMatch
-        if test.waitForExistence(timeout: 10) { test.tap() }
-        let check = any["smartrun-check-receipts"].firstMatch
-        if check.waitForExistence(timeout: 120) { sleep(2); check.tap() }
-        if any["smartreceipt-card"].firstMatch.waitForExistence(timeout: 10) { sleep(3) }
-        let add = any["smartreceipts-add"].firstMatch
-        if add.waitForExistence(timeout: 5) { add.tap() }
+        let test = app.buttons["smartrun-test-receipts"]
+        (test.exists ? test : any["smartrun-test-receipts"].firstMatch).tap()
+        let check = app.buttons["smartrun-check-receipts"]
+        if appears(check, within: 120) { sleep(2); check.tap() }
+        if appears(any["smartreceipt-card"].firstMatch, within: 10) { sleep(3) }
+        let add = app.buttons["smartreceipts-add"]
+        if appears(add, within: 6) { add.tap() }
         sleep(4)
         mark("FILM-END")
     }
@@ -65,21 +76,20 @@ final class HowToFilmTests: XCTestCase {
         app.launchArguments = ["-route", "home", "-uitest", "-givephotos", "1"]
         app.launch()
         XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 90))
-        sleep(2); mark("FILM-START"); sleep(3)
-        // "Send it" (smaller, private, the right format) works on any photo; the sample isn't one to cut out.
-        let send = any["goal-share"].firstMatch
-        let goal = send.waitForExistence(timeout: 10) ? send : any.matching(NSPredicate(format: "identifier BEGINSWITH 'goal-'")).firstMatch
-        if goal.waitForExistence(timeout: 10) { goal.tap() }
+        sleep(2); mark("FILM-START"); sleep(5)
+        // "Send it" (smaller, private, the right format) works on any photo; Privacy Scrubber is its first way.
+        let send = app.buttons["goal-share"]
+        (send.exists ? send : any["goal-share"].firstMatch).tap()
         sleep(3)
-        let way = any.matching(NSPredicate(format: "identifier BEGINSWITH 'guide-' AND identifier != 'guide-more' AND identifier != 'guide-suggested'")).firstMatch
-        if way.waitForExistence(timeout: 10) { way.tap() }
+        let way = app.buttons["guide-tool-scrub"]
+        (way.exists ? way : any["guide-tool-scrub"].firstMatch).tap()
         sleep(4)                                  // the photo arrives and the job starts looking at it
         // A simulator finds faces and writing far slower than a phone: the film skips that wait and shows what was found.
         let looking = any["scrub-detecting"].firstMatch
         if looking.exists {
             mark("FILM-PAUSE")
             let until = Date().addingTimeInterval(90)
-            while looking.exists && Date() < until { sleep(1) }
+            while looking.exists && Date() < until { sleep(2) }
             mark("FILM-RESUME")
         }
         sleep(5)
