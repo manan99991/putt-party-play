@@ -62,8 +62,11 @@ enum BeatReel {
             .concatenating(CGAffineTransform(translationX: (size.width - r.width * k) / 2, y: (size.height - r.height * k) / 2))
     }
 
-    /// A video ready to cut from: its picture track, how long it is, and how it's turned.
+    /// A video ready to cut from: its picture track, how long it is, and how it's turned. The asset is kept too: a
+    /// track doesn't hold on to its asset, and once the asset goes nothing can be cut from the track (26 Nov: every
+    /// reel and trailer came out empty on the test machine until it was kept).
     struct Source {
+        let asset: AVURLAsset
         let track: AVAssetTrack
         let length: Double
         let natural: CGSize
@@ -78,7 +81,7 @@ enum BeatReel {
             guard let t = try? await a.loadTracks(withMediaType: .video).first,
                   let d = try? await a.load(.duration).seconds, d > 0.2,
                   let n = try? await t.load(.naturalSize), let tr = try? await t.load(.preferredTransform) else { continue }
-            out.append(Source(track: t, length: d, natural: n, transform: tr))
+            out.append(Source(asset: a, track: t, length: d, natural: n, transform: tr))
         }
         return out
     }
@@ -94,12 +97,13 @@ enum BeatReel {
         var shapes: [(at: Double, transform: CGAffineTransform)] = []
         for c in cuts where srcs.indices.contains(c.clip) {
             let src = srcs[c.clip]
-            do { try cv.insertTimeRange(CMTimeRange(start: ts(c.from), duration: ts(c.length)), of: src.track, at: ts(at)) } catch { continue }
+            do { try cv.insertTimeRange(CMTimeRange(start: ts(c.from), duration: ts(c.length)), of: src.track, at: ts(at)) }
+            catch { print("REEL| cut \(c.clip) at \(c.from)s couldn't be inserted: \(error.localizedDescription)"); continue }
             if abs(c.lasts - c.length) > 0.01 { cv.scaleTimeRange(CMTimeRange(start: ts(at), duration: ts(c.length)), toDuration: ts(c.lasts)) }
             shapes.append((at, fill(natural: src.natural, transform: src.transform)))
             at += c.lasts
         }
-        guard at > 0 else { return nil }
+        guard at > 0 else { print("REEL| nothing could be cut from \(srcs.count) clips"); return nil }
         // The last shot holds while the music's final hit rings out.
         if hold > 0, let last = cuts.last, srcs.indices.contains(last.clip) {
             let src = srcs[last.clip], end = max(0, last.from + last.length - 1.0 / 30)
@@ -132,6 +136,7 @@ enum BeatReel {
         let poll = Task { while !Task.isCancelled { progress?(Double(s.progress)); try? await Task.sleep(nanoseconds: 300_000_000) } }
         let ok = await VideoEngine.run(s, seconds: at)
         poll.cancel()
+        if !ok { print("REEL| the edit didn't save: \(s.error?.localizedDescription ?? "no error given") (\((s.error as NSError?)?.code ?? 0))") }
         return ok ? (out, at) : nil
     }
 
@@ -151,6 +156,7 @@ enum BeatReel {
         var r = VideoFX.Recipe(look: st.look, light: st.light, motion: "pulse", texture: st.id == "epic" ? "bars" : "none")
         r.amount = 0.55
         let out = await VideoFX.export(cut, recipe: r, caption: nil)
+        if out == nil { print("REEL| the style pass didn't save") }
         try? FileManager.default.removeItem(at: cut)
         progress?(1)
         return out

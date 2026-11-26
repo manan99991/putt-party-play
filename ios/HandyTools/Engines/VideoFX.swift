@@ -410,8 +410,15 @@ enum VideoFX {
                     out = out.applyingFilter("CIBumpDistortion", parameters: [kCIInputCenterKey: CIVector(x: e.x, y: e.y), kCIInputRadiusKey: big * 0.24, kCIInputScaleKey: 0.55 + 0.4 * a])
                 }
             case "stretchy":
-                out = out.applyingFilter("CIBumpDistortionLinear", parameters: [kCIInputCenterKey: c, kCIInputRadiusKey: big * 0.95,
-                                                                                 kCIInputAngleKey: Double.pi / 2, kCIInputScaleKey: 0.5 + 0.4 * a + 0.1 * sin(t * 3)])
+                // The linear bump bends a whole band across the frame, so it's kept to a soft circle round the face
+                // (26 Nov: it was stretching the background top to bottom).
+                let warped = out.applyingFilter("CIBumpDistortionLinear", parameters: [kCIInputCenterKey: c, kCIInputRadiusKey: big * 0.95,
+                                                                                       kCIInputAngleKey: Double.pi / 2, kCIInputScaleKey: 0.5 + 0.4 * a + 0.1 * sin(t * 3)])
+                let ring = CIFilter(name: "CIRadialGradient", parameters: ["inputCenter": c, "inputRadius0": big * 0.75, "inputRadius1": big * 1.1,
+                                                                           "inputColor0": CIColor.white, "inputColor1": CIColor.black])?.outputImage
+                if let ring {
+                    out = warped.applyingFilter("CIBlendWithMask", parameters: [kCIInputBackgroundImageKey: out, kCIInputMaskImageKey: ring])
+                } else { out = warped }
             case "wobbly":
                 out = out.applyingFilter("CITwirlDistortion", parameters: [kCIInputCenterKey: c, kCIInputRadiusKey: big * 0.9,
                                                                             kCIInputAngleKey: (0.35 + 0.7 * a) * sin(t * 5)])

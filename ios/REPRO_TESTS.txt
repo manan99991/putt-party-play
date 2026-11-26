@@ -1,15 +1,10 @@
-# 26 Nov, before the TestFlight build, round 2. Round 1 proved every camera button (10/10), the four new voices and
-# the ask box's sentences; its one failure was the reminder test calling 26 Nov a Wednesday (it's a Thursday — the
-# reader was right). Now: that test on a real Wednesday, the new engines on real output (Tenzy's own music and funny
-# moments, background swap and funny faces, Beat Reel, Movie Trailer with its narrator), the how-to films, every tool
-# reachable by the smoke test, and the three new video tools end to end from a recorded clip to a finished video.
-HandyToolsTests/ReminderWordsTests
-HandyToolsTests/SynthTests
-HandyToolsTests/VideoFunTests
+# 26 Nov, before the TestFlight build, round 3. Round 2 passed the music and sound effects, Funny Moments end to end,
+# the reminder sentences, the how-to films, the catalog, the trailer's timing/score/cards and its narrator, and the
+# real-photo background test. It failed Beat Reel and the trailer (both empty: a track doesn't keep its asset, and the
+# edit dropped the asset — now kept, with REEL| lines at every failure point) and the stretchy face (it bent a band
+# across the whole frame — now kept to a circle round the face). Those, again, unit and end to end.
 HandyToolsTests/BeatReelTests
 HandyToolsTests/TrailerTests
-HandyToolsTests/HowToVideosTests
-HandyToolsTests/ToolCatalogCoverageTests
-HandyToolsUITests/CameraButtonTests/testFunnyMomentsRecordsAClipAndMakesTheJoke
+HandyToolsTests/VideoFunTests
 HandyToolsUITests/CameraButtonTests/testBeatReelRecordsAClipAndCutsAReel
 HandyToolsUITests/CameraButtonTests/testMovieTrailerRecordsAClipAndMakesATrailer
