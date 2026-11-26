@@ -1239,6 +1239,15 @@ final class SmartDescribeTests: XCTestCase {
     }
     func testItSaysWhenItIsOnlyAGuess() {
         XCTAssertEqual(ChainPlanner.guess("shrink a photo under 1 mb")?.sure, true)
+        // The Home ask box's own example (26 Nov) builds what it says: screenshots in, emailed, a reminder every evening.
+        let example = ChainPlanner.guess("Every evening, help me email today's screenshots to myself")
+        XCTAssertEqual(example?.chain.finish?.kind, .mail, "it ends in an email")
+        XCTAssertEqual(example?.chain.schedule?.hour, 19, "every evening")
+        XCTAssertEqual(example?.chain.schedule?.days, [])
+        XCTAssertEqual(ChainPlanner.timing("remind me every morning at 7:30"), ChainSchedule(hour: 7, minute: 30, days: []))
+        XCTAssertEqual(ChainPlanner.timing("every evening at 6"), ChainSchedule(hour: 18, minute: 0, days: []))
+        XCTAssertEqual(ChainPlanner.timing("on weekdays at 5 pm"), ChainSchedule(hour: 17, minute: 0, days: [2, 3, 4, 5, 6]))
+        XCTAssertNil(ChainPlanner.timing("shrink a photo under 1 mb"), "no timing said, no reminder")
         XCTAssertEqual(ChainPlanner.guess("my photo")?.sure, false)
         XCTAssertEqual(ChainPlanner.guess("collage")?.sure, false)
         XCTAssertNotEqual(ChainPlanner.guess("collage")?.chain.id, "photo-collage", "a guessed starter is a copy with its own id")

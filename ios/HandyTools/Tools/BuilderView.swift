@@ -1500,7 +1500,7 @@ struct BuilderView: View {
         return HStack(alignment: .bottom, spacing: HandySpacing.s8) {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Image(systemName: "sparkles").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.accent).accessibilityHidden(true)
-                    TextField(L("Say it — e.g. shrink a photo under 1 MB"), text: $ask, axis: .vertical)
+                    TextField(L("Say it — e.g. every evening, help me email today's screenshots to myself"), text: $ask, axis: .vertical)
                         .lineLimit(1...5).font(HandyFont.body).accessibilityIdentifier("describe-field")
                 }
                 .padding(.horizontal, 14).padding(.vertical, 13)

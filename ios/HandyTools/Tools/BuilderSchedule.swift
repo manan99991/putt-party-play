@@ -222,7 +222,11 @@ struct ScheduleCard: View {
             }
         }
         .cardStyle(padding: HandySpacing.s12)
-        .onAppear { ToolSchedules.blocked { blocked = $0 } }
+        .onAppear {
+            ToolSchedules.blocked { blocked = $0 }
+            // A tool described with its timing ("every evening…") opens with the reminder already on: ask now, once.
+            if schedule != nil { Task { let ok = await NotifyPermission.ensure(); await MainActor.run { blocked = !ok } } }
+        }
         .onChange(of: schedule != nil) { _, on in
             // Turning the reminder on is the moment to ask — and to show how to fix it if the answer was no.
             guard on else { return }

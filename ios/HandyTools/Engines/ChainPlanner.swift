@@ -36,6 +36,8 @@ enum ChainPlanner {
         var found = rules(clean).map { (chain: $0, sure: true) } ?? fallback(clean).map { (chain: $0, sure: false) }
         guard var c = found?.chain else { return nil }
         if c.finish == nil { c.finish = ending(clean) }
+        // "every evening", "daily at 6 pm", "on weekdays": the reminder to run it, set to what was said.
+        if c.schedule == nil { c.schedule = timing(clean) }
         // A short request is its own best name; a long one gets a name from what the tool does. A starter keeps its name.
         if found?.sure == true || c.name.isEmpty { c.name = ChainText.toolName(ask: ask, chain: c) }
         found?.chain = c
@@ -49,6 +51,41 @@ enum ChainPlanner {
         if has(["email"]), !has(["email address", "emails", "email and phone", "find the email"]) { return ChainFinish(kind: .mail, to: "") }
         if has(["text it", "message it", "imessage", " sms", "by text", "as a message", "send a message"]) { return ChainFinish(kind: .message, to: "") }
         return nil
+    }
+
+    /// When the sentence says the tool should come round on its own: "every evening" (7 PM), "every morning" (8 AM),
+    /// "every night" (9 PM), "every afternoon" (2 PM), "every day"/"daily" (9 AM) — a time said ("at 6 pm", "at 18:30")
+    /// wins — and "on weekdays", "at weekends" or named days. nil when no timing was said.
+    static func timing(_ clean: String) -> ChainSchedule? {
+        let s = " " + clean.lowercased() + " "
+        func has(_ words: [String]) -> Bool { words.contains { s.contains($0) } }
+        var hour: Int?
+        if has(["every evening", "each evening", "evenings", "in the evening", "end of the day", "end of day", "end of each day"]) { hour = 19 }
+        else if has(["every night", "each night", "nightly", "at night", "before bed"]) { hour = 21 }
+        else if has(["every morning", "each morning", "mornings", "in the morning"]) { hour = 8 }
+        else if has(["every afternoon", "each afternoon", "afternoons"]) { hour = 14 }
+        else if has(["every day", "each day", " daily ", "everyday"]) { hour = 9 }
+        let dayNames = [("sunday", 1), ("monday", 2), ("tuesday", 3), ("wednesday", 4), ("thursday", 5), ("friday", 6), ("saturday", 7)]
+        var days: [Int] = []
+        if has(["weekday", "workday", "work day"]) { days = [2, 3, 4, 5, 6] }
+        else if has(["weekend"]) { days = [1, 7] }
+        else { days = dayNames.filter { s.contains("every \($0.0)") || s.contains("on \($0.0)s") || s.contains("\($0.0)s ") }.map(\.1) }
+        var minute = 0
+        // A clock time only counts when the sentence is about timing ("look at 3 photos" is not 3 o'clock).
+        let timed = hour != nil || !days.isEmpty || has(["remind", "every "])
+        if timed, let r = s.range(of: #"\bat (\d{1,2})(?::(\d{2}))?\s*(am|pm|a\.m\.|p\.m\.)?"#, options: .regularExpression),
+           let re = try? NSRegularExpression(pattern: #"at (\d{1,2})(?::(\d{2}))?\s*(am|pm|a\.m\.|p\.m\.)?"#),
+           let m = re.firstMatch(in: String(s[r]), range: NSRange(location: 0, length: s[r].utf16.count)) {
+            let str = String(s[r]) as NSString
+            var h = Int(str.substring(with: m.range(at: 1))) ?? 9
+            if m.range(at: 2).location != NSNotFound { minute = Int(str.substring(with: m.range(at: 2))) ?? 0 }
+            let ampm = m.range(at: 3).location != NSNotFound ? str.substring(with: m.range(at: 3)) : ""
+            if ampm.hasPrefix("p"), h < 12 { h += 12 } else if ampm.hasPrefix("a"), h == 12 { h = 0 }
+            else if ampm.isEmpty, h < 7, hour.map({ $0 >= 12 }) == true { h += 12 }   // "every evening at 6" is 6 PM
+            if (0...23).contains(h) { hour = h } else { minute = 0 }
+        }
+        guard let hr = hour ?? (days.isEmpty ? nil : 9) else { return nil }
+        return ChainSchedule(hour: hr, minute: min(max(minute, 0), 59), days: days)
     }
 
     /// When no rule fits: the starter whose name shares a word with the request, or else the most useful tool for

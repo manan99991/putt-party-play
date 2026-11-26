@@ -1,6 +1,3 @@
-# 26 Nov, fourth look. Week film passed (opens on its title). Paper: the pages came back from Photos bright and right
-# (530x720, sRGB, mean 196) — but the photo index, which reads at 720 px, read 0 words: a page's body print is too small
-# there to be seen as writing. A real letter photo is worse (6–14 px print). Fix: a photo with no people, not a
-# screenshot, and little text found is read at full size before it's ruled out as paper.
-HandyToolsUITests/PromiseTests/testPaperAutorunMakesOneSearchablePDFFromTwoPages
-HandyToolsTests/SmartPapersTests
+# 26 Nov: the Home ask box's new example ("Every evening, help me email today's screenshots to myself") must build what
+# it says — an email at the end and a reminder every evening; the planner now reads timing words and clock times.
+HandyToolsTests/ChainRunnerTests/testItSaysWhenItIsOnlyAGuess
