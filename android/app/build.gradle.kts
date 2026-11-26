@@ -12,6 +12,8 @@ android {
     defaultConfig {
         applicationId = "com.tenzy.toolkit"
         minSdk = 26
+        // On-device checks of the studio tools (androidTest), run on an emulator by .github/workflows/android-device.yml.
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         targetSdk = 36
         // Auto-incrementing versionCode from the CI run number so every uploaded bundle is unique
         // and strictly increasing (Play rejects reused codes; a stale code leaves old bundles active).
@@ -59,6 +61,9 @@ android {
 
 dependencies {
     testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("junit:junit:4.13.2")
     val composeBom = platform("androidx.compose:compose-bom:2024.12.01")
     implementation(composeBom)
     implementation("androidx.core:core-ktx:1.15.0")

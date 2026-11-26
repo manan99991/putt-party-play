@@ -1,0 +1,66 @@
+# The Android studio tools (Beat Reel, Movie Trailer, Funny Moments, Video Effects) made for real on an emulator:
+# builds the app and its on-device tests (android/app/src/androidTest), boots the same emulator the QA agent uses,
+# and runs StudioOnDeviceTest. Nothing here signs, uploads or publishes anything.
+name: Android on a device
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [handytools]
+    paths:
+      - "android/app/src/androidTest/**"
+      - "android/app/src/main/java/com/handytools/app/tools/studio/**"
+      - ".github/workflows/android-device.yml"
+
+concurrency:
+  group: android-device
+  cancel-in-progress: true
+
+jobs:
+  device:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free disk
+        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL; df -h /
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - uses: gradle/actions/setup-gradle@v4
+        with: { gradle-version: "8.11.1" }
+
+      - name: Build the app and its on-device tests
+        working-directory: android
+        run: gradle --no-daemon assembleDebug assembleDebugAndroidTest -PinternalUnlock=true --warning-mode none
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+
+      - name: Boot an emulator and run the studio tests
+        run: |
+          set -o pipefail
+          export ANDROID_HOME="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+          export ANDROID_AVD_HOME="$HOME/.android/avd"; mkdir -p "$ANDROID_AVD_HOME"
+          yes | sdkmanager "system-images;android-30;google_apis;x86_64" >/dev/null 2>&1 && echo "image ok"
+          echo no | avdmanager --verbose create avd --force --name dev --package "system-images;android-30;google_apis;x86_64" --device pixel_6 2>&1 | tail -2
+          nohup emulator -avd dev -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -no-snapshot > emulator.log 2>&1 &
+          timeout 180 adb wait-for-device
+          for i in $(seq 1 60); do [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ] && { echo booted; break; }; sleep 5; done
+          adb shell settings put global hide_error_dialogs 1 || true
+          adb shell settings put global window_animation_scale 0 || true
+          adb shell settings put global transition_animation_scale 0 || true
+          adb shell settings put global animator_duration_scale 0 || true
+          sleep 30
+          adb install -r -g android/app/build/outputs/apk/debug/app-debug.apk
+          adb install -r -g android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          adb logcat -c || true
+          adb shell am instrument -w -r -e class com.handytools.app.StudioOnDeviceTest \
+            com.tenzy.toolkit.test/androidx.test.runner.AndroidJUnitRunner 2>&1 | tee device-tests.log
+          # What each test said, and why any failed (test names and assertion messages only).
+          grep -E "INSTRUMENTATION_STATUS: test=|INSTRUMENTATION_STATUS_CODE|AssertionError|Exception:|^OK \(|FAILURES|Tests run" device-tests.log | head -80 || true
+          echo "---- Media3 / app errors from the device log"
+          adb logcat -d -v brief '*:E' 2>/dev/null | grep -E "Transformer|ExportException|media3|AndroidRuntime|com.tenzy" | head -60 || true
+          grep -q "^OK (" device-tests.log || exit 1
