@@ -21,6 +21,9 @@ enum SmartPapers {
         var fileName: String { SmartPapers.fileName(title, taken) }
     }
 
+    /// What the last run saw, photo by photo — shown under UI tests, so a miss says why instead of guessing.
+    nonisolated(unsafe) static var trail: [String] = []
+
     static var folder: URL {
         let d = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("SmartRuns/Papers", isDirectory: true)
         try? FileManager.default.createDirectory(at: d, withIntermediateDirectories: true)
@@ -115,6 +118,7 @@ enum SmartPapers {
         let r = PHAsset.fetchAssets(with: .image, options: o)
         var assets: [PHAsset] = []
         r.enumerateObjects { a, _, _ in if !skip.contains(a.localIdentifier) { assets.append(a) } }
+        trail = ["\(assets.count) photos in the window"]
         var cache = PhotoFinder.loadCache()
         var found: [(id: String, taken: Date, text: String)] = []
         var byID: [String: PHAsset] = [:]
@@ -126,6 +130,12 @@ enum SmartPapers {
             else { seen = await PhotoFinder.read(a); if let seen { cache[a.localIdentifier] = seen } }
             let taken = a.creationDate ?? window.end
             let after = found.last.map { taken.timeIntervalSince($0.taken) <= 180 } ?? false
+            if let seen {
+                let words = seen.text.split { $0 == " " || $0 == "\n" }.count
+                trail.append(String(format: "doc %.1f rec %.1f card %.1f · %d words · %@%@", PhotoFinder.score(seen, for: .document),
+                                    PhotoFinder.score(seen, for: .receipt), PhotoFinder.score(seen, for: .card), words,
+                                    seen.labels.prefix(3).joined(separator: "/"), seen.screenshot ? " · shot" : ""))
+            } else { trail.append("unreadable") }
             guard let seen, isPaper(seen, afterAPage: after) else { continue }
             found.append((a.localIdentifier, taken, seen.text)); byID[a.localIdentifier] = a
         }

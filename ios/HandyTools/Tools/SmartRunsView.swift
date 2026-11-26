@@ -400,6 +400,7 @@ struct SmartRunsView: View {
         } else if k == .paperPDFs {
             note = found > 0 ? "\(L("Test run made")) \(found) \(L(found == 1 ? "searchable PDF" : "searchable PDFs")). \(L("Tap Check to look through them."))"
                              : L("Test run worked: no photos of letters, bills or forms from the last 24 hours.")
+                               + (Launch.uitest ? " [" + SmartPapers.trail.joined(separator: " | ") + "]" : "")
         } else if k == .dayCollage {
             note = found > 0 ? L("Test run made today's collage. Tap Check to see it.")
                              : L("Test run worked: fewer than three good photos of people from the last 24 hours, so no collage yet.")

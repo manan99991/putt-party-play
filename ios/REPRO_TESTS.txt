@@ -1,7 +1,8 @@
-# 26 Nov: paper into PDFs (new), plus the autoruns built since the last run — overdue invoices (with the guard that
-# every translated sentence keeps its blanks), tidy up, and warranty inside receipts.
-HandyToolsTests/SmartPapersTests
-HandyToolsTests/SmartInvoicesTests
-HandyToolsTests/SmartRunsTests
-HandyToolsTests/SmartReceiptsTests
+# 26 Nov: the paper UI test found no page in the seeded photos ("no photos of letters…"); the run now prints what it saw
+# for each photo (scores, words, labels) so the cause is read, not guessed. Plus the new autoruns' tests: the week's
+# film (a real film is made), the weekly schedule, the contacts copy and its diff, voice memos, tool days and the offer.
 HandyToolsUITests/PromiseTests/testPaperAutorunMakesOneSearchablePDFFromTwoPages
+HandyToolsTests/SmartWeekTests
+HandyToolsTests/SmartContactsTests
+HandyToolsTests/SmartVoiceTests
+HandyToolsTests/SmartRunsTests
