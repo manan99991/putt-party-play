@@ -10,7 +10,7 @@ import UniformTypeIdentifiers
 /// plays with it on; the saved video keeps its sound and finishes even if you leave the app.
 struct CelebrateView: View {
     enum Tab: String, CaseIterable, Identifiable {
-        case vibes, look, light, motion, texture, sparkle, words, celebrate
+        case vibes, look, light, motion, texture, sparkle, background, funny, words, celebrate
         var id: String { rawValue }
         var title: String {
             switch self {
@@ -20,6 +20,8 @@ struct CelebrateView: View {
             case .motion: return "Motion"
             case .texture: return "Texture"
             case .sparkle: return "Sparkle"
+            case .background: return "Background"
+            case .funny: return "Funny"
             case .words: return "Words"
             case .celebrate: return "Celebrate"
             }
@@ -32,6 +34,8 @@ struct CelebrateView: View {
             case .motion: return "move.3d"
             case .texture: return "film"
             case .sparkle: return "wand.and.stars"
+            case .background: return "person.crop.rectangle"
+            case .funny: return "face.smiling"
             case .words: return "textformat"
             case .celebrate: return "party.popper.fill"
             }
@@ -165,6 +169,8 @@ struct CelebrateView: View {
                 case .motion: chips(VideoFX.motions, current: recipe.motion) { recipe.motion = $0; if $0 == "pulse", beats.isEmpty { loadBeats() } }
                 case .texture: pictures(VideoFX.textures, current: recipe.texture) { recipe.texture = $0 }
                 case .sparkle: chips(VideoFX.sparkles, current: recipe.sparkle) { recipe.sparkle = $0 }
+                case .background: pictures(VideoFX.backgrounds, current: recipe.background) { recipe.background = $0 }
+                case .funny: pictures(VideoFX.funnies, current: recipe.funny) { recipe.funny = $0 }
                 case .words: wordsCard
                 case .celebrate: celebrateCard
                 }
@@ -476,6 +482,8 @@ struct CelebrateView: View {
 
     private func apply(_ r: VideoFX.Recipe) {
         var n = r; n.amount = recipe.amount; n.words = recipe.words
+        // A vibe is the look; what's behind the person and a funny face are theirs to keep (Original clears all).
+        if !r.isPlain || r.look != "none" { n.background = recipe.background; n.funny = recipe.funny }
         recipe = n
         if n.motion == "pulse", beats.isEmpty { loadBeats() }
     }
@@ -595,6 +603,10 @@ struct CelebrateView: View {
             for c in VideoFX.lights { add("light-\(c.id)") { r in r.light = c.id; r.sparkle = "none" } }
         case .texture:
             for c in VideoFX.textures { add("texture-\(c.id)") { r in r.texture = c.id; r.sparkle = "none" } }
+        case .background:
+            for c in VideoFX.backgrounds { add("background-\(c.id)") { r in r.background = c.id; r.sparkle = "none" } }
+        case .funny:
+            for c in VideoFX.funnies { add("funny-\(c.id)") { r in r.funny = c.id; r.sparkle = "none" } }
         default: break
         }
         let work = jobs

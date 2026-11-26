@@ -1,6 +1,7 @@
 import AVFoundation
 import CoreImage
 import UIKit
+import Vision
 
 /// Video effects — "Make it stunning". Any video gets a look (colour grade), light (glow, light leaks, golden sun, a
 /// sweeping flare, neon edges, vignette), motion (slow push-in, punches on the beat of its own sound, handheld shake,
@@ -25,8 +26,12 @@ enum VideoFX {
         var words = "pop"
         /// 0 = the video as filmed … 1 = all the way.
         var amount = 0.6
+        /// Behind the person (26 Nov): blurred like a portrait, black-and-white with the person in colour, or a backdrop.
+        var background = "none"
+        /// Funny faces (26 Nov): a big head, a tiny head, big eyes, a stretchy or wobbly face — found on every frame.
+        var funny = "none"
 
-        var isPlain: Bool { look == "none" && light == "none" && motion == "none" && texture == "none" && sparkle == "none" }
+        var isPlain: Bool { look == "none" && light == "none" && motion == "none" && texture == "none" && sparkle == "none" && background == "none" && funny == "none" }
     }
 
     static let looks: [Choice] = [
@@ -57,6 +62,17 @@ enum VideoFX {
         Choice(id: "stars", name: "Starry", emoji: "⭐️"), Choice(id: "snow", name: "Snow", emoji: "❄️"),
         Choice(id: "bubbles", name: "Bubbles", emoji: "🫧"), Choice(id: "fireworks", name: "Fireworks", emoji: "🎆"),
         Choice(id: "petals", name: "Petals", emoji: "🌸"),
+    ]
+    static let backgrounds: [Choice] = [
+        Choice(id: "none", name: "As filmed", emoji: "⚪️"), Choice(id: "blur", name: "Portrait blur", emoji: "🌫️"),
+        Choice(id: "colorpop", name: "Colour pop", emoji: "🎨"), Choice(id: "studio", name: "Studio", emoji: "🤍"),
+        Choice(id: "sunset", name: "Sunset", emoji: "🌇"), Choice(id: "night", name: "Night city", emoji: "🌃"),
+        Choice(id: "pastel", name: "Pastel", emoji: "🩵"),
+    ]
+    static let funnies: [Choice] = [
+        Choice(id: "none", name: "Off", emoji: "⚪️"), Choice(id: "bighead", name: "Big head", emoji: "🎈"),
+        Choice(id: "tinyhead", name: "Tiny head", emoji: "🐜"), Choice(id: "bigeyes", name: "Big eyes", emoji: "👀"),
+        Choice(id: "stretchy", name: "Stretchy face", emoji: "🫠"), Choice(id: "wobbly", name: "Wobbly face", emoji: "🌀"),
     ]
     static let wordStyles: [Choice] = [
         Choice(id: "pop", name: "Pop", emoji: "💥"), Choice(id: "slide", name: "Slide up", emoji: "⬆️"),
@@ -276,6 +292,8 @@ enum VideoFX {
         let cube: CIFilter?
         var painter: Celebrate.Painter?
         var words: (image: CIImage, size: CGSize)?
+        /// The faces last found and when, so a frame where the detector blinks keeps the effect steady.
+        var lastFaces: (t: Double, faces: [Face])?
         let lock = NSLock()
         init(_ r: Recipe) {
             recipe = r
@@ -315,13 +333,115 @@ enum VideoFX {
         return top.applyingFilter("CIScreenBlendMode", parameters: [kCIInputBackgroundImageKey: img])
     }
 
+    // MARK: - Behind the person, and funny faces
+
+    /// Where the person is in a frame (1 = person), the frame's size, from the phone's own person finder. nil if none.
+    static func personMask(_ img: CIImage) -> CIImage? {
+        let req = VNGeneratePersonSegmentationRequest()
+        req.qualityLevel = .balanced
+        req.outputPixelFormat = kCVPixelFormatType_OneComponent8
+        try? VNImageRequestHandler(ciImage: img, options: [:]).perform([req])
+        guard let pb = req.results?.first?.pixelBuffer else { return nil }
+        let m = CIImage(cvPixelBuffer: pb)
+        guard m.extent.width > 0, m.extent.height > 0 else { return nil }
+        return m.transformed(by: CGAffineTransform(scaleX: img.extent.width / m.extent.width, y: img.extent.height / m.extent.height))
+    }
+
+    private static func backdrop(_ id: String, src: CIImage, rect: CGRect, t: Double, a: Double) -> CIImage {
+        let W = rect.width, H = rect.height, short = min(W, H)
+        func linear(_ top: (Double, Double, Double), _ bottom: (Double, Double, Double)) -> CIImage {
+            CIFilter(name: "CILinearGradient", parameters: [
+                "inputPoint0": CIVector(x: W * 0.3, y: H), "inputPoint1": CIVector(x: W * 0.7, y: 0),
+                "inputColor0": CIColor(red: top.0, green: top.1, blue: top.2), "inputColor1": CIColor(red: bottom.0, green: bottom.1, blue: bottom.2),
+            ])?.outputImage?.cropped(to: rect) ?? CIImage(color: .black).cropped(to: rect)
+        }
+        switch id {
+        case "blur": return src.clampedToExtent().applyingGaussianBlur(sigma: Double(short) * (0.012 + 0.03 * a)).cropped(to: rect)
+        case "colorpop": return src.applyingFilter("CIPhotoEffectNoir").cropped(to: rect)
+        case "studio": return linear((0.97, 0.97, 0.98), (0.80, 0.81, 0.84))
+        case "sunset": return linear((0.99, 0.55, 0.35), (0.45, 0.20, 0.55))
+        case "pastel": return linear((1.0, 0.80, 0.88), (0.70, 0.86, 1.0))
+        case "night":
+            var bg = linear((0.05, 0.06, 0.20), (0.22, 0.08, 0.32))
+            // City lights: soft coloured glows drifting slowly, out of focus as behind a real person.
+            for i in 0..<7 {
+                let x = W * CGFloat((Double(i) * 0.153 + 0.04 * sin(t * 0.3 + Double(i))).truncatingRemainder(dividingBy: 1))
+                let y = H * CGFloat(0.12 + 0.55 * Double((i * 37) % 10) / 10)
+                let c: (Double, Double, Double) = [(1, 0.75, 0.3), (0.4, 0.7, 1), (1, 0.4, 0.7), (0.6, 1, 0.8)][i % 4]
+                if let g = gradient(CGPoint(x: x, y: y), short * 0.16, c, 0.55) { bg = screen(g.cropped(to: rect), over: bg) }
+            }
+            return bg
+        default: return src
+        }
+    }
+
+    /// One face: where it is and where its eyes are, in the frame's own points (origin bottom left, like Core Image).
+    struct Face { let box: CGRect; let eyes: [CGPoint] }
+
+    static func faces(in img: CIImage) -> [Face] {
+        let req = VNDetectFaceLandmarksRequest()
+        try? VNImageRequestHandler(ciImage: img, options: [:]).perform([req])
+        let W = img.extent.width, H = img.extent.height
+        return (req.results ?? []).filter { $0.confidence > 0.5 }.map { f in
+            let b = VNImageRectForNormalizedRect(f.boundingBox, Int(W), Int(H))
+            let eyes = [f.landmarks?.leftEye, f.landmarks?.rightEye].compactMap { e -> CGPoint? in
+                guard let e, e.pointCount > 0 else { return nil }
+                let pts = e.normalizedPoints
+                let cx = pts.map(\.x).reduce(0, +) / CGFloat(pts.count), cy = pts.map(\.y).reduce(0, +) / CGFloat(pts.count)
+                return CGPoint(x: b.minX + cx * b.width, y: b.minY + cy * b.height)
+            }
+            return Face(box: b, eyes: eyes)
+        }
+    }
+
+    /// The funny face on every face found. Pure apart from the face finder; the effect breathes a little with time.
+    static func funnyFaces(_ id: String, _ img: CIImage, faces: [Face], t: Double, a: Double, rect: CGRect) -> CIImage {
+        var out = img
+        for f in faces {
+            let c = CIVector(x: f.box.midX, y: f.box.midY + f.box.height * 0.08)
+            let big = max(f.box.width, f.box.height)
+            switch id {
+            case "bighead":
+                out = out.applyingFilter("CIBumpDistortion", parameters: [kCIInputCenterKey: c, kCIInputRadiusKey: big * 1.05, kCIInputScaleKey: 0.45 + 0.45 * a])
+            case "tinyhead":
+                out = out.applyingFilter("CIBumpDistortion", parameters: [kCIInputCenterKey: c, kCIInputRadiusKey: big * 1.0, kCIInputScaleKey: -(0.35 + 0.4 * a)])
+            case "bigeyes":
+                for e in f.eyes {
+                    out = out.applyingFilter("CIBumpDistortion", parameters: [kCIInputCenterKey: CIVector(x: e.x, y: e.y), kCIInputRadiusKey: big * 0.24, kCIInputScaleKey: 0.55 + 0.4 * a])
+                }
+            case "stretchy":
+                out = out.applyingFilter("CIBumpDistortionLinear", parameters: [kCIInputCenterKey: c, kCIInputRadiusKey: big * 0.95,
+                                                                                 kCIInputAngleKey: Double.pi / 2, kCIInputScaleKey: 0.5 + 0.4 * a + 0.1 * sin(t * 3)])
+            case "wobbly":
+                out = out.applyingFilter("CITwirlDistortion", parameters: [kCIInputCenterKey: c, kCIInputRadiusKey: big * 0.9,
+                                                                            kCIInputAngleKey: (0.35 + 0.7 * a) * sin(t * 5)])
+            default: break
+            }
+        }
+        return out.cropped(to: rect)
+    }
+
     /// One frame with the whole recipe on it. `src` is upright with its corner at zero and `size` big.
     static func frame(_ src: CIImage, t: Double, duration: Double, size: CGSize, kit: Kit, beats: [Double], caption: Celebrate.Caption?) -> CIImage {
         let r = kit.recipe, a = min(1, max(0, r.amount))
         let rect = CGRect(origin: .zero, size: size)
         let W = size.width, H = size.height, short = min(W, H), long = max(W, H)
+        // Behind the person and funny faces first, on the clean picture.
+        var base = src
+        if r.background != "none", let mask = personMask(src) {
+            let bg = backdrop(r.background, src: src, rect: rect, t: t, a: a)
+            let soft = mask.clampedToExtent().applyingGaussianBlur(sigma: 1.5).cropped(to: rect)
+            base = src.applyingFilter("CIBlendWithMask", parameters: [kCIInputBackgroundImageKey: bg, kCIInputMaskImageKey: soft]).cropped(to: rect)
+        }
+        if r.funny != "none" {
+            var found = faces(in: src)
+            kit.lock.lock()
+            if found.isEmpty, let last = kit.lastFaces, abs(t - last.t) < 0.6 { found = last.faces } else if !found.isEmpty { kit.lastFaces = (t, found) }
+            kit.lock.unlock()
+            base = funnyFaces(r.funny, base, faces: found, t: t, a: a, rect: rect)
+        }
         // Motion first (on the clean picture), clamped so the edges never show.
-        var img = src.clampedToExtent().transformed(by: motion(r.motion, t: t, duration: duration, size: size, amount: a, beats: beats)).cropped(to: rect)
+        var img = base.clampedToExtent().transformed(by: motion(r.motion, t: t, duration: duration, size: size, amount: a, beats: beats)).cropped(to: rect)
         // Look.
         if let f = kit.cube { f.setValue(img, forKey: kCIInputImageKey); img = f.outputImage?.cropped(to: rect) ?? img }
         // Light.
