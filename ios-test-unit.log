@@ -1,301 +1,301 @@
 == unit (results)
-2026-11-26 05:24:53.055214+0000 HandyTools[22562:66634] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
-2026-11-26 05:24:55.285378+0000 HandyTools[22562:66630] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-26 05:24:55.295672+0000 HandyTools[22562:66630] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-26 05:24:55.295971+0000 HandyTools[22562:66630] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-26 05:24:55.296124+0000 HandyTools[22562:66630] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-26 05:24:55.296734+0000 HandyTools[22562:66630] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-2026-11-26 05:24:55.372684+0000 HandyTools[22562:66630] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
-Test Case '-[HandyToolsTests.AudioIntakeTests testAFailedDownloadSavedAsMp3IsCalledWhatItIs]' passed (0.003 seconds).
+2026-11-26 07:11:25.663712+0000 HandyTools[25200:73989] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+Test Case '-[HandyToolsTests.AudioIntakeTests testAFailedDownloadSavedAsMp3IsCalledWhatItIs]' passed (0.004 seconds).
 Test Case '-[HandyToolsTests.AudioIntakeTests testAVoiceNoteIsSpottedByItsBytesNotItsName]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.AudioIntakeTests testDoubleEncodedNamesAreMadeReadable]' passed (0.001 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.006 (0.009) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.007 (0.011) seconds
 Test Case '-[HandyToolsTests.AutoParkTests testADrivesLengthFollowsItsFixes]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.AutoParkTests testARoughFixNeverBeatsAGoodOne]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.AutoParkTests testAShortShuffleIsNotADrive]' passed (0.000 seconds).
-Test Case '-[HandyToolsTests.AutoParkTests testAWalkAfterARealDriveIsParking]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.AutoParkTests testAWalkAfterARealDriveIsParking]' passed (0.000 seconds).
 Test Case '-[HandyToolsTests.AutoParkTests testDrivesKeptAndWaiting]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.AutoParkTests testFastIsACarWhateverTheChipSays]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.AutoParkTests testNoDriveNoParking]' passed (0.000 seconds).
+Test Case '-[HandyToolsTests.AutoParkTests testFastIsACarWhateverTheChipSays]' passed (0.000 seconds).
+Test Case '-[HandyToolsTests.AutoParkTests testNoDriveNoParking]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.AutoParkTests testNothingGoodEnoughMeansKeepListening]' passed (0.000 seconds).
-Test Case '-[HandyToolsTests.AutoParkTests testOnlyTheLastFiveMinutesAreKept]' passed (0.046 seconds).
+Test Case '-[HandyToolsTests.AutoParkTests testOnlyTheLastFiveMinutesAreKept]' passed (0.223 seconds).
 Test Case '-[HandyToolsTests.AutoParkTests testRedLightsAndTrafficJamsAreNeverParking]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.AutoParkTests testRoughFixesAndGlitchesAddNoMiles]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.AutoParkTests testSittingInTheCarThenParkingCountsAfterThreeMinutes]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.AutoParkTests testTheSpotIsWhereYouGotOut]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.AutoParkTests testTheStretchBeforeGPSCountsOnlyBeyondItsUncertainty]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.AutoParkTests testUndergroundGarageUsesTheEntrance]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.AutoParkTests testUnsureMotionReadingsAreIgnored]' passed (0.001 seconds).
-	 Executed 16 tests, with 0 failures (0 unexpected) in 0.057 (0.123) seconds
+Test Case '-[HandyToolsTests.AutoParkTests testSittingInTheCarThenParkingCountsAfterThreeMinutes]' passed (0.000 seconds).
+Test Case '-[HandyToolsTests.AutoParkTests testTheSpotIsWhereYouGotOut]' passed (0.127 seconds).
+Test Case '-[HandyToolsTests.AutoParkTests testTheStretchBeforeGPSCountsOnlyBeyondItsUncertainty]' passed (0.000 seconds).
+Test Case '-[HandyToolsTests.AutoParkTests testUndergroundGarageUsesTheEntrance]' passed (0.000 seconds).
+Test Case '-[HandyToolsTests.AutoParkTests testUnsureMotionReadingsAreIgnored]' passed (0.000 seconds).
+	 Executed 16 tests, with 0 failures (0 unexpected) in 0.359 (0.679) seconds
 Test Case '-[HandyToolsTests.AutomationGroupsTests testAnUnknownReminderFallsBackToItsOpenHint]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.AutomationGroupsTests testEachToolsRemindersLandInItsGroup]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.AutomationGroupsTests testEveryIdeaOpensARealTool]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.AutomationGroupsTests testTestRunsAndSnoozesAreNotShownAsAutomations]' passed (0.001 seconds).
-	 Executed 4 tests, with 0 failures (0 unexpected) in 0.003 (0.006) seconds
+Test Case '-[HandyToolsTests.AutomationGroupsTests testTestRunsAndSnoozesAreNotShownAsAutomations]' passed (0.000 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.003 (0.019) seconds
 Test Case '-[HandyToolsTests.BirthdayWishTests testWishUsesTheirNameAndTheMilestone]' passed (0.001 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.003) seconds
-Test Case '-[HandyToolsTests.BlockGoalTests testEveryBlockHasAKnownGoal]' passed (0.001 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.002) seconds
+Test Case '-[HandyToolsTests.BlockGoalTests testEveryBlockHasAKnownGoal]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.BlockGoalTests testPhotoStartOffersOnlyPhotoStepsGrouped]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.BlockGoalTests testTextStartOffersOnlyTextSteps]' passed (0.001 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.004 (0.007) seconds
-Test Case '-[HandyToolsTests.BoomerangTests testEveryStyleIsAValidLoop]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.BoomerangTests testEveryStyleMakesAGIF]' passed (0.450 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.005 (0.394) seconds
+Test Case '-[HandyToolsTests.BoomerangTests testEveryStyleIsAValidLoop]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.BoomerangTests testEveryStyleMakesAGIF]' passed (0.380 seconds).
 Test Case '-[HandyToolsTests.BoomerangTests testMotionCenterFindsTheMovement]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.BoomerangTests testStylesReallyDiffer]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.BoomerangTests testZoomNeverShowsAnEdge]' passed (0.001 seconds).
-	 Executed 5 tests, with 0 failures (0 unexpected) in 0.456 (0.458) seconds
-Test Case '-[HandyToolsTests.BusinessBooksTests testIRSRates]' passed (0.010 seconds).
-Test Case '-[HandyToolsTests.BusinessBooksTests testPriceListPDFHoldsEveryItem]' passed (0.128 seconds).
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.384 (0.386) seconds
+Test Case '-[HandyToolsTests.BusinessBooksTests testIRSRates]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.BusinessBooksTests testPriceListPDFHoldsEveryItem]' passed (0.092 seconds).
 Test Case '-[HandyToolsTests.BusinessBooksTests testSpreadsheetOpensCleanly]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.BusinessBooksTests testTotalsByMonthYearAndPurpose]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.BusinessBooksTests testTotalsByMonthYearAndPurpose]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.BusinessBooksTests testUsualTripsComeFirst]' passed (0.002 seconds).
-	 Executed 5 tests, with 0 failures (0 unexpected) in 0.145 (0.148) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.102 (0.104) seconds
 Test Case '-[HandyToolsTests.CHMTests testAlignedAndStoredBlocks]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.CHMTests testDamagedFileIsRefused]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.CHMTests testOpensAsBookInContentsOrder]' passed (0.083 seconds).
-Test Case '-[HandyToolsTests.CHMTests testUnpacksLikeTheReference]' passed (0.033 seconds).
-	 Executed 4 tests, with 0 failures (0 unexpected) in 0.122 (0.124) seconds
+Test Case '-[HandyToolsTests.CHMTests testDamagedFileIsRefused]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.CHMTests testOpensAsBookInContentsOrder]' passed (0.080 seconds).
+Test Case '-[HandyToolsTests.CHMTests testUnpacksLikeTheReference]' passed (0.032 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.118 (0.119) seconds
 Test Case '-[HandyToolsTests.ChainFinishTests testFinishRoundTripsAndSplitsRecipients]' passed (0.007 seconds).
 Test Case '-[HandyToolsTests.ChainFinishTests testLabels]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ChainFinishTests testOutboxFromTextAndFile]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.ChainFinishTests testSharedToolNeverCarriesRecipients]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.ChainFinishTests testOutboxFromTextAndFile]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.ChainFinishTests testSharedToolNeverCarriesRecipients]' passed (0.022 seconds).
 Test Case '-[HandyToolsTests.ChainFinishTests testToolsSavedBeforeFinishExistedStillLoad]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.ChainFinishTests testUnknownFinishKindFromAnotherPhoneFallsBackToShare]' passed (0.001 seconds).
-	 Executed 6 tests, with 0 failures (0 unexpected) in 0.015 (0.018) seconds
-Test Case '-[HandyToolsTests.ChainPlannerTests testHideThenShrinkRuns]' passed (0.069 seconds).
-Test Case '-[HandyToolsTests.ChainPlannerTests testNonsenseGivesNothing]' passed (0.006 seconds).
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.036 (0.038) seconds
+Test Case '-[HandyToolsTests.ChainPlannerTests testHideThenShrinkRuns]' passed (0.083 seconds).
+Test Case '-[HandyToolsTests.ChainPlannerTests testNonsenseGivesNothing]' passed (0.009 seconds).
 Test Case '-[HandyToolsTests.ChainPlannerTests testPhotoFileFeedsImageBlocks]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.ChainPlannerTests testReceiptReadsThenPulls]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.ChainPlannerTests testShrinkAndStrip]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.ChainPlannerTests testShrinkAndStrip]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.ChainPlannerTests testSummarizeText]' passed (0.001 seconds).
-	 Executed 6 tests, with 0 failures (0 unexpected) in 0.082 (0.085) seconds
-Test Case '-[HandyToolsTests.ChainRowTests testSplitPiecesOnOneRowAreRejoined]' passed (0.091 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.091 (0.091) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.099 (0.231) seconds
+Test Case '-[HandyToolsTests.ChainRowTests testSplitPiecesOnOneRowAreRejoined]' passed (0.082 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.082 (0.082) seconds
 Test Case '-[HandyToolsTests.ChainRunnerTests testEmptyTextStopsWithNamedBlock]' passed (0.006 seconds).
-2026-11-26 05:25:01.280693+0000 HandyTools[22562:67164] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1088d5040> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1088d5040> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-Test Case '-[HandyToolsTests.ChainRunnerTests testFullReceiptChainOnSampleImage]' passed (2.601 seconds).
+2026-11-26 07:11:35.372834+0000 HandyTools[25200:73991] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10913a760> connection from pid 25200 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10913a760> connection from pid 25200 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 07:11:35.397115+0000 HandyTools[25200:73986] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10913a3a0> connection from pid 25200 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10913a3a0> connection from pid 25200 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+Test Case '-[HandyToolsTests.ChainRunnerTests testFullReceiptChainOnSampleImage]' passed (2.266 seconds).
 Test Case '-[HandyToolsTests.ChainRunnerTests testMismatchedStepsAreRejectedInPlainWords]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testReceiptBlockProducesCSV]' passed (0.021 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testRunnerRefusesInvalidChainWithoutRunning]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testShrinkAndStripGiveJPEGFiles]' passed (0.017 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testReceiptBlockProducesCSV]' passed (0.020 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testRunnerRefusesInvalidChainWithoutRunning]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testShrinkAndStripGiveJPEGFiles]' passed (0.016 seconds).
 Test Case '-[HandyToolsTests.ChainRunnerTests testSummarizeBlockRuns]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.ChainRunnerTests testTemplatesAreValidAndCodable]' passed (0.003 seconds).
-	 Executed 8 tests, with 0 failures (0 unexpected) in 2.659 (2.663) seconds
-Test Case '-[HandyToolsTests.ChainTemplateTests testCardAndTaskBlocks]' passed (0.015 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 2.321 (2.324) seconds
+Test Case '-[HandyToolsTests.ChainTemplateTests testCardAndTaskBlocks]' passed (0.016 seconds).
 Test Case '-[HandyToolsTests.ChainTemplateTests testShareRoundTripAndRejectsJunk]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.ChainTemplateTests testTwentyEightTemplatesAllValidAndUnique]' passed (0.001 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.016 (0.018) seconds
-Test Case '-[HandyToolsTests.ClaimPackTests testClaimPackHasTheDetailsTheReceiptAndTheProblem]' passed (0.025 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.025 (0.026) seconds
-Test Case '-[HandyToolsTests.CleanerPlanTests testBurstKeepsYourPickThenFavouriteThenIPhonesPickThenCover]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.CleanerPlanTests testPlanDropsEmptyRowsAndPutsTheBiggestFirst]' passed (0.005 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.006 (0.007) seconds
-Test Case '-[HandyToolsTests.CombineTests testCombineFlagSurvivesSavingAndOldToolsLoadWithoutIt]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.CombineTests testPicturesBecomeOnePdfWithAPageEach]' passed (0.021 seconds).
-Test Case '-[HandyToolsTests.CombineTests testSavedPhotosCombineToo]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.CombineTests testSeparatePdfsAreJoinedInOrder]' passed (2.833 seconds).
-Test Case '-[HandyToolsTests.CombineTests testTextOrMixedResultsAreLeftSeparate]' passed (0.001 seconds).
-	 Executed 5 tests, with 0 failures (0 unexpected) in 2.862 (2.864) seconds
-Test Case '-[HandyToolsTests.ContactFinderTests testEveryPairSplitsEveryone]' passed (0.011 seconds).
-Test Case '-[HandyToolsTests.ContactFinderTests testWhatEachFinds]' passed (0.002 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.013 (0.019) seconds
-Test Case '-[HandyToolsTests.ContactsTransferTests testPlanSkipsPeopleAlreadyThereAndDuplicatesInsideTheBatch]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.ContactsTransferTests testSamePersonAcrossAccountsIsRecognised]' passed (0.001 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.003) seconds
-Test Case '-[HandyToolsTests.CutoutStudioTests testRunsOffTheEdgeIsSaidOnlyWhenItDoes]' passed (0.098 seconds).
-Test Case '-[HandyToolsTests.CutoutStudioTests testShapesComeOutTheRightProportions]' passed (0.195 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.293 (0.299) seconds
-Test Case '-[HandyToolsTests.EmptyCutoutTests testAnEmptyCutoutCountsAsNothing]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EmptyCutoutTests testASubjectCountsAsThere]' passed (0.001 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
-Test Case '-[HandyToolsTests.EngineTests testAChangingClockDoesntHideTheRepeatedHeader]' passed (0.820 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAnimateLooksAndPrintableFlipbook]' passed (7.193 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAnimateRendersEveryStyleAtTheRealFormat]' passed (11.617 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAnnotateBakesMarksKeepsPagesAndText]' passed (2.317 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAnnotateHandlesEmptyMarksAndBadInput]' passed (4.137 seconds).
-Test Case '-[HandyToolsTests.EngineTests testArrivalAlertShowsMyListAtTheStore]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanFileProducesPlayableResult]' passed (0.822 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanGateAttenuatesQuietKeepsLoud]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanHighPassKeepsHighTone]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanHighPassRemovesDC]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanNoiseFloorTracksTheQuietParts]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanNormalizeLeavesSilenceAlone]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanNormalizeRaisesPeakAndKeepsBalance]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanProcessPreservesShape]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCleanRejectsNonAudioGracefully]' passed (0.017 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioCompressShrinksAndStaysPlayable]' passed (0.171 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioConvertPicksFormatByPurpose]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioConvertProducesPlayableFilesEveryFormat]' passed (0.115 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioConvertRejectsNonAudioGracefully]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioEditFadesRampTheEdgesToSilence]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioEditFileTrimProducesPlayableShorterClip]' passed (0.073 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioEditFindsDeadAirAndKeepsTheRest]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioEditProcessTrimsAndRemovesSilence]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioEditRejectsNonAudioGracefully]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioJoinAndSpeedKeepRealLengths]' passed (0.144 seconds).
-Test Case '-[HandyToolsTests.EngineTests testAudioTagsWriteMP3AndM4AWithoutTouchingAudio]' passed (0.123 seconds).
-Test Case '-[HandyToolsTests.EngineTests testBusinessCardsReadMergeAndNeverMistakeAChat]' passed (0.188 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCameraReadsTheSceneAndCoaches]' passed (0.602 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCaptureFindsCodesInPhotosAndActionsInText]' passed (0.749 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCaregiverFollowUpsSummaryAndSharing]' passed (0.019 seconds).
-2026-11-26 05:25:33.791476+0000 HandyTools[22562:70633] [Context] [PREFLIGHTING] context 0x12f1b2e80: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
-Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' passed (0.038 seconds).
-2026-11-26 05:25:34.034437+0000 HandyTools[22562:67238] [Context] [PREFLIGHTING] context 0x12f1b2e80: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-Test Case '-[HandyToolsTests.EngineTests testCelebrateFindsAnyCelebrationAndDecoratesEveryFrame]' passed (11.413 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCollageLayoutsTileTheCanvasExactly]' passed (0.013 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorTypeCheckPairsFoolOnlyTheirOwnEye]' passed (0.024 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionHighlightCubeKeepsTargetGreysRest]' passed (0.015 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionMatricesBehave]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionNamesAndAverage]' passed (0.043 seconds).
-Test Case '-[HandyToolsTests.EngineTests testComicStripInksPanelsAndLaysThemOut]' passed (1.027 seconds).
-Test Case '-[HandyToolsTests.EngineTests testContactsBackupDueLogic]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testContactsCategorize]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testContactsCountryCodeAndBackupReminder]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testContactsProSearchesFiltersExportsAndPlans]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCrossfadeHalfwayIsAMixOfBothPhotos]' passed (0.150 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCutoutEdgesArePulledInAndFeathered]' passed (0.075 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDailyBriefSaysWhatMattersToday]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDataGrabReceiptCardEventTable]' passed (0.055 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDescribeItBuildsWhatWasAskedOrSaysWhatsMissing]' passed (0.071 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDuplicateHashSeparatesDifferentDocuments]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testEnhanceProducesAValidImageBothModes]' passed (0.347 seconds).
-unrecognised property keyTest Case '-[HandyToolsTests.EngineTests testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook]' passed (3.113 seconds).
-Test Case '-[HandyToolsTests.EngineTests testEveryPenColourSavesAVisibleSignature]' passed (0.127 seconds).
-Test Case '-[HandyToolsTests.EngineTests testEveryVoiceSoundsDifferentAndPreviewsAreShort]' passed (2.149 seconds).
-Test Case '-[HandyToolsTests.EngineTests testExcelWorkbookKeepsNumbersAsNumbers]' passed (0.012 seconds).
-Test Case '-[HandyToolsTests.EngineTests testFaceEmojiCoversOnlyChosenFacesAndMergesDetections]' passed (0.670 seconds).
-Test Case '-[HandyToolsTests.EngineTests testFileKindClassifier]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testFillFormWritesRealFields]' passed (0.154 seconds).
-Test Case '-[HandyToolsTests.EngineTests testFitItKnowsWhereThingsAreGoing]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testFlashlightMorseSirenAndShortcut]' passed (0.025 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGeoFormatting]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGifFromPhotosHasEveryFrame]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGlossaryFindsTermsAndRedFlags]' passed (0.026 seconds).
-Test Case '-[HandyToolsTests.EngineTests testIdentifierCleansLabels]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testKeepOnlyMyNewestScreenshots]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testLabelDecodeFlagsAndServingMath]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testLightPanelFindsTheReceiptInADarkScreenshot]' passed (0.115 seconds).
-Test Case '-[HandyToolsTests.EngineTests testLinkCleanerStripsTrackingAndUnwrapsRedirects]' passed (0.009 seconds).
-Test Case '-[HandyToolsTests.EngineTests testLongScreenshotFindsTheLatestScrollAndCutsPages]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMagnifierPipelineKeepsExtentAndAppliesLooks]' passed (0.078 seconds).
-2026-11-26 05:26:03.183397+0000 HandyTools[22562:66634] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1088d6c60> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1088d6c60> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-Test Case '-[HandyToolsTests.EngineTests testMakeSearchableAddsRealTextLayer]' passed (11.039 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeasureMathLengthsAreasAndFormatting]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMedicinePillCountWarnsOnceAtTheRefillPoint]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMedicineScheduleRules]' passed (0.008 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeetingEmailAddressesNamedPeopleWithTodos]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeetingEmailGreetsAllWhenNoNames]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeetingPeopleIsCleanAndSafe]' passed (0.053 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeetingTurnsEmptyIsEmpty]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeetingTurnsSingleWhenNoBigGap]' passed (0.000 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeetingTurnsSplitAtPauses]' passed (0.001 seconds).
-2026-11-26 05:26:04.709147+0000 HandyTools[22562:72066] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXTest Case '-[HandyToolsTests.EngineTests testMemorySynonymAndColorSearch]' started.
-Test Case '-[HandyToolsTests.EngineTests testMemorySynonymAndColorSearch]' passed (0.013 seconds).
-2026-11-26 05:26:04.801012+0000 HandyTools[22562:72067] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf06e0> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf06e0> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:26:04.836694+0000 HandyTools[22562:72067] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf3f20> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf3f20> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:26:04.858878+0000 HandyTools[22562:72067] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf0320> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf0320> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:26:05.806473+0000 HandyTools[22562:66634] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf0320> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf0320> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:26:05.824862+0000 HandyTools[22562:72066] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf1c20> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf1c20> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:26:05.846084+0000 HandyTools[22562:72066] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf19a0> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf19a0> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:26:05.888274+0000 HandyTools[22562:72066] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf1c20> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf1c20> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:26:05.895210+0000 HandyTools[22562:72066] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf15e0> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf15e0> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:26:05.904684+0000 HandyTools[22562:72066] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf0780> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x108cf0780> connection from pid 22562 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-Test Case '-[HandyToolsTests.EngineTests testMenuReaderFindsDishesPricesAndWhatsInThem]' passed (1.216 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMorseEncoding]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMyDayDiaryLogsLocksAndRemembers]' passed (0.129 seconds).
-Test Case '-[HandyToolsTests.EngineTests testNoiseSynthEveryKindRendersFiniteAudio]' passed (0.194 seconds).
-Test Case '-[HandyToolsTests.EngineTests testNoiseSynthProducesBoundedColouredNoise]' passed (2.161 seconds).
-Test Case '-[HandyToolsTests.EngineTests testOCRReadsCleanRenderedText]' passed (0.524 seconds).
-Test Case '-[HandyToolsTests.EngineTests testOrganizePagesMergeSplitAndBlankPages]' passed (0.160 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPaperworkPackForTheYear]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.EngineTests testParkingMeterAndSpeedWarning]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPassportCheckGradesPhotos]' passed (0.100 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPDFConvertPagesAndSizes]' passed (0.247 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPDFPagesKeepsTextWhenRedrawn]' passed (8.310 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPDFPagesReorderRotateRemove]' passed (0.043 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPDFProtectLockUnlockWatermark]' passed (0.043 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPdfTextExtractsEmbeddedLayer]' passed (0.009 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPdfToImagesRendersEveryPage]' passed (0.094 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPitchDetectionAndNoteMath]' passed (0.009 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPriceExtractionFromListingText]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram]' passed (0.330 seconds).
-Test Case '-[HandyToolsTests.EngineTests testProtectPDFWatermarksLocksAndBlocksInOnePass]' passed (0.405 seconds).
-Test Case '-[HandyToolsTests.EngineTests testQRLinkVerdictNamesTheRealOwner]' passed (0.010 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReadAloudPicksOneStableLanguageForMixedPages]' passed (0.850 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReadSourceExtractsArticleTextAndReaderSplits]' passed (0.131 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReceiptFuzzySearchFindsTypoAndVagueWords]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReceiptSimilarityIsBoundedAndSane]' passed (0.000 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRedactionTrulyRemovesHiddenText]' passed (0.045 seconds).
-Test Case '-[HandyToolsTests.EngineTests testResizeCapsLongestSideAndNeverUpscales]' passed (0.008 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRestNightSummaryByHour]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReturnWindowIsReadOffTheReceipt]' passed (0.016 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRingtoneClampsToThirtySecondsAndCutsFromStart]' passed (25.965 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRingtoneStartsOnTheBestPartAndReadsTheSong]' passed (0.395 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRoomMathWhatToBuyAndSavedMeasurements]' passed (0.011 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRoutePlanLinksPlacesAndOrders]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRoutePlanNeverGuessesANameAndStaysGraceful]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRoutePlanRoutesEmailAndCallTasksToTheRightApp]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSalePriceAndSplitTheBill]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSavedSignatureRoundTrips]' passed (0.524 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScamAnalyzerCatchesClassicsAndClearsNormalText]' passed (0.032 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanCleanupProducesDocumentLooks]' passed (0.184 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanNonSearchablePDFHasNoText]' passed (0.106 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanPDFIsSearchableAndKeepsPageCount]' passed (3.609 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanPDFUnderLimitKeepsTextLayer]' passed (8.700 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanRotationKeepsStampsAndInkInPlace]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanSplitRangesAndEveryPage]' passed (0.027 seconds).
-2026-11-26 05:27:00.493896+0000 HandyTools[22562:76055] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-Test Case '-[HandyToolsTests.EngineTests testSceneComposerSpeaksConcretely]' passed (1.124 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScrubberBlocksPixelsAndDropsMetadata]' passed (0.083 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScrubberClassifiesPersonalTextForAutoHiding]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSearchRanksTheObviousToolFirst]' passed (0.228 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSensorMathConversions]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testShutterLabelNeverTrapsOnInvalidExposure]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSignPDFStampsAndKeepsOriginalText]' passed (0.020 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeParserHandlesMultipacksAndJunk]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageIsFastAndOffMainForBigPhoto]' passed (12.854 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageLandsUnderLimit]' passed (4.466 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetPDFLandsUnderLimit]' passed (8.043 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetVideoLandsUnderLimit]' passed (9.793 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSmartAlertsFireOnlyWhenTrueAndOnceADay]' passed (0.094 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSortedFindsWaysToActAndRemindsBeforeTheDate]' passed (0.146 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSoundboardEveryVoiceProducesPlayableWAV]' passed (2.477 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSoundboardRejectsNonAudioGracefully]' passed (0.020 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSoundEventDetectorArmsHoldsAndStops]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSpellFixFollowsLanguage]' passed (0.024 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStickerStudioEveryPresetIsATrimmedSeeThroughSticker]' passed (3.642 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStitchedScreenshotsAreUpright]' passed (1.152 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStitcherOrdersShuffledScreenshots]' passed (1.163 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStitcherRemovesOverlapAndKeepsChromeOnce]' passed (1.134 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStudioEncodesEveryFormat]' passed (0.166 seconds).
-2026-11-26 05:27:46.379930+0000 HandyTools[22562:80978] [Context] [PREFLIGHTING] context 0x12f1b2e80: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:27:46.750205+0000 HandyTools[22562:76055] [Context] [PREFLIGHTING] context 0x12f1b2e80: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:27:47.228550+0000 HandyTools[22562:76055] [Context] [PREFLIGHTING] context 0x12f1b2e80: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:27:47.583984+0000 HandyTools[22562:79547] [Context] [PREFLIGHTING] context 0x12f1b2e80: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:27:47.910792+0000 HandyTools[22562:80978] [Context] [PREFLIGHTING] context 0x12f1b2e80: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:27:48.309133+0000 HandyTools[22562:80978] [Context] [PREFLIGHTING] context 0x12f1b2e80: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-Test Case '-[HandyToolsTests.EngineTests testStyledQRCodesStillScan]' passed (2.482 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTextToolsFixSummarizeActionsStats]' passed (0.105 seconds).
-Test Case '-[HandyToolsTests.EngineTests testThinkBoxDecidesJudgesAndRemembers]' passed (0.103 seconds).
-Test Case '-[HandyToolsTests.EngineTests testThinkBoxReadsWorriesAsWorriesNotTasks]' passed (0.023 seconds).
-Test Case '-[HandyToolsTests.EngineTests testThinkStepsAreRealActions]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTranscriptionCoversTheWholeRecording]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTranscriptionProgressIsHonest]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTranscriptionStitchKeepsEveryWindow]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTranscriptTidyRemovesFillersAndBuildsParagraphs]' passed (0.019 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTripTrackerAccumulatesAndFiltersNoise]' passed (0.011 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTroyOunceForPreciousMetals]' passed (0.371 seconds).
-Test Case '-[HandyToolsTests.EngineTests testUnitPriceComparesAcrossDifferentUnits]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testUntanglePlanBecomesAPictureToShare]' passed (0.174 seconds).
-Test Case '-[HandyToolsTests.EngineTests testUntanglePlansAroundHowYouFeel]' passed (0.069 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVaultCryptoRoundTripsAndRejectsTampering]' passed (0.016 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoEngineTrimsConvertsMutesAndMakesGIF]' passed (1.935 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoFormatFillAndFit]' passed (0.022 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoRecorderMakesARealMovieWithSound]' passed (10.821 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoReframeMakesExactPlatformSizes]' passed (4.952 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoScenesAndFilmingCoach]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testWarrantyCountdown]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.EngineTests testWarrantyNudgeComesWhenYouChose]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testWeatherWearSaysWhatToWear]' passed (0.011 seconds).
-Test Case '-[HandyToolsTests.EngineTests testWifiPayloadRoundTripsThroughParser]' passed (0.032 seconds).
-Test Case '-[HandyToolsTests.EngineTests testZipMakerBuildsArchiveTheUnzipReaderOpens]' passed (0.018 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.017 (0.018) seconds
+Test Case '-[HandyToolsTests.ClaimPackTests testClaimPackHasTheDetailsTheReceiptAndTheProblem]' passed (0.027 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.027 (0.027) seconds
+Test Case '-[HandyToolsTests.CleanerDuplicatesTests testGroupsAreOneItemAndItsTwinsNotChains]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.CleanerDuplicatesTests testOnlyClipsTheSameLengthAreCompared]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.CleanerDuplicatesTests testTheSavedIndexOnlyTrustsAnUneditedPhoto]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.CleanerDuplicatesTests testTwinHashesAreFoundAnywhereAndNothingElse]' passed (0.084 seconds).
+2026-11-26 07:11:47.306166+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-1-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.314805+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-2-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.315173+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-3-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.366561+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-4-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.366810+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-5-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.367006+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-6-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.367197+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-7-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.373031+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-8-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.373245+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-9-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.373383+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-10-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.373533+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-11-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.375327+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-12-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.375520+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-13-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.375672+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-14-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.383785+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-15-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.384021+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-16-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.384188+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-17-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.384346+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-18-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.486665+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-19-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.486962+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-20-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.487288+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-21-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.492223+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-22-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.492421+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-23-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.492608+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-24-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.492757+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-25-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.494251+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-26-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.494416+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-27-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.494546+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-28-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.494659+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-29-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.499154+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-30-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.499335+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-31-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.499464+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-32-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.506205+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-33-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.506382+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-34-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.506506+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-35-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.506613+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-36-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.507925+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-37-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.508102+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-38-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.508231+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-39-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.513932+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-40-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.514203+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-41-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.514378+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-42-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.514499+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-43-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.521688+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-44-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.521897+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-45-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.522037+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-46-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.522180+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-47-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.526425+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-48-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.526652+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-49-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.526828+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-50-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.529005+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-51-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.529181+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-52-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.529348+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-53-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.529466+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-54-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.530908+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-55-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.531072+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-56-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.531197+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-57-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.531303+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-58-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.532958+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-59-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.533148+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-60-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.533308+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-61-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.534253+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-62-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.534414+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-63-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.534532+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-64-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.534662+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-65-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.542850+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-66-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.543065+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-67-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.543238+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-68-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.546289+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-69-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.546473+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-70-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.546591+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-71-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.546697+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-72-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.549220+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-73-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.549439+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-74-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.549592+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-75-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.549724+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-76-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.571886+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-77-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.572086+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-78-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.572275+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-79-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.573456+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-80-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.573636+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-81-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.573760+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-82-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.574161+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-83-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.575210+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-84-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.575348+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-85-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.575468+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-86-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.576740+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-87-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.576917+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-88-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.577056+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-89-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.577209+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-90-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.580327+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-91-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.580472+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-92-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.580572+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-93-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.580753+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-94-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.582362+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-95-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.582548+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-96-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.582674+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-97-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.584389+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-98-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.584574+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-99-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.584731+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-100-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.584856+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-101-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.586218+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-102-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.586346+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-103-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.586439+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-104-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.588049+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-105-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.588216+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-106-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.588334+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-107-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.588464+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-108-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.591649+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-109-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.591847+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-110-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.591998+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-111-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.592151+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-112-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.593981+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-113-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.594161+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-114-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.594307+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-115-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.595069+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-116-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.595238+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-117-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.595349+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-118-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.595455+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-119-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.596748+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-120-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.596974+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-121-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.597137+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-122-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.598950+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-123-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.599147+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-124-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.599328+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-125-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.599487+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-126-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.600385+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-127-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.600631+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-128-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.600936+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-129-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.601176+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-130-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.605863+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-131-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.606028+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-132-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.606171+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-133-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.607037+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-134-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.607175+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-135-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.607277+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-136-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.607382+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-137-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.608678+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-138-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.608860+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-139-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.608999+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-140-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.609597+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-141-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.609739+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-142-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.609860+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-143-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.609966+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-144-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.610472+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-145-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.610580+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-146-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.610689+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-147-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.611140+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-148-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.611276+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-149-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.611385+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-150-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.611496+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-151-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.612196+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-152-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.612364+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-153-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.612483+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-154-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.612620+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-155-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.613144+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-156-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.613294+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-157-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.613417+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-158-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.613936+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-159-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.614066+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-160-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.614178+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-161-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.614529+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-162-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.618766+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-163-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.618942+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-164-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.619115+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-165-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.619930+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-166-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.620067+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-167-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.620175+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-168-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.620287+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-169-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.621129+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-170-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.621243+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-171-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.621387+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-172-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.621510+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-173-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.622048+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-174-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.622167+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-175-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.622269+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-176-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.623250+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-177-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.623398+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-178-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.623507+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-179-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.623636+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-180-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.625742+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-181-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.625882+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-182-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.625995+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-183-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.627688+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-184-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.627890+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-185-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.628018+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-186-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.628141+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-187-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.629418+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-188-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.629637+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-189-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.629813+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-190-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.629959+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-191-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.630688+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-192-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.630803+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-193-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.630952+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-194-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.632089+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-195-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.632243+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-196-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.632378+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-197-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.632495+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-198-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.633672+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-199-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.633825+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-200-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.633940+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-201-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.638007+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-202-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.638188+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-203-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.638306+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-204-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.638428+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-205-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.640052+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-206-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.640222+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-207-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.640342+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-208-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.640504+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-209-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.646244+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-210-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.646425+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-211-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.646588+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-212-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
+2026-11-26 07:11:47.650583+0000 HandyTools[25200:73984] [ImageManager] [RM]: 1-213-0 Image request failed with error: Error Domain=PHPhotosErrorDomain Code=3303 "No resource found matching image request spec" UserInfo={NSDebugDescription=No resource found matching image request spec}
