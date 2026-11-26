@@ -52,4 +52,117 @@ platform :android do
       supply(base.merge(release_status: "draft"))
     end
   end
+
+  # Tenzy Pro's two plans on Google Play, set by the pipeline instead of by hand (26 Nov — the same as the iPhone):
+  # monthly $2.99 (tenzy_pro_month) and yearly $29.99 (tenzy_pro_yearly), each with a 7-day free trial for people who
+  # have never subscribed. Prices in every country are Play's own conversion of the US price. People already on yearly
+  # at $19.99 keep their price: Play leaves existing subscribers on their old price unless they're moved, and this never
+  # moves them. Safe to run again — it only changes what differs, and says what it did.
+  lane :subscriptions do
+    require "googleauth"
+    require "net/http"
+    require "json"
+    pkg = "com.tenzy.toolkit"
+    key = ENV["SUPPLY_JSON_KEY_PATH"] || "play-key.json"
+    creds = Google::Auth::ServiceAccountCredentials.make_creds(json_key_io: File.open(key), scope: "https://www.googleapis.com/auth/androidpublisher")
+    token = creds.fetch_access_token!["access_token"]
+    base = "https://androidpublisher.googleapis.com/androidpublisher/v3/applications/#{pkg}"
+    call = lambda do |method, path, body = nil|
+      uri = URI(base + path)
+      req = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method].new(uri)
+      req["Authorization"] = "Bearer #{token}"
+      req["Content-Type"] = "application/json"
+      req.body = body.to_json if body
+      res = Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |h| h.request(req) }
+      [res.code.to_i, (JSON.parse(res.body) rescue { "raw" => res.body.to_s[0, 300] })]
+    end
+    money = lambda { |usd| u, c = usd.split("."); { "currencyCode" => "USD", "units" => u, "nanos" => c.ljust(9, "0").to_i } }
+    same_price = lambda { |a, b| a && b && a["currencyCode"] == b["currencyCode"] && a["units"].to_s == b["units"].to_s && a["nanos"].to_i == b["nanos"].to_i }
+    trial = "P7D"
+    plans = [
+      { pid: "tenzy_pro_yearly", bp: "yearly-p1y",  period: "P1Y", usd: "29.99", title: "Tenzy Pro (Yearly)" },
+      { pid: "tenzy_pro_month",  bp: "monthly-p1m", period: "P1M", usd: "2.99",  title: "Tenzy Pro (Monthly)" },
+    ]
+    plans.each do |p|
+      UI.header("#{p[:pid]}: $#{p[:usd]} every #{p[:period]}, #{trial} free trial")
+      code, conv = call.(:post, "/pricing:convertRegionPrices", { "price" => money.(p[:usd]) })
+      UI.user_error!("price conversion failed (#{code}): #{conv.to_s[0, 300]}") unless code == 200
+      prices = (conv["convertedRegionPrices"] || {}).transform_values { |r| r["price"] }
+      other = conv["convertedOtherRegionsPrice"] || {}
+      rv = "regionsVersion.version=#{(conv['regionVersion'] || {})['version'] || '2022/02'}"
+      UI.message("  Play's prices for #{prices.size} countries (US #{prices['US'].to_json})")
+
+      code, sub = call.(:get, "/subscriptions/#{p[:pid]}")
+      if code == 404
+        plan = { "basePlanId" => p[:bp], "autoRenewingBasePlanType" => { "billingPeriodDuration" => p[:period], "legacyCompatible" => true },
+                 "regionalConfigs" => prices.map { |rc, pr| { "regionCode" => rc, "newSubscriberAvailability" => true, "price" => pr } },
+                 "otherRegionsConfig" => { "usdPrice" => other["usdPrice"], "eurPrice" => other["eurPrice"], "newSubscriberAvailability" => true } }
+        body = { "packageName" => pkg, "productId" => p[:pid], "listings" => [{ "languageCode" => "en-US", "title" => p[:title] }], "basePlans" => [plan] }
+        code, sub = call.(:post, "/subscriptions?productId=#{p[:pid]}&#{rv}", body)
+        UI.user_error!("couldn't create #{p[:pid]} (#{code}): #{sub.to_s[0, 400]}") unless code == 200
+        UI.success("  created #{p[:pid]} with base plan #{p[:bp]}")
+      elsif code != 200
+        UI.user_error!("couldn't read #{p[:pid]} (#{code}): #{sub.to_s[0, 300]}")
+      end
+
+      plans_now = sub["basePlans"] || []
+      bp = plans_now.find { |b| b["basePlanId"] == p[:bp] } || plans_now.find { |b| b.dig("autoRenewingBasePlanType", "billingPeriodDuration") == p[:period] }
+      UI.user_error!("#{p[:pid]} has no #{p[:period]} base plan (has #{plans_now.map { |b| b['basePlanId'] }})") unless bp
+      bp_id = bp["basePlanId"]
+      # The price: every country the plan is sold in gets Play's conversion of the US price. Availability is kept as is.
+      changed = 0
+      (bp["regionalConfigs"] || []).each do |rc|
+        np = prices[rc["regionCode"]]
+        next if np.nil? || same_price.(rc["price"], np)
+        rc["price"] = np; changed += 1
+      end
+      if bp["otherRegionsConfig"] && other["usdPrice"] && !same_price.(bp["otherRegionsConfig"]["usdPrice"], other["usdPrice"])
+        bp["otherRegionsConfig"]["usdPrice"] = other["usdPrice"]; bp["otherRegionsConfig"]["eurPrice"] = other["eurPrice"]; changed += 1
+      end
+      if changed > 0
+        code, res = call.(:patch, "/subscriptions/#{p[:pid]}?updateMask=basePlans&#{rv}", sub)
+        UI.user_error!("price change refused (#{code}): #{res.to_s[0, 400]}") unless code == 200
+        UI.success("  price now $#{p[:usd]} (Play's conversion in #{changed} places); existing subscribers keep theirs")
+      else
+        UI.message("  price already $#{p[:usd]}")
+      end
+      if bp["state"] != "ACTIVE"
+        code, res = call.(:post, "/subscriptions/#{p[:pid]}/basePlans/#{bp_id}:activate", {})
+        UI.user_error!("couldn't switch on #{bp_id} (#{code}): #{res.to_s[0, 300]}") unless code == 200
+        UI.success("  base plan #{bp_id} switched on")
+      end
+
+      # The free trial: one 7-day offer for people who've never subscribed; any other free-trial length is switched off.
+      regions = (bp["regionalConfigs"] || []).map { |rc| rc["regionCode"] }
+      code, list = call.(:get, "/subscriptions/#{p[:pid]}/basePlans/#{bp_id}/offers")
+      offers = code == 200 ? (list["subscriptionOffers"] || []) : []
+      free = lambda { |o| (o["phases"] || []).find { |ph| (ph["regionalConfigs"] || []).any? { |r| r.key?("free") } || (ph["otherRegionsConfig"] || {}).key?("free") } }
+      offers.each do |o|
+        ph = free.(o)
+        next unless ph && ph["duration"] != trial && o["state"] == "ACTIVE"
+        code, res = call.(:post, "/subscriptions/#{p[:pid]}/basePlans/#{bp_id}/offers/#{o['offerId']}:deactivate", {})
+        UI.message("  #{ph['duration']} trial offer #{o['offerId']} switched off (#{code})")
+      end
+      week = offers.find { |o| (ph = free.(o)) && ph["duration"] == trial }
+      unless week
+        body = { "packageName" => pkg, "productId" => p[:pid], "basePlanId" => bp_id, "offerId" => "free-week",
+                 "phases" => [{ "recurrenceCount" => 1, "duration" => trial,
+                                "regionalConfigs" => regions.map { |r| { "regionCode" => r, "free" => {} } },
+                                "otherRegionsConfig" => { "free" => {} } }],
+                 "targeting" => { "acquisitionRule" => { "scope" => { "anySubscriptionInApp" => {} } } },
+                 "regionalConfigs" => regions.map { |r| { "regionCode" => r, "newSubscriberAvailability" => true } },
+                 "otherRegionsConfig" => { "otherRegionsNewSubscriberAvailability" => true } }
+        code, week = call.(:post, "/subscriptions/#{p[:pid]}/basePlans/#{bp_id}/offers?offerId=free-week&#{rv}", body)
+        UI.user_error!("couldn't create the 7-day trial (#{code}): #{week.to_s[0, 400]}") unless code == 200
+        UI.success("  7-day free trial created")
+      end
+      if week["state"] != "ACTIVE"
+        code, res = call.(:post, "/subscriptions/#{p[:pid]}/basePlans/#{bp_id}/offers/#{week['offerId']}:activate", {})
+        UI.user_error!("couldn't switch on the trial (#{code}): #{res.to_s[0, 300]}") unless code == 200
+        UI.success("  7-day free trial switched on")
+      else
+        UI.message("  7-day free trial already on")
+      end
+    end
+  end
 end

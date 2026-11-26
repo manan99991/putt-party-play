@@ -56,7 +56,7 @@ fun PrivacyScreen() {
             "Tenzy shows no ads at all — free or Pro. There is no ad SDK and no advertising ID is used.",
         ), null)
 
-        Block("Payments", false, listOf("Pro is $19.99 a year, billed by Google Play. We never see your card."), null)
+        Block("Payments", false, listOf("Pro is $2.99 a month or $29.99 a year, each with a 7-day free trial, billed by Google Play. We never see your card."), null)
         Block("Permissions", false, listOf(
             "Each one is asked for by the tool that needs it, with the reason next to the switch.",
             "Camera: scanning, codes, Pro Camera, Identify, Color Vision. Microphone: Voice, Hearing Boost, Rest, sound meter.",

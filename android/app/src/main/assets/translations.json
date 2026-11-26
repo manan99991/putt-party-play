@@ -16938,5 +16938,125 @@
   "ja": "話しかけて — 例: 毎晩、今日のスクリーンショットを自分にメールして",
   "pt": "Diga — ex.: toda noite, me ajude a enviar por e-mail as capturas de tela de hoje para mim",
   "zh": "说出来 — 例如：每天晚上，帮我把今天的截图发邮件给自己"
+ },
+ "Checking your whole library for copies…": {
+  "de": "Deine ganze Mediathek wird auf Kopien geprüft…",
+  "es": "Revisando toda tu fototeca en busca de copias…",
+  "fr": "Recherche de copies dans toute ta photothèque…",
+  "hi": "आपकी पूरी लाइब्रेरी में कॉपियाँ खोजी जा रही हैं…",
+  "it": "Controllo di tutta la libreria in cerca di copie…",
+  "ja": "ライブラリ全体で重複を確認しています…",
+  "pt": "Verificando toda a sua fototeca em busca de cópias…",
+  "zh": "正在检查整个图库中的重复项…"
+ },
+ "Scanning…": {
+  "de": "Wird durchsucht…",
+  "es": "Buscando…",
+  "fr": "Analyse…",
+  "hi": "स्कैन हो रहा है…",
+  "it": "Scansione…",
+  "ja": "スキャン中…",
+  "pt": "Procurando…",
+  "zh": "正在扫描…"
+ },
+ "The first check reads every photo once; after that only new ones.": {
+  "de": "Beim ersten Mal wird jedes Foto einmal gelesen, danach nur neue.",
+  "es": "La primera revisión lee cada foto una vez; después, solo las nuevas.",
+  "fr": "La première vérification lit chaque photo une fois ; ensuite, seulement les nouvelles.",
+  "hi": "पहली बार हर फ़ोटो एक बार पढ़ी जाती है; उसके बाद सिर्फ़ नई फ़ोटो।",
+  "it": "Il primo controllo legge ogni foto una volta; poi solo quelle nuove.",
+  "ja": "初回はすべての写真を一度読み込みます。以降は新しい写真だけです。",
+  "pt": "A primeira verificação lê cada foto uma vez; depois, só as novas.",
+  "zh": "首次检查会读取每张照片一次，之后只读取新照片。"
+ },
+ "Less than a minute left": {
+  "de": "Weniger als eine Minute",
+  "es": "Falta menos de un minuto",
+  "fr": "Moins d'une minute restante",
+  "hi": "एक मिनट से कम बाकी",
+  "it": "Manca meno di un minuto",
+  "ja": "残り1分未満",
+  "pt": "Falta menos de um minuto",
+  "zh": "剩余不到一分钟"
+ },
+ "About %d min left": {
+  "de": "Noch etwa %d Min.",
+  "es": "Faltan unos %d min",
+  "fr": "Environ %d min restantes",
+  "hi": "लगभग %d मिनट बाकी",
+  "it": "Mancano circa %d min",
+  "ja": "残り約%d分",
+  "pt": "Faltam cerca de %d min",
+  "zh": "大约还剩 %d 分钟"
+ },
+ "Checked all %@ photos and %@ videos for copies.": {
+  "de": "Alle %@ Fotos und %@ Videos auf Kopien geprüft.",
+  "es": "Se revisaron las %@ fotos y los %@ videos en busca de copias.",
+  "fr": "Les %@ photos et %@ vidéos ont toutes été vérifiées.",
+  "hi": "सभी %@ फ़ोटो और %@ वीडियो में कॉपियाँ जाँची गईं।",
+  "it": "Controllate tutte le %@ foto e i %@ video in cerca di copie.",
+  "ja": "%@枚の写真と%@本のビデオをすべて確認しました。",
+  "pt": "Todas as %@ fotos e %@ vídeos foram verificados.",
+  "zh": "已检查全部 %@ 张照片和 %@ 个视频。"
+ },
+ "No look-alike photos or videos found.": {
+  "de": "Keine doppelten Fotos oder Videos gefunden.",
+  "es": "No se encontraron fotos ni videos parecidos.",
+  "fr": "Aucune photo ni vidéo en double trouvée.",
+  "hi": "कोई मिलती-जुलती फ़ोटो या वीडियो नहीं मिली।",
+  "it": "Nessuna foto o video simile trovato.",
+  "ja": "似ている写真やビデオは見つかりませんでした。",
+  "pt": "Nenhuma foto ou vídeo parecido encontrado.",
+  "zh": "未发现相似的照片或视频。"
+ },
+ "%@ in iCloud only couldn't be checked — download them in Photos to include them.": {
+  "de": "%@ nur in iCloud konnten nicht geprüft werden – lade sie in Fotos, um sie einzubeziehen.",
+  "es": "%@ solo en iCloud no se pudieron revisar: descárgalos en Fotos para incluirlos.",
+  "fr": "%@ uniquement dans iCloud n'ont pas pu être vérifiés — télécharge-les dans Photos pour les inclure.",
+  "hi": "%@ सिर्फ़ iCloud में हैं, इसलिए जाँचे नहीं जा सके — शामिल करने के लिए उन्हें Photos में डाउनलोड करें।",
+  "it": "%@ solo su iCloud non sono stati controllati: scaricali in Foto per includerli.",
+  "ja": "iCloudのみにある%@件は確認できませんでした。含めるには写真アプリでダウンロードしてください。",
+  "pt": "%@ só no iCloud não puderam ser verificados — baixe-os no Fotos para incluí-los.",
+  "zh": "%@ 项仅在 iCloud 中，无法检查——请在“照片”中下载后再检查。"
+ },
+ "Yearly": {
+  "de": "Jährlich",
+  "es": "Anual",
+  "fr": "Annuel",
+  "hi": "सालाना",
+  "it": "Annuale",
+  "ja": "年額",
+  "pt": "Anual",
+  "zh": "按年"
+ },
+ "Monthly": {
+  "de": "Monatlich",
+  "es": "Mensual",
+  "fr": "Mensuel",
+  "hi": "मासिक",
+  "it": "Mensile",
+  "ja": "月額",
+  "pt": "Mensal",
+  "zh": "按月"
+ },
+ "Every helper and every builder step. No ads, no limits.": {
+  "de": "Jeder Helfer und jeder Baustein. Keine Werbung, keine Limits.",
+  "es": "Cada ayudante y cada paso del creador. Sin anuncios ni límites.",
+  "fr": "Chaque assistant et chaque étape. Sans pub, sans limites.",
+  "hi": "हर हेल्पर और हर बिल्डर स्टेप। कोई विज्ञापन नहीं, कोई सीमा नहीं।",
+  "it": "Ogni aiutante e ogni passaggio. Niente pubblicità, niente limiti.",
+  "ja": "すべてのヘルパーとすべてのステップ。広告なし、制限なし。",
+  "pt": "Cada ajudante e cada etapa. Sem anúncios, sem limites.",
+  "zh": "所有助手和所有构建步骤。无广告，无限制。"
+ },
+ "Every tool unlimited. No daily limits.": {
+  "de": "Alles unbegrenzt. Keine Tageslimits.",
+  "es": "Todo ilimitado. Sin límites diarios.",
+  "fr": "Tout en illimité. Aucune limite quotidienne.",
+  "hi": "सब कुछ असीमित। कोई दैनिक सीमा नहीं।",
+  "it": "Tutto illimitato. Nessun limite giornaliero.",
+  "ja": "すべて無制限。1日の上限なし。",
+  "pt": "Tudo ilimitado. Sem limites diários.",
+  "zh": "全部无限使用，没有每日限制。"
  }
 }

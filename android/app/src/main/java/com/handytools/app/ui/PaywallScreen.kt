@@ -60,7 +60,9 @@ fun PaywallScreen(onBack: () -> Unit) {
 fun PaywallContent(onBack: () -> Unit) {
     val billing = HandyApp.instance.billing
     val premium by billing.isPremium.collectAsState()
-    billing.yearly.collectAsState()   // recompose when the price loads
+    billing.yearly.collectAsState()   // recompose when the prices load
+    billing.monthly.collectAsState()
+    var pickYearly by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(true) }
     val activity = LocalContext.current.findActivity()
 
     Column(Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Space24).padding(bottom = HandyTokens.Space24).navigationBarsPadding(),
@@ -71,7 +73,7 @@ fun PaywallContent(onBack: () -> Unit) {
         Spacer(Modifier.height(HandyTokens.Space16))
         Text(com.handytools.app.I18n.t("Tenzy Pro"), style = MaterialTheme.typography.headlineSmall.copy(fontSize = 28.sp))
         Spacer(Modifier.height(HandyTokens.Space4))
-        Text(com.handytools.app.I18n.t("Every tool and every builder step. No ads, no limits."), style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
+        Text(com.handytools.app.I18n.t("Every helper and every builder step. No ads, no limits."), style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space24))
         Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
             listOf("Unlock every tool", "Every Build-your-own step, unlimited saved tools", "No banner or full-screen ads", "No daily limits — build and run freely").forEach {
@@ -90,9 +92,23 @@ fun PaywallContent(onBack: () -> Unit) {
                 Text(com.handytools.app.I18n.t("You're Pro. Thank you."), style = MaterialTheme.typography.titleMedium)
             }
         } else {
-            PlanRow("Yearly", billing.yearlyPrice ?: "$19.99", if (billing.trialLabel != null) "One plan · ${billing.trialLabel}" else "One plan · renews yearly", null, true) { billing.launchPurchase(activity) }
+            // Two honest plans, yearly picked first (the same as the iPhone): $2.99 a month or $29.99 a year, each with a
+            // 7-day free trial while the person can still have one. Prices are Play's, in the person's currency.
+            val yTrial = billing.trialDays(true); val mTrial = billing.trialDays(false)
+            val I = com.handytools.app.I18n
+            PlanRow(I.t("Yearly"), billing.yearlyPriceShown,
+                if (yTrial != null) I.f("%@ free, then %@ a year", billing.daysWords(yTrial), billing.yearlyPriceShown) else I.t("Renews yearly · cancel anytime"),
+                billing.yearlySaving?.let { I.f("Save %d%%", it) }, pickYearly) { pickYearly = true }
+            Spacer(Modifier.height(HandyTokens.Space8))
+            PlanRow(I.t("Monthly"), billing.monthlyPriceShown,
+                if (mTrial != null) I.f("%@ free, then %@ a month", billing.daysWords(mTrial), billing.monthlyPriceShown) else I.t("Renews monthly · cancel anytime"),
+                null, !pickYearly) { pickYearly = false }
             Spacer(Modifier.height(HandyTokens.Space16))
-            HPrimaryButton("Go Pro · ${billing.yearlyPrice ?: "$19.99"} / year") { billing.launchPurchase(activity) }
+            val trial = if (pickYearly) yTrial else mTrial
+            HPrimaryButton(if (trial != null) I.f("Try Pro free for %@", billing.daysWords(trial))
+                           else I.f(if (pickYearly) "Go Pro · %@ a year" else "Go Pro · %@ a month", if (pickYearly) billing.yearlyPriceShown else billing.monthlyPriceShown)) {
+                billing.launchPurchase(activity, yearlyPlan = pickYearly)
+            }
             Spacer(Modifier.height(HandyTokens.Space8))
             Text(com.handytools.app.I18n.t("Auto-renews until cancelled in Google Play. Price shown in your currency at checkout."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center)

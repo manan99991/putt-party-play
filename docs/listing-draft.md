@@ -16,7 +16,7 @@ What changes is the line after the name and the first screen of the description:
 |---|---|---|---|
 | Name | 30 | Tenzy: Scan, Shrink & Automate | 30 |
 | Subtitle | 30 | Build your own phone tools | 26 |
-| Promotional text | 170 | Build a tool once, use it forever: scan, sign, hide private details, shrink under a limit, send. Runs on your phone. No account. 3-day Pro trial. | 145 |
+| Promotional text | 170 | Build a tool once, use it forever: scan, sign, hide private details, shrink under a limit, send. Runs on your phone. No account. 7-day Pro trial. | 145 |
 | Keywords | 100 | compress,pdf,scanner,sign,ocr,shortcuts,automation,watermark,receipt,resize,heic,metadata,translate | 99 |
 
 Description, new opening (the tool list, free/Pro paragraph, privacy and subscription paragraphs stay as they are):
@@ -138,7 +138,7 @@ Free: seven everyday tools (Flashlight, QR & Wi-Fi, Magnifier, Measure, Cleaner,
 own with the basic steps and up to two saved tools of your own. Ads keep the free app going.
 
 Tenzy Pro unlocks all 30 tools, every Build-your-own step, unlimited saved tools, removes the ads, and lifts the
-daily limits. $19.99/year with a 3-day free trial. Everything still runs on your phone — no account, nothing uploaded.
+daily limits. $2.99 a month or $29.99 a year, each with a 7-day free trial. Everything still runs on your phone — no account, nothing uploaded.
 ```
 (Play: say "all the tools" instead of "all 30", per section 3 of the rulebook — Android ships a subset.)
 

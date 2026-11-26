@@ -48,7 +48,11 @@ fun ProLockScreen(route: String, onBack: () -> Unit, onPro: () -> Unit) {
                 com.handytools.app.I18n.t("Go Pro to unlock it and every other Pro tool — no daily limits, and unlimited tools you build yourself."),
                 style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary, textAlign = TextAlign.Center
             )
-            HPrimaryButton("Go Pro — \$19.99 a year", onClick = onPro)
+            val billing = com.handytools.app.HandyApp.instance.billing
+            val trial = billing.trialDays(true)
+            HPrimaryButton(if (trial != null) com.handytools.app.I18n.f("Try Pro free for %@", billing.daysWords(trial)) else com.handytools.app.I18n.t("See Pro plans"), onClick = onPro)
+            Text(com.handytools.app.I18n.f("%@ a month or %@ a year · cancel anytime", billing.monthlyPriceShown, billing.yearlyPriceShown),
+                style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, textAlign = TextAlign.Center)
             TextButton(onClick = onBack) { Text(com.handytools.app.I18n.t("Not now")) }
         }
     }

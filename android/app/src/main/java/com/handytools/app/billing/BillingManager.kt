@@ -25,12 +25,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
- * Google Play Billing, a single auto-renewing subscription: Yearly (matches iOS).
+ * Google Play Billing: Tenzy Pro monthly or yearly, the same as the iPhone (Manan's pricing, 22 Nov; 26 Nov on Android).
  *
- * Play Console setup (one time):
- *   Monetize > Products > Subscriptions
- *     • Product ID: tenzy_pro_yearly    base plan yearly-p1y  (P1Y)  — $19.99
- *   (Product ID must match the constant below.) 3-day free trial on yearly.
+ *     • tenzy_pro_month    base plan monthly-p1m (P1M)  — $2.99,  7-day free trial
+ *     • tenzy_pro_yearly   base plan yearly-p1y  (P1Y)  — $29.99, 7-day free trial (people already on $19.99 keep it)
+ *   Set by the pipeline, not by hand: `fastlane subscriptions` (android/fastlane/Fastfile).
  *
  * Premium = ads off + everything unlimited. Entitlement is cached in [isPremium] and re-verified
  * on every app start.
@@ -39,7 +38,8 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
 
     companion object {
         const val YEARLY_ID = "tenzy_pro_yearly"
-        private val PRODUCT_IDS = listOf(YEARLY_ID)
+        const val MONTHLY_ID = "tenzy_pro_month"
+        private val PRODUCT_IDS = listOf(YEARLY_ID, MONTHLY_ID)
         private const val TAG = "Billing"
     }
 
@@ -57,25 +57,47 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
 
     private val _yearly = MutableStateFlow<ProductDetails?>(null)
     val yearly: StateFlow<ProductDetails?> = _yearly
+    private val _monthly = MutableStateFlow<ProductDetails?>(null)
+    val monthly: StateFlow<ProductDetails?> = _monthly
 
-    private fun priceOf(pd: ProductDetails?): String? =
-        pd?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.lastOrNull()?.formattedPrice
-
-    /** e.g. "$19.99" — null until Play responds. */
-    val yearlyPrice: String? get() = priceOf(_yearly.value)
-
-    /** "3-day free trial" only when Play's live offer really has a free phase; otherwise null. */
-    val trialLabel: String? get() {
-        val ph = _yearly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
-            ?.firstOrNull { it.priceAmountMicros == 0L } ?: return null
-        val m = Regex("P(\\d+)([DWM])").matchEntire(ph.billingPeriod) ?: return null
-        val n = m.groupValues[1].toInt()
-        return when (m.groupValues[2]) {
-            "D" -> "$n-day free trial"
-            "W" -> "${n * 7}-day free trial"
-            else -> "$n-month free trial"
-        }
+    /** The offer to sell: the free trial while the person can still have it (Play only lists offers they qualify
+     *  for), otherwise the plain plan. */
+    private fun offerOf(pd: ProductDetails?): ProductDetails.SubscriptionOfferDetails? {
+        val offers = pd?.subscriptionOfferDetails ?: return null
+        return offers.firstOrNull { o -> o.pricingPhases.pricingPhaseList.any { it.priceAmountMicros == 0L } }
+            ?: offers.firstOrNull { it.offerId == null } ?: offers.firstOrNull()
     }
+    private fun pricePhase(pd: ProductDetails?) = offerOf(pd)?.pricingPhases?.pricingPhaseList?.lastOrNull { it.priceAmountMicros > 0L }
+
+    /** The live price in the person's currency, e.g. "$29.99" — null until Play responds. */
+    val yearlyPrice: String? get() = pricePhase(_yearly.value)?.formattedPrice
+    val monthlyPrice: String? get() = pricePhase(_monthly.value)?.formattedPrice
+    /** What to show before Play answers: the US prices, the same as the iPhone. */
+    val yearlyPriceShown: String get() = yearlyPrice ?: "$29.99"
+    val monthlyPriceShown: String get() = monthlyPrice ?: "$2.99"
+
+    /** "Save 16%": yearly against twelve months, from the live prices (null when it doesn't save). */
+    val yearlySaving: Int? get() {
+        val y = pricePhase(_yearly.value)?.priceAmountMicros ?: return null
+        val m = pricePhase(_monthly.value)?.priceAmountMicros ?: return null
+        if (m <= 0L) return null
+        val pct = ((1.0 - y.toDouble() / (m.toDouble() * 12)) * 100).toInt()
+        return pct.takeIf { it > 0 }
+    }
+
+    /** Days of free trial a plan really offers this person right now (null when none). */
+    fun trialDays(yearlyPlan: Boolean): Int? {
+        val ph = offerOf(if (yearlyPlan) _yearly.value else _monthly.value)?.pricingPhases?.pricingPhaseList
+            ?.firstOrNull { it.priceAmountMicros == 0L } ?: return null
+        return com.handytools.app.billing.trialDays(ph.billingPeriod)
+    }
+
+    /** "7 days" in the phone's language. */
+    fun daysWords(n: Int): String = android.icu.text.MeasureFormat.getInstance(java.util.Locale.getDefault(), android.icu.text.MeasureFormat.FormatWidth.WIDE)
+        .format(android.icu.util.Measure(n, android.icu.util.MeasureUnit.DAY))
+
+    /** "7-day free trial" only when Play's live yearly offer really has a free phase; otherwise null. */
+    val trialLabel: String? get() = trialDays(true)?.let { "$it-day free trial" }
 
     fun start() {
         if (client.isReady) return
@@ -99,6 +121,7 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
         val res = client.queryProductDetails(params)
         val list = res.productDetailsList ?: emptyList()
         _yearly.value = list.firstOrNull { it.productId == YEARLY_ID }
+        _monthly.value = list.firstOrNull { it.productId == MONTHLY_ID }
     }
 
     suspend fun refreshEntitlement() {
@@ -106,20 +129,20 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
             QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build()
         )
         val active = res.purchasesList.any { p ->
-            p.products.contains(YEARLY_ID) && p.purchaseState == Purchase.PurchaseState.PURCHASED
+            p.products.any { it in PRODUCT_IDS } && p.purchaseState == Purchase.PurchaseState.PURCHASED
         }
         res.purchasesList.forEach { ackIfNeeded(it) }
         setPremium(active)
     }
 
-    /** Launch the purchase flow for the yearly plan. */
-    fun launchPurchase(activity: Activity) {
-        val pd = _yearly.value ?: run {
+    /** Launch the purchase flow for the chosen plan (yearly unless the person picked monthly). */
+    fun launchPurchase(activity: Activity, yearlyPlan: Boolean = true) {
+        val pd = (if (yearlyPlan) _yearly.value else _monthly.value) ?: run {
             start()
             android.widget.Toast.makeText(ctx, "Couldn't reach Google Play. Check your connection and tap again.", android.widget.Toast.LENGTH_LONG).show()
             return
         }
-        val offerToken = pd.subscriptionOfferDetails?.firstOrNull()?.offerToken ?: return
+        val offerToken = offerOf(pd)?.offerToken ?: return
         val params = BillingFlowParams.newBuilder()
             .setProductDetailsParamsList(
                 listOf(
@@ -161,4 +184,11 @@ object PremiumCache {
     private const val PREF = "premium"
     fun read(ctx: Context) = ctx.getSharedPreferences(PREF, 0).getBoolean("active", false)
     fun write(ctx: Context, v: Boolean) = ctx.getSharedPreferences(PREF, 0).edit().putBoolean("active", v).apply()
+}
+
+/** Days in a Play billing period like "P7D", "P1W" or "P1M" (a month counts as 30). Pure, unit-tested. */
+fun trialDays(period: String): Int? {
+    val m = Regex("P(\\d+)([DWM])").matchEntire(period) ?: return null
+    val n = m.groupValues[1].toInt()
+    return when (m.groupValues[2]) { "D" -> n; "W" -> n * 7; else -> n * 30 }
 }

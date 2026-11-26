@@ -1,0 +1,39 @@
+name: Android Subscriptions
+# Sets Tenzy Pro's plans, prices and 7-day trials on Google Play (fastlane subscriptions in android/fastlane/Fastfile):
+# monthly $2.99 and yearly $29.99, the same as the iPhone. Separate from the Android release so it never waits behind a
+# build and never uploads one. Touch .github/play-subscriptions.trigger on handytools to run it.
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [handytools]
+    paths: [".github/play-subscriptions.trigger"]
+concurrency:
+  group: android-subscriptions
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  subscriptions:
+    runs-on: ubuntu-latest
+    defaults:
+      run: { working-directory: android }
+    env:
+      PLAY_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with: { ruby-version: "3.3" }
+      - name: Install fastlane
+        run: gem install fastlane --no-document
+      - name: Reconcile plans, prices, trials
+        run: |
+          set -o pipefail
+          [ -n "$PLAY_JSON" ] || { echo "::error::PLAY_SERVICE_ACCOUNT_JSON is not set"; exit 1; }
+          echo "$PLAY_JSON" > "$RUNNER_TEMP/play-key.json"
+          export SUPPLY_JSON_KEY_PATH="$RUNNER_TEMP/play-key.json"
+          fastlane subscriptions 2>&1 | tee "$GITHUB_WORKSPACE/play-subscriptions.log"
+      - name: Publish log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh android-subscriptions play-subscriptions.log || true

@@ -40,4 +40,11 @@ object I18n {
         if (lang == "en") return english
         return table[english]?.get(lang) ?: english
     }
+
+    /** A translated phrase with its %@ / %d filled in order, written the way the iPhone app writes them ("%%" is a %). */
+    fun f(english: String, vararg args: Any): String {
+        var s = t(english)
+        for (a in args) { val m = Regex("%[@d]").find(s) ?: break; s = s.replaceRange(m.range, a.toString()) }
+        return s.replace("%%", "%")
+    }
 }
