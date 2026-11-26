@@ -10,18 +10,18 @@ TENZY PRO (in-app subscription)
 - Buyable in the sandbox there; a real App Store install keeps Pro tools locked until purchase.
 
 PERMISSIONS (all processed on-device; nothing is uploaded)
-- Contacts: the Contacts tool finds and merges duplicates, exports a .vcf backup, and copies or moves contacts between the user's own accounts on the device. Asked only when that tool opens.
-- Microphone: Audio Lab (meter / tuner), Voice to Notes, Meeting Notes, Translate's voice mode and Pro Camera video. Audio is metered or transcribed on-device; saved only when the user taps record.
+- Contacts: the Contacts tool merges duplicates, exports a .vcf backup (weekly, if the user switches that autorun on) and copies contacts between the user's own accounts. Asked when used.
+- Microphone: Audio Lab (meter / tuner), Voice to Notes, Meeting Notes, Translate's voice mode and Pro Camera video. Processed on-device; saved only when the user taps record.
 - Camera: Scan, Studio, Measure, Pro Camera, Identify, Translate (camera mode), and See & Read.
-- Photos: Cleaner, Photo Studio, Privacy Scrubber and Search My Photos read photos the user selects, on-device only.
+- Photos: Cleaner, Photo Studio, Privacy Scrubber, Search My Photos and autoruns the user switches on read photos on-device only.
 - Media & Apple Music: Animate's "Add music" lists songs on the phone that aren't copy-protected, to put under a video. Read on-device.
 - Motion: the level, compass and sensors inside Measure; telling when a drive ends for automatic parking (if switched on).
-- Location (When In Use only, never Always): compass, altitude, GPS Dashboard, parked car, Morning Summary weather (WeatherKit), travel times (Apple Maps), arrival reminders (iOS). Stays on the phone.
-- Speech Recognition: Voice to Notes and Translate's voice mode transcribe speech on-device where supported.
-- Background audio: Rest keeps playing sleep sounds (or listening for snoring when the user starts it) with the screen off. It runs only after the user taps start.
+- Location (When In Use only, never Always): compass, altitude, GPS Dashboard, parked car, Morning Summary weather (WeatherKit), travel times (Apple Maps), arrival reminders (iOS).
+- Speech Recognition: Voice to Notes, Translate's voice mode and the voice-memo autorun transcribe on-device.
+- Background audio: Rest plays sleep sounds (or listens for snoring) with the screen off, only after the user taps start.
 - Face ID: unlocks the private Vault.
-- Notifications: only reminders the user turns on (medicines, birthdays, Morning Summary, parking meter, bedtime, contact backup, Price Watch, bills, warranties, tool reminders). Every one has a "Test run" button that sends a sample within seconds.
-- Background: Refresh runs the user's own alerts and Price Watch (pages they added, at most 10) a few times a day. Processing, only while charging, finishes the on-device photo index for Search My Photos. Nothing else.
+- Notifications: only reminders the user turns on (medicines, birthdays, Morning Summary, parking meter, bedtime, Price Watch, bills, warranties, autoruns, tool reminders). Each has a "Test run" button.
+- Background: Refresh runs the user's alerts and Price Watch (pages they added, at most 10). Processing finishes the on-device photo index while charging and prepares autoruns the user switched on (My stuff > Set an autorun: e.g. today's receipts into a sheet) for review. Nothing is sent, added or deleted until the user taps.
 - Network: See & Read, "Read the page at a link" and Price Watch fetch only pages the user gives. No user data is sent.
 - Calendar: plans open the system's own event editor (EKEventEditViewController); nothing is read.
 

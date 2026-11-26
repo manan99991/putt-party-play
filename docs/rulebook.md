@@ -160,6 +160,18 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   Reviewer note explains it (BACKGROUND LOCATION). The privacy policy needs one line about it before the store submit (drafted in
   docs/listing-draft.md; the website change needs Manan's yes). Android port: same switch, foreground-service-free design to
   be chosen at port time (Android background location is a Play declaration; ask before adding it).
+- Smart autoruns (25–26 Nov, My stuff > Set an autorun): each is **off until the person switches it on**, runs once or twice a
+  day (or once a week) as a `BGProcessingTask` (`com.tenzy.toolkit.smartruns`, already in `BGTaskSchedulerPermittedIdentifiers`;
+  `processing` now serves the photo index and this), and only **prepares** results for review: nothing is added to a sheet,
+  saved, sent, posted or deleted until the person taps, and deletions always go through iOS's own confirmation. Uses only
+  permissions already declared: Photos (read/write, to read the day's receipts, pages, photos and videos and save results),
+  Contacts (weekly .vcf copy into Files › Tenzy and the app's iCloud Drive folder; Bring back restores from it), Speech
+  (voice memos from a folder the person picks; `requiresOnDeviceRecognition`, never a server), Reminders (to-dos, on tap),
+  notifications (only when something is waiting; drives, invoices and contacts stay silent when nothing is). Everything is
+  on the phone, so App Privacy stays "Data Not Collected". The reviewer note's Photos, Contacts, Speech and Background lines
+  name the autoruns. Habit offers (a Home card) use only a local log of which days each tool id was opened (30 days).
+  The privacy policy needs one line about autoruns before the store submit (drafted in docs/listing-draft.md; the website
+  change needs Manan's yes).
 - "Change the voice" only changes speed and pitch. Do not describe it as voice cloning or as sounding like a real person.
 - Build your own, Pro steps: only the 10 basic steps are free (`Block.freeStepIDs` / `FREE_STEP_IDS`, matched on both
   phones): Read text, Tidy text, Summarize, Find links/emails/phones, Clean tracking, Make a QR code, Wi-Fi join code,

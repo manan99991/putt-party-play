@@ -218,3 +218,12 @@ Add under Location on manan99991.github.io/tenzy/privacy.html:
 > If you turn on "Save my spot automatically" in GPS Dashboard, Tenzy uses your location while it runs in the background
 > (iPhone shows the blue location indicator) and your phone's motion activity to notice when you stop driving, and saves
 > where you parked. This stays on your phone and is never uploaded. Turn it off any time in the same place.
+
+## 26 Nov — privacy policy line for autoruns (needs Manan's yes: the website is public)
+Add under "How Tenzy uses your data" on manan99991.github.io/tenzy/privacy.html:
+> **Autoruns.** If you switch one on (My stuff › Set an autorun), Tenzy looks at what's new on your phone once or twice a
+> day — or once a week — while it sits idle: the day's photos, videos and PDFs, your contacts for the weekly copy, or the
+> voice memos in the folder you chose. It reads them on your phone only and gets the results ready for you to check;
+> nothing is added, saved, sent, posted or deleted until you tap, and iPhone asks before anything is deleted. The weekly
+> contacts copy is a file in Files › Tenzy (and Tenzy's iCloud Drive folder, if you use iCloud Drive). Nothing is uploaded
+> to us. To suggest an autorun, Tenzy remembers on which days you opened each tool over the last month — on your phone only.
