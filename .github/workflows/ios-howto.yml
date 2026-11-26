@@ -52,8 +52,12 @@ jobs:
           run() {   # $1 test name, $2 film name. Records the whole test; the cut uses the times stamped in the test's marks.
             if [ -n "$ONLY" ] && ! echo " $ONLY " | grep -q " $2 "; then echo "skipping $2"; return 0; fi
             rm -f howto/$2.*
-            xcrun simctl io "$UDID" recordVideo --codec h264 --force howto/$2.raw.mov & echo $! > howto/$2.rec
-            python3 -c 'import time; print(time.time())' > howto/$2.t0
+            python3 -c 'import time; print(time.time() + 1)' > howto/$2.t0      # a guess, replaced below
+            xcrun simctl io "$UDID" recordVideo --codec h264 --force howto/$2.raw.mov > howto/$2.reclog 2>&1 & echo $! > howto/$2.rec
+            # The recording's clock starts when it says so (take 6 began ~3 s after the command): wait for that, then note it.
+            for i in $(seq 1 150); do grep -q "Recording started" howto/$2.reclog 2>/dev/null && break; sleep 0.1; done
+            if grep -q "Recording started" howto/$2.reclog; then python3 -c 'import time; print(time.time())' > howto/$2.t0
+            else echo "::warning::$2: the recorder never said it started — the cut may be off by a few seconds"; fi
             script -q /dev/null env TEST_RUNNER_HOWTO_FILM=1 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools \
               -destination "id=$UDID" -derivedDataPath build -only-testing:HandyToolsUITests/HowToFilmTests/$1 CODE_SIGNING_ALLOWED=NO 2>&1 \
               | while IFS= read -r line; do
@@ -94,7 +98,7 @@ jobs:
             [ -n "$CUT" ] && echo "$f: cut $CUT"
             D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 $f.mp4); echo "$f.mp4: ${D}s, $(du -k $f.mp4 | cut -f1) KB"
             for k in 1 2 3 4 5 6 7 8; do T=$(python3 -c "print(round(${D:-0}*($k-0.5)/8,2))"); ffmpeg -y -v error -ss $T -i $f.mp4 -frames:v 1 -vf scale=300:-1 $f-frame-$k.png || true; done
-            rm -f $f.raw.mov $f.rec $f.t0 $f.marks
+            rm -f $f.raw.mov $f.rec $f.t0 $f.marks $f.reclog
           done
           rm -rf scan
           ls -la
