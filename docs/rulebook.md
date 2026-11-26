@@ -172,6 +172,13 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   name the autoruns. Habit offers (a Home card) use only a local log of which days each tool id was opened (30 days).
   The privacy policy needs one line about autoruns before the store submit (drafted in docs/listing-draft.md; the website
   change needs Manan's yes).
+  Android (26 Nov, Settings › Smart autoruns): the same rules — off until switched on, an ordinary inexact alarm at each
+  chosen time (no exact-alarm or background-location permission), a quick look and a notification only when something is
+  waiting; the work runs when the person opens it, and nothing is added, saved, sent or deleted without their tap — deletions
+  go through Android's own confirmation, to the bin where the phone has one. Uses only permissions already declared
+  (photos/videos read, contacts read/write, notifications); voice memos only where the phone has an on-device recogniser
+  (never a server); contacts copies stay in Tenzy's own files on the phone. Drives (mileage) is NOT on Android: it needs
+  activity recognition, a new permission — ask Manan before adding it. Data safety stays "no data collected".
 - Camera button in tools (26 Nov): tools that work on a photo or video offer "Take a photo" / "Record" beside "From Photos",
   and the smart photo picker has a Camera button (not for screenshots). It uses the existing camera and microphone strings
   (both now name this use) and the system camera screen; nothing new is collected. If the camera is off for Tenzy, the
