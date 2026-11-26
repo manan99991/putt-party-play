@@ -74,6 +74,9 @@ object SpaceCleanerEngine {
                 exact.add(CleanGroup("${g.size} identical copies", g, g.drop(1).sumOf { it.size }))
             }
         }
+        // Copies of the same video, across the whole library (26 Nov, the iPhone's bug report: two 31.1 MB copies of
+        // one clip weren't shown). A copy is byte-for-byte the same size, confirmed by the same content hash.
+        exact += videoCopies(ctx)
         val exactUris = exact.flatMap { it.items }.map { it.uri }.toHashSet()
 
         // Look-alikes via difference-hash (dHash), excluding exact dupes already found. Three guards
@@ -114,6 +117,35 @@ object SpaceCleanerEngine {
 
         return CleanReport(total, exact, similar, screenshots, largeFiles)
     }
+
+    /** Every set of identical videos in the library (any age): same size to the byte, then the same content hash. */
+    fun videoCopies(ctx: Context): List<CleanGroup> {
+        val videos = mutableListOf<MediaItem>()
+        val proj = arrayOf(MediaStore.Video.Media._ID, MediaStore.Video.Media.DISPLAY_NAME, MediaStore.Video.Media.SIZE, MediaStore.Video.Media.BUCKET_DISPLAY_NAME)
+        runCatching {
+            ctx.contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, proj, null, null, "${MediaStore.Video.Media.DATE_ADDED} DESC")?.use { c ->
+                val iId = c.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
+                val iN = c.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
+                val iS = c.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
+                val iB = c.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME)
+                while (c.moveToNext()) {
+                    val size = c.getLong(iS); if (size <= 0) continue
+                    videos.add(MediaItem(ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, c.getLong(iId)),
+                        c.getString(iN) ?: "video", size, c.getString(iB) ?: ""))
+                }
+            }
+        }
+        val sameSize = sameSizeSets(videos.map { it.size }).map { set -> set.map { videos[it] } }
+        val hashed = parallelMap(sameSize.flatten()) { m -> m to contentHash(ctx, m.uri) }.toMap()
+        return sameSize.flatMap { set ->
+            set.groupBy { hashed[it] }.filterKeys { it != null }.values.filter { it.size > 1 }
+                .map { g -> CleanGroup("${g.size} copies of the same video", g, g.drop(1).sumOf { it.size }) }
+        }
+    }
+
+    /** Indexes grouped by identical size, only where two or more share it. Pure, unit-tested. */
+    fun sameSizeSets(sizes: List<Long>): List<List<Int>> =
+        sizes.indices.groupBy { sizes[it] }.values.filter { it.size > 1 }
 
     private fun contentHash(ctx: Context, uri: Uri): String? = runCatching {
         ctx.contentResolver.openInputStream(uri)?.use { ins ->
