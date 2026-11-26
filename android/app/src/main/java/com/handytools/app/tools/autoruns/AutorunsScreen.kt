@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.net.Uri
 import android.provider.MediaStore
 import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -46,6 +47,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.handytools.app.I18n
@@ -153,6 +155,8 @@ fun AutorunRun(k: SmartRuns.Kind, onClose: () -> Unit) {
         SmartRuns.Kind.OVERDUE_INVOICES -> OverdueInvoicesRun(onClose)
         SmartRuns.Kind.CONTACTS_BACKUP -> ContactsBackupRun(onClose)
         SmartRuns.Kind.READY_TO_POST -> ReadyToPostRun(onClose)
+        SmartRuns.Kind.DAY_COLLAGE -> DayCollageRun(onClose)
+        SmartRuns.Kind.WEEK_FILM -> WeekFilmRun(onClose)
         else -> LaunchedEffect(k) { onClose() }
     }
 }
@@ -398,6 +402,110 @@ private fun ReadyToPostRun(onClose: () -> Unit) {
                 }
                 HPrimaryButton(I18n.t("Post it"), Modifier.weight(1f)) { com.handytools.app.tools.Share.file(ctx, f, "video/mp4") }
             }
+        }
+        Spacer(Modifier.height(HandyTokens.Space24))
+    }
+}
+
+private fun canReadPhotos(ctx: Context): Boolean = ContextCompat.checkSelfPermission(ctx,
+    if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+
+/** Today's best photos of people as one picture: see it, then save it or send it. */
+@Composable
+private fun DayCollageRun(onClose: () -> Unit) {
+    val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val k = SmartRuns.Kind.DAY_COLLAGE
+    var allowed by remember { mutableStateOf(canReadPhotos(ctx)) }
+    val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> allowed = ok }
+    var stage by remember { mutableStateOf("") }
+    var progress by remember { mutableStateOf(0.0) }
+    var finished by remember { mutableStateOf(false) }
+    var made by remember { mutableStateOf<java.io.File?>(null) }
+    var count by remember { mutableStateOf(0) }
+    var saved by remember { mutableStateOf(false) }
+    var job by remember { mutableStateOf<Job?>(null) }
+    LaunchedEffect(allowed) {
+        if (!allowed) { ask.launch(if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE); return@LaunchedEffect }
+        job = scope.launch {
+            val now = System.currentTimeMillis()
+            stage = I18n.t("Looking at today's photos…")
+            val photos = PhotoDays.find(ctx, Autoruns.windowFor(ctx, k, now))
+            val picks = SmartRuns.collagePicks(PhotoDays.read(ctx, photos) { p -> progress = p * 0.8 })
+            count = picks.size
+            if (picks.size >= 2) { stage = I18n.t("Arranging the photos…"); made = PhotoDays.collage(ctx, picks.map { Uri.parse(it.id) }) }
+            progress = 1.0
+            Autoruns.markRun(ctx, k, now); Autoruns.clearReady(ctx, k)
+            finished = true
+        }
+    }
+    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter),
+        verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+        HTextButton(I18n.t("‹ Back")) { job?.cancel(); onClose() }
+        Text(I18n.t(k.title), style = MaterialTheme.typography.headlineSmall)
+        if (!allowed) { Text(I18n.t("Tenzy needs to see your photos to find today's."), color = Handy.palette.textSecondary); return@Column }
+        if (!finished) {
+            Text(stage, style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            LinearProgressIndicator(progress = { progress.toFloat().coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth().testTag("autorun-progress"))
+            return@Column
+        }
+        val f = made
+        if (f == null) { Text(I18n.t("Not enough sharp photos of people today for a collage."), color = Handy.palette.textSecondary); return@Column }
+        val pic = remember(f) { android.graphics.BitmapFactory.decodeFile(f.absolutePath)?.asImageBitmap() }
+        pic?.let { androidx.compose.foundation.Image(it, I18n.t(k.title), Modifier.fillMaxWidth().testTag("collage")) }
+        Text(I18n.fmt("%d photos, the best of each moment.", count), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+            HSecondaryButton(I18n.t(if (saved) "Saved to your photos" else "Save to my photos"), Modifier.weight(1f), enabled = !saved) {
+                saved = com.handytools.app.tools.power.MediaEngine.saveToGallery(ctx, "Collage " + System.currentTimeMillis() + ".jpg", "image/jpeg",
+                    com.handytools.app.tools.power.MediaEngine.Kind.IMAGE, file = f) != null
+            }
+            HPrimaryButton(I18n.t("Share"), Modifier.weight(1f)) { com.handytools.app.tools.Share.file(ctx, f, "image/jpeg") }
+        }
+        Spacer(Modifier.height(HandyTokens.Space24))
+    }
+}
+
+/** The week's best moments as one short film to Tenzy's own music: watch it, then save it or share it. */
+@Composable
+private fun WeekFilmRun(onClose: () -> Unit) {
+    val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val k = SmartRuns.Kind.WEEK_FILM
+    var allowed by remember { mutableStateOf(canReadPhotos(ctx)) }
+    val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> allowed = ok }
+    var stage by remember { mutableStateOf("") }
+    var progress by remember { mutableStateOf(0.0) }
+    var finished by remember { mutableStateOf(false) }
+    var made by remember { mutableStateOf<java.io.File?>(null) }
+    var saved by remember { mutableStateOf(false) }
+    var job by remember { mutableStateOf<Job?>(null) }
+    LaunchedEffect(allowed) {
+        if (!allowed) { ask.launch(if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE); return@LaunchedEffect }
+        job = scope.launch {
+            val now = System.currentTimeMillis()
+            made = WeekFilm.make(ctx, Autoruns.weekWindow(now), { s -> stage = I18n.t(s) }) { p -> progress = p }
+            Autoruns.markRun(ctx, k, now); Autoruns.clearReady(ctx, k)
+            finished = true
+        }
+    }
+    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter),
+        verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+        HTextButton(I18n.t("‹ Back")) { job?.cancel(); onClose() }
+        Text(I18n.t(k.title), style = MaterialTheme.typography.headlineSmall)
+        if (!allowed) { Text(I18n.t("Tenzy needs to see your photos to find this week's."), color = Handy.palette.textSecondary); return@Column }
+        if (!finished) {
+            Text(stage, style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            LinearProgressIndicator(progress = { progress.toFloat().coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth().testTag("autorun-progress"))
+            return@Column
+        }
+        val f = made
+        if (f == null) { Text(I18n.t("Not enough photos of people this week for a film."), color = Handy.palette.textSecondary); return@Column }
+        com.handytools.app.tools.studio.ResultPlayer(f, "week-film")
+        Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+            HSecondaryButton(I18n.t(if (saved) "Saved to your videos" else "Save to my videos"), Modifier.weight(1f), enabled = !saved) {
+                saved = ReadyToPost.saveVideo(ctx, f, "My week " + System.currentTimeMillis() + ".mp4", System.currentTimeMillis()) != null
+            }
+            HPrimaryButton(I18n.t("Share"), Modifier.weight(1f)) { com.handytools.app.tools.Share.file(ctx, f, "video/mp4") }
         }
         Spacer(Modifier.height(HandyTokens.Space24))
     }

@@ -67,19 +67,11 @@ object ReadyToPost {
     }
 
     /** Saves a made video into the phone's videos (Movies/Tenzy) with [taken] as its date. Its uri. */
-    fun saveVideo(ctx: Context, file: File, name: String, taken: Long): Uri? = runCatching {
-        val v = ContentValues().apply {
-            put(MediaStore.Video.Media.DISPLAY_NAME, name)
-            put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
-            put(MediaStore.Video.Media.DATE_TAKEN, taken)
-            if (Build.VERSION.SDK_INT >= 29) { put(MediaStore.Video.Media.RELATIVE_PATH, Environment.DIRECTORY_MOVIES + "/Tenzy"); put(MediaStore.Video.Media.IS_PENDING, 1) }
-        }
-        val r = ctx.contentResolver
-        val uri = r.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, v) ?: return null
-        r.openOutputStream(uri)?.use { o -> file.inputStream().use { it.copyTo(o) } } ?: return null
-        if (Build.VERSION.SDK_INT >= 29) r.update(uri, ContentValues().apply { put(MediaStore.Video.Media.IS_PENDING, 0) }, null, null)
-        uri
-    }.getOrNull()
+    fun saveVideo(ctx: Context, file: File, name: String, taken: Long): Uri? {
+        val uri = com.handytools.app.tools.power.MediaEngine.saveToGallery(ctx, name, "video/mp4", com.handytools.app.tools.power.MediaEngine.Kind.VIDEO, file = file) ?: return null
+        runCatching { ctx.contentResolver.update(uri, ContentValues().apply { put(MediaStore.Video.Media.DATE_TAKEN, taken) }, null, null) }
+        return uri
+    }
 
     /** The tall frame: the clip fitted whole in 1080×1920, the space around it filled with a blurred, darker copy of itself. */
     class TallFrame : GlEffect {

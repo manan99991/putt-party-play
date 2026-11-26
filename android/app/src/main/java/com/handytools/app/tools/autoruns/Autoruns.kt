@@ -34,7 +34,8 @@ object Autoruns {
     private const val CHANNEL = "autoruns"
 
     /** The autoruns Android does so far, in the page's order; the others stay iPhone-only until they're built here. */
-    val available: List<SmartRuns.Kind> = listOf(SmartRuns.Kind.OVERDUE_INVOICES, SmartRuns.Kind.READY_TO_POST, SmartRuns.Kind.HEAVY_VIDEOS, SmartRuns.Kind.CONTACTS_BACKUP)
+    val available: List<SmartRuns.Kind> = listOf(SmartRuns.Kind.OVERDUE_INVOICES, SmartRuns.Kind.DAY_COLLAGE, SmartRuns.Kind.WEEK_FILM, SmartRuns.Kind.READY_TO_POST,
+        SmartRuns.Kind.HEAVY_VIDEOS, SmartRuns.Kind.CONTACTS_BACKUP)
 
     /** Set when a notification is tapped; the page opens that autorun and clears it. */
     var pending by mutableStateOf<String?>(null)
@@ -112,6 +113,12 @@ object Autoruns {
             SmartRuns.Kind.READY_TO_POST -> ReadyToPost.find(ctx, window).size.let { n ->
                 if (n == 0) null else if (n == 1) I18n.t("1 clip from today can be made ready to post.") else I18n.fmt("%d clips from today can be made ready to post.", n)
             }
+            SmartRuns.Kind.DAY_COLLAGE -> PhotoDays.find(ctx, window).count { !it.screenshot }.let { n ->
+                if (n < 4) null else I18n.fmt("%d photos from today — tap to see the best of them as one collage.", n)
+            }
+            SmartRuns.Kind.WEEK_FILM -> PhotoDays.find(ctx, weekWindow(now)).count { !it.screenshot }.let { n ->
+                if (n < 8) null else I18n.fmt("%d photos this week — tap to make them into one short film.", n)
+            }
             // The week's copy is made right here; a word only when someone has disappeared since the last one.
             SmartRuns.Kind.CONTACTS_BACKUP -> ContactsBackup.make(ctx, now)?.gone?.size?.let { n ->
                 if (n == 0) null else ContactsBackup.notice(n)
@@ -127,6 +134,9 @@ object Autoruns {
         markRun(ctx, k, now)
         if (news != null) notify(ctx, k, news)
     }
+
+    /** The week's film looks at the last seven days. */
+    fun weekWindow(now: Long): LongRange = (now - 7L * 24 * 3600_000)..now
 
     /** The window the next opened run looks at: the one its notification found, else since the last run. */
     fun windowFor(ctx: Context, k: SmartRuns.Kind, now: Long = System.currentTimeMillis()): LongRange {

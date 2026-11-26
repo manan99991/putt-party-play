@@ -62,7 +62,11 @@ class OverdueInvoicesTest {
             "%d videos (%s) could be smaller and look the same." to arrayOf<Any>(3, "410 MB"),
             "1 video (%s) could be smaller and look the same." to arrayOf<Any>("410 MB"),
             "%d contacts have disappeared since last week's copy — tap to bring them back." to arrayOf<Any>(3),
-            "%d contacts copied, kept on this phone." to arrayOf<Any>(214))
+            "%d contacts copied, kept on this phone." to arrayOf<Any>(214),
+            "%d photos from today — tap to see the best of them as one collage." to arrayOf<Any>(14),
+            "%d photos this week — tap to make them into one short film." to arrayOf<Any>(52),
+            "%d clips from today can be made ready to post." to arrayOf<Any>(3),
+            "%d photos, the best of each moment." to arrayOf<Any>(9))
         for ((key, args) in keys) {
             val at = json.indexOf("\n \"" + key.replace("\"", "\\\"") + "\": {")
             assertTrue("missing translations for: $key", at >= 0)

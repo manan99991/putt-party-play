@@ -19398,5 +19398,115 @@
   "ja": "ビデオに保存しました",
   "pt": "Salvo nos seus vídeos",
   "zh": "已保存到你的视频"
+ },
+ "Save to my photos": {
+  "de": "In meinen Fotos speichern",
+  "es": "Guardar en mis fotos",
+  "fr": "Enregistrer dans mes photos",
+  "hi": "मेरी फ़ोटो में सेव करें",
+  "it": "Salva nelle mie foto",
+  "ja": "写真に保存",
+  "pt": "Salvar nas minhas fotos",
+  "zh": "保存到我的照片"
+ },
+ "Saved to your photos": {
+  "de": "In deinen Fotos gespeichert",
+  "es": "Guardado en tus fotos",
+  "fr": "Enregistré dans vos photos",
+  "hi": "आपकी फ़ोटो में सेव हुआ",
+  "it": "Salvato nelle tue foto",
+  "ja": "写真に保存しました",
+  "pt": "Salvo nas suas fotos",
+  "zh": "已保存到你的照片"
+ },
+ "Looking at this week's photos…": {
+  "de": "Die Fotos dieser Woche werden angesehen…",
+  "es": "Revisando las fotos de esta semana…",
+  "fr": "Examen des photos de la semaine…",
+  "hi": "इस हफ़्ते की फ़ोटो देखी जा रही हैं…",
+  "it": "Controllo le foto di questa settimana…",
+  "ja": "今週の写真を確認中…",
+  "pt": "Vendo as fotos desta semana…",
+  "zh": "正在查看本周的照片…"
+ },
+ "Making the film…": {
+  "de": "Der Film entsteht…",
+  "es": "Haciendo la película…",
+  "fr": "Création du film…",
+  "hi": "फ़िल्म बन रही है…",
+  "it": "Creo il film…",
+  "ja": "映像を作っています…",
+  "pt": "Fazendo o filme…",
+  "zh": "正在制作短片…"
+ },
+ "Tenzy needs to see your photos to find today's.": {
+  "de": "Tenzy muss deine Fotos sehen, um die von heute zu finden.",
+  "es": "Tenzy necesita ver tus fotos para encontrar las de hoy.",
+  "fr": "Tenzy doit voir vos photos pour trouver celles du jour.",
+  "hi": "आज की फ़ोटो ढूँढने के लिए Tenzy को आपकी फ़ोटो देखनी होंगी।",
+  "it": "Tenzy deve vedere le tue foto per trovare quelle di oggi.",
+  "ja": "今日の写真を見つけるには、Tenzy が写真を見られる必要があります。",
+  "pt": "O Tenzy precisa ver suas fotos para achar as de hoje.",
+  "zh": "Tenzy 需要查看你的照片才能找到今天的。"
+ },
+ "Tenzy needs to see your photos to find this week's.": {
+  "de": "Tenzy muss deine Fotos sehen, um die dieser Woche zu finden.",
+  "es": "Tenzy necesita ver tus fotos para encontrar las de esta semana.",
+  "fr": "Tenzy doit voir vos photos pour trouver celles de la semaine.",
+  "hi": "इस हफ़्ते की फ़ोटो ढूँढने के लिए Tenzy को आपकी फ़ोटो देखनी होंगी।",
+  "it": "Tenzy deve vedere le tue foto per trovare quelle di questa settimana.",
+  "ja": "今週の写真を見つけるには、Tenzy が写真を見られる必要があります。",
+  "pt": "O Tenzy precisa ver suas fotos para achar as desta semana.",
+  "zh": "Tenzy 需要查看你的照片才能找到本周的。"
+ },
+ "Not enough sharp photos of people today for a collage.": {
+  "de": "Heute gibt es nicht genug scharfe Fotos von Menschen für eine Collage.",
+  "es": "Hoy no hay suficientes fotos nítidas de personas para un collage.",
+  "fr": "Pas assez de photos nettes de personnes aujourd'hui pour un collage.",
+  "hi": "आज कोलाज के लिए लोगों की काफ़ी साफ़ फ़ोटो नहीं हैं।",
+  "it": "Oggi non ci sono abbastanza foto nitide di persone per un collage.",
+  "ja": "今日はコラージュにできるほど、人のくっきりした写真がありません。",
+  "pt": "Hoje não há fotos nítidas de pessoas suficientes para uma colagem.",
+  "zh": "今天没有足够清晰的人物照片来做拼图。"
+ },
+ "Not enough photos of people this week for a film.": {
+  "de": "Diese Woche gibt es nicht genug Fotos von Menschen für einen Film.",
+  "es": "Esta semana no hay suficientes fotos de personas para una película.",
+  "fr": "Pas assez de photos de personnes cette semaine pour un film.",
+  "hi": "इस हफ़्ते फ़िल्म के लिए लोगों की काफ़ी फ़ोटो नहीं हैं।",
+  "it": "Questa settimana non ci sono abbastanza foto di persone per un film.",
+  "ja": "今週は映像にできるほど人の写真がありません。",
+  "pt": "Nesta semana não há fotos de pessoas suficientes para um filme.",
+  "zh": "本周没有足够的人物照片来做短片。"
+ },
+ "%d photos, the best of each moment.": {
+  "de": "%d Fotos, das beste von jedem Moment.",
+  "es": "%d fotos, la mejor de cada momento.",
+  "fr": "%d photos, la meilleure de chaque moment.",
+  "hi": "%d फ़ोटो, हर पल की सबसे अच्छी।",
+  "it": "%d foto, la migliore di ogni momento.",
+  "ja": "%d 枚、それぞれの瞬間のベスト。",
+  "pt": "%d fotos, a melhor de cada momento.",
+  "zh": "%d 张照片，每个瞬间最好的一张。"
+ },
+ "%d photos from today — tap to see the best of them as one collage.": {
+  "de": "%d Fotos von heute – tippe, um die besten als eine Collage zu sehen.",
+  "es": "%d fotos de hoy: toca para ver las mejores en un collage.",
+  "fr": "%d photos du jour — touchez pour voir les meilleures en un seul collage.",
+  "hi": "आज की %d फ़ोटो — सबसे अच्छी फ़ोटो एक कोलाज में देखने के लिए टैप करें।",
+  "it": "%d foto di oggi: tocca per vedere le migliori in un unico collage.",
+  "ja": "今日の写真 %d 枚。タップすると、ベストを 1 枚のコラージュで見られます。",
+  "pt": "%d fotos de hoje — toque para ver as melhores em uma colagem.",
+  "zh": "今天有 %d 张照片——点按即可把最好的拼成一张图。"
+ },
+ "%d photos this week — tap to make them into one short film.": {
+  "de": "%d Fotos diese Woche – tippe, um daraus einen kurzen Film zu machen.",
+  "es": "%d fotos esta semana: toca para convertirlas en una película corta.",
+  "fr": "%d photos cette semaine — touchez pour en faire un court film.",
+  "hi": "इस हफ़्ते %d फ़ोटो — इनसे एक छोटी फ़िल्म बनाने के लिए टैप करें।",
+  "it": "%d foto questa settimana: tocca per farne un breve film.",
+  "ja": "今週の写真 %d 枚。タップすると 1 本の短い映像にできます。",
+  "pt": "%d fotos nesta semana — toque para transformá-las em um filme curto.",
+  "zh": "本周有 %d 张照片——点按即可做成一个短片。"
  }
 }

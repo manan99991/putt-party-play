@@ -18,11 +18,14 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.handytools.app.tools.autoruns.ContactsBackup
 import com.handytools.app.tools.autoruns.HeavyVideos
+import com.handytools.app.tools.autoruns.PhotoDays
+import com.handytools.app.tools.autoruns.WeekFilm
 import com.handytools.app.tools.autoruns.ReadyToPost
 import com.handytools.app.tools.autoruns.SmartRuns
 import com.handytools.app.tools.studio.Reels
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertNotNull
+import org.junit.Assume.assumeTrue
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -135,5 +138,52 @@ class AutorunsOnDeviceTest {
         println("AUTORUN| ready to post: top band ${"%.0f".format(top)}, middle ${"%.0f".format(middle)}")
         assertTrue("above the clip is a soft fill of it, not black bars ($top)", top > 25)
         assertTrue("the clip itself is in the middle, brighter than its dimmed fill ($middle vs $top)", middle > top)
+    }
+
+    /** The private test photos (decrypted on the build machine only, pushed to the emulator), put into the phone's
+     *  photos the way a camera would; their uris. Empty when absent. */
+    private fun realPhotosInGallery(max: Int = 12): List<Uri> {
+        val ui = InstrumentationRegistry.getInstrumentation().uiAutomation
+        fun shell(cmd: String) = android.os.ParcelFileDescriptor.AutoCloseInputStream(ui.executeShellCommand(cmd))
+        val names = shell("ls /data/local/tmp/real").bufferedReader().readText().lines().map { it.trim() }
+            .filter { n -> listOf(".jpg", ".jpeg", ".png").any { n.lowercase().endsWith(it) } }.sorted().take(max)
+        return names.mapNotNull { n ->
+            val v = ContentValues().apply {
+                put(MediaStore.Images.Media.DISPLAY_NAME, "autorun-test-${System.nanoTime()}." + n.substringAfterLast('.'))
+                put(MediaStore.Images.Media.MIME_TYPE, if (n.lowercase().endsWith(".png")) "image/png" else "image/jpeg")
+                if (Build.VERSION.SDK_INT >= 29) put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/TenzyTest")
+            }
+            val uri = ctx.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, v) ?: return@mapNotNull null
+            ctx.contentResolver.openOutputStream(uri)?.use { o -> shell("cat /data/local/tmp/real/$n").use { it.copyTo(o) } }
+            uri
+        }
+    }
+
+    @Test fun todaysPhotosOfPeopleBecomeOneCollageAndTheWeekAFilm() {
+        val added = realPhotosInGallery()
+        assumeTrue("private photos not on this device", added.isNotEmpty())
+        try {
+            val now = System.currentTimeMillis()
+            val photos = PhotoDays.find(ctx, (now - 10 * 60_000)..(now + 60_000))
+            val read = runBlocking { PhotoDays.read(ctx, photos) }
+            val picks = com.handytools.app.tools.autoruns.SmartRuns.collagePicks(read)
+            println("AUTORUN| collage: ${photos.size} photos, ${read.count { (it.seen?.faces ?: 0) > 0 }} with faces, ${picks.size} picked")
+            assertTrue("the photos put in are found (${photos.size} of ${added.size})", photos.size >= added.size)
+            assumeTrue("too few sharp photos of people in the private set", picks.size >= 2)
+            val collage = runBlocking { PhotoDays.collage(ctx, picks.map { Uri.parse(it.id) }) } ?: throw AssertionError("no collage")
+            val o = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }.also { android.graphics.BitmapFactory.decodeFile(collage.path, it) }
+            println("AUTORUN| collage ${o.outWidth}×${o.outHeight}")
+            assertTrue("one 1080-wide picture holding them (${o.outWidth}×${o.outHeight})", o.outWidth == 1080 && o.outHeight > 300)
+            val film = runBlocking { WeekFilm.make(ctx, (now - 10 * 60_000)..(now + 60_000), { }) { } }
+            if (picks.size >= 4) {
+                assertNotNull("with enough moments, the week becomes a film", film)
+                val r = android.media.MediaMetadataRetriever().apply { setDataSource(film!!.absolutePath) }
+                val secs = r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong() / 1000.0; r.release()
+                println("AUTORUN| week film ${"%.1f".format(secs)} s from ${picks.size} moments")
+                assertTrue("a real film (${secs}s)", secs > 6)
+            }
+        } finally {
+            added.forEach { runCatching { ctx.contentResolver.delete(it, null, null) } }
+        }
     }
 }
