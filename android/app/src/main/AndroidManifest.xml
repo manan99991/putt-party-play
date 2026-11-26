@@ -96,6 +96,10 @@
 
         <!-- Tool reminders ("run my receipt tool on Fridays at 6"): shows the reminder, and re-arms after a restart. -->
         <receiver
+            android:name=".tools.builder.OwnReminderReceiver"
+            android:exported="false" />
+
+        <receiver
             android:name=".tools.builder.ToolReminderReceiver"
             android:exported="false">
             <intent-filter>

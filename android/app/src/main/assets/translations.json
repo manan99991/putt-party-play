@@ -17488,5 +17488,45 @@
   "ja": "%d 件のコピー・1件を残す",
   "pt": "%d cópias · fique com uma",
   "zh": "%d 份副本 · 保留一份"
+ },
+ "Reminder set": {
+  "de": "Erinnerung gesetzt",
+  "es": "Recordatorio listo",
+  "fr": "Rappel programmé",
+  "hi": "रिमाइंडर सेट हो गया",
+  "it": "Promemoria impostato",
+  "ja": "リマインダーを設定しました",
+  "pt": "Lembrete definido",
+  "zh": "提醒已设置"
+ },
+ "Test it": {
+  "de": "Testen",
+  "es": "Probarlo",
+  "fr": "Tester",
+  "hi": "टेस्ट करें",
+  "it": "Provalo",
+  "ja": "試す",
+  "pt": "Testar",
+  "zh": "试一下"
+ },
+ "Your reminder from Tenzy": {
+  "de": "Deine Erinnerung von Tenzy",
+  "es": "Tu recordatorio de Tenzy",
+  "fr": "Ton rappel de Tenzy",
+  "hi": "Tenzy की ओर से आपका रिमाइंडर",
+  "it": "Il tuo promemoria da Tenzy",
+  "ja": "Tenzy からのリマインダー",
+  "pt": "Seu lembrete do Tenzy",
+  "zh": "来自 Tenzy 的提醒"
+ },
+ "Notifications are off for Tenzy — turn them on to get it.": {
+  "de": "Mitteilungen für Tenzy sind aus – schalte sie ein, um sie zu erhalten.",
+  "es": "Las notificaciones de Tenzy están desactivadas: actívalas para recibirlo.",
+  "fr": "Les notifications de Tenzy sont désactivées — active-les pour le recevoir.",
+  "hi": "Tenzy की सूचनाएँ बंद हैं — इसे पाने के लिए इन्हें चालू करें।",
+  "it": "Le notifiche di Tenzy sono disattivate: attivale per riceverlo.",
+  "ja": "Tenzy の通知がオフです。受け取るにはオンにしてください。",
+  "pt": "As notificações do Tenzy estão desativadas — ative-as para recebê-lo.",
+  "zh": "Tenzy 的通知已关闭——打开才能收到。"
  }
 }

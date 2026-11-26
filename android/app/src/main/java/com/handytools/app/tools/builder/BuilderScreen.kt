@@ -147,6 +147,7 @@ fun BuilderScreen() {
     var have by remember { mutableStateOf<Kind?>(null) }     // "What do you have?": narrows the starters
     var runOn by remember { mutableStateOf<Uri?>(null) }      // the new photo a tapped "run this tool" notification came with
     var editHint by remember { mutableStateOf<String?>(null) }   // shown above the steps after Describe it, when the request was only half said
+    var reminderSet by remember { mutableStateOf<OwnReminders.Reminder?>(null) }   // "remind me…" set in one tap
     var renaming by remember { mutableStateOf<Chain?>(null) }
     var newName by remember { mutableStateOf("") }
     // "Start with what you have": the thing picked (a file with its type, or text), waiting for a tool to be chosen.
@@ -278,6 +279,13 @@ fun BuilderScreen() {
                 Text(com.handytools.app.I18n.t("Describe it"), style = MaterialTheme.typography.titleMedium)
                 OutlinedTextField(ask, { ask = it }, Modifier.fillMaxWidth(), placeholder = { Text(com.handytools.app.I18n.t("e.g. shrink a photo under 1 MB and hide where it was taken")) }, minLines = 1, maxLines = 2)
                 HPrimaryButton("Build it for me", enabled = ask.isNotBlank()) {
+                    // "Remind me to call Mum at 6": that's a reminder, set right away (as on the iPhone), not a tool.
+                    ReminderWords.parse(ask)?.let { said ->
+                        val r = OwnReminders.from(said)
+                        OwnReminders.add(ctx, r)
+                        reminderSet = r; ask = ""; note = null
+                        return@HPrimaryButton
+                    }
                     val g = ChainPlanner.guess(ask)
                     if (g != null) {
                         editHint = if (g.second) null else "That wasn't much to go on, so this is my best guess. Change, add or remove any step before you save."
@@ -306,6 +314,7 @@ fun BuilderScreen() {
         }
 
         note?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) }
+        reminderSet?.let { r -> ReminderSetCard(r) { reminderSet = null } }
 
         Spacer(Modifier.weight(1f))
 
