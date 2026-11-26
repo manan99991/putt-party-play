@@ -176,7 +176,9 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   and the smart photo picker has a Camera button (not for screenshots). It uses the existing camera and microphone strings
   (both now name this use) and the system camera screen; nothing new is collected. If the camera is off for Tenzy, the
   button says so and offers Settings. The privacy page's camera line needs "and the Take a photo button in tools" before
-  the store submit (website change: Manan's yes).
+  the store submit (website change: Manan's yes). Android (26 Nov): Scrubber, Identify, Data Grabber, Receipts, Sorted,
+  See & Read and GIF Maker have the same button (`rememberCamera`), using the CAMERA permission the app already declares,
+  asked for only on the first tap; the phone's own camera app takes the picture into Tenzy's cache. Nothing new collected.
 - Video wow round (26 Nov, iPhone first): Beat Reel, Movie Trailer, Funny Moments, and Celebrate's Background and Funny tabs.
   All music, hits and sound effects are synthesised on the phone (`Synth`); never add a song, loop or sample Tenzy doesn't
   own. The trailer's narrator is the phone's own text-to-speech voice (`AVSpeechSynthesizer`, on the device) spoken low and

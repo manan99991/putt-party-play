@@ -41,6 +41,8 @@ import com.handytools.app.ui.Handy
 import com.handytools.app.ui.NoteText
 import com.handytools.app.ui.PowerToolPage
 import java.util.Locale
+import androidx.compose.ui.platform.testTag
+import androidx.compose.foundation.layout.Arrangement
 
 /** Lens — grab text from a photo or paste it, then listen to it read aloud or boil it down to the
  *  gist. Merges the old OCR + read-aloud idea into one. OCR + TTS + gist run on every phone. */
@@ -60,14 +62,16 @@ fun LensScreen() {
         onDispose { engine.stop(); engine.shutdown() }
     }
 
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-        if (uri == null) return@rememberLauncherForActivityResult
-        val bmp = com.handytools.app.SafeBitmap.decode(ctx, uri) ?: return@rememberLauncherForActivityResult
+    fun usePhoto(uri: Uri?) {
+        if (uri == null) return
+        val bmp = com.handytools.app.SafeBitmap.decode(ctx, uri) ?: return
         working = true; gist = ""; error = null
         TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS).process(InputImage.fromBitmap(bmp, 0))
             .addOnSuccessListener { working = false; text = TextFieldValue(it.text); if (it.text.isBlank()) error = "No readable text found in that image." }
             .addOnFailureListener { working = false; error = "Couldn't read text from that image. Try another photo." }
     }
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri -> usePhoto(uri) }
+    val camera = com.handytools.app.ui.rememberCamera { usePhoto(it) }
 
     fun speak() {
         val engine = tts.value ?: return
@@ -90,10 +94,11 @@ fun LensScreen() {
             }
         }
         Spacer(Modifier.size(8.dp))
-        Row(Modifier.fillMaxWidth()) {
-            HSecondaryButton("Photo", modifier = Modifier.fillMaxWidth()) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            HSecondaryButton("Photo", modifier = Modifier.weight(1f)) {
                 picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
+            HSecondaryButton(com.handytools.app.I18n.t("Camera"), Modifier.weight(1f).testTag("tool-camera")) { camera() }
         }
         if (working) { Spacer(Modifier.size(12.dp)); Text(com.handytools.app.I18n.t("Reading the text…"), color = Handy.palette.textSecondary) }
         error?.let { Spacer(Modifier.size(12.dp)); Text(it, color = com.handytools.app.ui.HandyColors.Danger, style = MaterialTheme.typography.bodySmall) }

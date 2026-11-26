@@ -47,6 +47,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.platform.testTag
 
 private data class IdResult(val labels: List<Pair<String, Int>>, val barcode: String?)
 
@@ -64,8 +65,8 @@ fun IdentifyToolScreen() {
     var working by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
 
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-        if (uri == null) return@rememberLauncherForActivityResult
+    fun usePhoto(uri: Uri?) {
+        if (uri == null) return
         working = true; result = null; error = null; preview = null
         scope.launch {
             val bmp = withContext(Dispatchers.IO) { SafeBitmap.decode(ctx, uri, 1600) }
@@ -87,6 +88,8 @@ fun IdentifyToolScreen() {
             else result = res
         }
     }
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri -> usePhoto(uri) }
+    val camera = com.handytools.app.ui.rememberCamera { usePhoto(it) }
 
     fun lookUp(q: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=" + Uri.encode(q)))
@@ -103,6 +106,8 @@ fun IdentifyToolScreen() {
         HPrimaryButton(if (working) "Looking…" else if (result != null) "Identify another" else "Choose a photo", enabled = !working) {
             picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+        Spacer(Modifier.height(8.dp))
+        HSecondaryButton(com.handytools.app.I18n.t("Take a photo"), Modifier.testTag("tool-camera"), enabled = !working) { camera() }
         error?.let { Spacer(Modifier.height(12.dp)); Text(it, color = Handy.palette.textSecondary, style = MaterialTheme.typography.bodyMedium) }
 
         result?.let { r ->

@@ -61,6 +61,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import kotlin.math.max
+import androidx.compose.ui.platform.testTag
 
 private val moneyRe = Regex("""(?:\$|£|€)?\s?(\d{1,3}(?:,\d{3})+(?:\.\d{2})?|\d+\.\d{2})""")
 
@@ -89,8 +90,8 @@ fun ReceiptKeeperScreen() {
 
     fun persist() = ReceiptStore.save(ctx, receipts.toList())
 
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri == null) return@rememberLauncherForActivityResult
+    fun usePhoto(uri: Uri?) {
+        if (uri == null) return
         busy = true
         scope.launch {
             val res = withContext(Dispatchers.IO) {
@@ -111,6 +112,8 @@ fun ReceiptKeeperScreen() {
             }
         }
     }
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri -> usePhoto(uri) }
+    val camera = com.handytools.app.ui.rememberCamera { usePhoto(it) }
 
     fun saveDraft() {
         val img = draftImage ?: return
@@ -141,6 +144,7 @@ fun ReceiptKeeperScreen() {
             HPrimaryButton(if (busy) "Reading…" else "Add a receipt", modifier = Modifier.fillMaxWidth(), enabled = !busy) {
                 picker.launch("image/*")
             }
+            HSecondaryButton(com.handytools.app.I18n.t("Take a photo"), Modifier.testTag("tool-camera"), enabled = !busy) { camera() }
         } else {
             Text(com.handytools.app.I18n.t("New receipt"), fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
             Spacer(Modifier.size(10.dp))

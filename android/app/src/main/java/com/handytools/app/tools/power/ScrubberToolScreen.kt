@@ -86,6 +86,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import androidx.compose.ui.platform.testTag
 
 /** One picked photo: the loaded bitmap plus the faces and text found in it (bitmap pixel coords). */
 private class Shot(val uri: Uri, val bitmap: Bitmap, val faces: List<Rect>, val text: List<Rect>)
@@ -134,8 +135,8 @@ fun ScrubberToolScreen() {
         return out
     }
 
-    val imagePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { picked ->
-        if (picked.isNullOrEmpty()) return@rememberLauncherForActivityResult
+    fun usePhotos(picked: List<Uri>?) {
+        if (picked.isNullOrEmpty()) return
         videoUri = null; videoStatus = null
         loading = true; status = null
         scope.launch {
@@ -152,6 +153,8 @@ fun ScrubberToolScreen() {
             shots.clear(); manual.clear(); shots.addAll(loaded); current = 0
         }
     }
+    val imagePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { picked -> usePhotos(picked) }
+    val camera = com.handytools.app.ui.rememberCamera { usePhotos(listOf(it)) }
 
     val videoPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { picked ->
         if (picked == null) return@rememberLauncherForActivityResult
@@ -239,6 +242,7 @@ fun ScrubberToolScreen() {
             HPrimaryButton("Pick photos", Modifier.weight(1f), icon = Icons.Outlined.AddPhotoAlternate) {
                 imagePicker.launch(arrayOf("image/*"))
             }
+            HSecondaryButton(com.handytools.app.I18n.t("Camera"), Modifier.weight(1f).testTag("tool-camera")) { camera() }
             HSecondaryButton("Video", Modifier.weight(1f)) {
                 videoPicker.launch(arrayOf("video/*"))
             }

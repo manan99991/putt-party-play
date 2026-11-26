@@ -40,6 +40,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.File
+import androidx.compose.ui.platform.testTag
 
 /**
  * Scan to Table / CSV. Snap or pick a photo of a receipt, list or simple table; the text is read
@@ -56,8 +57,8 @@ fun ScanCsvScreen() {
 
     val recognizer = remember { TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS) }
 
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri == null) return@rememberLauncherForActivityResult
+    fun usePhoto(uri: Uri?) {
+        if (uri == null) return
         busy = true; status = null; csv = ""
         scope.launch {
             val result = withContext(Dispatchers.IO) {
@@ -73,6 +74,8 @@ fun ScanCsvScreen() {
             else { csv = result; HandyHaptics.success(ctx) }
         }
     }
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri -> usePhoto(uri) }
+    val camera = com.handytools.app.ui.rememberCamera { usePhoto(it) }
 
     fun export() {
         if (csv.isBlank()) return
@@ -86,6 +89,8 @@ fun ScanCsvScreen() {
         HPrimaryButton(if (busy) "Reading…" else "Choose a photo", modifier = Modifier.fillMaxWidth(), enabled = !busy) {
             picker.launch("image/*")
         }
+        Spacer(Modifier.size(8.dp))
+        HSecondaryButton(com.handytools.app.I18n.t("Take a photo"), Modifier.testTag("tool-camera"), enabled = !busy) { camera() }
         status?.let { Spacer(Modifier.size(10.dp)); Text(it, color = Handy.palette.textSecondary, fontSize = 13.sp) }
 
         if (csv.isNotBlank()) {

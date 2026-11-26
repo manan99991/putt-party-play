@@ -42,6 +42,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import androidx.compose.ui.platform.testTag
 
 private data class Size(val label: String, val width: Int)
 private val SIZES = listOf(Size("Small", 180), Size("Medium", 240), Size("Large", 320), Size("HD", 480))
@@ -125,6 +126,7 @@ fun GifMakerScreen() {
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { u: Uri? ->
         if (u != null) build(u)
     }
+    val camera = com.handytools.app.ui.rememberCamera(video = true) { build(it) }
 
     PowerToolPage("gifmaker") {
         Text(com.handytools.app.I18n.t("Size"), color = Handy.palette.textSecondary, fontSize = 13.sp)
@@ -156,6 +158,8 @@ fun GifMakerScreen() {
         HPrimaryButton(if (busy) "Building GIF…" else "Choose a video", modifier = Modifier.fillMaxWidth(), enabled = !busy) {
             picker.launch("video/*")
         }
+        Spacer(Modifier.size(8.dp))
+        HSecondaryButton(com.handytools.app.I18n.t("Record one now"), Modifier.testTag("tool-record"), enabled = !busy) { camera() }
         status?.let { Spacer(Modifier.size(10.dp)); Text(it, color = Handy.palette.textSecondary, fontSize = 13.sp) }
 
         preview?.let { bmp ->

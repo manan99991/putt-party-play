@@ -42,6 +42,8 @@ import com.handytools.app.ui.PowerToolPage
 import java.text.DateFormat
 import java.util.Calendar
 import java.util.Date
+import androidx.compose.ui.platform.testTag
+import androidx.compose.foundation.layout.Arrangement
 
 /** Sorted — snap a bill, appointment card, form or notice; get what it is, what you owe, and the key
  *  date, then add it to your calendar in a tap. OCR + date/amount extraction run on every phone; the
@@ -54,14 +56,16 @@ fun SortedScreen() {
     var parsed by remember { mutableStateOf<Parsed?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
 
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-        if (uri == null) return@rememberLauncherForActivityResult
-        val bmp = com.handytools.app.SafeBitmap.decode(ctx, uri) ?: return@rememberLauncherForActivityResult
+    fun usePhoto(uri: Uri?) {
+        if (uri == null) return
+        val bmp = com.handytools.app.SafeBitmap.decode(ctx, uri) ?: return
         working = true; parsed = null; error = null
         TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS).process(InputImage.fromBitmap(bmp, 0))
             .addOnSuccessListener { working = false; text = TextFieldValue(it.text); if (it.text.isBlank()) error = "No readable text found in that image." }
             .addOnFailureListener { working = false; error = "Couldn't read that document. Try another photo." }
     }
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri -> usePhoto(uri) }
+    val camera = com.handytools.app.ui.rememberCamera { usePhoto(it) }
 
     PowerToolPage("sorted") {
         HCard(Modifier.fillMaxWidth()) {
@@ -75,10 +79,11 @@ fun SortedScreen() {
             }
         }
         Spacer(Modifier.size(8.dp))
-        Row(Modifier.fillMaxWidth()) {
-            HSecondaryButton("Photo", modifier = Modifier.fillMaxWidth()) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            HSecondaryButton("Photo", modifier = Modifier.weight(1f)) {
                 picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
+            HSecondaryButton(com.handytools.app.I18n.t("Camera"), Modifier.weight(1f).testTag("tool-camera")) { camera() }
         }
 
         if (text.text.trim().length >= 4) {

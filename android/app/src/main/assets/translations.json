@@ -17528,5 +17528,45 @@
   "ja": "Tenzy の通知がオフです。受け取るにはオンにしてください。",
   "pt": "As notificações do Tenzy estão desativadas — ative-as para recebê-lo.",
   "zh": "Tenzy 的通知已关闭——打开才能收到。"
+ },
+ "Take a photo": {
+  "de": "Foto aufnehmen",
+  "es": "Hacer una foto",
+  "fr": "Prendre une photo",
+  "hi": "फ़ोटो लें",
+  "it": "Scatta una foto",
+  "ja": "写真を撮る",
+  "pt": "Tirar uma foto",
+  "zh": "拍照"
+ },
+ "Record one now": {
+  "de": "Jetzt eins aufnehmen",
+  "es": "Grabar uno ahora",
+  "fr": "En filmer une maintenant",
+  "hi": "अभी रिकॉर्ड करें",
+  "it": "Registrane uno ora",
+  "ja": "今撮る",
+  "pt": "Gravar um agora",
+  "zh": "现在录一段"
+ },
+ "The camera is off for Tenzy": {
+  "de": "Die Kamera ist für Tenzy aus",
+  "es": "La cámara está desactivada para Tenzy",
+  "fr": "L'appareil photo est désactivé pour Tenzy",
+  "hi": "Tenzy के लिए कैमरा बंद है",
+  "it": "La fotocamera è disattivata per Tenzy",
+  "ja": "Tenzyのカメラがオフです",
+  "pt": "A câmera está desligada para o Tenzy",
+  "zh": "Tenzy 的相机权限已关闭"
+ },
+ "Turn on Camera for Tenzy in Settings to take a photo here. You can still pick one from your phone.": {
+  "de": "Schalte in den Einstellungen die Kamera für Tenzy ein, um hier ein Foto aufzunehmen. Du kannst trotzdem eines von deinem Handy auswählen.",
+  "es": "Activa la cámara para Tenzy en Ajustes para hacer una foto aquí. Aún puedes elegir una de tu teléfono.",
+  "fr": "Active l'appareil photo pour Tenzy dans les Réglages pour prendre une photo ici. Tu peux toujours en choisir une sur ton téléphone.",
+  "hi": "यहाँ फ़ोटो लेने के लिए सेटिंग्स में Tenzy का कैमरा चालू करें। आप अब भी अपने फ़ोन से कोई फ़ोटो चुन सकते हैं।",
+  "it": "Attiva la fotocamera per Tenzy nelle Impostazioni per scattare una foto qui. Puoi comunque sceglierne una dal telefono.",
+  "ja": "ここで写真を撮るには、設定で Tenzy のカメラをオンにしてください。スマホから写真を選ぶこともできます。",
+  "pt": "Ative a câmera para o Tenzy nos Ajustes para tirar uma foto aqui. Você ainda pode escolher uma do celular.",
+  "zh": "在设置中为 Tenzy 打开相机，即可在这里拍照。你也可以从手机里选一张。"
  }
 }
