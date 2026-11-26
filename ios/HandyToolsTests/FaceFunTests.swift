@@ -257,6 +257,18 @@ final class FaceFunTests: XCTestCase {
                 let out = FaceFun.apply(e.id, to: src, scene: scene, t: 0.5, amount: 0.7, memory: memory)
                 let after = pixels(out)
                 let ms = Int(Date().timeIntervalSince(started) * 1000)
+                // Round 12 diagnostics (numbers only): the face the effect was given, the picture's average colour, and
+                // the same effect given the face straight from the finder (no steadying) — to tell a wrong face from a
+                // wrong picture.
+                if let g = scene.faces.first {
+                    func n(_ v: CGFloat) -> String { v.isFinite ? String(Int(v)) : "NOTFINITE" }
+                    func p(_ q: CGPoint) -> String { "\(n(q.x)),\(n(q.y))" }
+                    var sum = [0.0, 0.0, 0.0, 0.0]
+                    for i in stride(from: 0, to: after.bytes.count - 3, by: 4 * 53) { for c in 0..<4 { sum[c] += Double(after.bytes[i + c]) } }
+                    let cnt = Double(max(1, after.bytes.count / (4 * 53)))
+                    let plain = pixels(FaceFun.apply(e.id, to: src, scene: FaceFun.Scene(faces: [f]), t: 0.5, amount: 0.7))
+                    print("VIDEOFX|facefun-diag|\(e.id)|eyes \(p(g.eyeA)) \(p(g.eyeB)) d\(n(g.eyeDistance))|mouth \(p(g.mouth)) w\(n(g.mouthWidth))|nose \(p(g.nose))|brow \(p(g.brow))|chin \(p(g.chin))|cheeks \(p(g.cheekA)) \(p(g.cheekB))|w\(n(g.width)) h\(n(g.height))|up \(String(format: "%.2f,%.2f", g.up.dx, g.up.dy))|pts \(g.contour.count)/\(g.lips.count)/\(g.eyePtsA.count)|avg \(sum.map { Int($0 / cnt) })|extent \(out.extent)|unsteadied head=\(String(format: "%.1f", change(before, plain, in: head))) corner=\(String(format: "%.1f", change(before, plain, in: corner)))")
+                }
                 let onHead = change(before, after, in: head), far = change(before, after, in: corner)
                 print("VIDEOFX|facefun-real|photo\(tried)|\(e.id)|faces=\(scene.faces.count)|head=\(String(format: "%.1f", onHead))|corner=\(String(format: "%.1f", far))|\(ms)ms")
                 XCTAssertEqual(out.extent, frame, "\(e.id) changed the picture's size")

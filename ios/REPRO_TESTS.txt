@@ -1,12 +1,5 @@
-# 26 Nov, round 11. Round 10: the music passed; on the real photo most effects came out blank because the test fed
-# every render the full-size photo and the build machine's renderer ran out of room (it said so: 100 MB a tile) — the
-# test now uses the small picture itself and prints the face it found. Bald redone with the forehead's own skin drawn
-# up over the crown; the soft looks no longer haze the whole picture; the Studio test scrolls to the Music grid.
-# Round 10. Video Studio: 37 face and body effects, music under the video, your own photo behind you, and
-# posting from the result. Each effect on a drawn face (pictures published to look at) and on real photos; the music
-# on the saved file; then the whole thing start to finish on the simulator.
+# 26 Nov, round 12. Round 11 failed the same way on the real photo (so the "renderer ran out of room" idea was
+# wrong); everything else passed, including the Studio start to finish. The real photo's face is tilted 48 degrees.
+# This round only measures: for each effect, the face it was given (numbers), the picture's average colour, and the
+# same effect on the face straight from the finder with no steadying.
 HandyToolsTests/FaceFunTests
-HandyToolsTests/VideoSoundTests
-HandyToolsTests/VideoFunTests
-HandyToolsUITests/CameraButtonTests/testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost
-HandyToolsUITests/PromiseTests/testCelebrateOffersEveryFestivalAndTypedOnes
