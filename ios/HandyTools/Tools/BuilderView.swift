@@ -728,7 +728,7 @@ struct BuilderView: View {
                         }
                     }.padding(HandySpacing.gutter)
                 }
-                .navigationTitle(L("My tools")).navigationBarTitleDisplayMode(.inline)
+                .navigationTitle(L("My helpers")).navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         if !mine.isEmpty {
@@ -1322,19 +1322,19 @@ struct BuilderView: View {
                 }
                 .buttonStyle(.plain).accessibilityIdentifier("page-back")
             }
-            TabHero(title: "Build", line: "Make your own tool or reminder. Tenzy runs it for you, any time.", symbol: "wand.and.stars")
+            TabHero(title: "Build", line: "Make your own helper or reminder. Tenzy runs it for you, any time.", symbol: "wand.and.stars")
             LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8)], spacing: HandySpacing.s8) {
                 Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []) } label: {
-                    buildTile("New tool", "Start from a photo, PDF, video, sound or text", "plus.square.fill", 0x7B5CFF)
+                    buildTile("New helper", "Start from a photo, PDF, video, sound or text", "plus.square.fill", 0x7B5CFF)
                 }.buttonStyle(.plain).accessibilityIdentifier("build-new-tool")
                 NavigationLink(value: "myreminders") {
-                    buildTile("New reminder", "What and when — it can open a tool", "bell.badge.fill", 0xF97316)
+                    buildTile("New reminder", "What and when — it can open a helper", "bell.badge.fill", 0xF97316)
                 }.buttonStyle(.plain).accessibilityIdentifier("build-new-reminder")
                 Button { showTemplates = true } label: {
                     buildTile("Ready-made", "Start from one and change it", "square.stack.3d.up.fill", 0xEC4899)
                 }.buttonStyle(.plain).accessibilityIdentifier("build-readymade")
                 Button { showMine = true } label: {
-                    buildTile("My tools", mine.isEmpty ? "The ones you make land here" : "\(mine.count) \(L("saved"))", "tray.full.fill", 0x0EA5E9)
+                    buildTile("My helpers", mine.isEmpty ? "The ones you make land here" : "\(mine.count) \(L("saved"))", "tray.full.fill", 0x0EA5E9)
                 }.buttonStyle(.plain).accessibilityIdentifier("build-mine")
             }
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
@@ -1344,7 +1344,7 @@ struct BuilderView: View {
                 if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             }
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                SectionLabel(text: "How a tool works", icon: "lightbulb.fill")
+                SectionLabel(text: "How a helper works", icon: "lightbulb.fill")
                 HStack(alignment: .top, spacing: HandySpacing.s8) {
                     howStep(1, "Start with something", "A photo, a PDF, a video, a recording, text — or a time.", "tray.and.arrow.down.fill")
                     howStep(2, "Add the steps", "Shrink, hide details, translate, sign, send…", "list.number")

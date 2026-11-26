@@ -187,7 +187,7 @@ struct SettingsView: View {
                             }
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(store.isPremium ? "Tenzy Pro" : "Go Pro").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                Text(store.isPremium ? "Every tool unlimited. No daily limits." : String(format: L("%@ a month or %@ a year. Every tool, no daily limits."), store.monthlyPrice, store.yearlyPrice))
+                                Text(store.isPremium ? L("Every helper unlimited. No daily limits.") : String(format: L("%@ a month or %@ a year. Every tool, no daily limits."), store.monthlyPrice, store.yearlyPrice))
                                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.leading)
                             }
                             Spacer()
@@ -264,6 +264,7 @@ struct SettingsView: View {
                         NavigationLink(value: "myalerts") {
                             Label { VStack(alignment: .leading, spacing: 2) {
                                 Text(L("Looks after your phone, so you don't have to")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                    .multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
                                 Text(L("Screenshots piling up, space running low, big videos")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                             } } icon: { Image(systemName: "bell.badge.fill").foregroundStyle(HandyColor.accent) }
                         }
@@ -307,7 +308,7 @@ struct SettingsView: View {
                             Toggle(isOn: Binding(get: { store.isTesterPro }, set: { store.setTesterPro($0) })) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(L("Unlock Pro (tester)")).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary)
-                                    Text(L("Every tool unlimited — for testing the paid experience.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                    Text(L("Every helper unlimited — for testing the paid experience.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                                 }
                             }.tint(HandyColor.accent).padding(.vertical, HandySpacing.s8)
                             SettingsRow(icon: "ladybug", title: "Diagnostics", sub: "View the on-device log and share it with me") { showDiagnostics = true }
@@ -522,7 +523,7 @@ struct BusinessSwitch: View {
         Toggle(isOn: $on) {
             VStack(alignment: .leading, spacing: 3) {
                 Text(L("I run a small business")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                Text(L("Adds Business to Tools: expenses, product photos, customers, contracts and QR codes."))
+                Text(L("Adds a Business section to Home: expenses, product photos, customers, contracts and QR codes."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }
         }

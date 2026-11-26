@@ -51028,5 +51028,85 @@
   "ja": "Tenzyに写真を渡して、やりたいことを選びます。",
   "pt": "Dê uma foto ao Tenzy e escolha o que quer fazer.",
   "zh": "给 Tenzy 一张照片，选择你想做的事。"
+ },
+ "My helpers": {
+  "de": "Meine Helfer",
+  "es": "Mis asistentes",
+  "fr": "Mes assistants",
+  "hi": "मेरे हेल्पर",
+  "it": "I miei aiutanti",
+  "ja": "マイヘルパー",
+  "pt": "Os meus ajudantes",
+  "zh": "我的助手"
+ },
+ "New helper": {
+  "de": "Neuer Helfer",
+  "es": "Nuevo asistente",
+  "fr": "Nouvel assistant",
+  "hi": "नया हेल्पर",
+  "it": "Nuovo aiutante",
+  "ja": "新しいヘルパー",
+  "pt": "Novo ajudante",
+  "zh": "新助手"
+ },
+ "How a helper works": {
+  "de": "So funktioniert ein Helfer",
+  "es": "Cómo funciona un asistente",
+  "fr": "Comment marche un assistant",
+  "hi": "हेल्पर कैसे काम करता है",
+  "it": "Come funziona un aiutante",
+  "ja": "ヘルパーのしくみ",
+  "pt": "Como funciona um ajudante",
+  "zh": "助手如何运作"
+ },
+ "Make your own helper or reminder. Tenzy runs it for you, any time.": {
+  "de": "Bau deinen eigenen Helfer oder deine eigene Erinnerung. Tenzy führt sie jederzeit für dich aus.",
+  "es": "Crea tu propio asistente o recordatorio. Tenzy lo ejecuta por ti cuando quieras.",
+  "fr": "Crée ton propre assistant ou rappel. Tenzy le lance pour toi, quand tu veux.",
+  "hi": "अपना हेल्पर या रिमाइंडर बनाएँ। Tenzy उसे कभी भी आपके लिए चलाता है।",
+  "it": "Crea il tuo aiutante o promemoria. Tenzy lo esegue per te, quando vuoi.",
+  "ja": "自分だけのヘルパーやリマインダーを作れます。Tenzy がいつでも実行します。",
+  "pt": "Crie o seu próprio ajudante ou lembrete. O Tenzy executa por você, quando quiser.",
+  "zh": "创建你自己的助手或提醒，Tenzy 随时为你运行。"
+ },
+ "What and when — it can open a helper": {
+  "de": "Was und wann – sie kann einen Helfer öffnen",
+  "es": "Qué y cuándo: puede abrir un asistente",
+  "fr": "Quoi et quand — il peut ouvrir un assistant",
+  "hi": "क्या और कब — यह एक हेल्पर खोल सकता है",
+  "it": "Cosa e quando — può aprire un aiutante",
+  "ja": "内容とタイミング。ヘルパーを開くこともできます",
+  "pt": "O quê e quando — pode abrir um ajudante",
+  "zh": "内容和时间——还能打开一个助手"
+ },
+ "Every helper unlimited. No daily limits.": {
+  "de": "Jeder Helfer unbegrenzt. Keine Tageslimits.",
+  "es": "Todos los asistentes sin límite. Sin límites diarios.",
+  "fr": "Tous les assistants en illimité. Aucune limite quotidienne.",
+  "hi": "हर हेल्पर असीमित। कोई दैनिक सीमा नहीं।",
+  "it": "Ogni aiutante senza limiti. Nessun limite giornaliero.",
+  "ja": "すべてのヘルパーが無制限。1日の上限なし。",
+  "pt": "Todos os ajudantes sem limite. Sem limites diários.",
+  "zh": "所有助手无限使用，没有每日限制。"
+ },
+ "Every helper unlimited — for testing the paid experience.": {
+  "de": "Jeder Helfer unbegrenzt – zum Testen der kostenpflichtigen Version.",
+  "es": "Todos los asistentes sin límite, para probar la versión de pago.",
+  "fr": "Tous les assistants en illimité — pour tester la version payante.",
+  "hi": "हर हेल्पर असीमित — पेड अनुभव की टेस्टिंग के लिए।",
+  "it": "Ogni aiutante senza limiti — per provare la versione a pagamento.",
+  "ja": "すべてのヘルパーが無制限（有料版のテスト用）。",
+  "pt": "Todos os ajudantes sem limite — para testar a versão paga.",
+  "zh": "所有助手无限使用——用于测试付费版本。"
+ },
+ "Adds a Business section to Home: expenses, product photos, customers, contracts and QR codes.": {
+  "de": "Fügt einen Business-Bereich zum Start hinzu: Ausgaben, Produktfotos, Kunden, Verträge und QR-Codes.",
+  "es": "Añade una sección Negocio en Inicio: gastos, fotos de productos, clientes, contratos y códigos QR.",
+  "fr": "Ajoute une section Pro à l'accueil : dépenses, photos de produits, clients, contrats et codes QR.",
+  "hi": "होम में बिज़नेस सेक्शन जोड़ता है: खर्च, प्रोडक्ट फ़ोटो, ग्राहक, कॉन्ट्रैक्ट और QR कोड।",
+  "it": "Aggiunge una sezione Lavoro alla Home: spese, foto dei prodotti, clienti, contratti e codici QR.",
+  "ja": "ホームにビジネスのセクションを追加：経費、商品写真、顧客、契約、QRコード。",
+  "pt": "Adiciona uma seção Negócios ao Início: despesas, fotos de produtos, clientes, contratos e códigos QR.",
+  "zh": "在首页添加商务分区：支出、产品照片、客户、合同和二维码。"
  }
 }
