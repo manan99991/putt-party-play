@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.effect.BitmapOverlay
 import androidx.media3.effect.OverlaySettings
-import androidx.media3.effect.StaticOverlaySettings
 
 /**
  * One picture laid over a video that changes with time (the trailer's cards and flashes, a funny moment's words):
@@ -18,6 +17,6 @@ class TimedOverlay(private val pick: (Double) -> Pair<Bitmap, Float>?, private v
         val t = presentationTimeUs / 1e6
         val a = pick(t)?.second ?: 0f
         val s = scaleAt(t)
-        return StaticOverlaySettings.Builder().setAlphaScale(a.coerceIn(0f, 1f)).setScale(s, s).build()
+        return OverlaySettings.Builder().setAlphaScale(a.coerceIn(0f, 1f)).setScale(s, s).build()   // Media3 1.5: OverlaySettings is the class
     }
 }
