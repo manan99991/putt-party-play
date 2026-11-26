@@ -19758,5 +19758,45 @@
   "ja": "連絡先に保存できませんでした。Tenzy が連絡先を使えるか確認してください。",
   "pt": "Os Contatos não os aceitaram — verifique se o Tenzy pode usar os Contatos.",
   "zh": "通讯录没有接收——请检查 Tenzy 能否使用通讯录。"
+ },
+ "Turns the letters, bills and forms you photographed today into clean PDFs you can search — each page cropped and straightened, pages taken together in one file, named from what it says.": {
+  "de": "Macht aus Briefen, Rechnungen und Formularen, die du heute fotografiert hast, saubere, durchsuchbare PDFs – jede Seite zugeschnitten und gerade gerückt, zusammen fotografierte Seiten in einer Datei, benannt nach ihrem Inhalt.",
+  "es": "Convierte las cartas, facturas y formularios que fotografiaste hoy en PDF limpios en los que se puede buscar: cada página recortada y enderezada, las páginas tomadas juntas en un archivo, con el nombre de lo que dice.",
+  "fr": "Transforme les lettres, factures et formulaires photographiés aujourd'hui en PDF nets et consultables — chaque page recadrée et redressée, les pages prises ensemble dans un seul fichier, nommé d'après son contenu.",
+  "hi": "आज फ़ोटो खींचे गए पत्र, बिल और फ़ॉर्म को साफ़, खोजने लायक PDF बनाता है — हर पेज कटा और सीधा, साथ ली गई पेज एक फ़ाइल में, नाम उसमें लिखी बात से।",
+  "it": "Trasforma lettere, bollette e moduli fotografati oggi in PDF puliti e ricercabili: ogni pagina ritagliata e raddrizzata, le pagine scattate insieme in un unico file, con il nome di ciò che dice.",
+  "ja": "今日撮った手紙・請求書・書類を、検索できるきれいな PDF にします。各ページを切り抜いてまっすぐにし、続けて撮ったページは 1 つのファイルに、内容から名前をつけます。",
+  "pt": "Transforma as cartas, contas e formulários que você fotografou hoje em PDFs limpos e pesquisáveis — cada página recortada e endireitada, páginas tiradas juntas em um arquivo, com o nome do que diz.",
+  "zh": "把你今天拍的信件、账单和表格变成干净、可搜索的 PDF——每页裁好并摆正，一起拍的页合成一个文件，按内容命名。"
+ },
+ "No pages of paper in today's photos.": {
+  "de": "Keine Papierseiten in den Fotos von heute.",
+  "es": "No hay páginas de papel en las fotos de hoy.",
+  "fr": "Aucune page papier dans les photos du jour.",
+  "hi": "आज की फ़ोटो में कागज़ का कोई पेज नहीं।",
+  "it": "Nessuna pagina di carta nelle foto di oggi.",
+  "ja": "今日の写真に紙の書類はありません。",
+  "pt": "Nenhuma página de papel nas fotos de hoje.",
+  "zh": "今天的照片里没有纸质页面。"
+ },
+ "%d pages · words you can search": {
+  "de": "%d Seiten · durchsuchbarer Text",
+  "es": "%d páginas · texto en el que se puede buscar",
+  "fr": "%d pages · texte consultable",
+  "hi": "%d पेज · खोजने लायक शब्द",
+  "it": "%d pagine · testo ricercabile",
+  "ja": "%d ページ · 検索できる文字",
+  "pt": "%d páginas · texto pesquisável",
+  "zh": "%d 页 · 文字可搜索"
+ },
+ "Document": {
+  "de": "Dokument",
+  "es": "Documento",
+  "fr": "Document",
+  "hi": "दस्तावेज़",
+  "it": "Documento",
+  "ja": "書類",
+  "pt": "Documento",
+  "zh": "文档"
  }
 }

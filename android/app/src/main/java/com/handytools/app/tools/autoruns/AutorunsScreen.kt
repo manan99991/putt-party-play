@@ -127,7 +127,7 @@ private fun AutorunCard(k: SmartRuns.Kind, expanded: Boolean, onToggle: () -> Un
                 }, Modifier.testTag("autorun-${k.id}-switch"))
             }
             if (expanded) {
-                Text(I18n.t(k.line), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                Text(I18n.t(Autoruns.line(k)), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                 ChipRow {
                     HChip(timeLabel(ctx, plan.hour, plan.minute), false) {
                         TimePickerDialog(ctx, { _, h, m -> set(plan.copy(hour = h, minute = m)) }, plan.hour, plan.minute, DateFormat.is24HourFormat(ctx)).show()
@@ -160,6 +160,7 @@ fun AutorunRun(k: SmartRuns.Kind, onClose: () -> Unit) {
         SmartRuns.Kind.TIDY_PHOTOS -> TidyPhotosRun(onClose)
         SmartRuns.Kind.RECEIPTS -> PaperRun(k, onClose)
         SmartRuns.Kind.BUSINESS_CARDS -> PaperRun(k, onClose)
+        SmartRuns.Kind.PAPER_PDFS -> PaperPdfsRun(onClose)
         else -> LaunchedEffect(k) { onClose() }
     }
 }
@@ -662,6 +663,60 @@ private fun PaperRun(k: SmartRuns.Kind, onClose: () -> Unit) {
             if (chosen.isNotEmpty() && done == null) HPrimaryButton(I18n.fmt("Save %d to Contacts", chosen.size), Modifier.fillMaxWidth().testTag("cards-save")) {
                 val n = PaperFinds.saveCards(ctx, chosen)
                 done = if (n > 0) I18n.fmt("%d saved to Contacts, each with the day you met.", n) else I18n.t("Contacts wouldn't take them — check that Tenzy can use Contacts.")
+            }
+        }
+        Spacer(Modifier.height(HandyTokens.Space24))
+    }
+}
+
+/** Today's pages as searchable PDFs: each to look through, then save or send. */
+@Composable
+private fun PaperPdfsRun(onClose: () -> Unit) {
+    val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val k = SmartRuns.Kind.PAPER_PDFS
+    var allowed by remember { mutableStateOf(canReadPhotos(ctx)) }
+    val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> allowed = ok }
+    var progress by remember { mutableStateOf(0.0) }
+    var docs by remember { mutableStateOf<List<PaperPdfs.Doc>?>(null) }
+    var job by remember { mutableStateOf<Job?>(null) }
+    LaunchedEffect(allowed) {
+        if (!allowed) { ask.launch(if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE); return@LaunchedEffect }
+        job = scope.launch {
+            val now = System.currentTimeMillis()
+            docs = PaperPdfs.make(ctx, Autoruns.windowFor(ctx, k, now)) { p -> progress = p }
+            Autoruns.markRun(ctx, k, now); Autoruns.clearReady(ctx, k)
+        }
+    }
+    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter),
+        verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+        HTextButton(I18n.t("‹ Back")) { job?.cancel(); onClose() }
+        Text(I18n.t(k.title), style = MaterialTheme.typography.headlineSmall)
+        if (!allowed) { Text(I18n.t("Tenzy needs to see your photos to find today's."), color = Handy.palette.textSecondary); return@Column }
+        val d = docs
+        if (d == null) {
+            Text(I18n.t("Looking at today's photos…"), style = MaterialTheme.typography.bodyMedium)
+            LinearProgressIndicator(progress = { progress.toFloat().coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth().testTag("autorun-progress"))
+            return@Column
+        }
+        if (d.isEmpty()) Text(I18n.t("No pages of paper in today's photos."), color = Handy.palette.textSecondary)
+        d.forEach { doc ->
+            HCard(Modifier.fillMaxWidth().testTag("paper-row")) {
+                Column(Modifier.padding(HandyTokens.Space12), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space4)) {
+                    Text(doc.title, style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(I18n.fmt("%d pages · words you can search", doc.pages.size), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, maxLines = 1)
+                    Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                        HSecondaryButton(I18n.t("Open"), Modifier.weight(1f)) {
+                            val uri = androidx.core.content.FileProvider.getUriForFile(ctx, ctx.packageName + ".fileprovider",
+                                java.io.File(ctx.cacheDir, doc.file.name).also { doc.file.copyTo(it, overwrite = true) })
+                            runCatching { ctx.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW).setDataAndType(uri, "application/pdf")
+                                .addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION or android.content.Intent.FLAG_ACTIVITY_NEW_TASK)) }
+                        }
+                        HPrimaryButton(I18n.t("Share"), Modifier.weight(1f)) {
+                            com.handytools.app.tools.Share.file(ctx, java.io.File(ctx.cacheDir, doc.file.name).also { doc.file.copyTo(it, overwrite = true) }, "application/pdf")
+                        }
+                    }
+                }
             }
         }
         Spacer(Modifier.height(HandyTokens.Space24))
