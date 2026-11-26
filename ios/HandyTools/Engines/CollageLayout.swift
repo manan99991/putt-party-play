@@ -92,24 +92,45 @@ enum CollageLayout: String, CaseIterable, Identifiable {
 
     // MARK: render
 
+    /// Where a filled photo goes in its frame: centred, or — when the photo's faces are known (`focus`, 0…1 from the
+    /// top-left) — shifted so the faces sit in the middle of the frame as far as the photo allows. Never leaves a gap.
+    static func placed(_ size: CGSize, in f: CGRect, focus: CGPoint?) -> CGRect {
+        var x = f.midX - size.width / 2, y = f.midY - size.height / 2
+        if let p = focus {
+            x = min(f.minX, max(f.maxX - size.width, f.midX - p.x * size.width))
+            y = min(f.minY, max(f.maxY - size.height, f.midY - p.y * size.height))
+        }
+        return CGRect(x: x, y: y, width: size.width, height: size.height)
+    }
+
     /// The finished collage. `gapRatio` and `cornerRatio` are fractions of the canvas's short side.
     static func render(_ images: [UIImage], layout: CollageLayout, canvas: CGSize, gapRatio: CGFloat,
-                       cornerRatio: CGFloat, background: UIColor) -> UIImage {
+                       cornerRatio: CGFloat, background: UIColor, focus: [CGPoint?]? = nil, footer: String? = nil) -> UIImage {
         let short = min(canvas.width, canvas.height)
         let gap = (short * gapRatio).rounded()
         let corner = short * cornerRatio
-        let frames = layout.frames(count: images.count, canvas: canvas, gap: gap)
+        // A footer line (the day's date) takes a band at the bottom; the photos tile the rest.
+        let band: CGFloat = footer == nil ? 0 : (short * 0.085).rounded()
+        let frames = layout.frames(count: images.count, canvas: CGSize(width: canvas.width, height: canvas.height - band), gap: gap)
         let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
         return UIGraphicsImageRenderer(size: canvas, format: fmt).image { c in
             background.setFill(); c.fill(CGRect(origin: .zero, size: canvas))
-            for (img, f) in zip(images, frames) {
+            for (i, (img, f)) in zip(images, frames).enumerated() {
                 let src = img.normalizedUp()
                 c.cgContext.saveGState()
                 UIBezierPath(roundedRect: f, cornerRadius: min(corner, min(f.width, f.height) / 2)).addClip()
                 let k = max(f.width / max(src.size.width, 1), f.height / max(src.size.height, 1))
                 let w = src.size.width * k, h = src.size.height * k
-                src.draw(in: CGRect(x: f.midX - w / 2, y: f.midY - h / 2, width: w, height: h))
+                src.draw(in: placed(CGSize(width: w, height: h), in: f, focus: focus.flatMap { i < $0.count ? $0[i] : nil }))
                 c.cgContext.restoreGState()
+            }
+            if let footer, band > 0 {
+                let para = NSMutableParagraphStyle(); para.alignment = .center
+                let font = UIFont(descriptor: UIFont.systemFont(ofSize: band * 0.42, weight: .semibold).fontDescriptor.withDesign(.serif) ?? UIFont.systemFont(ofSize: band * 0.42).fontDescriptor, size: band * 0.42)
+                var lum: CGFloat = 1; background.getWhite(&lum, alpha: nil)
+                let ink = lum < 0.5 ? UIColor.white.withAlphaComponent(0.85) : UIColor(white: 0.2, alpha: 1)
+                (footer as NSString).draw(in: CGRect(x: gap, y: canvas.height - band - gap * 0.2 + (band - font.lineHeight) / 2, width: canvas.width - gap * 2, height: font.lineHeight + 2),
+                                          withAttributes: [.font: font, .foregroundColor: ink, .paragraphStyle: para, .kern: band * 0.02])
             }
         }
     }

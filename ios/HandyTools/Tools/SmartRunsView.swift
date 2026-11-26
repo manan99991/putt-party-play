@@ -212,7 +212,7 @@ struct SmartRunsView: View {
                 Button { Task { await testRun(k) } } label: { Label(L("Test run"), systemImage: "play.circle").frame(maxWidth: .infinity) }
                     .secondaryButton().disabled(store.working != nil).accessibilityIdentifier("smartrun-test-\(k.rawValue)")
                 if store.waitingCount(k) > 0 {
-                    NavigationLink(value: k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : "smartreceipts") {
+                    NavigationLink(value: k == .drives ? "smartdrives" : k == .heavyVideos ? "smartvideos" : k == .readyToPost ? "smartposts" : k == .dayCollage ? "smartcollage" : "smartreceipts") {
                         Text("\(L("Check")) \(store.waitingCount(k))").frame(maxWidth: .infinity)
                     }.primaryButton().accessibilityIdentifier("smartrun-check-\(k.rawValue)")
                 }
@@ -255,7 +255,10 @@ struct SmartRunsView: View {
         let before = store.waitingCount(k)
         await store.run(k, test: true)
         let found = store.waitingCount(k) - before
-        if k == .readyToPost {
+        if k == .dayCollage {
+            note = found > 0 ? L("Test run made today's collage. Tap Check to see it.")
+                             : L("Test run worked: fewer than three good photos of people from the last 24 hours, so no collage yet.")
+        } else if k == .readyToPost {
             note = found > 0 ? "\(L("Test run made")) \(found) \(L(found == 1 ? "clip ready to post" : "clips ready to post")). \(L("Tap Check to watch them."))"
                              : L("Test run worked: no clips from the last 24 hours between 4 seconds and 3 minutes.")
         } else if k == .heavyVideos {
@@ -551,6 +554,62 @@ struct SmartVideosReview: View {
         }
         .cardStyle(padding: HandySpacing.s12)
         .accessibilityElement(children: .contain).accessibilityIdentifier("smartvideo-row")
+    }
+}
+
+/// The day's collage: see it full size, try another layout, save it to Photos or send it.
+struct SmartCollageReview: View {
+    @ObservedObject private var store = SmartRunStore.shared
+    @Environment(\.dismiss) private var dismiss
+    @State private var busy = false
+    @State private var saved = false
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                HStack {
+                    Button { dismiss() } label: { Label(L("Back"), systemImage: "chevron.left").font(HandyFont.bodyStrong) }.accessibilityIdentifier("page-back")
+                    Spacer()
+                }
+                Text(L("Today's collage")).font(HandyFont.display).accessibilityAddTraits(.isHeader)
+                if let r = store.collages.first {
+                    let url = SmartCollage.folder.appendingPathComponent(r.file)
+                    if let img = UIImage(contentsOfFile: url.path) {
+                        Image(uiImage: img).resizable().scaledToFit()
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous)).contentShape(Rectangle())
+                            .shadow(color: .black.opacity(0.15), radius: 10, y: 4)
+                            .accessibilityLabel("\(L("Collage of")) \(r.count) \(L("photos"))")
+                            .accessibilityValue(Launch.uitest ? "\(Int(img.size.width))x\(Int(img.size.height)) \(r.count)" : "")
+                            .accessibilityIdentifier("smartcollage-image")
+                    }
+                    Text("\(r.count) \(L("photos — one per moment, sharpest first, faces kept in frame."))")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    Text(L("Layout")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    HandyFlow(spacing: 6) {
+                        ForEach([CollageLayout.hero, .grid, .mosaic, .sideHero], id: \.self) { l in
+                            HChip(text: L(l.title), selected: r.layout == l.rawValue) {
+                                busy = true
+                                Task { await store.remakeCollage(r.id, layout: l); busy = false }
+                            }.disabled(busy)
+                        }
+                    }
+                    if busy { HStack { BusySpinner(); Text(L("Arranging the photos…")).font(HandyFont.caption) } }
+                    HStack(spacing: HandySpacing.s8) {
+                        Button {
+                            Task { saved = await store.saveCollage(r.id); HandyHaptics.success() }
+                        } label: { Label(L(r.saved || saved ? "Saved to Photos" : "Save to Photos"), systemImage: r.saved || saved ? "checkmark.circle.fill" : "square.and.arrow.down").frame(maxWidth: .infinity) }
+                            .primaryButton().disabled(r.saved || saved || busy).accessibilityIdentifier("smartcollage-save")
+                        ShareLink(item: url) { Label(L("Send"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                    }
+                } else {
+                    EmptyState(icon: "square.grid.3x3.fill", line: "Nothing waiting", sub: "Today's collage shows up here after the next run.")
+                }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(TenzyBackdrop())
+        .toolbar(.hidden, for: .navigationBar)
+        .accessibilityIdentifier("smartcollage")
     }
 }
 

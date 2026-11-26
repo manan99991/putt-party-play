@@ -48818,5 +48818,125 @@
   "ja": "今日のベストクリップを選び、あなたのスタイルとReels・TikTok・Shorts向けの縦長サイズに整えて、確認・投稿できる状態にします。",
   "pt": "Escolhe os melhores clipes de hoje, dá-lhes o seu visual e o formato vertical que Reels, TikTok e Shorts pedem, prontos a ver e publicar.",
   "zh": "挑选今天最好的片段，套用你的风格并做成 Reels、TikTok、Shorts 需要的竖屏尺寸，供你观看和发布。"
+ },
+ "Arranging the photos…": {
+  "de": "Fotos werden angeordnet …",
+  "es": "Colocando las fotos…",
+  "fr": "Mise en page des photos…",
+  "hi": "फ़ोटो सजा रहे हैं…",
+  "it": "Sistemo le foto…",
+  "ja": "写真を配置中…",
+  "pt": "A organizar as fotos…",
+  "zh": "正在排列照片…"
+ },
+ "Collage of": {
+  "de": "Collage aus",
+  "es": "Collage de",
+  "fr": "Collage de",
+  "hi": "कोलाज:",
+  "it": "Collage di",
+  "ja": "コラージュ：",
+  "pt": "Colagem de",
+  "zh": "拼贴："
+ },
+ "Layout": {
+  "de": "Layout",
+  "es": "Diseño",
+  "fr": "Mise en page",
+  "hi": "लेआउट",
+  "it": "Layout",
+  "ja": "レイアウト",
+  "pt": "Esquema",
+  "zh": "版式"
+ },
+ "Looking at today's photos…": {
+  "de": "Die Fotos von heute werden angesehen …",
+  "es": "Mirando las fotos de hoy…",
+  "fr": "Examen des photos du jour…",
+  "hi": "आज की फ़ोटो देख रहे हैं…",
+  "it": "Guardo le foto di oggi…",
+  "ja": "今日の写真を確認中…",
+  "pt": "A ver as fotos de hoje…",
+  "zh": "正在查看今天的照片…"
+ },
+ "Tap and Tenzy makes one collage of the best photos of your day.": {
+  "de": "Tippe, und Tenzy macht eine Collage aus den besten Fotos deines Tages.",
+  "es": "Toca y Tenzy hace un collage con las mejores fotos de tu día.",
+  "fr": "Touchez et Tenzy crée un collage des meilleures photos de votre journée.",
+  "hi": "टैप करें, Tenzy आपके दिन की सबसे अच्छी फ़ोटो का एक कोलाज बनाएगा।",
+  "it": "Tocca e Tenzy crea un collage con le foto migliori della tua giornata.",
+  "ja": "タップすると、Tenzyが今日のベスト写真で1枚のコラージュを作ります。",
+  "pt": "Toque e o Tenzy faz uma colagem com as melhores fotos do seu dia.",
+  "zh": "点按后，Tenzy 会用今天最好的照片拼成一张。"
+ },
+ "Test run made today's collage. Tap Check to see it.": {
+  "de": "Testlauf hat die heutige Collage erstellt. Tippe auf Prüfen, um sie zu sehen.",
+  "es": "La prueba hizo el collage de hoy. Toca Revisar para verlo.",
+  "fr": "L'essai a créé le collage du jour. Touchez Vérifier pour le voir.",
+  "hi": "टेस्ट रन ने आज का कोलाज बनाया। देखने के लिए जाँचें दबाएँ।",
+  "it": "La prova ha creato il collage di oggi. Tocca Controlla per vederlo.",
+  "ja": "テスト実行で今日のコラージュを作りました。「確認」で表示。",
+  "pt": "O teste fez a colagem de hoje. Toque em Verificar para a ver.",
+  "zh": "试运行已做好今天的拼贴。点按“检查”查看。"
+ },
+ "Test run worked: fewer than three good photos of people from the last 24 hours, so no collage yet.": {
+  "de": "Testlauf hat funktioniert: weniger als drei gute Personenfotos der letzten 24 Stunden, daher noch keine Collage.",
+  "es": "La prueba funcionó: menos de tres buenas fotos de personas en las últimas 24 horas, así que aún no hay collage.",
+  "fr": "L'essai a fonctionné : moins de trois bonnes photos de personnes ces dernières 24 heures, donc pas encore de collage.",
+  "hi": "टेस्ट रन ठीक चला: पिछले 24 घंटों में लोगों की तीन से कम अच्छी फ़ोटो, इसलिए अभी कोलाज नहीं।",
+  "it": "La prova ha funzionato: meno di tre buone foto di persone nelle ultime 24 ore, quindi ancora nessun collage.",
+  "ja": "テスト成功：過去24時間の人物写真が3枚未満のため、まだコラージュはありません。",
+  "pt": "O teste funcionou: menos de três boas fotos de pessoas nas últimas 24 horas, por isso ainda não há colagem.",
+  "zh": "试运行成功：过去 24 小时的人物好照片不到三张，暂不生成拼贴。"
+ },
+ "Today's collage": {
+  "de": "Heutige Collage",
+  "es": "Collage de hoy",
+  "fr": "Collage du jour",
+  "hi": "आज का कोलाज",
+  "it": "Collage di oggi",
+  "ja": "今日のコラージュ",
+  "pt": "Colagem de hoje",
+  "zh": "今天的拼贴"
+ },
+ "Today's collage is ready — have a look.": {
+  "de": "Die heutige Collage ist fertig – sieh sie dir an.",
+  "es": "El collage de hoy está listo: échale un vistazo.",
+  "fr": "Le collage du jour est prêt — jetez un œil.",
+  "hi": "आज का कोलाज तैयार है — एक बार देख लें।",
+  "it": "Il collage di oggi è pronto: dai un'occhiata.",
+  "ja": "今日のコラージュができました — 見てみましょう。",
+  "pt": "A colagem de hoje está pronta — veja.",
+  "zh": "今天的拼贴好了——来看看吧。"
+ },
+ "photos — one per moment, sharpest first, faces kept in frame.": {
+  "de": "Fotos – eins pro Moment, das schärfste zuerst, Gesichter bleiben im Bild.",
+  "es": "fotos: una por momento, la más nítida primero, caras dentro del marco.",
+  "fr": "photos — une par moment, la plus nette d'abord, visages gardés dans le cadre.",
+  "hi": "फ़ोटो — हर पल की एक, सबसे साफ़ पहले, चेहरे फ़्रेम में।",
+  "it": "foto: una per momento, la più nitida prima, volti dentro l'inquadratura.",
+  "ja": "枚 — 1シーン1枚、鮮明なものが先頭、顔は枠内に。",
+  "pt": "fotos — uma por momento, a mais nítida primeiro, rostos no enquadramento.",
+  "zh": "张照片——每个瞬间一张，最清晰的在前，脸都在画面内。"
+ },
+ "Today's photos as one collage": {
+  "de": "Heutige Fotos als eine Collage",
+  "es": "Las fotos de hoy en un collage",
+  "fr": "Les photos du jour en un collage",
+  "hi": "आज की फ़ोटो एक कोलाज में",
+  "it": "Le foto di oggi in un collage",
+  "ja": "今日の写真を1枚のコラージュに",
+  "pt": "As fotos de hoje numa colagem",
+  "zh": "把今天的照片拼成一张"
+ },
+ "Picks the best photos of the people you took today — sharp, no repeats — and lays them out as one beautiful picture to keep or send.": {
+  "de": "Wählt die besten Personenfotos von heute – scharf, ohne Wiederholungen – und ordnet sie zu einem schönen Bild zum Behalten oder Verschicken.",
+  "es": "Elige las mejores fotos de personas de hoy (nítidas, sin repetir) y las compone en una imagen bonita para guardar o enviar.",
+  "fr": "Choisit les meilleures photos de personnes du jour — nettes, sans doublons — et les assemble en une belle image à garder ou envoyer.",
+  "hi": "आज ली गई लोगों की सबसे अच्छी फ़ोटो चुनता है — साफ़, बिना दोहराव — और उन्हें रखने या भेजने लायक एक सुंदर तस्वीर में सजाता है।",
+  "it": "Sceglie le foto migliori delle persone scattate oggi, nitide e senza doppioni, e le compone in un'unica bella immagine da tenere o inviare.",
+  "ja": "今日撮った人物写真から鮮明で重複のないベストを選び、残したり送ったりできる1枚の美しい写真にまとめます。",
+  "pt": "Escolhe as melhores fotos das pessoas tiradas hoje — nítidas, sem repetições — e junta-as numa imagem bonita para guardar ou enviar.",
+  "zh": "挑出今天拍的人物照中最好的——清晰、不重复——排成一张漂亮的图，可保存或发送。"
  }
 }

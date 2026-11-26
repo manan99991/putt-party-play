@@ -8,12 +8,13 @@ import UserNotifications
 @MainActor final class SmartRunStore: ObservableObject {
     static let shared = SmartRunStore()
     /// The autoruns built so far. An autorun is only offered once it truly works end to end.
-    static let built: [SmartRuns.Kind] = [.receipts, .drives, .heavyVideos, .readyToPost]
+    static let built: [SmartRuns.Kind] = [.receipts, .drives, .heavyVideos, .readyToPost, .dayCollage]
 
     @Published private(set) var plans: [SmartRuns.Kind: SmartRuns.Plan] = [:]
     @Published private(set) var receipts: [SmartReceipts.Entry] = []      // found, waiting for a look
     @Published private(set) var videos: [SmartVideos.Result] = []          // smaller copies made, waiting for a look
     @Published private(set) var posts: [SmartPosts.Result] = []            // clips made ready to post, waiting for a look
+    @Published private(set) var collages: [SmartCollage.Result] = []       // the day's collages, waiting for a look
     @Published var working: SmartRuns.Kind?
     @Published var progress: (share: Double, what: String) = (0, "")
     @Published var started: Date?
@@ -28,6 +29,7 @@ import UserNotifications
     private var receiptsURL: URL { folder.appendingPathComponent("receipts.json") }
     private var videosURL: URL { folder.appendingPathComponent("videos.json") }
     private var postsURL: URL { folder.appendingPathComponent("posts.json") }
+    private var collagesURL: URL { folder.appendingPathComponent("collages.json") }
 
     init() {
         if let d = AppGroup.defaults.data(forKey: plansKey), let p = try? JSONDecoder().decode([String: SmartRuns.Plan].self, from: d) {
@@ -36,6 +38,9 @@ import UserNotifications
         if let d = try? Data(contentsOf: receiptsURL), let r = try? JSONDecoder().decode([SmartReceipts.Entry].self, from: d) { receipts = r }
         if let d = try? Data(contentsOf: videosURL), let r = try? JSONDecoder().decode([SmartVideos.Result].self, from: d) {
             videos = r.filter { FileManager.default.fileExists(atPath: SmartVideos.folder.appendingPathComponent($0.file).path) }
+        }
+        if let d = try? Data(contentsOf: collagesURL), let r = try? JSONDecoder().decode([SmartCollage.Result].self, from: d) {
+            collages = r.filter { FileManager.default.fileExists(atPath: SmartCollage.folder.appendingPathComponent($0.file).path) }
         }
         if let d = try? Data(contentsOf: postsURL), let r = try? JSONDecoder().decode([SmartPosts.Result].self, from: d) {
             posts = r.filter { FileManager.default.fileExists(atPath: SmartPosts.folder.appendingPathComponent($0.file).path) }
@@ -61,6 +66,7 @@ import UserNotifications
         case .drives: return drives.count
         case .heavyVideos: return videos.count
         case .readyToPost: return posts.filter { !$0.saved }.count
+        case .dayCollage: return collages.filter { !$0.saved }.count
         default: return 0
         }
     }
@@ -118,6 +124,11 @@ import UserNotifications
                     self.progress = ((Double(i) + p) / Double(max(1, heavy.count)), label) } }) {
                     videos.append(r); saveVideos()
                 }
+            }
+            progress = (1, "Done")
+        case .dayCollage:
+            if let r = await SmartCollage.make(in: window, progress: { share, what in Task { @MainActor in self.progress = (share, what) } }) {
+                collages.removeAll { $0.id == r.id }; collages.insert(r, at: 0); saveCollages()
             }
             progress = (1, "Done")
         case .readyToPost:
@@ -203,6 +214,24 @@ import UserNotifications
         if let r = posts.first(where: { $0.id == id }) { try? FileManager.default.removeItem(at: SmartPosts.folder.appendingPathComponent(r.file)) }
         posts.removeAll { $0.id == id }; savePosts()
     }
+    /// Another layout for a day's collage (Grid, Hero, Mosaic…), made again from that day's photos.
+    func remakeCollage(_ id: String, layout: CollageLayout) async {
+        guard let old = collages.first(where: { $0.id == id }) else { return }
+        let end = (DateFormatter.posixDay.date(from: id) ?? Date()).addingTimeInterval(86_399)
+        guard let r = await SmartCollage.make(in: DateInterval(start: end.addingTimeInterval(-86_399), end: min(end, Date())), layout: layout) else { return }
+        try? FileManager.default.removeItem(at: SmartCollage.folder.appendingPathComponent(old.file))
+        if let i = collages.firstIndex(where: { $0.id == id }) { collages[i] = r }; saveCollages()
+    }
+    func saveCollage(_ id: String) async -> Bool {
+        guard let i = collages.firstIndex(where: { $0.id == id }), await SmartCollage.save(collages[i]) else { return false }
+        collages[i].saved = true; saveCollages()
+        Task { await SmartRunAlerts.ready(.dayCollage, count: waitingCount(.dayCollage)) }
+        return true
+    }
+    private func saveCollages() {
+        if let d = try? JSONEncoder().encode(collages) { try? d.write(to: collagesURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
+    }
+
     private func savePosts() {
         if let d = try? JSONEncoder().encode(posts) { try? d.write(to: postsURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) }
     }
@@ -256,6 +285,8 @@ enum SmartRunAlerts {
             let body = UNMutableNotificationContent()
             body.title = L(k.title)
             switch k {
+            case .dayCollage:
+                body.body = waiting > 0 ? L("Today's collage is ready — have a look.") : L("Tap and Tenzy makes one collage of the best photos of your day.")
             case .readyToPost:
                 body.body = waiting > 0 ? "\(waiting) \(L(waiting == 1 ? "clip is ready to post — watch it first." : "clips are ready to post — watch them first."))"
                                         : L("Tap and Tenzy picks today's best clips and gets them ready to post.")
@@ -280,4 +311,10 @@ enum SmartRunAlerts {
     @MainActor static func ready(_ k: SmartRuns.Kind, count: Int) async {
         await schedule(k, SmartRunStore.shared.plan(k), waiting: count)
     }
+}
+
+
+extension DateFormatter {
+    /// "2026-11-25", the same everywhere.
+    static let posixDay: DateFormatter = { let f = DateFormatter(); f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM-dd"; return f }()
 }

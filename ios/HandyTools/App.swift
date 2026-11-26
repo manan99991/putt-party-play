@@ -661,6 +661,7 @@ struct HomeView: View {
                 case "smartdrives": SmartDrivesReview()               // the drives an autorun found, waiting for a look
                 case "smartvideos": SmartVideosReview()               // smaller copies of heavy videos, waiting for a look
                 case "smartposts": SmartPostsReview()                 // today's best clips, ready to post
+                case "smartcollage": SmartCollageReview()             // the day's collage
                 // Home › See all: every helper on one map, with the ready-made flows of each section.
                 case "allhelpers": BuilderView(face: .tools, asPage: true).background(TenzyBackdrop()).toolbar(.hidden, for: .navigationBar)
                 // My stuff › Build a helper: start from nothing, from a ready-made one, or say it.
