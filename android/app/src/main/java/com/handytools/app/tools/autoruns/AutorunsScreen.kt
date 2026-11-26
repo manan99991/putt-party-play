@@ -158,6 +158,8 @@ fun AutorunRun(k: SmartRuns.Kind, onClose: () -> Unit) {
         SmartRuns.Kind.DAY_COLLAGE -> DayCollageRun(onClose)
         SmartRuns.Kind.WEEK_FILM -> WeekFilmRun(onClose)
         SmartRuns.Kind.TIDY_PHOTOS -> TidyPhotosRun(onClose)
+        SmartRuns.Kind.RECEIPTS -> PaperRun(k, onClose)
+        SmartRuns.Kind.BUSINESS_CARDS -> PaperRun(k, onClose)
         else -> LaunchedEffect(k) { onClose() }
     }
 }
@@ -577,6 +579,90 @@ private fun TidyPhotosRun(onClose: () -> Unit) {
             }
             if (sure) Text(I18n.t("This phone has no bin: tap again to delete them for good."), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
             Text(I18n.t("Your phone asks before anything is deleted."), style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
+        }
+        Spacer(Modifier.height(HandyTokens.Space24))
+    }
+}
+
+/** Today's receipts (into the expense sheet) or business cards (into Contacts), read and shown for a look first. */
+@Composable
+private fun PaperRun(k: SmartRuns.Kind, onClose: () -> Unit) {
+    val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val cards = k == SmartRuns.Kind.BUSINESS_CARDS
+    var allowed by remember { mutableStateOf(canReadPhotos(ctx)) }
+    val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> allowed = ok }
+    val contacts = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { }
+    var progress by remember { mutableStateOf(0.0) }
+    var found by remember { mutableStateOf<Pair<List<PaperFinds.Receipt>, List<PaperFinds.Card>>?>(null) }
+    val left = remember { mutableStateListOf<String>() }      // photos the person left out
+    var done by remember { mutableStateOf<String?>(null) }
+    var job by remember { mutableStateOf<Job?>(null) }
+    LaunchedEffect(allowed) {
+        if (!allowed) { ask.launch(if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE); return@LaunchedEffect }
+        if (cards && !ContactsBackup.canRead(ctx)) contacts.launch(arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS))
+        job = scope.launch {
+            val now = System.currentTimeMillis()
+            found = PaperFinds.read(ctx, Autoruns.windowFor(ctx, k, now)) { p -> progress = p }
+            Autoruns.markRun(ctx, k, now); Autoruns.clearReady(ctx, k)
+        }
+    }
+    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter),
+        verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+        HTextButton(I18n.t("‹ Back")) { job?.cancel(); onClose() }
+        Text(I18n.t(k.title), style = MaterialTheme.typography.headlineSmall)
+        if (!allowed) { Text(I18n.t("Tenzy needs to see your photos to find today's."), color = Handy.palette.textSecondary); return@Column }
+        val f = found
+        if (f == null) {
+            Text(I18n.t("Looking at today's photos…"), style = MaterialTheme.typography.bodyMedium)
+            LinearProgressIndicator(progress = { progress.toFloat().coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth().testTag("autorun-progress"))
+            return@Column
+        }
+        done?.let { Text(it, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary) }
+        val day = java.text.SimpleDateFormat("d MMM yyyy", java.util.Locale.getDefault())
+        if (!cards) {
+            val list = f.first
+            if (list.isEmpty() && done == null) Text(I18n.t("No receipts in today's photos."), color = Handy.palette.textSecondary)
+            if (list.isNotEmpty()) Text(I18n.t("Check them before they're added."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            list.forEach { r ->
+                val id = r.photo
+                HCard(Modifier.fillMaxWidth().testTag("receipt-row")) {
+                    Row(Modifier.padding(HandyTokens.Space12), verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(r.merchant.ifBlank { I18n.t("Receipt") }, style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text("${r.dateMs?.let { day.format(java.util.Date(it)) } ?: ""} · ${r.total}", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, maxLines = 1)
+                        }
+                        androidx.compose.material3.Checkbox(id !in left, { on -> if (on) left.remove(id) else left.add(id) })
+                    }
+                }
+            }
+            val chosen = list.filter { it.photo !in left }
+            if (chosen.isNotEmpty() && done == null) HPrimaryButton(I18n.fmt("Add %d to my expense sheet", chosen.size), Modifier.fillMaxWidth().testTag("receipts-add")) {
+                val sheet = PaperFinds.addToSheet(ctx, chosen)
+                done = I18n.fmt("Added to %@.", sheet.nameWithoutExtension)
+            }
+        } else {
+            val list = f.second
+            if (list.isEmpty() && done == null) Text(I18n.t("No business cards in today's photos."), color = Handy.palette.textSecondary)
+            list.forEach { c ->
+                val id = c.photo
+                HCard(Modifier.fillMaxWidth().testTag("card-row")) {
+                    Row(Modifier.padding(HandyTokens.Space12), verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(c.name.ifBlank { c.email.ifBlank { c.phone } }, style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(listOf(c.title, c.company).filter { it.isNotBlank() }.joinToString(" · ").ifBlank { c.phone.ifBlank { c.email } },
+                                style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            c.already?.let { Text("${I18n.t("Already in Contacts as")} $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, maxLines = 1) }
+                        }
+                        if (c.already == null) androidx.compose.material3.Checkbox(id !in left, { on -> if (on) left.remove(id) else left.add(id) })
+                    }
+                }
+            }
+            val chosen = list.filter { it.already == null && it.photo !in left }
+            if (chosen.isNotEmpty() && done == null) HPrimaryButton(I18n.fmt("Save %d to Contacts", chosen.size), Modifier.fillMaxWidth().testTag("cards-save")) {
+                val n = PaperFinds.saveCards(ctx, chosen)
+                done = if (n > 0) I18n.fmt("%d saved to Contacts, each with the day you met.", n) else I18n.t("Contacts wouldn't take them — check that Tenzy can use Contacts.")
+            }
         }
         Spacer(Modifier.height(HandyTokens.Space24))
     }

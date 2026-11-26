@@ -19658,5 +19658,105 @@
   "ja": "削除しました。",
   "pt": "Apagadas.",
   "zh": "已删除。"
+ },
+ "Met on %@": {
+  "de": "Kennengelernt am %@",
+  "es": "Nos conocimos el %@",
+  "fr": "Rencontré le %@",
+  "hi": "%@ को मिले",
+  "it": "Conosciuto il %@",
+  "ja": "%@ に会った",
+  "pt": "Conhecido em %@",
+  "zh": "%@ 相识"
+ },
+ "%d photos from today — tap to find the receipts and business cards in them.": {
+  "de": "%d Fotos von heute – tippe, um die Belege und Visitenkarten darin zu finden.",
+  "es": "%d fotos de hoy: toca para encontrar los recibos y las tarjetas de visita.",
+  "fr": "%d photos du jour — touchez pour y trouver les reçus et cartes de visite.",
+  "hi": "आज की %d फ़ोटो — इनमें रसीदें और बिज़नेस कार्ड ढूँढने के लिए टैप करें।",
+  "it": "%d foto di oggi: tocca per trovare ricevute e biglietti da visita.",
+  "ja": "今日の写真 %d 枚。タップしてレシートと名刺を探せます。",
+  "pt": "%d fotos de hoje — toque para achar os recibos e cartões de visita.",
+  "zh": "今天有 %d 张照片——点按即可找出其中的收据和名片。"
+ },
+ "No receipts in today's photos.": {
+  "de": "Keine Belege in den Fotos von heute.",
+  "es": "No hay recibos en las fotos de hoy.",
+  "fr": "Aucun reçu dans les photos du jour.",
+  "hi": "आज की फ़ोटो में कोई रसीद नहीं।",
+  "it": "Nessuna ricevuta nelle foto di oggi.",
+  "ja": "今日の写真にレシートはありません。",
+  "pt": "Nenhum recibo nas fotos de hoje.",
+  "zh": "今天的照片里没有收据。"
+ },
+ "No business cards in today's photos.": {
+  "de": "Keine Visitenkarten in den Fotos von heute.",
+  "es": "No hay tarjetas de visita en las fotos de hoy.",
+  "fr": "Aucune carte de visite dans les photos du jour.",
+  "hi": "आज की फ़ोटो में कोई बिज़नेस कार्ड नहीं।",
+  "it": "Nessun biglietto da visita nelle foto di oggi.",
+  "ja": "今日の写真に名刺はありません。",
+  "pt": "Nenhum cartão de visita nas fotos de hoje.",
+  "zh": "今天的照片里没有名片。"
+ },
+ "Add %d to my expense sheet": {
+  "de": "%d zu meiner Ausgabenliste hinzufügen",
+  "es": "Añadir %d a mi hoja de gastos",
+  "fr": "Ajouter %d à ma feuille de dépenses",
+  "hi": "%d को मेरी ख़र्च शीट में जोड़ें",
+  "it": "Aggiungi %d al mio foglio spese",
+  "ja": "%d 件を経費シートに追加",
+  "pt": "Adicionar %d à minha planilha de despesas",
+  "zh": "将 %d 张加入我的支出表"
+ },
+ "Added to %@.": {
+  "de": "Zu %@ hinzugefügt.",
+  "es": "Añadido a %@.",
+  "fr": "Ajouté à %@.",
+  "hi": "%@ में जोड़ा गया।",
+  "it": "Aggiunto a %@.",
+  "ja": "%@ に追加しました。",
+  "pt": "Adicionado a %@.",
+  "zh": "已加入 %@。"
+ },
+ "Save %d to Contacts": {
+  "de": "%d in Kontakten speichern",
+  "es": "Guardar %d en Contactos",
+  "fr": "Enregistrer %d dans Contacts",
+  "hi": "%d को कॉन्टैक्ट में सेव करें",
+  "it": "Salva %d nei Contatti",
+  "ja": "%d 件を連絡先に保存",
+  "pt": "Salvar %d nos Contatos",
+  "zh": "将 %d 张存入通讯录"
+ },
+ "%d saved to Contacts, each with the day you met.": {
+  "de": "%d in Kontakten gespeichert, jeweils mit dem Tag, an dem ihr euch kennengelernt habt.",
+  "es": "%d guardados en Contactos, cada uno con el día en que os conocisteis.",
+  "fr": "%d enregistrés dans Contacts, chacun avec le jour de votre rencontre.",
+  "hi": "%d कॉन्टैक्ट में सेव हुए, हर एक के साथ मिलने का दिन।",
+  "it": "%d salvati nei Contatti, ognuno con il giorno in cui vi siete conosciuti.",
+  "ja": "%d 件を連絡先に保存しました。それぞれ会った日付つきです。",
+  "pt": "%d salvos nos Contatos, cada um com o dia em que vocês se conheceram.",
+  "zh": "已将 %d 张存入通讯录，每张都记着相识的日子。"
+ },
+ "Receipt": {
+  "de": "Beleg",
+  "es": "Recibo",
+  "fr": "Reçu",
+  "hi": "रसीद",
+  "it": "Ricevuta",
+  "ja": "レシート",
+  "pt": "Recibo",
+  "zh": "收据"
+ },
+ "Contacts wouldn't take them — check that Tenzy can use Contacts.": {
+  "de": "Kontakte hat sie nicht übernommen – prüfe, ob Tenzy auf Kontakte zugreifen darf.",
+  "es": "Contactos no los aceptó: comprueba que Tenzy puede usar Contactos.",
+  "fr": "Contacts ne les a pas pris — vérifiez que Tenzy peut utiliser Contacts.",
+  "hi": "कॉन्टैक्ट ने इन्हें नहीं लिया — देखें कि Tenzy कॉन्टैक्ट इस्तेमाल कर सकता है।",
+  "it": "Contatti non li ha accettati: controlla che Tenzy possa usare i Contatti.",
+  "ja": "連絡先に保存できませんでした。Tenzy が連絡先を使えるか確認してください。",
+  "pt": "Os Contatos não os aceitaram — verifique se o Tenzy pode usar os Contatos.",
+  "zh": "通讯录没有接收——请检查 Tenzy 能否使用通讯录。"
  }
 }

@@ -34,7 +34,7 @@ object Autoruns {
     private const val CHANNEL = "autoruns"
 
     /** The autoruns Android does so far, in the page's order; the others stay iPhone-only until they're built here. */
-    val available: List<SmartRuns.Kind> = listOf(SmartRuns.Kind.OVERDUE_INVOICES, SmartRuns.Kind.DAY_COLLAGE, SmartRuns.Kind.WEEK_FILM, SmartRuns.Kind.READY_TO_POST,
+    val available: List<SmartRuns.Kind> = listOf(SmartRuns.Kind.RECEIPTS, SmartRuns.Kind.OVERDUE_INVOICES, SmartRuns.Kind.BUSINESS_CARDS, SmartRuns.Kind.DAY_COLLAGE, SmartRuns.Kind.WEEK_FILM, SmartRuns.Kind.READY_TO_POST,
         SmartRuns.Kind.HEAVY_VIDEOS, SmartRuns.Kind.TIDY_PHOTOS, SmartRuns.Kind.CONTACTS_BACKUP)
 
     /** Set when a notification is tapped; the page opens that autorun and clears it. */
@@ -118,6 +118,10 @@ object Autoruns {
             }
             SmartRuns.Kind.WEEK_FILM -> PhotoDays.find(ctx, weekWindow(now)).count { !it.screenshot }.let { n ->
                 if (n < 8) null else I18n.fmt("%d photos this week — tap to make them into one short film.", n)
+            }
+            // Receipts and cards need each photo read, so the quick look only counts today's photos; the reading happens when it's opened.
+            SmartRuns.Kind.RECEIPTS, SmartRuns.Kind.BUSINESS_CARDS -> PhotoDays.find(ctx, window).count { !it.screenshot }.let { n ->
+                if (n == 0) null else I18n.fmt("%d photos from today — tap to find the receipts and business cards in them.", n)
             }
             // A quick count of old screenshots; the full look (copies, look-alikes) happens when it's opened.
             SmartRuns.Kind.TIDY_PHOTOS -> TidyPhotos.oldScreenshotCount(ctx, now).let { n ->
