@@ -1,1 +1,11 @@
 == smoke (results)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolControlsReachableTests.swift:20: error: -[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge] : Failed to get matching snapshot: No matches found for Element at index 15 from input {(
+Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' failed (1042.364 seconds).
+	 Executed 1 test, with 1 failure (0 unexpected) in 1042.364 (1042.469) seconds
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (906.390 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (13.795 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (18.814 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 938.998 (939.004) seconds
+	 Executed 4 tests, with 1 failure (0 unexpected) in 1981.362 (1981.482) seconds
+	 Executed 4 tests, with 1 failure (0 unexpected) in 1981.362 (1981.486) seconds
+** TEST FAILED **
