@@ -16,21 +16,17 @@ Resolve Package Graph
 
 Fetching from https://github.com/element-hq/swift-ogg
 
-Fetching from https://github.com/tsolomko/BitByteData
-
 Fetching from https://github.com/tsolomko/SWCompression
+
+Fetching from https://github.com/tsolomko/BitByteData
 
 Fetching from https://github.com/vector-im/ogg-swift.git
 
 Fetching from https://github.com/vector-im/opus-swift
 
-Creating working copy of package ‘BitByteData’
+Creating working copy of package ‘SWCompression’
 
-Checking out 2.0.4 of package ‘BitByteData’
-
-Creating working copy of package ‘swift-ogg’
-
-Checking out main (a00a22b) of package ‘swift-ogg’
+Checking out 4.8.6 of package ‘SWCompression’
 
 Creating working copy of package ‘ogg-swift’
 
@@ -40,19 +36,51 @@ Creating working copy of package ‘opus-swift’
 
 Checking out 0.8.4 of package ‘opus-swift’
 
-Creating working copy of package ‘SWCompression’
+Creating working copy of package ‘swift-ogg’
 
-Checking out 4.8.6 of package ‘SWCompression’
+Checking out main (a00a22b) of package ‘swift-ogg’
+
+Creating working copy of package ‘BitByteData’
+
+Checking out 2.0.4 of package ‘BitByteData’
 
 
 Resolved source packages:
-  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
-  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
-  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
   SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
+  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
+  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
   YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
-  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
   BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
+  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
+  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
 
-resolved source packages: StbVorbis, Unrar, SWCompression, SwiftOGG, YbridOpus, YbridOgg, BitByteData
+resolved source packages: SwiftOGG, SWCompression, Unrar, YbridOpus, BitByteData, StbVorbis, YbridOgg
 == build.log (errors)
+2026-11-26 03:24:04.205060+0000 HandyTools[11732:37986] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
+2026-11-26 03:26:26.338001+0000 HandyTools[11732:55290] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x104947980> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x104947980> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 03:26:26.500017+0000 HandyTools[11732:55290] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x104947ca0> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x104947ca0> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 03:29:15.162843+0000 HandyTools[11732:61261] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
+2026-11-26 03:29:15.833699+0000 HandyTools[11732:54678] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 03:30:16.009559+0000 HandyTools[11732:65370] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1081adf40> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1081adf40> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 03:30:18.052641+0000 HandyTools[11732:55531] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1081ad360> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalTest Case '-[HandyToolsTests.EngineTests testMeetingTurnsEmptyIsEmpty]' passed (0.001 seconds).
+2026-11-26 03:30:18.460919+0000 HandyTools[11732:58349] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1049478e0> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1049478e0> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 03:30:18.523843+0000 HandyTools[11732:64291] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x104947de0> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x104947de0> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 03:30:19.022841+0000 HandyTools[11732:55531] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x104946080> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x104946080> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 03:30:19.111345+0000 HandyTools[11732:64291] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1049457c0> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1049457c0> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 03:30:19.279182+0000 HandyTools[11732:55531] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1081aea80> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1081aea80> connection from pid 11732 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 03:30:20.039577+0000 HandyTools[11732:55531] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-26 03:30:20.054509+0000 HandyTools[11732:55531] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAs2026-11-26 03:30:20.077593+0000 HandyTools[11732:36619] Lexicon creation for es_MX failed: Error Domain=com.apple.Lexicon.ErrorDomain Code=0 "Could not determine the location of the base unigrams file, or one was not provided." UserInfo={NSLocalizedDescription=Could not determine the location of the base unigrams file, or one was not provided.}
+2026-11-26 03:30:20.121424+0000 HandyTools[11732:65370] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-26 03:30:20.206906+0000 HandyTools[11732:55531] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
+2026-11-26 03:30:20.209868+0000 HandyTools[11732:55531] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-teTest Case '-[HandyToolsTests.EngineTests testMenuReaderFindsDishesPricesAndWhatsInThem]' passed (1.904 seconds).
+2026-11-26 03:32:05.755453+0000 HandyTools[11732:65370] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 03:32:05.865249+0000 HandyTools[11732:70548] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 03:32:05.870275+0000 HandyTools[11732:70453] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 03:32:05.936318+0000 HandyTools[11732:70548] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 03:32:06.224338+0000 HandyTools[11732:70449] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 03:32:06.453893+0000 HandyTools[11732:70548] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 03:32:33.732632+0000 HandyTools[11732:73447] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 03:32:33.889293+0000 HandyTools[11732:69059] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 03:32:57.335565+0000 HandyTools[11732:79162] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 03:33:18.224203+0000 HandyTools[11732:73574] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 03:34:14.221835+0000 HandyTools[11732:70452] [Context] [PREFLIGHTING] context 0x13802de60: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
