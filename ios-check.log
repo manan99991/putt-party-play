@@ -1,10 +1,10 @@
 == setup.log
 [32m==>[0m [1mDownloading bottle manifests[0m
-✔︎ Bottle Manifest xcodegen (2.46.0)
+✔︎ Bottle Manifest xcodegen (2.48.0)
 [32m==>[0m [1mFetching downloads for: [32mxcodegen[39m[0m
-✔︎ Bottle xcodegen (2.46.0)
-[34m==>[0m [1mPouring xcodegen--2.46.0.arm64_golden_gate.bottle.1.tar.gz[0m
-🍺  /opt/homebrew/Cellar/xcodegen/2.46.0: 38 files, 7.5MB
+✔︎ Bottle xcodegen (2.48.0)
+[34m==>[0m [1mPouring xcodegen--2.48.0.arm64_golden_gate.bottle.tar.gz[0m
+🍺  /opt/homebrew/Cellar/xcodegen/2.48.0: 38 files, 9.8MB
 ⚙️  Generating plists...
 ⚙️  Generating project...
 ⚙️  Writing project...
@@ -24,14 +24,6 @@ Fetching from https://github.com/vector-im/opus-swift
 
 Fetching from https://github.com/vector-im/ogg-swift.git
 
-Creating working copy of package ‘BitByteData’
-
-Checking out 2.0.4 of package ‘BitByteData’
-
-Creating working copy of package ‘opus-swift’
-
-Checking out 0.8.4 of package ‘opus-swift’
-
 Creating working copy of package ‘ogg-swift’
 
 Checking out 0.8.3 of package ‘ogg-swift’
@@ -40,28 +32,29 @@ Creating working copy of package ‘SWCompression’
 
 Checking out 4.8.6 of package ‘SWCompression’
 
+Creating working copy of package ‘opus-swift’
+
+Checking out 0.8.4 of package ‘opus-swift’
+
 Creating working copy of package ‘swift-ogg’
 
 Checking out main (a00a22b) of package ‘swift-ogg’
 
+Creating working copy of package ‘BitByteData’
+
+Checking out 2.0.4 of package ‘BitByteData’
+
 
 Resolved source packages:
-  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
-  BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
-  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
-  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
-  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
   YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
   SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
+  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
+  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
+  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
+  BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
 
-resolved source packages: YbridOpus, BitByteData, StbVorbis, SWCompression, Unrar, YbridOgg, SwiftOGG
+resolved source packages: YbridOgg, SwiftOGG, Unrar, SWCompression, YbridOpus, StbVorbis, BitByteData
 == build.log (errors)
-2026-11-26 13:22:53.931918+0000 HandyTools[12096:40490] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
-2026-11-26 13:26:45.167660+0000 HandyTools[12096:64055] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1074acb40> connection from pid 12096 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1074acb40> connection from pid 12096 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 13:26:45.293203+0000 HandyTools[12096:64048] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1074ac640> connection from pid 12096 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1074ac640> connection from pid 12096 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 13:26:45.497699+0000 HandyTools[12096:40455] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1074acb40> connection from pid 12096 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1074acb40> connection from pid 12096 on mach service nTest Case '-[HandyToolsTests.ChainRunnerTests testFullReceiptChainOnSampleImage]' passed (6.732 seconds).
-*** If you believe this error represents a bug, please attach the result bundle at /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Logs/Test/Test-HandyTools-2026.11.26_13-11-07-+0000.xcresult
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:299: error: -[HandyToolsTests.EngineTests testAChangingClockDoesntHideTheRepeatedHeader] : XCTAssertLessThan failed: ("1722.0") is not less than ("1552.0") - the second shot adds only its new rows, without its bars
-2026-11-26 13:29:19.866218+0000 HandyTools[22753:69071] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x107443e80> connection from pid 22753 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x107443e80> connection from pid 22753 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 13:29:36.125085+0000 HandyTools[22753:73399] [Context] [PREFLIGHTING] context 0x130aeef40: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
-2026-11-26 13:29:37.510293+0000 HandyTools[22753:69040] [Context] [PREFLIGHTING] context 0x130aeef40: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 13:43:39.373501+0000 HandyTools[13818:47372] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
+2026-11-26 13:44:28.367658+0000 HandyTools[13818:50427] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105430280> connection from pid 13818 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x105430280> connection from pid 13818 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
