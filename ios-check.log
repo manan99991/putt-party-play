@@ -1,10 +1,10 @@
 == setup.log
 [32m==>[0m [1mDownloading bottle manifests[0m
-✔︎ Bottle Manifest xcodegen (2.46.0)
+✔︎ Bottle Manifest xcodegen (2.48.0)
 [32m==>[0m [1mFetching downloads for: [32mxcodegen[39m[0m
-✔︎ Bottle xcodegen (2.46.0)
-[34m==>[0m [1mPouring xcodegen--2.46.0.arm64_golden_gate.bottle.1.tar.gz[0m
-🍺  /opt/homebrew/Cellar/xcodegen/2.46.0: 38 files, 7.5MB
+✔︎ Bottle xcodegen (2.48.0)
+[34m==>[0m [1mPouring xcodegen--2.48.0.arm64_golden_gate.bottle.tar.gz[0m
+🍺  /opt/homebrew/Cellar/xcodegen/2.48.0: 38 files, 9.8MB
 ⚙️  Generating plists...
 ⚙️  Generating project...
 ⚙️  Writing project...
@@ -16,70 +16,237 @@ Resolve Package Graph
 
 Fetching from https://github.com/element-hq/swift-ogg
 
-Fetching from https://github.com/tsolomko/SWCompression
-
-Fetching from https://github.com/tsolomko/BitByteData
-
 Fetching from https://github.com/vector-im/ogg-swift.git
+
+Fetching from https://github.com/tsolomko/SWCompression
 
 Fetching from https://github.com/vector-im/opus-swift
 
-Creating working copy of package ‘SWCompression’
+Fetching from https://github.com/tsolomko/BitByteData
 
-Checking out 4.8.6 of package ‘SWCompression’
+2026-11-26 06:30:21.656 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Ultra 4 (49mm) (E67E53BC-9A06-4643-BD70-6A1ECAE16789) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm: SimDeviceType : Apple Watch Ultra 4 (49mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067c00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.656 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (40mm) (29AF471F-64DF-4513-81E4-00ACC8570EF2) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm: SimDeviceType : Apple Watch SE 3 (40mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f023c000>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.657 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (42mm) (9D4D8D16-33D1-45E3-865D-C38C4FA63B8D) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm: SimDeviceType : Apple Watch Series 12 (42mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067a00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.657 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (44mm) (A0B9FB34-5993-450B-B226-8AD37DD5D584) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm: SimDeviceType : Apple Watch SE 3 (44mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067e00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.657 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (46mm) (EC430E7F-98D4-4E9E-83E9-967EBD463A35) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm: SimDeviceType : Apple Watch Series 12 (46mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067800>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.661 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (40mm) (29AF471F-64DF-4513-81E4-00ACC8570EF2) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm: SimDeviceType : Apple Watch SE 3 (40mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f023c000>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.661 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (40mm) (29AF471F-64DF-4513-81E4-00ACC8570EF2) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm: SimDeviceType : Apple Watch SE 3 (40mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f023c000>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.661 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (44mm) (A0B9FB34-5993-450B-B226-8AD37DD5D584) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm: SimDeviceType : Apple Watch SE 3 (44mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067e00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.661 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (44mm) (A0B9FB34-5993-450B-B226-8AD37DD5D584) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm: SimDeviceType : Apple Watch SE 3 (44mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067e00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.661 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (42mm) (9D4D8D16-33D1-45E3-865D-C38C4FA63B8D) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm: SimDeviceType : Apple Watch Series 12 (42mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067a00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.661 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (42mm) (9D4D8D16-33D1-45E3-865D-C38C4FA63B8D) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm: SimDeviceType : Apple Watch Series 12 (42mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067a00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.662 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (46mm) (EC430E7F-98D4-4E9E-83E9-967EBD463A35) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm: SimDeviceType : Apple Watch Series 12 (46mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067800>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.662 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (46mm) (EC430E7F-98D4-4E9E-83E9-967EBD463A35) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm: SimDeviceType : Apple Watch Series 12 (46mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067800>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.662 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Ultra 4 (49mm) (E67E53BC-9A06-4643-BD70-6A1ECAE16789) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm: SimDeviceType : Apple Watch Ultra 4 (49mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067c00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.662 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Ultra 4 (49mm) (E67E53BC-9A06-4643-BD70-6A1ECAE16789) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm: SimDeviceType : Apple Watch Ultra 4 (49mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067c00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.677 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (40mm) (29AF471F-64DF-4513-81E4-00ACC8570EF2) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm: SimDeviceType : Apple Watch SE 3 (40mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f023c000>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.677 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (40mm) (29AF471F-64DF-4513-81E4-00ACC8570EF2) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm: SimDeviceType : Apple Watch SE 3 (40mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-40mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f023c000>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.677 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (44mm) (A0B9FB34-5993-450B-B226-8AD37DD5D584) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm: SimDeviceType : Apple Watch SE 3 (44mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067e00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.677 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch SE 3 (44mm) (A0B9FB34-5993-450B-B226-8AD37DD5D584) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm: SimDeviceType : Apple Watch SE 3 (44mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-SE-3-44mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067e00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.678 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (42mm) (9D4D8D16-33D1-45E3-865D-C38C4FA63B8D) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm: SimDeviceType : Apple Watch Series 12 (42mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067a00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.678 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (42mm) (9D4D8D16-33D1-45E3-865D-C38C4FA63B8D) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm: SimDeviceType : Apple Watch Series 12 (42mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-42mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067a00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.678 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (46mm) (EC430E7F-98D4-4E9E-83E9-967EBD463A35) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm: SimDeviceType : Apple Watch Series 12 (46mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067800>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.679 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Series 12 (46mm) (EC430E7F-98D4-4E9E-83E9-967EBD463A35) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm: SimDeviceType : Apple Watch Series 12 (46mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-12-46mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067800>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.679 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Ultra 4 (49mm) (E67E53BC-9A06-4643-BD70-6A1ECAE16789) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm: SimDeviceType : Apple Watch Ultra 4 (49mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067c00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+2026-11-26 06:30:21.679 xcodebuild[6440:21571] [MT] DVTAssertions: Warning in DVTiOSFrameworks/IDEiOSSupportCore/DVTiPhoneSimulator.m:661
+Details:  SimDevice native architecture is nil. Device: SimDevice : Apple Watch Ultra 4 (49mm) (E67E53BC-9A06-4643-BD70-6A1ECAE16789) : state={ Shutdown } deviceType={ com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm: SimDeviceType : Apple Watch Ultra 4 (49mm) (com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Ultra-4-49mm) } runtime={ com.apple.CoreSimulator.SimRuntime.watchOS-27-0: (null) }, supportedArches: (
+)
+Object:   <DVTiPhoneSimulator: 0x74f0067c00>
+Method:   -nativeArchitecture
+Thread:   <_NSMainThread: 0x102f7cde0>{number = 1, name = main}
+Please file a bug at https://feedbackassistant.apple.com with this warning message and any useful information you can provide.
+Creating working copy of package ‘swift-ogg’
 
-Creating working copy of package ‘opus-swift’
-
-Checking out 0.8.4 of package ‘opus-swift’
-
-Creating working copy of package ‘ogg-swift’
-
-Checking out 0.8.3 of package ‘ogg-swift’
+Checking out main (a00a22b) of package ‘swift-ogg’
 
 Creating working copy of package ‘BitByteData’
 
 Checking out 2.0.4 of package ‘BitByteData’
 
-Creating working copy of package ‘swift-ogg’
+Creating working copy of package ‘ogg-swift’
 
-Checking out main (a00a22b) of package ‘swift-ogg’
+Checking out 0.8.3 of package ‘ogg-swift’
+
+Creating working copy of package ‘opus-swift’
+
+Checking out 0.8.4 of package ‘opus-swift’
+
+Creating working copy of package ‘SWCompression’
+
+Checking out 4.8.6 of package ‘SWCompression’
 
 
 Resolved source packages:
-  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
+  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
+  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
   Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
   SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
-  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
-  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
-  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
+  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
   BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
 
-resolved source packages: SWCompression, Unrar, SwiftOGG, StbVorbis, YbridOpus, YbridOgg, BitByteData
+resolved source packages: StbVorbis, YbridOgg, Unrar, SwiftOGG, SWCompression, BitByteData, YbridOpus
 == build.log (errors)
-2026-11-26 05:41:16.969980+0000 HandyTools[14620:48582] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
-2026-11-26 05:42:53.756364+0000 HandyTools[14620:52293] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1050cbd40> connection from pid 14620 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1050cbd40> connection from pid 14620 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:42:53.797711+0000 HandyTools[14620:52289] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1053bad00> connection from pid 14620 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1053bad00> connection from pid 14620 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:43:25.685223+0000 HandyTools[14620:54094] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
-2026-11-26 05:43:26.614833+0000 HandyTools[14620:54852] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:44:03.197936+0000 HandyTools[14620:55460] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1054b9720> connection from pid 14620 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1054b9720> connection from pid 14620 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:44:04.686741+0000 HandyTools[14620:55201] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1054b95e0> connection from pid 1Test Case '-[HandyToolsTests.EngineTests testMeetingTurnsEmptyIsEmpty]' started.
-2026-11-26 05:44:05.085418+0000 HandyTools[14620:55459] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1054b8d20> connection from pid 14620 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1054b8d20> connection from pid 14620 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:44:10.146354+0000 HandyTools[14620:55824] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1054bb340> connection from pid 14620 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1054bb340> connection from pid 14620 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
-2026-11-26 05:44:10.392392+0000 HandyTools[14620:54094] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-26 05:44:11.022881+0000 HandyTools[14620:53771] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-26 05:44:11.186482+0000 HandyTools[14620:53771] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=com.apple.MobileAssetError.AutoAsset Code=6582 "[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance" UserInfo={NSLocalizedDescription=[handleSetRequestSandboxExtension:NoSharedLock(6582)] no short-term lockable atomic instance}
-2026-11-26 05:45:07.669378+0000 HandyTools[14620:62442] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:45:07.839855+0000 HandyTools[14620:62375] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:45:08.020414+0000 HandyTools[14620:62375] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:45:08.184110+0000 HandyTools[14620:62442] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:45:08.384219+0000 HandyTools[14620:62442] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:45:08.562539+0000 HandyTools[14620:65786] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:45:30.905774+0000 HandyTools[14620:55824] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:45:31.036288+0000 HandyTools[14620:68054] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:45:52.630913+0000 HandyTools[14620:68051] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:46:09.141759+0000 HandyTools[14620:74752] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-2026-11-26 05:46:49.168875+0000 HandyTools[14620:66961] [Context] [PREFLIGHTING] context 0x134c40180: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:492: error: -[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses] : XCTAssertTrue failed - Contacts finder didn't show (is contacts access granted?)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:493: error: -[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses] : Failed to tap "find-hasPhone" Button: No matches found for Elements matching predicate '"find-hasPhone" IN identifiers' from input {(
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:749: error: -[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact] : XCTAssertTrue failed - the test card never reached the photo library
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:756: error: -[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact] : XCTAssertTrue failed - the card wasn't read: no message
+2026-11-26 06:41:11.666511+0000 HandyTools[18216:56538] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
+2026-11-26 06:43:07.136557+0000 HandyTools[18216:65211] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1074ca580> connection from pid 18216 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1074ca580> connection from pid 18216 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 06:45:26.544920+0000 HandyTools[18216:68298] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6010 "Timed out waiting for model to be loaded." UserInfo={NSDescription=Timed out waiting for model to be loaded.}
+2026-11-26 06:45:28.558652+0000 HandyTools[18216:66948] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 06:46:25.913896+0000 HandyTools[18216:70132] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10790f7a0> connection from pid 18216 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10790f7a0> connection from pid 18216 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 06:46:27.926037+0000 HandyTools[18216:67820] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10790fc00> connection from pid 18216 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x10790fc00> connection from pid 18216 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 06:46:28.189657+0000 HandyTools[18216:72798] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1079e4f00> connection from pid 18216 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1079e4f00> connection from pid 18216 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-26 06:46:29.266980+0000 HandyTools[18216:70122] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1074cb340> connection from pid 18216 on mach service named com.applTest Case '-[HandyToolsTests.EngineTests testMenuReaderFindsDishesPricesAndWhatsInThem]' passed (1.192 seconds).
+2026-11-26 06:48:52.121746+0000 HandyTools[18216:79610] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 06:48:52.419807+0000 HandyTools[18216:67820] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 06:48:52.694341+0000 HandyTools[18216:82136] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 06:48:53.043800+0000 HandyTools[18216:82136] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 06:48:53.363991+0000 HandyTools[18216:79585] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 06:48:53.680590+0000 HandyTools[18216:79585] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 06:49:34.702611+0000 HandyTools[18216:83605] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 06:49:34.868784+0000 HandyTools[18216:83605] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 06:50:06.139555+0000 HandyTools[18216:85000] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 06:50:34.208704+0000 HandyTools[18216:92581] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
+2026-11-26 06:51:39.853917+0000 HandyTools[18216:88015] [Context] [PREFLIGHTING] context 0x12eff82a0: failed to preflight ANMDModel, error: Error Domain=MRCErrorDomain Code=-6001 "Unable to compile network." UserInfo={NSDescription=Unable to compile network., MRCErrorE5RTErrorCodeKey=11, MRCErrorE5RTErrorCodeStringKey=OPERATION ERROR}
