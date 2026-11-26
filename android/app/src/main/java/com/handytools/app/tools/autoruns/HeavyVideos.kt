@@ -61,8 +61,20 @@ object HeavyVideos {
             arrayOf((window.first / 1000).toString(), (window.last / 1000 + 1).toString()), null)?.use { c ->
             while (c.moveToNext()) {
                 val id = c.getLong(0)
-                all += Item(ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id), c.getString(1) ?: "Video",
-                    c.getLong(2), c.getLong(3) / 1000.0, c.getInt(4), c.getInt(5), c.getLong(6) * 1000)
+                val uri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id)
+                var bytes = c.getLong(2); var seconds = c.getLong(3) / 1000.0; var w = c.getInt(4); var h = c.getInt(5)
+                // A video saved moments ago may not have been measured by the phone's library yet: read the file itself.
+                if (bytes <= 0) bytes = runCatching { ctx.contentResolver.openFileDescriptor(uri, "r")?.use { it.statSize } }.getOrNull() ?: 0
+                if (seconds <= 0 || w <= 0 || h <= 0) runCatching {
+                    val r = android.media.MediaMetadataRetriever()
+                    try {
+                        r.setDataSource(ctx, uri)
+                        if (seconds <= 0) seconds = (r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull() ?: 0) / 1000.0
+                        if (w <= 0) w = r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)?.toIntOrNull() ?: 0
+                        if (h <= 0) h = r.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)?.toIntOrNull() ?: 0
+                    } finally { r.release() }
+                }
+                all += Item(uri, c.getString(1) ?: "Video", bytes, seconds, w, h, c.getLong(6) * 1000)
             }
         }
         val heavy = SmartRuns.heavy(all.map { SmartRuns.Found(it.uri.toString(), it.created, isVideo = true, bytes = it.bytes, seconds = it.seconds, width = it.width, height = it.height) },

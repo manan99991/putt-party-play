@@ -67,10 +67,14 @@ class AutorunsOnDeviceTest {
         try {
             ctx.contentResolver.openOutputStream(uri)!!.use { o -> heavy.inputStream().use { it.copyTo(o) } }
             val now = System.currentTimeMillis()
-            // The test clip is short, so the bar is its own rate (bytes a minute), not 60 MB.
-            val perMinute = heavy.length() / 3.0 * 60 * 0.5
+            // Everything from the last minutes, as the phone's library lists it.
+            val all = HeavyVideos.find(ctx, (now - 10 * 60_000)..(now + 60_000), minBytes = 1, minPerMinute = 0.0)
+            val mine = all.firstOrNull { it.uri == uri } ?: throw AssertionError("the saved video isn't in the phone's videos (${all.size} listed)")
+            assertTrue("its size and length should be read (${mine.bytes} bytes, ${mine.seconds} s)", mine.bytes > 0 && mine.seconds > 0)
+            // The test clip is short, so the bar is half its own rate (bytes a minute), not 60 MB.
+            val perMinute = mine.bytes / (mine.seconds / 60) * 0.5
             val found = HeavyVideos.find(ctx, (now - 10 * 60_000)..(now + 60_000), minBytes = Long.MAX_VALUE, minPerMinute = perMinute)
-            println("AUTORUN| heavy copy ${heavy.length() / 1000} KB, found ${found.size}")
+            println("AUTORUN| heavy copy ${mine.bytes / 1000} KB, ${"%.1f".format(mine.seconds)} s, ${mine.width}×${mine.height}, found ${found.size} of ${all.size}")
             val item = found.firstOrNull { it.uri == uri } ?: throw AssertionError("the heavy video wasn't found (${found.size} found)")
             val smaller = runBlocking { HeavyVideos.resave(ctx, item.uri, item.width, item.height) { } } ?: throw AssertionError("it couldn't be re-saved")
             val worst = runBlocking { HeavyVideos.worstMatch(ctx, item.uri, smaller, item.seconds) }
