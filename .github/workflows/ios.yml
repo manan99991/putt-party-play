@@ -221,7 +221,7 @@ jobs:
             only: "-only-testing:HandyToolsTests"
           - part: smoke
             device: iPhone
-            only: "-only-testing:HandyToolsUITests/ToolSmokeTests -only-testing:HandyToolsUITests/ToolControlsReachableTests"
+            only: "-only-testing:HandyToolsUITests/ToolSmokeTests -only-testing:HandyToolsUITests/ToolControlsReachableTests -only-testing:HandyToolsUITests/CameraButtonTests"
           - part: flows
             device: iPhone
             only: "-only-testing:HandyToolsUITests/LiveToolTests -only-testing:HandyToolsUITests/PromiseTests -only-testing:HandyToolsUITests/MultiPhotoTests"

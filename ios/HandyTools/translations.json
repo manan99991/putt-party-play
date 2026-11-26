@@ -51268,5 +51268,105 @@
   "ja": "写真を渡して、やることを選ぶ",
   "pt": "Dê uma foto e escolha o que fazer",
   "zh": "交一张照片，选要做的事"
+ },
+ "Take a photo": {
+  "de": "Foto aufnehmen",
+  "es": "Hacer una foto",
+  "fr": "Prendre une photo",
+  "hi": "फ़ोटो लें",
+  "it": "Scatta una foto",
+  "ja": "写真を撮る",
+  "pt": "Tirar uma foto",
+  "zh": "拍照"
+ },
+ "Another photo": {
+  "de": "Anderes Foto",
+  "es": "Otra foto",
+  "fr": "Une autre photo",
+  "hi": "दूसरी फ़ोटो",
+  "it": "Un'altra foto",
+  "ja": "別の写真",
+  "pt": "Outra foto",
+  "zh": "换一张照片"
+ },
+ "Take a new one": {
+  "de": "Neu aufnehmen",
+  "es": "Hacer otra",
+  "fr": "En prendre une autre",
+  "hi": "नई लें",
+  "it": "Scattane un'altra",
+  "ja": "撮り直す",
+  "pt": "Tirar outra",
+  "zh": "重新拍一张"
+ },
+ "Record a video": {
+  "de": "Video aufnehmen",
+  "es": "Grabar un vídeo",
+  "fr": "Filmer une vidéo",
+  "hi": "वीडियो रिकॉर्ड करें",
+  "it": "Registra un video",
+  "ja": "動画を撮る",
+  "pt": "Gravar um vídeo",
+  "zh": "录一段视频"
+ },
+ "Record one now": {
+  "de": "Jetzt eins aufnehmen",
+  "es": "Grabar uno ahora",
+  "fr": "En filmer une maintenant",
+  "hi": "अभी रिकॉर्ड करें",
+  "it": "Registrane uno ora",
+  "ja": "今撮る",
+  "pt": "Gravar um agora",
+  "zh": "现在录一段"
+ },
+ "A sign, a menu or a page": {
+  "de": "Ein Schild, eine Speisekarte oder eine Seite",
+  "es": "Un cartel, un menú o una página",
+  "fr": "Un panneau, un menu ou une page",
+  "hi": "कोई साइन, मेन्यू या पन्ना",
+  "it": "Un cartello, un menù o una pagina",
+  "ja": "看板、メニュー、ページなど",
+  "pt": "Uma placa, um cardápio ou uma página",
+  "zh": "标牌、菜单或一页纸"
+ },
+ "A photo of the problem helps (optional)": {
+  "de": "Ein Foto des Problems hilft (optional)",
+  "es": "Una foto del problema ayuda (opcional)",
+  "fr": "Une photo du problème aide (facultatif)",
+  "hi": "समस्या की फ़ोटो मदद करती है (वैकल्पिक)",
+  "it": "Una foto del problema aiuta (facoltativa)",
+  "ja": "不具合の写真があると助かります（任意）",
+  "pt": "Uma foto do problema ajuda (opcional)",
+  "zh": "附一张问题照片更好（可选）"
+ },
+ "Photo of the problem added": {
+  "de": "Foto des Problems hinzugefügt",
+  "es": "Foto del problema añadida",
+  "fr": "Photo du problème ajoutée",
+  "hi": "समस्या की फ़ोटो जोड़ दी गई",
+  "it": "Foto del problema aggiunta",
+  "ja": "不具合の写真を追加しました",
+  "pt": "Foto do problema adicionada",
+  "zh": "已添加问题照片"
+ },
+ "The camera is off for Tenzy": {
+  "de": "Die Kamera ist für Tenzy aus",
+  "es": "La cámara está desactivada para Tenzy",
+  "fr": "L'appareil photo est désactivé pour Tenzy",
+  "hi": "Tenzy के लिए कैमरा बंद है",
+  "it": "La fotocamera è disattivata per Tenzy",
+  "ja": "Tenzyのカメラがオフです",
+  "pt": "A câmera está desligada para o Tenzy",
+  "zh": "Tenzy 的相机权限已关闭"
+ },
+ "Turn on Camera for Tenzy in Settings to take a photo here. Photos stay on your phone.": {
+  "de": "Schalte in den Einstellungen die Kamera für Tenzy ein, um hier ein Foto aufzunehmen. Fotos bleiben auf deinem Handy.",
+  "es": "Activa la Cámara para Tenzy en Ajustes para hacer una foto aquí. Las fotos se quedan en tu teléfono.",
+  "fr": "Active l'appareil photo pour Tenzy dans Réglages pour prendre une photo ici. Les photos restent sur ton téléphone.",
+  "hi": "यहाँ फ़ोटो लेने के लिए सेटिंग्स में Tenzy के लिए कैमरा चालू करें। फ़ोटो आपके फ़ोन पर ही रहती हैं।",
+  "it": "Attiva la Fotocamera per Tenzy in Impostazioni per scattare una foto qui. Le foto restano sul tuo telefono.",
+  "ja": "ここで写真を撮るには、設定でTenzyのカメラをオンにしてください。写真はスマホの中に残ります。",
+  "pt": "Ative a Câmera para o Tenzy em Ajustes para tirar uma foto aqui. As fotos ficam no seu celular.",
+  "zh": "请在设置中为 Tenzy 打开相机，即可在这里拍照。照片只保存在你的手机上。"
  }
 }

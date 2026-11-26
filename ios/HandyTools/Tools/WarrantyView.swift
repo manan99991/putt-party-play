@@ -331,9 +331,15 @@ private struct ReceiptDetail: View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Label(L("Something wrong with it?"), systemImage: "wrench.and.screwdriver").font(HandyFont.bodyStrong)
             TextField(L("What's wrong (optional)"), text: $problemNote, axis: .vertical).textFieldStyle(.handy)
-            PhotosPicker(selection: $problemItem, matching: .images) {
-                Label(L(problem == nil ? "Add a photo of the problem (optional)" : "Photo added — change it"), systemImage: "camera").frame(maxWidth: .infinity)
-            }.secondaryButton()
+            Text(L(problem == nil ? "A photo of the problem helps (optional)" : "Photo of the problem added")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HStack(spacing: HandySpacing.s8) {
+                CameraButton(took: { t in if case .photo(let img) = t { problem = img; pack = nil } }) {
+                    Label(L("Take a photo"), systemImage: "camera").frame(maxWidth: .infinity)
+                }.secondaryButton().accessibilityIdentifier("warranty-problem-camera")
+                PhotosPicker(selection: $problemItem, matching: .images) {
+                    Label(L("From Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity)
+                }.secondaryButton()
+            }
             Button {
                 pack = ClaimPack.pdf(receipt, receiptImage: store.image(receipt), problem: problem, note: problemNote); HandyHaptics.success()
             } label: { Label(L("Make the claim pack (PDF)"), systemImage: "doc.richtext").frame(maxWidth: .infinity) }.primaryButton()

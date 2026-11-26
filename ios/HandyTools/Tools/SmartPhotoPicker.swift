@@ -217,10 +217,19 @@ struct SmartPhotoPicker: View {
                     Text("\(L("Use")) \(picked.count) \(L(picked.count == 1 ? "photo" : "photos"))").frame(maxWidth: .infinity)
                 }.primaryButton().accessibilityIdentifier("finder-use").accessibilityValue(Launch.uitest ? swipeTrace : "")
             }
-            PhotosPicker(selection: $allItems, maxSelectionCount: maxCount, matching: .images) {
-                HStack { if loading { ProgressView() }; Label(L("All photos"), systemImage: "photo.on.rectangle") }.frame(maxWidth: .infinity)
+            HStack(spacing: HandySpacing.s8) {
+                // Take it now, right here (26 Nov) — a receipt on the counter, a card in your hand. Not for screenshots.
+                if kind != .screenshot {
+                    CameraButton(took: { t in if case .photo(let img) = t { tookPhoto(img) } }) {
+                        Label(L("Camera"), systemImage: "camera").frame(maxWidth: .infinity)
+                    }
+                    .secondaryButton().accessibilityIdentifier("finder-camera")
+                }
+                PhotosPicker(selection: $allItems, maxSelectionCount: maxCount, matching: .images) {
+                    HStack { if loading { ProgressView() }; Label(L("All photos"), systemImage: "photo.on.rectangle") }.frame(maxWidth: .infinity)
+                }
+                .secondaryButton().accessibilityIdentifier("finder-all")
             }
-            .secondaryButton().accessibilityIdentifier("finder-all")
         }
         .padding(.horizontal, HandySpacing.gutter).padding(.vertical, HandySpacing.s8)
         .background(.ultraThinMaterial)
@@ -245,6 +254,11 @@ struct SmartPhotoPicker: View {
                 finish(out)
             }
         }
+    }
+
+    /// A photo just taken with the camera: handed over like a picked one (as a JPEG file where the tool wants files).
+    private func tookPhoto(_ img: UIImage) {
+        if doneFiles != nil, let d = img.jpegData(compressionQuality: 0.92) { finishFiles([(d, "jpg")]) } else { finish([img]) }
     }
 
     private func finishFiles(_ files: [(Data, String)]) {

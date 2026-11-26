@@ -7,22 +7,22 @@ TENZY PRO (in-app subscription)
 - Two plans in the "Tenzy Pro" group: monthly US$2.99, yearly US$29.99, each with a 7-day free trial. Both submitted with this version.
 - Unlocks the Pro tools and removes daily limits.
 - The purchase screen (Settings > Go Pro, or any Pro tool's unlock screen) shows the price, trial terms, auto-renewal disclosure, and Terms of Use (EULA) and Privacy Policy links (3.1.2).
-- Buyable in the sandbox there; a real App Store install keeps Pro tools locked until purchase.
+- Buyable in the sandbox; an App Store install keeps Pro tools locked until purchase.
 
 PERMISSIONS (all processed on-device; nothing is uploaded)
 - Contacts: the Contacts tool merges duplicates, exports a .vcf backup (weekly, if the user switches that autorun on) and copies contacts between the user's own accounts. Asked when used.
-- Microphone: Audio Lab (meter / tuner), Voice to Notes, Meeting Notes, Translate's voice mode and Pro Camera video. Processed on-device; saved only when the user taps record.
-- Camera: Scan, Studio, Measure, Pro Camera, Identify, Translate (camera mode), and See & Read.
+- Microphone: Audio Lab, Voice to Notes, Meeting Notes, Translate's voice mode, and sound for videos recorded in a tool. Saved only when the user taps record.
+- Camera: Scan, Studio, Measure, Pro Camera, Identify, See & Read, and the "Take a photo" / "Record" button in tools that work on a photo or video. Only when tapped.
 - Photos: Cleaner, Photo Studio, Privacy Scrubber, Search My Photos and autoruns the user switches on read photos on-device only.
 - Media & Apple Music: Animate's "Add music" lists songs on the phone that aren't copy-protected, to put under a video. Read on-device.
 - Motion: the level, compass and sensors inside Measure; telling when a drive ends for automatic parking (if switched on).
 - Location (When In Use only, never Always): compass, altitude, GPS Dashboard, parked car, Morning Summary weather (WeatherKit), travel times (Apple Maps), arrival reminders (iOS).
 - Speech Recognition: Voice to Notes, Translate's voice mode and the voice-memo autorun transcribe on-device.
-- Background audio: Rest plays sleep sounds (or listens for snoring) with the screen off, only after the user taps start.
+- Background audio: Rest plays sleep sounds (or listens for snoring), only after the user taps start.
 - Face ID: unlocks the private Vault.
 - Notifications: only reminders the user turns on (medicines, birthdays, Morning Summary, parking meter, bedtime, Price Watch, bills, warranties, autoruns, tool reminders). Each has a "Test run" button.
 - Background: Refresh runs the user's alerts and Price Watch (pages they added, at most 10). Processing finishes the on-device photo index while charging and prepares autoruns the user switched on (My stuff > Set an autorun: e.g. today's receipts into a sheet) for review. Nothing is sent, added or deleted until the user taps.
-- Network: See & Read, "Read the page at a link" and Price Watch fetch only pages the user gives. No user data is sent.
+- Network: See & Read, "Read the page at a link" and Price Watch fetch only pages the user gives.
 - Calendar: plans open the system's own event editor (EKEventEditViewController); nothing is read.
 
 BACKGROUND LOCATION: only for GPS Dashboard > "Save my spot automatically", off by default. The user switches it on in the app; Tenzy then keeps a When In Use background session (CLBackgroundActivitySession, blue indicator shown). Cell-level accuracy off the road, GPS only while driving; when the user gets out, the spot is saved on the phone with a notification. Nothing is uploaded. To test: GPS Dashboard > switch on > Test run.

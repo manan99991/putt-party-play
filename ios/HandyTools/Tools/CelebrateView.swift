@@ -131,6 +131,13 @@ struct CelebrateView: View {
             PhotosPicker(selection: $pick, matching: .any(of: [.videos, .images])) {
                 Label(L("Choose a video or photo"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
             }.primaryButton().accessibilityIdentifier("celebrate-pick")
+            // Or make it now (26 Nov): record the moment, or snap a photo, right here.
+            HStack(spacing: HandySpacing.s8) {
+                CameraButton(video: true, took: tookWithCamera) { Label(L("Record"), systemImage: "video").frame(maxWidth: .infinity) }
+                    .secondaryButton().accessibilityIdentifier("tool-record")
+                CameraButton(took: tookWithCamera) { Label(L("Take a photo"), systemImage: "camera").frame(maxWidth: .infinity) }
+                    .secondaryButton().accessibilityIdentifier("tool-camera")
+            }
             if let f = loading { ToolProgressBar(value: f, label: "Getting it ready…") }
             if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         }
@@ -511,6 +518,20 @@ struct CelebrateView: View {
                 return
             }
             await MainActor.run { loading = nil; errorText = "Couldn't open that — try another video or photo." }
+        }
+    }
+
+    private func tookWithCamera(_ t: CameraTake) {
+        errorText = nil
+        switch t {
+        case .video(let u): Task { await use(u) }
+        case .photo(let img):
+            loading = 0.5
+            Task {
+                let v = await Celebrate.videoFromPhoto(img)
+                await MainActor.run { loading = nil }
+                if let v { await use(v) } else { await MainActor.run { errorText = "Couldn't turn that photo into a video — try another." } }
+            }
         }
     }
 

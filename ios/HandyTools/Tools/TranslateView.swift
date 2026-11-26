@@ -85,7 +85,7 @@ struct TranslateView: View {
         .onChange(of: photoItem) { _, item in
             guard let item else { return }
             busy = true
-            Task { if let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) { let t = await AIEngine.recognizeText(img); await MainActor.run { photoText = t; busy = false; if t.isEmpty { errorText = "No text found in that photo." } else { translate(t, from: fromCode, to: toCode, speak: false) } } } else { await MainActor.run { busy = false } } }
+            Task { if let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) { await readPhoto(img) } else { await MainActor.run { busy = false } } }
         }
         .onAppear { if Launch.sample, input.isEmpty { input = "Where is the nearest pharmacy? My son has a fever." } }
         .onDisappear { speech.stop(); speaker.stop() }
@@ -228,11 +228,26 @@ struct TranslateView: View {
 
     private var photoPanel: some View {
         VStack(spacing: HandySpacing.s8) {
-            PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Choose a photo of a sign, menu, or page"), systemImage: "camera.viewfinder").frame(maxWidth: .infinity) }.secondaryButton().disabled(overQuota)
+            Text(L("A sign, a menu or a page")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+            HStack(spacing: HandySpacing.s8) {
+                CameraButton(took: { t in if case .photo(let img) = t { busy = true; Task { await readPhoto(img) } } }) {
+                    Label(L("Take a photo"), systemImage: "camera").frame(maxWidth: .infinity)
+                }.primaryButton().disabled(overQuota).accessibilityIdentifier("tool-camera")
+                PhotosPicker(selection: $photoItem, matching: .images) { Label(L("From Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton().disabled(overQuota)
+            }
             if busy { ToolProgressBar(label: "Reading…") }
             if !photoText.isEmpty { DisclosureGroup("Original text") { Text(photoText).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).textSelection(.enabled) }.font(HandyFont.caption) }
             if !output.isEmpty && mode == .photo { resultCard(output) }
             Text(L("For live camera translation, use Capture — tap a line there and choose Translate.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        }
+    }
+
+    /// A photo of a sign, menu or page, taken or picked: read its words, then translate them.
+    private func readPhoto(_ img: UIImage) async {
+        let t = await AIEngine.recognizeText(img)
+        await MainActor.run {
+            photoText = t; busy = false
+            if t.isEmpty { errorText = "No text found in that photo." } else { translate(t, from: fromCode, to: toCode, speak: false) }
         }
     }
 

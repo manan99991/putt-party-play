@@ -63,9 +63,14 @@ struct ShareReadyView: View {
                 }
             }
 
-            HStack(spacing: HandySpacing.s12) {
+            HStack(spacing: HandySpacing.s8) {
+                CameraButton(took: { t in
+                    outputs = []; skipped = []
+                    if case .photo(let img) = t { queue.append(.image(img)) }
+                }) { Label(L("Camera"), systemImage: "camera").frame(maxWidth: .infinity) }
+                .secondaryButton().accessibilityIdentifier("tool-camera")
                 PhotosPicker(selection: $photoItems, maxSelectionCount: store.isPremium ? 0 : 10, matching: .any(of: [.images, .videos])) {
-                    Label(L("Photos & videos"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
+                    Label(L("Photos"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
                 }.secondaryButton()
                 Button { showFiles = true } label: { Label(L("PDFs"), systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
             }

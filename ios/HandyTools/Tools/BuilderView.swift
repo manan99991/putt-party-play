@@ -2639,6 +2639,12 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     Group {
                         PhotosPicker(selection: $videoPick, matching: .videos) { Label(L(result == nil ? "Choose a video" : "Choose another video"), systemImage: "film").frame(maxWidth: .infinity) }
                             .primaryButton().accessibilityIdentifier("run-video")
+                        CameraButton(video: true, took: { t in
+                            guard case .video(let u) = t else { return }
+                            busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the video ready…"; progressValue = 0
+                            runTask = Task { await takeVideo(u) }
+                        }) { Label(L("Record a video"), systemImage: "video").frame(maxWidth: .infinity) }
+                            .secondaryButton().accessibilityIdentifier("run-record-video")
                         PhotosPicker(selection: $livePick, matching: .livePhotos) { Label(L("Choose a Live Photo"), systemImage: "livephoto").frame(maxWidth: .infinity) }
                             .secondaryButton().accessibilityIdentifier("run-live-photo")
                         Text(L("Long videos can take a few minutes — the bar shows how far along it is. A Live Photo is used as its short video.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -2946,21 +2952,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             runTask = Task {
                 // Shows how much of the video has come in (an iCloud video downloads first) instead of a bare wait.
                 let movie = await MovieImport.load(item) { f in Task { @MainActor in progressValue = f; progress = f > 0 ? "Getting the video ready — \(Int(f * 100))%" : "Getting the video ready…" } }
-                if let movie, chain.steps.first?.block == .videoTrim {
-                    // Keep-a-part tools: show the video and let you pick the stretch first.
-                    let d = await VideoEngine.duration(movie.url)
-                    let strip = await VideoEngine.filmstrip(movie.url)
-                    await MainActor.run {
-                        busy = false; progress = ""
-                        let w = ChainText.trimWindow(side: chain.steps.first?.settings["side"], secs: chain.steps.first?.settings["secs"], duration: d)
-                        partLength = d; partStart = w.start; partEnd = w.end; partFrames = strip; choosing = movie.url
-                    }
-                    return
-                }
-                await MainActor.run {
-                    if let movie { go(.video(movie.url)) }
-                    else { busy = false; progress = ""; message = "That video didn't load. If it's a large iCloud video, open it once in Photos to download it to this phone, then pick it again." }
-                }
+                await takeVideo(movie?.url)
             }
         }
         .onChange(of: livePick) { _, item in
@@ -3270,6 +3262,24 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         let full = found.lowercased().hasPrefix("http") ? found : "https://" + found
         guard !found.isEmpty, !found.contains(" "), let url = URL(string: full) else { message = "There was no link to open. The result is shown below to copy."; return }
         UIApplication.shared.open(url)
+    }
+
+    /// A video for the run, picked or just recorded: a keep-a-part tool shows it first to choose the stretch; others run.
+    private func takeVideo(_ url: URL?) async {
+        if let url, chain.steps.first?.block == .videoTrim {
+            let d = await VideoEngine.duration(url)
+            let strip = await VideoEngine.filmstrip(url)
+            await MainActor.run {
+                busy = false; progress = ""
+                let w = ChainText.trimWindow(side: chain.steps.first?.settings["side"], secs: chain.steps.first?.settings["secs"], duration: d)
+                partLength = d; partStart = w.start; partEnd = w.end; partFrames = strip; choosing = url
+            }
+            return
+        }
+        await MainActor.run {
+            if let url { go(.video(url)) }
+            else { busy = false; progress = ""; message = "That video didn't load. If it's a large iCloud video, open it once in Photos to download it to this phone, then pick it again." }
+        }
     }
 
     /// Called when a run finishes: get the result ready to send and, if the tool ends in an email or a message, open it.

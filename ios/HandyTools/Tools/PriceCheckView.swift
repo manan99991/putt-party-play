@@ -53,9 +53,14 @@ private struct ComparePanel: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            PhotosPicker(selection: $photoItem, matching: .images) {
-                Label(L("Scan a photo or screenshot"), systemImage: "camera.viewfinder").frame(maxWidth: .infinity)
-            }.secondaryButton()
+            HStack(spacing: HandySpacing.s8) {
+                CameraButton(took: { t in if case .photo(let img) = t { busy = true; scanNote = nil; Task { await scan(img) } } }) {
+                    Label(L("Take a photo"), systemImage: "camera").frame(maxWidth: .infinity)
+                }.primaryButton().accessibilityIdentifier("tool-camera")
+                PhotosPicker(selection: $photoItem, matching: .images) {
+                    Label(L("From Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity)
+                }.secondaryButton()
+            }
             if busy { HStack(spacing: HandySpacing.s8) { BusySpinner(); Text(L("Reading prices…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
             if let scanNote { Text(scanNote).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
 
@@ -103,18 +108,23 @@ private struct ComparePanel: View {
                 let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init)
                 photoItem = nil
                 guard let img else { await MainActor.run { busy = false }; return }
-                let text = await AIEngine.recognizeText(img)
-                let found = PriceBrain.extract(from: text)
-                await MainActor.run {
-                    busy = false
-                    if found.isEmpty {
-                        scanNote = "Couldn't read a price and size from that. Try a clearer shot, or type them in below."
-                    } else {
-                        rows = found.map { CompareRow(name: $0.name, price: $0.price.filter { $0.isNumber || $0 == "." }, size: $0.size) }
-                        troyManual = nil   // let auto-detect re-run on the new names
-                        scanNote = "Found \(found.count) item\(found.count == 1 ? "" : "s"). Check the numbers below."
-                    }
-                }
+                await scan(img)
+            }
+        }
+    }
+
+    /// A shelf tag or screenshot, taken or picked: read the prices and sizes into the rows.
+    private func scan(_ img: UIImage) async {
+        let text = await AIEngine.recognizeText(img)
+        let found = PriceBrain.extract(from: text)
+        await MainActor.run {
+            busy = false
+            if found.isEmpty {
+                scanNote = "Couldn't read a price and size from that. Try a clearer shot, or type them in below."
+            } else {
+                rows = found.map { CompareRow(name: $0.name, price: $0.price.filter { $0.isNumber || $0 == "." }, size: $0.size) }
+                troyManual = nil   // let auto-detect re-run on the new names
+                scanNote = "Found \(found.count) item\(found.count == 1 ? "" : "s"). Check the numbers below."
             }
         }
     }
@@ -259,9 +269,14 @@ private struct LabelPanel: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            PhotosPicker(selection: $photoItem, matching: .images) {
-                Label(L("Snap or choose a label"), systemImage: "text.viewfinder").frame(maxWidth: .infinity)
-            }.secondaryButton()
+            HStack(spacing: HandySpacing.s8) {
+                CameraButton(took: { t in if case .photo(let img) = t { busy = true; result = nil; Task { await decode(img) } } }) {
+                    Label(L("Take a photo"), systemImage: "camera").frame(maxWidth: .infinity)
+                }.primaryButton().accessibilityIdentifier("label-camera")
+                PhotosPicker(selection: $photoItem, matching: .images) {
+                    Label(L("From Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity)
+                }.secondaryButton()
+            }
             if busy { HStack(spacing: HandySpacing.s8) { BusySpinner(); Text(L("Reading the label…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
 
             if let result {
@@ -298,10 +313,15 @@ private struct LabelPanel: View {
                 let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init)
                 photoItem = nil
                 guard let img else { await MainActor.run { busy = false }; return }
-                let text = await AIEngine.recognizeText(img)
-                await MainActor.run { result = LabelDecode.decode(text); busy = false }
+                await decode(img)
             }
         }
+    }
+
+    /// A food label, taken or picked: read it and decode what it says.
+    private func decode(_ img: UIImage) async {
+        let text = await AIEngine.recognizeText(img)
+        await MainActor.run { result = LabelDecode.decode(text); busy = false }
     }
 }
 

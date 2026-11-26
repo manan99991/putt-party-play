@@ -52,9 +52,13 @@ struct StudioView: View {
     var body: some View {
         ToolPage(title: "Photo Studio", subtitle: "What's the photo for? Pick the job — Studio does the rest and shows you before and after.", working: working) {
             if original == nil {
-                PhotosPicker(selection: $pickedItem, matching: .images) {
-                    Label(L("Choose a photo"), systemImage: "photo").frame(maxWidth: .infinity)
-                }.primaryButton()
+                HStack(spacing: HandySpacing.s8) {
+                    CameraButton(took: tookPhoto) { Label(L("Take a photo"), systemImage: "camera").frame(maxWidth: .infinity) }
+                        .primaryButton().accessibilityIdentifier("tool-camera")
+                    PhotosPicker(selection: $pickedItem, matching: .images) {
+                        Label(L("From Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity)
+                    }.secondaryButton()
+                }
             }
             if let original {
                 if let job {
@@ -110,7 +114,11 @@ struct StudioView: View {
                         }.buttonStyle(.plain).accessibilityIdentifier("studio-job-\(j.rawValue)")
                     }
                 }
-                PhotosPicker(selection: $pickedItem, matching: .images) { Label(L("Choose a different photo"), systemImage: "photo.on.rectangle.angled") }.textButton()
+                HStack {
+                    PhotosPicker(selection: $pickedItem, matching: .images) { Label(L("Another photo"), systemImage: "photo.on.rectangle.angled") }.textButton()
+                    Spacer()
+                    CameraButton(took: tookPhoto) { Label(L("Take a new one"), systemImage: "camera") }.textButton()
+                }
             }
         }
         .onAppear { if Launch.sample, original == nil { original = SampleAssets.photo(); originalBytes = original?.jpegData(compressionQuality: 0.95)?.count ?? 0 } }
@@ -121,11 +129,20 @@ struct StudioView: View {
         .onChange(of: pickedItem) { _, item in
             Task {
                 if let d = try? await item?.loadTransferable(type: Data.self), let img = UIImage(data: d) {
-                    await MainActor.run { original = img.normalizedUp(); originalBytes = d.count; reset(); passportCounted = false
-                        if let job, job != .passport, job != .smaller { run(job) } }
+                    await MainActor.run { adopt(img, bytes: d.count) }
                 }
             }
         }
+    }
+
+    /// A photo, picked or just taken: it becomes the one being worked on, and the chosen job runs again on it.
+    private func adopt(_ img: UIImage, bytes: Int) {
+        original = img.normalizedUp(); originalBytes = bytes; reset(); passportCounted = false
+        if let job, job != .passport, job != .smaller { run(job) }
+    }
+
+    private func tookPhoto(_ t: CameraTake) {
+        if case .photo(let img) = t { adopt(img, bytes: img.jpegData(compressionQuality: 0.95)?.count ?? 0) }
     }
 
     private func reset() { preview = nil; output = nil; changed = []; errorText = nil; saved = nil }

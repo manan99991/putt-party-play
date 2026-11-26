@@ -172,6 +172,11 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   name the autoruns. Habit offers (a Home card) use only a local log of which days each tool id was opened (30 days).
   The privacy policy needs one line about autoruns before the store submit (drafted in docs/listing-draft.md; the website
   change needs Manan's yes).
+- Camera button in tools (26 Nov): tools that work on a photo or video offer "Take a photo" / "Record" beside "From Photos",
+  and the smart photo picker has a Camera button (not for screenshots). It uses the existing camera and microphone strings
+  (both now name this use) and the system camera screen; nothing new is collected. If the camera is off for Tenzy, the
+  button says so and offers Settings. The privacy page's camera line needs "and the Take a photo button in tools" before
+  the store submit (website change: Manan's yes).
 - "Change the voice" only changes speed and pitch. Do not describe it as voice cloning or as sounding like a real person.
 - Build your own, Pro steps: only the 10 basic steps are free (`Block.freeStepIDs` / `FREE_STEP_IDS`, matched on both
   phones): Read text, Tidy text, Summarize, Find links/emails/phones, Clean tracking, Make a QR code, Wi-Fi join code,

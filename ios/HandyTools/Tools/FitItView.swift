@@ -46,9 +46,17 @@ struct FitItView: View {
                 "Fit It shrinks it just under the limit and keeps it sharp — then share.",
             ])
             if source == nil {
-                PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos]), photoLibrary: .shared()) {
-                    Label(L("Choose a photo or video"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
-                }.secondaryButton()
+                HStack(spacing: HandySpacing.s8) {
+                    CameraButton(took: { t in
+                        guard case .photo(let img) = t else { return }
+                        reset(); originalID = nil
+                        source = .image(img); sourceName = "Photo"; sourceBytes = img.jpegData(compressionQuality: 0.95)?.count ?? 0
+                    }) { Label(L("Take a photo"), systemImage: "camera").frame(maxWidth: .infinity) }
+                    .secondaryButton().accessibilityIdentifier("tool-camera")
+                    PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos]), photoLibrary: .shared()) {
+                        Label(L("From Photos"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
+                    }.secondaryButton()
+                }
                 Button { showFiles = true } label: { Label(L("Choose a PDF"), systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
                 Text(L("Typical limits: email 25 MB, most portals 2 MB, government photo uploads 50–200 KB."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)

@@ -590,7 +590,9 @@ struct ContactDetailView: View {
                         Text([person.title, person.company].filter { !$0.isEmpty }.joined(separator: " · ")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     }
                     HStack(spacing: HandySpacing.s8) {
-                        PhotosPicker(selection: $photoPick, matching: .images) { Label(person.hasPhoto ? L("Change photo") : L("Add photo"), systemImage: "camera") }.compactButton()
+                        CameraButton(took: { t in if case .photo(let img) = t { setPhoto(img) } }) { Label(L("Camera"), systemImage: "camera") }
+                            .compactButton().accessibilityIdentifier("contact-camera")
+                        PhotosPicker(selection: $photoPick, matching: .images) { Label(person.hasPhoto ? L("Change photo") : L("Add photo"), systemImage: "photo") }.compactButton()
                         if person.hasPhoto { Button(L("Remove photo")) { setPhoto(nil) }.textButton().font(HandyFont.caption) }
                     }
                 }

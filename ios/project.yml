@@ -227,8 +227,8 @@ targets:
               public.filename-extension: [mkv, mka, webm]
         LSSupportsOpeningDocumentsInPlace: false
         # --- Tool permissions ---
-        NSCameraUsageDescription: Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded.
-        NSMicrophoneUsageDescription: Needed for the sound meter and voice tools. Levels are measured on your phone; nothing is uploaded.
+        NSCameraUsageDescription: Lets you take a photo or record a video right inside a tool (Scan, Translate, Photo Studio and more), and powers Capture, Color Vision, the magnifier, mirror and light meter. Everything stays on your phone and is never uploaded.
+        NSMicrophoneUsageDescription: Needed for the sound meter, the voice tools and the sound of videos you record in Tenzy. Everything stays on your phone; nothing is uploaded.
         NSAppleMusicUsageDescription: Lets you add a song from your Music app to a video you make. Songs are read on your phone and never uploaded.
         NSLocationWhenInUseUsageDescription: Needed for the compass (true north), altitude, the GPS dashboard, saving where you parked (and, if you switch it on, saving it automatically when you stop driving), and to put where you are into a tool when you tap Location. It stays on your phone and is only shared if you send it.
         NSMotionUsageDescription: Needed for the level, barometer/altimeter and metal detector readings, and to tell when you stop driving so your parking spot saves by itself (only if you switch that on). It stays on your phone.

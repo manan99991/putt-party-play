@@ -76,9 +76,14 @@ struct VideoView: View {
                 "Export, then save or share.",
             ])
             if source == nil {
-                PhotosPicker(selection: $pickedItem, matching: .videos, photoLibrary: .shared()) {
-                    Label(L("Choose a video"), systemImage: "film").frame(maxWidth: .infinity)
-                }.secondaryButton()
+                HStack(spacing: HandySpacing.s8) {
+                    CameraButton(video: true, took: { t in if case .video(let u) = t { open(u) } }) {
+                        Label(L("Record"), systemImage: "video").frame(maxWidth: .infinity)
+                    }.secondaryButton().accessibilityIdentifier("tool-record")
+                    PhotosPicker(selection: $pickedItem, matching: .videos, photoLibrary: .shared()) {
+                        Label(L("Choose a video"), systemImage: "film").frame(maxWidth: .infinity)
+                    }.secondaryButton()
+                }
                 Text(L("Or make a GIF from photos:")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 PhotosPicker(selection: $gifPhotoItems, maxSelectionCount: 30, matching: .images) {
                     Label(L("Choose photos for a GIF"), systemImage: "photo.stack").frame(maxWidth: .infinity)

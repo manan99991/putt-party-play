@@ -43,9 +43,15 @@ struct ScrubView: View {
                 "Save or share the scrubbed copy — your original stays untouched.",
             ])
             if original == nil && videoInURL == nil {
-                PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
-                    Label(L("Choose a photo or video"), systemImage: "photo").frame(maxWidth: .infinity)
-                }.secondaryButton()
+                HStack(spacing: HandySpacing.s8) {
+                    CameraButton(took: { t in
+                        if case .photo(let img) = t, let d = img.jpegData(compressionQuality: 0.95) { Task { await adopt(d) } }
+                    }) { Label(L("Take a photo"), systemImage: "camera").frame(maxWidth: .infinity) }
+                    .secondaryButton().accessibilityIdentifier("tool-camera")
+                    PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
+                        Label(L("From Photos"), systemImage: "photo").frame(maxWidth: .infinity)
+                    }.secondaryButton()
+                }
                 Text(L("Blur can be undone. Our blocks can't — the pixels underneath are gone in the copy."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }

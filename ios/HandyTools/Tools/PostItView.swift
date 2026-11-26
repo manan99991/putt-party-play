@@ -44,6 +44,9 @@ struct PostItView: View {
             PhotosPicker(selection: $pick, matching: .videos) {
                 Label(L("Choose a video"), systemImage: "film").frame(maxWidth: .infinity)
             }.primaryButton().accessibilityIdentifier("post-pick")
+            CameraButton(video: true, took: { t in if case .video(let u) = t { Task { await use(u) } } }) {
+                Label(L("Record one now"), systemImage: "video").frame(maxWidth: .infinity)
+            }.secondaryButton().accessibilityIdentifier("tool-record")
             if let f = loading { ToolProgressBar(value: f, label: "Getting it ready…") }
         }
         .cardStyle(padding: HandySpacing.s16)
