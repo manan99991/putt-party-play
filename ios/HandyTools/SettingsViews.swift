@@ -292,6 +292,7 @@ struct SettingsView: View {
                         SettingsRow(icon: "book", title: L("How Tenzy works"), sub: L("A helper in three steps")) { showGuide = true }
                         if !HowToVideo.available.isEmpty {
                             SettingsRow(icon: "play.rectangle.fill", title: L("Watch how"), sub: L("Three short videos")) { showHowTo = true }
+                                .accessibilityIdentifier("settings-watchhow")
                         }
                         SettingsRow(icon: "envelope", title: "Send feedback", sub: SUPPORT_EMAIL) {
                             UIApplication.shared.open(URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20iOS%20\(version)")!)

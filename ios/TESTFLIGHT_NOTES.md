@@ -13,3 +13,4 @@
 6. Got something? → a photo → Send it → Privacy Scrubber: your photo should already be in it.
 7. Home › See all: helpers by section, each section's ready-made helpers, and "Make your own".
 8. Settings: every line fits on one line ("Looks after your phone").
+9. Settings › Help › Watch how: three short videos filmed in Tenzy — say what you need, set an autorun, got something?

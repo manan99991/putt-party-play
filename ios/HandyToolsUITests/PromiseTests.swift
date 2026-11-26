@@ -603,6 +603,29 @@ final class PromiseTests: XCTestCase {
         }
     }
 
+    /// 26 Nov: Settings › Help › Watch how lists the three films, opens one full screen, and Done comes back.
+    func testWatchHowOpensTheFilms() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "settings", "-uitest"]
+        app.launch()
+        let row = app.buttons["settings-watchhow"]
+        XCTAssertTrue(row.waitForExistence(timeout: 20), "Settings has no Watch how row — \(Self.onScreen(app))")
+        var swipes = 0
+        while !row.isHittable && swipes < 8 { app.swipeUp(); swipes += 1 }
+        sleep(1)
+        row.tap()
+        for id in ["say-what-you-need", "set-an-autorun", "got-something"] {
+            XCTAssertTrue(app.buttons["howto-\(id)"].waitForExistence(timeout: 10), "the \(id) film isn't listed")
+        }
+        app.buttons["howto-set-an-autorun"].tap()
+        let done = app.buttons["howto-done"]
+        XCTAssertTrue(done.waitForExistence(timeout: 10), "the film didn't open")
+        sleep(3)
+        done.tap()
+        XCTAssertTrue(app.buttons["howto-got-something"].waitForExistence(timeout: 5), "Done didn't come back to the list")
+        XCTAssertEqual(app.state, .runningForeground)
+    }
+
     /// What a failing step saw: which page (by its identifier), and its first lines of text.
     static func onScreen(_ app: XCUIApplication) -> String {
         let pages = ["smartruns", "smartposts", "smartreceipts", "smartrun-working"].filter { app.descendants(matching: .any)[$0].firstMatch.exists }

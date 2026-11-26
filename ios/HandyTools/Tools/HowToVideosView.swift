@@ -11,9 +11,9 @@ struct HowToVideo: Identifiable, Equatable {
     let icon: String
 
     static let all: [HowToVideo] = [
-        HowToVideo(id: "say-what-you-need", title: "Say what you need", line: "One sentence in the ask box becomes a helper that does the whole job.", icon: "text.bubble.fill"),
-        HowToVideo(id: "set-an-autorun", title: "Set an autorun", line: "Switch one on, tap Test run, and see what it found for you.", icon: "clock.arrow.circlepath"),
-        HowToVideo(id: "got-something", title: "Got something? Hand it over", line: "Give Tenzy a photo and pick what you want done.", icon: "tray.and.arrow.down.fill"),
+        HowToVideo(id: "say-what-you-need", title: "Say what you need", line: "One sentence becomes a helper", icon: "text.bubble.fill"),
+        HowToVideo(id: "set-an-autorun", title: "Set an autorun", line: "Switch it on, tap Test run", icon: "clock.arrow.circlepath"),
+        HowToVideo(id: "got-something", title: "Got something? Hand it over", line: "Give Tenzy a photo, pick a job", icon: "tray.and.arrow.down.fill"),
     ]
 
     var url: URL? { Bundle.main.url(forResource: id, withExtension: "mp4", subdirectory: "HowTo") ?? Bundle.main.url(forResource: id, withExtension: "mp4") }
@@ -29,7 +29,7 @@ struct HowToVideosView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                    Text(L("Three short videos, filmed in Tenzy itself. Tap one to watch."))
+                    Text(L("Filmed in Tenzy. Tap one to watch."))
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     ForEach(HowToVideo.available) { v in
                         Button { playing = v } label: {
@@ -39,8 +39,9 @@ struct HowToVideosView: View {
                                     .accessibilityHidden(true)
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(L(v.title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                        .lineLimit(1).minimumScaleFactor(0.85)
                                     Text(L(v.line)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                                        .multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
+                                        .lineLimit(1).minimumScaleFactor(0.85)
                                 }
                                 Spacer(minLength: 0)
                                 Image(systemName: "play.circle.fill").font(.system(size: 28)).foregroundStyle(HandyColor.accent).accessibilityHidden(true)

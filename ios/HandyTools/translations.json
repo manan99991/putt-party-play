@@ -50959,16 +50959,6 @@
   "pt": "Três vídeos curtos: diga o que precisa, defina um autorun, dê uma foto ao Tenzy",
   "zh": "三个短视频：说出需求、设置自动运行、把照片交给 Tenzy"
  },
- "Three short videos, filmed in Tenzy itself. Tap one to watch.": {
-  "de": "Drei kurze Videos, direkt in Tenzy gefilmt. Tippe eins an, um es anzusehen.",
-  "es": "Tres videos cortos, grabados en el propio Tenzy. Toca uno para verlo.",
-  "fr": "Trois courtes vidéos, filmées dans Tenzy. Touche-en une pour la regarder.",
-  "hi": "तीन छोटे वीडियो, Tenzy में ही रिकॉर्ड किए गए। देखने के लिए किसी पर टैप करें।",
-  "it": "Tre brevi video, girati dentro Tenzy. Toccane uno per guardarlo.",
-  "ja": "Tenzyの中で撮影した3本の短い動画です。タップして再生します。",
-  "pt": "Três vídeos curtos, gravados no próprio Tenzy. Toque em um para assistir.",
-  "zh": "三个在 Tenzy 中录制的短视频。点按即可观看。"
- },
  "Build a helper that does the whole job, in three steps": {
   "de": "Bau in drei Schritten einen Helfer, der die ganze Arbeit erledigt",
   "es": "Crea en tres pasos un asistente que haga todo el trabajo",
@@ -50989,26 +50979,6 @@
   "pt": "Diga o que precisa",
   "zh": "说出你的需要"
  },
- "One sentence in the ask box becomes a helper that does the whole job.": {
-  "de": "Ein Satz im Frage-Feld wird zu einem Helfer, der die ganze Arbeit erledigt.",
-  "es": "Una frase en el cuadro de preguntas se convierte en un asistente que hace todo el trabajo.",
-  "fr": "Une phrase dans la zone de demande devient un assistant qui fait tout le travail.",
-  "hi": "आस्क बॉक्स में एक वाक्य, पूरा काम करने वाला हेल्पर बन जाता है।",
-  "it": "Una frase nella casella delle richieste diventa un aiutante che fa tutto il lavoro.",
-  "ja": "入力欄の一文が、仕事をまるごとこなすヘルパーになります。",
-  "pt": "Uma frase na caixa de pedidos vira um ajudante que faz o trabalho todo.",
-  "zh": "在提问框里说一句话，就能变成完成整件事的助手。"
- },
- "Switch one on, tap Test run, and see what it found for you.": {
-  "de": "Schalte einen ein, tippe auf Probelauf und sieh, was er für dich gefunden hat.",
-  "es": "Activa uno, toca Prueba y mira lo que encontró para ti.",
-  "fr": "Active-en un, touche Essai et vois ce qu'il a trouvé pour toi.",
-  "hi": "एक चालू करें, टेस्ट रन पर टैप करें, और देखें उसने आपके लिए क्या ढूँढा।",
-  "it": "Attivane uno, tocca Prova e guarda cosa ha trovato per te.",
-  "ja": "オンにして「テスト実行」をタップすると、見つけたものが表示されます。",
-  "pt": "Ative um, toque em Teste e veja o que ele encontrou para você.",
-  "zh": "打开一个，点按“测试”，看看它为你找到了什么。"
- },
  "Got something? Hand it over": {
   "de": "Etwas dabei? Gib es Tenzy",
   "es": "¿Tienes algo? Dáselo",
@@ -51018,16 +50988,6 @@
   "ja": "何かある？Tenzyに渡そう",
   "pt": "Tem algo? Entregue ao Tenzy",
   "zh": "有东西？交给 Tenzy"
- },
- "Give Tenzy a photo and pick what you want done.": {
-  "de": "Gib Tenzy ein Foto und wähle, was damit passieren soll.",
-  "es": "Dale una foto a Tenzy y elige qué quieres hacer.",
-  "fr": "Donne une photo à Tenzy et choisis ce que tu veux en faire.",
-  "hi": "Tenzy को एक फ़ोटो दें और चुनें कि क्या करना है।",
-  "it": "Dai una foto a Tenzy e scegli cosa vuoi fare.",
-  "ja": "Tenzyに写真を渡して、やりたいことを選びます。",
-  "pt": "Dê uma foto ao Tenzy e escolha o que quer fazer.",
-  "zh": "给 Tenzy 一张照片，选择你想做的事。"
  },
  "My helpers": {
   "de": "Meine Helfer",
@@ -51268,5 +51228,45 @@
   "ja": "%d 件のコピー・1件を残す",
   "pt": "%d cópias · fique com uma",
   "zh": "%d 份副本 · 保留一份"
+ },
+ "Filmed in Tenzy. Tap one to watch.": {
+  "de": "In Tenzy gefilmt. Tippe eins an.",
+  "es": "Grabados en Tenzy. Toca uno para verlo.",
+  "fr": "Filmées dans Tenzy. Touche-en une.",
+  "hi": "Tenzy में रिकॉर्ड किए गए। देखने के लिए टैप करें।",
+  "it": "Girati in Tenzy. Toccane uno.",
+  "ja": "Tenzyで撮影。タップして再生。",
+  "pt": "Gravados no Tenzy. Toque em um.",
+  "zh": "在 Tenzy 中录制。点按观看。"
+ },
+ "One sentence becomes a helper": {
+  "de": "Ein Satz wird zum Helfer",
+  "es": "Una frase se vuelve un asistente",
+  "fr": "Une phrase devient un assistant",
+  "hi": "एक वाक्य, एक हेल्पर",
+  "it": "Una frase diventa un aiutante",
+  "ja": "ひと言がヘルパーになる",
+  "pt": "Uma frase vira um ajudante",
+  "zh": "一句话变成助手"
+ },
+ "Switch it on, tap Test run": {
+  "de": "Einschalten, Probelauf tippen",
+  "es": "Actívalo y toca Prueba",
+  "fr": "Active-le, touche Essai",
+  "hi": "चालू करें, टेस्ट रन दबाएँ",
+  "it": "Attivalo, tocca Prova",
+  "ja": "オンにしてテスト実行",
+  "pt": "Ative e toque em Teste",
+  "zh": "打开后点“测试一下”"
+ },
+ "Give Tenzy a photo, pick a job": {
+  "de": "Foto geben, Aufgabe wählen",
+  "es": "Dale una foto y elige qué hacer",
+  "fr": "Donne une photo, choisis quoi faire",
+  "hi": "फ़ोटो दें, काम चुनें",
+  "it": "Dai una foto, scegli cosa fare",
+  "ja": "写真を渡して、やることを選ぶ",
+  "pt": "Dê uma foto e escolha o que fazer",
+  "zh": "交一张照片，选要做的事"
  }
 }

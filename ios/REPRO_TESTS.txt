@@ -1,6 +1,4 @@
-# 26 Nov (3rd): the TestFlight gate failed once on Ready to post (no clip after Check), and the second how-to film froze
-# at the end of a receipts Test run. Both again — failures now say what was on screen, and the workflow samples the app
-# every 20 s and prints where its main thread is stuck, if it ever is.
-HandyToolsUITests/PromiseTests/testReceiptTestRunKeepsTheAppAnswering
-HandyToolsUITests/PromiseTests/testReceiptsAutorunReadsTodaysReceiptIntoTheSheet
-HandyToolsUITests/PromiseTests/testReadyToPostMakesATallClipAndSavesIt
+# 26 Nov (4th): the three how-to films are in the app (Settings › Help › Watch how). Each ships, plays and is the
+# phone's tall shape; each list line fits one line; the row opens the list, a film opens full screen, Done comes back.
+HandyToolsTests/HowToVideosTests
+HandyToolsUITests/PromiseTests/testWatchHowOpensTheFilms
