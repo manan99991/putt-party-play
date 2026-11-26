@@ -1,9 +1,6 @@
-# 26 Nov, third look — read from the second run's report:
-#  • week film: the title card (136) and photos (180) are bright and the film is fine from 0.2 s, but frame 0 is black:
-#    Animate fades up from black, so the film's first frame — the picture Photos shows for it — was black. The film now
-#    opens straight on its title (Settings.fadeIn = false for the opening stretch only).
-#  • paper: the drawn pages are bright (mean 197) and the right size (1400x1900), yet read back as "night sky", 0 words.
-#    The seed now draws in standard range, opaque; and the run reports what the reader actually got back (size, bits,
-#    colour space, brightness), so if it's still dark the cause is in the read, and it's shown.
+# 26 Nov, fourth look. Week film passed (opens on its title). Paper: the pages came back from Photos bright and right
+# (530x720, sRGB, mean 196) — but the photo index, which reads at 720 px, read 0 words: a page's body print is too small
+# there to be seen as writing. A real letter photo is worse (6–14 px print). Fix: a photo with no people, not a
+# screenshot, and little text found is read at full size before it's ruled out as paper.
 HandyToolsUITests/PromiseTests/testPaperAutorunMakesOneSearchablePDFFromTwoPages
-HandyToolsTests/SmartWeekTests
+HandyToolsTests/SmartPapersTests

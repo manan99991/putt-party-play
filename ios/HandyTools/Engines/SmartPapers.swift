@@ -43,6 +43,12 @@ enum SmartPapers {
         return PhotoFinder.score(s, for: .receipt) < doc && PhotoFinder.score(s, for: .card) < PhotoFinder.threshold
     }
 
+    /// A photo worth reading at full size before ruling it out: no people in it, not a screenshot, and the quick index
+    /// read little or nothing (small print it couldn't see).
+    static func worthAFullRead(_ s: PhotoFinder.Seen) -> Bool {
+        !s.screenshot && s.faces == 0 && s.text.split { $0 == " " || $0 == "\n" }.count < 25
+    }
+
     /// Pages photographed one after another (within `gap`) are one document — unless a page says it is the first
     /// ("Page 1 of 3", "1/3"), which always starts a new one.
     static func group(_ pages: [(id: String, taken: Date, text: String)], gap: TimeInterval = 180) -> [[String]] {
@@ -143,7 +149,17 @@ enum SmartPapers {
                                     PhotoFinder.score(seen, for: .receipt), PhotoFinder.score(seen, for: .card), words,
                                     seen.labels.prefix(3).joined(separator: "/"), seen.screenshot ? " · shot" : ""))
             } else { trail.append("unreadable") }
-            guard let seen, isPaper(seen, afterAPage: after) else { continue }
+            guard var seen else { continue }
+            // The photo index reads at 720 px, where a full page's print is too small to be seen as writing (a letter's
+            // body text is ~6–14 px there, and the index reads nothing). A photo without people that the index found
+            // little writing on is read properly, at full size, before deciding it isn't paper.
+            if !isPaper(seen, afterAPage: after), worthAFullRead(seen), let big = await PhotoFinder.image(a, side: 2000) {
+                seen.text = await Task.detached(priority: .utility) { ChainText.documentText(big) }.value
+                let words = seen.text.split { $0 == " " || $0 == "\n" }.count
+                trail.append(String(format: "read in full: doc %.1f rec %.1f card %.1f · %d words", PhotoFinder.score(seen, for: .document),
+                                    PhotoFinder.score(seen, for: .receipt), PhotoFinder.score(seen, for: .card), words))
+            }
+            guard isPaper(seen, afterAPage: after) else { continue }
             found.append((a.localIdentifier, taken, seen.text)); byID[a.localIdentifier] = a
         }
         PhotoFinder.saveCache(cache)

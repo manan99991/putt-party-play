@@ -42,6 +42,15 @@ final class SmartPapersTests: XCTestCase {
         XCTAssertEqual(SmartPapers.title("12/04/2026\n$ 45.00\n555-123-4567"), "", "nothing usable: the caller names it Document")
     }
 
+    /// 26 Nov: the photo index reads at 720 px, where a page's print is too small and it reads nothing. Such a photo
+    /// (no people, not a screenshot, little text) is read in full before it's ruled out.
+    func testAPageTheIndexCouldntReadIsReadInFull() {
+        XCTAssertTrue(SmartPapers.worthAFullRead(seen("", labels: [])))
+        XCTAssertFalse(SmartPapers.worthAFullRead(PhotoFinder.Seen(modified: 0, labels: [], text: "", faces: 2, codes: 0, screenshot: false)), "a photo of people")
+        XCTAssertFalse(SmartPapers.worthAFullRead(seen("", shot: true)), "a screenshot")
+        XCTAssertFalse(SmartPapers.worthAFullRead(seen(letter)), "already read: the index saw the words")
+    }
+
     func testPagesTakenTogetherAreOneDocument() {
         let t = Date(timeIntervalSince1970: 1_790_000_000)
         let pages: [(id: String, taken: Date, text: String)] = [
