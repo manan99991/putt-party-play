@@ -1,32 +1,30 @@
-2026-11-26 19:41:52.745382+0000 HandyTools[29113:82223] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
-2026-11-26 19:41:53.385210+0000 HandyTools[29113:82230] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+2026-11-26 20:13:34.597847+0000 HandyTools[23768:70007] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-26 20:13:36.149668+0000 HandyTools[23768:69996] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-11-26 20:13:36.752846+0000 HandyTools[23768:70017] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
 Test Case '-[HandyToolsTests.BeatReelTests testAPortraitAndALandscapeClipBothFillTheTallFrame]' started.
 Test Case '-[HandyToolsTests.BeatReelTests testAPortraitAndALandscapeClipBothFillTheTallFrame]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.BeatReelTests testAReelIsReallyMade]' started.
-REEL| the reel didn't save: Operation Stopped (-11838) — 8 pieces, shortest 0.9523333333333334s, length 8.418666666666667s, clips ["640x360", "360x640"]
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/BeatReelTests.swift:49: error: -[HandyToolsTests.BeatReelTests testAReelIsReallyMade] : XCTUnwrap failed: expected non-nil value of type "URL" - the reel wasn't made
-Test Case '-[HandyToolsTests.BeatReelTests testAReelIsReallyMade]' failed (9.625 seconds).
+Test Case '-[HandyToolsTests.BeatReelTests testAReelIsReallyMade]' passed (41.359 seconds).
 Test Case '-[HandyToolsTests.BeatReelTests testThePlanCutsOnTheBeat]' started.
-Test Case '-[HandyToolsTests.BeatReelTests testThePlanCutsOnTheBeat]' passed (0.004 seconds).
-	 Executed 3 tests, with 1 failure (0 unexpected) in 9.632 (9.637) seconds
-	 Executed 3 tests, with 1 failure (0 unexpected) in 9.632 (9.637) seconds
-	 Executed 3 tests, with 1 failure (0 unexpected) in 9.632 (9.638) seconds
+Test Case '-[HandyToolsTests.BeatReelTests testThePlanCutsOnTheBeat]' passed (0.005 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 41.367 (41.376) seconds
+Test Case '-[HandyToolsTests.SynthTests testARecordScratchFreezeIsReallyMade]' started.
+Test Case '-[HandyToolsTests.SynthTests testARecordScratchFreezeIsReallyMade]' passed (6.024 seconds).
+Test Case '-[HandyToolsTests.SynthTests testEveryEffectIsItsOwnSound]' started.
+Test Case '-[HandyToolsTests.SynthTests testEveryEffectIsItsOwnSound]' passed (1.048 seconds).
+Test Case '-[HandyToolsTests.SynthTests testEveryStyleHitsItsBarsAndNeverClips]' started.
+Test Case '-[HandyToolsTests.SynthTests testEveryStyleHitsItsBarsAndNeverClips]' passed (12.621 seconds).
+Test Case '-[HandyToolsTests.SynthTests testTheMomentIsTheLaughAndTheLooksArriveOnTime]' started.
+Test Case '-[HandyToolsTests.SynthTests testTheMomentIsTheLaughAndTheLooksArriveOnTime]' passed (0.003 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 19.695 (19.700) seconds
+	 Executed 7 tests, with 0 failures (0 unexpected) in 61.062 (61.083) seconds
+	 Executed 7 tests, with 0 failures (0 unexpected) in 61.062 (61.084) seconds
 Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/CameraButtonTests.swift:108: error: -[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel] : XCTAssertTrue failed - no finished reel — on screen: no known page — Beat Reel, Your clips, cut to the beat of a song made for them. / Your clips and photos / The music / Length / Couldn't make the reel — try other clips. [the reel didn't save: Operation Stopped (-11838) — 12 pieces, shortest 0.9523333333333334s, length 12.228s, clips ["640x360"]] / Beat Reel / Your clips, cut to the beat of a song made for them. / Add more / Record / Make my reel / ☀️ / Upbeat / 118 BPM / 🪩
-Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' failed (390.789 seconds).
-	 Executed 1 test, with 1 failure (0 unexpected) in 390.789 (390.794) seconds
-	 Executed 1 test, with 1 failure (0 unexpected) in 390.789 (390.799) seconds
-	 Executed 1 test, with 1 failure (0 unexpected) in 390.789 (390.800) seconds
+Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' passed (54.162 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testFunnyMomentsRecordsAClipAndMakesTheJoke]' started.
+Test Case '-[HandyToolsUITests.CameraButtonTests testFunnyMomentsRecordsAClipAndMakesTheJoke]' passed (22.396 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 76.558 (76.563) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 76.558 (76.567) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 76.558 (76.568) seconds
 == main thread when stuck
-HANG| 19:45:07 main thread busy in 431/431 samples
-HANG|     431 start  (in dyld)
-HANG|     431 start_sim  (in dyld_sim)
-HANG|     431 __debug_main_executable_dylib_entry_point  (in HandyTools.debug.dylib) + 12  App.swift:0
-HANG|     431 static TenzyApp.$main()  (in HandyTools.debug.dylib) + 40  /<compiler-generated>:0
-HANG|     431 static App.main()  (in SwiftUI)
-HANG|     431 runApp<A>(_:)  (in SwiftUI)
-HANG|     431 closure #1 in KitRendererCommon(_:)  (in SwiftUI)
-HANG|     431 UIApplicationMain  (in UIKitCore)
-HANG|     431 GSEventRunModal  (in GraphicsServices)
-HANG|     431 _CFRunLoopRunSpecificWithOptions  (in CoreFoundation)
 == crash reports
