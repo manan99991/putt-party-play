@@ -109,6 +109,18 @@ final class CameraButtonTests: XCTestCase {
                       "no finished reel — \(PromiseTests.onScreen(app))")
     }
 
+    /// Movie Trailer: film a clip, name the film, and a trailer comes out to watch.
+    func testMovieTrailerRecordsAClipAndMakesATrailer() {
+        let app = open("trailer")
+        tap(app, "tool-record")
+        let name = app.textFields["trailer-title"].firstMatch
+        XCTAssertTrue(appears(name, within: 60), "the recorded clip didn't reach Movie Trailer — \(PromiseTests.onScreen(app))")
+        name.tap(); name.typeText("The Test\n")
+        tap(app, "trailer-make")
+        XCTAssertTrue(appears(app.descendants(matching: .any)["trailer-result"].firstMatch, within: 420),
+                      "no finished trailer — \(PromiseTests.onScreen(app))")
+    }
+
     func testPostItRecordsAClip() {
         let app = open("post")
         tap(app, "tool-record")

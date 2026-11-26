@@ -52038,5 +52038,175 @@
   "ja": "チル",
   "pt": "Tranquila",
   "zh": "轻松"
+ },
+ "Movie Trailer": {
+  "de": "Filmtrailer",
+  "es": "Tráiler de película",
+  "fr": "Bande-annonce",
+  "hi": "मूवी ट्रेलर",
+  "it": "Trailer del film",
+  "ja": "映画予告編",
+  "pt": "Trailer de filme",
+  "zh": "电影预告片"
+ },
+ "Your clips as an epic trailer": {
+  "de": "Deine Clips als epischer Trailer",
+  "es": "Tus clips como un tráiler épico",
+  "fr": "Tes clips en bande-annonce épique",
+  "hi": "आपकी क्लिप्स एक शानदार ट्रेलर में",
+  "it": "Le tue clip in un trailer epico",
+  "ja": "あなたのクリップを壮大な予告編に",
+  "pt": "Seus clipes num trailer épico",
+  "zh": "把你的片段做成史诗预告片"
+ },
+ "Your clips as a trailer, with a narrator and a score.": {
+  "de": "Deine Clips als Trailer, mit Sprecher und Filmmusik.",
+  "es": "Tus clips como tráiler, con narrador y banda sonora.",
+  "fr": "Tes clips en bande-annonce, avec narrateur et musique.",
+  "hi": "आपकी क्लिप्स एक ट्रेलर में, नैरेटर और संगीत के साथ।",
+  "it": "Le tue clip in un trailer, con narratore e colonna sonora.",
+  "ja": "ナレーターと音楽付きの予告編に。",
+  "pt": "Seus clipes num trailer, com narrador e trilha.",
+  "zh": "把片段做成预告片，配旁白和配乐。"
+ },
+ "Make a movie trailer": {
+  "de": "Einen Filmtrailer machen",
+  "es": "Hacer un tráiler",
+  "fr": "Faire une bande-annonce",
+  "hi": "मूवी ट्रेलर बनाएँ",
+  "it": "Crea un trailer",
+  "ja": "映画予告編を作る",
+  "pt": "Fazer um trailer",
+  "zh": "做一个电影预告片"
+ },
+ "The film's name": {
+  "de": "Name des Films",
+  "es": "Nombre de la película",
+  "fr": "Nom du film",
+  "hi": "फ़िल्म का नाम",
+  "it": "Nome del film",
+  "ja": "映画のタイトル",
+  "pt": "Nome do filme",
+  "zh": "片名"
+ },
+ "The Adventure": {
+  "de": "Das Abenteuer",
+  "es": "La aventura",
+  "fr": "L'Aventure",
+  "hi": "द एडवेंचर",
+  "it": "L'avventura",
+  "ja": "ジ・アドベンチャー",
+  "pt": "A Aventura",
+  "zh": "冒险"
+ },
+ "What the narrator says": {
+  "de": "Was der Sprecher sagt",
+  "es": "Lo que dice el narrador",
+  "fr": "Ce que dit le narrateur",
+  "hi": "नैरेटर क्या कहे",
+  "it": "Cosa dice il narratore",
+  "ja": "ナレーターのセリフ",
+  "pt": "O que o narrador diz",
+  "zh": "旁白说什么"
+ },
+ "Make my trailer": {
+  "de": "Meinen Trailer machen",
+  "es": "Hacer mi tráiler",
+  "fr": "Créer ma bande-annonce",
+  "hi": "मेरा ट्रेलर बनाएँ",
+  "it": "Crea il mio trailer",
+  "ja": "予告編を作る",
+  "pt": "Fazer meu trailer",
+  "zh": "生成我的预告片"
+ },
+ "Making your trailer…": {
+  "de": "Dein Trailer entsteht…",
+  "es": "Creando tu tráiler…",
+  "fr": "Création de ta bande-annonce…",
+  "hi": "आपका ट्रेलर बन रहा है…",
+  "it": "Creo il tuo trailer…",
+  "ja": "予告編を作成中…",
+  "pt": "Criando seu trailer…",
+  "zh": "正在制作预告片…"
+ },
+ "Change the title or lines": {
+  "de": "Titel oder Sätze ändern",
+  "es": "Cambiar el título o las frases",
+  "fr": "Changer le titre ou les phrases",
+  "hi": "शीर्षक या पंक्तियाँ बदलें",
+  "it": "Cambia titolo o frasi",
+  "ja": "タイトルやセリフを変える",
+  "pt": "Mudar o título ou as falas",
+  "zh": "修改片名或台词"
+ },
+ "Couldn't make the trailer — try other clips.": {
+  "de": "Trailer konnte nicht erstellt werden – versuch andere Clips.",
+  "es": "No se pudo hacer el tráiler: prueba otros clips.",
+  "fr": "Impossible de créer la bande-annonce — essaie d'autres clips.",
+  "hi": "ट्रेलर नहीं बन पाया — दूसरी क्लिप्स आज़माएँ।",
+  "it": "Impossibile creare il trailer: prova altre clip.",
+  "ja": "予告編を作れませんでした。別のクリップでお試しください。",
+  "pt": "Não foi possível fazer o trailer — tente outros clipes.",
+  "zh": "无法生成预告片——换些片段试试。"
+ },
+ "In a world where anything can happen…": {
+  "de": "In einer Welt, in der alles passieren kann …",
+  "es": "En un mundo donde todo puede pasar…",
+  "fr": "Dans un monde où tout peut arriver…",
+  "hi": "एक ऐसी दुनिया में जहाँ कुछ भी हो सकता है…",
+  "it": "In un mondo dove tutto può succedere…",
+  "ja": "何が起きてもおかしくない世界で…",
+  "pt": "Num mundo onde tudo pode acontecer…",
+  "zh": "在一个一切皆有可能的世界……"
+ },
+ "One story was waiting to be told.": {
+  "de": "Wartete eine Geschichte darauf, erzählt zu werden.",
+  "es": "Una historia esperaba ser contada.",
+  "fr": "Une histoire attendait d'être racontée.",
+  "hi": "एक कहानी सुनाए जाने का इंतज़ार कर रही थी।",
+  "it": "Una storia aspettava di essere raccontata.",
+  "ja": "ひとつの物語が語られる時を待っていた。",
+  "pt": "Uma história esperava para ser contada.",
+  "zh": "一个故事正等待被讲述。"
+ },
+ "This year, get ready for…": {
+  "de": "Mach dich dieses Jahr bereit für …",
+  "es": "Este año, prepárate para…",
+  "fr": "Cette année, préparez-vous pour…",
+  "hi": "इस साल, तैयार हो जाइए…",
+  "it": "Quest'anno, preparati per…",
+  "ja": "今年、その時がやって来る…",
+  "pt": "Este ano, prepare-se para…",
+  "zh": "今年，准备好迎接……"
+ },
+ "Coming soon": {
+  "de": "Demnächst",
+  "es": "Próximamente",
+  "fr": "Prochainement",
+  "hi": "जल्द आ रहा है",
+  "it": "Prossimamente",
+  "ja": "近日公開",
+  "pt": "Em breve",
+  "zh": "即将上映"
+ },
+ "Those didn't load — try others.": {
+  "de": "Die wurden nicht geladen – versuch andere.",
+  "es": "No se cargaron: prueba otros.",
+  "fr": "Ils ne se sont pas chargés — essaie d'autres.",
+  "hi": "ये लोड नहीं हुए — दूसरे आज़माएँ।",
+  "it": "Non si sono caricati: prova altri.",
+  "ja": "読み込めませんでした。別のものでお試しください。",
+  "pt": "Não carregaram — tente outros.",
+  "zh": "没能载入——换几个试试。"
+ },
+ "Couldn't make the reel — try other clips.": {
+  "de": "Reel konnte nicht erstellt werden – versuch andere Clips.",
+  "es": "No se pudo hacer el reel: prueba otros clips.",
+  "fr": "Impossible de créer le reel — essaie d'autres clips.",
+  "hi": "रील नहीं बन पाई — दूसरी क्लिप्स आज़माएँ।",
+  "it": "Impossibile creare il reel: prova altre clip.",
+  "ja": "リールを作れませんでした。別のクリップでお試しください。",
+  "pt": "Não foi possível fazer o reel — tente outros clipes.",
+  "zh": "无法生成视频——换些片段试试。"
  }
 }

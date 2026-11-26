@@ -58,6 +58,7 @@ enum TenzyArt {
         "celebrate": "studio",
         "funny": "studio",
         "beatreel": "studio",
+        "trailer": "studio",
         "collage": "stitch",
         "faceemoji": "scrub",
         "comicstrip": "studio",
@@ -126,7 +127,7 @@ extension ToolIconBadge {
         switch id {
         case "medreminder", "brief", "daydiary", "untangle", "thinking", "pricewatch": return Color(hex: 0x22C55E)
         case "pdfannotate", "pdfconvert", "pdfpages", "pdfsign", "pdfprotect", "pdfsearchable", "pdfform", "zipmaker": return Color(hex: 0xEF4444)
-        case "animate", "celebrate", "funny", "beatreel", "collage", "faceemoji", "comicstrip", "sticker": return Color(hex: 0xF59E0B)
+        case "animate", "celebrate", "funny", "beatreel", "trailer", "collage", "faceemoji", "comicstrip", "sticker": return Color(hex: 0xF59E0B)
         case "audioconvert", "audiocompress", "ringtone", "audioedit", "audiomix", "audiotags", "audioclean", "meetingnotes", "soundboard": return Color(hex: 0x8B5CF6)
         case "menu", "cards": return Color(hex: 0x06B6D4)
         default: return Color(hex: 0x3B82F6)

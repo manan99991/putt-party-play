@@ -177,7 +177,17 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   (both now name this use) and the system camera screen; nothing new is collected. If the camera is off for Tenzy, the
   button says so and offers Settings. The privacy page's camera line needs "and the Take a photo button in tools" before
   the store submit (website change: Manan's yes).
-- "Change the voice" only changes speed and pitch. Do not describe it as voice cloning or as sounding like a real person.
+- Video wow round (26 Nov, iPhone first): Beat Reel, Movie Trailer, Funny Moments, and Celebrate's Background and Funny tabs.
+  All music, hits and sound effects are synthesised on the phone (`Synth`); never add a song, loop or sample Tenzy doesn't
+  own. The trailer's narrator is the phone's own text-to-speech voice (`AVSpeechSynthesizer`, on the device) spoken low and
+  slow: never call it a famous voice, a real person, voice cloning or "AI". Background (blur, colour pop, backdrops) finds the
+  person with the phone's own detector (Vision person segmentation); Funny faces (big head, tiny head, big eyes, stretchy,
+  wobbly) find faces with Vision and warp that area like a fairground mirror. Describe them as playful effects only, never
+  as "AI", "deepfake", "face swap" or "face animator", and never claim they make a face talk or move. Nothing new is
+  collected or sent; no new permission (recording uses the camera button's strings). App Privacy / Data safety unchanged.
+  Android has none of these yet: keep them out of the Play listing and screenshots until the Android build ships them.
+- "Change the voice" changes speed, pitch and tone (echo, radio, whisper, a sung auto-tune, a stadium announcer). Do not
+  describe it as voice cloning or as sounding like a real person.
 - Build your own, Pro steps: only the 10 basic steps are free (`Block.freeStepIDs` / `FREE_STEP_IDS`, matched on both
   phones): Read text, Tidy text, Summarize, Find links/emails/phones, Clean tracking, Make a QR code, Wi-Fi join code,
   Contact as a QR code, WhatsApp link, Translate. Every other step is a Pro step (`isProStep`). A free user can see the

@@ -197,6 +197,7 @@ struct Tool: Identifiable {
     Tool(id: "post",       name: "Post a Video",          blurb: "The right shape for TikTok, Reels, Shorts", icon: "paperplane.circle.fill",              page: 7, asset: "tool_studio", keywords: ["post it","post","post it","tiktok","instagram","reels","reel","stories","story","youtube","shorts","youtube shorts","facebook","snapchat","twitter","x","whatsapp status","social media","upload","share video","vertical","9:16","hashtags","caption"]),
     Tool(id: "funny",      name: "Funny Moments",         blurb: "Record scratch, dramatic zoom, crickets…", icon: "theatermasks.fill",                   page: 7, asset: "tool_studio", keywords: ["funny","funny moment","joke","comedy","record scratch","freeze frame","that's me","dramatic zoom","dun dun dun","crickets","awkward","air horn","boing","ba dum tss","rimshot","meme video","prank","laugh"]),
     Tool(id: "beatreel",   name: "Beat Reel",             blurb: "Your clips cut to the beat of our music", icon: "music.note.list",                  page: 7, asset: "tool_studio", keywords: ["reel","reels","beat","to the beat","music video","montage","edit","tiktok","shorts","highlight","highlights","slideshow","music","song","cut to music","clips together","join videos","combine videos"]),
+    Tool(id: "trailer",    name: "Movie Trailer",         blurb: "Your clips as an epic trailer", icon: "film.stack",                  page: 7, asset: "tool_studio", keywords: ["trailer","movie trailer","film trailer","in a world","coming soon","epic","cinematic","narrator","voiceover","movie","film","teaser","title card","intro video","hype video"]),
     Tool(id: "animate",    name: "Animate",          blurb: "Turn photos into a video", icon: "play.rectangle.on.rectangle.fill",          page: 7, asset: "tool_studio", keywords: ["animate","animation","slideshow","reel","reels","tiktok","shorts","story","ken burns","polaroid","film strip","cube","boomerang","photo video","video from photos","montage","collage video"]),
     Tool(id: "collage",    name: "Collage",          blurb: "Lay photos out in one picture",   icon: "rectangle.3.group.fill",              page: 7, asset: "tool_stitch", keywords: ["collage","photo collage","grid","mosaic","photo strip","layout","combine photos","story collage","photo grid","moodboard"]),
     Tool(id: "faceemoji",  name: "Face Emoji",       blurb: "Hide faces with emoji",  icon: "face.smiling.inverse",                page: 7, asset: "tool_scrub", keywords: ["face emoji","emoji face","cover faces","hide faces","hide kids faces","kids","children","blur faces","privacy photo","emoji over face","sticker face"]),
@@ -439,6 +440,7 @@ struct ToolDestination: View {
         case "post": PostItView()
         case "funny": FunnyMomentView()
         case "beatreel": BeatReelView()
+        case "trailer": TrailerView()
         case "collage": CollageView()
         case "faceemoji": FaceEmojiView()
         case "comicstrip": ComicStripView()

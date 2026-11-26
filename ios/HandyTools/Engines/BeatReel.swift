@@ -62,49 +62,57 @@ enum BeatReel {
             .concatenating(CGAffineTransform(translationX: (size.width - r.width * k) / 2, y: (size.height - r.height * k) / 2))
     }
 
-    /// The reel from `sources` (videos; photos become short clips first). nil if the phone couldn't make it.
-    static func make(_ sources: [URL], style styleID: String, seconds: Double? = nil, progress: ((Double) -> Void)? = nil) async -> URL? {
-        let st = Synth.style(styleID)
-        var tracks: [(track: AVAssetTrack, length: Double, natural: CGSize, transform: CGAffineTransform)] = []
-        for u in sources {
+    /// A video ready to cut from: its picture track, how long it is, and how it's turned.
+    struct Source {
+        let track: AVAssetTrack
+        let length: Double
+        let natural: CGSize
+        let transform: CGAffineTransform
+    }
+
+    /// The videos that load (photos should already be clips); ones without a picture or shorter than 0.2 s are left out.
+    static func load(_ urls: [URL]) async -> [Source] {
+        var out: [Source] = []
+        for u in urls {
             let a = AVURLAsset(url: u)
             guard let t = try? await a.loadTracks(withMediaType: .video).first,
                   let d = try? await a.load(.duration).seconds, d > 0.2,
                   let n = try? await t.load(.naturalSize), let tr = try? await t.load(.preferredTransform) else { continue }
-            tracks.append((t, d, n, tr))
+            out.append(Source(track: t, length: d, natural: n, transform: tr))
         }
-        guard !tracks.isEmpty else { return nil }
-        let (cuts, total) = plan(lengths: tracks.map(\.length), style: st, seconds: seconds)
-        guard !cuts.isEmpty else { return nil }
-        progress?(0.05)
+        return out
+    }
 
-        // The edit: every cut in turn on one track, the slow moment stretched to fill its beats.
+    /// The edit itself, shared by reels and trailers: every cut in turn on one tall track (each clip upright and filling
+    /// the frame, stretched where a cut lasts longer than its piece), the last frame held `hold` seconds, and `audio`
+    /// (samples at Synth.rate) underneath from the start. Saved once at full quality; `progress` runs 0…1.
+    static func assemble(_ srcs: [Source], cuts: [Cut], hold: Double, audio: [Float], progress: ((Double) -> Void)?) async -> (url: URL, seconds: Double)? {
         let comp = AVMutableComposition()
         guard let cv = comp.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
         let ts: (Double) -> CMTime = { CMTime(seconds: $0, preferredTimescale: 6000) }
         var at = 0.0
         var shapes: [(at: Double, transform: CGAffineTransform)] = []
-        for c in cuts {
-            let src = tracks[c.clip]
+        for c in cuts where srcs.indices.contains(c.clip) {
+            let src = srcs[c.clip]
             do { try cv.insertTimeRange(CMTimeRange(start: ts(c.from), duration: ts(c.length)), of: src.track, at: ts(at)) } catch { continue }
             if abs(c.lasts - c.length) > 0.01 { cv.scaleTimeRange(CMTimeRange(start: ts(at), duration: ts(c.length)), toDuration: ts(c.lasts)) }
             shapes.append((at, fill(natural: src.natural, transform: src.transform)))
             at += c.lasts
         }
+        guard at > 0 else { return nil }
         // The last shot holds while the music's final hit rings out.
-        if let last = cuts.last {
-            let src = tracks[last.clip], end = max(0, last.from + last.length - 1.0 / 30)
+        if hold > 0, let last = cuts.last, srcs.indices.contains(last.clip) {
+            let src = srcs[last.clip], end = max(0, last.from + last.length - 1.0 / 30)
             if (try? cv.insertTimeRange(CMTimeRange(start: ts(end), duration: ts(1.0 / 30)), of: src.track, at: ts(at))) != nil {
-                cv.scaleTimeRange(CMTimeRange(start: ts(at), duration: ts(1.0 / 30)), toDuration: ts(ringOut))
-                at += ringOut
+                cv.scaleTimeRange(CMTimeRange(start: ts(at), duration: ts(1.0 / 30)), toDuration: ts(hold))
+                at += hold
             }
         }
-        // The music, as long as the reel.
-        let music = Synth.track(st.id, seconds: total).samples
-        if let mu = Synth.file(music, name: "reel-music"),
+        // The sound, as long as the picture.
+        if let mu = Synth.file(audio, name: "cut-sound"),
            let mt = try? await AVURLAsset(url: mu).loadTracks(withMediaType: .audio).first,
            let ca = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
-            try? ca.insertTimeRange(CMTimeRange(start: .zero, duration: ts(min(at, Double(music.count) / Synth.rate))), of: mt, at: .zero)
+            try? ca.insertTimeRange(CMTimeRange(start: .zero, duration: ts(min(at, Double(audio.count) / Synth.rate))), of: mt, at: .zero)
         }
 
         // Every clip upright and filling the tall frame.
@@ -119,12 +127,24 @@ enum BeatReel {
         vc.frameDuration = CMTime(value: 1, timescale: 30)
 
         guard let s = AVAssetExportSession(asset: comp, presetName: AVAssetExportPresetHighestQuality) else { return nil }
-        let cut = VideoEngine.tempURL("mp4")
-        s.outputURL = cut; s.outputFileType = .mp4; s.videoComposition = vc; s.metadata = []
-        let poll = Task { while !Task.isCancelled { progress?(0.05 + 0.45 * Double(s.progress)); try? await Task.sleep(nanoseconds: 300_000_000) } }
+        let out = VideoEngine.tempURL("mp4")
+        s.outputURL = out; s.outputFileType = .mp4; s.videoComposition = vc; s.metadata = []
+        let poll = Task { while !Task.isCancelled { progress?(Double(s.progress)); try? await Task.sleep(nanoseconds: 300_000_000) } }
         let ok = await VideoEngine.run(s, seconds: at)
         poll.cancel()
-        guard ok else { return nil }
+        return ok ? (out, at) : nil
+    }
+
+    /// The reel from `sources` (videos; photos become short clips first). nil if the phone couldn't make it.
+    static func make(_ sources: [URL], style styleID: String, seconds: Double? = nil, progress: ((Double) -> Void)? = nil) async -> URL? {
+        let st = Synth.style(styleID)
+        let srcs = await load(sources)
+        guard !srcs.isEmpty else { return nil }
+        let (cuts, total) = plan(lengths: srcs.map(\.length), style: st, seconds: seconds)
+        guard !cuts.isEmpty else { return nil }
+        progress?(0.05)
+        let music = Synth.track(st.id, seconds: total).samples
+        guard let cut = await assemble(srcs, cuts: cuts, hold: ringOut, audio: music, progress: { p in progress?(0.05 + 0.45 * p) })?.url else { return nil }
         progress?(0.5)
 
         // The style over it all: its look and light, a punch on every beat (found in the music itself).
