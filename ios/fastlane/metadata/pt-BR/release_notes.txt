@@ -1,11 +1,10 @@
 O maior Tenzy até agora.
-• Um visual novo: Início, Ferramentas, Criar, As minhas coisas e Definições, a um toque
-• Figurinhas animadas: nove movimentos, prontas para o Mensagens
-• Negócio: um registro de quilometragem e uma lista de preços ao lado das notas
-• Salve onde estacionou pela Central de Controle, ou automaticamente quando o celular sai do carro; o parquímetro conta na Tela Bloqueada
-• Identificar diz o que é o principal na foto (a TV, não o vaso ao lado)
-• Configure uma vez e funciona: lembretes de remédios com contagem para repor e aviso a quem cuida, aniversários, um resumo diário, alertas de parquímetro e um lembrete para dormir, cada um com seu teste
-• Novas ferramentas: Alerta de preço, Contatos, Meu dia, Criar um Zip, Toque, Criador de figurinhas e mais
-• A câmera agora grava vídeo, com ajustes de cena e dicas enquanto você filma
-• Crie seu próprio ajudante: muitos prontos, um modificador de voz com prévia e avisos conforme o resultado
+• Um app mais simples: Início, As minhas coisas e Definições. Diga o que precisa na caixa de pedidos (ou toque no microfone), ou dê uma foto ao Tenzy
+• Autoruns: uma ou duas vezes por dia, o Tenzy deixa o trabalho pesado pronto para você conferir, como os recibos de hoje na sua planilha de gastos, vídeos pesados menores, as fotos da semana num filme curto ou uma cópia semanal dos seus contatos
+• As ferramentas agora são ajudantes, e "Ver todos" mostra os prontos de cada seção
+• O Limpador encontra fotos e vídeos duplicados em toda a sua fototeca
+• Salve onde estacionou pela Central de Controle, ou automaticamente ao sair do carro; o parquímetro conta na tela bloqueada
+• Configure uma vez e pronto: lembretes de remédios com contagem de reposição e aviso a um cuidador, aniversários, um Resumo diário e um lembrete para dormir, cada um com um teste
+• Novos ajudantes: Alerta de preço, gerenciador de contatos, criar ZIP, toques, figurinhas animadas, e registro de quilometragem e lista de preços para negócios
+• A câmera Pro grava vídeo, com ajustes de cena e dicas enquanto você filma
 • Abra arquivos no Tenzy pelo Arquivos, Mail ou Downloads

@@ -21,6 +21,7 @@ PEOPLE
 • Plan a call or a visit: it goes in your calendar with a "time to leave" alert, the number and the address
 
 YOUR PHONE, LOOKED AFTER
+• Autoruns: switch one on and, once or twice a day, Tenzy gets the heavy work ready for you to check, like today's receipts in your expense sheet
 • Clean up screenshots and duplicates, keep just your newest ones
 • Open the files people send you, even unusual formats
 • Shrink photos, videos and PDFs to fit an upload limit, and convert HEIC and MOV
@@ -32,12 +33,12 @@ Say what you need ("read this letter out loud in English", "shrink a photo, remo
 AND EVERYTHING ELSE YOU REACH FOR
 A camera that films with scene settings, a voice changer, stickers (still or animated) and collages, a flashlight with SOS, an AR tape measure that works out the paint and flooring for a room, Translate, white noise, Color Vision, a GPS dashboard and a Face ID vault.
 
-On supported iPhones the thinking and writing tools use the model built into your phone. Available in English, German, Spanish, French, Hindi, Italian, Japanese, Portuguese and Chinese.
+On supported iPhones the thinking and writing helpers use the model built into your phone. Available in English, German, Spanish, French, Hindi, Italian, Japanese, Portuguese and Chinese.
 
 Tenzy reminds you; it doesn't give medical advice. Always check with your doctor or pharmacist about your medicines.
 
 FREE, WITH OPTIONAL TENZY PRO
-Thirteen everyday tools are free, including Scan, Translate, What is this?, Find my car and the Flashlight, and you can build and keep two helpers of your own. Tenzy Pro unlocks everything else, unlimited helpers and all themes: $2.99 a month or $29.99 a year, each starting with a 7-day free trial.
+Thirteen everyday helpers are free, including Scan, Translate, What is this?, Find my car and the Flashlight, and you can build and keep two helpers of your own. Tenzy Pro unlocks everything else, unlimited helpers and all themes: $2.99 a month or $29.99 a year, each starting with a 7-day free trial.
 
 PRIVACY
 No account, no ads, no tracking. Your files stay on your device. Privacy Policy: https://manan99991.github.io/tenzy/privacy.html

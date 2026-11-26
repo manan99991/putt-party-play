@@ -1,11 +1,10 @@
 The biggest Tenzy yet.
-• A new look: Home, Tools, Build, My stuff and Settings, each one tap away
-• Animated stickers: nine moves, ready for Messages
-• Business: a mileage log and a price list next to invoices
+• A simpler app: Home, My stuff and Settings. Say what you need in the ask box (or tap the mic), or hand Tenzy a photo
+• Autoruns: once or twice a day, Tenzy gets the heavy work ready for you to check, like today's receipts in your expense sheet, heavy videos made smaller, the week's photos as a short film, or a weekly copy of your contacts
+• Tools are now helpers, and See all lists the ready-made ones for each section
+• Cleaner finds duplicate photos and videos across your whole library
 • Save where you parked from Control Center, or automatically when your phone leaves the car; the meter counts down on the Lock Screen
-• Identify names the big thing in the photo (a TV, not the vase beside it)
-• Set it once, it just works: medicine reminders with refill counts and caregiver follow-ups, birthday reminders, a Daily Brief, parking-meter alerts and a bedtime nudge, each with a Test run
-• New tools: Price Watch, Contacts manager, Untangle, My Day, Make a Zip, Ringtone, Sticker Maker and more
-• Pro Camera now films video, with scene settings and tips as you shoot
-• Build your own helper: many more ready-made ones, a voice changer with previews, and "Tell me when" alerts
+• Set it once, it just works: medicine reminders with refill counts and caregiver follow-ups, birthdays, a Daily Brief and a bedtime nudge, each with a Test run
+• New helpers: Price Watch, Contacts manager, Make a Zip, Ringtone, animated stickers, and a mileage log and price list for business
+• Pro Camera films video, with scene settings and tips as you shoot
 • Open files in Tenzy from Files, Mail or Downloads

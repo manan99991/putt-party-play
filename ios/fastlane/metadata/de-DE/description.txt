@@ -21,6 +21,7 @@ MENSCHEN
 • Einen Anruf oder Besuch planen: kommt in deinen Kalender, mit „Zeit loszufahren“-Hinweis, Nummer und Adresse
 
 DEIN HANDY, IM GRIFF
+• Autoruns: Schalte einen ein, und ein- oder zweimal am Tag bereitet Tenzy die schwere Arbeit zum Prüfen vor, etwa die heutigen Belege in deiner Ausgabenliste
 • Screenshots und Duplikate aufräumen, nur die neuesten behalten
 • Dateien öffnen, die dir geschickt werden, auch ungewöhnliche Formate
 • Fotos, Videos und PDFs für ein Upload-Limit verkleinern, HEIC und MOV umwandeln
@@ -32,12 +33,12 @@ Sag, was du brauchst („lies diesen Brief auf Englisch vor“, „verkleinere e
 UND ALLES ANDERE, WAS DU BRAUCHST
 Eine Kamera mit Szene-Einstellungen, ein Stimmverzerrer, Sticker (still oder animiert) und Collagen, eine Taschenlampe mit SOS, ein AR-Maßband, das Farbe und Boden für einen Raum berechnet, Übersetzen, weißes Rauschen, Farbsehen, ein GPS-Tacho und ein Tresor mit Face ID.
 
-Auf unterstützten iPhones nutzen die Denk- und Schreibwerkzeuge das Modell in deinem Handy. Verfügbar auf Deutsch, Englisch, Spanisch, Französisch, Hindi, Italienisch, Japanisch, Portugiesisch und Chinesisch.
+Auf unterstützten iPhones nutzen die Denk- und Schreibhelfer das Modell in deinem Handy. Verfügbar in neun Sprachen, darunter Deutsch und Englisch.
 
 Tenzy erinnert dich; es gibt keinen medizinischen Rat. Frag zu deinen Medikamenten immer deine Ärztin, deinen Arzt oder die Apotheke.
 
 KOSTENLOS, MIT OPTIONALEM TENZY PRO
-Dreizehn Alltagswerkzeuge sind kostenlos, darunter Scannen, Übersetzen, Was ist das?, Mein Auto finden und die Taschenlampe, und du kannst zwei eigene Helfer bauen und behalten. Tenzy Pro schaltet alles andere frei, unbegrenzt viele Helfer und alle Designs: 2,99 $ pro Monat oder 29,99 $ pro Jahr, jeweils mit 7 Tagen gratis zum Start.
+Dreizehn Alltagshelfer sind kostenlos, darunter Scannen, Übersetzen, Was ist das?, Mein Auto finden und die Taschenlampe, und du kannst zwei eigene Helfer bauen und behalten. Tenzy Pro schaltet alles andere frei, unbegrenzt viele Helfer und alle Designs: 2,99 $ pro Monat oder 29,99 $ pro Jahr, jeweils mit 7 Tagen gratis zum Start.
 
 DATENSCHUTZ
 Kein Konto, keine Werbung, kein Tracking. Deine Dateien bleiben auf deinem Gerät. Datenschutz: https://manan99991.github.io/tenzy/privacy.html

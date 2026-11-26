@@ -1,11 +1,10 @@
-Das größte Tenzy bisher.
-• Ein neuer Look: Start, Werkzeuge, Erstellen, Meine Sachen und Einstellungen, jeweils einen Tipp entfernt
-• Animierte Sticker: neun Bewegungen, bereit für Nachrichten
-• Geschäft: ein Fahrtenbuch und eine Preisliste neben den Rechnungen
-• Parkplatz im Kontrollzentrum speichern oder automatisch, wenn dein Handy das Auto verlässt; die Parkuhr zählt auf dem Sperrbildschirm herunter
-• Erkennen nennt das Große im Foto (den Fernseher, nicht die Vase daneben)
-• Einmal einrichten, es läuft: Medikamenten-Erinnerungen mit Nachfüll-Zähler und Nachfrage bei Betreuungspersonen, Geburtstage, eine tägliche Übersicht, Parkuhr-Hinweise und ein Schlafenszeit-Hinweis – jeweils mit Testlauf
-• Neue Werkzeuge: Preiswächter, Kontakte, Mein Tag, Zip erstellen, Klingelton, Sticker und mehr
-• Die Kamera filmt jetzt auch, mit Szene-Einstellungen und Tipps beim Drehen
-• Baue deinen eigenen Helfer: viele fertige Vorlagen, ein Stimmverzerrer mit Vorschau und Benachrichtigungen bei Ergebnissen
-• Dateien aus Dateien, Mail oder Downloads in Tenzy öffnen
+Das bisher größte Tenzy.
+• Eine einfachere App: Start, Meine Sachen und Einstellungen. Sag im Frage-Feld, was du brauchst (oder tippe aufs Mikrofon), oder gib Tenzy ein Foto
+• Autoruns: Ein- oder zweimal am Tag bereitet Tenzy die schwere Arbeit zum Prüfen vor, etwa die heutigen Belege in deiner Ausgabenliste, große Videos kleiner gemacht, die Fotos der Woche als kurzer Film oder eine wöchentliche Kopie deiner Kontakte
+• Werkzeuge heißen jetzt Helfer, und „Alle zeigen“ zeigt für jeden Bereich die fertigen Helfer
+• Aufräumen findet doppelte Fotos und Videos in deiner ganzen Mediathek
+• Speichere, wo du geparkt hast, im Kontrollzentrum oder automatisch, wenn dein Handy das Auto verlässt; die Parkuhr läuft auf dem Sperrbildschirm
+• Einmal einrichten, läuft: Medikamenten-Erinnerungen mit Nachfüllzähler und Nachfrage für Betreuende, Geburtstage, eine Tägliche Übersicht und ein Hinweis zur Schlafenszeit, jeweils mit Probelauf
+• Neue Helfer: Preiswächter, Kontaktverwaltung, ZIP erstellen, Klingelton, animierte Sticker sowie Fahrtenbuch und Preisliste fürs Geschäft
+• Die Pro-Kamera filmt Videos, mit Szeneneinstellungen und Tipps beim Filmen
+• Dateien in Tenzy öffnen aus Dateien, Mail oder Downloads

@@ -21,6 +21,7 @@ PERSONAS
 • Planifica una llamada o una visita: va a tu calendario con un aviso de «hora de salir», el número y la dirección
 
 TU MÓVIL, BAJO CONTROL
+• Autoruns: activa uno y, una o dos veces al día, Tenzy deja listo el trabajo pesado para que lo revises, como los recibos de hoy en tu hoja de gastos
 • Limpia capturas y duplicados, quédate solo con las más recientes
 • Abre los archivos que te envían, incluso formatos poco comunes
 • Reduce fotos, vídeos y PDF para que quepan en un límite de subida, y convierte HEIC y MOV
@@ -32,12 +33,12 @@ Di lo que necesitas («léeme esta carta en inglés», «reduce una foto, quíta
 Y TODO LO DEMÁS QUE USAS
 Una cámara que graba con ajustes de escena, un cambiador de voz, stickers (fijos o animados) y collages, una linterna con SOS, una cinta métrica AR que calcula la pintura y el suelo de una habitación, Traducir, ruido blanco, Visión de color, un panel GPS y una caja fuerte con Face ID.
 
-En los iPhone compatibles, las herramientas para pensar y escribir usan el modelo integrado en tu teléfono. Disponible en español, inglés, alemán, francés, hindi, italiano, japonés, portugués y chino.
+En los iPhone compatibles, los asistentes para pensar y escribir usan el modelo integrado en tu teléfono. Disponible en español, inglés, alemán, francés, hindi, italiano, japonés, portugués y chino.
 
 Tenzy te lo recuerda; no da consejo médico. Consulta siempre a tu médico o farmacéutico sobre tus medicinas.
 
 GRATIS, CON TENZY PRO OPCIONAL
-Trece herramientas del día a día son gratis, entre ellas Escanear, Traducir, ¿Qué es esto?, Encontrar mi coche y la Linterna, y puedes crear y guardar dos ayudantes propios. Tenzy Pro desbloquea todo lo demás, ayudantes ilimitados y todos los temas: 2,99 $ al mes o 29,99 $ al año, ambos con 7 días gratis para empezar.
+Trece asistentes del día a día son gratis, entre ellas Escanear, Traducir, ¿Qué es esto?, Encontrar mi coche y la Linterna, y puedes crear y guardar dos ayudantes propios. Tenzy Pro desbloquea todo lo demás, ayudantes ilimitados y todos los temas: 2,99 $ al mes o 29,99 $ al año, ambos con 7 días gratis para empezar.
 
 PRIVACIDAD
 Sin cuenta, sin anuncios, sin rastreo. Tus archivos se quedan en tu dispositivo. Política de privacidad: https://manan99991.github.io/tenzy/privacy.html

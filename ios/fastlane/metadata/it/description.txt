@@ -21,6 +21,7 @@ PERSONE
 • Pianifica una chiamata o una visita: finisce nel calendario con un avviso «è ora di partire», il numero e l'indirizzo
 
 IL TUO TELEFONO, IN ORDINE
+• Autorun: attivane uno e, una o due volte al giorno, Tenzy prepara il lavoro pesante da controllare, come le ricevute di oggi nel foglio delle spese
 • Fai pulizia di screenshot e doppioni, tieni solo i più recenti
 • Apri i file che ti mandano, anche nei formati insoliti
 • Riduci foto, video e PDF per rispettare un limite di caricamento, e converti HEIC e MOV
@@ -32,12 +33,12 @@ Di' cosa ti serve («leggimi questa lettera in inglese», «riduci una foto, tog
 E TUTTO IL RESTO
 Una fotocamera che registra con impostazioni di scena, un modificatore di voce, sticker (fissi o animati) e collage, una torcia con SOS, un metro in realtà aumentata che calcola vernice e pavimento di una stanza, Traduci, rumore bianco, Visione colori, un cruscotto GPS e una cassaforte con Face ID.
 
-Sugli iPhone compatibili, gli strumenti per pensare e scrivere usano il modello integrato nel telefono. Disponibile in italiano, inglese, tedesco, spagnolo, francese, hindi, giapponese, portoghese e cinese.
+Sugli iPhone compatibili, gli aiutanti per pensare e scrivere usano il modello integrato nel telefono. Disponibile in italiano, inglese, tedesco, spagnolo, francese, hindi, giapponese, portoghese e cinese.
 
 Tenzy ti ricorda; non dà consigli medici. Chiedi sempre al tuo medico o al farmacista per i tuoi farmaci.
 
 GRATIS, CON TENZY PRO FACOLTATIVO
-Tredici strumenti di tutti i giorni sono gratis, tra cui Scansiona, Traduci, Cos'è questo?, Trova la mia auto e la Torcia, e puoi creare e tenere due assistenti tuoi. Tenzy Pro sblocca tutto il resto, assistenti illimitati e tutti i temi: 2,99 $ al mese o 29,99 $ all'anno, entrambi con 7 giorni di prova gratuita per iniziare.
+Tredici aiutanti di tutti i giorni sono gratis, tra cui Scansiona, Traduci, Cos'è questo?, Trova la mia auto e la Torcia, e puoi creare e tenere due assistenti tuoi. Tenzy Pro sblocca tutto il resto, assistenti illimitati e tutti i temi: 2,99 $ al mese o 29,99 $ all'anno, entrambi con 7 giorni di prova gratuita per iniziare.
 
 PRIVACY
 Nessun account, nessuna pubblicità, nessun tracciamento. I tuoi file restano sul dispositivo. Informativa sulla privacy: https://manan99991.github.io/tenzy/privacy.html

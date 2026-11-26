@@ -21,6 +21,7 @@ PESSOAS
 • Planeje uma ligação ou visita: vai para a sua agenda com um alerta de "hora de sair", o número e o endereço
 
 SEU CELULAR, EM DIA
+• Autoruns: ative um e, uma ou duas vezes por dia, o Tenzy deixa o trabalho pesado pronto para você conferir, como os recibos de hoje na sua planilha de gastos
 • Limpe capturas de tela e duplicados, fique só com as mais recentes
 • Abra os arquivos que te mandam, mesmo em formatos incomuns
 • Reduza fotos, vídeos e PDFs para caber em um limite de envio, e converta HEIC e MOV
@@ -32,12 +33,12 @@ Diga o que você precisa ("leia esta carta em inglês", "reduza uma foto, tire a
 E TUDO O MAIS QUE VOCÊ USA
 Uma câmera que grava com ajustes de cena, um modificador de voz, figurinhas (paradas ou animadas) e colagens, uma lanterna com SOS, uma trena em realidade aumentada que calcula tinta e piso de um cômodo, Traduzir, ruído branco, Visão de cor, um painel GPS e um cofre com Face ID.
 
-Nos iPhones compatíveis, as ferramentas de pensar e escrever usam o modelo do próprio celular. Disponível em português, inglês, alemão, espanhol, francês, hindi, italiano, japonês e chinês.
+Nos iPhones compatíveis, os ajudantes de pensar e escrever usam o modelo do próprio celular. Disponível em português, inglês, alemão, espanhol, francês, hindi, italiano, japonês e chinês.
 
 O Tenzy lembra você; ele não dá conselho médico. Sempre consulte seu médico ou farmacêutico sobre seus remédios.
 
 GRÁTIS, COM TENZY PRO OPCIONAL
-Treze ferramentas do dia a dia são grátis, entre elas Escanear, Traduzir, O que é isto?, Achar meu carro e a Lanterna, e você pode criar e manter dois ajudantes seus. O Tenzy Pro libera todo o resto, ajudantes ilimitados e todos os temas: US$ 2,99 por mês ou US$ 29,99 por ano, ambos começando com 7 dias grátis.
+Treze ajudantes do dia a dia são grátis, entre elas Escanear, Traduzir, O que é isto?, Achar meu carro e a Lanterna, e você pode criar e manter dois ajudantes seus. O Tenzy Pro libera todo o resto, ajudantes ilimitados e todos os temas: US$ 2,99 por mês ou US$ 29,99 por ano, ambos começando com 7 dias grátis.
 
 PRIVACIDADE
 Sem conta, sem anúncios, sem rastreamento. Seus arquivos ficam no seu aparelho. Política de privacidade: https://manan99991.github.io/tenzy/privacy.html

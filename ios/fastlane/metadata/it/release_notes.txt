@@ -1,11 +1,10 @@
 Il Tenzy più grande di sempre.
-• Un nuovo look: Home, Strumenti, Crea, Le mie cose e Impostazioni, ognuno a un tocco
-• Sticker animati: nove movimenti, pronti per Messaggi
-• Attività: un registro dei chilometri e un listino prezzi accanto alle fatture
-• Salva dove hai parcheggiato dal Centro di Controllo, o in automatico quando il telefono lascia l'auto; il parchimetro conta alla rovescia sulla schermata di blocco
-• Identifica dice cosa c'è di principale nella foto (la TV, non il vaso accanto)
-• Imposta una volta e funziona: promemoria farmaci con contatore di ricarica e avviso a chi ti assiste, compleanni, un riepilogo giornaliero, avvisi del parchimetro e un promemoria per dormire, ognuno con la sua prova
-• Nuovi strumenti: Controllo prezzi, Contatti, La mia giornata, Crea uno Zip, Suoneria, Crea sticker e altro
-• La fotocamera ora registra video, con impostazioni di scena e consigli durante le riprese
-• Crea il tuo assistente: tanti già pronti, un modificatore di voce con anteprima e avvisi in base al risultato
+• Un'app più semplice: Home, Le mie cose e Impostazioni. Di' cosa ti serve nella casella delle richieste (o tocca il microfono), oppure dai una foto a Tenzy
+• Autorun: una o due volte al giorno, Tenzy prepara il lavoro pesante da controllare, come le ricevute di oggi nel foglio delle spese, i video pesanti alleggeriti, le foto della settimana in un breve film o una copia settimanale dei contatti
+• Gli strumenti ora sono aiutanti, e «Vedi tutti» mostra quelli già pronti di ogni sezione
+• Pulizia trova foto e video doppi in tutta la libreria
+• Salva dove hai parcheggiato dal Centro di Controllo, o in automatico quando scendi dall'auto; il parchimetro scorre sulla schermata di blocco
+• Imposta una volta e funziona: promemoria dei farmaci con conteggio delle ricariche e avviso a chi assiste, compleanni, un Riepilogo giornaliero e un promemoria per dormire, ognuno con una prova
+• Nuovi aiutanti: Controllo prezzi, gestione contatti, crea ZIP, suonerie, sticker animati, e registro chilometri e listino prezzi per il lavoro
+• La fotocamera Pro registra video, con impostazioni di scena e consigli mentre riprendi
 • Apri file in Tenzy da File, Mail o Download

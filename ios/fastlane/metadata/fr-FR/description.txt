@@ -4,9 +4,9 @@ Tenzy est un assistant personnel qui vit sur votre téléphone. Dites-lui ce qui
 
 VOTRE JOURNÉE, BIEN TENUE
 • Point quotidien : une note chaque matin avec les prises du jour, les factures à payer, les anniversaires et la météo
-• Rappels de médicaments : un bouton Pris, un compte à rebours avant le renouvellement et une relance si une prise est oubliée, avec un toucher pour prévenir un aidant
+• Rappels de médicaments : un bouton Pris, un compte à rebours avant le renouvellement et une relance si une prise est oubliée
 • Les anniversaires de vos contacts, la veille
-• Un rappel pour aller dormir, et votre parcmètre qui décompte sur l'écran verrouillé ; enregistrez où vous êtes garé depuis le centre de contrôle, ou automatiquement en quittant la voiture
+• Un rappel pour dormir, votre parcmètre sur l'écran verrouillé, et où vous êtes garé, enregistré depuis le centre de contrôle ou en quittant la voiture
 
 ARGENT ET PAPIERS
 • Photographiez une facture ou un courrier : c'est classé, avec un rappel avant l'échéance
@@ -21,10 +21,11 @@ VOS PROCHES
 • Prévoir un appel ou une visite : c'est ajouté à votre calendrier avec une alerte « il est temps de partir », le numéro et l'adresse
 
 VOTRE TÉLÉPHONE, BIEN TENU
+• Autoruns : activez-en un et, une ou deux fois par jour, Tenzy prépare le gros du travail pour vous, comme les reçus du jour dans votre tableau de dépenses
 • Faites le tri dans les captures et les doublons, gardez seulement les plus récentes
-• Ouvrez les fichiers qu'on vous envoie, même dans des formats inhabituels
+• Ouvrez les fichiers reçus, même aux formats inhabituels
 • Réduisez photos, vidéos et PDF pour respecter une limite d'envoi, et convertissez HEIC et MOV
-• Retirez le lieu des photos avant de les partager, et vérifiez si un message suspect est une arnaque
+• Retirez le lieu des photos avant de les partager, vérifiez si un message est une arnaque
 
 VOTRE PROPRE ASSISTANT
 Dites ce qu'il vous faut (« lis-moi ce courrier en anglais », « réduis une photo, retire le lieu et envoie-la par e-mail ») et Tenzy assemble les étapes pour vous, ou choisissez-en un tout prêt. Lancez-le depuis le menu Partager, un widget ou Raccourcis, et recevez une alerte selon son résultat.
@@ -32,12 +33,12 @@ Dites ce qu'il vous faut (« lis-moi ce courrier en anglais », « réduis une p
 ET TOUT LE RESTE
 Un appareil photo qui filme avec des réglages de scène, un changeur de voix, des stickers (fixes ou animés) et des collages, une lampe avec SOS, un mètre en réalité augmentée qui calcule la peinture et le sol d'une pièce, Traduire, du bruit blanc, Vision des couleurs, un tableau de bord GPS et un coffre-fort Face ID.
 
-Sur les iPhone compatibles, les outils pour réfléchir et écrire utilisent le modèle intégré à votre téléphone. Disponible en français, anglais, allemand, espagnol, hindi, italien, japonais, portugais et chinois.
+Sur les iPhone compatibles, les assistants pour réfléchir et écrire utilisent le modèle intégré à votre téléphone. Disponible en neuf langues, dont le français et l'anglais.
 
 Tenzy vous rappelle ; il ne donne pas d'avis médical. Demandez toujours conseil à votre médecin ou pharmacien pour vos médicaments.
 
 GRATUIT, AVEC TENZY PRO EN OPTION
-Treize outils du quotidien sont gratuits, dont Scanner, Traduire, Qu'est-ce que c'est ?, Retrouver ma voiture et la Lampe, et vous pouvez créer et garder deux assistants à vous. Tenzy Pro débloque tout le reste, des assistants illimités et tous les thèmes : 2,99 $ par mois ou 29,99 $ par an, chacun avec 7 jours d'essai gratuit pour commencer.
+Treize assistants du quotidien sont gratuits, dont Scanner, Traduire, Qu'est-ce que c'est ?, Retrouver ma voiture et la Lampe, et vous pouvez créer et garder deux assistants à vous. Tenzy Pro débloque tout le reste, des assistants illimités et tous les thèmes : 2,99 $ par mois ou 29,99 $ par an, chacun avec 7 jours d'essai gratuit pour commencer.
 
 CONFIDENTIALITÉ
 Pas de compte, pas de pub, pas de pistage. Vos fichiers restent sur votre appareil. Politique de confidentialité : https://manan99991.github.io/tenzy/privacy.html
