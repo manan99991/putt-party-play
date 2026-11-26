@@ -171,7 +171,7 @@ private fun greeting(): String = when (Calendar.getInstance().get(Calendar.HOUR_
  * sideways. The Business tab appears only for people who said they run one.
  */
 @Composable
-fun HomeTabsScreen(onOpen: (String) -> Unit, onBuild: (String) -> Unit = {}) {
+fun HomeTabsScreen(onOpen: (String) -> Unit, onBuild: (String) -> Unit = {}, onSeeAll: () -> Unit = {}) {
     val ctx = LocalContext.current
     val prefs = remember { ctx.getSharedPreferences(HomeShelves.PREFS, 0) }
     val business = remember { HomeShelves.businessOn(ctx) }
@@ -259,6 +259,16 @@ fun HomeTabsScreen(onOpen: (String) -> Unit, onBuild: (String) -> Unit = {}) {
             Spacer(Modifier.height(HandyTokens.Space12))
         }
 
+        // "All helpers · See all ›" (the iPhone's): every helper on one searchable page.
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text(I18n.t("All helpers"), Modifier.weight(1f), style = MaterialTheme.typography.labelLarge, color = Handy.palette.textSecondary, maxLines = 1)
+            Row(Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onSeeAll).heightIn(min = 32.dp).padding(horizontal = 6.dp).testTag("home-browse"),
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(I18n.t("See all"), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary, maxLines = 1)
+                Icon(Icons.Outlined.ChevronRight, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+            }
+        }
+        Spacer(Modifier.height(HandyTokens.Space4))
         // Every tab on screen at once, four across: an icon in its own colour above a one-word name.
         val rows = tabs.chunked(4)
         rows.forEach { row ->
@@ -299,6 +309,50 @@ fun HomeTabsScreen(onOpen: (String) -> Unit, onBuild: (String) -> Unit = {}) {
                         repeat(3 - r.size) { Spacer(Modifier.weight(1f)) }
                     }
                 }
+            }
+        }
+    }
+}
+
+/**
+ * Home › See all (the iPhone's "All helpers"): every helper on one page, by tab, each named for its job, with a search
+ * box on top. Back returns Home.
+ */
+@Composable
+fun AllHelpersScreen(onOpen: (String) -> Unit, onBack: () -> Unit) {
+    val ctx = LocalContext.current
+    val tabs = remember { HomeShelves.tabs(HomeShelves.businessOn(ctx)) }
+    var query by remember { mutableStateOf("") }
+    Column(Modifier.fillMaxSize().statusBarsPadding().padding(horizontal = HandyTokens.Gutter)) {
+        androidx.compose.material3.TextButton(onBack) { Text(I18n.t("‹ Back")) }
+        Text(I18n.t("All helpers"), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+        Spacer(Modifier.height(HandyTokens.Space8))
+        TextField(
+            value = query, onValueChange = { query = it },
+            placeholder = { Text(I18n.t("What do you want to do?"), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+            leadingIcon = { Icon(Icons.Outlined.Search, null, tint = Handy.palette.textSecondary) },
+            trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Close, I18n.t("Clear")) } },
+            singleLine = true, shape = RoundedCornerShape(50),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.surface, unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                focusedIndicatorColor = Color.Transparent, unfocusedIndicatorColor = Color.Transparent,
+            ),
+            modifier = Modifier.fillMaxWidth().testTag("allhelpers-search"),
+        )
+        Spacer(Modifier.height(HandyTokens.Space8))
+        LazyColumn(Modifier.fillMaxSize()) {
+            if (query.isNotBlank()) {
+                val found = searchTools(query)
+                if (found.isEmpty()) item { Text(I18n.t("No tool does that yet."), color = Handy.palette.textSecondary, modifier = Modifier.padding(top = HandyTokens.Space12)) }
+                items(found, key = { "q-" + it.route }) { t -> ResultRow(t) { onOpen(t.route) } }
+            } else tabs.forEach { shelf ->
+                val tools = shelf.tools.mapNotNull { id -> ALL_TOOLS.firstOrNull { it.route == id } }
+                if (shelf.id == "business" || tools.isEmpty()) return@forEach
+                item(key = "h-" + shelf.id) {
+                    Text(I18n.t(shelf.title), Modifier.padding(top = HandyTokens.Space12, bottom = HandyTokens.Space4), style = MaterialTheme.typography.titleSmall,
+                        color = Color(HomeShelves.colors[shelf.id] ?: 0xFF7B5CFF), fontWeight = FontWeight.Bold)
+                }
+                items(tools, key = { shelf.id + "-" + it.route }) { t -> ResultRow(t) { onOpen(t.route) } }
             }
         }
     }

@@ -348,9 +348,11 @@ fun HomeScreen(onOpen: (String) -> Unit) {
           Box(Modifier.weight(1f).fillMaxWidth()) {
             when (tab) {
                 // Home (23 Nov, same design as the iPhone): For you, every tab on screen, tiles named for the job.
-                0 -> HomeTabsScreen(onOpen = onOpen, onBuild = { said -> com.handytools.app.tools.builder.BuilderHandoff.ask = said; tab = 1 })
+                0 -> HomeTabsScreen(onOpen = onOpen, onBuild = { said -> com.handytools.app.tools.builder.BuilderHandoff.ask = said; tab = 1 }, onSeeAll = { tab = 3 })
                 1 -> Box(Modifier.fillMaxSize().statusBarsPadding()) { com.handytools.app.tools.builder.BuilderScreen() }
                 2 -> SettingsScreen(onOpen = onOpen)
+                // Home › See all: every helper by tab, searchable; Back (or the system back) returns Home.
+                3 -> { androidx.activity.compose.BackHandler { tab = 0 }; AllHelpersScreen(onOpen = onOpen, onBack = { tab = 0 }) }
                 else -> Column(Modifier.fillMaxSize().statusBarsPadding()) {
             // Search
             TextField(

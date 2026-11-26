@@ -18998,5 +18998,15 @@
   "ja": "このリマインダーを設定",
   "pt": "Definir este lembrete",
   "zh": "设置这个提醒"
+ },
+ "See all": {
+  "de": "Alle zeigen",
+  "es": "Ver todos",
+  "fr": "Tout voir",
+  "hi": "सभी देखें",
+  "it": "Vedi tutti",
+  "ja": "すべて表示",
+  "pt": "Ver todos",
+  "zh": "查看全部"
  }
 }
