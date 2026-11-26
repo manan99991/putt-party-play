@@ -1,3 +1,7 @@
-# 25 Nov: smart autorun 4 — ready to post: a tall 9:16 clip with the chosen look, watched in place, saved to Photos.
+# 25 Nov: smart autoruns 4–6 — ready to post (tall 9:16, look, saved), today's collage (faces kept in every tile, on
+# the real photos), business cards into contacts (read, saved once).
 HandyToolsUITests/PromiseTests/testReadyToPostMakesATallClipAndSavesIt
+HandyToolsUITests/PromiseTests/testBusinessCardsAutorunSavesTheContact
+HandyToolsTests/SmartCollageTests
 HandyToolsTests/SmartRunsTests
+HandyToolsTests/SmartReceiptsTests
