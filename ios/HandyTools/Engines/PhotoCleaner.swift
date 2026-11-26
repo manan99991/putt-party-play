@@ -92,62 +92,161 @@ enum PhotoCleaner {
         return out
     }
 
-    /// Group near-duplicate photos using Vision feature prints over the most recent `scanLimit` photos
-    /// (bounded so a huge library can't stall). Each returned group has 2+ look-alikes.
-    /// Covers photos AND videos. A video is fingerprinted on its poster frame (PhotoKit hands one back
-    /// for a video the same as a photo), so two copies of the same clip group together. Photos and
-    /// videos are never grouped with each other, and video matches are held to a stricter look-alike
-    /// threshold plus a similar-duration check so two unrelated clips that open on a dark frame don't
-    /// get lumped in.
-    static func duplicates(scanLimit: Int = 500, progress: @escaping (Double) -> Void) async -> (groups: [[Item]], skipped: Int) {
+    /// What a duplicate check found, and how much of the library it looked at — so the screen never calls a
+    /// library "tidy" without saying what was checked.
+    struct DupScan {
+        var groups: [[Item]]
+        var skipped: Int          // in iCloud only (not on the phone) or unreadable, so not checked
+        var photos: Int           // photos checked
+        var videos: Int           // videos checked
+    }
+
+    /// Look-alike photos and copies of the same video, across the WHOLE library (26 Nov: it used to stop at the
+    /// newest 500 items, so two copies of an older clip were never compared — Manan found two 31.1 MB copies by eye).
+    /// `scanLimit` keeps only the newest N (the daily tidy autorun looks at recent photos only).
+    ///
+    /// Photos: two photos are copies when Vision's feature print is close (< 0.28) AND the 128-bit difference hash
+    /// is near-identical (≤ 10 bits) — the hash stops all white document screenshots grouping as one. The hash is the
+    /// cheap half, so every photo gets one (kept on the phone between checks, so a photo is read once), and the feature
+    /// print is worked out only for photos whose hash has a near-twin.
+    /// Videos: a copy is the same length, so only clips with a same-length partner are looked at; their poster frames
+    /// must then be very close (< 0.22). Photos and videos are never grouped with each other.
+    static func duplicates(scanLimit: Int? = nil, progress: @escaping (Double) -> Void) async -> DupScan {
         let o = PHFetchOptions()
         o.predicate = NSPredicate(format: "mediaType == %d OR mediaType == %d", PHAssetMediaType.image.rawValue, PHAssetMediaType.video.rawValue)
         o.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        o.fetchLimit = scanLimit
-        let fetch = PHAsset.fetchAssets(with: o)
-        var assets: [PHAsset] = []
-        fetch.enumerateObjects { a, _, _ in assets.append(a) }
-        guard assets.count > 1 else { progress(1); return ([], 0) }
+        if let scanLimit { o.fetchLimit = scanLimit }
+        var photos: [PHAsset] = [], videos: [PHAsset] = []
+        PHAsset.fetchAssets(with: o).enumerateObjects { a, _, _ in if a.mediaType == .video { videos.append(a) } else { photos.append(a) } }
+        guard photos.count + videos.count > 1 else { progress(1); return DupScan(groups: [], skipped: 0, photos: photos.count, videos: videos.count) }
 
         let mgr = PHImageManager.default()
         let req = PHImageRequestOptions()
         req.isSynchronous = true; req.deliveryMode = .fastFormat; req.resizeMode = .fast; req.isNetworkAccessAllowed = false
-
-        var prints: [(PHAsset, VNFeaturePrintObservation, (UInt64, UInt64))] = []
-        var skipped = 0   // iCloud-only or unreadable assets we couldn't fingerprint (network is off here)
-        for (i, a) in assets.enumerated() {
-            if i % 10 == 0 { progress(Double(i) / Double(assets.count)) }
+        func thumb(_ a: PHAsset) -> CGImage? {
             var image: UIImage?
             mgr.requestImage(for: a, targetSize: CGSize(width: 160, height: 160), contentMode: .aspectFit, options: req) { im, _ in image = im }
-            guard let cg = image?.cgImage else { skipped += 1; continue }
+            return image?.cgImage
+        }
+        func featurePrint(_ cg: CGImage) -> VNFeaturePrintObservation? {
             let r = VNGenerateImageFeaturePrintRequest()
             try? VNImageRequestHandler(cgImage: cg, options: [:]).perform([r])
-            if let p = r.results?.first as? VNFeaturePrintObservation { prints.append((a, p, dHash(cg))) }
+            return r.results?.first as? VNFeaturePrintObservation
         }
-        progress(1)
+        func distance(_ a: VNFeaturePrintObservation, _ b: VNFeaturePrintObservation) -> Float {
+            var d = Float.greatestFiniteMagnitude; try? a.computeDistance(&d, to: b); return d
+        }
 
-        var used = [Bool](repeating: false, count: prints.count)
-        var groups: [[Item]] = []
-        for i in 0..<prints.count where !used[i] {
-            let a = prints[i].0
-            var members = [i]; used[i] = true
-            for j in (i + 1)..<prints.count where !used[j] {
-                let b = prints[j].0
-                guard a.mediaType == b.mediaType else { continue }     // never mix a photo with a video
-                var dist = Float.greatestFiniteMagnitude
-                try? prints[i].1.computeDistance(&dist, to: prints[j].1)
-                let nearIdentical = a.mediaType == .video
-                    ? (dist < 0.22 && abs(a.duration - b.duration) < max(1.0, a.duration * 0.08))  // stricter + similar length
-                    // Photos: the perceptual feature-print lumps all white text screenshots together
-                    // (they're semantically "a document"), so require the 128-bit difference hash to be
-                    // near-identical too. dHash encodes WHERE edges/text sit, so two different documents
-                    // differ in many bits and are no longer grouped — while true copies still match.
-                    : (dist < 0.28 && hamming(prints[i].2, prints[j].2) <= 10)
-                if nearIdentical { members.append(j); used[j] = true }
-            }
-            if members.count > 1 { groups.append(members.map { Item(asset: prints[$0].0, bytes: estimatedBytes(of: prints[$0].0)) }) }
+        // 1. A difference hash for every photo (most come straight from the saved index).
+        var index = DupHashIndex.load()
+        var hashes: [(UInt64, UInt64)?] = []
+        hashes.reserveCapacity(photos.count)
+        var skipped = 0
+        for (i, a) in photos.enumerated() {
+            if Task.isCancelled { break }
+            if i % 50 == 0 { progress(0.85 * Double(i) / Double(max(1, photos.count))) }
+            let mod = (a.modificationDate ?? a.creationDate ?? .distantPast).timeIntervalSince1970
+            if let h = index.hash(a.localIdentifier, modified: mod) { hashes.append(h); continue }
+            guard let cg = thumb(a) else { skipped += 1; hashes.append(nil); continue }
+            let h = dHash(cg)
+            index.set(a.localIdentifier, modified: mod, hash: h); hashes.append(h)
+            if index.unsaved >= 500 { index.save() }   // a long first check keeps what it has if the app is closed
         }
-        return (groups, skipped)
+        if scanLimit == nil, !Task.isCancelled { index.keepOnly(Set(photos.map(\.localIdentifier))) }
+        index.save()
+        if Task.isCancelled { return DupScan(groups: [], skipped: skipped, photos: 0, videos: 0) }
+
+        var groups: [[Item]] = []
+        // 2. Photos with a near-twin hash: feature prints, then the same rule as always.
+        let hashed = hashes.indices.filter { hashes[$0] != nil }
+        let photoPairs = nearHashPairs(hashed.map { hashes[$0]! }, within: 10).map { (hashed[$0.0], hashed[$0.1]) }
+        var photoPrints: [Int: VNFeaturePrintObservation] = [:]
+        for k in Set(photoPairs.flatMap { [$0.0, $0.1] }).sorted() {
+            if let cg = thumb(photos[k]), let p = featurePrint(cg) { photoPrints[k] = p }
+        }
+        progress(0.92)
+        let photoMatches = photoPairs.filter { p in
+            guard let a = photoPrints[p.0], let b = photoPrints[p.1] else { return false }
+            return distance(a, b) < 0.28
+        }
+        groups += seededGroups(count: photos.count, matches: photoMatches).map { $0.map { Item(asset: photos[$0], bytes: estimatedBytes(of: photos[$0])) } }
+
+        // 3. Videos the same length: poster-frame prints, held to the stricter rule.
+        let videoPairs = sameLengthPairs(videos.map(\.duration))
+        var videoPrints: [Int: VNFeaturePrintObservation] = [:]
+        for k in Set(videoPairs.flatMap { [$0.0, $0.1] }).sorted() {
+            if Task.isCancelled { break }
+            guard let cg = thumb(videos[k]) else { skipped += 1; continue }
+            if let p = featurePrint(cg) { videoPrints[k] = p }
+        }
+        let videoMatches = videoPairs.filter { p in
+            guard let a = videoPrints[p.0], let b = videoPrints[p.1] else { return false }
+            return distance(a, b) < 0.22
+        }
+        groups += seededGroups(count: videos.count, matches: videoMatches).map { $0.map { Item(asset: videos[$0], bytes: estimatedBytes(of: videos[$0])) } }
+        progress(1)
+        return DupScan(groups: groups, skipped: skipped, photos: photos.count, videos: videos.count)
+    }
+
+    /// Every pair of hashes at most `within` bits apart, without comparing every photo with every other: split the
+    /// 128 bits into `within + 1` slices — two hashes that close must agree exactly on at least one slice — and only
+    /// compare hashes that share a slice. Pure and unit-tested; pairs come back (lower index, higher index), once each.
+    static func nearHashPairs(_ hashes: [(UInt64, UInt64)], within: Int) -> [(Int, Int)] {
+        guard hashes.count > 1 else { return [] }
+        let slices = max(1, within + 1)
+        func bit(_ h: (UInt64, UInt64), _ i: Int) -> UInt64 { i < 64 ? (h.0 >> UInt64(i)) & 1 : (h.1 >> UInt64(i - 64)) & 1 }
+        let bounds = (0...slices).map { $0 * 128 / slices }
+        var seen = Set<Int>()
+        var out: [(Int, Int)] = []
+        for s in 0..<slices {
+            var buckets: [UInt64: [Int]] = [:]
+            for (i, h) in hashes.enumerated() {
+                var key: UInt64 = 0
+                for b in bounds[s]..<bounds[s + 1] { key = (key << 1) | bit(h, b) }
+                buckets[key, default: []].append(i)
+            }
+            for members in buckets.values where members.count > 1 {
+                for x in 0..<members.count { for y in (x + 1)..<members.count {
+                    let i = members[x], j = members[y]
+                    let key = i * hashes.count + j
+                    guard !seen.contains(key) else { continue }
+                    seen.insert(key)
+                    if hamming(hashes[i], hashes[j]) <= within { out.append((i, j)) }
+                } }
+            }
+        }
+        return out.sorted { $0.0 != $1.0 ? $0.0 < $1.0 : $0.1 < $1.1 }
+    }
+
+    /// Pairs of clips close enough in length to be copies of each other (within a second, or 8% of the longer clip
+    /// for long ones). Pure and unit-tested; pairs come back (lower index, higher index).
+    static func sameLengthPairs(_ seconds: [Double]) -> [(Int, Int)] {
+        let order = seconds.indices.filter { seconds[$0] > 0 }.sorted { seconds[$0] < seconds[$1] }
+        var out: [(Int, Int)] = []
+        for (k, i) in order.enumerated() {
+            for j in order[(k + 1)...] {
+                let longer = max(seconds[i], seconds[j])
+                guard seconds[j] - seconds[i] < max(1.0, longer * 0.08) else { break }   // sorted: no later clip is closer
+                out.append((min(i, j), max(i, j)))
+            }
+        }
+        return out.sorted { $0.0 != $1.0 ? $0.0 < $1.0 : $0.1 < $1.1 }
+    }
+
+    /// Groups from matching pairs, newest first: each group is one item plus every later item that matches IT (not a
+    /// chain of look-alikes of look-alikes). Pure and unit-tested.
+    static func seededGroups(count: Int, matches: [(Int, Int)]) -> [[Int]] {
+        var twins: [Int: [Int]] = [:]
+        for (a, b) in matches { twins[min(a, b), default: []].append(max(a, b)) }
+        var used = Set<Int>()
+        var out: [[Int]] = []
+        for i in 0..<count where !used.contains(i) {
+            guard let later = twins[i] else { continue }
+            let members = [i] + later.filter { !used.contains($0) }.sorted()
+            guard members.count > 1 else { continue }
+            used.formUnion(members); out.append(members)
+        }
+        return out
     }
 
     /// 128-bit difference hash (horizontal + vertical gradients). Unlike an average hash — which only
@@ -171,6 +270,50 @@ enum PhotoCleaner {
     }
     static func hamming(_ a: (UInt64, UInt64), _ b: (UInt64, UInt64)) -> Int {
         (a.0 ^ b.0).nonzeroBitCount + (a.1 ^ b.1).nonzeroBitCount
+    }
+
+    /// Each photo's difference hash, kept on the phone (Application Support, never synced) so the whole library is
+    /// read once and later checks only read photos that are new or edited. Holds hashes only — no pictures.
+    struct DupHashIndex: Codable {
+        struct Entry: Codable { var m: Double; var h: UInt64; var v: UInt64 }
+        private(set) var entries: [String: Entry] = [:]
+        private(set) var unsaved = 0
+
+        enum CodingKeys: String, CodingKey { case entries }
+
+        static var file: URL {
+            let d = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("Cleaner", isDirectory: true)
+            try? FileManager.default.createDirectory(at: d, withIntermediateDirectories: true)
+            return d.appendingPathComponent("photo-hashes.plist")
+        }
+        static var exists: Bool { FileManager.default.fileExists(atPath: file.path) }
+        static func load() -> DupHashIndex {
+            guard let d = try? Data(contentsOf: file), let i = try? PropertyListDecoder().decode(DupHashIndex.self, from: d) else { return DupHashIndex() }
+            return i
+        }
+        func hash(_ id: String, modified: Double) -> (UInt64, UInt64)? {
+            guard let e = entries[id], e.m == modified else { return nil }
+            return (e.h, e.v)
+        }
+        mutating func set(_ id: String, modified: Double, hash: (UInt64, UInt64)) {
+            entries[id] = Entry(m: modified, h: hash.0, v: hash.1); unsaved += 1
+        }
+        /// Forget photos that are no longer in the library.
+        mutating func keepOnly(_ ids: Set<String>) {
+            let before = entries.count
+            entries = entries.filter { ids.contains($0.key) }
+            if entries.count != before { unsaved += 1 }
+        }
+        mutating func save() {
+            guard unsaved > 0 || !Self.exists else { return }
+            let e = PropertyListEncoder(); e.outputFormat = .binary
+            if let d = try? e.encode(self) {
+                var url = Self.file
+                try? d.write(to: url, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+                var rv = URLResourceValues(); rv.isExcludedFromBackup = true; try? url.setResourceValues(rv)
+            }
+            unsaved = 0
+        }
     }
 
     // MARK: bursts — the best shot of each kept, the rest cleared
@@ -257,6 +400,9 @@ enum PhotoCleaner {
     @Published private(set) var scanning = false
     @Published private(set) var progress: Double = 0
     @Published private(set) var skippedInCloud = 0   // couldn't be dup-checked (in iCloud, not downloaded)
+    @Published private(set) var photosChecked = 0
+    @Published private(set) var videosChecked = 0
+    @Published private(set) var startedAt: Date?
 
     private var scannedAt: Date?
     private var task: Task<Void, Never>?
@@ -265,10 +411,20 @@ enum PhotoCleaner {
     /// that a library that changed during a session gets re-scanned on the next prewarm.
     var isFresh: Bool { duplicates != nil && (scannedAt.map { Date().timeIntervalSince($0) < 600 } ?? false) }
 
+    /// "About 2 min left" while a check runs, from how far it has got (nil until there's enough to go on).
+    var timeLeft: String? {
+        guard scanning, let s = startedAt, progress > 0.05, progress < 0.99 else { return nil }
+        let left = Date().timeIntervalSince(s) * (1 - progress) / progress
+        return left < 60 ? L("Less than a minute left") : String(format: L("About %d min left"), Int((left / 60).rounded(.up)))
+    }
+
     /// Start a background scan if one isn't already running and the cache isn't fresh. Safe to call
     /// repeatedly (launch, tool appear, permission granted) — it no-ops when there's nothing to do.
-    func prewarm() {
+    /// At launch it only runs once the library has been checked before (then it reads just the new photos);
+    /// the first whole-library read waits until the person opens Cleaner, so it never costs battery unasked.
+    func prewarm(fromLaunch: Bool = false) {
         guard PhotoCleaner.authorized, !scanning, !isFresh else { return }
+        if fromLaunch && !PhotoCleaner.DupHashIndex.exists { return }
         start()
     }
 
@@ -277,13 +433,15 @@ enum PhotoCleaner {
 
     private func start() {
         guard !scanning else { return }
-        scanning = true; progress = 0
+        scanning = true; progress = 0; startedAt = Date()
         task?.cancel()
         task = Task { [weak self] in
-            let (groups, skipped) = await PhotoCleaner.duplicates(progress: { p in Task { @MainActor in self?.progress = p } })
+            let found = await PhotoCleaner.duplicates(progress: { p in Task { @MainActor in self?.progress = p } })
             guard let self, !Task.isCancelled else { return }
-            self.duplicates = groups
-            self.skippedInCloud = skipped
+            self.duplicates = found.groups
+            self.skippedInCloud = found.skipped
+            self.photosChecked = found.photos
+            self.videosChecked = found.videos
             self.scannedAt = Date()
             self.scanning = false
         }

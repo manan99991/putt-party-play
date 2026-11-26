@@ -253,11 +253,26 @@ struct CleanerView: View {
         }.frame(maxWidth: .infinity)
     }
 
+    /// What the duplicate check looked at, in plain words — it never says "tidy" without saying what it checked.
+    private var checkedLine: String {
+        var line = index.photosChecked + index.videosChecked > 0
+            ? String(format: L("Checked all %@ photos and %@ videos for copies."), index.photosChecked.formatted(), index.videosChecked.formatted())
+            : L("No look-alike photos or videos found.")
+        if index.skippedInCloud > 0 {
+            line += " " + String(format: L("%@ in iCloud only couldn't be checked — download them in Photos to include them."), index.skippedInCloud.formatted())
+        }
+        return line
+    }
+
     private var scanningView: some View {
         VStack(spacing: 6) {
             if cat == .duplicates { ProgressView(value: index.progress) } else { BusySpinner() }
-            Text(cat == .duplicates ? "Scanning your photos & videos… \(Int(index.progress * 100))%" : "Scanning…")
+            Text(cat == .duplicates ? "\(L("Checking your whole library for copies…")) \(Int(index.progress * 100))%" : L("Scanning…"))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            if cat == .duplicates {
+                Text(index.timeLeft ?? L("The first check reads every photo once; after that only new ones."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+            }
         }.frame(maxWidth: .infinity).padding(.vertical, HandySpacing.s24)
     }
 
@@ -265,7 +280,7 @@ struct CleanerView: View {
         if all.isEmpty {
             EmptyState(icon: "sparkles",
                        line: "Nothing to clean here",
-                       sub: cat == .duplicates ? "No look-alike photos or videos in your recent library." : cat == .videos ? (receivedOnly ? "No received or downloaded videos found." : "No large videos found.") : "No screenshots found.")
+                       sub: cat == .duplicates ? checkedLine : cat == .videos ? (receivedOnly ? "No received or downloaded videos found." : "No large videos found.") : "No screenshots found.")
         } else {
             HStack {
                 Text("\(all.count) item\(all.count == 1 ? "" : "s") · about \(PhotoCleaner.format(totalBytes))")
@@ -280,10 +295,7 @@ struct CleanerView: View {
             ScrollViewReader { proxy in
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
                 if cat == .duplicates {
-                    if index.skippedInCloud > 0 {
-                        Text("\(index.skippedInCloud) photo\(index.skippedInCloud == 1 ? "" : "s") in iCloud couldn't be checked for duplicates. Download them in Photos to include them.")
-                            .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
-                    }
+                    Text(checkedLine).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
                     ForEach(Array(sortedGroups.enumerated()), id: \.offset) { _, g in
                         Text("\(g.count) look-alikes · keep one").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
                         grid(g)
