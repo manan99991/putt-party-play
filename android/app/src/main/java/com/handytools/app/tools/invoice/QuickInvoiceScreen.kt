@@ -260,7 +260,7 @@ private fun pdfPreview(file: File): Bitmap? = runCatching {
 }.getOrNull()
 
 /** US Letter where people use it, A4 elsewhere; long lists continue on more pages with the column heads repeated. */
-private fun buildInvoicePdf(ctx: Context, d: InvoiceLogic.Doc): File {
+internal fun buildInvoicePdf(ctx: Context, d: InvoiceLogic.Doc): File {
     val letter = Locale.getDefault().country in setOf("US", "CA", "MX", "PH", "CL", "CO", "VE")
     val w = if (letter) 612 else 595; val h = if (letter) 792 else 842; val margin = 48f
     val doc = PdfDocument()

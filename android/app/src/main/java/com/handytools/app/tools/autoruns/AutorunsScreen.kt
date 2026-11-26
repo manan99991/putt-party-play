@@ -150,6 +150,7 @@ private fun AutorunCard(k: SmartRuns.Kind, expanded: Boolean, onToggle: () -> Un
 fun AutorunRun(k: SmartRuns.Kind, onClose: () -> Unit) {
     when (k) {
         SmartRuns.Kind.HEAVY_VIDEOS -> HeavyVideosRun(onClose)
+        SmartRuns.Kind.OVERDUE_INVOICES -> OverdueInvoicesRun(onClose)
         else -> LaunchedEffect(k) { onClose() }
     }
 }
@@ -236,6 +237,56 @@ private fun HeavyVideosRun(onClose: () -> Unit) {
                 }
             }
             Text(I18n.t("Your phone asks before anything is deleted."), style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
+        }
+        Spacer(Modifier.height(HandyTokens.Space24))
+    }
+}
+
+/** Every overdue invoice with its reminder ready: read it, send it from your email app, or mark it paid. */
+@Composable
+private fun OverdueInvoicesRun(onClose: () -> Unit) {
+    val ctx = LocalContext.current
+    val k = SmartRuns.Kind.OVERDUE_INVOICES
+    val now = remember { System.currentTimeMillis() }
+    var docs by remember { mutableStateOf(OverdueInvoices.overdue(com.handytools.app.tools.invoice.InvoiceStore.load(ctx), now)) }
+    var showing by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(Unit) { Autoruns.markRun(ctx, k, now); Autoruns.clearReady(ctx, k) }
+    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter),
+        verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+        HTextButton(I18n.t("‹ Back")) { onClose() }
+        Text(I18n.t(k.title), style = MaterialTheme.typography.headlineSmall)
+        if (docs.isEmpty()) Text(I18n.t("Nothing is overdue — every invoice is paid or not due yet."), color = Handy.palette.textSecondary)
+        docs.forEach { d ->
+            val late = OverdueInvoices.daysLate(d, now)
+            val (subject, body) = remember(d.id) { OverdueInvoices.reminder(d, now) }
+            HCard(Modifier.fillMaxWidth().testTag("overdue-${d.number}"), onClick = { showing = if (showing == d.id) null else d.id }) {
+                Column(Modifier.padding(HandyTokens.Space12), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space4)) {
+                    Text(d.who.ifBlank { d.number }, style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text("${d.number} · ${OverdueInvoices.amount(d)} · $late ${I18n.t("days late")}", style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    if (showing == d.id) {
+                        Text(subject, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                        Text(body, style = MaterialTheme.typography.bodySmall)
+                    }
+                    HPrimaryButton(I18n.t("Email the reminder"), Modifier.fillMaxWidth().testTag("overdue-send")) {
+                        val pdf = runCatching { com.handytools.app.tools.invoice.buildInvoicePdf(ctx, d) }.getOrNull()
+                        val intent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                            type = if (pdf != null) "application/pdf" else "text/plain"
+                            OverdueInvoices.email(d.to)?.let { putExtra(android.content.Intent.EXTRA_EMAIL, arrayOf(it)) }
+                            putExtra(android.content.Intent.EXTRA_SUBJECT, subject); putExtra(android.content.Intent.EXTRA_TEXT, body)
+                            pdf?.let {
+                                putExtra(android.content.Intent.EXTRA_STREAM, androidx.core.content.FileProvider.getUriForFile(ctx, ctx.packageName + ".fileprovider", it))
+                                addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            }
+                        }
+                        runCatching { ctx.startActivity(android.content.Intent.createChooser(intent, I18n.t("Email the reminder"))) }
+                    }
+                    HTextButton(I18n.t("Mark paid"), Modifier.fillMaxWidth()) {
+                        com.handytools.app.tools.invoice.InvoiceStore.setPaid(ctx, d.id, true)
+                        docs = docs.filterNot { it.id == d.id }
+                    }
+                }
+            }
         }
         Spacer(Modifier.height(HandyTokens.Space24))
     }

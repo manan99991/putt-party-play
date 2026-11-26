@@ -41,6 +41,15 @@ object I18n {
         return table[english]?.get(lang) ?: english
     }
 
+    /** The iPhone's placeholders (%@, %1$@) as Java's (%s, %1$s), so a translated phrase can be filled with String.format. */
+    fun javaPlaceholders(s: String): String = s.replace(Regex("%(\\d+\\$)?@"), "%$1s")
+
+    /** A translated phrase filled with [args] — positional placeholders (%1$@ … %2$d) as well as plain ones. Falls back
+     *  to the English phrase if a translation's placeholders don't fit. */
+    fun fmt(english: String, vararg args: Any): String =
+        runCatching { String.format(Locale.getDefault(), javaPlaceholders(t(english)), *args) }
+            .getOrElse { String.format(Locale.getDefault(), javaPlaceholders(english), *args) }
+
     /** A translated phrase with its %@ / %d filled in order, written the way the iPhone app writes them ("%%" is a %). */
     fun f(english: String, vararg args: Any): String {
         var s = t(english)

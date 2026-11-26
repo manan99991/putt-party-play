@@ -19218,5 +19218,45 @@
   "ja": "1 本のビデオ（%s）を、見た目そのままで小さくできます。",
   "pt": "1 vídeo (%s) poderia ser menor e ficar igual.",
   "zh": "1 个视频（%s）可以变小，画面不变。"
+ },
+ "1 invoice is overdue — a reminder is ready to send.": {
+  "de": "1 Rechnung ist überfällig – eine Erinnerung ist bereit zum Senden.",
+  "es": "1 factura está vencida: hay un recordatorio listo para enviar.",
+  "fr": "1 facture est en retard : un rappel est prêt à envoyer.",
+  "hi": "1 इनवॉइस की तारीख़ निकल गई है — रिमाइंडर भेजने के लिए तैयार है।",
+  "it": "1 fattura è scaduta: un promemoria è pronto da inviare.",
+  "ja": "1 件の請求書が期限切れです。催促メールを送る準備ができています。",
+  "pt": "1 fatura está vencida — um lembrete está pronto para enviar.",
+  "zh": "1 张发票已逾期——提醒邮件已备好，可以发送。"
+ },
+ "%d invoices are overdue — reminders are ready to send.": {
+  "de": "%d Rechnungen sind überfällig – Erinnerungen sind bereit zum Senden.",
+  "es": "%d facturas están vencidas: hay recordatorios listos para enviar.",
+  "fr": "%d factures sont en retard : des rappels sont prêts à envoyer.",
+  "hi": "%d इनवॉइस की तारीख़ निकल गई है — रिमाइंडर भेजने के लिए तैयार हैं।",
+  "it": "%d fatture sono scadute: i promemoria sono pronti da inviare.",
+  "ja": "%d 件の請求書が期限切れです。催促メールを送る準備ができています。",
+  "pt": "%d faturas estão vencidas — os lembretes estão prontos para enviar.",
+  "zh": "%d 张发票已逾期——提醒邮件已备好，可以发送。"
+ },
+ "Email the reminder": {
+  "de": "Erinnerung per E-Mail senden",
+  "es": "Enviar el recordatorio por correo",
+  "fr": "Envoyer le rappel par e-mail",
+  "hi": "रिमाइंडर ईमेल करें",
+  "it": "Invia il promemoria via email",
+  "ja": "催促メールを送る",
+  "pt": "Enviar o lembrete por e-mail",
+  "zh": "发送提醒邮件"
+ },
+ "Nothing is overdue — every invoice is paid or not due yet.": {
+  "de": "Nichts ist überfällig – jede Rechnung ist bezahlt oder noch nicht fällig.",
+  "es": "Nada está vencido: todas las facturas están pagadas o aún no vencen.",
+  "fr": "Rien n'est en retard : chaque facture est payée ou pas encore échue.",
+  "hi": "कुछ भी बकाया नहीं — हर इनवॉइस का भुगतान हो चुका है या तारीख़ अभी बाक़ी है।",
+  "it": "Niente è scaduto: ogni fattura è pagata o non ancora in scadenza.",
+  "ja": "期限切れの請求書はありません。すべて支払い済みか、まだ期限前です。",
+  "pt": "Nada está vencido — todas as faturas estão pagas ou ainda não venceram.",
+  "zh": "没有逾期的发票——每张都已付款或尚未到期。"
  }
 }
