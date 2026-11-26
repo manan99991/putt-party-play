@@ -7,7 +7,7 @@ import CoreLocation
 /// one main action, and a Not now. The choosing is pure (unit-tested); gathering reads the phone.
 enum ForYou {
     enum Kind: String, CaseIterable, Codable {
-        case dose, car, bill, invoice, birthday, space, screenshots, contactsBackup
+        case dose, car, bill, invoice, birthday, space, screenshots, contactsBackup, autorun
     }
 
     /// What one tap does.
@@ -43,6 +43,8 @@ enum ForYou {
         var contactCount: Int?          // only when Contacts access was already given
         var lastContactsBackup: Date?
         var invoices: [Invoice.Doc] = []     // made in Invoices & Quotes (Business tab)
+        /// An autorun worth offering from the person's own habit, and on how many days lately they did it by hand.
+        var autorun: (kind: SmartRuns.Kind, days: Int)?
     }
 
     static let maxCards = 2
@@ -112,6 +114,13 @@ enum ForYou {
                             why: say("More than the %d you said to tell you about", lim), button: "Tidy up",
                             action: .open("cleaner"), icon: "photo.stack.fill", hex: 0x64748B, priority: 50))
         }
+        // A habit worth handing over: a tool used by hand on several days lately becomes an offer to do it every day.
+        // Offered once — Not now puts it away for good.
+        if let a = f.autorun {
+            out.append(Card(id: "autorun-\(a.kind.rawValue)", kind: .autorun, title: L(a.kind.title),
+                            why: say("You did this by hand on %d days lately. Tenzy can do it for you.", a.days),
+                            button: "Set it up", action: .open("smartruns"), icon: a.kind.icon, hex: a.kind.hex, priority: 45))
+        }
         // Many contacts and no backup in 90 days (or ever).
         if let n = f.contactCount, n >= 300, (f.lastContactsBackup.map { now.timeIntervalSince($0) > 90 * 86400 } ?? true) {
             let since = f.lastContactsBackup.map { say("Last backup: %@", $0.formatted(Date.FormatStyle().month(.wide).locale(loc))) } ?? L("Never backed up")
@@ -132,8 +141,17 @@ enum ForYou {
     static var off: Set<Kind> {
         Set((UserDefaults.standard.stringArray(forKey: offKey) ?? []).compactMap(Kind.init(rawValue:)))
     }
-    /// Not now: this card stays away for a week (a dose or a bill is a new card next time anyway).
+    /// Autorun offers put away: never offered again.
+    static var autorunsPutOff: Set<SmartRuns.Kind> {
+        Set((UserDefaults.standard.stringArray(forKey: "foryou.autoruns.off") ?? []).compactMap(SmartRuns.Kind.init(rawValue:)))
+    }
+
+    /// Not now: this card stays away for a week (a dose or a bill is a new card next time anyway). An autorun offer
+    /// is made once: put off, it doesn't come back.
     static func notNow(_ c: Card, now: Date = Date()) {
+        if c.kind == .autorun, let k = SmartRuns.Kind(rawValue: String(c.id.dropFirst("autorun-".count))) {
+            UserDefaults.standard.set(Array(autorunsPutOff.union([k]).map(\.rawValue)), forKey: "foryou.autoruns.off")
+        }
         var h = hidden.filter { $0.value > now }
         h[c.id] = now.addingTimeInterval(7 * 86400)
         UserDefaults.standard.set(h, forKey: hiddenKey)
@@ -160,6 +178,11 @@ enum ForYou {
         if let c = ParkStore.load(), let at = ParkStore.date() { f.car = (c.latitude, c.longitude, at) }
         f.meterEnds = ParkingMeter.endsAt
         f.invoices = InvoiceStore.shared.docs
+        let days = ToolDays.all(now: now)
+        let on = Set(SmartRunStore.built.filter { SmartRunStore.shared.plan($0).on })
+        if let k = SmartRuns.suggested(toolDays: days, found: [:], on: on, hidden: autorunsPutOff).first(where: SmartRunStore.built.contains) {
+            f.autorun = (k, k.habitTools.reduce(into: Set<Int>()) { $0.formUnion(days[$1] ?? []) }.count)
+        }
         if CNContactStore.authorizationStatus(for: .contacts) == .authorized {
             f.contactCount = await Task.detached(priority: .utility) { () -> Int? in
                 let r = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as CNKeyDescriptor])

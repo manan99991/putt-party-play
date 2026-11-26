@@ -96,18 +96,18 @@ enum SmartRuns {
         /// The tools whose use suggests this autorun would help (Habit offers).
         var habitTools: Set<String> {
             switch self {
-            case .receipts: return ["receipts", "expense", "warranty", "scan", "datagrab"]
+            case .receipts: return ["warranty", "datagrab", "sheets", "sorted"]
             case .drives: return ["mileage", "gpsdash"]
             case .overdueInvoices: return ["invoice"]
             case .tidyPhotos: return ["cleaner"]
-            case .heavyVideos: return ["videoshrink", "shrink", "cleaner", "videofinish"]
-            case .readyToPost: return ["celebrate", "videofx", "socialpost", "vertical", "captions"]
-            case .dayCollage: return ["collage", "photogrid", "animate"]
-            case .businessCards: return ["bizcard", "contacts", "businesscards"]
-            case .paperPDFs: return ["scan", "pdf", "imgpdf", "ocr", "docscan"]
-            case .weekFilm: return ["animate", "videojoin", "join", "celebrate", "memories"]
-            case .contactsBackup: return ["contacts", "contactsbackup", "contactclean"]
-            case .voiceNotes: return ["meeting", "transcribe", "voicenotes", "dictate"]
+            case .heavyVideos: return ["video", "formatfix", "shareready"]
+            case .readyToPost: return ["post", "celebrate", "shareready"]
+            case .dayCollage: return ["collage", "animate"]
+            case .businessCards: return ["cards"]
+            case .paperPDFs: return ["scan", "pdfsearchable", "pdfconvert"]
+            case .weekFilm: return ["animate", "celebrate", "video"]
+            case .contactsBackup: return ["contacts"]
+            case .voiceNotes: return ["meetingnotes", "voicenotes", "speechnotes"]
             }
         }
     }

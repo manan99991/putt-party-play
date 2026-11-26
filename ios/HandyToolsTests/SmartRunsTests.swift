@@ -119,9 +119,35 @@ final class SmartRunsTests: XCTestCase {
         XCTAssertFalse(SmartTidy.usefulScreenshot(seen("lol ok see you there")), "a chat you won't look at again")
     }
 
+    /// Each tool's days of use: once a day however often it's opened, and only the last month.
+    func testToolDaysCountDaysNotOpens() {
+        var log: [String: [Int]] = [:]
+        log = ToolDays.noted(log, tool: "warranty", today: 100)
+        log = ToolDays.noted(log, tool: "warranty", today: 100)
+        log = ToolDays.noted(log, tool: "warranty", today: 101)
+        XCTAssertEqual(log["warranty"], [100, 101], "two opens on one day is one day")
+        log = ToolDays.noted(log, tool: "cards", today: 140)
+        XCTAssertNil(log["warranty"], "a month later the old days are gone")
+        XCTAssertEqual(log["cards"], [140])
+        var c = Calendar(identifier: .gregorian); c.timeZone = TimeZone(identifier: "Asia/Tokyo")!
+        let late = c.date(from: DateComponents(year: 2026, month: 11, day: 25, hour: 23, minute: 50))!
+        XCTAssertEqual(ToolDays.day(late, cal: c), ToolDays.day(late.addingTimeInterval(-20 * 3600), cal: c), "the person's own midnight, not London's")
+    }
+
+    /// The habit turns into one Home card, made once.
+    func testAHabitBecomesAForYouOffer() {
+        var f = ForYou.Facts(now: at(25, 12))
+        f.autorun = (.receipts, 4)
+        let cards = ForYou.cards(f)
+        XCTAssertEqual(cards.first?.kind, .autorun)
+        XCTAssertEqual(cards.first?.action, .open("smartruns"))
+        XCTAssertTrue(cards.first?.why.contains("4") == true)
+        XCTAssertTrue(ForYou.cards(f, off: [.autorun]).isEmpty, "Don't suggest turns them all off")
+    }
+
     func testHabitsSuggestTheRightAutorun() {
-        // Receipts on 4 separate days; video shrink twice; lots of baby photos on the phone.
-        let days: [String: Set<Int>] = ["receipts": [1, 3], "scan": [5, 8], "videoshrink": [2, 2, 9]]
+        // Receipt tools on 4 separate days; the video tool on two; lots of baby photos on the phone. (Ids are real routes.)
+        let days: [String: Set<Int>] = ["warranty": [1, 3], "datagrab": [5, 8], "formatfix": [2, 2, 9]]
         let s = S.suggested(toolDays: days, found: [.dayCollage: 45, .businessCards: 1], on: [], hidden: [])
         XCTAssertEqual(s.first, .dayCollage)
         XCTAssertTrue(s.contains(.receipts))

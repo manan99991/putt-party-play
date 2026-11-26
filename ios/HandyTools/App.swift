@@ -642,6 +642,7 @@ struct HomeView: View {
             .id(theme.current)   // force a full re-skin of the grid when the theme changes
             .background(TenzyBackdrop())
             .navigationDestination(for: String.self) { id in
+                let _ = ToolDays.note(id)   // the days each tool is used: what an autorun offer is built on
                 switch id {
                 case "settings": SettingsView().toolbarRole(.editor)
                 case "alltools": AllToolsView().toolbarRole(.editor)

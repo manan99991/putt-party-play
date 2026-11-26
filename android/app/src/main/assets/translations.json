@@ -16878,5 +16878,25 @@
   "ja": "全文の書き起こし",
   "pt": "A transcrição completa",
   "zh": "完整文字记录"
+ },
+ "You did this by hand on %d days lately. Tenzy can do it for you.": {
+  "de": "Das hast du zuletzt an %d Tagen von Hand gemacht. Tenzy kann es für dich erledigen.",
+  "es": "Lo has hecho a mano %d días últimamente. Tenzy puede hacerlo por ti.",
+  "fr": "Vous l'avez fait à la main %d jours ces derniers temps. Tenzy peut s'en charger.",
+  "hi": "आपने हाल में %d दिन यह हाथ से किया। Tenzy यह आपके लिए कर सकता है।",
+  "it": "Ultimamente l'hai fatto a mano per %d giorni. Tenzy può farlo per te.",
+  "ja": "最近%d日、手作業でしていました。Tenzyが代わりにできます。",
+  "pt": "Você fez isso à mão em %d dias ultimamente. O Tenzy pode fazer por você.",
+  "zh": "你最近有 %d 天手动做这件事。Tenzy 可以替你完成。"
+ },
+ "Set it up": {
+  "de": "Einrichten",
+  "es": "Configurarlo",
+  "fr": "Le configurer",
+  "hi": "सेट करें",
+  "it": "Configuralo",
+  "ja": "設定する",
+  "pt": "Configurar",
+  "zh": "设置"
  }
 }
