@@ -2,7 +2,8 @@
 
 1. My stuff › Set an autorun — switch one on and tap **Test run**. Try: today's receipts, paper into PDFs, the day's collage,
    heavy videos made smaller, clips ready to post, business cards, tidy up, the week's film, the weekly contacts copy,
-   voice memos (pick the folder your memos are saved to first).
+   voice memos (pick the folder your memos are saved to first). If a Test run ever looks stuck (its timer stops),
+   tell me which one — it happened once on the test machine and hasn't happened again since.
 2. Home — the camera button: take a picture of a receipt, a card or a page and see what Tenzy offers.
 3. Home — the ask box (type or tap the mic): "every evening, help me email today's screenshots to myself" should build
    "Email today's screenshots to myself", with the picker opening on your screenshots.
