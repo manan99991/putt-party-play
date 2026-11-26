@@ -1,18 +1,20 @@
+2026-11-26 18:25:49.414277+0000 HandyTools[29063:82054] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
+2026-11-26 18:25:51.076071+0000 HandyTools[29063:82066] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-11-26 18:25:51.607922+0000 HandyTools[29063:82060] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
 Test Case '-[HandyToolsTests.BeatReelTests testAPortraitAndALandscapeClipBothFillTheTallFrame]' started.
-Test Case '-[HandyToolsTests.BeatReelTests testAPortraitAndALandscapeClipBothFillTheTallFrame]' passed (0.033 seconds).
+Test Case '-[HandyToolsTests.BeatReelTests testAPortraitAndALandscapeClipBothFillTheTallFrame]' passed (0.007 seconds).
 Test Case '-[HandyToolsTests.BeatReelTests testAReelIsReallyMade]' started.
-REEL| the edit didn't save: Operation Stopped (-11838)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/BeatReelTests.swift:49: error: -[HandyToolsTests.BeatReelTests testAReelIsReallyMade] : XCTUnwrap failed: expected non-nil value of type "URL" - the reel wasn't made
-Test Case '-[HandyToolsTests.BeatReelTests testAReelIsReallyMade]' failed (17.840 seconds).
+Test Case '-[HandyToolsTests.BeatReelTests testAReelIsReallyMade]' passed (54.392 seconds).
 Test Case '-[HandyToolsTests.BeatReelTests testThePlanCutsOnTheBeat]' started.
 Test Case '-[HandyToolsTests.BeatReelTests testThePlanCutsOnTheBeat]' passed (0.003 seconds).
-	 Executed 3 tests, with 1 failure (0 unexpected) in 17.876 (17.889) seconds
-	 Executed 3 tests, with 1 failure (0 unexpected) in 17.876 (17.890) seconds
-	 Executed 3 tests, with 1 failure (0 unexpected) in 17.876 (17.892) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 54.401 (54.421) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 54.401 (54.430) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 54.401 (54.431) seconds
 Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' started.
-Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' passed (137.351 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 137.351 (137.390) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 137.351 (137.402) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 137.351 (137.404) seconds
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/CameraButtonTests.swift:108: error: -[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel] : XCTAssertTrue failed - no finished reel — on screen: no known page — Beat Reel, Your clips, cut to the beat of a song made for them. / Your clips and photos / The music / Length / Couldn't make the reel — try other clips. / Beat Reel / Your clips, cut to the beat of a song made for them. / Add more / Record / Make my reel / ☀️ / Upbeat / 118 BPM / 🪩
+Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' failed (397.452 seconds).
+	 Executed 1 test, with 1 failure (0 unexpected) in 397.452 (397.465) seconds
+	 Executed 1 test, with 1 failure (0 unexpected) in 397.452 (397.471) seconds
+	 Executed 1 test, with 1 failure (0 unexpected) in 397.452 (397.473) seconds
 == main thread when stuck
 == crash reports
