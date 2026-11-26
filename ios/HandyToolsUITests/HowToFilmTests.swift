@@ -17,7 +17,11 @@ final class HowToFilmTests: XCTestCase {
         }
     }
 
-    private func mark(_ name: String) { XCTContext.runActivity(named: name) { _ in } }
+    /// A mark carries the moment it was reached ("FILM-START@1764160000.12"): the workflow reads marks off the build log,
+    /// which arrives late by a varying amount, so it cuts by these times instead (tools/film_cut.py).
+    private func mark(_ name: String) {
+        XCTContext.runActivity(named: "\(name)@\(String(format: "%.2f", Date().timeIntervalSince1970))") { _ in }
+    }
 
     /// 1 · Say what you need: the ask box turns one sentence into a helper that does the whole job.
     func testFilmSayWhatYouNeed() {
