@@ -19,11 +19,13 @@ import java.nio.ByteBuffer
  * sized, on the clean frame, before the look and motion — the iPhone's order.
  */
 @androidx.annotation.OptIn(UnstableApi::class)
-class PeopleEffect(private val people: People, private val background: String, private val funny: String, private val amount: Float = 0.6f) : GlEffect {
-    override fun toGlShaderProgram(context: Context, useHdr: Boolean): GlShaderProgram = Program(people, background, funny, amount, useHdr)
+class PeopleEffect(private val people: People, private val background: String, private val funny: String, private val amount: Float = 0.6f,
+                   /** The person's own photo, for the "photo" background (26 Nov). */
+                   private val photo: android.graphics.Bitmap? = null) : GlEffect {
+    override fun toGlShaderProgram(context: Context, useHdr: Boolean): GlShaderProgram = Program(people, background, funny, amount, useHdr, photo)
 
     companion object {
-        val backgroundCodes = mapOf("none" to 0f, "blur" to 1f, "colorpop" to 2f, "studio" to 3f, "sunset" to 4f, "night" to 5f, "pastel" to 6f)
+        val backgroundCodes = mapOf("none" to 0f, "blur" to 1f, "colorpop" to 2f, "studio" to 3f, "sunset" to 4f, "night" to 5f, "pastel" to 6f, "photo" to 7f)
         val funnyCodes = mapOf("none" to 0f, "bighead" to 1f, "tinyhead" to 2f, "bigeyes" to 3f, "stretchy" to 4f, "wobbly" to 5f)
 
         /**
@@ -55,6 +57,8 @@ precision highp float;
 uniform sampler2D uTexSampler;
 uniform sampler2D uMaskA;
 uniform sampler2D uMaskB;
+uniform sampler2D uPhoto;
+uniform vec2 uPhotoSize;
 uniform float uMaskMix;
 uniform float uBackground;
 uniform float uFunny;
@@ -149,7 +153,12 @@ vec3 backdrop(vec2 px) {
     }
     return bg;
   }
-  return grad(px, vec3(1.0, 0.80, 0.88), vec3(0.70, 0.86, 1.0));
+  if (uBackground < 6.5) return grad(px, vec3(1.0, 0.80, 0.88), vec3(0.70, 0.86, 1.0));
+  // Their own photo, filling the frame (cropped evenly, never stretched).
+  float k = max(uSize.x / max(uPhotoSize.x, 1.0), uSize.y / max(uPhotoSize.y, 1.0));
+  vec2 shown = uPhotoSize * k;
+  vec2 at = (px - (uSize - shown) * 0.5) / shown;
+  return texture2D(uPhoto, vec2(at.x, 1.0 - at.y)).rgb;
 }
 
 void main() {
@@ -172,7 +181,7 @@ void main() {
 """
     }
 
-    private class Program(private val people: People, background: String, funny: String, private val amount: Float, useHdr: Boolean) :
+    private class Program(private val people: People, background: String, funny: String, private val amount: Float, useHdr: Boolean, private val photo: android.graphics.Bitmap?) :
         BaseGlShaderProgram(useHdr, 1) {
         private val bg = backgroundCodes[background] ?: 0f
         private val fun0 = funnyCodes[funny] ?: 0f
@@ -182,7 +191,7 @@ void main() {
             }
         } catch (e: GlUtil.GlException) { throw VideoFrameProcessingException(e) }
         private var width = 1; private var height = 1
-        private var texA = 0; private var texB = 0
+        private var texA = 0; private var texB = 0; private var texP = 0
         private var loadedA = -1; private var loadedB = -1
 
         override fun configure(inputWidth: Int, inputHeight: Int): Size { width = inputWidth; height = inputHeight; return Size(inputWidth, inputHeight) }
@@ -205,6 +214,14 @@ void main() {
                     // Until a mask is loaded (or when there are none) the whole frame counts as person.
                     val full = byteArrayOf(-1)
                     upload(texA, full, 1, 1); upload(texB, full, 1, 1)
+                    val pid = IntArray(1); GLES20.glGenTextures(1, pid, 0); texP = pid[0]
+                    GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texP)
+                    if (photo != null) android.opengl.GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, photo, 0)
+                    else GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, 1, 1, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, ByteBuffer.wrap(byteArrayOf(0, 0, 0, -1)))
+                    GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR)
+                    GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR)
+                    GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE)
+                    GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE)
                 }
                 val (a, b, f) = people.around(t)
                 if (people.masks.isNotEmpty()) {
@@ -219,6 +236,8 @@ void main() {
                 program.setSamplerTexIdUniform("uTexSampler", inputTexId, 0)
                 program.setSamplerTexIdUniform("uMaskA", texA, 1)
                 program.setSamplerTexIdUniform("uMaskB", texB, 2)
+                program.setSamplerTexIdUniform("uPhoto", texP, 3)
+                program.setFloatsUniform("uPhotoSize", floatArrayOf((photo?.width ?: 1).toFloat(), (photo?.height ?: 1).toFloat()))
                 program.setFloatUniform("uMaskMix", if (people.masks.isEmpty()) 0f else f)
                 program.setFloatUniform("uBackground", bg)
                 program.setFloatUniform("uFunny", fun0)
@@ -239,7 +258,7 @@ void main() {
             super.release()
             try {
                 program.delete()
-                if (texA != 0) GLES20.glDeleteTextures(2, intArrayOf(texA, texB), 0)
+                if (texA != 0) GLES20.glDeleteTextures(3, intArrayOf(texA, texB, texP), 0)
             } catch (e: GlUtil.GlException) { throw VideoFrameProcessingException(e) }
         }
     }

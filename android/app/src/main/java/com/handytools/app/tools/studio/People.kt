@@ -25,7 +25,9 @@ import kotlin.math.sqrt
 data class Spot(val x: Float, val y: Float)
 
 /** One face in a frame, as fractions of the frame (y down): its centre, its size (its longer side over the frame's width), its eyes. */
-data class FaceSpot(val x: Float, val y: Float, val size: Float, val eyes: List<Spot> = emptyList())
+data class FaceSpot(val x: Float, val y: Float, val size: Float, val eyes: List<Spot> = emptyList(),
+                    /** Its tilt (radians, clockwise in the picture), the middle of its mouth and its nose — when found. */
+                    val roll: Float = 0f, val mouth: Spot? = null, val nose: Spot? = null)
 
 /**
  * Where the people are in a video, found once on the phone before it's made (the iPhone finds them frame by frame
@@ -63,7 +65,8 @@ class People(val step: Double, val maskW: Int, val maskH: Int, val masks: List<B
                     ?.takeIf { abs(it.x - fa.x) < 0.25f && abs(it.y - fa.y) < 0.25f } ?: return@map fa
                 fun l(p: Float, q: Float) = p + (q - p) * f
                 val eyes = if (fa.eyes.size == fb.eyes.size) fa.eyes.zip(fb.eyes) { p, q -> Spot(l(p.x, q.x), l(p.y, q.y)) } else fa.eyes
-                FaceSpot(l(fa.x, fb.x), l(fa.y, fb.y), l(fa.size, fb.size), eyes)
+                fun sp(p: Spot?, q: Spot?) = if (p != null && q != null) Spot(l(p.x, q.x), l(p.y, q.y)) else p ?: q
+                FaceSpot(l(fa.x, fb.x), l(fa.y, fb.y), l(fa.size, fb.size), eyes, l(fa.roll, fb.roll), sp(fa.mouth, fb.mouth), sp(fa.nose, fb.nose))
             }
         }
 
@@ -120,7 +123,12 @@ class People(val step: Double, val maskW: Int, val maskH: Int, val masks: List<B
                             outFaces.add(found.map { f ->
                                 val b = f.boundingBox
                                 val eyes = listOf(FaceLandmark.LEFT_EYE, FaceLandmark.RIGHT_EYE).mapNotNull { f.getLandmark(it)?.position }.map { Spot(it.x / w, it.y / h) }
-                                FaceSpot(b.exactCenterX() / w, b.exactCenterY() / h, max(b.width(), b.height()) / w, eyes)
+                                fun lm(k: Int) = f.getLandmark(k)?.position?.let { Spot(it.x / w, it.y / h) }
+                                val mouthParts = listOf(FaceLandmark.MOUTH_LEFT, FaceLandmark.MOUTH_RIGHT, FaceLandmark.MOUTH_BOTTOM).mapNotNull { lm(it) }
+                                val mouth = if (mouthParts.size >= 2) Spot(mouthParts.map { it.x }.average().toFloat(), mouthParts.map { it.y }.average().toFloat()) else null
+                                // ML Kit's Z angle turns the face anticlockwise; the picture's tilt is the other way round.
+                                FaceSpot(b.exactCenterX() / w, b.exactCenterY() / h, max(b.width(), b.height()) / w, eyes,
+                                    (-f.headEulerAngleZ * Math.PI / 180).toFloat(), mouth, lm(FaceLandmark.NOSE_BASE))
                             }.sortedByDescending { it.size }.take(2))
                         }
                         small.recycle()

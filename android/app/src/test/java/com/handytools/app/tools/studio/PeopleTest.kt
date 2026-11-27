@@ -45,7 +45,7 @@ class PeopleTest {
 
     @Test fun everyChoiceHasItsShaderCode() {
         for (c in VideoEffects.backgrounds) assertTrue(c.id, PeopleEffect.backgroundCodes.containsKey(c.id))
-        for (c in VideoEffects.funnies) assertTrue(c.id, PeopleEffect.funnyCodes.containsKey(c.id))
+        for (c in VideoEffects.funnies) assertTrue(c.id, c.id == "none" || FaceFun.effect(c.id) != null)
         assertTrue(!VideoEffects.Recipe(background = "blur").isPlain && !VideoEffects.Recipe(funny = "bighead").isPlain)
     }
 

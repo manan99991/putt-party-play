@@ -19858,5 +19858,645 @@
   "ja": "やること",
   "pt": "A fazer",
   "zh": "待办"
+ },
+ "Bald": {
+  "de": "Glatze",
+  "es": "Calvo",
+  "fr": "Chauve",
+  "hi": "गंजा",
+  "it": "Calvo",
+  "ja": "つるつる頭",
+  "pt": "Careca",
+  "zh": "光头"
+ },
+ "Balloon face": {
+  "de": "Ballongesicht",
+  "es": "Cara de globo",
+  "fr": "Visage ballon",
+  "hi": "गुब्बारा चेहरा",
+  "it": "Faccia a palloncino",
+  "ja": "風船顔",
+  "pt": "Cara de balão",
+  "zh": "气球脸"
+ },
+ "Barely there": {
+  "de": "Kaum sichtbar",
+  "es": "Apenas",
+  "fr": "À peine",
+  "hi": "बस ज़रा सा",
+  "it": "Appena",
+  "ja": "ほんのり",
+  "pt": "Quase nada",
+  "zh": "若有若无"
+ },
+ "Beautiful": {
+  "de": "Wunderschön",
+  "es": "Belleza",
+  "fr": "Beauté",
+  "hi": "खूबसूरत",
+  "it": "Bellezza",
+  "ja": "ビューティー",
+  "pt": "Beleza",
+  "zh": "美颜"
+ },
+ "Big head, tiny body": {
+  "de": "Großer Kopf, kleiner Körper",
+  "es": "Cabezón, cuerpo mini",
+  "fr": "Grosse tête, petit corps",
+  "hi": "बड़ा सिर, छोटा शरीर",
+  "it": "Testone, corpo mini",
+  "ja": "でか頭にちび体",
+  "pt": "Cabeção, corpo mini",
+  "zh": "大头小身"
+ },
+ "Big mouth": {
+  "de": "Großer Mund",
+  "es": "Boca grande",
+  "fr": "Grande bouche",
+  "hi": "बड़ा मुँह",
+  "it": "Bocca grande",
+  "ja": "でか口",
+  "pt": "Boca grande",
+  "zh": "大嘴"
+ },
+ "Body": {
+  "de": "Körper",
+  "es": "Cuerpo",
+  "fr": "Corps",
+  "hi": "शरीर",
+  "it": "Corpo",
+  "ja": "体",
+  "pt": "Corpo",
+  "zh": "身体"
+ },
+ "Bold": {
+  "de": "Fett",
+  "es": "Grueso",
+  "fr": "Épais",
+  "hi": "मोटा",
+  "it": "Spesso",
+  "ja": "太い",
+  "pt": "Grosso",
+  "zh": "粗"
+ },
+ "Bunny": {
+  "de": "Häschen",
+  "es": "Conejito",
+  "fr": "Lapin",
+  "hi": "खरगोश",
+  "it": "Coniglietto",
+  "ja": "うさぎ",
+  "pt": "Coelhinho",
+  "zh": "小兔子"
+ },
+ "Cartoon": {
+  "de": "Cartoon",
+  "es": "Caricatura",
+  "fr": "Cartoon",
+  "hi": "कार्टून",
+  "it": "Cartoon",
+  "ja": "カートゥーン",
+  "pt": "Desenho",
+  "zh": "卡通"
+ },
+ "Change the video": {
+  "de": "Video ändern",
+  "es": "Cambiar el vídeo",
+  "fr": "Modifier la vidéo",
+  "hi": "वीडियो बदलें",
+  "it": "Modifica il video",
+  "ja": "動画を変更",
+  "pt": "Alterar o vídeo",
+  "zh": "修改视频"
+ },
+ "Chipmunk cheeks": {
+  "de": "Hamsterbacken",
+  "es": "Mofletes de ardilla",
+  "fr": "Joues de hamster",
+  "hi": "गिलहरी गाल",
+  "it": "Guance da scoiattolo",
+  "ja": "リスのほっぺ",
+  "pt": "Bochechas de esquilo",
+  "zh": "花栗鼠脸颊"
+ },
+ "Choose a song first.": {
+  "de": "Wähle zuerst einen Song.",
+  "es": "Elige primero una canción.",
+  "fr": "Choisissez d'abord une chanson.",
+  "hi": "पहले एक गाना चुनें।",
+  "it": "Scegli prima una canzone.",
+  "ja": "先に曲を選んでください。",
+  "pt": "Escolha uma música primeiro.",
+  "zh": "请先选择一首歌曲。"
+ },
+ "Clown nose": {
+  "de": "Clownsnase",
+  "es": "Nariz de payaso",
+  "fr": "Nez de clown",
+  "hi": "जोकर नाक",
+  "it": "Naso da clown",
+  "ja": "ピエロの鼻",
+  "pt": "Nariz de palhaço",
+  "zh": "小丑鼻子"
+ },
+ "Cone head": {
+  "de": "Kegelkopf",
+  "es": "Cabeza de cono",
+  "fr": "Tête en cône",
+  "hi": "शंकु सिर",
+  "it": "Testa a cono",
+  "ja": "とんがり頭",
+  "pt": "Cabeça de cone",
+  "zh": "锥形头"
+ },
+ "Cool shades": {
+  "de": "Coole Sonnenbrille",
+  "es": "Gafas de sol",
+  "fr": "Lunettes de soleil",
+  "hi": "कूल चश्मा",
+  "it": "Occhiali da sole",
+  "ja": "サングラス",
+  "pt": "Óculos escuros",
+  "zh": "酷墨镜"
+ },
+ "Couldn't make it tall — share it as it is.": {
+  "de": "Hochformat ging nicht – teile es so, wie es ist.",
+  "es": "No se pudo hacer vertical: compártelo tal cual.",
+  "fr": "Impossible de le passer en vertical — partagez-le tel quel.",
+  "hi": "लंबा नहीं बन सका — जैसा है वैसा ही शेयर करें।",
+  "it": "Impossibile renderlo verticale: condividilo così com'è.",
+  "ja": "縦長にできませんでした。このまま共有してください。",
+  "pt": "Não deu para deixar na vertical — compartilhe como está.",
+  "zh": "无法改成竖屏——请直接分享原样。"
+ },
+ "Couldn't save it to your videos — try Share instead.": {
+  "de": "Konnte nicht in deinen Videos gespeichert werden – probiere stattdessen Teilen.",
+  "es": "No se pudo guardar en tus vídeos: prueba con Compartir.",
+  "fr": "Impossible de l'enregistrer dans vos vidéos — essayez Partager.",
+  "hi": "आपके वीडियो में सेव नहीं हो सका — शेयर आज़माएँ।",
+  "it": "Impossibile salvarlo nei tuoi video: prova Condividi.",
+  "ja": "動画に保存できませんでした。「共有」をお試しください。",
+  "pt": "Não foi possível salvar nos seus vídeos — tente Compartilhar.",
+  "zh": "无法保存到你的视频——请改用分享。"
+ },
+ "Crown": {
+  "de": "Krone",
+  "es": "Corona",
+  "fr": "Couronne",
+  "hi": "मुकुट",
+  "it": "Corona",
+  "ja": "王冠",
+  "pt": "Coroa",
+  "zh": "皇冠"
+ },
+ "Devil horns": {
+  "de": "Teufelshörner",
+  "es": "Cuernos de diablo",
+  "fr": "Cornes de diable",
+  "hi": "शैतान के सींग",
+  "it": "Corna da diavolo",
+  "ja": "悪魔のツノ",
+  "pt": "Chifres de diabo",
+  "zh": "恶魔角"
+ },
+ "Egg head": {
+  "de": "Eierkopf",
+  "es": "Cabeza de huevo",
+  "fr": "Tête d'œuf",
+  "hi": "अंडा सिर",
+  "it": "Testa a uovo",
+  "ja": "たまご頭",
+  "pt": "Cabeça de ovo",
+  "zh": "蛋形头"
+ },
+ "Faces": {
+  "de": "Gesichter",
+  "es": "Caras",
+  "fr": "Visages",
+  "hi": "चेहरे",
+  "it": "Facce",
+  "ja": "顔",
+  "pt": "Rostos",
+  "zh": "脸部"
+ },
+ "Flower crown": {
+  "de": "Blumenkranz",
+  "es": "Corona de flores",
+  "fr": "Couronne de fleurs",
+  "hi": "फूलों का ताज",
+  "it": "Corona di fiori",
+  "ja": "花かんむり",
+  "pt": "Coroa de flores",
+  "zh": "花环"
+ },
+ "Funny faces, a new background, music, looks and words — then save it or post it anywhere.": {
+  "de": "Lustige Gesichter, neuer Hintergrund, Musik, Looks und Text – dann speichern oder überall posten.",
+  "es": "Caras divertidas, un fondo nuevo, música, estilos y texto: luego guárdalo o publícalo donde quieras.",
+  "fr": "Visages drôles, nouveau fond, musique, looks et texte — puis enregistrez ou publiez où vous voulez.",
+  "hi": "मज़ेदार चेहरे, नया बैकग्राउंड, संगीत, लुक और शब्द — फिर सेव करें या कहीं भी पोस्ट करें।",
+  "it": "Facce buffe, un nuovo sfondo, musica, look e testo — poi salvalo o pubblicalo ovunque.",
+  "ja": "おもしろ顔、新しい背景、音楽、ルック、文字。あとは保存するか、どこにでも投稿。",
+  "pt": "Caras divertidas, um fundo novo, música, looks e texto — depois salve ou publique onde quiser.",
+  "zh": "搞笑脸、新背景、音乐、风格和文字——然后保存或发布到任何地方。"
+ },
+ "Funny faces, backgrounds, music, looks": {
+  "de": "Lustige Gesichter, Hintergründe, Musik, Looks",
+  "es": "Caras divertidas, fondos, música, estilos",
+  "fr": "Visages drôles, fonds, musique, looks",
+  "hi": "मज़ेदार चेहरे, बैकग्राउंड, संगीत, लुक",
+  "it": "Facce buffe, sfondi, musica, look",
+  "ja": "おもしろ顔、背景、音楽、ルック",
+  "pt": "Caras divertidas, fundos, música, looks",
+  "zh": "搞笑脸、背景、音乐、风格"
+ },
+ "Halo": {
+  "de": "Heiligenschein",
+  "es": "Aureola",
+  "fr": "Auréole",
+  "hi": "प्रभामंडल",
+  "it": "Aureola",
+  "ja": "天使の輪",
+  "pt": "Auréola",
+  "zh": "光环"
+ },
+ "Heads": {
+  "de": "Köpfe",
+  "es": "Cabezas",
+  "fr": "Têtes",
+  "hi": "सिर",
+  "it": "Teste",
+  "ja": "頭",
+  "pt": "Cabeças",
+  "zh": "头型"
+ },
+ "Heart glasses": {
+  "de": "Herzbrille",
+  "es": "Gafas de corazón",
+  "fr": "Lunettes cœur",
+  "hi": "दिल वाला चश्मा",
+  "it": "Occhiali a cuore",
+  "ja": "ハートめがね",
+  "pt": "Óculos de coração",
+  "zh": "爱心眼镜"
+ },
+ "How much": {
+  "de": "Wie viel",
+  "es": "Cuánto",
+  "fr": "Combien",
+  "hi": "कितना",
+  "it": "Quanto",
+  "ja": "量",
+  "pt": "Quanto",
+  "zh": "多少"
+ },
+ "Just right": {
+  "de": "Genau richtig",
+  "es": "Justo",
+  "fr": "Juste ce qu'il faut",
+  "hi": "बिल्कुल सही",
+  "it": "Giusto",
+  "ja": "ちょうどいい",
+  "pt": "Na medida",
+  "zh": "刚好"
+ },
+ "Long chin": {
+  "de": "Langes Kinn",
+  "es": "Barbilla larga",
+  "fr": "Long menton",
+  "hi": "लंबी ठुड्डी",
+  "it": "Mento lungo",
+  "ja": "長いあご",
+  "pt": "Queixo comprido",
+  "zh": "长下巴"
+ },
+ "Long legs": {
+  "de": "Lange Beine",
+  "es": "Piernas largas",
+  "fr": "Longues jambes",
+  "hi": "लंबी टाँगें",
+  "it": "Gambe lunghe",
+  "ja": "足長",
+  "pt": "Pernas longas",
+  "zh": "大长腿"
+ },
+ "Make it tall for TikTok, Reels, Shorts": {
+  "de": "Hochformat für TikTok, Reels, Shorts",
+  "es": "Vertical para TikTok, Reels, Shorts",
+  "fr": "Format vertical pour TikTok, Reels, Shorts",
+  "hi": "TikTok, Reels, Shorts के लिए लंबा बनाएँ",
+  "it": "Verticale per TikTok, Reels, Shorts",
+  "ja": "TikTok・リール・ショート用に縦長に",
+  "pt": "Vertical para TikTok, Reels, Shorts",
+  "zh": "为 TikTok、Reels、Shorts 改成竖屏"
+ },
+ "Moods": {
+  "de": "Stimmungen",
+  "es": "Estados de ánimo",
+  "fr": "Ambiances",
+  "hi": "मूड",
+  "it": "Atmosfere",
+  "ja": "ムード",
+  "pt": "Climas",
+  "zh": "氛围"
+ },
+ "Moustache": {
+  "de": "Schnurrbart",
+  "es": "Bigote",
+  "fr": "Moustache",
+  "hi": "मूँछ",
+  "it": "Baffi",
+  "ja": "口ひげ",
+  "pt": "Bigode",
+  "zh": "小胡子"
+ },
+ "Music": {
+  "de": "Musik",
+  "es": "Música",
+  "fr": "Musique",
+  "hi": "संगीत",
+  "it": "Musica",
+  "ja": "音楽",
+  "pt": "Música",
+  "zh": "音乐"
+ },
+ "Music and the video's own sound": {
+  "de": "Musik und Originalton",
+  "es": "Música y sonido original",
+  "fr": "Musique et son d'origine",
+  "hi": "संगीत और वीडियो की अपनी आवाज़",
+  "it": "Musica e audio originale",
+  "ja": "音楽と動画の音",
+  "pt": "Música e som original",
+  "zh": "音乐与视频原声"
+ },
+ "No sound": {
+  "de": "Kein Ton",
+  "es": "Sin sonido",
+  "fr": "Pas de son",
+  "hi": "आवाज़ नहीं",
+  "it": "Senza audio",
+  "ja": "音声なし",
+  "pt": "Sem som",
+  "zh": "无声音"
+ },
+ "Party hat": {
+  "de": "Partyhut",
+  "es": "Gorro de fiesta",
+  "fr": "Chapeau de fête",
+  "hi": "पार्टी टोपी",
+  "it": "Cappellino da festa",
+  "ja": "パーティーハット",
+  "pt": "Chapéu de festa",
+  "zh": "派对帽"
+ },
+ "Pinched": {
+  "de": "Gequetscht",
+  "es": "Pellizcado",
+  "fr": "Pincé",
+  "hi": "दबा हुआ",
+  "it": "Pizzicato",
+  "ja": "つまみ顔",
+  "pt": "Apertado",
+  "zh": "捏脸"
+ },
+ "Puppy": {
+  "de": "Hündchen",
+  "es": "Perrito",
+  "fr": "Chiot",
+  "hi": "पिल्ला",
+  "it": "Cucciolo",
+  "ja": "子犬",
+  "pt": "Cachorrinho",
+  "zh": "小狗"
+ },
+ "Save to videos": {
+  "de": "In Videos speichern",
+  "es": "Guardar en vídeos",
+  "fr": "Enregistrer dans les vidéos",
+  "hi": "वीडियो में सेव करें",
+  "it": "Salva nei video",
+  "ja": "動画に保存",
+  "pt": "Salvar nos vídeos",
+  "zh": "保存到视频"
+ },
+ "Seriously sunny": {
+  "de": "Richtig sonnig",
+  "es": "Sol a tope",
+  "fr": "Plein soleil",
+  "hi": "खूब धूप",
+  "it": "Sole pieno",
+  "ja": "ギラギラ太陽",
+  "pt": "Sol de verdade",
+  "zh": "阳光灿烂"
+ },
+ "Skin & colour": {
+  "de": "Haut & Farbe",
+  "es": "Piel y color",
+  "fr": "Peau et couleur",
+  "hi": "त्वचा और रंग",
+  "it": "Pelle e colore",
+  "ja": "肌と色",
+  "pt": "Pele e cor",
+  "zh": "皮肤与颜色"
+ },
+ "Squished": {
+  "de": "Zerquetscht",
+  "es": "Aplastado",
+  "fr": "Écrasé",
+  "hi": "पिचका हुआ",
+  "it": "Schiacciato",
+  "ja": "ぺちゃんこ",
+  "pt": "Amassado",
+  "zh": "压扁"
+ },
+ "Stickers": {
+  "de": "Sticker",
+  "es": "Pegatinas",
+  "fr": "Autocollants",
+  "hi": "स्टिकर",
+  "it": "Adesivi",
+  "ja": "ステッカー",
+  "pt": "Adesivos",
+  "zh": "贴纸"
+ },
+ "Subtle": {
+  "de": "Dezent",
+  "es": "Sutil",
+  "fr": "Subtil",
+  "hi": "हल्का",
+  "it": "Delicato",
+  "ja": "控えめ",
+  "pt": "Sutil",
+  "zh": "低调"
+ },
+ "Tacky": {
+  "de": "Kitschig",
+  "es": "Hortera",
+  "fr": "Kitsch",
+  "hi": "भड़कीला",
+  "it": "Kitsch",
+  "ja": "ド派手",
+  "pt": "Brega",
+  "zh": "土豪风"
+ },
+ "Tall 9:16 — tap Share and pick TikTok, Instagram or YouTube.": {
+  "de": "Hochformat 9:16 – tippe auf Teilen und wähle TikTok, Instagram oder YouTube.",
+  "es": "Vertical 9:16: toca Compartir y elige TikTok, Instagram o YouTube.",
+  "fr": "Vertical 9:16 — touchez Partager et choisissez TikTok, Instagram ou YouTube.",
+  "hi": "लंबा 9:16 — शेयर पर टैप करें और TikTok, Instagram या YouTube चुनें।",
+  "it": "Verticale 9:16 — tocca Condividi e scegli TikTok, Instagram o YouTube.",
+  "ja": "縦長9:16。「共有」をタップしてTikTok・Instagram・YouTubeを選んでください。",
+  "pt": "Vertical 9:16 — toque em Compartilhar e escolha TikTok, Instagram ou YouTube.",
+  "zh": "竖屏 9:16——点“分享”，选择 TikTok、Instagram 或 YouTube。"
+ },
+ "Tenzy finds every face on every frame, right on your phone. \"How much\" takes each one from gentle to wild.": {
+  "de": "Tenzy findet jedes Gesicht in jedem Bild, direkt auf deinem Handy. Mit „Wie viel“ geht jeder Effekt von sanft bis wild.",
+  "es": "Tenzy encuentra cada cara en cada fotograma, en tu teléfono. «Cuánto» lleva cada efecto de suave a salvaje.",
+  "fr": "Tenzy trouve chaque visage sur chaque image, directement sur votre téléphone. « Combien » fait passer chaque effet de doux à délirant.",
+  "hi": "Tenzy हर फ़्रेम में हर चेहरा आपके फ़ोन पर ही ढूँढ़ता है। \"कितना\" से हर इफ़ेक्ट हल्के से धमाकेदार तक जाता है।",
+  "it": "Tenzy trova ogni volto in ogni fotogramma, direttamente sul telefono. «Quanto» porta ogni effetto da delicato a scatenato.",
+  "ja": "Tenzyがスマホ上ですべてのフレームの顔を見つけます。「量」で控えめから大胆まで調整できます。",
+  "pt": "O Tenzy encontra cada rosto em cada quadro, direto no seu celular. \"Quanto\" leva cada efeito de suave a exagerado.",
+  "zh": "Tenzy 在你的手机上找到每一帧里的每张脸。“多少”可把每个效果从轻微调到夸张。"
+ },
+ "Tenzy finds the person on every frame and changes only what's behind them.": {
+  "de": "Tenzy findet die Person in jedem Bild und ändert nur, was hinter ihr ist.",
+  "es": "Tenzy encuentra a la persona en cada fotograma y cambia solo lo que hay detrás.",
+  "fr": "Tenzy trouve la personne sur chaque image et ne change que ce qui est derrière elle.",
+  "hi": "Tenzy हर फ़्रेम में व्यक्ति को ढूँढ़ता है और सिर्फ़ उसके पीछे का हिस्सा बदलता है।",
+  "it": "Tenzy trova la persona in ogni fotogramma e cambia solo ciò che c'è dietro.",
+  "ja": "Tenzyがすべてのフレームで人物を見つけ、その後ろだけを変えます。",
+  "pt": "O Tenzy encontra a pessoa em cada quadro e muda só o que está atrás dela.",
+  "zh": "Tenzy 在每一帧里找到人物，只改变其身后的部分。"
+ },
+ "Tenzy makes this music on your phone. It's yours to post anywhere.": {
+  "de": "Tenzy erzeugt diese Musik auf deinem Handy. Du darfst sie überall posten.",
+  "es": "Tenzy crea esta música en tu teléfono. Puedes publicarla donde quieras.",
+  "fr": "Tenzy crée cette musique sur votre téléphone. Vous pouvez la publier partout.",
+  "hi": "Tenzy यह संगीत आपके फ़ोन पर बनाता है। इसे आप कहीं भी पोस्ट कर सकते हैं।",
+  "it": "Tenzy crea questa musica sul tuo telefono. Puoi pubblicarla ovunque.",
+  "ja": "この音楽はTenzyがスマホ上で作ります。どこにでも投稿できます。",
+  "pt": "O Tenzy cria essa música no seu celular. Você pode publicá-la em qualquer lugar.",
+  "zh": "这段音乐由 Tenzy 在你的手机上生成，你可以发布到任何地方。"
+ },
+ "That song can't be used — it may be protected. Try another file.": {
+  "de": "Dieser Song lässt sich nicht verwenden – er ist vielleicht geschützt. Probiere eine andere Datei.",
+  "es": "Esa canción no se puede usar: puede estar protegida. Prueba con otro archivo.",
+  "fr": "Cette chanson ne peut pas être utilisée — elle est peut-être protégée. Essayez un autre fichier.",
+  "hi": "यह गाना इस्तेमाल नहीं हो सकता — शायद यह सुरक्षित है। कोई दूसरी फ़ाइल आज़माएँ।",
+  "it": "Questa canzone non si può usare: potrebbe essere protetta. Prova un altro file.",
+  "ja": "この曲は使えません。保護されている可能性があります。別のファイルをお試しください。",
+  "pt": "Essa música não pode ser usada — talvez esteja protegida. Tente outro arquivo.",
+  "zh": "这首歌无法使用——可能受保护。请换一个文件。"
+ },
+ "TikTok, Reels and Shorts want it tall: Tenzy fits the whole video in 9:16, then you share it straight to the app.": {
+  "de": "TikTok, Reels und Shorts wollen Hochformat: Tenzy bringt das ganze Video in 9:16, dann teilst du es direkt in die App.",
+  "es": "TikTok, Reels y Shorts lo quieren vertical: Tenzy encaja todo el vídeo en 9:16 y luego lo compartes directo en la app.",
+  "fr": "TikTok, Reels et Shorts veulent du vertical : Tenzy fait tenir toute la vidéo en 9:16, puis vous la partagez directement dans l'app.",
+  "hi": "TikTok, Reels और Shorts लंबा वीडियो चाहते हैं: Tenzy पूरा वीडियो 9:16 में फ़िट करता है, फिर आप उसे सीधे ऐप में शेयर करें।",
+  "it": "TikTok, Reels e Shorts lo vogliono verticale: Tenzy adatta tutto il video in 9:16, poi lo condividi direttamente nell'app.",
+  "ja": "TikTok・リール・ショートは縦長が基本。Tenzyが動画全体を9:16に収めるので、そのままアプリに共有できます。",
+  "pt": "TikTok, Reels e Shorts querem na vertical: o Tenzy encaixa o vídeo todo em 9:16 e você compartilha direto no app.",
+  "zh": "TikTok、Reels 和 Shorts 需要竖屏：Tenzy 会把整段视频放进 9:16，然后你直接分享到应用。"
+ },
+ "Tiny face": {
+  "de": "Winziges Gesicht",
+  "es": "Cara diminuta",
+  "fr": "Tout petit visage",
+  "hi": "छोटा चेहरा",
+  "it": "Faccina",
+  "ja": "ちび顔",
+  "pt": "Rosto minúsculo",
+  "zh": "小脸"
+ },
+ "Video Studio": {
+  "de": "Video-Studio",
+  "es": "Estudio de vídeo",
+  "fr": "Studio vidéo",
+  "hi": "वीडियो स्टूडियो",
+  "it": "Studio video",
+  "ja": "ビデオスタジオ",
+  "pt": "Estúdio de vídeo",
+  "zh": "视频工作室"
+ },
+ "Warps": {
+  "de": "Verzerrungen",
+  "es": "Deformaciones",
+  "fr": "Déformations",
+  "hi": "टेढ़े-मेढ़े",
+  "it": "Deformazioni",
+  "ja": "ゆがみ",
+  "pt": "Distorções",
+  "zh": "变形"
+ },
+ "Wholesome": {
+  "de": "Herzlich",
+  "es": "Tierno",
+  "fr": "Tout doux",
+  "hi": "प्यारा",
+  "it": "Tenero",
+  "ja": "ほっこり",
+  "pt": "Fofo",
+  "zh": "暖心"
+ },
+ "Wild": {
+  "de": "Wild",
+  "es": "Loco",
+  "fr": "Fou",
+  "hi": "ज़बरदस्त",
+  "it": "Pazzesco",
+  "ja": "派手",
+  "pt": "Ousado",
+  "zh": "狂野"
+ },
+ "Your own song, from Files. Post it only where you have the right to use that music — apps can mute videos with music they recognise.": {
+  "de": "Dein eigener Song aus Dateien. Poste ihn nur dort, wo du die Rechte an der Musik hast – Apps können Videos mit erkannter Musik stummschalten.",
+  "es": "Tu propia canción, desde Archivos. Publícalo solo donde tengas derecho a usar esa música: las apps pueden silenciar vídeos con música que reconocen.",
+  "fr": "Votre propre chanson, depuis Fichiers. Ne publiez que là où vous avez le droit d'utiliser cette musique — les apps peuvent couper le son des vidéos dont elles reconnaissent la musique.",
+  "hi": "फ़ाइल्स से आपका अपना गाना। वहीं पोस्ट करें जहाँ आपको उस संगीत के इस्तेमाल का अधिकार हो — ऐप पहचाने गए संगीत वाले वीडियो म्यूट कर सकते हैं।",
+  "it": "La tua canzone, da File. Pubblicala solo dove hai il diritto di usare quella musica: le app possono silenziare i video con musica che riconoscono.",
+  "ja": "「ファイル」にある自分の曲です。その音楽を使う権利がある場所にだけ投稿してください。アプリは認識した音楽入りの動画をミュートすることがあります。",
+  "pt": "Sua própria música, do app Arquivos. Publique só onde você tem o direito de usar essa música — os apps podem silenciar vídeos com músicas que reconhecem.",
+  "zh": "来自“文件”的你自己的歌曲。请只在你有权使用该音乐的地方发布——应用可能会将识别出音乐的视频静音。"
+ },
+ "Your photo": {
+  "de": "Dein Foto",
+  "es": "Tu foto",
+  "fr": "Votre photo",
+  "hi": "आपकी फ़ोटो",
+  "it": "La tua foto",
+  "ja": "あなたの写真",
+  "pt": "Sua foto",
+  "zh": "你的照片"
+ },
+ "Your song": {
+  "de": "Dein Song",
+  "es": "Tu canción",
+  "fr": "Votre chanson",
+  "hi": "आपका गाना",
+  "it": "La tua canzone",
+  "ja": "自分の曲",
+  "pt": "Sua música",
+  "zh": "你的歌曲"
+ },
+ "Zombie": {
+  "de": "Zombie",
+  "es": "Zombi",
+  "fr": "Zombie",
+  "hi": "ज़ॉम्बी",
+  "it": "Zombie",
+  "ja": "ゾンビ",
+  "pt": "Zumbi",
+  "zh": "僵尸"
+ },
+ "Make faces funny or beautiful, swap what's behind you, add Tenzy's music or your own song, a look and words — watch a preview, save it, and post it. All made on your phone.": {
+  "de": "Mach Gesichter lustig oder schön, tausch aus, was hinter dir ist, füge Tenzys Musik oder deinen eigenen Song hinzu, einen Look und Text – sieh dir eine Vorschau an, speichere und poste es. Alles auf deinem Handy.",
+  "es": "Haz caras divertidas o bonitas, cambia lo que hay detrás de ti, añade música de Tenzy o tu propia canción, un estilo y texto: mira una vista previa, guárdalo y publícalo. Todo en tu teléfono.",
+  "fr": "Rendez les visages drôles ou beaux, changez ce qu'il y a derrière vous, ajoutez la musique de Tenzy ou votre chanson, un look et du texte — regardez un aperçu, enregistrez et publiez. Tout sur votre téléphone.",
+  "hi": "चेहरों को मज़ेदार या सुंदर बनाएँ, पीछे का हिस्सा बदलें, Tenzy का संगीत या अपना गाना, एक लुक और शब्द जोड़ें — प्रीव्यू देखें, सेव करें और पोस्ट करें। सब आपके फ़ोन पर।",
+  "it": "Rendi i volti buffi o belli, cambia ciò che hai dietro, aggiungi la musica di Tenzy o la tua canzone, un look e del testo — guarda l'anteprima, salvalo e pubblicalo. Tutto sul telefono.",
+  "ja": "顔をおもしろく・きれいに、背景を差し替え、Tenzyの音楽や自分の曲、ルックや文字を追加。プレビューを見て保存・投稿。すべてスマホ上で。",
+  "pt": "Deixe rostos engraçados ou bonitos, troque o que está atrás de você, adicione a música do Tenzy ou sua própria música, um look e texto — veja a prévia, salve e publique. Tudo no seu celular.",
+  "zh": "让脸变搞笑或变美，换掉你身后的背景，加上 Tenzy 的音乐或你自己的歌、风格和文字——先预览，再保存和发布。全部在手机上完成。"
  }
 }

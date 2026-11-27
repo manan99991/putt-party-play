@@ -71,17 +71,19 @@ object VideoEffects {
     /** What goes behind the person (the iPhone's list): the person stays, the rest is swapped. */
     val backgrounds = listOf(
         Choice("none", "As filmed", "⚪️"), Choice("blur", "Portrait blur", "🌫️"), Choice("colorpop", "Colour pop", "🎨"), Choice("studio", "Studio", "🤍"),
-        Choice("sunset", "Sunset", "🌇"), Choice("night", "Night city", "🌃"), Choice("pastel", "Pastel", "🩵"),
+        Choice("sunset", "Sunset", "🌇"), Choice("night", "Night city", "🌃"), Choice("pastel", "Pastel", "🩵"), Choice("photo", "Your photo", "🖼️"),
     )
-    val funnies = listOf(
-        Choice("none", "Off", "⚪️"), Choice("bighead", "Big head", "🎈"), Choice("tinyhead", "Tiny head", "🐜"), Choice("bigeyes", "Big eyes", "👀"),
-        Choice("stretchy", "Stretchy face", "🫠"), Choice("wobbly", "Wobbly face", "🌀"),
-    )
+    /** Every face and body effect (FaceFun), with "Off" first. */
+    val funnies: List<Choice> = listOf(Choice("none", "Off", "⚪️")) + FaceFun.effects.map { Choice(it.id, it.name, it.emoji) }
 
     data class Recipe(val look: String = "none", val light: String = "none", val motion: String = "none", val texture: String = "none",
-                      val words: String = "", val wordStyle: String = "pop", val background: String = "none", val funny: String = "none") {
+                      val words: String = "", val wordStyle: String = "pop", val background: String = "none", val funny: String = "none",
+                      /** Their own photo behind them (background "photo"), the sound ("original", "none", "synth:<style>", "file") and
+                       *  their own song, and with music on how much of the video's own sound stays (0 just music … 1 just the video). */
+                      val backdrop: String? = null, val music: String = "original", val song: String? = null, val keep: Double = 0.25,
+                      val amount: Float = 0.6f) {
         val isPlain: Boolean get() = look == "none" && light == "none" && motion == "none" && texture == "none" && words.isBlank() &&
-            background == "none" && funny == "none"
+            background == "none" && funny == "none" && music == "original"
     }
 
     // MARK: pure timings (the iPhone's)
@@ -200,6 +202,12 @@ object VideoEffects {
         }
     }
 
+    /** Why the music couldn't go in on the last make (the video then kept its own sound), for the screen to say. */
+    @Volatile var lastSoundProblem: String? = null
+
+    /** A photo picked for behind the person, upright and at most [maxSide] on its long side. */
+    fun loadPhoto(ctx: Context, uri: Uri, maxSide: Int): Bitmap? = com.handytools.app.tools.autoruns.PhotoDays.small(ctx, uri, maxSide)
+
     /** The video's upright size, kept at most 1920 (or [maxSide]) on its long side. */
     fun size(ctx: Context, uri: Uri, maxSide: Int = 1920): Pair<Int, Int> {
         val (w0, h0) = runCatching {
@@ -218,19 +226,26 @@ object VideoEffects {
     }
 
     /** The video with [r] on it. [preview] makes a short, smaller copy of the first seconds to watch before saving. */
-    suspend fun make(ctx: Context, uri: Uri, r: Recipe, preview: Boolean = false, progress: (Double) -> Unit = {}): File? {
+    suspend fun make(ctx: Context, uri: Uri, r: Recipe, preview: Boolean = false, progress: (Double) -> Unit = {},
+                     /** For the tests: the people already found (a drawn face the finder wouldn't see). */
+                     given: People? = null): File? {
         val duration = MediaEngine.videoDurationMs(ctx, uri) / 1000.0
         if (duration <= 0.1) return null
         val (w, h) = size(ctx, uri, if (preview) 960 else 1920)
         val length = if (preview) min(duration, 6.0) else duration
 
         // The beats of its own sound, for the beat punch (a steady beat when there's nothing clear).
-        val beats = if (r.motion == "pulse") {
+        val beats = if (r.motion == "pulse" && r.music.startsWith("synth:")) {
+            Synth.track(r.music.removePrefix("synth:"), duration).beats
+        } else if (r.motion == "pulse") {
             val local = FunnyMaker.local(ctx, uri)
             val sound = local?.let { FunnyMaker.sound(it) }
             val found = sound?.let { beats(FunnyPlan.loudness(it.first, it.second, 0.05), 0.05) } ?: emptyList()
             if (found.size >= 3) found else steady(duration)
         } else emptyList()
+
+        // The sound first: made as one file so the music (and how much of the video's own sound stays) is exactly what's saved.
+        val sound = VideoSound.build(ctx, uri, r.music, r.song?.let { Uri.parse(it) }, r.keep, length)
 
         val item = MediaItem.Builder().setUri(uri).apply {
             if (preview) setClippingConfiguration(MediaItem.ClippingConfiguration.Builder().setEndPositionMs((length * 1000).toLong()).build())
@@ -240,9 +255,12 @@ object VideoEffects {
         // once, a few times a second, then the GPU follows them frame by frame.
         val people = r.background != "none" || r.funny != "none"
         val share = if (people) 0.3 else 0.0
+        var found: People? = null
         if (people) {
-            val found = People.find(ctx, uri, length, masks = r.background != "none", faces = r.funny != "none") { p -> progress(p * share) }
-            if (found != null) video += PeopleEffect(found, r.background, r.funny)
+            found = given ?: People.find(ctx, uri, length, masks = r.background != "none" || FaceFun.needsMask(r.funny), faces = r.funny != "none") { p -> progress(p * share) }
+            val photo = if (r.background == "photo") r.backdrop?.let { withContext(Dispatchers.IO) { loadPhoto(ctx, Uri.parse(it), 1600) } } else null
+            if (found != null && r.background != "none") video += PeopleEffect(found, r.background, "none", r.amount, photo)
+            if (found != null && r.funny != "none") video += FaceFunEffect(found, r.funny, r.amount)
         }
         video += look(r.look)
         if (r.texture == "vhs") video += HslAdjustment.Builder().adjustSaturation(-12f).build()
@@ -251,6 +269,8 @@ object VideoEffects {
             Matrix().apply { setScale(s.toFloat(), s.toFloat()); postTranslate((dx * 2).toFloat(), (dy * 2).toFloat()) }
         }
         val layers = mutableListOf<TextureOverlay>()
+        // The face stickers, drawn by Tenzy on every frame where the faces are.
+        found?.let { f -> if (r.funny != "none") layers += StickerOverlay(f, r.funny, w, h) }
         lightPicture(r.light, w, h)?.let { layers += BitmapOverlay.createStaticBitmapOverlay(it) }
         when (r.texture) {
             "grain" -> { val frames = (0 until 4).map { grain(w, h, 7L + it) }; layers += TimedOverlay({ t -> frames[((t * 24).toInt()) % 4] to 1f }) }
@@ -268,9 +288,17 @@ object VideoEffects {
         }
         if (layers.isNotEmpty()) video += OverlayEffect(ImmutableList.copyOf(layers))
 
-        val edited = EditedMediaItem.Builder(item).setEffects(Effects(emptyList(), video)).build()
+        val edited = EditedMediaItem.Builder(item).setEffects(Effects(emptyList(), video)).setRemoveAudio(r.music != "original").build()
         val out = File(File(ctx.cacheDir, "effects").also { it.mkdirs() }, (if (preview) "preview-" else "Tenzy video ") + System.currentTimeMillis() + ".mp4")
-        val ok = Reels.export(ctx, Composition.Builder(listOf(EditedMediaItemSequence(listOf(edited)))).build(), out) { p -> progress(share + (1 - share) * p) }
+        val sequences = mutableListOf(EditedMediaItemSequence(listOf(edited)))
+        sound.file?.let { f ->
+            val clip = MediaItem.Builder().setUri(Uri.fromFile(f)).setClippingConfiguration(
+                MediaItem.ClippingConfiguration.Builder().setEndPositionMs((length * 1000).toLong()).build()).build()
+            sequences += EditedMediaItemSequence(listOf(EditedMediaItem.Builder(clip).build()))
+        }
+        val ok = Reels.export(ctx, Composition.Builder(sequences).build(), out) { p -> progress(share + (1 - share) * p) }
+        sound.file?.delete()
+        lastSoundProblem = sound.problem
         return if (ok && out.length() > 0) out else { out.delete(); null }
     }
 
