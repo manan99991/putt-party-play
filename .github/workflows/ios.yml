@@ -183,7 +183,15 @@ jobs:
           d=json.load(sys.stdin)["devices"]
           c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
           c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
-          xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
+          # A boot that ends in status -1 (27 Nov, twice) left xcodebuild waiting on a dead simulator until the job timed
+          # out. Check it really booted; if not, shut it down, wipe it and boot again (three tries), else fail fast.
+          for try in 1 2 3; do
+            xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
+            if xcrun simctl list devices | grep "$UDID" | grep -q "(Booted)"; then echo "simulator booted (try $try)"; break; fi
+            echo "::warning::simulator didn't boot (try $try); wiping it and trying again"
+            xcrun simctl shutdown "$UDID" 2>/dev/null || true; xcrun simctl erase "$UDID" || true
+            [ "$try" = 3 ] && { echo "::error::the simulator wouldn't boot after three tries"; exit 1; }
+          done
           for p in camera microphone photos location; do
             xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true
           done
@@ -251,7 +259,15 @@ jobs:
           [ -n "$UDID" ] || { echo "::error::no $DEVICE simulator"; exit 1; }
           echo "simulator=$UDID part=${{ matrix.part }}"
           # Boot and pre-authorize so the live tests drive the real camera / mic / location paths with no prompt.
-          xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
+          # A boot that ends in status -1 (27 Nov, twice) left xcodebuild waiting on a dead simulator until the job timed
+          # out. Check it really booted; if not, shut it down, wipe it and boot again (three tries), else fail fast.
+          for try in 1 2 3; do
+            xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
+            if xcrun simctl list devices | grep "$UDID" | grep -q "(Booted)"; then echo "simulator booted (try $try)"; break; fi
+            echo "::warning::simulator didn't boot (try $try); wiping it and trying again"
+            xcrun simctl shutdown "$UDID" 2>/dev/null || true; xcrun simctl erase "$UDID" || true
+            [ "$try" = 3 ] && { echo "::error::the simulator wouldn't boot after three tries"; exit 1; }
+          done
           for p in camera microphone photos location contacts; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
           xcodebuild test -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" $ONLY \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
@@ -293,7 +309,15 @@ jobs:
           d=json.load(sys.stdin)["devices"]
           c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
           c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
-          xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
+          # A boot that ends in status -1 (27 Nov, twice) left xcodebuild waiting on a dead simulator until the job timed
+          # out. Check it really booted; if not, shut it down, wipe it and boot again (three tries), else fail fast.
+          for try in 1 2 3; do
+            xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
+            if xcrun simctl list devices | grep "$UDID" | grep -q "(Booted)"; then echo "simulator booted (try $try)"; break; fi
+            echo "::warning::simulator didn't boot (try $try); wiping it and trying again"
+            xcrun simctl shutdown "$UDID" 2>/dev/null || true; xcrun simctl erase "$UDID" || true
+            [ "$try" = 3 ] && { echo "::error::the simulator wouldn't boot after three tries"; exit 1; }
+          done
           for p in camera microphone photos location; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
           xcodebuild build-for-testing -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation 2>&1 | tail -3
