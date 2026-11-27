@@ -1,6 +1,20 @@
-# What to try in this TestFlight build (26 Nov)
+# What to try in this TestFlight build (27 Nov)
 
-New in this build — the video and voice round:
+New: **Video Studio** (Home › Video; it was "Video Effects") — one place for a video:
+
+- **Faces** tab: 37 effects on every face, steady from frame to frame — Bald, Cone head, Egg head, Alien, Balloon face,
+  big/tiny head, big mouth, big eyes, squished, chipmunk cheeks; shades, heart glasses, crown, moustache, puppy, bunny,
+  clown nose, halo, devil horns, party hat, flower crown; Zombie, Robot, Cartoon, Glow; Beautiful, Seriously sunny,
+  Tacky, Wholesome; Long legs, Big head tiny body. Each one shows on your own video before you pick it.
+- **Background**: blur, colour pop, backdrops — or **Your photo** behind you.
+- **Music**: Tenzy's own music (Upbeat, Party, Chill, Epic), **Your song** from Files, or No sound, with a slider
+  between the music and the video's own sound. You hear it in the preview.
+- When it's made: save it, or tap where it's going (TikTok, Reels, Shorts…) and it's made the right shape and opened.
+
+Please try the face effects on a real face and tell me which ones look off — the test machine's face finder is
+unreliable, so the real phone is the first true test of how well they sit.
+
+Also in this build — the video and voice round:
 
 1. **Movie Trailer** (Home › Video): pick or film a few clips, name the film, tap **Make my trailer** — title cards,
    a deep narrator ("In a world…"), slow motion, a montage that builds, the title on a huge hit, "Coming soon".
