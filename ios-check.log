@@ -46,15 +46,15 @@ Checking out main (a00a22b) of package ‘swift-ogg’
 
 
 Resolved source packages:
-  BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
   StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
-  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
-  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
-  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
   SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
+  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
   YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
+  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
+  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
+  BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
 
-resolved source packages: BitByteData, StbVorbis, YbridOgg, SwiftOGG, Unrar, SWCompression, YbridOpus
+resolved source packages: StbVorbis, SWCompression, SwiftOGG, YbridOpus, YbridOgg, Unrar, BitByteData
 == build.log (errors)
-2026-11-27 00:05:15.436393+0000 HandyTools[49435:124130] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
-2026-11-27 00:08:00.531862+0000 HandyTools[49435:134889] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1074ff660> connection from pid 49435 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1074ff660> connection from pid 49435 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-27 00:41:40.600068+0000 HandyTools[26491:82158] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109771720> connection from pid 26491 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109771720> connection from pid 26491 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
+2026-11-27 00:41:41.557788+0000 HandyTools[26491:84611] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109771040> connection from pid 26491 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x109771040> connection from pid 26491 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
