@@ -2837,7 +2837,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                                            hideFaces: chain.steps.contains { $0.block == .hideSensitive } ? nil : { hideInResult(d, e) },
                                            limitBytes: chain.steps.last(where: { $0.block == .shrinkImage })?.settings["mb"].flatMap { Double($0) }.map { Int(max(0.01, $0) * 1_000_000) })
                     }
-                    output(result)
+                    // A new result is a new card: finish cards keep their own state (the look picked, the picture shown),
+                    // so without this a second photo showed the first one's result (27 Nov, emoji art).
+                    output(result).id(result.identity)
                 }
                 if !batch.isEmpty { batchView }
                 sendOn
@@ -3533,7 +3535,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         case .image(let i) where [.emojiFaces, .meme, .artFilter, .emojiMosaic].contains(chain.steps.last?.block):
             // Same finish for every fun photo: other looks on the same photo, Copy into a chat, Photos, Share, the full tool.
             FunFinishCard(block: chain.steps.last!.block, original: inputPhoto, result: i,
-                          look: chain.steps.last?.settings["style"] ?? chain.steps.last?.settings["emoji"] ?? "")
+                          look: chain.steps.last?.settings["style"] ?? chain.steps.last?.settings["emoji"]
+                            ?? ([.emojiMosaic, .meme].contains(chain.steps.last!.block) ? "classic" : ""),
+                          settings: chain.steps.last?.settings ?? [:])
         case .image(let i) where chain.steps.last?.block == .videoStill:
             // The sharpest frame, any other moment one slide away, then Photos / Copy / Share.
             StillFinishCard(video: inputVideo, image: i)

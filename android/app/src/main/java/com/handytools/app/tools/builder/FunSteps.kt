@@ -63,7 +63,7 @@ object FunSteps {
                 var top = TextTidy.memeText(step.settings["top"].orEmpty()); var bottom = TextTidy.memeText(step.settings["bottom"].orEmpty())
                 if (dryRun && top.isEmpty() && bottom.isEmpty()) { top = "TOP LINE"; bottom = "BOTTOM LINE" }
                 if (top.isEmpty() && bottom.isEmpty()) stop("Add meme text needs some words. Type a top or a bottom line, then run it again.")
-                else Outcome.Done(Payload.Pic(meme(input.bmp, top, bottom)))
+                else Outcome.Done(Payload.Pic(meme(input.bmp, top, bottom, step.settings["style"])))
             }
 
             b == Block.ART_FILTER && input is Payload.Pic -> Outcome.Done(Payload.Pic(art(input.bmp, PixelArt.style(step.settings["style"]))))
@@ -77,7 +77,7 @@ object FunSteps {
                 } finally { src.delete() }
             }
 
-            b == Block.EMOJI_MOSAIC && input is Payload.Pic -> mosaic(input.bmp)?.let { Outcome.Done(Payload.Pic(it)) } ?: fail()
+            b == Block.EMOJI_MOSAIC && input is Payload.Pic -> mosaic(input.bmp, step.settings["style"])?.let { Outcome.Done(Payload.Pic(it)) } ?: fail()
 
             b == Block.VIDEO_SPEED && input is Payload.Clip ->
                 VideoSteps.speed(ctx, input.uri, TextTidy.speedRate(step.settings["speed"]))?.let { Outcome.Done(Payload.Clip(Uri.fromFile(it))) } ?: fail()
@@ -146,31 +146,63 @@ object FunSteps {
 
     // ------------------------------------------------------------------ meme text
 
-    /** Big white capitals with a black edge, across the top and the bottom. The words shrink until each block fits. */
-    fun meme(src: Bitmap, top: String, bottom: String): Bitmap {
-        val out = src.copy(Bitmap.Config.ARGB_8888, true)
-        val c = Canvas(out)
-        val width = (out.width * 0.94f).toInt().coerceAtLeast(1); val room = out.height * 0.3f; val gap = out.height * 0.025f
+    /**
+     * The words on the photo, in one of four looks. Classic: big white capitals with a black edge, across the top and
+     * the bottom. Caption: a white band above the photo with black words. Bars: black bands above and below with white
+     * words, the photo untouched. Pop: thick-edged yellow capitals. The words shrink until each block fits.
+     */
+    fun meme(src: Bitmap, top: String, bottom: String, style: String? = null): Bitmap {
         val face = Typeface.create("sans-serif-condensed", Typeface.BOLD)
-        for ((words, atTop) in listOf(top to true, bottom to false)) {
-            if (words.isEmpty()) continue
-            var size = maxOf(16f, minOf(out.width, out.height) / 7f)
+        val width = (src.width * 0.94f).toInt().coerceAtLeast(1); val short = minOf(src.width, src.height).toFloat()
+        /** The words laid out to fit [room]: the edge (if any) and the fill. */
+        fun fit(words: String, room: Float, ink: Int, edge: Int?, edgeK: Float, start: Float): Pair<StaticLayout?, StaticLayout> {
+            var size = maxOf(16f, start)
             fun layout(stroke: Boolean): StaticLayout {
                 val p = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-                    typeface = face; textSize = size; color = if (stroke) Color.BLACK else Color.WHITE
-                    if (stroke) { style = Paint.Style.STROKE; strokeWidth = size * 0.12f; strokeJoin = Paint.Join.ROUND }
+                    typeface = face; textSize = size; color = if (stroke) (edge ?: Color.BLACK) else ink
+                    if (stroke) { this.style = Paint.Style.STROKE; strokeWidth = size * edgeK; strokeJoin = Paint.Join.ROUND }
                 }
                 return StaticLayout.Builder.obtain(words, 0, words.length, p, width).setAlignment(Layout.Alignment.ALIGN_CENTER).build()
             }
-            var edge = layout(true)
-            while (edge.height > room && size > 12f) { size *= 0.9f; edge = layout(true) }
-            val fill = layout(false)
-            c.save()
-            c.translate((out.width - width) / 2f, if (atTop) gap else out.height - edge.height - gap)
-            edge.draw(c); fill.draw(c)
-            c.restore()
+            var fill = layout(false)
+            while (fill.height > room && size > 12f) { size *= 0.9f; fill = layout(false) }
+            return (if (edge != null) layout(true) else null) to fill
         }
-        return out
+        fun Canvas.put(l: Pair<StaticLayout?, StaticLayout>, x: Float, y: Float) { save(); translate(x, y); l.first?.draw(this); l.second.draw(this); restore() }
+        return when (style) {
+            "caption" -> {
+                val words = listOf(top, bottom).filter { it.isNotEmpty() }.joinToString(" ")
+                val l = fit(words, src.height * 0.4f, Color.BLACK, null, 0f, short / 11f)
+                val pad = short * 0.05f; val band = (l.second.height + pad * 2).toInt()
+                Bitmap.createBitmap(src.width, src.height + band, Bitmap.Config.ARGB_8888).also { out ->
+                    val c = Canvas(out); c.drawColor(Color.WHITE)
+                    c.put(l, (src.width - width) / 2f, pad); c.drawBitmap(src, 0f, band.toFloat(), null)
+                }
+            }
+            "bars" -> {
+                val pad = short * 0.04f
+                val t = top.takeIf { it.isNotEmpty() }?.let { fit(it, src.height * 0.22f, Color.WHITE, null, 0f, short / 9f) }
+                val b = bottom.takeIf { it.isNotEmpty() }?.let { fit(it, src.height * 0.22f, Color.WHITE, null, 0f, short / 9f) }
+                val topBand = t?.let { (it.second.height + pad * 2).toInt() } ?: 0; val bottomBand = b?.let { (it.second.height + pad * 2).toInt() } ?: 0
+                Bitmap.createBitmap(src.width, src.height + topBand + bottomBand, Bitmap.Config.ARGB_8888).also { out ->
+                    val c = Canvas(out); c.drawColor(Color.BLACK)
+                    c.drawBitmap(src, 0f, topBand.toFloat(), null)
+                    t?.let { c.put(it, (src.width - width) / 2f, pad) }
+                    b?.let { c.put(it, (src.width - width) / 2f, topBand + src.height + pad) }
+                }
+            }
+            else -> {
+                val pop = style == "pop"
+                val out = src.copy(Bitmap.Config.ARGB_8888, true); val c = Canvas(out)
+                val gap = out.height * 0.025f
+                for ((words, atTop) in listOf(top to true, bottom to false)) {
+                    if (words.isEmpty()) continue
+                    val l = fit(words, out.height * 0.3f, if (pop) Color.rgb(255, 222, 26) else Color.WHITE, Color.BLACK, if (pop) 0.2f else 0.12f, short / 7f)
+                    c.put(l, (out.width - width) / 2f, if (atTop) gap else out.height - l.second.height - gap)
+                }
+                out
+            }
+        }
     }
 
     // ------------------------------------------------------------------ sketch, comic, pop art
@@ -259,9 +291,10 @@ object FunSteps {
         return b
     }
 
-    /** What colour each mosaic emoji is on the whole, on white, measured once from how this phone draws it. */
-    private val palette: List<IntArray> by lazy {
-        TextTidy.MOSAIC_EMOJIS.map { e ->
+    /** What colour each emoji is on the whole, on white, measured from how this phone draws it (once per set). */
+    private val palettes = java.util.concurrent.ConcurrentHashMap<String, List<IntArray>>()
+    private fun palette(emojis: List<String>): List<IntArray> = palettes.getOrPut(emojis.joinToString("")) {
+        emojis.map { e ->
             val t = tile(e, 24)
             val px = IntArray(24 * 24); t.getPixels(px, 0, 24, 0, 0, 24, 24)
             var r = 0L; var g = 0L; var b = 0L
@@ -274,25 +307,31 @@ object FunSteps {
     }
 
     /**
-     * The photo rebuilt from emojis: each small square of it becomes the emoji closest to its colour, on a square of
-     * that colour, so from a step back it still reads as the photo.
+     * The photo rebuilt from emojis in one of the looks ([TextTidy.MOSAIC_STYLES]): each small square becomes the emoji
+     * closest to its colour, on a square of that colour so from a step back it still reads as the photo, or on its own
+     * (slightly larger, touching) for a wall of emoji.
      */
-    fun mosaic(src: Bitmap, cell: Int = 28): Bitmap? {
-        val (cols, rows) = TextTidy.mosaicGrid(src.width.toDouble(), src.height.toDouble())
+    fun mosaic(src: Bitmap, style: String? = null, cell: Int = 28): Bitmap? {
+        val look = TextTidy.mosaicLook(style)
+        val (cols, rows) = TextTidy.mosaicGrid(src.width.toDouble(), src.height.toDouble(), look.long)
         if (cols <= 0 || rows <= 0) return null
+        val pal = palette(look.emojis)
+        val side = maxOf(18, Math.round(cell * 56f / look.long))
         val small = Bitmap.createScaledBitmap(src, cols, rows, true)
         val px = IntArray(cols * rows); small.getPixels(px, 0, cols, 0, 0, cols, rows)
-        val out = Bitmap.createBitmap(cols * cell, rows * cell, Bitmap.Config.ARGB_8888)
+        val out = Bitmap.createBitmap(cols * side, rows * side, Bitmap.Config.ARGB_8888)
         val c = Canvas(out)
+        if (!look.backed) c.drawColor(Color.WHITE)
         val ground = Paint()
         val tiles = HashMap<Int, Bitmap>()
+        val drawSide = if (look.backed) side else Math.round(side * 1.18f)
+        val off = (drawSide - side) / 2f
         for (i in px.indices) {
             val v = px[i]; val r = v shr 16 and 0xFF; val g = v shr 8 and 0xFF; val b = v and 0xFF
-            val x = (i % cols) * cell; val y = (i / cols) * cell
-            ground.color = Color.rgb(r, g, b)
-            c.drawRect(x.toFloat(), y.toFloat(), (x + cell).toFloat(), (y + cell).toFloat(), ground)
-            val pick = TextTidy.nearestColor(r, g, b, palette)
-            if (pick >= 0) c.drawBitmap(tiles.getOrPut(pick) { tile(TextTidy.MOSAIC_EMOJIS[pick], cell) }, x.toFloat(), y.toFloat(), null)
+            val x = (i % cols) * side; val y = (i / cols) * side
+            if (look.backed) { ground.color = Color.rgb(r, g, b); c.drawRect(x.toFloat(), y.toFloat(), (x + side).toFloat(), (y + side).toFloat(), ground) }
+            val pick = TextTidy.nearestColor(r, g, b, pal)
+            if (pick >= 0) c.drawBitmap(tiles.getOrPut(pick) { tile(look.emojis[pick], drawSide) }, x - off, y - off, null)
         }
         return out
     }

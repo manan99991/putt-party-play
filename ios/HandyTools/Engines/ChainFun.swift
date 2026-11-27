@@ -34,14 +34,14 @@ enum ChainFun {
             guard !top.isEmpty || !bottom.isEmpty else {
                 return .failure(.invalid("Add meme text needs some words. Type a top or a bottom line, then run it again."))
             }
-            return .success(.image(meme(img.normalizedUp(), top: top, bottom: bottom)))
+            return .success(.image(meme(img.normalizedUp(), top: top, bottom: bottom, style: step.settings["style"])))
 
         case (.artFilter, .image(let img)):
             guard let out = art(img.normalizedUp(), style: PixelArt.style(step.settings["style"])) else { return .failure(.failed(b)) }
             return .success(.image(out))
 
         case (.emojiMosaic, .image(let img)):
-            guard let out = mosaic(img.normalizedUp()) else { return .failure(.failed(b)) }
+            guard let out = mosaic(img.normalizedUp(), style: step.settings["style"]) else { return .failure(.failed(b)) }
             return .success(.image(out))
 
         default:
@@ -130,32 +130,70 @@ enum ChainFun {
 
     // MARK: meme text
 
-    /// Big white capitals with a black edge, across the top and the bottom. The words shrink until each block fits.
-    static func meme(_ image: UIImage, top: String, bottom: String) -> UIImage {
-        let size = pixels(image)
+    /// The words on the photo, in one of four looks. Classic: big white capitals with a black edge, across the top
+    /// and the bottom. Caption: a white band above the photo with black words (both lines in it). Bars: black bands
+    /// above and below with white words, the photo untouched. Pop: thick-edged yellow capitals. Words shrink to fit.
+    static func meme(_ image: UIImage, top: String, bottom: String, style: String? = nil) -> UIImage {
+        let photo = pixels(image)
         let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
-        return UIGraphicsImageRenderer(size: size, format: fmt).image { _ in
-            image.draw(in: CGRect(origin: .zero, size: size))
-            let width = size.width * 0.94, room = size.height * 0.3, gap = size.height * 0.025
-            for (words, atTop) in [(top, true), (bottom, false)] where !words.isEmpty {
-                var points = max(16, min(size.width, size.height) / 7)
-                var line = memeLine(words, points: points)
-                var box = line.boundingRect(with: CGSize(width: width, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil)
-                while box.height > room, points > 12 {
-                    points *= 0.9
-                    line = memeLine(words, points: points)
-                    box = line.boundingRect(with: CGSize(width: width, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil)
+        let width = photo.width * 0.94, short = min(photo.width, photo.height)
+        func fit(_ words: String, room: CGFloat, ink: UIColor, edge: UIColor?, edgeWidth: CGFloat, start: CGFloat) -> (NSAttributedString, CGFloat) {
+            var points = start
+            var line = memeLine(words, points: points, ink: ink, edge: edge, edgeWidth: edgeWidth)
+            var h = ceil(line.boundingRect(with: CGSize(width: width, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil).height)
+            while h > room, points > 12 {
+                points *= 0.9
+                line = memeLine(words, points: points, ink: ink, edge: edge, edgeWidth: edgeWidth)
+                h = ceil(line.boundingRect(with: CGSize(width: width, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil).height)
+            }
+            return (line, h)
+        }
+        func draw(_ line: NSAttributedString, y: CGFloat, h: CGFloat, canvasWidth: CGFloat) {
+            line.draw(with: CGRect(x: (canvasWidth - width) / 2, y: y, width: width, height: h), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil)
+        }
+        switch style {
+        case "caption":
+            let words = [top, bottom].filter { !$0.isEmpty }.joined(separator: " ")
+            let (line, h) = fit(words, room: photo.height * 0.4, ink: .black, edge: nil, edgeWidth: 0, start: max(16, short / 11))
+            let pad = short * 0.05, band = h + pad * 2
+            let size = CGSize(width: photo.width, height: photo.height + band)
+            return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
+                UIColor.white.setFill(); ctx.fill(CGRect(origin: .zero, size: size))
+                draw(line, y: pad, h: h, canvasWidth: size.width)
+                image.draw(in: CGRect(x: 0, y: band, width: photo.width, height: photo.height))
+            }
+        case "bars":
+            let t = top.isEmpty ? nil : fit(top, room: photo.height * 0.22, ink: .white, edge: nil, edgeWidth: 0, start: max(16, short / 9))
+            let b = bottom.isEmpty ? nil : fit(bottom, room: photo.height * 0.22, ink: .white, edge: nil, edgeWidth: 0, start: max(16, short / 9))
+            let pad = short * 0.04
+            let topBand = t.map { $0.1 + pad * 2 } ?? 0, bottomBand = b.map { $0.1 + pad * 2 } ?? 0
+            let size = CGSize(width: photo.width, height: photo.height + topBand + bottomBand)
+            return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
+                UIColor.black.setFill(); ctx.fill(CGRect(origin: .zero, size: size))
+                image.draw(in: CGRect(x: 0, y: topBand, width: photo.width, height: photo.height))
+                if let t { draw(t.0, y: pad, h: t.1, canvasWidth: size.width) }
+                if let b { draw(b.0, y: topBand + photo.height + pad, h: b.1, canvasWidth: size.width) }
+            }
+        default:
+            let pop = style == "pop"
+            let ink = pop ? UIColor(red: 1, green: 0.87, blue: 0.1, alpha: 1) : UIColor.white
+            return UIGraphicsImageRenderer(size: photo, format: fmt).image { _ in
+                image.draw(in: CGRect(origin: .zero, size: photo))
+                let gap = photo.height * 0.025
+                for (words, atTop) in [(top, true), (bottom, false)] where !words.isEmpty {
+                    let (line, h) = fit(words, room: photo.height * 0.3, ink: ink, edge: .black, edgeWidth: pop ? -7 : -4.5, start: max(16, short / 7))
+                    draw(line, y: atTop ? gap : photo.height - h - gap, h: h, canvasWidth: photo.width)
                 }
-                let y = atTop ? gap : size.height - ceil(box.height) - gap
-                line.draw(with: CGRect(x: (size.width - width) / 2, y: y, width: width, height: ceil(box.height)), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil)
             }
         }
     }
 
-    private static func memeLine(_ words: String, points: CGFloat) -> NSAttributedString {
+    private static func memeLine(_ words: String, points: CGFloat, ink: UIColor = .white, edge: UIColor? = .black, edgeWidth: CGFloat = -4.5) -> NSAttributedString {
         let style = NSMutableParagraphStyle(); style.alignment = .center; style.lineBreakMode = .byWordWrapping
         let font = UIFont(name: "HelveticaNeue-CondensedBlack", size: points) ?? UIFont.systemFont(ofSize: points, weight: .black)
-        return NSAttributedString(string: words, attributes: [.font: font, .foregroundColor: UIColor.white, .strokeColor: UIColor.black, .strokeWidth: -4.5, .paragraphStyle: style])
+        var a: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: ink, .paragraphStyle: style]
+        if let edge { a[.strokeColor] = edge; a[.strokeWidth] = edgeWidth }
+        return NSAttributedString(string: words, attributes: a)
     }
 
     // MARK: sketch, comic, pop art
@@ -227,30 +265,48 @@ enum ChainFun {
         return out
     }
 
-    /// What colour each mosaic emoji is on the whole, measured once from how this phone draws it.
-    private static let palette: [(r: Int, g: Int, b: Int)] = ChainText.mosaicEmojis.map { e -> (r: Int, g: Int, b: Int) in
-        guard let cg = tile(e, side: 24).cgImage, let c = colours(cg, cols: 1, rows: 1)?.first else { return (r: 128, g: 128, b: 128) }
-        return c
+    /// What colour each emoji is on the whole, measured from how this phone draws it (once per set of emojis).
+    private static var palettes: [String: [(r: Int, g: Int, b: Int)]] = [:]
+    private static let paletteLock = NSLock()
+    private static func palette(_ emojis: [String]) -> [(r: Int, g: Int, b: Int)] {
+        let key = emojis.joined()
+        paletteLock.lock(); defer { paletteLock.unlock() }
+        if let p = palettes[key] { return p }
+        let p = emojis.map { e -> (r: Int, g: Int, b: Int) in
+            guard let cg = tile(e, side: 24).cgImage, let c = colours(cg, cols: 1, rows: 1)?.first else { return (r: 128, g: 128, b: 128) }
+            return c
+        }
+        palettes[key] = p
+        return p
     }
 
-    /// The photo rebuilt from emojis: each small square of it becomes the emoji closest to its colour, on a square
-    /// of that colour, so from a step back it still reads as the photo.
-    static func mosaic(_ image: UIImage, cell: CGFloat = 28) -> UIImage? {
+    /// The photo rebuilt from emojis in one of the looks (ChainText.mosaicStyles): each small square of it becomes the
+    /// emoji closest to its colour, on a square of that colour so from a step back it still reads as the photo, or on
+    /// its own (slightly larger, touching) for a wall of emoji.
+    static func mosaic(_ image: UIImage, style: String? = nil, cell: CGFloat = 28) -> UIImage? {
         guard let cg = image.cgImage else { return nil }
-        let grid = ChainText.mosaicGrid(width: Double(cg.width), height: Double(cg.height))
+        let look = ChainText.mosaicLook(style)
+        let grid = ChainText.mosaicGrid(width: Double(cg.width), height: Double(cg.height), long: look.long)
         guard grid.cols > 0, grid.rows > 0, let cells = colours(cg, cols: grid.cols, rows: grid.rows) else { return nil }
+        let pal = palette(look.emojis)
+        // Keep the picture about the same size whatever the count: fewer emojis are drawn bigger.
+        let side = max(18, (cell * 56 / CGFloat(look.long)).rounded())
         var tiles: [Int: UIImage] = [:]
-        let size = CGSize(width: CGFloat(grid.cols) * cell, height: CGFloat(grid.rows) * cell)
+        let size = CGSize(width: CGFloat(grid.cols) * side, height: CGFloat(grid.rows) * side)
         let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
         return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
+            if !look.backed { UIColor.white.setFill(); ctx.fill(CGRect(origin: .zero, size: size)) }
             for (i, c) in cells.enumerated() {
-                let r = CGRect(x: CGFloat(i % grid.cols) * cell, y: CGFloat(i / grid.cols) * cell, width: cell, height: cell)
-                UIColor(red: CGFloat(c.r) / 255, green: CGFloat(c.g) / 255, blue: CGFloat(c.b) / 255, alpha: 1).setFill()
-                ctx.fill(r)
-                let pick = ChainText.nearestColor(r: c.r, g: c.g, b: c.b, in: palette)
+                let r = CGRect(x: CGFloat(i % grid.cols) * side, y: CGFloat(i / grid.cols) * side, width: side, height: side)
+                if look.backed {
+                    UIColor(red: CGFloat(c.r) / 255, green: CGFloat(c.g) / 255, blue: CGFloat(c.b) / 255, alpha: 1).setFill()
+                    ctx.fill(r)
+                }
+                let pick = ChainText.nearestColor(r: c.r, g: c.g, b: c.b, in: pal)
                 guard pick >= 0 else { continue }
-                if tiles[pick] == nil { tiles[pick] = tile(ChainText.mosaicEmojis[pick], side: cell) }
-                tiles[pick]?.draw(in: r)
+                let drawSide = look.backed ? side : side * 1.18
+                if tiles[pick] == nil { tiles[pick] = tile(look.emojis[pick], side: drawSide) }
+                tiles[pick]?.draw(in: look.backed ? r : r.insetBy(dx: -(drawSide - side) / 2, dy: -(drawSide - side) / 2))
             }
         }
     }

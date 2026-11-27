@@ -81,6 +81,16 @@ enum ChainPayload {
     /// A video stays a file on disk (it is far too big to hold in memory); steps hand its location along.
     case video(URL)
 
+    /// Tells one result from the next, so a view showing it starts fresh when it changes.
+    var identity: String {
+        switch self {
+        case .image(let i): return "i\(ObjectIdentifier(i).hashValue)"
+        case .text(let t): return "t\(t.hashValue)"
+        case .file(let d, let e): return "f\(e)\(d.count)-\(d.hashValue)"
+        case .video(let u): return "v\(u.absoluteString)"
+        }
+    }
+
     var kind: ChainKind {
         switch self {
         case .image: return .image
@@ -1511,6 +1521,29 @@ enum ChainText {
 
     /// Emojis a mosaic is built from: a spread of every colour, so any part of a photo has a close match.
     static let mosaicEmojis = ["🍎", "🌹", "🍓", "🔴", "🍅", "🍊", "🦊", "🏀", "🥕", "🟠", "🌟", "🍋", "🌻", "🟡", "🧀", "🍌", "🍏", "🌲", "🐸", "🥦", "🟢", "🍀", "🥝", "💙", "🌊", "🐳", "🔵", "🧊", "🫐", "💜", "🍇", "🔮", "🟣", "🌸", "🐷", "💗", "🍑", "🐻", "🍫", "🟤", "🥔", "🌰", "🍞", "🥜", "🧇", "🍪", "⚫", "🎱", "🖤", "🎩", "⚪", "☁️", "🥚", "🤍", "🐑", "🐘", "🪨", "🐭", "🥈", "🔘"]
+
+    /// Emoji art looks, offered side by side on the result: (id, name).
+    static let mosaicStyles: [(id: String, name: String)] = [
+        ("classic", "Classic"), ("pure", "Just emoji"), ("hearts", "Hearts"), ("food", "Food"),
+        ("animals", "Animals"), ("nature", "Nature"), ("bold", "Big emoji"), ("fine", "Fine detail"),
+    ]
+    /// Each look: the emojis it may use, how many across the long side, and whether each emoji sits on a square of
+    /// the photo's colour (reads as the photo from a step back) or on its own (reads as a wall of emoji).
+    static func mosaicLook(_ id: String?) -> (emojis: [String], long: Int, backed: Bool) {
+        switch id {
+        case "pure": return (mosaicEmojis, 48, false)
+        case "hearts": return (["❤️", "🧡", "💛", "💚", "💙", "💜", "🤎", "🖤", "🤍", "🩷", "🩵", "🩶", "💗", "💖"], 56, true)
+        case "food": return (["🍎", "🍓", "🍅", "🌶️", "🍊", "🥕", "🍋", "🍌", "🧀", "🌽", "🍏", "🥦", "🥒", "🥝", "🫐", "🍇", "🍆", "🍑", "🍫", "🥔", "🍞", "🥜", "🍪", "🍩", "🥚", "🍙", "🥥", "🍉", "🍒", "🥑", "🍔", "🫒"], 56, true)
+        case "animals": return (["🦊", "🐯", "🐥", "🐸", "🐢", "🦖", "🐳", "🐬", "🐟", "🦋", "🦄", "🐙", "🦩", "🐷", "🐻", "🐵", "🦁", "🐼", "🐧", "🐑", "🐘", "🐭", "🐺", "🦓", "🐞", "🐝", "🦜", "🐊", "🦍", "🐜"], 56, true)
+        case "nature": return (["🌹", "🌺", "🍁", "🍂", "🌻", "🌼", "☀️", "🌵", "🌲", "🌿", "🍀", "🌊", "💧", "❄️", "🌌", "🌙", "⭐", "🌸", "🪻", "🪨", "🌑", "☁️", "🔥", "🏔️"], 56, true)
+        case "bold": return (mosaicEmojis, 30, true)
+        case "fine": return (mosaicEmojis, 84, true)
+        default: return (mosaicEmojis, 56, true)
+        }
+    }
+
+    /// Meme looks: classic white capitals, a white caption band above, black bars, or bold yellow.
+    static let memeStyles: [(id: String, name: String)] = [("classic", "Classic"), ("caption", "Caption on top"), ("bars", "Black bars"), ("pop", "Bold yellow")]
 
     /// Which colour in `palette` is closest to the one given (all 0...255). -1 for an empty palette.
     static func nearestColor(r: Int, g: Int, b: Int, in palette: [(r: Int, g: Int, b: Int)]) -> Int {

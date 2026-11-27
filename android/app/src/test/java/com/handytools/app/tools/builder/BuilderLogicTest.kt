@@ -621,6 +621,15 @@ class BuilderLogicTest {
         val palette = listOf(intArrayOf(255, 0, 0), intArrayOf(0, 255, 0), intArrayOf(250, 250, 250))
         assertEquals(0, TextTidy.nearestColor(200, 30, 20, palette)); assertEquals(2, TextTidy.nearestColor(255, 255, 255, palette)); assertEquals(-1, TextTidy.nearestColor(1, 2, 3, emptyList()))
         assertEquals(TextTidy.MOSAIC_EMOJIS.size, TextTidy.MOSAIC_EMOJIS.toSet().size); assertTrue(TextTidy.MOSAIC_EMOJIS.size >= 48)
+        // Emoji art and memes offer several looks (the same as the iPhone), each different.
+        assertTrue(TextTidy.MOSAIC_STYLES.size >= 6); assertTrue(TextTidy.MEME_STYLES.size >= 4)
+        val seenLooks = HashSet<String>()
+        for ((id, _) in TextTidy.MOSAIC_STYLES) {
+            val l = TextTidy.mosaicLook(id)
+            assertTrue(id, l.emojis.size >= 12); assertEquals(id, l.emojis.size, l.emojis.toSet().size)
+            assertTrue("$id is the same as another look", seenLooks.add("${l.emojis.joinToString("")}|${l.long}|${l.backed}"))
+        }
+        assertEquals(56, TextTidy.mosaicLook(null).long)
     }
     @Test fun describeItUnderstandsTheFunRequests() {
         assertEquals(listOf(Block.MEME), planned("make a meme")); assertEquals(listOf(Block.MEME), planned("make a meme from my foto"))

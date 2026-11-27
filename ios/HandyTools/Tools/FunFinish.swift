@@ -9,6 +9,8 @@ struct FunFinishCard: View {
     let original: UIImage?
     @State var result: UIImage
     @State var look: String
+    /// The step's other settings (a meme's words), kept when another look is tried.
+    var settings: [String: String] = [:]
 
     @State private var busy: String?
     @State private var note: String?
@@ -19,6 +21,8 @@ struct FunFinishCard: View {
         case .artFilter: return PixelArt.styles
         case .sticker: return StickerStudio.presets.map { ($0.id, $0.name) }
         case .emojiFaces: return ChainText.faceEmojis.map { ($0, $0) }
+        case .emojiMosaic: return ChainText.mosaicStyles
+        case .meme: return ChainText.memeStyles
         default: return []
         }
     }
@@ -104,7 +108,8 @@ struct FunFinishCard: View {
         busy = id
         let key = block == .emojiFaces ? "emoji" : "style"
         Task {
-            let r = await ChainRunner.apply(ChainStep(block: block, settings: [key: id]), to: .image(o))
+            var all = settings; all[key] = id
+            let r = await ChainRunner.apply(ChainStep(block: block, settings: all), to: .image(o))
             await MainActor.run {
                 busy = nil
                 switch r {

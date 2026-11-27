@@ -490,6 +490,27 @@ object TextTidy {
     /** Emojis a mosaic is built from: a spread of every colour, so any part of a photo has a close match. */
     val MOSAIC_EMOJIS = listOf("🍎", "🌹", "🍓", "🔴", "🍅", "🍊", "🦊", "🏀", "🥕", "🟠", "🌟", "🍋", "🌻", "🟡", "🧀", "🍌", "🍏", "🌲", "🐸", "🥦", "🟢", "🍀", "🥝", "💙", "🌊", "🐳", "🔵", "🧊", "🫐", "💜", "🍇", "🔮", "🟣", "🌸", "🐷", "💗", "🍑", "🐻", "🍫", "🟤", "🥔", "🌰", "🍞", "🥜", "🧇", "🍪", "⚫", "🎱", "🖤", "🎩", "⚪", "☁️", "🥚", "🤍", "🐑", "🐘", "🪨", "🐭", "🥈", "🔘")
 
+    /** Emoji art looks, offered side by side on the result (the same as the iPhone). */
+    val MOSAIC_STYLES = listOf("classic" to "Classic", "pure" to "Just emoji", "hearts" to "Hearts", "food" to "Food",
+        "animals" to "Animals", "nature" to "Nature", "bold" to "Big emoji", "fine" to "Fine detail")
+
+    data class MosaicLook(val emojis: List<String>, val long: Int, val backed: Boolean)
+
+    /** Each look: the emojis it may use, how many across the long side, and whether each sits on a square of the photo's colour. */
+    fun mosaicLook(id: String?): MosaicLook = when (id) {
+        "pure" -> MosaicLook(MOSAIC_EMOJIS, 48, false)
+        "hearts" -> MosaicLook(listOf("❤️", "🧡", "💛", "💚", "💙", "💜", "🤎", "🖤", "🤍", "🩷", "🩵", "🩶", "💗", "💖"), 56, true)
+        "food" -> MosaicLook(listOf("🍎", "🍓", "🍅", "🌶️", "🍊", "🥕", "🍋", "🍌", "🧀", "🌽", "🍏", "🥦", "🥒", "🥝", "🫐", "🍇", "🍆", "🍑", "🍫", "🥔", "🍞", "🥜", "🍪", "🍩", "🥚", "🍙", "🥥", "🍉", "🍒", "🥑", "🍔", "🫒"), 56, true)
+        "animals" -> MosaicLook(listOf("🦊", "🐯", "🐥", "🐸", "🐢", "🦖", "🐳", "🐬", "🐟", "🦋", "🦄", "🐙", "🦩", "🐷", "🐻", "🐵", "🦁", "🐼", "🐧", "🐑", "🐘", "🐭", "🐺", "🦓", "🐞", "🐝", "🦜", "🐊", "🦍", "🐜"), 56, true)
+        "nature" -> MosaicLook(listOf("🌹", "🌺", "🍁", "🍂", "🌻", "🌼", "☀️", "🌵", "🌲", "🌿", "🍀", "🌊", "💧", "❄️", "🌌", "🌙", "⭐", "🌸", "🪻", "🪨", "🌑", "☁️", "🔥", "🏔️"), 56, true)
+        "bold" -> MosaicLook(MOSAIC_EMOJIS, 30, true)
+        "fine" -> MosaicLook(MOSAIC_EMOJIS, 84, true)
+        else -> MosaicLook(MOSAIC_EMOJIS, 56, true)
+    }
+
+    /** Meme looks: classic white capitals, a white caption band above, black bars, or bold yellow. */
+    val MEME_STYLES = listOf("classic" to "Classic", "caption" to "Caption on top", "bars" to "Black bars", "pop" to "Bold yellow")
+
     /** Which colour in [palette] (each r, g, b from 0 to 255) is closest to the one given. -1 for an empty palette. */
     fun nearestColor(r: Int, g: Int, b: Int, palette: List<IntArray>): Int {
         var best = -1; var bestD = Int.MAX_VALUE

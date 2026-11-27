@@ -816,6 +816,10 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
     var busy by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
     var result by remember { mutableStateOf<Payload?>(null) }
+    // The photo a fun result was made from, so other looks can be tried on it with one tap.
+    var source by remember { mutableStateOf<Bitmap?>(null) }
+    var look by remember { mutableStateOf("") }
+    var restyling by remember { mutableStateOf(false) }
     var batch by remember { mutableStateOf<List<BatchItem>>(emptyList()) }
     var progress by remember { mutableStateOf("") }
     // What each result of a many-at-once run is called in the list: a photo, or a file.
@@ -835,6 +839,8 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
 
     fun go(input: Payload) {
         busy = true; result = null; message = null; batch = emptyList()
+        source = (input as? Payload.Pic)?.bmp
+        look = live().steps.lastOrNull()?.let { if (it.block == Block.ART_FILTER) PixelArt.style(it.settings["style"]) else it.settings["style"] ?: it.settings["emoji"] } ?: "classic"
         scope.launch {
             when (val r = ChainRunner.run(live(), input)) {
                 is Outcome.Done -> { result = r.value; keep(r.value) }
@@ -1111,6 +1117,32 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
             }
             is Payload.Pic -> {
                 Image(r.bmp.asImageBitmap(), null, Modifier.heightIn(max = 320.dp))
+                // Fun photos: every other look one tap away on the same photo (the same as the iPhone's finish card).
+                val last = live().steps.lastOrNull()
+                val looks = when (last?.block) {
+                    Block.EMOJI_MOSAIC -> TextTidy.MOSAIC_STYLES
+                    Block.MEME -> TextTidy.MEME_STYLES
+                    Block.ART_FILTER -> PixelArt.STYLES
+                    Block.EMOJI_FACES -> TextTidy.FACE_EMOJIS.map { it to it }
+                    else -> emptyList()
+                }
+                val from = source
+                if (looks.isNotEmpty() && from != null && chain.steps.size == 1) {
+                    Text(if (last?.block == Block.EMOJI_FACES) "Try another emoji" else "Try another look", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                    ChoiceChips(looks, look) { id ->
+                        if (restyling || id == look || last == null) return@ChoiceChips
+                        restyling = true
+                        scope.launch {
+                            val key = if (last.block == Block.EMOJI_FACES) "emoji" else "style"
+                            when (val o = ChainRunner.apply(last.copy(settings = last.settings + (key to id)), Payload.Pic(from))) {
+                                is Outcome.Done -> { result = o.value; look = id }
+                                is Outcome.Stopped -> message = "That look couldn't be made from this photo."
+                            }
+                            restyling = false
+                        }
+                    }
+                    if (restyling) Text("Making that look…", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                }
                 HPrimaryButton("Save or share") {
                     val f = File(ctx.cacheDir, TextTidy.fileName(chain.fileName, chain.name, ext = "jpg")).also { it.writeBytes(MediaEngine.jpeg(r.bmp, 92)) }
                     Share.file(ctx, f, "image/jpeg")

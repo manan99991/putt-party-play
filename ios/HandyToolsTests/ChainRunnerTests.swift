@@ -1343,6 +1343,35 @@ final class FunStepTests: XCTestCase {
         XCTAssertEqual(ChainText.nearestColor(r: 200, g: 30, b: 20, in: palette), 0); XCTAssertEqual(ChainText.nearestColor(r: 255, g: 255, b: 255, in: palette), 2)
         XCTAssertEqual(ChainText.nearestColor(r: 1, g: 2, b: 3, in: []), -1)
         XCTAssertEqual(Set(ChainText.mosaicEmojis).count, ChainText.mosaicEmojis.count); XCTAssertGreaterThanOrEqual(ChainText.mosaicEmojis.count, 48)
+
+        // Emoji art and memes offer several looks, each different and each with enough emojis to match any colour.
+        XCTAssertGreaterThanOrEqual(ChainText.mosaicStyles.count, 6); XCTAssertGreaterThanOrEqual(ChainText.memeStyles.count, 4)
+        var seen = Set<String>()
+        for st in ChainText.mosaicStyles {
+            let l = ChainText.mosaicLook(st.id)
+            XCTAssertGreaterThanOrEqual(l.emojis.count, 12, st.id); XCTAssertEqual(Set(l.emojis).count, l.emojis.count, st.id)
+            XCTAssertTrue(seen.insert("\(l.emojis.joined())|\(l.long)|\(l.backed)").inserted, "\(st.id) is the same as another look")
+        }
+        XCTAssertEqual(ChainText.mosaicLook(nil).long, 56)
+    }
+    func testEveryEmojiArtAndMemeLookMakesADifferentPicture() {
+        let one = UIGraphicsImageRendererFormat(); one.scale = 1
+        let photo = UIGraphicsImageRenderer(size: CGSize(width: 120, height: 90), format: one).image { ctx in
+            UIColor.red.setFill(); ctx.fill(CGRect(x: 0, y: 0, width: 60, height: 90))
+            UIColor.blue.setFill(); ctx.fill(CGRect(x: 60, y: 0, width: 60, height: 90))
+        }
+        var shapes = Set<String>()
+        for st in ChainText.mosaicStyles {
+            let out = try? XCTUnwrap(ChainFun.mosaic(photo, style: st.id), st.id)
+            XCTAssertNotNil(out, st.id)
+            if let d = out?.pngData() { shapes.insert("\(d.count)") }
+        }
+        XCTAssertGreaterThanOrEqual(shapes.count, ChainText.mosaicStyles.count - 1, "looks came out the same")
+        let classic = ChainFun.meme(photo, top: "TOP", bottom: "BOTTOM")
+        let caption = ChainFun.meme(photo, top: "TOP", bottom: "BOTTOM", style: "caption")
+        let bars = ChainFun.meme(photo, top: "TOP", bottom: "BOTTOM", style: "bars")
+        XCTAssertEqual(classic.size.height, 90, accuracy: 1); XCTAssertGreaterThan(caption.size.height, 90); XCTAssertGreaterThan(bars.size.height, caption.size.height - 1)
+        XCTAssertNotEqual(ChainFun.meme(photo, top: "TOP", bottom: "", style: "pop").pngData(), ChainFun.meme(photo, top: "TOP", bottom: "").pngData())
     }
     func testDescribeItUnderstandsTheFunRequests() {
         XCTAssertEqual(planned("make a meme"), [.meme])
