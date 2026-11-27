@@ -256,6 +256,91 @@ object FunSteps {
 
     // ------------------------------------------------------------------ before and after
 
+    /**
+     * Before and after as one picture, in a look from TextTidy.REVEAL_STYLES: side by side (tall tiles), one above the
+     * other (wide tiles), or half and half (the left of the before joined to the right of the after).
+     */
+    fun beforeAfter(before: Bitmap, after: Bitmap, style: String?): Bitmap = when (style) {
+        "stack" -> beforeAfterStacked(before, after)
+        "half" -> beforeAfterHalf(before, after)
+        else -> beforeAfter(before, after)
+    }
+
+    private fun tag(c: Canvas, label: String, left: Float, top: Float) {
+        val words = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE; textSize = 44f; typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD); letterSpacing = 0.05f }
+        val plate = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.argb(158, 0, 0, 0) }
+        val m = words.fontMetrics
+        val box = RectF(left, top, left + words.measureText(label) + 44f, top + (m.descent - m.ascent) + 24f)
+        c.drawRoundRect(box, box.height() / 2f, box.height() / 2f, plate)
+        c.drawText(label, box.left + 22f, box.top + 12f - m.ascent, words)
+    }
+    private fun fillInto(c: Canvas, bmp: Bitmap, l: Float, t: Float, w: Float, h: Float) {
+        val s = maxOf(w / bmp.width, h / bmp.height); val bw = bmp.width * s; val bh = bmp.height * s
+        c.save(); c.clipRect(l, t, l + w, t + h)
+        c.drawBitmap(bmp, null, RectF(l + (w - bw) / 2f, t + (h - bh) / 2f, l + (w + bw) / 2f, t + (h + bh) / 2f), Paint(Paint.FILTER_BITMAP_FLAG))
+        c.restore()
+    }
+    private fun beforeAfterStacked(before: Bitmap, after: Bitmap, tileW: Int = 1200, tileH: Int = 800, gap: Int = 12): Bitmap {
+        val out = Bitmap.createBitmap(tileW + gap * 2, tileH * 2 + gap * 3, Bitmap.Config.ARGB_8888)
+        val c = Canvas(out); c.drawColor(Color.WHITE)
+        listOf(before to "BEFORE", after to "AFTER").forEachIndexed { i, (bmp, label) ->
+            val top = gap + i * (tileH + gap).toFloat()
+            fillInto(c, bmp, gap.toFloat(), top, tileW.toFloat(), tileH.toFloat()); tag(c, label, gap + 28f, top + 28f)
+        }
+        return out
+    }
+    private fun beforeAfterHalf(before: Bitmap, after: Bitmap, w: Int = 1080, h: Int = 1350): Bitmap {
+        val out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val c = Canvas(out)
+        fillInto(c, after, 0f, 0f, w.toFloat(), h.toFloat())
+        c.save(); c.clipRect(0f, 0f, w / 2f, h.toFloat()); fillInto(c, before, 0f, 0f, w.toFloat(), h.toFloat()); c.restore()
+        c.drawRect(w / 2f - 3f, 0f, w / 2f + 3f, h.toFloat(), Paint().apply { color = Color.WHITE })
+        tag(c, "BEFORE", 28f, h - 110f)
+        val p = Paint().apply { textSize = 44f; typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD); letterSpacing = 0.05f }
+        tag(c, "AFTER", w - 28f - p.measureText("AFTER") - 44f, h - 110f)
+        return out
+    }
+
+    /**
+     * A cut-out item as a listing photo, as the iPhone: trimmed to the item, centred at 80% of a [w] by [h] frame on a
+     * backdrop from TextTidy.BACKDROPS. Null for an ordinary photo (nothing see-through around it).
+     */
+    fun productShot(src: Bitmap, w: Int, h: Int, backdrop: String): Bitmap? {
+        if (!src.hasAlpha()) return null
+        val k = minOf(1f, 256f / maxOf(src.width, src.height))
+        val sw = maxOf(1, (src.width * k).toInt()); val sh = maxOf(1, (src.height * k).toInt())
+        val small = Bitmap.createScaledBitmap(src, sw, sh, false)
+        val px = IntArray(sw * sh); small.getPixels(px, 0, sw, 0, 0, sw, sh)
+        var minX = sw; var minY = sh; var maxX = -1; var maxY = -1; var clear = 0
+        for (y in 0 until sh) for (x in 0 until sw) {
+            if ((px[y * sw + x] ushr 24) > 24) { minX = minOf(minX, x); maxX = maxOf(maxX, x); minY = minOf(minY, y); maxY = maxOf(maxY, y) } else clear++
+        }
+        if (maxX < minX || clear <= sw * sh / 50) return null
+        val box = android.graphics.Rect((minX / k).toInt(), (minY / k).toInt(), minOf(src.width, ((maxX + 1) / k).toInt()), minOf(src.height, ((maxY + 1) / k).toInt()))
+        val s = minOf(w * 0.8f / box.width(), h * 0.8f / box.height())
+        val iw = box.width() * s; val ih = box.height() * s
+        val lift = if (backdrop == "shadow") h * 0.03f else 0f
+        val spot = RectF((w - iw) / 2f, (h - ih) / 2f - lift, (w + iw) / 2f, (h + ih) / 2f - lift)
+        val out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val c = Canvas(out)
+        when (backdrop) {
+            "grey" -> c.drawColor(Color.rgb(237, 237, 240))
+            "studio" -> c.drawRect(0f, 0f, w.toFloat(), h.toFloat(), Paint().apply {
+                shader = android.graphics.RadialGradient(w / 2f, h * 0.45f, maxOf(w, h) * 0.75f, Color.WHITE, Color.rgb(214, 219, 230), android.graphics.Shader.TileMode.CLAMP)
+            })
+            else -> c.drawColor(Color.WHITE)
+        }
+        if (backdrop == "shadow") {
+            val floor = RectF(spot.centerX() - iw * 0.42f, spot.bottom - ih * 0.03f, spot.centerX() + iw * 0.42f, spot.bottom - ih * 0.03f + maxOf(8f, ih * 0.07f))
+            c.drawOval(floor, Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                color = Color.argb(70, 0, 0, 0)
+                maskFilter = android.graphics.BlurMaskFilter(maxOf(12f, iw * 0.05f), android.graphics.BlurMaskFilter.Blur.NORMAL)
+            })
+        }
+        c.drawBitmap(src, box, spot, Paint(Paint.FILTER_BITMAP_FLAG))
+        return out
+    }
+
     /** Two pictures side by side, each filling a tall tile, with BEFORE and AFTER written on them. */
     fun beforeAfter(before: Bitmap, after: Bitmap, tileW: Int = 900, tileH: Int = 1200, gap: Int = 12): Bitmap {
         val out = Bitmap.createBitmap(tileW * 2 + gap * 3, tileH + gap * 2, Bitmap.Config.ARGB_8888)

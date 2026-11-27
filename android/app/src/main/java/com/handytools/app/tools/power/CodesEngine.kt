@@ -47,6 +47,72 @@ object CodesEngine {
     // ------------------------------------------------------------------ generate
 
     /** Render [text] as a QR bitmap with a quiet margin. Null if the text is too long for a QR. */
+    /** The code's squares, true = dark, row by row, with no margin. */
+    fun qrModules(text: String, correction: String = "M"): Array<BooleanArray>? = try {
+        val ecc = when (correction) {
+            "H" -> com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.H
+            "Q" -> com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.Q
+            else -> com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.M
+        }
+        val m = com.google.zxing.qrcode.encoder.Encoder.encode(text, ecc, mapOf(EncodeHintType.CHARACTER_SET to "UTF-8")).matrix
+        Array(m.height) { y -> BooleanArray(m.width) { x -> m.get(x, y).toInt() == 1 } }
+    } catch (_: Exception) { null }
+
+    /**
+     * A QR code in one of TextTidy.QR_STYLES, as the iPhone: classic, dots, rounded, colour or a "Scan me" card. Every
+     * one still scans: the three corner squares stay solid, there's a white margin all round, and dots use sturdier
+     * error correction.
+     */
+    fun qrStyled(text: String, style: String?, correction: String = "M", scanMe: String = "Scan me"): Bitmap? {
+        val st = if (com.handytools.app.tools.builder.TextTidy.QR_STYLES.any { it.first == style }) style!! else "classic"
+        if (st == "classic") return qr(text, correction = correction)
+        val m = qrModules(text, if (st == "dots") (if (correction == "H") "H" else "Q") else correction) ?: return null
+        val n = m.size; val cell = 24f; val quiet = 4 * cell
+        val codeSide = n * cell + 2 * quiet
+        val card = st == "card"
+        val band = if (card) cell * 7 else 0f; val pad = if (card) cell * 2 else 0f
+        val w = (codeSide + 2 * pad).toInt(); val h = (codeSide + 2 * pad + band).toInt()
+        val out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val c = android.graphics.Canvas(out)
+        val ink = if (st == "color") android.graphics.Color.rgb(43, 46, 125) else android.graphics.Color.rgb(20, 20, 20)
+        val eyeInk = if (st == "color") android.graphics.Color.rgb(232, 84, 69) else ink
+        val p = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { color = ink }
+        if (card) {
+            c.drawColor(android.graphics.Color.rgb(245, 242, 252))
+            c.drawRoundRect(android.graphics.RectF(pad / 2, pad / 2, w - pad / 2, h - pad / 2), cell * 1.5f, cell * 1.5f,
+                android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { color = android.graphics.Color.WHITE })
+        } else c.drawColor(android.graphics.Color.WHITE)
+        val ox = pad + quiet; val oy = pad + quiet
+        fun inFinder(r: Int, col: Int) = (r < 7 && col < 7) || (r < 7 && col >= n - 7) || (r >= n - 7 && col < 7)
+        for (r in 0 until n) for (col in 0 until n) if (m[r][col] && !inFinder(r, col)) {
+            val box = android.graphics.RectF(ox + col * cell, oy + r * cell, ox + (col + 1) * cell, oy + (r + 1) * cell)
+            when (st) {
+                "dots" -> c.drawOval(android.graphics.RectF(box.left + cell * 0.06f, box.top + cell * 0.06f, box.right - cell * 0.06f, box.bottom - cell * 0.06f), p)
+                "rounded" -> c.drawRoundRect(android.graphics.RectF(box.left - 0.5f, box.top - 0.5f, box.right + 0.5f, box.bottom + 0.5f), cell * 0.32f, cell * 0.32f, p)
+                else -> c.drawRect(android.graphics.RectF(box.left - 0.25f, box.top - 0.25f, box.right + 0.25f, box.bottom + 0.25f), p)
+            }
+        }
+        val eye = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { color = eyeInk }
+        val white = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { color = android.graphics.Color.WHITE }
+        val radius = if (st == "dots" || st == "rounded") cell * 1.6f else 0f
+        for ((fr, fc) in listOf(0 to 0, 0 to n - 7, n - 7 to 0)) {
+            val l = ox + fc * cell; val t = oy + fr * cell
+            c.drawRoundRect(android.graphics.RectF(l, t, l + 7 * cell, t + 7 * cell), radius, radius, eye)
+            c.drawRoundRect(android.graphics.RectF(l + cell, t + cell, l + 6 * cell, t + 6 * cell), maxOf(0f, radius - cell), maxOf(0f, radius - cell), white)
+            val inner = if (radius > 0) cell * 0.9f else 0f
+            c.drawRoundRect(android.graphics.RectF(l + 2 * cell, t + 2 * cell, l + 5 * cell, t + 5 * cell), inner, inner, eye)
+        }
+        if (card) {
+            val words = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+                color = ink; textSize = cell * 2.6f; typeface = android.graphics.Typeface.create(android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD)
+                textAlign = android.graphics.Paint.Align.CENTER
+            }
+            val fm = words.fontMetrics
+            c.drawText(scanMe, w / 2f, pad + codeSide + band / 2f - cell - (fm.ascent + fm.descent) / 2f, words)
+        }
+        return out
+    }
+
     fun qr(text: String, size: Int = 720, correction: String = "M"): Bitmap? = try {
         if (text.isEmpty()) null else {
             val ecc = if (correction == "H") com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.H else com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.M

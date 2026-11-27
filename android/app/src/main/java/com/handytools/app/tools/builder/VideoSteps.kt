@@ -100,11 +100,29 @@ object VideoSteps {
     }
 
     /** The middle of the frame at 9:16 (a phone held upright). */
-    suspend fun vertical(ctx: Context, uri: Uri): File? {
+    suspend fun vertical(ctx: Context, uri: Uri, blurredEdges: Boolean = false): File? {
         val out = outFile(ctx, "mp4")
-        val tall = Presentation.createForAspectRatio(9f / 16f, Presentation.LAYOUT_SCALE_TO_FIT_WITH_CROP)
-        val ok = export(ctx, EditedMediaItem.Builder(MediaItem.fromUri(uri)).setEffects(Effects(emptyList(), listOf(tall))).build(), out, null)
+        val aspect = if (blurredEdges) displayAspect(ctx, uri) else null
+        val effects = if (aspect != null && aspect > 9f / 16f) {
+            // The whole picture kept, full width, over a blurred copy of itself filling the tall screen: squeeze the
+            // frame into 9:16, blur that, then lay the sharp frame on top at its true shape.
+            listOf(Presentation.createForAspectRatio(9f / 16f, Presentation.LAYOUT_STRETCH_TO_FIT),
+                androidx.media3.effect.GaussianBlurWithFrameOverlaid(24f, 1f, (9f / 16f) / aspect))
+        } else listOf(Presentation.createForAspectRatio(9f / 16f, Presentation.LAYOUT_SCALE_TO_FIT_WITH_CROP))
+        val ok = export(ctx, EditedMediaItem.Builder(MediaItem.fromUri(uri)).setEffects(Effects(emptyList(), effects)).build(), out, null)
         return if (ok && out.length() > 0L) out else { out.delete(); null }
+    }
+
+    /** Width over height as the video is shown (its rotation applied); null if it can't be read. */
+    private fun displayAspect(ctx: Context, uri: Uri): Float? {
+        val mmr = android.media.MediaMetadataRetriever()
+        return try {
+            mmr.setDataSource(ctx, uri)
+            val w = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)?.toFloatOrNull() ?: return null
+            val h = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)?.toFloatOrNull() ?: return null
+            val rot = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION)?.toIntOrNull() ?: 0
+            if (w <= 0f || h <= 0f) null else if (rot % 180 != 0) h / w else w / h
+        } catch (_: Throwable) { null } finally { runCatching { mmr.release() } }
     }
 
     /** The same video played [rate] times as fast (0.5 is slow motion). It comes out without sound, since sound at another speed is only noise. */

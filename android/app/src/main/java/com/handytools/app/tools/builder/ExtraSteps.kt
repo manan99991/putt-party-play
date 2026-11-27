@@ -223,9 +223,10 @@ object ExtraSteps {
                 b == Block.VIDEO_ROTATE && input is Payload.Clip ->
                     VideoSteps.rotate(ctx, input.uri, TextTidy.turnDegrees(step.settings["turn"]))?.let { clip(it) } ?: fail()
                 b == Block.VIDEO_VERTICAL && input is Payload.Clip ->
-                    VideoSteps.vertical(ctx, input.uri)?.let { clip(it) } ?: fail()
+                    VideoSteps.vertical(ctx, input.uri, blurredEdges = step.settings["fit"] == "blur")?.let { clip(it) } ?: fail()
                 b == Block.VIDEO_GIF && input is Payload.Clip -> {
-                    val made = withContext(Dispatchers.IO) { MediaEngine.videoToGif(ctx, input.uri, 480) }
+                    val look = TextTidy.videoGifLook(step.settings["look"])
+                    val made = withContext(Dispatchers.IO) { MediaEngine.videoToGif(ctx, input.uri, look.width, look.spanMs, look.frames, look.speed) }
                     if (made == null) fail() else {
                         val bytes = made.first.readBytes()
                         made.first.delete()

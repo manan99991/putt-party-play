@@ -650,6 +650,28 @@ class BuilderLogicTest {
         val fade = TextTidy.gifTimeline(3, "fade")
         assertEquals(18, fade.size); assertEquals(0, fade.last().to); assertTrue(fade.all { it.mix >= 0f && it.mix < 1f })
     }
+    @Test fun resultLooksAreOfferedWhereTheyBelong() {
+        fun keys(vararg b: Block) = TextTidy.resultLooks(b.toList()).map { it.key }
+        assertEquals(listOf("style"), keys(Block.MAKE_QR)); assertEquals(listOf("style"), keys(Block.WIFI_QR)); assertEquals(listOf("style"), keys(Block.CONTACT_QR))
+        assertEquals(listOf("look"), keys(Block.VIDEO_GIF)); assertEquals(listOf("style"), keys(Block.HIDE_SENSITIVE))
+        assertEquals(listOf("fit"), keys(Block.VIDEO_VERTICAL)); assertEquals(listOf("sentences", "format"), keys(Block.SUMMARIZE))
+        assertEquals(listOf("style"), keys(Block.REWRITE)); assertEquals(listOf("speed"), keys(Block.READ_ALOUD))
+        val sell = TextTidy.resultLooks(listOf(Block.CUTOUT, Block.ENHANCE, Block.RESIZE_PHOTO, Block.STRIP_LOCATION))
+        assertEquals(listOf("backdrop"), sell.map { it.key }); assertEquals(2, sell.first().step)
+        assertTrue(keys(Block.RESIZE_PHOTO).isEmpty())          // an ordinary exact-size photo has no backdrop
+        assertTrue(keys(Block.MEME).isEmpty()); assertTrue(keys(Block.VIDEO_LOOP).isEmpty())   // those have their own looks
+        for (g in TextTidy.resultLooks(listOf(Block.MAKE_QR)) + TextTidy.resultLooks(listOf(Block.VIDEO_GIF)) + TextTidy.resultLooks(listOf(Block.SUMMARIZE)) + sell +
+            TextTidy.resultLooks(listOf(Block.HIDE_SENSITIVE)) + TextTidy.resultLooks(listOf(Block.VIDEO_VERTICAL)) + TextTidy.resultLooks(listOf(Block.READ_ALOUD))) {
+            assertEquals(g.key, g.options.size, g.options.map { it.first }.toSet().size)
+            assertTrue("${g.key}: the default is one of the choices", g.options.any { it.first == g.fallback })
+        }
+        assertEquals(TextTidy.VIDEO_GIF_LOOKS.size, TextTidy.VIDEO_GIF_LOOKS.map { TextTidy.videoGifLook(it.first) }.toSet().size)
+        assertEquals(TextTidy.REVEAL_STYLES.size, TextTidy.REVEAL_STYLES.map { it.first }.toSet().size)
+        // The same choices as the iPhone (ids), so a tool built on one phone means the same on the other.
+        assertEquals(listOf("classic", "dots", "rounded", "color", "card"), TextTidy.QR_STYLES.map { it.first })
+        assertEquals(listOf("white", "grey", "studio", "shadow"), TextTidy.BACKDROPS.map { it.first })
+        assertEquals(listOf("block", "pixelate", "emoji"), TextTidy.HIDE_STYLES.map { it.first })
+    }
     @Test fun everyArtStyleMakesADifferentPicture() {
         // The same test card as the iPhone: a warm left half, a cool right half with a dark square in it.
         val w = 96; val h = 72

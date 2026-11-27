@@ -342,14 +342,14 @@ internal object MediaEngine {
     }
 
     /** First ~4 s of the clip sampled into a looping GIF (same recipe as GIF Maker). Returns file + first frame. */
-    fun videoToGif(ctx: Context, uri: Uri, targetW: Int): Pair<File, Bitmap>? {
+    fun videoToGif(ctx: Context, uri: Uri, targetW: Int, maxSpanMs: Long = 4000L, frames: Int = 20, speed: Double = 1.0): Pair<File, Bitmap>? {
         val mmr = MediaMetadataRetriever()
         try {
             mmr.setDataSource(ctx, uri)
             val durMs = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull() ?: 0L
             if (durMs <= 0L) return null
-            val spanMs = minOf(durMs, 4000L)
-            val count = 20
+            val spanMs = minOf(durMs, maxSpanMs)
+            val count = frames
             val stepMs = (spanMs / count).coerceAtLeast(60L)
             val frames = ArrayList<Bitmap>()
             var t = 0L
@@ -368,7 +368,7 @@ internal object MediaEngine {
                 t += stepMs
             }
             if (frames.isEmpty()) return null
-            val delayCs = (stepMs / 10).toInt().coerceIn(4, 25)
+            val delayCs = (stepMs / 10 / speed).toInt().coerceIn(2, 50)
             val bytes = GifEncoder.encode(frames, delayCs)
             val first = frames.first()
             val preview = first.copy(first.config ?: Bitmap.Config.ARGB_8888, false)

@@ -258,13 +258,13 @@ object ChainRunner {
                 b == Block.WIFI_QR && input is Payload.Words -> {
                     // The network name and password from a router label or a cafe sign, as a code a guest's camera joins from.
                     val code = TextTidy.wifiCode(input.text)
-                    if (code == null) none() else com.handytools.app.tools.power.CodesEngine.qr(code)?.let { Outcome.Done(Payload.Pic(it)) } ?: fail()
+                    if (code == null) none() else com.handytools.app.tools.power.CodesEngine.qrStyled(code, step.settings["style"])?.let { Outcome.Done(Payload.Pic(it)) } ?: fail()
                 }
                 b == Block.CONTACT_QR && input is Payload.Words -> {
                     // Only what is in the text goes into the code, so you choose what the other person gets.
                     val c = CaptureClassifier.classify(input.text)
                     if (c.phone.isBlank() && c.email.isBlank()) Outcome.Stopped("Contact as a QR code needs a phone number or an email, and didn't find one.")
-                    else com.handytools.app.tools.power.CodesEngine.qr(vcard(c.name, c.title, c.company, c.phone, c.email))?.let { Outcome.Done(Payload.Pic(it)) } ?: fail()
+                    else com.handytools.app.tools.power.CodesEngine.qrStyled(vcard(c.name, c.title, c.company, c.phone, c.email), step.settings["style"])?.let { Outcome.Done(Payload.Pic(it)) } ?: fail()
                 }
                 b == Block.EXPENSE_ROW && input is Payload.Words -> {
                     val r = CaptureClassifier.classify(input.text)
@@ -300,7 +300,7 @@ object ChainRunner {
                     TextTidy.cleanLinks(input.text)?.let { Outcome.Done(Payload.Words(it)) } ?: none()
                 b == Block.MAKE_QR && input is Payload.Words ->
                     if (input.text.isBlank()) none()
-                    else com.handytools.app.tools.power.CodesEngine.qr(input.text.trim(), correction = TextTidy.qrCorrection(step.settings["sturdiness"]))?.let { Outcome.Done(Payload.Pic(it)) }
+                    else com.handytools.app.tools.power.CodesEngine.qrStyled(input.text.trim(), step.settings["style"], correction = TextTidy.qrCorrection(step.settings["sturdiness"]))?.let { Outcome.Done(Payload.Pic(it)) }
                         ?: Outcome.Stopped("Make a QR code couldn't fit that much text into one code. Try something shorter.")
                 b == Block.PHOTO_PDF && input is Payload.Pic -> {
                     Outcome.Done(Payload.Doc(onePdf(listOf(input.bmp), pageSize = step.settings["pagesize"] ?: "auto"), "pdf"))
@@ -353,6 +353,8 @@ object ChainRunner {
                     val px = TextTidy.pixels(step.settings["size"] ?: "") ?: return@withContext Outcome.Stopped("Exact pixel size needs a size like 600x600.")
                     // Scale to cover the exact size and trim the overflow evenly, so nothing is stretched.
                     val (w, h) = px
+                    // A cut-out (see-through around the item) sits whole on a backdrop, as the iPhone; any other photo fills the size.
+                    FunSteps.productShot(input.bmp, w, h, step.settings["backdrop"] ?: "white")?.let { return@withContext Outcome.Done(Payload.Pic(it)) }
                     val s = maxOf(w.toFloat() / input.bmp.width, h.toFloat() / input.bmp.height)
                     val sw = input.bmp.width * s; val sh = input.bmp.height * s
                     val out = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
@@ -366,7 +368,8 @@ object ChainRunner {
                 b == Block.HIDE_SENSITIVE && input is Payload.Pic -> {
                     val rects = ArrayList<Rect>(ScrubberEngine.detectFaces(input.bmp))
                     rects.addAll(personalText(input.bmp))
-                    val out = if (rects.isEmpty()) input.bmp else ScrubberEngine.scrub(input.bmp, rects, ScrubberEngine.HideStyle.PIXELATE)
+                    val style = when (step.settings["style"]) { "pixelate" -> ScrubberEngine.HideStyle.PIXELATE; "emoji" -> ScrubberEngine.HideStyle.EMOJI; else -> ScrubberEngine.HideStyle.BLOCK }
+                    val out = if (rects.isEmpty()) input.bmp else ScrubberEngine.scrub(input.bmp, rects, style)
                     Outcome.Done(Payload.Doc(MediaEngine.jpeg(out, 92), "jpg"))
                 }
                 b == Block.BUSINESS_CARD && input is Payload.Words -> {

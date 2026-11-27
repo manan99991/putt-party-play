@@ -32,7 +32,7 @@ import java.io.FileOutputStream
 internal object ScrubberEngine {
 
     /** How a region gets hidden. Both are destructive — the original pixels are gone in the output. */
-    enum class HideStyle(val label: String) { PIXELATE("Pixelate"), BLUR("Blur") }
+    enum class HideStyle(val label: String) { PIXELATE("Pixelate"), BLUR("Blur"), BLOCK("Black bars"), EMOJI("Emoji") }
 
     /** Everything detected (and manually added) for one image, in that image's own pixel coords. */
     data class Detection(val faces: List<Rect>, val text: List<Rect>)
@@ -137,10 +137,24 @@ internal object ScrubberEngine {
             val hidden = when (style) {
                 HideStyle.PIXELATE -> pixelate(region)
                 HideStyle.BLUR -> blur(region)
+                HideStyle.BLOCK -> solid(region)
+                HideStyle.EMOJI -> emoji(region)
             }
             canvas.drawBitmap(hidden, null, c, paint)
         }
         return copy
+    }
+
+    /** A solid black bar. */
+    private fun solid(region: Bitmap): Bitmap = Bitmap.createBitmap(region.width, region.height, Bitmap.Config.ARGB_8888).apply { eraseColor(android.graphics.Color.BLACK) }
+
+    /** A black bar with a sunglasses emoji on it: fun for faces, and the pixels underneath are still gone. */
+    private fun emoji(region: Bitmap): Bitmap {
+        val out = solid(region)
+        val p = Paint(Paint.ANTI_ALIAS_FLAG).apply { textSize = minOf(region.width, region.height) * 0.9f; textAlign = Paint.Align.CENTER }
+        val m = p.fontMetrics
+        Canvas(out).drawText("😎", out.width / 2f, out.height / 2f - (m.ascent + m.descent) / 2f, p)
+        return out
     }
 
     /** Blocky mosaic: shrink with no filtering, blow back up with no filtering. Fully opaque. */

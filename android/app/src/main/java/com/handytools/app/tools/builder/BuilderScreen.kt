@@ -822,6 +822,12 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
     var restyling by remember { mutableStateOf(false) }
     // A collage's or a photos GIF's photos, so its result can switch looks without picking them again.
     var joined by remember { mutableStateOf<List<android.graphics.Bitmap>>(emptyList()) }
+    // The last single run's input and tool, so "Try another look" can run it again with one choice changed.
+    var runInput by remember { mutableStateOf<Payload?>(null) }
+    var runTool by remember { mutableStateOf<Chain?>(null) }
+    var picks by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
+    var remaking by remember { mutableStateOf(false) }
+    var remakeStart by remember { mutableStateOf(0L) }
     var batch by remember { mutableStateOf<List<BatchItem>>(emptyList()) }
     var progress by remember { mutableStateOf("") }
     // What each result of a many-at-once run is called in the list: a photo, or a file.
@@ -841,6 +847,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
 
     fun go(input: Payload) {
         busy = true; result = null; message = null; batch = emptyList(); joined = emptyList()
+        runInput = input; runTool = live(); picks = emptyMap()
         source = (input as? Payload.Pic)?.bmp
         look = live().steps.lastOrNull()?.let { if (it.block == Block.ART_FILTER) PixelArt.style(it.settings["style"]) else it.settings["style"] ?: it.settings["emoji"] } ?: "classic"
         scope.launch {
@@ -876,7 +883,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
     }
     fun runBatch(uris: List<Uri>) {
         val picked = uris.take(MAX_BATCH)
-        busy = true; result = null; message = null; batch = emptyList(); joined = emptyList()
+        busy = true; result = null; message = null; batch = emptyList(); joined = emptyList(); runInput = null; runTool = null; picks = emptyMap()
         scope.launch {
             val dir = File(ctx.cacheDir, "batch-${System.currentTimeMillis()}").also { it.mkdirs() }
             val out = ArrayList<BatchItem>()
@@ -907,6 +914,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                 if (joinable && pages.size >= 2) {
                     val one = withContext(Dispatchers.Default) { FunSteps.beforeAfter(pages.first(), pages.last()) }
                     result = Payload.Pic(one); keep(Payload.Pic(one))
+                    joined = withContext(Dispatchers.Default) { keepSmall(listOf(pages.first(), pages.last())) }; look = "side"
                 } else message = "Before and after needs two photos: pick the before and the after together."
                 busy = false; progress = ""
                 return@launch
@@ -1134,7 +1142,18 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                     else -> emptyList()
                 }
                 val from = source
-                if (chain.collage && joined.size > 1) {
+                if (chain.versus && joined.size == 2) {
+                    // Before and after: side by side, one above the other, or half and half.
+                    Text("Try another layout", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                    ChoiceChips(TextTidy.REVEAL_STYLES, look) { id ->
+                        if (restyling || id == look) return@ChoiceChips
+                        restyling = true
+                        scope.launch {
+                            result = Payload.Pic(withContext(Dispatchers.Default) { FunSteps.beforeAfter(joined[0], joined[1], id) }); look = id
+                            restyling = false
+                        }
+                    }
+                } else if (chain.collage && joined.size > 1) {
                     // A collage: the same photos in another layout.
                     Text("Try another layout", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                     ChoiceChips(TextTidy.COLLAGE_LOOKS, look) { id ->
@@ -1195,6 +1214,37 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                 }
             }
             null -> {}
+        }
+        // Other looks for this result, one tap each (QR style, GIF speed, summary length, backdrop…), as the iPhone.
+        val rIn = runInput; val rTool = runTool
+        if (result != null && !busy && rIn != null && rTool != null) {
+            for (g in TextTidy.resultLooks(rTool.steps.map { it.block })) {
+                val gid = "${g.step}.${g.key}"
+                val now = picks[gid] ?: rTool.steps[g.step].settings[g.key]?.takeIf { it.isNotEmpty() } ?: g.fallback
+                Text(g.title, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                ChoiceChips(g.options, now) { id ->
+                    if (remaking || id == now) return@ChoiceChips
+                    remaking = true; remakeStart = System.currentTimeMillis()
+                    scope.launch {
+                        val next = rTool.copy(steps = rTool.steps.mapIndexed { i, st ->
+                            var set = st.settings
+                            for (o in TextTidy.resultLooks(rTool.steps.map { it.block })) if (o.step == i) picks["${o.step}.${o.key}"]?.let { set = set + (o.key to it) }
+                            if (i == g.step) set = set + (g.key to id)
+                            st.copy(settings = set)
+                        })
+                        when (val o = ChainRunner.run(next, rIn)) {
+                            is Outcome.Done -> { result = o.value; picks = picks + (gid to id) }
+                            is Outcome.Stopped -> message = "That one couldn't be made from this. The result above is unchanged."
+                        }
+                        remaking = false
+                    }
+                }
+            }
+            if (remaking) {
+                var secs by remember { mutableStateOf(0L) }
+                LaunchedEffect(remakeStart) { while (true) { secs = (System.currentTimeMillis() - remakeStart) / 1000; kotlinx.coroutines.delay(1000) } }
+                Text("Making it… $secs s", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            }
         }
         // The tool's own ending: open email, messages or WhatsApp already filled in. If that app isn't on this phone,
         // fall back to the share menu so the result always has somewhere to go.

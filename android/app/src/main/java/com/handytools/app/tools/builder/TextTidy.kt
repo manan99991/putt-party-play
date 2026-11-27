@@ -420,6 +420,51 @@ object TextTidy {
         return lines.joinToString("\n")
     }
 
+    // ------------------------------------------------------------------ "Try another look" under a result (as the iPhone)
+
+    val QR_STYLES = listOf("classic" to "Classic", "dots" to "Dots", "rounded" to "Rounded", "color" to "Colour", "card" to "Scan me card")
+    val VIDEO_GIF_LOOKS = listOf("normal" to "Normal", "slow" to "Slow motion", "fast" to "Fast", "small" to "Small for chat", "sharp" to "Sharp for posting")
+    /** How a video GIF look is made: how much of the video (ms), frames, playback speed and width. */
+    data class VideoGifLook(val spanMs: Long, val frames: Int, val speed: Double, val width: Int)
+    fun videoGifLook(id: String?): VideoGifLook = when (id) {
+        "slow" -> VideoGifLook(3000, 30, 0.5, 480)
+        "fast" -> VideoGifLook(12000, 48, 2.0, 480)
+        "small" -> VideoGifLook(6000, 36, 1.0, 320)
+        "sharp" -> VideoGifLook(6000, 60, 1.0, 720)
+        else -> VideoGifLook(6000, 48, 1.0, 480)
+    }
+    val HIDE_STYLES = listOf("block" to "Black bars", "pixelate" to "Pixelate", "emoji" to "Emoji")
+    val BACKDROPS = listOf("white" to "White", "grey" to "Soft grey", "studio" to "Studio fade", "shadow" to "White with shadow")
+    val TALL_FITS = listOf("crop" to "Fill the screen", "blur" to "Whole video, blurred edges")
+    val SUMMARY_LENGTHS = listOf("1" to "1 sentence", "3" to "3 sentences", "5" to "5 sentences")
+    val SUMMARY_FORMATS = listOf("text" to "Paragraph", "bullets" to "Bullet points")
+    val READ_SPEEDS = listOf("slow" to "Slow", "normal" to "Normal", "fast" to "Fast")
+    /** Before and after on Android is one picture: the two side by side, one above the other, or split down the middle. */
+    val REVEAL_STYLES = listOf("side" to "Side by side", "stack" to "One above the other", "half" to "Half and half")
+
+    /** One row of choices under a result: which step it changes, the setting, a title, the choices and the default. */
+    data class LookGroup(val step: Int, val key: String, val title: String, val options: List<Pair<String, String>>, val fallback: String)
+
+    /** The choices offered under a result of a tool made of [blocks]. Fun photos, voices, boomerangs and speeds have their own. */
+    fun resultLooks(blocks: List<Block>): List<LookGroup> {
+        val out = ArrayList<LookGroup>()
+        val i = blocks.lastIndex
+        if (i < 0) return out
+        when (blocks[i]) {
+            Block.VIDEO_GIF -> out += LookGroup(i, "look", "Try another look", VIDEO_GIF_LOOKS, "normal")
+            Block.MAKE_QR, Block.WIFI_QR, Block.CONTACT_QR -> out += LookGroup(i, "style", "Try another style", QR_STYLES, "classic")
+            Block.HIDE_SENSITIVE -> out += LookGroup(i, "style", "Cover them with", HIDE_STYLES, "block")
+            Block.VIDEO_VERTICAL -> out += LookGroup(i, "fit", "Try another fit", TALL_FITS, "crop")
+            Block.REWRITE -> out += LookGroup(i, "style", "Try another tone", REWRITE_STYLES, "clear")
+            Block.SUMMARIZE -> { out += LookGroup(i, "sentences", "How long", SUMMARY_LENGTHS, "3"); out += LookGroup(i, "format", "Layout", SUMMARY_FORMATS, "text") }
+            Block.READ_ALOUD -> out += LookGroup(i, "speed", "Speed", READ_SPEEDS, "normal")
+            else -> {}
+        }
+        val resize = blocks.indexOf(Block.RESIZE_PHOTO)
+        if (Block.CUTOUT in blocks && resize >= 0) out += LookGroup(resize, "backdrop", "Try another backdrop", BACKDROPS, "white")
+        return out
+    }
+
     /** The looks a collage can be switched between on its result: id to label. The first is the default. */
     val COLLAGE_LOOKS = listOf("grid" to "Grid", "hero" to "Big first photo", "mosaic" to "Magazine", "strip" to "Photo strip", "black" to "Grid on black")
 
