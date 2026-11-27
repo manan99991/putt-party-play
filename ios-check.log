@@ -23,42 +23,5 @@ Fetching from https://github.com/tsolomko/BitByteData
 
 Fetching from https://github.com/tsolomko/SWCompression
 
-Fetching from https://github.com/vector-im/ogg-swift.git
-
 Fetching from https://github.com/vector-im/opus-swift
-
-Creating working copy of package ‘BitByteData’
-
-Checking out 2.0.4 of package ‘BitByteData’
-
-Creating working copy of package ‘ogg-swift’
-
-Checking out 0.8.3 of package ‘ogg-swift’
-
-Creating working copy of package ‘SWCompression’
-
-Checking out 4.8.6 of package ‘SWCompression’
-
-Creating working copy of package ‘opus-swift’
-
-Checking out 0.8.4 of package ‘opus-swift’
-
-Creating working copy of package ‘swift-ogg’
-
-Checking out main (a00a22b) of package ‘swift-ogg’
-
-
-Resolved source packages:
-  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
-  BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
-  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
-  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
-  TFLite: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/TFLite
-  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
-  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
-  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
-
-resolved source packages: YbridOgg, BitByteData, StbVorbis, Unrar, TFLite, YbridOpus, SWCompression, SwiftOGG
 == build.log (errors)
-2026-11-27 13:46:47.996477+0000 HandyTools[23388:67973] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNConnectionErrorDomain Code=1014 "LNConnectionErrorCodeOperationFailure" UserInfo={NSLocalizedDescription=LNConnectionErrorCodeOperationFailure}
-2026-11-27 13:51:26.032780+0000 HandyTools[23388:84775] [UAFAssetProvider] Sandbox extension request for asset set: com.apple.linguisticdata failed with error: Error Domain=SUCoreError Code=8113 "[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1077d7020> connection from pid 23388 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request" UserInfo={NSLocalizedDescription=[kSUCoreErrorNotSupported] [SendServerMessage](<NSXPCConnection: 0x1077d7020> connection from pid 23388 on mach service named com.apple.mobileasset.autoasset) client is not entitled for specific message request}
