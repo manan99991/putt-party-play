@@ -117,25 +117,68 @@ class FaceFunOnDeviceTest {
         return People(1.0 / 8, 180, 240, List(count) { bytes }, List(count) { listOf(f) })
     }
 
+    /**
+     * The same clip through the Studio with nothing chosen: every saved video is a fresh encode, which moves flat colour
+     * by a point or so everywhere, so each effect is measured against this — the same encode without the effect — not
+     * against the original clip.
+     */
+    private fun baseline(clip: File): Bitmap {
+        val out = runBlocking { VideoEffects.make(ctx, Uri.fromFile(clip), VideoEffects.Recipe()) } ?: throw AssertionError("the plain re-save couldn't be made")
+        return frame(out, 1.0).also { out.delete() }
+    }
+
+    /** A small whole person (the drawn head and shoulders at 40 %, with a body and legs below), for Long legs. */
+    private fun wholeBody(): Bitmap {
+        val b = Bitmap.createBitmap(W, H, Bitmap.Config.ARGB_8888)
+        val c = Canvas(b); val p = Paint(Paint.ANTI_ALIAS_FLAG)
+        c.drawColor(Color.rgb(158, 199, 230))
+        p.color = Color.rgb(102, 148, 191); p.strokeWidth = 3f
+        for (x in 0..W step 60) c.drawLine(x.toFloat(), 0f, x.toFloat(), H.toFloat(), p)
+        for (y in 0..H step 60) c.drawLine(0f, y.toFloat(), W.toFloat(), y.toFloat(), p)
+        c.drawBitmap(Bitmap.createScaledBitmap(drawing(false), 288, 384, true), 216f, 0f, null)
+        p.color = Color.rgb(51, 115, 89); c.drawRect(270f, 370f, 450f, 560f, p)
+        p.color = Color.rgb(40, 52, 90); c.drawRect(282f, 560f, 352f, 930f, p); c.drawRect(368f, 560f, 438f, 930f, p)
+        p.color = Color.rgb(30, 30, 30); c.drawRect(272f, 920f, 356f, 950f, p); c.drawRect(364f, 920f, 448f, 950f, p)
+        return b
+    }
+
+    private fun onePerson(f: FaceSpot): People = People(1.0 / 8, 180, 240, List(26) { ByteArray(180 * 240) }, List(26) { listOf(f) })
+
     @Test fun everyFaceEffectOnADrawnFace() {
         val pic = drawing(false)
         val clip = still(pic, "facefun-drawn")
-        val plain = frame(clip, 1.0)
+        val plain = baseline(clip)
         val people = drawnPeople()
         val shots = mutableListOf("As filmed" to plain)
         val failures = mutableListOf<String>()
         for (e in FaceFun.effects) {
+            if (e.id == "longlegs") continue
             val out = runBlocking { VideoEffects.make(ctx, Uri.fromFile(clip), VideoEffects.Recipe(funny = e.id, amount = 0.7f), given = people) }
             if (out == null) { failures += "${e.id}: not made"; continue }
             val f = frame(out, 1.0)
             val head = diff(plain, f, 180f / W, 40f / H, 540f / W, 600f / H)
             val corner = diff(plain, f, 0f, 1f - 80f / H, 80f / W, 1f)
             println("FACEFUN|drawn|${e.id}|head ${"%.1f".format(head)}|corner ${"%.1f".format(corner)}")
-            if (e.id != "longlegs" && head < 0.8) failures += "${e.id} did nothing to the face ($head)"
-            if (e.id == "longlegs" && diff(plain, f, 110f / W, 1f - 300f / H, 610f / W, 1f) < 0.5) failures += "long legs changed nothing"
+            if (head < 0.8) failures += "${e.id} did nothing to the face ($head)"
             if (e.id !in FaceFun.wholePicture && corner > 0.8) failures += "${e.id} changed the far corner ($corner)"
             shots += e.name to f
             out.delete()
+        }
+        // Long legs needs legs in the shot: a small whole person, legs drawn longer, the head left where it was.
+        run {
+            val body = still(wholeBody(), "facefun-body")
+            val before = baseline(body)
+            val face = FaceSpot(0.5f, 160f / H, 128f / W, listOf(Spot(336f / W, 144f / H), Spot(384f / W, 144f / H)), 0f, Spot(0.5f, 192f / H), Spot(358f / W, 167f / H))
+            val out = runBlocking { VideoEffects.make(ctx, Uri.fromFile(body), VideoEffects.Recipe(funny = "longlegs", amount = 0.7f), given = onePerson(face)) }
+            if (out == null) { failures += "longlegs: not made"; return@run }
+            val f = frame(out, 1.0); out.delete()
+            val legs = diff(before, f, 0f, 0.55f, 1f, 1f)
+            val head = diff(before, f, 216f / W, 0f, 504f / W, 0.18f)
+            println("FACEFUN|drawn|longlegs|legs ${"%.1f".format(legs)}|head ${"%.1f".format(head)}")
+            if (legs < 0.8) failures += "long legs changed nothing ($legs)"
+            if (head > 0.8) failures += "long legs moved the head ($head)"
+            shots += "Long legs (before)" to before
+            shots += "Long legs" to f
         }
         // Stickers land where they belong: shades on the eyes, a crown above the head, a moustache under the nose.
         fun shot(name: String) = shots.first { it.first == name }.second
@@ -152,7 +195,7 @@ class FaceFunOnDeviceTest {
 
     /** Sheets of twelve (four across) with names, in the app's files for the workflow to pull. A drawing only. */
     private fun sheets(shots: List<Pair<String, Bitmap>>, name: String) {
-        val dir = File(ctx.getExternalFilesDir(null), "facefun").also { it.mkdirs() }
+        val dir = File(ctx.filesDir, "facefun").also { it.mkdirs() }
         val cw = 270; val ch = 360; val label = 30
         shots.chunked(12).forEachIndexed { page, part ->
             val rows = (part.size + 3) / 4
@@ -187,13 +230,19 @@ class FaceFunOnDeviceTest {
             tried++
             val clip = still(pic, "facefun-real")
             local.delete()
-            val plain = frame(clip, 1.0)
+            val plain = baseline(clip)
+            // What the finder sees on it (numbers only), found once and used for every effect.
+            val found = runBlocking { People.find(ctx, Uri.fromFile(clip), 3.0, masks = true, faces = true) }
+            val spot = found?.facesAt(1.0)?.firstOrNull()
+            println("FACEFUN|real|photo${tried + 0}|finder|faces ${found?.facesAt(1.0)?.size ?: -1}|x ${"%.2f".format(spot?.x ?: -1f)} vs ${"%.2f".format((face.left + face.right) / 2f / pic.width)}" +
+                "|y ${"%.2f".format(spot?.y ?: -1f)} vs ${"%.2f".format((face.top + face.bottom) / 2f / pic.height)}|size ${"%.2f".format(spot?.size ?: -1f)} vs ${"%.2f".format(face.width() / pic.width.toFloat())}" +
+                "|eyes ${spot?.eyes?.size ?: -1}|mouth ${spot?.mouth != null}")
             val fx0 = face.left / pic.width.toFloat(); val fx1 = face.right / pic.width.toFloat()
             val fy0 = face.top / pic.height.toFloat(); val fy1 = face.bottom / pic.height.toFloat()
             val cx = (fx0 + fx1) / 2
             val failures = mutableListOf<String>()
             for (e in FaceFun.effects) {
-                val out = runBlocking { VideoEffects.make(ctx, Uri.fromFile(clip), VideoEffects.Recipe(funny = e.id, amount = 0.7f)) }
+                val out = runBlocking { VideoEffects.make(ctx, Uri.fromFile(clip), VideoEffects.Recipe(funny = e.id, amount = 0.7f), given = found) }
                 if (out == null) { failures += "${e.id}: not made"; continue }
                 val f = frame(out, 1.0)
                 val head = diff(plain, f, fx0 - 0.1f, fy0 - 0.15f, fx1 + 0.1f, fy1 + 0.05f)

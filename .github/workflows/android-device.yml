@@ -75,6 +75,7 @@ jobs:
             echo "private photos pushed: $n"
             rm -rf "${RUNNER_TEMP:?}/real"
           fi
+          adb logcat -G 16M || true
           adb logcat -c || true
           adb shell am instrument -w -r -e class com.handytools.app.StudioOnDeviceTest,com.handytools.app.AutorunsOnDeviceTest,com.handytools.app.FaceFunOnDeviceTest \
             com.tenzy.toolkit.test/androidx.test.runner.AndroidJUnitRunner 2>&1 | tee device-tests.log
@@ -83,7 +84,10 @@ jobs:
           echo "---- What the people tests measured (numbers only)"
           adb logcat -d -v brief 2>/dev/null | grep -o -E "(PEOPLE|AUTORUN|FACEFUN)\|.*" | head -120 || true
           # The Face fun pictures (a drawn face only — never a real photo), to look at.
-          mkdir -p "$RUNNER_TEMP/facefun" && adb pull /sdcard/Android/data/com.tenzy.toolkit/files/facefun/. "$RUNNER_TEMP/facefun" >/dev/null 2>&1 || true
+          mkdir -p "$RUNNER_TEMP/facefun"
+          adb exec-out run-as com.tenzy.toolkit tar -c -C files facefun > "$RUNNER_TEMP/facefun.tar" 2>/dev/null \
+            && tar -x -C "$RUNNER_TEMP" -f "$RUNNER_TEMP/facefun.tar" && rm -f "$RUNNER_TEMP/facefun.tar" || echo "the pictures couldn't be pulled"
+          echo "pictures pulled: $(ls "$RUNNER_TEMP/facefun" 2>/dev/null | wc -l)"
           echo "---- Media3 / app errors from the device log"
           adb logcat -d -v brief '*:E' 2>/dev/null | grep -E "Transformer|ExportException|media3|AndroidRuntime|com.tenzy" | head -60 || true
           grep -q "^OK (" device-tests.log || exit 1
