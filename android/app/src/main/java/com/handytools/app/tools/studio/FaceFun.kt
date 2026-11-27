@@ -196,7 +196,7 @@ object FaceFun {
             "sunglasses", "sunny" -> out += put("shades", eyes, glasses)
             "heartglasses" -> out += put("heartglasses", eyes, glasses * 1.04f)
             "crown" -> out += put("crown", f.point(f.brow, up = f.height * 0.6f), f.width * 0.95f)
-            "moustache" -> out += put("moustache", underNose, max(f.mouthWidth * 1.9f, f.width * 0.5f))
+            "moustache" -> out += put("moustache", underNose, max(f.mouthWidth * 2.3f, f.width * 0.62f))
             "dog" -> { out += put("dogears", f.point(f.brow, up = f.height * 0.5f), f.width * 1.55f)
                 out += put("tongue", f.point(f.mouth, up = -f.mouthWidth * 0.08f), f.mouthWidth * 0.55f, 0.1f * sin(t * 6))
                 out += put("dognose", noseTip, f.eyeDistance * 0.68f) }

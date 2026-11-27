@@ -222,7 +222,7 @@ extension FaceFun {
         case "sunglasses": out = [put("shades", eyes, glassesWidth)]
         case "heartglasses": out = [put("heartglasses", eyes, glassesWidth * 1.04)]
         case "crown": out = [put("crown", f.point(f.brow, up: f.height * 0.6), f.width * 0.95)]
-        case "moustache": out = [put("moustache", underNose, max(f.mouthWidth * 1.9, f.width * 0.5))]
+        case "moustache": out = [put("moustache", underNose, max(f.mouthWidth * 2.3, f.width * 0.62))]
         case "dog":
             out = [put("dogears", f.point(f.brow, up: f.height * 0.5), f.width * 1.55),
                    put("tongue", f.point(f.mouth, up: -f.mouthWidth * 0.08), f.mouthWidth * 0.55, turn: 0.1 * sin(t * 6)),

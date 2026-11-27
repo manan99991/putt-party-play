@@ -170,6 +170,7 @@ enum FaceStickers {
                     p.addCurve(to: pt(150, 66), control1: pt(292, 96), control2: pt(210, 52))        // round the tip and back
                     p.addCurve(to: pt(0, 96), control1: pt(95, 80), control2: pt(45, 70))            // under, to the middle
                     p.closeSubpath()
+                    stroke(ctx, p, 0xFFF1D6, 40)          // a cream rim: on dark skin or in shade a brown moustache vanished (27 Nov phone run)
                     fill(ctx, p, top: 0x4A3324, bottom: 0x1E130C)
                     let shine = CGMutablePath(); shine.move(to: pt(40, 150)); shine.addQuadCurve(to: pt(160, 132), control: pt(100, 166))
                     stroke(ctx, shine, 0xFFFFFF, 7, alpha: 0.18)

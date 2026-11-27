@@ -153,6 +153,7 @@ object FaceStickers {
                     cubicTo(X(95f), 80f, X(45f), 70f, X(0f), 96f)
                     close()
                 }
+                stroke(c, p, 0xFFF1D6, 40f)          // a cream rim: on dark skin or in shade a brown moustache vanished (27 Nov phone run)
                 fill(c, p, 0x4A3324, 0x1E130C)
                 stroke(c, Path().apply { moveTo(X(40f), 150f); quadTo(X(100f), 166f, X(160f), 132f) }, 0xFFFFFF, 7f, 0.18f)
             }
