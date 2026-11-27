@@ -2846,16 +2846,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     // A new result is a new card: finish cards keep their own state (the look picked, the picture shown),
                     // so without this a second photo showed the first one's result (27 Nov, emoji art).
                     output(result).id(result.identity)
-                    if !busy, batch.isEmpty, let ri = runInput, let rt = runTool {
-                        // Other looks for this result, one tap each (QR style, GIF speed, summary length, backdrop…).
-                        ResultLooksRow(chain: rt, input: ri, text: { if case .text(let t)? = lastStepInput { return t }; return nil }()) { p, next in
-                            result = p; runTool = next
-                        }.id(runSerial)
-                    }
-                    if !busy, chain.versus == true, collagePhotos.count >= 2, case .video = result {
-                        RevealLooksRow(before: collagePhotos[0], after: collagePhotos[collagePhotos.count - 1], name: chain.name) { result = .video($0) }
-                            .id(runSerial)
-                    }
+                    otherLooks
                 }
                 if !batch.isEmpty { batchView }
                 sendOn
@@ -3508,6 +3499,21 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         }
         if !texts.isEmpty {
             CopyButton(text: texts.joined(separator: "\n\n"), title: "Copy all text")
+        }
+    }
+
+    /// Other looks for the result, one tap each (QR style, GIF speed, summary length, backdrop, before/after…).
+    @ViewBuilder private var otherLooks: some View {
+        if !busy, batch.isEmpty, let ri = runInput, let rt = runTool {
+            let said: String? = { if case .text(let t)? = lastStepInput { return t }; return nil }()
+            ResultLooksRow(chain: rt, input: ri, text: said) { p, next in
+                self.result = p; self.runTool = next
+            }.id(runSerial)
+        }
+        if !busy, chain.versus == true, collagePhotos.count >= 2, case .video? = result {
+            RevealLooksRow(before: collagePhotos[0], after: collagePhotos[collagePhotos.count - 1], name: chain.name) { u in
+                self.result = .video(u)
+            }.id(runSerial)
         }
     }
 
