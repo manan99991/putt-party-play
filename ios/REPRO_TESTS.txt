@@ -1,6 +1,5 @@
-# 27 Nov, round 18. Round 17 passed everything. Bald looked soft: the strip drawn up over the crown carried the hair
-# at its ends up the sides in dark streaks. Now the strip's middle (clear skin) is widened across before it's drawn up.
-# Same tests, to prove nothing else moved and to look at the new Bald.
+# 27 Nov, round 19. Round 18 passed; the crown is now clean skin, but the cap met the side hair in a flat shelf at the
+# temples. The cap's lower edge now fades in up the temples. Same tests, and look at Bald again.
 HandyToolsTests/FaceFunTests
 HandyToolsTests/VideoSoundTests
 HandyToolsTests/VideoFunTests

@@ -396,6 +396,14 @@ extension FaceFun {
             ctx.clip(to: CGRect(x: -f.width * 2, y: from + strip * 0.5, width: f.width * 4, height: f.height * 3))
             ctx.fillEllipse(in: CGRect(x: -rx, y: cy - ry, width: 2 * rx, height: 2 * ry))
         }
-        return blend(dome, over: out, mask: cap)
+        // The cap's lower edge fades in up the temples, so the hair left at the sides runs into the crown instead of
+        // meeting it in a flat shelf (over the forehead it's the same skin either way).
+        var mask = cap
+        if let fade = CIFilter(name: "CILinearGradient", parameters: [
+            "inputPoint0": CIVector(cgPoint: f.point(f.brow, up: from + strip * 0.5)), "inputPoint1": CIVector(cgPoint: f.point(f.brow, up: f.height * 0.42)),
+            "inputColor0": CIColor(red: 0, green: 0, blue: 0), "inputColor1": CIColor(red: 1, green: 1, blue: 1)])?.outputImage?.cropped(to: rect) {
+            mask = fade.applyingFilter("CIMultiplyCompositing", parameters: [kCIInputBackgroundImageKey: cap]).cropped(to: rect)
+        }
+        return blend(dome, over: out, mask: mask)
     }
 }
