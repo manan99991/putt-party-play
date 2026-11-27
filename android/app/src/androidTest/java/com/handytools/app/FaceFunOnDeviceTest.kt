@@ -251,6 +251,22 @@ class FaceFunOnDeviceTest {
                 val head = diff(plain, f, fx0 - 0.1f, fy0 - 0.15f, fx1 + 0.1f, fy1 + 0.05f)
                 val far = if (cx > 0.5f) diff(plain, f, 0f, 0.88f, 0.15f, 1f) else diff(plain, f, 0.85f, 0.88f, 1f, 1f)
                 println("FACEFUN|real|photo$tried|${e.id}|head ${"%.1f".format(head)}|far ${"%.1f".format(far)}")
+                // 27 Nov diagnostics (numbers only): Big eyes, Cool shades and Clown nose barely changed this real face on
+                // the phone while Big head did. Where the finder put the eyes, nose and mouth, where each sticker lands,
+                // and how much changed right there.
+                if (e.id in setOf("bigeyes", "sunglasses", "clown") && found != null) {
+                    fun p(s: com.handytools.app.tools.studio.Spot?) = s?.let { "%.3f,%.3f".format(it.x, it.y) } ?: "none"
+                    println("FACEFUN|diag|photo$tried|${e.id}|sizes plain ${plain.width}x${plain.height} out ${f.width}x${f.height}" +
+                        "|spot ${"%.3f,%.3f".format(spot?.x ?: -1f, spot?.y ?: -1f)} size ${"%.3f".format(spot?.size ?: -1f)} roll ${"%.2f".format(spot?.roll ?: 0f)}" +
+                        "|eyes ${spot?.eyes?.joinToString(";") { p(it) }}|nose ${p(spot?.nose)}|mouth ${p(spot?.mouth)}" +
+                        "|faces at 0.5 ${found.facesAt(0.5).size} at 1.0 ${found.facesAt(1.0).size} at 1.5 ${found.facesAt(1.5).size}")
+                    for (pl in com.handytools.app.tools.studio.StickerOverlay(found, e.id, f.width, f.height).placed(1.0)) {
+                        val ax = pl.at.x / f.width; val ay = pl.at.y / f.height; val hw = pl.width / f.width / 2
+                        val here = diff(plain, f, ax - hw, ay - hw, ax + hw, ay + hw)
+                        println("FACEFUN|diag|photo$tried|${e.id}|sticker ${pl.sprite} at ${"%.3f,%.3f".format(ax, ay)} width ${"%.3f".format(pl.width / f.width)} alpha ${"%.2f".format(pl.alpha)}|change there ${"%.1f".format(here)}")
+                    }
+                    spot?.eyes?.forEach { ey -> println("FACEFUN|diag|photo$tried|${e.id}|change at eye ${p(ey)} ${"%.1f".format(diff(plain, f, ey.x - 0.03f, ey.y - 0.03f, ey.x + 0.03f, ey.y + 0.03f))}") }
+                }
                 if (e.id != "longlegs" && head < 0.6) failures += "${e.id} did nothing to the face ($head)"
                 if (e.id !in FaceFun.wholePicture && far > 2.0) failures += "${e.id} changed the far corner ($far)"
                 out.delete()
