@@ -5,8 +5,8 @@
 ✔︎ Bottle xcodegen (2.48.0)
 [34m==>[0m [1mPouring xcodegen--2.48.0.arm64_golden_gate.bottle.tar.gz[0m
 🍺  /opt/homebrew/Cellar/xcodegen/2.48.0: 38 files, 9.8MB
-slice ios-arm64_x86_64-simulator: builtin_ops.h c_api_experimental.h c_api_opaque.h c_api_types.h c_api.h common.h module.modulemap operator.h profiler.h telemetry_setting.h TensorFlowLiteC.h types.h xnnpack_delegate.h 
-slice ios-arm64: builtin_ops.h c_api_experimental.h c_api_opaque.h c_api_types.h c_api.h common.h module.modulemap operator.h profiler.h telemetry_setting.h TensorFlowLiteC.h types.h xnnpack_delegate.h 
+slice ios-arm64_x86_64-simulator: builtin_ops.h c_api_experimental.h c_api_opaque.h c_api_types.h c_api.h common.h operator.h profiler.h telemetry_setting.h TensorFlowLiteC.h types.h xnnpack_delegate.h 
+slice ios-arm64: builtin_ops.h c_api_experimental.h c_api_opaque.h c_api_types.h c_api.h common.h operator.h profiler.h telemetry_setting.h TensorFlowLiteC.h types.h xnnpack_delegate.h 
 TensorFlowLiteC ready
 ⚙️  Generating plists...
 ⚙️  Generating project...
@@ -16,4 +16,47 @@ Command line invocation:
     /Applications/Xcode_27.2.app/Contents/Developer/usr/bin/xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
 
 Resolve Package Graph
+
+Fetching from https://github.com/element-hq/swift-ogg
+
+Fetching from https://github.com/tsolomko/BitByteData
+
+Fetching from https://github.com/tsolomko/SWCompression
+
+Fetching from https://github.com/vector-im/opus-swift
+
+Fetching from https://github.com/vector-im/ogg-swift.git
+
+Creating working copy of package ‘SWCompression’
+
+Checking out 4.8.6 of package ‘SWCompression’
+
+Creating working copy of package ‘opus-swift’
+
+Checking out 0.8.4 of package ‘opus-swift’
+
+Creating working copy of package ‘BitByteData’
+
+Checking out 2.0.4 of package ‘BitByteData’
+
+Creating working copy of package ‘swift-ogg’
+
+Checking out main (a00a22b) of package ‘swift-ogg’
+
+Creating working copy of package ‘ogg-swift’
+
+Checking out 0.8.3 of package ‘ogg-swift’
+
+
+Resolved source packages:
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
+  StbVorbis: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/StbVorbis
+  TFLite: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/TFLite
+  BitByteData: https://github.com/tsolomko/BitByteData @ 2.0.4
+  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
+  Unrar: /Users/runner/work/putt-party-play/putt-party-play/ios/Packages/Unrar
+  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
+  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
+
+resolved source packages: YbridOpus, StbVorbis, TFLite, BitByteData, YbridOgg, Unrar, SwiftOGG, SWCompression
 == build.log (errors)
