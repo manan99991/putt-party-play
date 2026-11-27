@@ -1,7 +1,6 @@
-# 27 Nov, round 17. Round 16: every effect now changes the real face and leaves the far corner alone; music and the
-# Studio start to finish passed. Left: the finder's drifting points still got through a loose check on some calls
-# (same face read 222 to 433 wide) — the check is now what a real jaw and eyes measure; Bald's cap covers the hair at
-# the temples; Glow, Beautiful and Wholesome glow on the faces only instead of hazing the whole picture.
+# 27 Nov, round 18. Round 17 passed everything. Bald looked soft: the strip drawn up over the crown carried the hair
+# at its ends up the sides in dark streaks. Now the strip's middle (clear skin) is widened across before it's drawn up.
+# Same tests, to prove nothing else moved and to look at the new Bald.
 HandyToolsTests/FaceFunTests
 HandyToolsTests/VideoSoundTests
 HandyToolsTests/VideoFunTests

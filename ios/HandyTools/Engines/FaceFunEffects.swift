@@ -375,8 +375,16 @@ extension FaceFun {
             out = blend(spread, over: out, mask: hairOnPerson)
         }
         // The strip of forehead just above the brows, drawn up to the top of the head.
+        // The strip's middle is widened across first, so the crown is drawn from the clear skin between the temples and
+        // the hair at the strip's ends isn't dragged up the sides of the head in dark streaks.
         let strip = f.height * 0.2, from = f.height * 0.05
-        let skin = drawnUp(out, from: f.point(f.brow, up: from), up: f.up, height: strip, halfWidth: rx * 1.1, stretch: (cy + ry - from) / strip - 1)
+        let base = f.point(f.brow, up: from)
+        let sx = f.up.dy, sy = -f.up.dx, wide: CGFloat = 1.55 - 1
+        var across = CGAffineTransform(a: 1 + wide * sx * sx, b: wide * sx * sy, c: wide * sx * sy, d: 1 + wide * sy * sy, tx: 0, ty: 0)
+        let moved = base.applying(across)
+        across.tx = base.x - moved.x; across.ty = base.y - moved.y
+        let widened = out.clampedToExtent().transformed(by: across).cropped(to: rect)
+        let skin = drawnUp(widened, from: base, up: f.up, height: strip, halfWidth: rx * 1.1, stretch: (cy + ry - from) / strip - 1)
         // Rounder: a touch darker toward the rim, a soft highlight on the crown.
         var dome = skin
         if let rim = CIFilter(name: "CIRadialGradient", parameters: ["inputCenter": CIVector(cgPoint: f.point(f.brow, up: cy + ry * 0.2)), "inputRadius0": rx * 0.5, "inputRadius1": ry * 1.05,
