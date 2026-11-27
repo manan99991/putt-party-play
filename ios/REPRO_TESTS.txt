@@ -1,3 +1,4 @@
+# Round 23: Big head and Tiny head scale the whole head (proportions kept) on every head the engine found.
 # 27 Nov, round 22: the face repaints (Alien, Zombie, Robot, Glow, Beautiful, Wholesome) taken out too; warps pushed
 # much further (Big head, Balloon, Big eyes, Big mouth, Tiny head/face, Squish, Chipmunk, Stretchy, Long chin).
 # 27 Nov, round 21: Bald taken out of the Video Studio (Manan: never reached the bar on real video). Same tests.

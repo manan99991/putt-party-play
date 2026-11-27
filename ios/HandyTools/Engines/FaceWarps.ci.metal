@@ -99,5 +99,18 @@ float4 tenzyScalp(sample_t base, sample_t hair, sample_t face, sample_t noise, f
     return float4(mix(base.rgb, scalp, a), base.a);
 }
 
+
+// Big head / tiny head (27 Nov): the whole head made `scale` times its size with its proportions kept (not a fish-eye
+// bulge), easing back to the untouched picture between `inner` and 1 of `radius`. One-to-one for any scale > 0.
+float2 tenzyScale(float2 centre, float radius, float scale, float inner, destination dest) {
+    float2 d = dest.coord();
+    float2 v = d - centre;
+    float r = length(v) / max(radius, 1.0);
+    if (r >= 1.0) { return d; }
+    float t = clamp((r - inner) / (1.0 - inner), 0.0, 1.0);
+    t = t * t * (3.0 - 2.0 * t);
+    return centre + v * mix(1.0 / max(scale, 0.05), 1.0, t);
+}
+
 }
 }

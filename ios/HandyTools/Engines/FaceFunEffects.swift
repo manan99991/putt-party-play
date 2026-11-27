@@ -26,7 +26,7 @@ extension FaceFun {
     static func needsBody(_ id: String) -> Bool { id == "longlegs" }
     static func needsPerson(_ id: String) -> Bool { id == "bald" }
     /// The effects that use the face engine's parts map (hair, face skin): Bald and the skin effects.
-    static func usesParts(_ id: String) -> Bool { ["bald", "alien", "zombie", "robot", "glow", "beautiful", "wholesome"].contains(id) }
+    static func usesParts(_ id: String) -> Bool { ["bald", "alien", "zombie", "robot", "glow", "beautiful", "wholesome", "bighead", "tinyhead"].contains(id) }
 
     /// The faces (steadied against the last frame's) and, when the effect needs them, the body and the person's outline.
     static func scene(_ img: CIImage, for id: String, t: Double, memory: Memory, person: @autoclosure () -> CIImage?) -> Scene {
@@ -66,6 +66,11 @@ extension FaceFun {
         var out = img
         // Bald on every head the engine found (turned away too); the older one-face Bald when there's no engine.
         if id == "bald", let p = scene.parts { return baldHeads(out, p, amount: a) }
+        // Big and tiny head on every head the engine found (turned away too), the whole head scaled, not bulged.
+        if id == "bighead" || id == "tinyhead", let p = scene.parts,
+           let scaled = scaleHeads(out, p, scale: id == "bighead" ? s(1.45, 1.75) * (1 + 0.04 * sin(tt * 3)) : s(0.7, 0.55), big: id == "bighead") {
+            return scaled
+        }
         // 1. Colour and skin, on the faces where they were found.
         for (i, f) in scene.faces.enumerated() {
             switch id {

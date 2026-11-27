@@ -89,6 +89,30 @@ extension FaceFun {
         return m
     }
 
+    // MARK: - Big head and tiny head (every head the engine found, turned away too)
+
+    private static let scaleKernel: CIWarpKernel? = library.flatMap { try? CIWarpKernel(functionName: "tenzyScale", fromMetalLibraryData: $0) }
+
+    /// Every head made `scale` times its size, proportions kept, easing back into the picture round it.
+    static func scaleHeads(_ img: CIImage, _ p: Parts, scale: CGFloat, big: Bool) -> CIImage? {
+        guard let k = scaleKernel, !p.frame.heads.isEmpty else { return nil }
+        let rect = img.extent, H = rect.height
+        var out = img
+        for h in p.frame.heads {
+            let e = h.ellipse
+            let size = CGFloat(max(e.rx, e.ry))
+            guard size > 8 else { continue }
+            // The head's middle a little above its outline's centre (the outline takes in the beard and neck line); up is up.
+            var ux = CGFloat(sin(e.tilt)), uy = CGFloat(cos(e.tilt))
+            if uy < 0 { ux = -ux; uy = -uy }
+            let c = CGPoint(x: CGFloat(e.cx) + ux * size * 0.05, y: H - CGFloat(e.cy) + uy * size * 0.05)
+            let radius = big ? size * (1 + scale) * 0.95 : size * 1.6
+            if let w = k.apply(extent: rect, roiCallback: { _, _ in rect }, image: out.clampedToExtent(),
+                               arguments: [CIVector(cgPoint: c), radius, scale, 0.55]) { out = w.cropped(to: rect) }
+        }
+        return out
+    }
+
     // MARK: - Bald (every head, faces turned away included)
 
     private static let hairOutKernel: CIColorKernel? = library.flatMap { try? CIColorKernel(functionName: "tenzyHairOut", fromMetalLibraryData: $0) }
