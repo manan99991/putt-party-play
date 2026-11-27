@@ -376,17 +376,12 @@ enum ChainMedia {
 extension ChainCombine {
     /// "One GIF for everything": the results of a multi-photo run played one after another, for ever. Every picture
     /// fills the shape of the first one. nil when a result isn't a picture.
-    static func oneGif(_ results: [ChainPayload], long: CGFloat = 600, hold: Double = 0.6) -> ChainPayload? {
-        var images: [UIImage] = []
-        for r in results {
-            switch r {
-            case .image(let i): images.append(i)
-            case .file(let d, let ext) where ChainPayload.isPhoto(ext):
-                guard let i = UIImage(data: d) else { return nil }
-                images.append(i)
-            default: return nil
-            }
-        }
+    static func oneGif(_ results: [ChainPayload], long: CGFloat = 600, look: String = "normal") -> ChainPayload? {
+        images(results).flatMap { gif($0, long: long, look: look) }.map { .file($0, ext: "gif") }
+    }
+
+    /// Your photos as one looping GIF in a look from `ChainText.gifLooks`, each cropped to fill the first photo's shape.
+    static func gif(_ images: [UIImage], long: CGFloat = 600, look: String) -> Data? {
         guard let first = images.first, first.size.width > 0, first.size.height > 0 else { return nil }
         let k = long / max(first.size.width, first.size.height)
         let size = CGSize(width: max(2, (first.size.width * k).rounded()), height: max(2, (first.size.height * k).rounded()))
@@ -398,9 +393,19 @@ extension ChainCombine {
                 img.draw(in: CGRect(x: (size.width - w) / 2, y: (size.height - h) / 2, width: w, height: h))
             }.cgImage
         }
-        guard !frames.isEmpty, let url = tenzyWriteGIF(frames: frames, delay: hold), let d = try? Data(contentsOf: url) else { return nil }
+        guard frames.count == images.count else { return nil }
+        let plan = ChainText.gifTimeline(count: frames.count, look: look)
+        let shots: [CGImage] = plan.compactMap { p in
+            if p.mix <= 0 || p.from == p.to { return frames[p.from] }
+            return UIGraphicsImageRenderer(size: size, format: fmt).image { _ in
+                UIImage(cgImage: frames[p.from]).draw(in: CGRect(origin: .zero, size: size))
+                UIImage(cgImage: frames[p.to]).draw(in: CGRect(origin: .zero, size: size), blendMode: .normal, alpha: CGFloat(p.mix))
+            }.cgImage
+        }
+        guard shots.count == plan.count, let url = tenzyWriteGIF(frames: shots, delays: plan.map(\.delay)),
+              let d = try? Data(contentsOf: url) else { return nil }
         try? FileManager.default.removeItem(at: url)
-        return .file(d, ext: "gif")
+        return d
     }
 }
 

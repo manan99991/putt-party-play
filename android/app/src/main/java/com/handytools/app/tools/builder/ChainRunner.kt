@@ -89,13 +89,37 @@ object ChainRunner {
         return out.toByteArray()
     }
 
-    /** Every picture as one image, in a grid of square tiles with thin white gaps. Each picture fills its tile. */
-    fun collage(pictures: List<Bitmap>, tile: Int = 900, gap: Int = 12): Bitmap? {
+    /**
+     * A collage in one of TextTidy.COLLAGE_LOOKS, as the iPhone: grid looks keep square tiles; the others go on a 4:5
+     * portrait canvas (a photo strip goes tall), every photo filling its frame.
+     */
+    fun collage(pictures: List<Bitmap>, look: String): Bitmap? {
+        if (pictures.isEmpty()) return null
+        if (look !in setOf("hero", "mosaic", "strip")) return collage(pictures, background = if (look == "black") android.graphics.Color.BLACK else android.graphics.Color.WHITE)
+        val w = 1080; val h = if (look == "strip") (640 * pictures.size).coerceIn(1350, 2700) else 1350
+        val out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val c = android.graphics.Canvas(out)
+        c.drawColor(android.graphics.Color.WHITE)
+        val paint = android.graphics.Paint(android.graphics.Paint.FILTER_BITMAP_FLAG)
+        val frames = TextTidy.collageFrames(look, pictures.size, w.toFloat(), h.toFloat(), Math.round(minOf(w, h) * 0.014f).toFloat())
+        pictures.zip(frames).forEach { (bmp, f) ->
+            val fw = f[2] - f[0]; val fh = f[3] - f[1]
+            val k = maxOf(fw / bmp.width, fh / bmp.height)
+            val bw = bmp.width * k; val bh = bmp.height * k
+            c.save(); c.clipRect(f[0], f[1], f[2], f[3])
+            c.drawBitmap(bmp, null, android.graphics.RectF(f[0] + (fw - bw) / 2f, f[1] + (fh - bh) / 2f, f[0] + (fw + bw) / 2f, f[1] + (fh + bh) / 2f), paint)
+            c.restore()
+        }
+        return out
+    }
+
+    /** Every picture as one image, in a grid of square tiles with thin gaps. Each picture fills its tile. */
+    fun collage(pictures: List<Bitmap>, tile: Int = 900, gap: Int = 12, background: Int = android.graphics.Color.WHITE): Bitmap? {
         if (pictures.isEmpty()) return null
         val (cols, rows) = TextTidy.collageGrid(pictures.size)
         val out = Bitmap.createBitmap(cols * tile + (cols + 1) * gap, rows * tile + (rows + 1) * gap, Bitmap.Config.ARGB_8888)
         val c = android.graphics.Canvas(out)
-        c.drawColor(android.graphics.Color.WHITE)
+        c.drawColor(background)
         val paint = android.graphics.Paint(android.graphics.Paint.FILTER_BITMAP_FLAG)
         pictures.forEachIndexed { i, bmp ->
             val left = gap + (i % cols) * (tile + gap); val top = gap + (i / cols) * (tile + gap)

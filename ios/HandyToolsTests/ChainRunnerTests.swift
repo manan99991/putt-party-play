@@ -1441,6 +1441,30 @@ final class FunStepTests: XCTestCase {
         guard case .file(let d, let ext)? = made else { return XCTFail("no GIF") }
         XCTAssertEqual(ext, "gif"); XCTAssertEqual(String(data: d.prefix(3), encoding: .ascii), "GIF")
         XCTAssertNil(ChainCombine.oneGif([.text("words")])); XCTAssertNil(ChainCombine.oneGif([]))
+        // Every look makes a GIF, and they differ: slow lasts longer than fast, back-and-forth and fading add frames.
+        let pics = [picture(), picture(CGSize(width: 300, height: 500), .systemRed), picture(CGSize(width: 400, height: 300), .systemYellow)]
+        var made2: [String: Data] = [:]
+        for l in ChainText.gifLooks { made2[l.id] = ChainCombine.gif(pics, look: l.id); XCTAssertNotNil(made2[l.id], l.id) }
+        XCTAssertEqual(Set(made2.values).count, ChainText.gifLooks.count, "two looks made the same GIF")
+        let secs = { (l: String) in ChainText.gifTimeline(count: 3, look: l).reduce(0) { $0 + $1.delay } }
+        XCTAssertGreaterThan(secs("slow"), secs("normal")); XCTAssertGreaterThan(secs("normal"), secs("fast"))
+        XCTAssertEqual(ChainText.gifTimeline(count: 3, look: "bounce").map(\.from), [0, 1, 2, 1])
+        let fade = ChainText.gifTimeline(count: 3, look: "fade")
+        XCTAssertEqual(fade.count, 18); XCTAssertEqual(fade.last?.to, 0)   // the last photo fades back into the first
+        XCTAssertTrue(fade.allSatisfy { $0.mix >= 0 && $0.mix < 1 })
+    }
+    func testEveryCollageLayoutMakesADifferentPicture() {
+        let pics = [picture(), picture(CGSize(width: 300, height: 500), .systemRed), picture(CGSize(width: 400, height: 300), .systemYellow)]
+        var sizes = Set<String>(), datas = Set<Data>()
+        for l in ChainText.collageLooks {
+            guard let img = ChainImage.collage(pics, look: l.id) else { XCTFail(l.id); continue }
+            sizes.insert("\(Int(img.size.width))x\(Int(img.size.height))")
+            if let d = img.pngData() { datas.insert(d) }
+        }
+        XCTAssertEqual(datas.count, ChainText.collageLooks.count, "two layouts made the same picture")
+        XCTAssertGreaterThan(sizes.count, 1)
+        XCTAssertEqual(Set(ChainText.collageLooks.map(\.id)).count, ChainText.collageLooks.count)
+        XCTAssertEqual(ChainText.collageLooks.first?.id, "grid")
     }
 }
 

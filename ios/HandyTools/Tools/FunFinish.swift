@@ -11,6 +11,8 @@ struct FunFinishCard: View {
     @State var look: String
     /// The step's other settings (a meme's words), kept when another look is tried.
     var settings: [String: String] = [:]
+    /// A collage's photos: with two or more, the collage's layouts are offered on the result.
+    var sources: [UIImage] = []
 
     @State private var busy: String?
     @State private var note: String?
@@ -23,6 +25,7 @@ struct FunFinishCard: View {
         case .emojiFaces: return ChainText.faceEmojis.map { ($0, $0) }
         case .emojiMosaic: return ChainText.mosaicStyles
         case .meme: return ChainText.memeStyles
+        case .stripLocation: return ChainText.collageLooks   // a collage (only offered when its photos are known)
         default: return []
         }
     }
@@ -57,7 +60,7 @@ struct FunFinishCard: View {
             }
 
             let options = Self.looks(block)
-            if !options.isEmpty, original != nil {
+            if !options.isEmpty, block == .stripLocation ? sources.count > 1 : original != nil {
                 Text(L(block == .emojiFaces ? "Try another emoji" : "Try another look")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 HandyFlow(spacing: 8) {
                         ForEach(options, id: \.id) { o in
@@ -104,7 +107,21 @@ struct FunFinishCard: View {
     }
 
     private func restyle(_ id: String) {
-        guard id != look, let o = original else { return }
+        guard id != look else { return }
+        if block == .stripLocation {
+            // A collage: the same photos in another layout.
+            let pics = sources
+            busy = id
+            Task.detached {
+                let img = ChainImage.collage(pics, look: id)
+                await MainActor.run {
+                    busy = nil
+                    if let img { result = img; look = id } else { note = L("That layout couldn't be made from these photos.") }
+                }
+            }
+            return
+        }
+        guard let o = original else { return }
         busy = id
         let key = block == .emojiFaces ? "emoji" : "style"
         Task {

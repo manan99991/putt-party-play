@@ -20,7 +20,11 @@ object GifEncoder {
     private fun writeShort(o: ByteArrayOutputStream, v: Int) { o.write(v and 0xff); o.write((v ushr 8) and 0xff) }
 
     /** @param delayCs frame delay in centiseconds (1/100 s). */
-    fun encode(frames: List<Bitmap>, delayCs: Int): ByteArray {
+    fun encode(frames: List<Bitmap>, delayCs: Int): ByteArray = encode(frames, List(frames.size) { delayCs })
+
+    /** @param delaysCs each frame's own delay in centiseconds (1/100 s), one per frame. */
+    fun encode(frames: List<Bitmap>, delaysCs: List<Int>): ByteArray {
+        require(delaysCs.size == frames.size)
         val o = ByteArrayOutputStream()
         val w = frames[0].width; val h = frames[0].height
         o.write("GIF89a".toByteArray(Charsets.US_ASCII))
@@ -33,8 +37,8 @@ object GifEncoder {
         o.write("NETSCAPE2.0".toByteArray(Charsets.US_ASCII))
         o.write(byteArrayOf(0x03, 0x01, 0x00, 0x00, 0x00))
 
-        for (f in frames) {
-            o.write(byteArrayOf(0x21, 0xF9.toByte(), 0x04, 0x00)); writeShort(o, delayCs); o.write(0x00); o.write(0x00) // GCE
+        for ((n, f) in frames.withIndex()) {
+            o.write(byteArrayOf(0x21, 0xF9.toByte(), 0x04, 0x00)); writeShort(o, delaysCs[n]); o.write(0x00); o.write(0x00) // GCE
             o.write(0x2C); writeShort(o, 0); writeShort(o, 0); writeShort(o, w); writeShort(o, h); o.write(0x00) // image descriptor
             val px = IntArray(w * h)
             f.getPixels(px, 0, w, 0, 0, w, h)

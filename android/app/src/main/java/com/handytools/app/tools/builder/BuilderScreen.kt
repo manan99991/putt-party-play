@@ -820,6 +820,8 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
     var source by remember { mutableStateOf<Bitmap?>(null) }
     var look by remember { mutableStateOf("") }
     var restyling by remember { mutableStateOf(false) }
+    // A collage's or a photos GIF's photos, so its result can switch looks without picking them again.
+    var joined by remember { mutableStateOf<List<android.graphics.Bitmap>>(emptyList()) }
     var batch by remember { mutableStateOf<List<BatchItem>>(emptyList()) }
     var progress by remember { mutableStateOf("") }
     // What each result of a many-at-once run is called in the list: a photo, or a file.
@@ -838,7 +840,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
     fun keep(made: Payload) { scope.launch(Dispatchers.IO) { RunHistory.add(ctx, chain.name, TextTidy.fileName(chain.fileName, chain.name, ext = "").trimEnd('.'), made) } }
 
     fun go(input: Payload) {
-        busy = true; result = null; message = null; batch = emptyList()
+        busy = true; result = null; message = null; batch = emptyList(); joined = emptyList()
         source = (input as? Payload.Pic)?.bmp
         look = live().steps.lastOrNull()?.let { if (it.block == Block.ART_FILTER) PixelArt.style(it.settings["style"]) else it.settings["style"] ?: it.settings["emoji"] } ?: "classic"
         scope.launch {
@@ -867,9 +869,14 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
         }
     }
     /** One result per photo. A photo that can't be processed never stops the others; it just gets its own note. */
+    // The photos kept for switching looks, at most 1600 px on the long side so twenty of them stay light in memory.
+    fun keepSmall(pics: List<android.graphics.Bitmap>) = pics.map { b ->
+        val k = 1600f / maxOf(b.width, b.height)
+        if (k >= 1f) b else android.graphics.Bitmap.createScaledBitmap(b, maxOf(1, (b.width * k).toInt()), maxOf(1, (b.height * k).toInt()), true)
+    }
     fun runBatch(uris: List<Uri>) {
         val picked = uris.take(MAX_BATCH)
-        busy = true; result = null; message = null; batch = emptyList()
+        busy = true; result = null; message = null; batch = emptyList(); joined = emptyList()
         scope.launch {
             val dir = File(ctx.cacheDir, "batch-${System.currentTimeMillis()}").also { it.mkdirs() }
             val out = ArrayList<BatchItem>()
@@ -909,7 +916,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                 val skipped = out.count { it.note != null }
                 val one = withContext(Dispatchers.Default) { FunSteps.photosGif(pages) }
                 if (one != null) {
-                    result = Payload.Doc(one, "gif"); keep(Payload.Doc(one, "gif"))
+                    result = Payload.Doc(one, "gif"); keep(Payload.Doc(one, "gif")); joined = withContext(Dispatchers.Default) { keepSmall(pages) }; look = "normal"
                     if (skipped > 0) message = "$skipped of ${picked.size} couldn't be used and were left out."
                     busy = false; progress = ""
                     return@launch
@@ -920,7 +927,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                 val skipped = out.count { it.note != null }
                 val one = withContext(Dispatchers.Default) { ChainRunner.collage(pages) }
                 if (one != null) {
-                    result = Payload.Pic(one)
+                    result = Payload.Pic(one); joined = withContext(Dispatchers.Default) { keepSmall(pages) }; look = "grid"
                     if (skipped > 0) message = "$skipped of ${picked.size} couldn't be used and were left out."
                     busy = false; progress = ""
                     return@launch
@@ -1127,7 +1134,19 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                     else -> emptyList()
                 }
                 val from = source
-                if (looks.isNotEmpty() && from != null && chain.steps.size == 1) {
+                if (chain.collage && joined.size > 1) {
+                    // A collage: the same photos in another layout.
+                    Text("Try another layout", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                    ChoiceChips(TextTidy.COLLAGE_LOOKS, look) { id ->
+                        if (restyling || id == look) return@ChoiceChips
+                        restyling = true
+                        scope.launch {
+                            val made = withContext(Dispatchers.Default) { ChainRunner.collage(joined, id) }
+                            if (made != null) { result = Payload.Pic(made); look = id } else message = "That layout couldn't be made from these photos."
+                            restyling = false
+                        }
+                    }
+                } else if (looks.isNotEmpty() && from != null && chain.steps.size == 1) {
                     Text(if (last?.block == Block.EMOJI_FACES) "Try another emoji" else "Try another look", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                     ChoiceChips(looks, look) { id ->
                         if (restyling || id == look || last == null) return@ChoiceChips
@@ -1154,6 +1173,21 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                 HPrimaryButton("Save or share") { if (f != null && f.exists()) Share.file(ctx, f, "video/mp4") else message = "The video couldn't be found to share. Run the tool again." }
             }
             is Payload.Doc -> {
+                if (r.ext.equals("gif", ignoreCase = true)) GifView(r.bytes, Modifier.fillMaxWidth().heightIn(max = 320.dp))
+                if (r.ext.equals("gif", ignoreCase = true) && chain.gif && joined.size > 1) {
+                    // Photos played as a GIF: slow, fast, back and forth or fading, one tap away on the same photos.
+                    Text("Try another look", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                    ChoiceChips(TextTidy.GIF_LOOKS, look) { id ->
+                        if (restyling || id == look) return@ChoiceChips
+                        restyling = true
+                        scope.launch {
+                            val made = withContext(Dispatchers.Default) { FunSteps.photosGif(joined, look = id) }
+                            if (made != null) { result = Payload.Doc(made, "gif"); look = id } else message = "That look couldn't be made from these photos."
+                            restyling = false
+                        }
+                    }
+                    if (restyling) Text("Making that look…", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                }
                 Text("${r.bytes.size / 1024} KB · ${r.ext.uppercase()}", style = MaterialTheme.typography.bodySmall)
                 HPrimaryButton("Save or share") {
                     val f = File(ctx.cacheDir, TextTidy.fileName(chain.fileName, chain.name, ext = r.ext)).also { it.writeBytes(r.bytes) }

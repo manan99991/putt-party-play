@@ -420,6 +420,67 @@ object TextTidy {
         return lines.joinToString("\n")
     }
 
+    /** The looks a collage can be switched between on its result: id to label. The first is the default. */
+    val COLLAGE_LOOKS = listOf("grid" to "Grid", "hero" to "Big first photo", "mosaic" to "Magazine", "strip" to "Photo strip", "black" to "Grid on black")
+
+    /** The looks a GIF of your photos can be switched between on its result. The first is the default. */
+    val GIF_LOOKS = listOf("normal" to "Normal", "slow" to "Slow", "fast" to "Fast", "bounce" to "Back and forth", "fade" to "Fade between")
+
+    /** One frame of a photos GIF: photo [from] blended [mix] (0..1) of the way to photo [to], shown [delayCs] hundredths of a second. */
+    data class GifFrame(val from: Int, val to: Int, val mix: Float, val delayCs: Int)
+
+    /** A photos GIF's frames in play order, as the iPhone: a fade holds each photo then dissolves into the next, the last back into the first. */
+    fun gifTimeline(count: Int, look: String): List<GifFrame> {
+        if (count <= 0) return emptyList()
+        return when (look) {
+            "slow" -> (0 until count).map { GifFrame(it, it, 0f, 120) }
+            "fast" -> (0 until count).map { GifFrame(it, it, 0f, 25) }
+            "bounce" -> loopOrder(count, null).map { GifFrame(it, it, 0f, 40) }
+            "fade" -> if (count < 2) listOf(GifFrame(0, 0, 0f, 80)) else (0 until count).flatMap { i ->
+                listOf(GifFrame(i, i, 0f, 80)) + (1..5).map { k -> GifFrame(i, (i + 1) % count, k / 6f, 7) }
+            }
+            else -> (0 until count).map { GifFrame(it, it, 0f, 60) }
+        }
+    }
+
+    /**
+     * Where each photo goes in a collage look on a [w] by [h] canvas with [gap] between and around: (left, top, right, bottom).
+     * "hero": the first photo big on top, the rest in rows of up to 3 under it. "mosaic": rows of 2 then 3, alternating.
+     * "strip": one column. Anything else: as-square-as-possible rows.
+     */
+    fun collageFrames(look: String, count: Int, w: Float, h: Float, gap: Float): List<FloatArray> {
+        if (count <= 0) return emptyList()
+        val l = gap; val t = gap; val r = w - gap; val b = h - gap
+        if (count == 1) return listOf(floatArrayOf(l, t, r, b))
+        fun rows(sizes: List<Int>, l: Float, t: Float, r: Float, b: Float): List<FloatArray> {
+            val rh = (b - t - gap * (sizes.size - 1)) / sizes.size
+            return sizes.withIndex().flatMap { (i, n) ->
+                val y = t + i * (rh + gap); val cw = (r - l - gap * (n - 1)) / n
+                (0 until n).map { j -> floatArrayOf(l + j * (cw + gap), y, l + j * (cw + gap) + cw, y + rh) }
+            }
+        }
+        fun grid(n: Int, l: Float, t: Float, r: Float, b: Float, maxPerRow: Int = n): List<FloatArray> {
+            var cols = Math.round(Math.sqrt(n * ((r - l) / maxOf(1f, b - t)).toDouble())).toInt().coerceAtLeast(1)
+            cols = minOf(cols, maxPerRow, n)
+            val sizes = mutableListOf<Int>(); var left = n
+            while (left > 0) { val k = minOf(cols, left); sizes += k; left -= k }
+            return rows(sizes, l, t, r, b)
+        }
+        return when (look) {
+            "hero" -> {
+                val top = t + (b - t - gap) * (if (count <= 3) 0.6f else 0.55f)
+                listOf(floatArrayOf(l, t, r, top)) + grid(count - 1, l, top + gap, r, b, 3)
+            }
+            "mosaic" -> {
+                val sizes = mutableListOf<Int>(); var left = count; var two = true
+                while (left > 0) { val k = minOf(left, if (two) 2 else 3); sizes += k; left -= k; two = !two }
+                rows(sizes, l, t, r, b)
+            }
+            "strip" -> rows(List(count) { 1 }, l, t, r, b)
+            else -> grid(count, l, t, r, b)
+        }
+    }
+
     /** How many columns and rows a collage of [count] pictures gets: as square as it can be. */
     fun collageGrid(count: Int): Pair<Int, Int> {
         if (count <= 0) return 0 to 0

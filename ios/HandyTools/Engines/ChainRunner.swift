@@ -1482,6 +1482,31 @@ enum ChainText {
     // MARK: collage
 
     /// How many columns and rows a collage of `count` pictures gets: as square as it can be.
+    /// The looks a collage can be switched between on its result: (setting value, label). The first is the default.
+    static let collageLooks: [(id: String, name: String)] = [("grid", "Grid"), ("hero", "Big first photo"), ("mosaic", "Magazine"),
+                                                            ("strip", "Photo strip"), ("black", "Grid on black")]
+
+    /// The looks a GIF of your photos can be switched between on its result. The first is the default.
+    static let gifLooks: [(id: String, name: String)] = [("normal", "Normal"), ("slow", "Slow"), ("fast", "Fast"),
+                                                         ("bounce", "Back and forth"), ("fade", "Fade between")]
+
+    /// The frames of a photos GIF in a look, in play order: photo `from` blended `mix` (0…1) of the way to photo `to`,
+    /// shown for `delay` seconds. A fade holds each photo then dissolves into the next, the last back into the first.
+    static func gifTimeline(count: Int, look: String) -> [(from: Int, to: Int, mix: Double, delay: Double)] {
+        guard count > 0 else { return [] }
+        switch look {
+        case "slow": return (0..<count).map { ($0, $0, 0, 1.2) }
+        case "fast": return (0..<count).map { ($0, $0, 0, 0.25) }
+        case "bounce": return loopOrder(count, style: nil).map { ($0, $0, 0, 0.4) }
+        case "fade":
+            guard count > 1 else { return [(0, 0, 0, 0.8)] }
+            return (0..<count).flatMap { i -> [(from: Int, to: Int, mix: Double, delay: Double)] in
+                [(i, i, 0, 0.8)] + (1...5).map { k in (i, (i + 1) % count, Double(k) / 6, 0.07) }
+            }
+        default: return (0..<count).map { ($0, $0, 0, 0.6) }
+        }
+    }
+
     static func collageGrid(_ count: Int) -> (cols: Int, rows: Int) {
         guard count > 0 else { return (0, 0) }
         let cols = Int(Double(count).squareRoot().rounded(.up))
@@ -1716,13 +1741,27 @@ enum ChainImage {
         }
     }
     /// Every picture as one image, in a grid of square tiles with thin white gaps. Each picture fills its tile.
-    static func collage(_ images: [UIImage], tile: CGFloat = 900, gap: CGFloat = 12) -> UIImage? {
+    /// A collage in one of `ChainText.collageLooks`. Grid looks keep square tiles; the others use the designer layouts
+    /// on a 4:5 portrait canvas (a photo strip goes tall), every photo filling its frame.
+    static func collage(_ images: [UIImage], look: String) -> UIImage? {
+        guard !images.isEmpty else { return nil }
+        switch look {
+        case "hero", "mosaic", "strip":
+            let layout: CollageLayout = look == "hero" ? .hero : look == "mosaic" ? .mosaic : .strip
+            let canvas = look == "strip" ? CGSize(width: 1080, height: max(1350, min(2700, 640 * CGFloat(images.count)))) : CGSize(width: 1080, height: 1350)
+            return CollageLayout.render(images, layout: layout, canvas: canvas, gapRatio: 0.014, cornerRatio: 0, background: .white)
+        case "black": return collage(images, background: .black)
+        default: return collage(images)
+        }
+    }
+
+    static func collage(_ images: [UIImage], tile: CGFloat = 900, gap: CGFloat = 12, background: UIColor = .white) -> UIImage? {
         guard !images.isEmpty else { return nil }
         let g = ChainText.collageGrid(images.count)
         let size = CGSize(width: CGFloat(g.cols) * tile + CGFloat(g.cols + 1) * gap, height: CGFloat(g.rows) * tile + CGFloat(g.rows + 1) * gap)
         let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1; fmt.opaque = true
         return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
-            UIColor.white.setFill(); ctx.fill(CGRect(origin: .zero, size: size))
+            background.setFill(); ctx.fill(CGRect(origin: .zero, size: size))
             for (i, img) in images.enumerated() {
                 let r = CGRect(x: gap + CGFloat(i % g.cols) * (tile + gap), y: gap + CGFloat(i / g.cols) * (tile + gap), width: tile, height: tile)
                 ctx.cgContext.saveGState()
@@ -1864,6 +1903,11 @@ extension ChainCombine {
 
     /// "One picture for everything": the results of a multi-photo run as a single collage. nil when a result isn't a picture.
     static func onePicture(_ results: [ChainPayload]) -> ChainPayload? {
+        images(results).flatMap { ChainImage.collage($0) }.map { ChainPayload.image($0) }
+    }
+
+    /// The pictures among `results`, in order; nil if any isn't a picture.
+    static func images(_ results: [ChainPayload]) -> [UIImage]? {
         var images: [UIImage] = []
         for r in results {
             switch r {
@@ -1874,7 +1918,7 @@ extension ChainCombine {
             default: return nil
             }
         }
-        return ChainImage.collage(images).map { ChainPayload.image($0) }
+        return images
     }
 }
 

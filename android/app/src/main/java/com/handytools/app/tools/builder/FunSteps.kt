@@ -366,7 +366,7 @@ object FunSteps {
     }
 
     /** Several pictures played one after another as a GIF, for ever. Every picture fills the shape of the first one. */
-    fun photosGif(pictures: List<Bitmap>, long: Int = 480, holdCs: Int = 60): ByteArray? {
+    fun photosGif(pictures: List<Bitmap>, long: Int = 480, look: String = "normal"): ByteArray? {
         val first = pictures.firstOrNull() ?: return null
         val k = long.toFloat() / maxOf(first.width, first.height)
         val w = maxOf(2, Math.round(first.width * k)); val h = maxOf(2, Math.round(first.height * k))
@@ -378,6 +378,19 @@ object FunSteps {
             Canvas(f).apply { drawColor(Color.WHITE); drawBitmap(bmp, null, RectF((w - bw) / 2f, (h - bh) / 2f, (w + bw) / 2f, (h + bh) / 2f), paint) }
             f
         }
-        return try { GifEncoder.encode(frames, holdCs) } catch (_: Throwable) { null } finally { frames.forEach { it.recycle() } }
+        val plan = TextTidy.gifTimeline(frames.size, look)
+        val blended = mutableListOf<Bitmap>()
+        return try {
+            val shots = plan.map { p ->
+                if (p.mix <= 0f || p.from == p.to) frames[p.from] else Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888).also { out ->
+                    Canvas(out).apply {
+                        drawBitmap(frames[p.from], 0f, 0f, null)
+                        drawBitmap(frames[p.to], 0f, 0f, Paint().apply { alpha = (p.mix * 255).toInt().coerceIn(0, 255) })
+                    }
+                    blended += out
+                }
+            }
+            GifEncoder.encode(shots, plan.map { it.delayCs })
+        } catch (_: Throwable) { null } finally { frames.forEach { it.recycle() }; blended.forEach { it.recycle() } }
     }
 }

@@ -211,6 +211,52 @@ struct GIFFinishCard: View {
     }
 }
 
+/// Photos played as a GIF: the GIF, and every other look (slow, fast, back and forth, fading) one tap away on the
+/// same photos — remade on the phone in a moment.
+struct PhotosGIFFinishCard: View {
+    let photos: [UIImage]
+    @State var data: Data
+    var tool = "GIF"
+    @State private var look = ChainText.gifLooks[0].id
+    @State private var busy: String?
+    @State private var problem: String?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            GIFFinishCard(data: data, shareURL: nil, tool: tool, record: false).id(data.hashValue)
+            Text(L("Try another look")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HandyFlow(spacing: 8) {
+                ForEach(ChainText.gifLooks, id: \.id) { o in
+                    Button { change(o.id) } label: {
+                        HStack(spacing: 4) {
+                            if busy == o.id { ProgressView().controlSize(.mini) }
+                            Text(L(o.name)).font(HandyFont.caption)
+                        }
+                        .padding(.horizontal, 10).padding(.vertical, 7)
+                        .background(look == o.id ? HandyColor.accent : HandyColor.surface, in: Capsule())
+                        .foregroundStyle(look == o.id ? Color.white : HandyColor.textPrimary)
+                    }.buttonStyle(.plain).disabled(busy != nil)
+                }
+            }
+            .accessibilityIdentifier("gif-looks")
+            if let problem { Text(problem).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+        }
+    }
+
+    private func change(_ id: String) {
+        guard id != look else { return }
+        busy = id
+        let pics = photos
+        Task.detached {
+            let d = ChainCombine.gif(pics, look: id)
+            await MainActor.run {
+                busy = nil
+                if let d { data = d; look = id; problem = nil } else { problem = L("That look couldn't be made from these photos.") }
+            }
+        }
+    }
+}
+
 /// A boomerang's finish: the GIF, and every other style one tap away on the same moment (the frames are kept, so a
 /// switch takes a moment, not another trip through the video).
 struct BoomerangFinishCard: View {

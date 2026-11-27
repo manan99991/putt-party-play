@@ -2520,6 +2520,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var inputVideo: URL?
     /// The photos a flipbook was made from, so its finish can try every other animation on them.
     @State private var animPhotos: [UIImage] = []
+    /// A collage's or a photos GIF's photos, so its result can switch looks without picking them again.
+    @State private var collagePhotos: [UIImage] = []
     @State private var scamChecked: String?
     /// A video waiting for you to pick its part (tools that keep a stretch: stories, reels, first minute).
     @State private var choosing: URL?
@@ -3260,8 +3262,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             let pdfSize: DocEngine.PageSize = { switch chain.steps.first(where: { $0.block == .photoPdf })?.settings["pagesize"] { case "a4": return .a4; case "letter": return .letter; default: return .auto } }()
             if let one = gif ? ChainCombine.oneGif(kept) : collage ? ChainCombine.onePicture(kept) : combine ? ChainCombine.onePDF(kept, onePage: chain.onePage == true, pageSize: pdfSize) : nil {
                 let skipped = out.filter { $0.note != nil }.count
+                let pics = collage || gif ? (ChainCombine.images(kept) ?? []) : []
                 await MainActor.run {
-                    busy = false; progress = ""; result = one
+                    busy = false; progress = ""; result = one; collagePhotos = pics
                     if skipped > 0 { message = "\(skipped) of \(count) couldn't be used and were left out." }
                     finished(Outbox.make(one, named: chain.fileName, tool: chain.name))
                 }
@@ -3543,7 +3546,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             StillFinishCard(video: inputVideo, image: i)
         case .image(let i) where chain.collage == true || chain.versus == true:
             // A collage or a before/after: the picture, Copy into a chat, Photos, Share.
-            FunFinishCard(block: .stripLocation, original: nil, result: i, look: "")
+            FunFinishCard(block: .stripLocation, original: nil, result: i, look: chain.collage == true ? "grid" : "",
+                          sources: chain.collage == true ? collagePhotos : [])
         case .image(let i) where [.makeQr, .wifiQr, .contactQr].contains(chain.steps.last?.block):
             // Same finish as QR & Wi‑Fi: tested by reading it back, what it does when scanned, Photos / Share / print card.
             CodeFinishCard(image: i)
@@ -3567,6 +3571,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             } else if lext == "gif", chain.steps.last?.block == .videoLoop, let v = inputVideo {
                 // Boomerang: every other style one tap away on the same moment.
                 BoomerangFinishCard(source: v, data: d, style: Boomerang.style(chain.steps.last?.settings["style"]).id, tool: chain.name)
+            } else if lext == "gif", chain.gif == true, collagePhotos.count > 1 {
+                // Photos played as a GIF: slow, fast, back and forth or fading, one tap away on the same photos.
+                PhotosGIFFinishCard(photos: collagePhotos, data: d, tool: chain.name)
             } else if lext == "gif" {
                 GIFFinishCard(data: d, shareURL: tempURL(d, ext), tool: chain.name, record: false)
             } else if chain.steps.last?.block == .sticker, let img = UIImage(data: d) {

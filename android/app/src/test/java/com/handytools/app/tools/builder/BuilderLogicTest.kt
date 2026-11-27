@@ -630,6 +630,25 @@ class BuilderLogicTest {
             assertTrue("$id is the same as another look", seenLooks.add("${l.emojis.joinToString("")}|${l.long}|${l.backed}"))
         }
         assertEquals(56, TextTidy.mosaicLook(null).long)
+        // Collages and photo GIFs offer the iPhone's looks too.
+        assertEquals("grid", TextTidy.COLLAGE_LOOKS.first().first); assertEquals(TextTidy.COLLAGE_LOOKS.size, TextTidy.COLLAGE_LOOKS.map { it.first }.toSet().size)
+        assertEquals(TextTidy.GIF_LOOKS.size, TextTidy.GIF_LOOKS.map { it.first }.toSet().size)
+        for (look in listOf("grid", "hero", "mosaic", "strip")) for (n in 1..7) {
+            val f = TextTidy.collageFrames(look, n, 1080f, 1350f, 15f)
+            assertEquals("$look $n", n, f.size)
+            for (r in f) assertTrue("$look $n inside", r[0] >= 15f - 0.01f && r[1] >= 15f - 0.01f && r[2] <= 1065.01f && r[3] <= 1335.01f && r[2] > r[0] && r[3] > r[1])
+            for (i in f.indices) for (j in i + 1 until f.size) {
+                val a = f[i]; val b = f[j]
+                assertTrue("$look $n: $i and $j overlap", a[2] <= b[0] + 0.01f || b[2] <= a[0] + 0.01f || a[3] <= b[1] + 0.01f || b[3] <= a[1] + 0.01f)
+            }
+        }
+        val hero = TextTidy.collageFrames("hero", 4, 1080f, 1350f, 15f)
+        assertTrue("the first photo is the big one", (hero[0][2] - hero[0][0]) * (hero[0][3] - hero[0][1]) > 2 * (hero[1][2] - hero[1][0]) * (hero[1][3] - hero[1][1]))
+        val secs = { l: String -> TextTidy.gifTimeline(3, l).sumOf { it.delayCs } }
+        assertTrue(secs("slow") > secs("normal")); assertTrue(secs("normal") > secs("fast"))
+        assertEquals(listOf(0, 1, 2, 1), TextTidy.gifTimeline(3, "bounce").map { it.from })
+        val fade = TextTidy.gifTimeline(3, "fade")
+        assertEquals(18, fade.size); assertEquals(0, fade.last().to); assertTrue(fade.all { it.mix >= 0f && it.mix < 1f })
     }
     @Test fun describeItUnderstandsTheFunRequests() {
         assertEquals(listOf(Block.MEME), planned("make a meme")); assertEquals(listOf(Block.MEME), planned("make a meme from my foto"))
