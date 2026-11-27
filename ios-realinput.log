@@ -45,7 +45,7 @@ REALINPUT pdf-join: result (run-result)
 REALINPUT pdf-first-page: result (run-result)
 REALINPUT video-story: result (run-result)
 REALINPUT video-gif: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (1234.997 seconds).
+Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (1394.348 seconds).
 Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' started.
 REALINPUT video-words: result (run-result)
 REALINPUT photo-collage: result (run-result)
@@ -97,19 +97,79 @@ REALINPUT whiteboard-email: result (run-result)
 REALINPUT chat-scam: result (run-result)
 REALINPUT rewrite-clear: result (run-result)
 REALINPUT signature-contact: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1436.150 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 2671.147 (2671.173) seconds
+Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1393.659 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 2788.008 (2788.017) seconds
 Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' started.
-TOOLINPUT studio: ok 35s
-TOOLINPUT procam: ok 32s
-TOOLINPUT video: ok 32s
-TOOLINPUT formatfix: ok 33s
-TOOLINPUT fitit: ok 33s
-TOOLINPUT scrub: ok 33s
-TOOLINPUT identify: ok 34s
-TOOLINPUT stitch: ok 31s
+TOOLINPUT studio: ok 36s
+TOOLINPUT procam: ok 36s
+TOOLINPUT video: ok 37s
+TOOLINPUT formatfix: ok 36s
+TOOLINPUT fitit: ok 37s
+TOOLINPUT scrub: ok 39s
+TOOLINPUT identify: ok 36s
+TOOLINPUT stitch: ok 35s
 TOOLINPUT qrwifi: ok 33s
-TOOLINPUT cleaner: ok 31s
-TOOLINPUT scan: ok 35s
-TOOLINPUT datagrab: ok 34s
+TOOLINPUT cleaner: ok 36s
+TOOLINPUT scan: ok 38s
+TOOLINPUT datagrab: ok 38s
 TOOLINPUT pdfredact: ok 34s
+TOOLINPUT sorted: ok 35s
+TOOLINPUT memory: ok 36s
+TOOLINPUT warranty: ok 39s
+TOOLINPUT textstudio: ok 37s
+TOOLINPUT thinking: ok 41s
+TOOLINPUT medreminder: ok 38s
+TOOLINPUT pricewatch: ok 35s
+TOOLINPUT planner: ok 35s
+TOOLINPUT brief: ok 36s
+TOOLINPUT daydiary: ok 38s
+TOOLINPUT untangle: ok 35s
+TOOLINPUT menu: ok 35s
+TOOLINPUT cards: ok 35s
+TOOLINPUT pdfannotate: ok 35s
+TOOLINPUT pdfconvert: ok 46s
+TOOLINPUT pdfpages: ok 41s
+TOOLINPUT pdfsign: ok 38s
+TOOLINPUT pdfprotect: ok 38s
+TOOLINPUT pdfsearchable: ok 35s
+TOOLINPUT pdfform: ok 35s
+TOOLINPUT zipmaker: ok 36s
+TOOLINPUT celebrate: ok 35s
+TOOLINPUT animate: ok 37s
+TOOLINPUT collage: ok 36s
+TOOLINPUT faceemoji: ok 37s
+TOOLINPUT comicstrip: ok 35s
+TOOLINPUT sticker: ok 35s
+TOOLINPUT audioconvert: ok 36s
+TOOLINPUT audiocompress: ok 33s
+TOOLINPUT ringtone: ok 35s
+TOOLINPUT audioedit: ok 35s
+TOOLINPUT audiomix: ok 35s
+TOOLINPUT audiotags: ok 33s
+TOOLINPUT audioclean: ok 33s
+TOOLINPUT meetingnotes: ok 34s
+TOOLINPUT soundboard: ok 31s
+TOOLINPUT translate: ok 31s
+TOOLINPUT voicenotes: ok 30s
+TOOLINPUT shield: ok 35s
+TOOLINPUT contacts: ok 34s
+TOOLINPUT light: ok 44s
+TOOLINPUT measure: ok 36s
+TOOLINPUT gpsdash: ok 40s
+TOOLINPUT audiolab: ok 33s
+TOOLINPUT rest: ok 41s
+TOOLINPUT seeread: ok 32s
+TOOLINPUT colorvision: ok 31s
+TOOLINPUT fileviewer: ok 29s
+TOOLINPUT pricecheck: ok 36s
+TOOLINPUT vault: ok 36s
+TOOLINPUT speechnotes: ok 33s
+TOOLINPUT audiostudio: ok 34s
+TOOLINPUT invoice: ok 38s
+TOOLINPUT mileage: ok 35s
+TOOLINPUT pricelist: ok 34s
+Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' passed (2546.965 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 2546.965 (2546.967) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 5334.972 (5335.004) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 5334.972 (5335.006) seconds
+** TEST EXECUTE SUCCEEDED **
