@@ -52778,5 +52778,75 @@
   "ja": "動画を変更",
   "pt": "Alterar o vídeo",
   "zh": "修改视频"
+ },
+ "That layout couldn't be made from these photos.": {
+  "de": "Dieses Layout ließ sich aus den Fotos nicht machen.",
+  "es": "No se pudo hacer ese diseño con estas fotos.",
+  "fr": "Cette mise en page n'a pas pu être créée avec ces photos.",
+  "hi": "इन फ़ोटो से वह लेआउट नहीं बन सका।",
+  "it": "Non è stato possibile creare quel layout da queste foto.",
+  "ja": "これらの写真ではそのレイアウトを作れませんでした。",
+  "pt": "Não foi possível fazer esse layout com estas fotos.",
+  "zh": "无法用这些照片做出这种布局。"
+ },
+ "That look couldn't be made from these photos.": {
+  "de": "Dieser Look ließ sich aus den Fotos nicht machen.",
+  "es": "No se pudo hacer ese estilo con estas fotos.",
+  "fr": "Ce style n'a pas pu être créé avec ces photos.",
+  "hi": "इन फ़ोटो से वह लुक नहीं बन सका।",
+  "it": "Non è stato possibile creare quello stile da queste foto.",
+  "ja": "これらの写真ではそのスタイルを作れませんでした。",
+  "pt": "Não foi possível fazer esse estilo com estas fotos.",
+  "zh": "无法用这些照片做出这种效果。"
+ },
+ "Big first photo": {
+  "de": "Erstes Foto groß",
+  "es": "Primera foto grande",
+  "fr": "Première photo en grand",
+  "hi": "पहली फ़ोटो बड़ी",
+  "it": "Prima foto grande",
+  "ja": "1枚目を大きく",
+  "pt": "Primeira foto grande",
+  "zh": "首张大图"
+ },
+ "Magazine": {
+  "de": "Magazin",
+  "es": "Revista",
+  "fr": "Magazine",
+  "hi": "मैगज़ीन",
+  "it": "Rivista",
+  "ja": "マガジン",
+  "pt": "Revista",
+  "zh": "杂志"
+ },
+ "Grid on black": {
+  "de": "Raster auf Schwarz",
+  "es": "Cuadrícula en negro",
+  "fr": "Grille sur noir",
+  "hi": "काले पर ग्रिड",
+  "it": "Griglia su nero",
+  "ja": "黒背景のグリッド",
+  "pt": "Grade no preto",
+  "zh": "黑底网格"
+ },
+ "Back and forth": {
+  "de": "Hin und zurück",
+  "es": "Ida y vuelta",
+  "fr": "Aller-retour",
+  "hi": "आगे-पीछे",
+  "it": "Avanti e indietro",
+  "ja": "行ったり来たり",
+  "pt": "Vai e volta",
+  "zh": "来回播放"
+ },
+ "Fade between": {
+  "de": "Überblenden",
+  "es": "Fundido entre fotos",
+  "fr": "Fondu entre les photos",
+  "hi": "धीरे-धीरे बदलें",
+  "it": "Dissolvenza tra foto",
+  "ja": "フェードで切り替え",
+  "pt": "Transição suave",
+  "zh": "淡入淡出"
  }
 }

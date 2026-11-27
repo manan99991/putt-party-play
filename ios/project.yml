@@ -266,6 +266,7 @@ targets:
       # The chain runner and the engines it calls, so a saved tool runs right inside the share sheet.
       # (Video tools are not offered there; see ShareExtension/EngineShims.swift.)
       - HandyTools/Engines/ChainRunner.swift
+      - HandyTools/Engines/CollageLayout.swift
       - HandyTools/Engines/SheetPeriod.swift
       - HandyTools/Engines/NumberWatch.swift
       - HandyTools/Engines/ChainExtras.swift
