@@ -1,8 +1,4 @@
 == ipad (results)
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1364.011 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (24.908 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (36.826 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1425.745 (1425.779) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1425.745 (1425.780) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1425.745 (1425.787) seconds
-** TEST SUCCEEDED **
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/ChainRunner.swift:1899:110: error: 'nil' is not compatible with expected argument type 'CGColorSpace'
+     |                                                                                                              `- error: 'nil' is not compatible with expected argument type 'CGColorSpace'
+** TEST FAILED **
