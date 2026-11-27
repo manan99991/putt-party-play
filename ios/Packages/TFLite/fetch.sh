@@ -22,15 +22,13 @@ for slice in "$src"/*/; do
   fw="$slice/TensorFlowLiteC.framework"
   [ -d "$fw" ] || continue
   name="$(basename "$slice")"
-  out="$tmp/lib/$name"; mkdir -p "$out/Headers"
+  out="$tmp/lib/$name"; mkdir -p "$out/Headers/TensorFlowLiteC"
   cp "$fw/TensorFlowLiteC" "$out/libTensorFlowLiteC.a"
-  cp -R "$fw/Headers/." "$out/Headers/"
-  if [ -f "$out/Headers/TensorFlowLiteC.h" ]; then
-    printf 'module TensorFlowLiteC {\n  umbrella header "TensorFlowLiteC.h"\n  export *\n}\n' > "$out/Headers/module.modulemap"
-  else
-    { echo 'module TensorFlowLiteC {'; for h in "$out"/Headers/*.h; do echo "  header \"$(basename "$h")\""; done; echo '  export *'; echo '}'; } > "$out/Headers/module.modulemap"
-  fi
-  echo "slice $name: $(ls "$out/Headers" | tr '\n' ' ')"
+  # The headers include each other framework-style ("TensorFlowLiteC/common.h"), so they keep that folder.
+  cp -R "$fw/Headers/." "$out/Headers/TensorFlowLiteC/"
+  rm -f "$out/Headers/TensorFlowLiteC/module.modulemap"
+  printf 'module TensorFlowLiteC {\n  umbrella header "TensorFlowLiteC/TensorFlowLiteC.h"\n  export *\n}\n' > "$out/Headers/module.modulemap"
+  echo "slice $name: $(ls "$out/Headers/TensorFlowLiteC" | tr '\n' ' ')"
   args+=(-library "$out/libTensorFlowLiteC.a" -headers "$out/Headers")
 done
 xcodebuild -create-xcframework "${args[@]}" -output "$dest" >/dev/null

@@ -349,7 +349,7 @@ class FaceEngine private constructor(private val detector: Interpreter, private 
         fun col(i: Int) = floatArrayOf(((rgb[i] shr 16) and 255) / 255f, ((rgb[i] shr 8) and 255) / 255f, (rgb[i] and 255) / 255f)
         fun median(v: List<FloatArray>) = FloatArray(3) { c -> v.map { it[c] }.sorted()[v.size / 2] }
         if (m != null) {
-            val pts = FOREHEAD.mapNotNull { k ->
+            val pts = FOREHEAD.toList().mapNotNull { k ->
                 val gx = (m[k * 3] / w * n).toInt(); val gy = (m[k * 3 + 1] / h * n).toInt()
                 if (gx in 0 until n && gy in 0 until n) col(gy * n + gx) else null
             }
