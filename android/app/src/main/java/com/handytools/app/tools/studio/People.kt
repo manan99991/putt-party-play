@@ -51,6 +51,9 @@ class People(val step: Double, val maskW: Int, val maskH: Int, val masks: List<B
     }
 
     companion object {
+        /** The new face engine on Android: off until it passes FaceFunOnDeviceTest on a phone (27 Nov: 0/30 faces). */
+        const val ENGINE_ON = false
+
         /** How often to look: 8 times a second, fewer for long videos so a minute is at most 240 looks. */
         fun stepFor(seconds: Double): Double = max(1.0 / 8, seconds / 240)
 
@@ -92,7 +95,9 @@ class People(val step: Double, val maskW: Int, val maskH: Int, val masks: List<B
                          /** Also the hair and skin shares (Bald and the skin effects), and the filled picture for Bald. */
                          parts: Boolean = false, fill: Boolean = false, progress: (Double) -> Unit = {}): People? =
             withContext(Dispatchers.Default) {
-                FaceEngine.open(ctx)?.use { engine -> return@withContext findWith(engine, ctx, uri, seconds, masks, faces, parts, fill, progress) }
+                // 27 Nov: on the test phone the new engine found no faces (0/30) and broke colour pop, so Android keeps
+                // ML Kit (proven) until the engine passes FaceFunOnDeviceTest. Turn on with ENGINE_ON once it does.
+                if (ENGINE_ON) FaceEngine.open(ctx)?.use { engine -> return@withContext findWith(engine, ctx, uri, seconds, masks, faces, parts, fill, progress) }
                 val step = stepFor(seconds)
                 val count = max(1, (seconds / step).toInt() + 1)
                 val r = MediaMetadataRetriever()
