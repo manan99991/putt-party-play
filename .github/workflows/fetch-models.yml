@@ -1,0 +1,39 @@
+name: Fetch face models
+
+# Downloads Google's open MediaPipe model files (face detector, face mesh, hair and selfie segmenters) for the Video
+# Studio's new face engine, and publishes them with their checksums to ci-logs (the sandbox Claude works in can't reach
+# Google's model host). They are run directly with LiteRT/TFLite on the phone — never MediaPipe Tasks, which reports
+# usage to Google — so nothing leaves the phone. Data files only; nothing here is executed.
+on:
+  workflow_dispatch:
+  push:
+    branches: [handytools]
+    paths: [".github/workflows/fetch-models.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download
+        run: |
+          set -e
+          mkdir -p "$RUNNER_TEMP/models" && cd "$RUNNER_TEMP/models"
+          B=https://storage.googleapis.com/mediapipe-models
+          get() { curl -fsSL --retry 3 -o "$2" "$1" && echo "ok $2 $(stat -c %s "$2")" || echo "MISSING $2 <- $1"; }
+          get $B/face_landmarker/face_landmarker/float16/1/face_landmarker.task face_landmarker.task
+          get $B/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite blaze_face_short_range.tflite
+          get $B/image_segmenter/hair_segmenter/float32/latest/hair_segmenter.tflite hair_segmenter.tflite
+          get $B/image_segmenter/selfie_multiclass_256x256/float32/latest/selfie_multiclass_256x256.tflite selfie_multiclass_256x256.tflite
+          get $B/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite selfie_segmenter.tflite
+          get $B/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task pose_landmarker_lite.task
+          # The .task files are zips of .tflite files: list what's inside.
+          for t in *.task; do [ -f "$t" ] && { echo "== $t"; unzip -l "$t"; }; done
+          sha256sum * > SHA256SUMS; cat SHA256SUMS
+      - name: Publish
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh face-models "$RUNNER_TEMP/models"
