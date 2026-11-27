@@ -7,4 +7,13 @@
 🍺  /opt/homebrew/Cellar/xcodegen/2.48.0: 38 files, 9.8MB
 slice ios-arm64_x86_64-simulator: builtin_ops.h c_api_experimental.h c_api_opaque.h c_api_types.h c_api.h common.h operator.h profiler.h telemetry_setting.h TensorFlowLiteC.h types.h xnnpack_delegate.h 
 slice ios-arm64: builtin_ops.h c_api_experimental.h c_api_opaque.h c_api_types.h c_api.h common.h operator.h profiler.h telemetry_setting.h TensorFlowLiteC.h types.h xnnpack_delegate.h 
+TensorFlowLiteC ready
+⚙️  Generating plists...
+⚙️  Generating project...
+⚙️  Writing project...
+Created project at /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj
+Command line invocation:
+    /Applications/Xcode_27.2.app/Contents/Developer/usr/bin/xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
+
+Resolve Package Graph
 == build.log (errors)
