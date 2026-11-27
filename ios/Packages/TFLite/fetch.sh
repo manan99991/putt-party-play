@@ -14,6 +14,25 @@ got="$(shasum -a 256 "$tmp/tflc.tgz" | cut -d' ' -f1)"
 [ "$got" = "$sum" ] || { echo "TensorFlowLiteC checksum mismatch: $got" >&2; exit 1; }
 tar -xzf "$tmp/tflc.tgz" -C "$tmp"
 rm -rf "${dest:?}"
-cp -R "$tmp/TensorFlowLiteC-2.17.0/Frameworks/TensorFlowLiteC.xcframework" "$dest"
+# The pod ships static frameworks without an Info.plist, which Xcode refuses to embed. Repackage each slice as a
+# static library (with its headers and a module map) so it's linked into the app, never embedded.
+src="$tmp/TensorFlowLiteC-2.17.0/Frameworks/TensorFlowLiteC.xcframework"
+args=()
+for slice in "$src"/*/; do
+  fw="$slice/TensorFlowLiteC.framework"
+  [ -d "$fw" ] || continue
+  name="$(basename "$slice")"
+  out="$tmp/lib/$name"; mkdir -p "$out/Headers"
+  cp "$fw/TensorFlowLiteC" "$out/libTensorFlowLiteC.a"
+  cp -R "$fw/Headers/." "$out/Headers/"
+  if [ -f "$out/Headers/TensorFlowLiteC.h" ]; then
+    printf 'module TensorFlowLiteC {\n  umbrella header "TensorFlowLiteC.h"\n  export *\n}\n' > "$out/Headers/module.modulemap"
+  else
+    { echo 'module TensorFlowLiteC {'; for h in "$out"/Headers/*.h; do echo "  header \"$(basename "$h")\""; done; echo '  export *'; echo '}'; } > "$out/Headers/module.modulemap"
+  fi
+  echo "slice $name: $(ls "$out/Headers" | tr '\n' ' ')"
+  args+=(-library "$out/libTensorFlowLiteC.a" -headers "$out/Headers")
+done
+xcodebuild -create-xcframework "${args[@]}" -output "$dest" >/dev/null
 echo "$sum" > "$dest/.sha256"
 echo "TensorFlowLiteC ready"
