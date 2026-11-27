@@ -2,10 +2,11 @@
 
 New: **Video Studio** (Home › Video; it was "Video Effects") — one place for a video:
 
-- **Faces** tab: 36 effects on every face, steady from frame to frame — Cone head, Egg head, Alien, Balloon face,
-  big/tiny head, big mouth, big eyes, squished, chipmunk cheeks; shades, heart glasses, crown, moustache, puppy, bunny,
-  clown nose, halo, devil horns, party hat, flower crown; Zombie, Robot, Cartoon, Glow; Beautiful, Seriously sunny,
-  Tacky, Wholesome; Long legs, Big head tiny body. Each one shows on your own video before you pick it.
+- **Faces** tab: 30 effects on every face, steady from frame to frame — Cone head, Egg head, Balloon face,
+  big/tiny head, big mouth, big eyes, squished, chipmunk cheeks (all much bigger now); shades, heart glasses, crown,
+  moustache, puppy, bunny, clown nose, halo, devil horns, party hat, flower crown; Cartoon, Seriously sunny, Tacky;
+  Long legs, Big head tiny body. Each one shows on your own video before you pick it. (27 Nov: Bald, Alien, Zombie,
+  Robot, Glow, Beautiful and Wholesome were taken out — they didn't look good enough on real home video.)
 - **Background**: blur, colour pop, backdrops — or **Your photo** behind you.
 - **Music**: Tenzy's own music (Upbeat, Party, Chill, Epic), **Your song** from Files, or No sound, with a slider
   between the music and the video's own sound. You hear it in the preview.

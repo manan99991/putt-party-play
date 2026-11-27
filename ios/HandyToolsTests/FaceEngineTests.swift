@@ -109,7 +109,7 @@ final class FaceEngineTests: XCTestCase {
             print("FACEENGINE|parts|photo\(n + 1)|faces \(seen.meshes.count)|heads \(seen.heads.count)")
             XCTAssertFalse(seen.meshes.isEmpty, "photo \(n + 1): no face")
             XCTAssertFalse(seen.heads.isEmpty, "photo \(n + 1): no head")
-            for id in ["alien", "zombie", "robot", "glow", "beautiful", "wholesome", "bighead", "sunglasses", "crown"] {
+            for id in ["bighead", "balloon", "bigeyes", "tinyhead", "sunglasses", "crown", "cartoon"] {
                 let scene = FaceFun.scene(engine: seen, parts: parts, for: id, src: img)
                 guard let f = scene.faces.first else { return XCTFail("photo \(n + 1): no face for \(id)") }
                 let out = FaceFun.apply(id, to: img, scene: scene, t: 0.5, amount: 0.7)
@@ -120,7 +120,7 @@ final class FaceEngineTests: XCTestCase {
                 print("FACEENGINE|effect|photo\(n + 1)|\(id)|head \(String(format: "%.1f", onHead))|corner \(String(format: "%.1f", far))")
                 XCTAssertEqual(out.extent, rect)
                 XCTAssertGreaterThan(onHead, 1.5, "photo \(n + 1): \(id) did nothing to the head")
-                if !["glow", "beautiful", "wholesome"].contains(id) { XCTAssertLessThan(far, 1.0, "photo \(n + 1): \(id) changed the far corner") }
+                if id != "cartoon" { XCTAssertLessThan(far, 1.0, "photo \(n + 1): \(id) changed the far corner") }
                 if id == "bald" {
                     // Above the brows, where there was hair: changed a lot.
                     let hair = pixels(parts.hair)

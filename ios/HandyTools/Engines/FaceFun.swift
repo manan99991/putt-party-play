@@ -23,7 +23,6 @@ enum FaceFun {
         // unlisted, in case a trained model makes it good one day.
         Effect(id: "cone", name: "Cone head", emoji: "🍦", group: .heads),
         Effect(id: "egg", name: "Egg head", emoji: "🥚", group: .heads),
-        Effect(id: "alien", name: "Alien", emoji: "👽", group: .heads),
         Effect(id: "balloon", name: "Balloon face", emoji: "🎈", group: .heads),
         Effect(id: "bighead", name: "Big head", emoji: "🎃", group: .heads),
         Effect(id: "tinyhead", name: "Tiny head", emoji: "🐜", group: .heads),
@@ -50,15 +49,11 @@ enum FaceFun {
         Effect(id: "partyhat", name: "Party hat", emoji: "🥳", group: .stickers),
         Effect(id: "flowers", name: "Flower crown", emoji: "🌸", group: .stickers),
 
-        Effect(id: "zombie", name: "Zombie", emoji: "🧟", group: .skin),
-        Effect(id: "robot", name: "Robot", emoji: "🤖", group: .skin),
-        Effect(id: "cartoon", name: "Cartoon", emoji: "🎨", group: .skin),
-        Effect(id: "glow", name: "Glow", emoji: "✨", group: .skin),
-
-        Effect(id: "beautiful", name: "Beautiful", emoji: "💄", group: .moods),
+        // Alien, Zombie, Robot, Glow, Beautiful and Wholesome (the face repaints) were taken out on 27 Nov with Bald:
+        // hand-built, they looked cheap on real home video (Manan's call). Their code stays, unlisted.
+        Effect(id: "cartoon", name: "Cartoon", emoji: "🎨", group: .moods),
         Effect(id: "sunny", name: "Seriously sunny", emoji: "☀️", group: .moods),
         Effect(id: "tacky", name: "Tacky", emoji: "💎", group: .moods),
-        Effect(id: "wholesome", name: "Wholesome", emoji: "🥰", group: .moods),
 
         Effect(id: "longlegs", name: "Long legs", emoji: "🦵", group: .body),
         Effect(id: "tinybody", name: "Big head, tiny body", emoji: "🧸", group: .body),

@@ -162,7 +162,7 @@ fun VideoEffectsScreen() {
                 FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     Box(Modifier.testTag("fx-funny-none")) { HChip("⚪️ ${I18n.t("Off")}", selected = recipe.funny == "none") { recipe = recipe.copy(funny = "none") } }
                 }
-                FaceFun.Group.values().forEach { g ->
+                FaceFun.Group.values().filter { g -> FaceFun.effects.any { it.group == g } }.forEach { g ->
                     Spacer(Modifier.height(HandyTokens.Space8))
                     Text(I18n.t(g.title), style = MaterialTheme.typography.titleSmall)
                     FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {

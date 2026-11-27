@@ -294,7 +294,7 @@ struct CelebrateView: View {
     /// Every face and body effect, in its group, each shown on the person's own video.
     private var facesCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            ForEach(FaceFun.Group.allCases) { g in
+            ForEach(FaceFun.Group.allCases.filter { g in g == FaceFun.Group.allCases.first || FaceFun.effects.contains { $0.group == g } }) { g in
                 Text(L(g.rawValue)).font(HandyFont.bodyStrong)
                 HandyFlow(spacing: 10) {
                     if g == FaceFun.Group.allCases.first {

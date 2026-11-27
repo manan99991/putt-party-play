@@ -21,7 +21,7 @@ object FaceFun {
 
     val effects = listOf(
         Effect("cone", "Cone head", "🍦", Group.HEADS), Effect("egg", "Egg head", "🥚", Group.HEADS),
-        Effect("alien", "Alien", "👽", Group.HEADS), Effect("balloon", "Balloon face", "🎈", Group.HEADS), Effect("bighead", "Big head", "🎃", Group.HEADS),
+        Effect("balloon", "Balloon face", "🎈", Group.HEADS), Effect("bighead", "Big head", "🎃", Group.HEADS),
         Effect("tinyhead", "Tiny head", "🐜", Group.HEADS),
         Effect("bigmouth", "Big mouth", "👄", Group.WARPS), Effect("bigeyes", "Big eyes", "👀", Group.WARPS), Effect("tinyface", "Tiny face", "🤏", Group.WARPS),
         Effect("squish", "Squished", "🫓", Group.WARPS), Effect("pinch", "Pinched", "🍐", Group.WARPS), Effect("longchin", "Long chin", "🌙", Group.WARPS),
@@ -30,9 +30,9 @@ object FaceFun {
         Effect("moustache", "Moustache", "🥸", Group.STICKERS), Effect("dog", "Puppy", "🐶", Group.STICKERS), Effect("bunny", "Bunny", "🐰", Group.STICKERS),
         Effect("clown", "Clown nose", "🤡", Group.STICKERS), Effect("halo", "Halo", "😇", Group.STICKERS), Effect("devil", "Devil horns", "😈", Group.STICKERS),
         Effect("partyhat", "Party hat", "🥳", Group.STICKERS), Effect("flowers", "Flower crown", "🌸", Group.STICKERS),
-        Effect("zombie", "Zombie", "🧟", Group.SKIN), Effect("robot", "Robot", "🤖", Group.SKIN), Effect("cartoon", "Cartoon", "🎨", Group.SKIN), Effect("glow", "Glow", "✨", Group.SKIN),
-        Effect("beautiful", "Beautiful", "💄", Group.MOODS), Effect("sunny", "Seriously sunny", "☀️", Group.MOODS), Effect("tacky", "Tacky", "💎", Group.MOODS),
-        Effect("wholesome", "Wholesome", "🥰", Group.MOODS),
+        // Alien, Zombie, Robot, Glow, Beautiful and Wholesome (the face repaints) were taken out on 27 Nov with Bald, as on
+        // the iPhone: hand-built, they looked cheap on real home video. Their code stays, unlisted.
+        Effect("cartoon", "Cartoon", "🎨", Group.MOODS), Effect("sunny", "Seriously sunny", "☀️", Group.MOODS), Effect("tacky", "Tacky", "💎", Group.MOODS),
         Effect("longlegs", "Long legs", "🦵", Group.BODY), Effect("tinybody", "Big head, tiny body", "🧸", Group.BODY),
     )
 
@@ -99,9 +99,9 @@ object FaceFun {
         fun s(lo: Float, hi: Float) = lo + (hi - lo) * a
         val c = f.center; val r = f.roll
         return when (id) {
-            "bighead" -> listOf(bulge(f.point(c, up = f.height * 0.12f), f.width * 1.15f, f.height * 1.35f, r, s(0.3f, 0.6f), s(0.3f, 0.6f)))
-            "tinyhead" -> listOf(bulge(f.point(c, up = f.height * 0.12f), f.width * 1.05f, f.height * 1.25f, r, -s(0.5f, 1.1f), -s(0.5f, 1.1f)))
-            "balloon" -> { val p = s(0.42f, 0.66f) * (1 + 0.06f * sin(t * 2.4f)); listOf(bulge(f.point(c, up = f.height * 0.05f), f.width * 1.08f, f.height * 1.22f, r, p, p)) }
+            "bighead" -> { val k = s(0.55f, 0.82f) * (1 + 0.05f * sin(t * 3)); listOf(bulge(f.point(c, up = f.height * 0.12f), f.width * 1.6f, f.height * 1.85f, r, k, k)) }
+            "tinyhead" -> listOf(bulge(f.point(c, up = f.height * 0.12f), f.width * 1.2f, f.height * 1.4f, r, -s(0.85f, 1.2f), -s(0.85f, 1.2f)))
+            "balloon" -> { val p = s(0.62f, 0.86f) * (1 + 0.06f * sin(t * 2.4f)); listOf(bulge(f.point(c, up = f.height * 0.05f), f.width * 1.08f, f.height * 1.22f, r, p, p)) }
             "cone" -> listOf(Bend(2, floatArrayOf(f.brow.x, f.brow.y, f.height * 0.98f, f.width * 0.56f), floatArrayOf(r, s(0.5f, 1f), s(0.6f, 1f))))
             "egg" -> listOf(Bend(2, floatArrayOf(f.brow.x, f.brow.y, f.height * 0.98f, f.width * 0.56f), floatArrayOf(r, s(0.35f, 0.7f), 0.22f)))
             "alien" -> listOf(
@@ -109,19 +109,19 @@ object FaceFun {
                 bulge(f.point(f.mouth, up = -f.height * 0.1f), f.width * 0.6f, f.height * 0.55f, r, -s(0.5f, 0.9f), 0f),
                 bulge(f.eyeA, f.eyeDistance * 0.46f, f.eyeDistance * 0.38f, r, s(0.4f, 0.6f), s(0.4f, 0.6f)),
                 bulge(f.eyeB, f.eyeDistance * 0.46f, f.eyeDistance * 0.38f, r, s(0.4f, 0.6f), s(0.4f, 0.6f)))
-            "bigmouth" -> listOf(bulge(f.mouth, f.mouthWidth * 1.25f, f.mouthWidth * 0.95f, r, s(0.4f, 0.68f), s(0.4f, 0.68f)))
-            "bigeyes" -> listOf(f.eyeA, f.eyeB).map { bulge(it, f.eyeDistance * 0.46f, f.eyeDistance * 0.46f, r, s(0.4f, 0.66f), s(0.4f, 0.66f)) }
-            "tinyface" -> listOf(bulge(c, f.width * 0.62f, f.height * 0.72f, r, -s(0.6f, 1.15f), -s(0.6f, 1.15f)))
-            "squish" -> listOf(bulge(c, f.width * 1.1f, f.height * 1.2f, r, s(0.3f, 0.5f), -s(0.5f, 1f)))
+            "bigmouth" -> listOf(bulge(f.mouth, f.mouthWidth * 1.5f, f.mouthWidth * 1.15f, r, s(0.62f, 0.86f), s(0.62f, 0.86f)))
+            "bigeyes" -> listOf(f.eyeA, f.eyeB).map { bulge(it, f.eyeDistance * 0.5f, f.eyeDistance * 0.5f, r, s(0.62f, 0.86f), s(0.62f, 0.86f)) }
+            "tinyface" -> listOf(bulge(c, f.width * 0.7f, f.height * 0.8f, r, -s(0.9f, 1.2f), -s(0.9f, 1.2f)))
+            "squish" -> listOf(bulge(c, f.width * 1.1f, f.height * 1.2f, r, s(0.45f, 0.7f), -s(0.8f, 1.15f)))
             "pinch" -> listOf(
                 bulge(f.point(f.brow, up = f.height * 0.1f), f.width * 0.85f, f.height * 0.7f, r, -s(0.5f, 1f), 0f),
                 bulge(f.point(f.mouth, up = -f.height * 0.05f), f.width * 0.8f, f.height * 0.6f, r, s(0.3f, 0.5f), 0f))
-            "longchin" -> listOf(bulge(f.point(f.mouth, up = -f.height * 0.2f), f.width * 0.5f, f.height * 0.7f, r, -0.1f, s(0.45f, 0.72f)))
+            "longchin" -> listOf(bulge(f.point(f.mouth, up = -f.height * 0.2f), f.width * 0.5f, f.height * 0.7f, r, -0.15f, s(0.65f, 0.88f)))
             "chipmunk" -> listOf(f.cheekA, f.cheekB).map { ch ->
                 val p = f.point(Pt(f.mouth.x + (ch.x - f.mouth.x) * 0.62f, f.mouth.y + (ch.y - f.mouth.y) * 0.62f), up = f.height * 0.05f)
-                bulge(p, f.width * 0.34f, f.width * 0.34f, r, s(0.4f, 0.66f), s(0.4f, 0.66f))
+                bulge(p, f.width * 0.4f, f.width * 0.4f, r, s(0.62f, 0.86f), s(0.62f, 0.86f))
             }
-            "stretchy" -> listOf(bulge(c, f.width, f.height * 1.35f, r, -0.25f, s(0.4f, 0.62f) + 0.06f * sin(t * 3)))
+            "stretchy" -> listOf(bulge(c, f.width, f.height * 1.35f, r, -0.35f, s(0.62f, 0.82f) + 0.06f * sin(t * 3)))
             "wobbly" -> listOf(Bend(3, floatArrayOf(c.x, c.y, f.width * 0.95f, 0f), floatArrayOf((0.35f + 0.7f * a) * sin(t * 5), 0f, 0f)))
             "tinybody" -> listOf(
                 bulge(f.point(f.chin, up = -f.height * 1.75f), f.width * 1.7f, f.height * 1.75f, r, -s(0.55f, 1.1f), -s(0.2f, 0.45f)),

@@ -126,10 +126,10 @@ extension FaceFun {
         for f in scene.faces {
             let c = f.center
             switch id {
-            case "bighead": out = bulge(out, at: f.point(c, up: f.height * 0.12), radii: CGSize(width: f.width * 1.15, height: f.height * 1.35), angle: f.roll, strength: both(s(0.3, 0.6)))
-            case "tinyhead": out = bulge(out, at: f.point(c, up: f.height * 0.12), radii: CGSize(width: f.width * 1.05, height: f.height * 1.25), angle: f.roll, strength: both(-s(0.5, 1.1)))
+            case "bighead": out = bulge(out, at: f.point(c, up: f.height * 0.12), radii: CGSize(width: f.width * 1.6, height: f.height * 1.85), angle: f.roll, strength: both(s(0.55, 0.82) * (1 + 0.05 * sin(tt * 3))))
+            case "tinyhead": out = bulge(out, at: f.point(c, up: f.height * 0.12), radii: CGSize(width: f.width * 1.2, height: f.height * 1.4), angle: f.roll, strength: both(-s(0.85, 1.2)))
             case "balloon":
-                let puff = s(0.42, 0.66) * (1 + 0.06 * sin(tt * 2.4))
+                let puff = s(0.62, 0.86) * (1 + 0.06 * sin(tt * 2.4))
                 out = bulge(out, at: f.point(c, up: f.height * 0.05), radii: CGSize(width: f.width * 1.08, height: f.height * 1.22), angle: f.roll, strength: both(puff))
             case "cone": out = cone(out, f, stretch: s(0.5, 1.0), point: s(0.6, 1.0))
             case "egg": out = cone(out, f, stretch: s(0.35, 0.7), point: 0.22)
@@ -140,26 +140,26 @@ extension FaceFun {
                     out = bulge(out, at: e, radii: CGSize(width: f.eyeDistance * 0.46, height: f.eyeDistance * 0.38), angle: f.roll, strength: both(s(0.4, 0.6)))
                 }
             case "bigmouth":
-                out = bulge(out, at: f.mouth, radii: CGSize(width: f.mouthWidth * 1.25, height: f.mouthWidth * 0.95), angle: f.roll, strength: both(s(0.4, 0.68)))
+                out = bulge(out, at: f.mouth, radii: CGSize(width: f.mouthWidth * 1.5, height: f.mouthWidth * 1.15), angle: f.roll, strength: both(s(0.62, 0.86)))
             case "bigeyes":
                 for e in [f.eyeA, f.eyeB] {
-                    out = bulge(out, at: e, radii: CGSize(width: f.eyeDistance * 0.46, height: f.eyeDistance * 0.46), angle: f.roll, strength: both(s(0.4, 0.66)))
+                    out = bulge(out, at: e, radii: CGSize(width: f.eyeDistance * 0.5, height: f.eyeDistance * 0.5), angle: f.roll, strength: both(s(0.62, 0.86)))
                 }
-            case "tinyface": out = bulge(out, at: c, radii: CGSize(width: f.width * 0.62, height: f.height * 0.72), angle: f.roll, strength: both(-s(0.6, 1.15)))
+            case "tinyface": out = bulge(out, at: c, radii: CGSize(width: f.width * 0.7, height: f.height * 0.8), angle: f.roll, strength: both(-s(0.9, 1.2)))
             case "squish":
-                out = bulge(out, at: c, radii: CGSize(width: f.width * 1.1, height: f.height * 1.2), angle: f.roll, strength: CGVector(dx: s(0.3, 0.5), dy: -s(0.5, 1.0)))
+                out = bulge(out, at: c, radii: CGSize(width: f.width * 1.1, height: f.height * 1.2), angle: f.roll, strength: CGVector(dx: s(0.45, 0.7), dy: -s(0.8, 1.15)))
             case "pinch":
                 out = bulge(out, at: f.point(f.brow, up: f.height * 0.1), radii: CGSize(width: f.width * 0.85, height: f.height * 0.7), angle: f.roll, strength: CGVector(dx: -s(0.5, 1.0), dy: 0))
                 out = bulge(out, at: f.point(f.mouth, up: -f.height * 0.05), radii: CGSize(width: f.width * 0.8, height: f.height * 0.6), angle: f.roll, strength: CGVector(dx: s(0.3, 0.5), dy: 0))
             case "longchin":
-                out = bulge(out, at: f.point(f.mouth, up: -f.height * 0.2), radii: CGSize(width: f.width * 0.5, height: f.height * 0.7), angle: f.roll, strength: CGVector(dx: -0.1, dy: s(0.45, 0.72)))
+                out = bulge(out, at: f.point(f.mouth, up: -f.height * 0.2), radii: CGSize(width: f.width * 0.5, height: f.height * 0.7), angle: f.roll, strength: CGVector(dx: -0.15, dy: s(0.65, 0.88)))
             case "chipmunk":
                 for ch in [f.cheekA, f.cheekB] {
                     let p = f.point(CGPoint(x: f.mouth.x + (ch.x - f.mouth.x) * 0.62, y: f.mouth.y + (ch.y - f.mouth.y) * 0.62), up: f.height * 0.05)
-                    out = bulge(out, at: p, radii: CGSize(width: f.width * 0.34, height: f.width * 0.34), angle: f.roll, strength: both(s(0.4, 0.66)))
+                    out = bulge(out, at: p, radii: CGSize(width: f.width * 0.4, height: f.width * 0.4), angle: f.roll, strength: both(s(0.62, 0.86)))
                 }
             case "stretchy":
-                out = bulge(out, at: c, radii: CGSize(width: f.width * 1.0, height: f.height * 1.35), angle: f.roll, strength: CGVector(dx: -0.25, dy: s(0.4, 0.62) + 0.06 * sin(tt * 3)))
+                out = bulge(out, at: c, radii: CGSize(width: f.width * 1.0, height: f.height * 1.35), angle: f.roll, strength: CGVector(dx: -0.35, dy: s(0.62, 0.82) + 0.06 * sin(tt * 3)))
             case "wobbly":
                 let twirled = out.applyingFilter("CITwirlDistortion", parameters: [kCIInputCenterKey: CIVector(cgPoint: c), kCIInputRadiusKey: f.width * 0.95,
                                                                                     kCIInputAngleKey: (0.35 + 0.7 * a) * sin(tt * 5)])
