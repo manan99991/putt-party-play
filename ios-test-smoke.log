@@ -1,2 +1,27 @@
 == smoke (results)
+Test Case '-[HandyToolsUITests.CameraButtonTests testAVideoHelperRunsOnAClipItRecorded]' passed (54.303 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' passed (62.204 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testCelebrateRecordsAClip]' passed (29.860 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testFitUnderALimitTakesAPhoto]' passed (17.033 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testFunnyMomentsRecordsAClipAndMakesTheJoke]' passed (37.129 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/CameraButtonTests.swift:16: error: -[HandyToolsUITests.CameraButtonTests testMovieTrailerRecordsAClipAndMakesATrailer] : Failed to get matching snapshots: Timed out while evaluating UI query.
+Test Case '-[HandyToolsUITests.CameraButtonTests testMovieTrailerRecordsAClipAndMakesATrailer]' failed (443.989 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPhotoStudioTakesAPhoto]' passed (22.725 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPostItRecordsAClip]' passed (17.618 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPriceCheckReadsAShelfPhoto]' passed (21.157 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPrivacyScrubberTakesAPhoto]' passed (15.042 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testReadyToSendTakesAPhoto]' passed (12.998 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testThePhotoPickerTakesAPhoto]' passed (21.777 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testTranslateReadsAPhotoItTook]' passed (21.640 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testVideoRecordsAClip]' passed (19.055 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' passed (109.770 seconds).
+	 Executed 15 tests, with 1 failure (0 unexpected) in 906.300 (906.322) seconds
+Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (911.524 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 911.524 (911.527) seconds
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1126.509 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (20.297 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (27.214 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1174.020 (1174.025) seconds
+	 Executed 19 tests, with 1 failure (0 unexpected) in 2991.844 (2991.885) seconds
+	 Executed 19 tests, with 1 failure (0 unexpected) in 2991.844 (2991.887) seconds
 ** TEST FAILED **
