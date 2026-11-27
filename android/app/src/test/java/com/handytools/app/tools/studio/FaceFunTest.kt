@@ -41,6 +41,13 @@ class FaceFunTest {
         assertEquals(0f, squashed.roll, 0.001f)
         assertTrue("eyes ${squashed.eyeDistance}", squashed.eyeDistance > 0.125f * 644 * 0.3f)
         assertEquals(squashed.eyeA.y, squashed.eyeB.y, 0.5f)
+        // The same face with its nose found (the 27 Nov rerun): the eyes sit either side of the nose, above it.
+        val turned = FaceFun.face(FaceSpot(0.6f, 0.827f, 0.125f, listOf(Spot(0.586f, 0.817f), Spot(0.588f, 0.823f)), 0f,
+            Spot(0.585f, 0.869f), Spot(0.574f, 0.849f)), 644, 482)
+        val nx = 0.574f * 644; val ny = 0.849f * 482
+        assertEquals(nx, (turned.eyeA.x + turned.eyeB.x) / 2, 0.5f)
+        assertTrue("eyes above the nose", turned.eyeA.y < ny && turned.eyeB.y < ny)
+        assertTrue("eyes either side of it", turned.eyeA.x < nx && turned.eyeB.x > nx)
     }
 
     @Test fun everyEffectDoesSomethingToAFace() {

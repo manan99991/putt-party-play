@@ -254,7 +254,12 @@ class FaceFunOnDeviceTest {
                 // 27 Nov diagnostics (numbers only): Big eyes, Cool shades and Clown nose barely changed this real face on
                 // the phone while Big head did. Where the finder put the eyes, nose and mouth, where each sticker lands,
                 // and how much changed right there.
-                if (e.id in setOf("bigeyes", "sunglasses", "clown") && found != null) {
+                if (e.id in setOf("bigeyes", "sunglasses", "clown", "moustache") && found != null) {
+                    // Where the laid-out face put the eyes (what Big eyes bends), as fractions.
+                    spot?.let { sp ->
+                        val lf = com.handytools.app.tools.studio.FaceFun.face(sp, plain.width, plain.height)
+                        println("FACEFUN|diag|photo$tried|${e.id}|laid out eyes ${"%.3f,%.3f;%.3f,%.3f".format(lf.eyeA.x / plain.width, lf.eyeA.y / plain.height, lf.eyeB.x / plain.width, lf.eyeB.y / plain.height)} eyeDistance ${"%.3f".format(lf.eyeDistance / plain.width)}")
+                    }
                     fun p(s: com.handytools.app.tools.studio.Spot?) = s?.let { "%.3f,%.3f".format(it.x, it.y) } ?: "none"
                     println("FACEFUN|diag|photo$tried|${e.id}|sizes plain ${plain.width}x${plain.height} out ${f.width}x${f.height}" +
                         "|spot ${"%.3f,%.3f".format(spot?.x ?: -1f, spot?.y ?: -1f)} size ${"%.3f".format(spot?.size ?: -1f)} roll ${"%.2f".format(spot?.roll ?: 0f)}" +

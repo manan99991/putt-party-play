@@ -78,9 +78,13 @@ object FaceFun {
         val eyes = if (believable) seen else emptyList()
         val roll = if (eyes.size >= 2) atan2(eyes[1].y - eyes[0].y, eyes[1].x - eyes[0].x) else spot.roll
         val up = Pt(sin(roll), -cos(roll)); val side = Pt(cos(roll), sin(roll))
-        fun at(u: Float, v: Float) = c + side * (u * s) + up * (v * s)
-        val eyeA = if (eyes.size >= 2) eyes[0] else at(-0.19f, 0.1f)
-        val eyeB = if (eyes.size >= 2) eyes[1] else at(0.19f, 0.1f)
+        // Without believable eyes, the eye pair sits above the nose when the nose was found (a half-turned face's
+        // features are off its box centre: 27 Nov photo 1, nose 17 px left of the box), else on the box.
+        val noseSeen = spot.nose?.let { Pt(it.x * w, it.y * h) }
+        val anchor = noseSeen?.let { it + up * (s * 0.22f) } ?: (c + up * (s * 0.1f))
+        fun at(u: Float) = anchor + side * (u * s)
+        val eyeA = if (eyes.size >= 2) eyes[0] else at(-0.19f)
+        val eyeB = if (eyes.size >= 2) eyes[1] else at(0.19f)
         val ed = hypot(eyeB.x - eyeA.x, eyeB.y - eyeA.y).coerceAtLeast(s * 0.2f)
         val mid = (eyeA + eyeB) * 0.5f
         val mouth = spot.mouth?.let { Pt(it.x * w, it.y * h) } ?: (mid + up * (-ed * 0.95f))
