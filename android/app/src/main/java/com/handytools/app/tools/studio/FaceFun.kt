@@ -20,7 +20,7 @@ object FaceFun {
     data class Effect(val id: String, val name: String, val emoji: String, val group: Group)
 
     val effects = listOf(
-        Effect("bald", "Bald", "👨‍🦲", Group.HEADS), Effect("cone", "Cone head", "🍦", Group.HEADS), Effect("egg", "Egg head", "🥚", Group.HEADS),
+        Effect("cone", "Cone head", "🍦", Group.HEADS), Effect("egg", "Egg head", "🥚", Group.HEADS),
         Effect("alien", "Alien", "👽", Group.HEADS), Effect("balloon", "Balloon face", "🎈", Group.HEADS), Effect("bighead", "Big head", "🎃", Group.HEADS),
         Effect("tinyhead", "Tiny head", "🐜", Group.HEADS),
         Effect("bigmouth", "Big mouth", "👄", Group.WARPS), Effect("bigeyes", "Big eyes", "👀", Group.WARPS), Effect("tinyface", "Tiny face", "🤏", Group.WARPS),

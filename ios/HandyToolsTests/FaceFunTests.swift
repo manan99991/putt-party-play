@@ -232,7 +232,7 @@ final class FaceFunTests: XCTestCase {
                                            nose: t([CGPoint(x: 350, y: 545)]), lips: t(straight.lips)))
         let before = pixels(tilted)
         var shots: [(String, CIImage)] = [("Tilted", tilted)]
-        for id in ["sunglasses", "crown", "moustache", "bunny", "bald", "cone", "wholesome", "tacky"] {
+        for id in ["sunglasses", "crown", "moustache", "bunny", "cone", "wholesome", "tacky"] {
             let out = FaceFun.apply(id, to: tilted, scene: FaceFun.Scene(faces: [f]), t: 0.8, amount: 0.7)
             shots.append((id, out))
             guard id == "sunglasses" else { continue }

@@ -1,3 +1,4 @@
+# 27 Nov, round 21: Bald taken out of the Video Studio (Manan: never reached the bar on real video). Same tests.
 # 27 Nov, round 20 — the face engine rebuild. Manan's own video showed the old engine nearly invisible on real home
 # video (small, turned, moving faces). New: Google's open face-mesh and parts models run on the phone (TensorFlow
 # Lite, nothing sent), faces followed every frame, hair/skin/person from one look; Bald on every head; portrait blur

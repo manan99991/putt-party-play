@@ -19,7 +19,8 @@ enum FaceFun {
     }
 
     static let effects: [Effect] = [
-        Effect(id: "bald", name: "Bald", emoji: "👨‍🦲", group: .heads),
+        // Bald was taken out on 27 Nov: on real home video it never reached the bar (Manan's call). Its code stays,
+        // unlisted, in case a trained model makes it good one day.
         Effect(id: "cone", name: "Cone head", emoji: "🍦", group: .heads),
         Effect(id: "egg", name: "Egg head", emoji: "🥚", group: .heads),
         Effect(id: "alien", name: "Alien", emoji: "👽", group: .heads),

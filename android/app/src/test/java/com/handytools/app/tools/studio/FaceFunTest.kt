@@ -6,15 +6,15 @@ import org.junit.Test
 import kotlin.math.PI
 import kotlin.math.abs
 
-/** Face fun on Android: the iPhone's 37 effects, each laid out from a face and turned into bends, skin and stickers. */
+/** Face fun on Android: the iPhone's 36 effects, each laid out from a face and turned into bends, skin and stickers. */
 class FaceFunTest {
     private val w = 720; private val h = 960
     private val upright = FaceSpot(0.5f, 400f / 960, 320f / 720, listOf(Spot(300f / 720, 360f / 960), Spot(420f / 720, 360f / 960)), 0f, Spot(0.5f, 480f / 960), Spot(0.49f, 418f / 960))
 
     @Test fun theSameEffectsAsTheIphone() {
         val ids = FaceFun.effects.map { it.id }
-        assertEquals(37, ids.size); assertEquals(ids.size, ids.toSet().size)
-        for (must in listOf("bald", "cone", "balloon", "sunglasses", "crown", "moustache", "dog", "bunny", "zombie", "robot", "cartoon", "beautiful", "sunny", "tacky", "wholesome", "longlegs"))
+        assertEquals(36, ids.size); assertEquals(ids.size, ids.toSet().size)
+        for (must in listOf("cone", "balloon", "sunglasses", "crown", "moustache", "dog", "bunny", "zombie", "robot", "cartoon", "beautiful", "sunny", "tacky", "wholesome", "longlegs"))
             assertTrue(must, must in ids)
         for (g in FaceFun.Group.values()) assertTrue(g.name, FaceFun.effects.count { it.group == g } >= 2)
         for (e in FaceFun.effects) assertTrue(e.id, e.name.length <= 22)

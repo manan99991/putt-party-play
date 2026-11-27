@@ -2,7 +2,7 @@
 
 New: **Video Studio** (Home › Video; it was "Video Effects") — one place for a video:
 
-- **Faces** tab: 37 effects on every face, steady from frame to frame — Bald, Cone head, Egg head, Alien, Balloon face,
+- **Faces** tab: 36 effects on every face, steady from frame to frame — Cone head, Egg head, Alien, Balloon face,
   big/tiny head, big mouth, big eyes, squished, chipmunk cheeks; shades, heart glasses, crown, moustache, puppy, bunny,
   clown nose, halo, devil horns, party hat, flower crown; Zombie, Robot, Cartoon, Glow; Beautiful, Seriously sunny,
   Tacky, Wholesome; Long legs, Big head tiny body. Each one shows on your own video before you pick it.

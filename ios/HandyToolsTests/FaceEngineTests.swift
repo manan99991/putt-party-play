@@ -109,7 +109,7 @@ final class FaceEngineTests: XCTestCase {
             print("FACEENGINE|parts|photo\(n + 1)|faces \(seen.meshes.count)|heads \(seen.heads.count)")
             XCTAssertFalse(seen.meshes.isEmpty, "photo \(n + 1): no face")
             XCTAssertFalse(seen.heads.isEmpty, "photo \(n + 1): no head")
-            for id in ["bald", "alien", "zombie", "robot", "glow", "beautiful", "wholesome", "bighead", "sunglasses", "crown"] {
+            for id in ["alien", "zombie", "robot", "glow", "beautiful", "wholesome", "bighead", "sunglasses", "crown"] {
                 let scene = FaceFun.scene(engine: seen, parts: parts, for: id, src: img)
                 guard let f = scene.faces.first else { return XCTFail("photo \(n + 1): no face for \(id)") }
                 let out = FaceFun.apply(id, to: img, scene: scene, t: 0.5, amount: 0.7)

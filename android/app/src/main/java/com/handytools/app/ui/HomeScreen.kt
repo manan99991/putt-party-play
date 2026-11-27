@@ -175,7 +175,7 @@ val TOOLS = listOf(
         about = "Pick a video and a classic joke — a record-scratch freeze, a dramatic zoom, crickets, air horns — and Tenzy finds the funniest moment and puts it in with its sound.",
         tint = Color(0xFFF59E0B), vicon = Icons.Outlined.TheaterComedy),
     HTool("videofx", "Video Studio", "Funny faces, backgrounds, music, looks", 0, 0,
-        listOf("video studio","video effects","effects","filter","filters","face filter","funny face","bald","big head","sunglasses","crown","bunny ears","puppy","beauty","background music","add music","music","change background","look","color grade","cinematic","vintage","film grain","vhs","zoom","words on video","caption","glow"),
+        listOf("video studio","video effects","effects","filter","filters","face filter","funny face","big head","sunglasses","crown","bunny ears","puppy","beauty","background music","add music","music","change background","look","color grade","cinematic","vintage","film grain","vhs","zoom","words on video","caption","glow"),
         about = "Make faces funny or beautiful, swap what's behind you, add Tenzy's music or your own song, a look and words — watch a preview, save it, and post it. All made on your phone.",
         tint = Color(0xFF8B5CF6), vicon = Icons.Outlined.AutoAwesome),
     HTool("texttools", "Text Tools", "Clean & change text", 0, 0,

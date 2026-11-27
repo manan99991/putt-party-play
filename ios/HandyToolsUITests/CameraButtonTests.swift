@@ -111,9 +111,11 @@ final class CameraButtonTests: XCTestCase {
         tap(app, "tool-record")
         XCTAssertTrue(appears(app.buttons["fx-tab-funny"].firstMatch, within: 90), "the recorded clip didn't open in the Video Studio — \(PromiseTests.onScreen(app))")
         bring(app, "fx-tab-funny").tap()
-        for id in ["fx-funny-bald", "fx-funny-balloon", "fx-funny-crown", "fx-funny-wholesome", "fx-funny-longlegs"] {
+        for id in ["fx-funny-balloon", "fx-funny-crown", "fx-funny-wholesome", "fx-funny-longlegs"] {
             XCTAssertTrue(app.buttons[id].firstMatch.waitForExistence(timeout: 10), "no \(id) in Faces")
         }
+        // Bald was taken out (27 Nov): it must not be offered.
+        XCTAssertFalse(app.buttons["fx-funny-bald"].firstMatch.exists, "Bald is still offered")
         bring(app, "fx-funny-sunglasses").tap()
         bring(app, "fx-tab-music").tap()
         bring(app, "fx-music-synth-party").tap()
