@@ -1,4 +1,22 @@
 == flows (results)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/BuilderView.swift:2842:25: error: the compiler is unable to type-check this expression in reasonable time; try breaking up the expression into distinct sub-expressions
-     |                         `- error: the compiler is unable to type-check this expression in reasonable time; try breaking up the expression into distinct sub-expressions
-** TEST FAILED **
+} (error = Error Domain=NSPOSIXErrorDomain Code=3 "No such process" UserInfo={SimCallingSelector=launchApplicationWithID:options:pid:error:, NSLocalizedDescription=Simulator device failed to launch com.tenzy.toolkit., NSUnderlyingError=0x7cc28d9770 {Error Domain=NSPOSIXErrorDomain Code=3 "No such process" UserInfo={NSLocalizedDescription=Application launch for 'com.tenzy.toolkit' did not return a process handle nor launch error.}}})
+2026-11-27 20:11:08.602 xcodebuild[6125:22785] [MT] IDELaunchReport: f19f5356a5c672c0:f19f5356a5c67980:Launching HandyTools Finished with error: Simulator device failed to launch com.tenzy.toolkit.
+    SimCallingSelector = "launchApplicationWithID:options:pid:error:";
+2026-11-27 20:11:08.605 xcodebuild[6125:22785] [MT] IDELaunchReport: f19f5356a5c672c0:f19f5356a5c672c0: Finished with error: Simulator device failed to launch com.tenzy.toolkit.
+    SimCallingSelector = "launchApplicationWithID:options:pid:error:";
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/LiveToolTests.swift:31: error: -[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing] : Failed to get launch progress for <XCUIApplicationImpl: 0x109dc2540 com.tenzy.toolkit at /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Products/Debug-iphonesimulator/HandyTools.app>: Simulator device failed to launch com.tenzy.toolkit. No such process. (Underlying Error: Application launch for 'com.tenzy.toolkit' did not return a process handle nor launch error. No such process)
+Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' failed (170.272 seconds).
+Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (26.140 seconds).
+	 Executed 2 tests, with 1 failure (0 unexpected) in 196.412 (196.417) seconds
+Test Case '-[HandyToolsUITests.MultiPhotoTests testAPhotoHandedToTheScrubberShowsUp]' passed (25.282 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/MultiPhotoTests.swift:75: error: -[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp] : Failed to get matching snapshots: Timed out while evaluating UI query.
+Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' failed (258.328 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (92.915 seconds).
+	 Executed 3 tests, with 1 failure (0 unexpected) in 376.525 (376.528) seconds
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:496: error: -[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses] : XCTAssertTrue failed - Contacts finder didn't show (is contacts access granted?)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:497: error: -[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses] : Failed to tap "find-hasPhone" Button: No matches found for Elements matching predicate '"find-hasPhone" IN identifiers' from input {(
+Test Case '-[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses]' failed (33.054 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (91.987 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (20.123 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:822: error: -[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact] : XCTAssertTrue failed - the test card never reached the photo library
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:829: error: -[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact] : XCTAssertTrue failed - the card wasn't read: no message
