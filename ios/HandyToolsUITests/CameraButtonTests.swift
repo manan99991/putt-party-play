@@ -12,8 +12,17 @@ final class CameraButtonTests: XCTestCase {
     }
 
     /// Looks now and then, never continuously (a continuous wait starves the app's main thread in this Xcode).
+    /// Long waits (a trailer or a reel being made) look every 10 s instead of every 2 s, so the checks don't crowd a
+    /// busy simulator, and say how long they've waited — 27 Nov the trailer wait ended in "Timed out while evaluating
+    /// UI query" with no clue how far it got.
     private func appears(_ e: XCUIElement, within seconds: Int) -> Bool {
-        for _ in 0..<max(1, seconds / 2) { if e.exists { return true }; sleep(2) }
+        let every: UInt32 = seconds > 120 ? 10 : 2
+        let start = Date()
+        for n in 0..<max(1, seconds / Int(every)) {
+            if e.exists { if every > 2 { print("WAIT|\(name)|found after \(Int(Date().timeIntervalSince(start))) s") }; return true }
+            if every > 2, n % 3 == 0 { print("WAIT|\(name)|\(Int(Date().timeIntervalSince(start))) s and still waiting") }
+            sleep(every)
+        }
         return e.exists
     }
 

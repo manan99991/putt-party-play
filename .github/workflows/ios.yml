@@ -255,7 +255,7 @@ jobs:
           for p in camera microphone photos location contacts; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
           xcodebuild test -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" $ONLY \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
-            2>&1 | tee test.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD" || true
+            2>&1 | tee test.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD|WAIT\|" || true
           grep -E "error:|Test Case .*failed|failed - " test.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | head -20 | sed 's/^/::error::/' || true
           grep -q "TEST SUCCEEDED" test.log || { echo "== last lines"; tail -60 test.log; exit 1; }
       - name: Publish test log
