@@ -1,4 +1,27 @@
-# What to try in this TestFlight build (27 Nov)
+# What to try in this TestFlight build (27 Nov, evening)
+
+New: **Try another look** — every tool that makes something now lets you remake it a different way and keep the best:
+
+1. **Emoji art / memes / fun photos**: many more styles, plus five new art looks — watercolour, oil paint, neon,
+   old film, comic dots. A new photo now always shows its own result (the old picture no longer sticks).
+2. **Collage**: grid, one big + small ones, mosaic, strip, or on black.
+3. **Photos into a GIF**: normal, slow, fast, bounce (back and forth), fade between pictures.
+4. **Video into a GIF**: slow, fast, small, sharp.
+5. **QR codes** (link, Wi-Fi, contact): classic, dots, rounded, colour, or a card with "Scan me". Each one is scanned
+   back on the phone to make sure it still works.
+6. **Product photo**: white, soft grey, warm, dark or gradient backdrop.
+7. **Celebrate**: try another theme on the same clip.
+8. **Before and after**: swipe, fade or side by side.
+9. **Hide faces / private details**: block, blur, pixels or emoji.
+10. **Tall video for Reels/TikTok**: cropped to fill, or the whole video on a blurred background.
+11. **Rewrite / summary**: another tone; short, medium or long; text or bullet points.
+12. **Read aloud**: slower or faster, and other voices for that language.
+
+Pick any choice under the result — it's remade from the same input in a few seconds, with a timer while it works.
+
+---
+
+# Earlier today (27 Nov)
 
 New: **Video Studio** (Home › Video; it was "Video Effects") — one place for a video:
 
