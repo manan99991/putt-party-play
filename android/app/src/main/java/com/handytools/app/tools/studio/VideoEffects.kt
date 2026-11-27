@@ -226,9 +226,9 @@ object VideoEffects {
     }
 
     /** The video with [r] on it. [preview] makes a short, smaller copy of the first seconds to watch before saving. */
-    suspend fun make(ctx: Context, uri: Uri, r: Recipe, preview: Boolean = false, progress: (Double) -> Unit = {},
+    suspend fun make(ctx: Context, uri: Uri, r: Recipe, preview: Boolean = false,
                      /** For the tests: the people already found (a drawn face the finder wouldn't see). */
-                     given: People? = null): File? {
+                     given: People? = null, progress: (Double) -> Unit = {}): File? {
         val duration = MediaEngine.videoDurationMs(ctx, uri) / 1000.0
         if (duration <= 0.1) return null
         val (w, h) = size(ctx, uri, if (preview) 960 else 1920)

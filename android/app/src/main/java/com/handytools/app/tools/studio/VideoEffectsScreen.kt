@@ -86,7 +86,7 @@ fun VideoEffectsScreen() {
         error = null; progress = 0.0
         val r = recipe
         working = scope.launch {
-            val out = VideoEffects.make(ctx, u, r, preview = !full) { p -> progress = p }
+            val out = VideoEffects.make(ctx, u, r, preview = !full, progress = { p -> progress = p })
             working = null
             VideoEffects.lastSoundProblem?.let { error = it }
             when {
