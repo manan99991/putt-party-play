@@ -12,7 +12,7 @@ New: **Video Studio** (Home › Video; it was "Video Effects") — one place for
   between the music and the video's own sound. You hear it in the preview.
 - When it's made: save it, or tap where it's going (TikTok, Reels, Shorts…) and it's made the right shape and opened.
 
-Please try the face effects on a real face and tell me which ones look off — the test machine's face finder is
+Please try the face effects on a real face (Big head, Tiny head, Balloon first) and tell me which ones look off — the test machine's face finder is
 unreliable, so the real phone is the first true test of how well they sit.
 
 Also in this build — the video and voice round:
