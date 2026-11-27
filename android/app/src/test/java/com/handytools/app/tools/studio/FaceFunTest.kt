@@ -35,6 +35,12 @@ class FaceFunTest {
         val boxOnly = FaceFun.face(FaceSpot(0.5f, 0.5f, 0.4f, roll = 0.3f), w, h)
         assertEquals(0.3f, boxOnly.roll, 0.001f)
         assertTrue(boxOnly.eyeDistance > 80f)
+        // The 27 Nov phone run: both eyes reported a few pixels apart, one above the other. Not believed — the face
+        // stays upright and its eyes sit side by side across it, so shades and big eyes land on a face-sized spot.
+        val squashed = FaceFun.face(FaceSpot(0.6f, 0.83f, 0.125f, listOf(Spot(0.591f, 0.816f), Spot(0.590f, 0.825f))), 644, 482)
+        assertEquals(0f, squashed.roll, 0.001f)
+        assertTrue("eyes ${squashed.eyeDistance}", squashed.eyeDistance > 0.125f * 644 * 0.3f)
+        assertEquals(squashed.eyeA.y, squashed.eyeB.y, 0.5f)
     }
 
     @Test fun everyEffectDoesSomethingToAFace() {

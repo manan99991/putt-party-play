@@ -1,6 +1,7 @@
 package com.handytools.app.tools.studio
 
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.hypot
@@ -65,7 +66,16 @@ object FaceFun {
     fun face(spot: FaceSpot, w: Int, h: Int): Face {
         val c = Pt(spot.x * w, spot.y * h)
         val s = spot.size * w
-        val eyes = spot.eyes.map { Pt(it.x * w, it.y * h) }.sortedBy { it.x }
+        // ML Kit sometimes puts both eyes almost on one spot (a small or half-turned face): 27 Nov phone run, photo 1,
+        // eyes 4 px apart on an 80 px face, one above the other, which read as a face turned on its side. Eyes that
+        // close together, or not side by side, are not believed; the face box and its own tilt place them instead.
+        val seen = spot.eyes.map { Pt(it.x * w, it.y * h) }.sortedBy { it.x }
+        val believable = seen.size >= 2 && run {
+            val d = hypot(seen[1].x - seen[0].x, seen[1].y - seen[0].y)
+            val tilt = abs(atan2(seen[1].y - seen[0].y, seen[1].x - seen[0].x) - spot.roll)
+            d >= s * 0.25f && tilt < 0.6f
+        }
+        val eyes = if (believable) seen else emptyList()
         val roll = if (eyes.size >= 2) atan2(eyes[1].y - eyes[0].y, eyes[1].x - eyes[0].x) else spot.roll
         val up = Pt(sin(roll), -cos(roll)); val side = Pt(cos(roll), sin(roll))
         fun at(u: Float, v: Float) = c + side * (u * s) + up * (v * s)
