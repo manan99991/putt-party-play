@@ -449,6 +449,9 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(noPrint.waitForExistence(timeout: 5), "no block-printing switch")
         for _ in 0..<6 where !noPrint.isHittable { app.swipeUp() }
         noPrint.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap()
+        // A tap on a switch sometimes lands while the page is still settling after the scroll (27 Nov, flows run):
+        // if it didn't take, tap the switch itself once more. It still has to end up on.
+        if (noPrint.value as? String) != "1" { sleep(1); noPrint.switches.firstMatch.exists ? noPrint.switches.firstMatch.tap() : noPrint.tap() }
         XCTAssertEqual(noPrint.value as? String, "1", "block printing didn't switch on")
         let run = app.buttons["protect-run"]
         XCTAssertTrue(run.waitForExistence(timeout: 5)); XCTAssertTrue(run.isEnabled, "can't run with watermark + password")
