@@ -1895,13 +1895,13 @@ enum ChainImage {
         switch cg.alphaInfo { case .none, .noneSkipFirst, .noneSkipLast: return nil; default: break }
         let k = min(1, 256 / CGFloat(max(cg.width, cg.height)))
         let w = max(1, Int(CGFloat(cg.width) * k)), h = max(1, Int(CGFloat(cg.height) * k))
-        var a = [UInt8](repeating: 0, count: w * h)
-        guard let ctx = CGContext(data: &a, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w, space: nil,
-                                  bitmapInfo: CGImageAlphaInfo.alphaOnly.rawValue) else { return nil }
+        var a = [UInt8](repeating: 0, count: w * h * 4)
+        guard let ctx = CGContext(data: &a, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w * 4, space: CGColorSpaceCreateDeviceRGB(),
+                                  bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
         ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
         var minX = w, minY = h, maxX = -1, maxY = -1, clear = 0
         for y in 0..<h { for x in 0..<w {
-            if a[y * w + x] > 24 { minX = min(minX, x); maxX = max(maxX, x); minY = min(minY, y); maxY = max(maxY, y) } else { clear += 1 }
+            if a[(y * w + x) * 4 + 3] > 24 { minX = min(minX, x); maxX = max(maxX, x); minY = min(minY, y); maxY = max(maxY, y) } else { clear += 1 }
         } }
         guard maxX >= minX, clear > w * h / 50 else { return nil }   // nothing there, or barely see-through: a photo
         // A bitmap context's memory starts at the picture's top row, so rows are already top-down.
