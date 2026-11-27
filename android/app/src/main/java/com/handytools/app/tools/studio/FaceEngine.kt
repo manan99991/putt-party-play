@@ -110,7 +110,8 @@ class FaceEngine private constructor(private val detector: Interpreter, private 
 
         /** A face as the studio's effects take it (fractions of the frame, y down) from a mesh. */
         fun spot(m: FloatArray, w: Int, h: Int): FaceSpot {
-            fun x(i: Int) = m[i * 3] / w; fun y(i: Int) = m[i * 3 + 1] / h
+            fun x(i: Int) = m[i * 3] / w
+            fun y(i: Int) = m[i * 3 + 1] / h
             val b = box(m)
             val ea = Spot(EYE_A.map { x(it) }.average().toFloat(), EYE_A.map { y(it) }.average().toFloat())
             val eb = Spot(EYE_B.map { x(it) }.average().toFloat(), EYE_B.map { y(it) }.average().toFloat())
