@@ -157,8 +157,7 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   shows the blue location indicator). **Never request Always location** for it. Cell-level accuracy off the road, full GPS only
   while the motion chip or speed says driving; the spot is saved on the phone when the person walks away (or after three minutes
   still), with a local notification and a "Not my car" undo. Nothing is uploaded, so App Privacy stays "Data Not Collected".
-  Reviewer note explains it (BACKGROUND LOCATION). The privacy policy needs one line about it before the store submit (drafted in
-  docs/listing-draft.md; the website change needs Manan's yes). Android port: same switch, foreground-service-free design to
+  Reviewer note explains it (BACKGROUND LOCATION). The privacy policy's parking line is live. Android port: same switch, foreground-service-free design to
   be chosen at port time (Android background location is a Play declaration; ask before adding it).
 - Smart autoruns (25–26 Nov, My stuff > Set an autorun): each is **off until the person switches it on**, runs once or twice a
   day (or once a week) as a `BGProcessingTask` (`com.tenzy.toolkit.smartruns`, already in `BGTaskSchedulerPermittedIdentifiers`;
@@ -170,8 +169,7 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   notifications (only when something is waiting; drives, invoices and contacts stay silent when nothing is). Everything is
   on the phone, so App Privacy stays "Data Not Collected". The reviewer note's Photos, Contacts, Speech and Background lines
   name the autoruns. Habit offers (a Home card) use only a local log of which days each tool id was opened (30 days).
-  The privacy policy needs one line about autoruns before the store submit (drafted in docs/listing-draft.md; the website
-  change needs Manan's yes).
+  The privacy policy's Autoruns section is live.
   Android (26 Nov, Settings › Smart autoruns): the same rules — off until switched on, an ordinary inexact alarm at each
   chosen time (no exact-alarm or background-location permission), a quick look and a notification only when something is
   waiting; the work runs when the person opens it, and nothing is added, saved, sent or deleted without their tap — deletions
@@ -182,8 +180,8 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
 - Camera button in tools (26 Nov): tools that work on a photo or video offer "Take a photo" / "Record" beside "From Photos",
   and the smart photo picker has a Camera button (not for screenshots). It uses the existing camera and microphone strings
   (both now name this use) and the system camera screen; nothing new is collected. If the camera is off for Tenzy, the
-  button says so and offers Settings. The privacy page's camera line needs "and the Take a photo button in tools" before
-  the store submit (website change: Manan's yes). Android (26 Nov): Scrubber, Identify, Data Grabber, Receipts, Sorted,
+  button says so and offers Settings. The privacy page's camera and microphone lines name the Take a photo / Record buttons in
+  tools (live 27 Nov, Manan's yes). Android (26 Nov): Scrubber, Identify, Data Grabber, Receipts, Sorted,
   See & Read and GIF Maker have the same button (`rememberCamera`), using the CAMERA permission the app already declares,
   asked for only on the first tap; the phone's own camera app takes the picture into Tenzy's cache. Nothing new collected.
 - Video wow round (26 Nov, iPhone first): Beat Reel, Movie Trailer, Funny Moments, and Celebrate's Background and Funny tabs.
