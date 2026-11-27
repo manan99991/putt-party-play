@@ -19,6 +19,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - run: sudo apt-get install -y -qq poppler-utils >/dev/null
       - name: Download
         run: |
           set -e
@@ -31,6 +32,18 @@ jobs:
           get $B/image_segmenter/selfie_multiclass_256x256/float32/latest/selfie_multiclass_256x256.tflite selfie_multiclass_256x256.tflite
           get $B/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite selfie_segmenter.tflite
           get $B/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task pose_landmarker_lite.task
+          # Model cards (licence and intended use).
+          A=https://storage.googleapis.com/mediapipe-assets
+          get "$A/Model%20Card%20Multiclass%20Segmentation.pdf" card-multiclass-segmentation.pdf
+          get "$A/Model%20Card%20MediaPipe%20Face%20Mesh%20V2.pdf" card-face-mesh-v2.pdf
+          get "$A/MediaPipe%20BlazeFace%20Model%20Card%20(Short%20Range).pdf" card-blazeface-short.pdf
+          # The TFLite C runtime for iPhone (what the TensorFlowLiteC 2.17.0 CocoaPod vendors), to pin and check.
+          get https://dl.google.com/tflite-release/ios/prod/tensorflow/lite/release/ios/release/32/20240729-115310/TensorFlowLiteC/2.17.0/0c10b3543e01f547/TensorFlowLiteC-2.17.0.tar.gz TensorFlowLiteC-2.17.0.tar.gz
+          mkdir -p tflc && tar -xzf TensorFlowLiteC-2.17.0.tar.gz -C tflc && find tflc -maxdepth 4 | head -40
+          echo "---- web addresses inside the iPhone runtime (should be none that it calls)"
+          find tflc -type f -name TensorFlowLiteC -exec strings {} \; | grep -o -E "https?://[a-zA-Z0-9./_-]+" | sort -u | head -40 || true
+          rm -rf tflc
+          for c in card-*.pdf; do [ -f "$c" ] && { echo "== $c"; pdftotext "$c" - 2>/dev/null | grep -i -E -A2 "licen" | head -12; }; done
           # The .task files are zips of .tflite files: list what's inside.
           for t in *.task; do [ -f "$t" ] && { echo "== $t"; unzip -l "$t"; }; done
           sha256sum * > SHA256SUMS; cat SHA256SUMS
