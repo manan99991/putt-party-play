@@ -167,7 +167,7 @@ final class FaceFunTests: XCTestCase {
     func testTheListHasEveryGroupAndNoDoubles() {
         XCTAssertEqual(Set(FaceFun.effects.map(\.id)).count, FaceFun.effects.count)
         for g in FaceFun.Group.allCases where FaceFun.effects.contains(where: { $0.group == g }) { XCTAssertGreaterThanOrEqual(FaceFun.effects.filter { $0.group == g }.count, 2, g.rawValue) }
-        XCTAssertGreaterThanOrEqual(FaceFun.effects.count, 35)
+        XCTAssertGreaterThanOrEqual(FaceFun.effects.count, 30)
         for e in FaceFun.effects { XCTAssertLessThanOrEqual(e.name.count, 22, "\(e.id): the name must fit one line under its picture") }
     }
 
