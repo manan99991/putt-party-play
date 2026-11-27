@@ -52848,5 +52848,35 @@
   "ja": "フェードで切り替え",
   "pt": "Transição suave",
   "zh": "淡入淡出"
+ },
+ "Watercolour": {
+  "de": "Aquarell",
+  "es": "Acuarela",
+  "fr": "Aquarelle",
+  "hi": "वॉटरकलर",
+  "it": "Acquerello",
+  "ja": "水彩",
+  "pt": "Aquarela",
+  "zh": "水彩"
+ },
+ "Oil paint": {
+  "de": "Ölgemälde",
+  "es": "Óleo",
+  "fr": "Peinture à l'huile",
+  "hi": "ऑयल पेंट",
+  "it": "Pittura a olio",
+  "ja": "油絵",
+  "pt": "Pintura a óleo",
+  "zh": "油画"
+ },
+ "Halftone print": {
+  "de": "Rasterdruck",
+  "es": "Impresión en semitono",
+  "fr": "Impression en trame",
+  "hi": "हाफ़टोन प्रिंट",
+  "it": "Stampa a mezzitoni",
+  "ja": "網点プリント",
+  "pt": "Impressão em meio-tom",
+  "zh": "网点印刷"
  }
 }

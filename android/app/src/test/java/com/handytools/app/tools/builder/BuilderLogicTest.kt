@@ -650,6 +650,29 @@ class BuilderLogicTest {
         val fade = TextTidy.gifTimeline(3, "fade")
         assertEquals(18, fade.size); assertEquals(0, fade.last().to); assertTrue(fade.all { it.mix >= 0f && it.mix < 1f })
     }
+    @Test fun everyArtStyleMakesADifferentPicture() {
+        // The same test card as the iPhone: a warm left half, a cool right half with a dark square in it.
+        val w = 96; val h = 72
+        val card = IntArray(w * h) { i ->
+            val x = i % w; val y = i / w
+            if (x in 61..79 && y in 21..49) 0x202030 else if (x < w / 2) 0xD98A4E + y / 8 else 0x3C78C8 + ((x / 8) shl 8)
+        }
+        assertEquals(PixelArt.STYLES.size, PixelArt.STYLES.map { it.first }.toSet().size); assertTrue(PixelArt.STYLES.size >= 9)
+        val made = HashMap<String, List<Int>>()
+        for ((id, _) in PixelArt.STYLES) {
+            val out = PixelArt.apply(card, w, h, id).toList()
+            assertEquals(id, card.size, out.size); assertTrue(id, out.all { it in 0..0xFFFFFF })
+            for ((k, v) in made) assertTrue("$id looks the same as $k", v != out)
+            made[id] = out
+        }
+        val flat = IntArray(w * h) { 0x808080 }
+        assertTrue(PixelArt.apply(flat, w, h, "neon").all { (it shr 16 and 0xFF) < 40 })
+        assertEquals(setOf(0xFAF4E4), PixelArt.apply(IntArray(w * h) { 0xFFFFFF }, w, h, "halftone").toSet())
+        val film = PixelArt.apply(flat, w, h, "film")
+        assertTrue((film[0] shr 16 and 0xFF) < (film[(h / 2) * w + w / 2] shr 16 and 0xFF))
+        // Same numbers as the iPhone (ChainRunnerTests.testEveryArtStyleMakesADifferentPicture).
+        assertEquals(-8, PixelArt.grain(1, 9)); assertEquals(5, PixelArt.grain(1000, 9))
+    }
     @Test fun describeItUnderstandsTheFunRequests() {
         assertEquals(listOf(Block.MEME), planned("make a meme")); assertEquals(listOf(Block.MEME), planned("make a meme from my foto"))
         assertEquals(listOf(Block.STICKER), planned("turn my dog into a sticker")); assertEquals(listOf(Block.STICKER), planned("whatsapp stikcer of my cat"))

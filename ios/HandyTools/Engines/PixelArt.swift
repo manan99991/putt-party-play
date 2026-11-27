@@ -1,10 +1,13 @@
 import Foundation
 import CoreGraphics
 
-/// Turns a photo into a pencil sketch, a comic, a black-and-white print or pop art. It works on plain numbers
+/// Turns a photo into a pencil sketch, a comic, a black-and-white print, pop art, watercolour, oil paint, neon,
+/// retro film or a halftone print. It works on plain numbers
 /// (one 0xRRGGBB value per pixel, row by row), so it is the same on iPhone and Android and can be unit-tested.
 enum PixelArt {
-    static let styles: [(id: String, name: String)] = [("sketch", "Pencil sketch"), ("comic", "Comic"), ("noir", "Black and white"), ("pop", "Pop art")]
+    static let styles: [(id: String, name: String)] = [("sketch", "Pencil sketch"), ("comic", "Comic"), ("noir", "Black and white"), ("pop", "Pop art"),
+                                                       ("watercolor", "Watercolour"), ("oil", "Oil paint"), ("neon", "Neon glow"),
+                                                       ("film", "Retro film"), ("halftone", "Halftone print")]
     static func style(_ setting: String?) -> String { styles.contains { $0.id == setting } ? (setting ?? "sketch") : "sketch" }
 
     /// How bright each pixel is, 0 (black) to 255 (white).
@@ -185,6 +188,98 @@ enum PixelArt {
         return out
     }
 
+    // MARK: painted looks (the same integer maths as Android, so both phones make the same picture)
+
+    static func channels(_ px: [Int]) -> ([Int], [Int], [Int]) {
+        (px.map { $0 >> 16 & 0xFF }, px.map { $0 >> 8 & 0xFF }, px.map { $0 & 0xFF })
+    }
+    static func clamp(_ v: Int) -> Int { min(255, max(0, v)) }
+    /// More (k > 100) or less colour, in hundredths, around each pixel's own brightness.
+    static func saturate(_ r: Int, _ g: Int, _ b: Int, _ k: Int) -> (Int, Int, Int) {
+        let y = (r * 299 + g * 587 + b * 114) / 1000
+        return (clamp(y + (r - y) * k / 100), clamp(y + (g - y) * k / 100), clamp(y + (b - y) * k / 100))
+    }
+    /// A fixed speckle in -n...n for pixel i, the same on every phone (film grain).
+    static func grain(_ i: Int, _ n: Int) -> Int {
+        var x = UInt32(truncatingIfNeeded: i) &* 2654435761
+        x ^= x >> 15; x = x &* 2246822519; x ^= x >> 13
+        return Int(x % UInt32(2 * n + 1)) - n
+    }
+
+    /// Soft washes of colour that bleed a little, darker where the paint pooled at edges, on white paper.
+    static func watercolor(_ px: [Int], width w: Int, height h: Int) -> [Int] {
+        let rad = max(2, min(w, h) / 120)
+        let (r0, g0, b0) = channels(px)
+        let r = blur(r0, width: w, height: h, radius: rad), g = blur(g0, width: w, height: h, radius: rad), b = blur(b0, width: w, height: h, radius: rad)
+        let lines = pencil(px, width: w, height: h)
+        return px.indices.map { i -> Int in
+            let (sr, sg, sb) = saturate(r[i] / 24 * 24 + 12, g[i] / 24 * 24 + 12, b[i] / 24 * 24 + 12, 115)
+            let edge = 70 + lines[i] * 30 / 255          // 70…100: pooled paint at edges
+            func paper(_ c: Int) -> Int { clamp((c * edge / 100) * 82 / 100 + 255 * 18 / 100) }
+            return paper(sr) << 16 | paper(sg) << 8 | paper(sb)
+        }
+    }
+
+    /// Thick, flat dabs of rich colour.
+    static func oil(_ px: [Int], width w: Int, height h: Int) -> [Int] {
+        let rad = max(2, min(w, h) / 90)
+        let (r0, g0, b0) = channels(px)
+        let r = blur(r0, width: w, height: h, radius: rad), g = blur(g0, width: w, height: h, radius: rad), b = blur(b0, width: w, height: h, radius: rad)
+        let fine = blur(gray(px), width: w, height: h, radius: 1), lum = gray(px)
+        return px.indices.map { i -> Int in
+            let (sr, sg, sb) = saturate(r[i] / 20 * 20 + 10, g[i] / 20 * 20 + 10, b[i] / 20 * 20 + 10, 135)
+            let relief = (lum[i] - fine[i]) * 2        // a hint of brush texture from the photo's own detail
+            return clamp(sr + relief) << 16 | clamp(sg + relief) << 8 | clamp(sb + relief)
+        }
+    }
+
+    /// Every outline glowing in the photo's own colours, brightened, on black.
+    static func neon(_ px: [Int], width w: Int, height h: Int) -> [Int] {
+        let lines = pencil(px, width: w, height: h).map { 255 - $0 }          // 0 flat … 255 a strong edge
+        let glow = blur(lines, width: w, height: h, radius: max(2, min(w, h) / 100))
+        return px.indices.map { i -> Int in
+            let e = min(255, lines[i] * 3 + glow[i] * 2)
+            let (sr, sg, sb) = saturate(px[i] >> 16 & 0xFF, px[i] >> 8 & 0xFF, px[i] & 0xFF, 220)
+            func lit(_ c: Int) -> Int { clamp((c + 80) * e / 255) }
+            return lit(sr) << 16 | lit(sg) << 8 | lit(sb)
+        }
+    }
+
+    /// An old print: warm, faded blacks, softer colour, a darker rim and fine grain.
+    static func film(_ px: [Int], width w: Int, height h: Int) -> [Int] {
+        let cx = w / 2, cy = h / 2, far = max(1, cx * cx + cy * cy)
+        return px.indices.map { i -> Int in
+            let x = i % w, y = i / w
+            let rim = 100 - ((x - cx) * (x - cx) + (y - cy) * (y - cy)) * 30 / far      // 70 at the corners
+            let (sr, sg, sb) = saturate(px[i] >> 16 & 0xFF, px[i] >> 8 & 0xFF, px[i] & 0xFF, 75)
+            let n = grain(i, 9)
+            func tone(_ c: Int, _ shift: Int) -> Int { clamp((28 + c * 80 / 100 + shift) * rim / 100 + n) }
+            return tone(sr, 14) << 16 | tone(sg, 4) << 8 | tone(sb, -16)
+        }
+    }
+
+    /// A printed look: a grid of ink dots, bigger where the photo is darker, each in its patch's colour, on cream paper.
+    static func halftone(_ px: [Int], width w: Int, height h: Int) -> [Int] {
+        let per = max(5, min(w, h) / 90)
+        let cols = (w + per - 1) / per, rows = (h + per - 1) / per
+        var sr = [Int](repeating: 0, count: cols * rows), sg = sr, sb = sr, cnt = sr
+        for i in px.indices {
+            let c = (i / w) / per * cols + (i % w) / per
+            sr[c] += px[i] >> 16 & 0xFF; sg[c] += px[i] >> 8 & 0xFF; sb[c] += px[i] & 0xFF; cnt[c] += 1
+        }
+        let paper = 250 << 16 | 244 << 8 | 228
+        return px.indices.map { i -> Int in
+            let x = i % w, y = i / w, c = y / per * cols + x / per, n = max(1, cnt[c])
+            let r = sr[c] / n, g = sg[c] / n, b = sb[c] / n
+            let dark = 255 - (r * 299 + g * 587 + b * 114) / 1000
+            let rad2 = per * per * (dark + 40) * (dark + 40) / (295 * 295) * 55 / 100      // up to just over the cell
+            let dx = 2 * (x % per) - per + 1, dy = 2 * (y % per) - per + 1                  // doubled offsets from the centre
+            guard dx * dx + dy * dy < 4 * rad2 else { return paper }
+            let (ir, ig, ib) = saturate(r, g, b, 140)
+            return clamp(ir * 85 / 100) << 16 | clamp(ig * 85 / 100) << 8 | clamp(ib * 85 / 100)
+        }
+    }
+
     /// The picture in the chosen style, as 0xRRGGBB values. An unknown style gives the pencil sketch.
     static func apply(_ px: [Int], width: Int, height: Int, style: String, faces: [CGRect] = []) -> [Int] {
         guard width > 0, height > 0, px.count == width * height else { return px }
@@ -198,6 +293,11 @@ enum PixelArt {
             return gray(px).map { inks[min(3, $0 / 64)] }
         case "comic":
             return comic(px, width: width, height: height, faces: faces)
+        case "watercolor": return watercolor(px, width: width, height: height)
+        case "oil": return oil(px, width: width, height: height)
+        case "neon": return neon(px, width: width, height: height)
+        case "film": return film(px, width: width, height: height)
+        case "halftone": return halftone(px, width: width, height: height)
         default:
             return pencil(px, width: width, height: height).map { rgb($0, $0, $0) }
         }

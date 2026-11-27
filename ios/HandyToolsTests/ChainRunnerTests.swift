@@ -1502,6 +1502,36 @@ final class NewestStepTests: XCTestCase {
         XCTAssertEqual(PixelArt.apply(px, width: 5, height: 5, style: "noir"), px)
         XCTAssertEqual(PixelArt.style(nil), "sketch"); XCTAssertEqual(PixelArt.style("comic"), "comic"); XCTAssertEqual(PixelArt.style("x"), "sketch")
     }
+    func testEveryArtStyleMakesADifferentPicture() {
+        // A photo-ish test card: a warm left half, a cool right half with a dark square in it.
+        let w = 96, h = 72
+        let card = (0..<(w * h)).map { i -> Int in
+            let x = i % w, y = i / w
+            if x > 60, x < 80, y > 20, y < 50 { return 0x202030 }
+            return x < w / 2 ? 0xD98A4E + y / 8 : 0x3C78C8 + ((x / 8) << 8)
+        }
+        XCTAssertEqual(Set(PixelArt.styles.map(\.id)).count, PixelArt.styles.count)
+        XCTAssertGreaterThanOrEqual(PixelArt.styles.count, 9)
+        var made: [String: [Int]] = [:]
+        for st in PixelArt.styles {
+            let out = PixelArt.apply(card, width: w, height: h, style: st.id)
+            XCTAssertEqual(out.count, card.count, st.id)
+            XCTAssertTrue(out.allSatisfy { $0 >= 0 && $0 <= 0xFFFFFF }, st.id)
+            for (k, v) in made { XCTAssertNotEqual(v, out, "\(st.id) looks the same as \(k)") }
+            made[st.id] = out
+        }
+        // Neon: a flat photo has no outlines, so it's dark; halftone on white paper is all paper.
+        let flat = [Int](repeating: 0x808080, count: w * h)
+        XCTAssertTrue(PixelArt.apply(flat, width: w, height: h, style: "neon").allSatisfy { ($0 >> 16 & 0xFF) < 40 })
+        XCTAssertEqual(Set(PixelArt.apply([Int](repeating: 0xFFFFFF, count: w * h), width: w, height: h, style: "halftone")), [0xFAF4E4])
+        // Retro film: the corners are darker than the middle; the grain is the same every time.
+        let film = PixelArt.apply(flat, width: w, height: h, style: "film")
+        XCTAssertLessThan(film[0] >> 16 & 0xFF, film[(h / 2) * w + w / 2] >> 16 & 0xFF)
+        XCTAssertEqual(film, PixelArt.apply(flat, width: w, height: h, style: "film"))
+        XCTAssertEqual(PixelArt.grain(12345, 9), PixelArt.grain(12345, 9)); XCTAssertTrue((-9...9).contains(PixelArt.grain(7, 9)))
+        // Same numbers as Android (BuilderLogicTest.everyArtStyleMakesADifferentPicture): both phones make the same picture.
+        XCTAssertEqual(PixelArt.grain(1, 9), -8); XCTAssertEqual(PixelArt.grain(1000, 9), 5)
+    }
     func testVoicesAndWavFiles() {
         XCTAssertEqual(ChainText.voiceRate("chipmunk"), 1.5); XCTAssertEqual(ChainText.voiceRate("deep"), 0.75); XCTAssertEqual(ChainText.voiceRate(nil), 1.5)
         let head = ChainText.wavHeader(sampleRate: 44100, channels: 1, dataBytes: 1000)
