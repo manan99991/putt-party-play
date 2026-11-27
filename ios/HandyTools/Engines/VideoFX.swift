@@ -303,9 +303,13 @@ enum VideoFX {
         let fun = FaceFun.Memory()
         /// The person's own photo for behind them, upright.
         let backdrop: CIImage?
+        /// The face engine (27 Nov rebuild): faces followed every frame, and hair, skin and the person's outline.
+        /// Loaded only when the recipe has a face effect or a new background.
+        let engine: FaceEngine?
         let lock = NSLock()
         init(_ r: Recipe) {
             recipe = r
+            engine = (r.funny != "none" || r.background != "none") ? FaceEngine() : nil
             backdrop = r.background == "photo" ? r.backdrop.flatMap { CIImage(contentsOf: $0, options: [.applyOrientationProperty: true]) } : nil
             cube = r.look == "none" ? nil : CIFilter(name: "CIColorCubeWithColorSpace", parameters: [
                 "inputCubeDimension": 24, "inputCubeData": VideoFX.cube(r.look, amount: min(1, 0.25 + r.amount), size: 24),
@@ -445,7 +449,10 @@ enum VideoFX {
         let W = size.width, H = size.height, short = min(W, H), long = max(W, H)
         // Behind the person and funny faces first, on the clean picture.
         var base = src
-        let mask = r.background != "none" ? personMask(src) : nil
+        // The face engine, when it loaded: faces every frame, and hair, skin and the person's outline from one look.
+        let seen = kit.engine.map { $0.step(src, t: t, wantParts: r.background != "none" || FaceFun.usesParts(r.funny)) }
+        let parts = seen.flatMap { FaceFun.parts($0, guide: src) }
+        let mask = r.background != "none" ? (parts?.person ?? personMask(src)) : nil
         if let mask {
             var bg = backdrop(r.background == "photo" ? "blur" : r.background, src: src, rect: rect, t: t, a: a)
             if r.background == "photo", let photo = kit.backdrop, photo.extent.width > 1, photo.extent.height > 1 {
@@ -454,11 +461,28 @@ enum VideoFX {
                 let scaled = photo.transformed(by: CGAffineTransform(scaleX: k, y: k))
                 bg = scaled.transformed(by: CGAffineTransform(translationX: rect.midX - scaled.extent.midX, y: rect.midY - scaled.extent.midY)).cropped(to: rect)
             }
-            let soft = mask.clampedToExtent().applyingGaussianBlur(sigma: 1.5).cropped(to: rect)
+            if r.background == "blur" || r.background == "photo" && kit.backdrop == nil {
+                // Blur only what's behind the person, so the person never bleeds into the blur as a halo: the picture
+                // without the person, blurred, divided by how much of it was there.
+                let behind = src.applyingFilter("CIBlendWithMask", parameters: [kCIInputBackgroundImageKey: CIImage.empty(),
+                                                                                  kCIInputMaskImageKey: mask.applyingFilter("CIColorInvert")]).cropped(to: rect)
+                let sigma = Double(short) * (0.012 + 0.03 * a)
+                let blurred = behind.clampedToExtent().applyingGaussianBlur(sigma: sigma).cropped(to: rect)
+                let wide = src.clampedToExtent().applyingGaussianBlur(sigma: sigma).cropped(to: rect)
+                // Where almost nothing behind was seen (deep inside the person), the plain blur is used instead.
+                let seenBehind = blurred.applyingFilter("CIColorMatrix", parameters: [
+                    "inputRVector": CIVector(x: 0, y: 0, z: 0, w: 4), "inputGVector": CIVector(x: 0, y: 0, z: 0, w: 4),
+                    "inputBVector": CIVector(x: 0, y: 0, z: 0, w: 4), "inputAVector": CIVector(x: 0, y: 0, z: 0, w: 0),
+                    "inputBiasVector": CIVector(x: 0, y: 0, z: 0, w: 1)]).applyingFilter("CIColorClamp").cropped(to: rect)
+                bg = blurred.unpremultiplyingAlpha().settingAlphaOne(in: rect)
+                    .applyingFilter("CIBlendWithMask", parameters: [kCIInputBackgroundImageKey: wide, kCIInputMaskImageKey: seenBehind]).cropped(to: rect)
+            }
+            let soft = parts == nil ? mask.clampedToExtent().applyingGaussianBlur(sigma: 1.5).cropped(to: rect) : mask
             base = src.applyingFilter("CIBlendWithMask", parameters: [kCIInputBackgroundImageKey: bg, kCIInputMaskImageKey: soft]).cropped(to: rect)
         }
         if r.funny != "none" {
-            let scene = FaceFun.scene(src, for: r.funny, t: t, memory: kit.fun, person: mask ?? personMask(src))
+            let scene = seen.map { FaceFun.scene(engine: $0, parts: parts, for: r.funny, src: src) }
+                ?? FaceFun.scene(src, for: r.funny, t: t, memory: kit.fun, person: mask ?? personMask(src))
             base = FaceFun.apply(r.funny, to: base, scene: scene, t: t, amount: a, memory: kit.fun).cropped(to: rect)
         }
         // Motion first (on the clean picture), clamped so the edges never show.
@@ -523,7 +547,9 @@ enum VideoFX {
                     ])
                 }
                 let red = only((1, 0, 0), alpha: 1).transformed(by: CGAffineTransform(translationX: dx, y: 0))
-                let green = only((0, 1, 0), alpha: 0), blue = only((0, 0, 1), alpha: 0).transformed(by: CGAffineTransform(translationX: -dx, y: 0))
+                // Every channel keeps full alpha: Core Image works premultiplied, so a colour with alpha 0 is dropped — that
+                // left only the red channel and the whole video came out red (27 Nov, Manan's recording).
+                let green = only((0, 1, 0), alpha: 1), blue = only((0, 0, 1), alpha: 1).transformed(by: CGAffineTransform(translationX: -dx, y: 0))
                 img = red.applyingFilter("CIAdditionCompositing", parameters: [kCIInputBackgroundImageKey: green])
                     .applyingFilter("CIAdditionCompositing", parameters: [kCIInputBackgroundImageKey: blue]).cropped(to: rect)
                 if let lines = CIFilter(name: "CIStripesGenerator", parameters: [

@@ -55,6 +55,22 @@ final class VideoFunTests: XCTestCase {
         XCTAssertLessThan(change(img, VideoFX.funnyFaces("bighead", img, faces: [], t: 0, a: 1, rect: rect), in: rect), 0.01)
     }
 
+    /// VHS keeps the picture's colours (27 Nov: it turned the whole video red — the green and blue channels were
+    /// dropped). A grey card stays near grey: green and blue keep most of their brightness, red isn't far above them.
+    func testVHSKeepsAllThreeColours() {
+        let size = CGSize(width: 640, height: 360)
+        let grey = CIImage(color: CIColor(red: 0.5, green: 0.55, blue: 0.6)).cropped(to: CGRect(origin: .zero, size: size))
+        var r = VideoFX.Recipe(); r.texture = "vhs"
+        let out = VideoFX.frame(grey, t: 0.5, duration: 4, size: size, kit: VideoFX.Kit(r), beats: [], caption: nil)
+        let p = pixels(out)
+        var sum = [0.0, 0.0, 0.0]
+        for i in stride(from: 0, to: p.bytes.count, by: 4) { for c in 0..<3 { sum[c] += Double(p.bytes[i + c]) } }
+        let n = Double(p.w * p.h), mean = sum.map { $0 / n }
+        XCTAssertGreaterThan(mean[1], 90, "VHS lost the green: \(mean)")
+        XCTAssertGreaterThan(mean[2], 95, "VHS lost the blue: \(mean)")
+        XCTAssertLessThan(mean[0] - mean[2], 30, "VHS turned the picture red: \(mean)")
+    }
+
     /// Real photos of people (private set): colour pop greys what's behind the person and keeps the person in colour;
     /// portrait blur softens the background, not the face; a big head changes the face region most.
     func testRealPeopleGetTheirBackgroundAndFunnyFace() throws {

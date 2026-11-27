@@ -255,7 +255,7 @@ enum FaceFun {
 
     // MARK: - Warps (FaceWarps.ci.metal, with Core Image's own filters if the kernels can't load)
 
-    private static let library: Data? = Bundle.main.url(forResource: "default", withExtension: "metallib").flatMap { try? Data(contentsOf: $0) }
+    static let library: Data? = Bundle.main.url(forResource: "default", withExtension: "metallib").flatMap { try? Data(contentsOf: $0) }
     private static let bulgeKernel: CIWarpKernel? = library.flatMap { try? CIWarpKernel(functionName: "tenzyBulge", fromMetalLibraryData: $0) }
     private static let coneKernel: CIWarpKernel? = library.flatMap { try? CIWarpKernel(functionName: "tenzyCone", fromMetalLibraryData: $0) }
     private static let bandKernel: CIWarpKernel? = library.flatMap { try? CIWarpKernel(functionName: "tenzyBand", fromMetalLibraryData: $0) }

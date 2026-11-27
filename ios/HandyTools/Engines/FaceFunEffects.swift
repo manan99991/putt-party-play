@@ -10,6 +10,8 @@ extension FaceFun {
         var body: Body?
         /// Where the person is (1 = person), the frame's size; nil if not asked for or none.
         var person: CIImage?
+        /// The face engine's parts (hair, face skin, person, heads), when the engine ran (27 Nov rebuild).
+        var parts: Parts?
     }
 
     /// What's kept from frame to frame so the effects sit still.
@@ -23,6 +25,8 @@ extension FaceFun {
 
     static func needsBody(_ id: String) -> Bool { id == "longlegs" }
     static func needsPerson(_ id: String) -> Bool { id == "bald" }
+    /// The effects that use the face engine's parts map (hair, face skin): Bald and the skin effects.
+    static func usesParts(_ id: String) -> Bool { ["bald", "alien", "zombie", "robot", "glow", "beautiful", "wholesome"].contains(id) }
 
     /// The faces (steadied against the last frame's) and, when the effect needs them, the body and the person's outline.
     static func scene(_ img: CIImage, for id: String, t: Double, memory: Memory, person: @autoclosure () -> CIImage?) -> Scene {
@@ -60,12 +64,14 @@ extension FaceFun {
         default: break
         }
         var out = img
-        // 1. Colour and skin, on the faces where Vision found them.
+        // Bald on every head the engine found (turned away too); the older one-face Bald when there's no engine.
+        if id == "bald", let p = scene.parts { return baldHeads(out, p, amount: a) }
+        // 1. Colour and skin, on the faces where they were found.
         for (i, f) in scene.faces.enumerated() {
             switch id {
             case "bald": out = bald(out, f, person: scene.person, index: i, memory: memory)
             case "alien":
-                let skin = faceMask(f, rect: around(f, rect), forehead: 0.9, holes: true)
+                let skin = skinMask(f, scene, rect: rect, forehead: 0.9, holes: true)
                 let green = out.applyingFilter("CIColorControls", parameters: [kCIInputSaturationKey: 0.45])
                     .applyingFilter("CIColorMatrix", parameters: ["inputRVector": CIVector(x: 0.6, y: 0, z: 0, w: 0), "inputGVector": CIVector(x: 0, y: 1.0, z: 0, w: 0),
                                                                   "inputBVector": CIVector(x: 0, y: 0, z: 0.66, w: 0)])
@@ -75,7 +81,7 @@ extension FaceFun {
                     out = blend(dark, over: out, mask: dim(spot(e, radius: f.eyeDistance * 0.34, inner: 0.5, rect: rect), 0.8))
                 }
             case "zombie":
-                let skin = faceMask(f, rect: around(f, rect), forehead: 0.62, holes: true)
+                let skin = skinMask(f, scene, rect: rect, forehead: 0.62, holes: true)
                 let dead = out.applyingFilter("CIColorControls", parameters: [kCIInputSaturationKey: 0.3, kCIInputContrastKey: 1.18])
                     .applyingFilter("CIColorMatrix", parameters: ["inputRVector": CIVector(x: 0.74, y: 0, z: 0, w: 0), "inputGVector": CIVector(x: 0, y: 0.95, z: 0, w: 0),
                                                                   "inputBVector": CIVector(x: 0, y: 0, z: 0.72, w: 0)])
@@ -89,7 +95,7 @@ extension FaceFun {
                     out = blend(sunk, over: out, mask: dim(ring, s(0.55, 0.85)))
                 }
             case "robot":
-                let skin = faceMask(f, rect: around(f, rect), forehead: 0.7, holes: true)
+                let skin = skinMask(f, scene, rect: rect, forehead: 0.7, holes: true)
                 let steel = out.applyingFilter("CIColorControls", parameters: [kCIInputSaturationKey: 0, kCIInputContrastKey: 1.35])
                     .applyingFilter("CIColorPosterize", parameters: ["inputLevels": 7])
                     .applyingFilter("CIColorMatrix", parameters: ["inputRVector": CIVector(x: 0.74, y: 0, z: 0, w: 0), "inputGVector": CIVector(x: 0, y: 0.86, z: 0, w: 0),

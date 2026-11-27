@@ -7,6 +7,8 @@ options:
     iOS: "26.0"
   xcodeVersion: "26.0"
   createIntermediateGroups: true
+  # The TensorFlow Lite runtime for the Video Studio's face engine is fetched (checksum-pinned), never committed.
+  preGenCommand: Packages/TFLite/fetch.sh
 
 settings:
   base:
@@ -32,6 +34,10 @@ packages:
   Unrar:
     # Local package: UnRAR 6.12 freeware source (see its Package.swift for the licence paragraph) for .rar and .cbr.
     path: Packages/Unrar
+  TFLite:
+    # Local package: the TensorFlow Lite C runtime (Apache 2.0, fetched by its fetch.sh) and a small Swift wrapper,
+    # for the Video Studio's on-device face engine (models in ../models/face). Nothing leaves the phone.
+    path: Packages/TFLite
   StbVorbis:
     # Local package: stb_vorbis (public domain) to play Ogg Vorbis files in File Opener.
     path: Packages/StbVorbis
@@ -60,7 +66,11 @@ targets:
       - path: HandyTools
       - path: Shared
       - path: OutsideShared
+      - path: ../models/face
+        type: folder
+        buildPhase: resources
     dependencies:
+      - package: TFLite
       - package: SwiftOGG
       - package: SWCompression
       - package: BitByteData

@@ -58,5 +58,46 @@ float2 tenzyBand(float2 line, float2 dir, float length, float k, destination des
     return d + dir * (sv - v);
 }
 
+
+// ---- Bald on the new face engine (27 Nov). The skull is an oval whose middle is on the brow line (`c`), `axes` its
+// half-width and height, `side`/`up` the head's directions, `B` the brow line's middle, `scale` the head's size.
+// Only what is above the brow line is ever touched, so beards and sideburns stay.
+
+static inline float baldGate(float2 d, float2 B, float2 up, float scale) {
+    return clamp((dot(d - B, up) + 0.02 * scale) / (0.12 * scale), 0.0, 1.0);
+}
+
+// The hair that stands out beyond the skull (to fill from what's around it), as a grey mask.
+float4 tenzyHairOut(sample_t hair, float2 c, float2 axes, float2 side, float2 up, float2 B, float scale, destination dest) {
+    float2 d = dest.coord();
+    float e = length(float2(dot(d - c, side) / max(axes.x, 1.0), dot(d - c, up) / max(axes.y, 1.0)));
+    float zone = 1.0 - smoothstep(1.8, 1.95, e);
+    float skull = 1.0 - smoothstep(0.94, 1.0, e);
+    float m = clamp(hair.r * zone * baldGate(d, B, up, scale) - skull, 0.0, 1.0);
+    return float4(m, m, m, 1.0);
+}
+
+// The bare scalp over the skull: the face's own skin colour, lit as a sphere from the upper left, with a soft sheen and
+// a little blotchiness so it reads as skin. Kept off the face itself (`face` is the face-skin share).
+float4 tenzyScalp(sample_t base, sample_t hair, sample_t face, sample_t noise, float2 c, float2 axes, float2 side, float2 up,
+                  float2 B, float scale, float3 tone, float amount, destination dest) {
+    float2 d = dest.coord();
+    float u = dot(d - c, side) / max(axes.x, 1.0);
+    float v = dot(d - c, up) / max(axes.y, 1.0);
+    float e = length(float2(u, v));
+    float skull = 1.0 - smoothstep(0.96, 1.0, e);
+    float gate = baldGate(d, B, up, scale);
+    float z = sqrt(clamp(1.0 - u * u - v * v, 0.0, 1.0));
+    float3 n = float3(u, v, z);
+    float3 L = normalize(float3(-0.35, 0.55, 0.76));
+    float lam = clamp(dot(n, L), 0.0, 1.0);
+    float spec = pow(clamp(dot(n, normalize(L + float3(0.0, 0.0, 1.0))), 0.0, 1.0), 30.0);
+    float shade = 0.78 + 0.26 * lam - 0.1 * (1.0 - z) + (noise.r - 0.5) * 0.05;
+    float3 scalp = clamp(tone * shade + 0.07 * spec * tone, 0.0, 1.0);
+    float a = skull * gate * clamp(1.0 - face.r * 1.2, 0.0, 1.0) * clamp(max(hair.r * 1.5, gate), 0.0, 1.0);
+    a = clamp(a * (0.6 + 0.6 * amount), 0.0, 1.0);
+    return float4(mix(base.rgb, scalp, a), base.a);
+}
+
 }
 }

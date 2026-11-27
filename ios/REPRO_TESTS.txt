@@ -1,5 +1,8 @@
-# 27 Nov, round 19. Round 18 passed; the crown is now clean skin, but the cap met the side hair in a flat shelf at the
-# temples. The cap's lower edge now fades in up the temples. Same tests, and look at Bald again.
+# 27 Nov, round 20 — the face engine rebuild. Manan's own video showed the old engine nearly invisible on real home
+# video (small, turned, moving faces). New: Google's open face-mesh and parts models run on the phone (TensorFlow
+# Lite, nothing sent), faces followed every frame, hair/skin/person from one look; Bald on every head; portrait blur
+# without a halo; VHS no longer turns the video red. First run: does it build, load and follow real faces?
+HandyToolsTests/FaceEngineTests
 HandyToolsTests/FaceFunTests
 HandyToolsTests/VideoSoundTests
 HandyToolsTests/VideoFunTests
