@@ -1,22 +1,52 @@
 == flows (results)
-} (error = Error Domain=NSPOSIXErrorDomain Code=3 "No such process" UserInfo={SimCallingSelector=launchApplicationWithID:options:pid:error:, NSLocalizedDescription=Simulator device failed to launch com.tenzy.toolkit., NSUnderlyingError=0x7cc28d9770 {Error Domain=NSPOSIXErrorDomain Code=3 "No such process" UserInfo={NSLocalizedDescription=Application launch for 'com.tenzy.toolkit' did not return a process handle nor launch error.}}})
-2026-11-27 20:11:08.602 xcodebuild[6125:22785] [MT] IDELaunchReport: f19f5356a5c672c0:f19f5356a5c67980:Launching HandyTools Finished with error: Simulator device failed to launch com.tenzy.toolkit.
-    SimCallingSelector = "launchApplicationWithID:options:pid:error:";
-2026-11-27 20:11:08.605 xcodebuild[6125:22785] [MT] IDELaunchReport: f19f5356a5c672c0:f19f5356a5c672c0: Finished with error: Simulator device failed to launch com.tenzy.toolkit.
-    SimCallingSelector = "launchApplicationWithID:options:pid:error:";
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/LiveToolTests.swift:31: error: -[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing] : Failed to get launch progress for <XCUIApplicationImpl: 0x109dc2540 com.tenzy.toolkit at /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Products/Debug-iphonesimulator/HandyTools.app>: Simulator device failed to launch com.tenzy.toolkit. No such process. (Underlying Error: Application launch for 'com.tenzy.toolkit' did not return a process handle nor launch error. No such process)
-Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' failed (170.272 seconds).
-Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (26.140 seconds).
-	 Executed 2 tests, with 1 failure (0 unexpected) in 196.412 (196.417) seconds
-Test Case '-[HandyToolsUITests.MultiPhotoTests testAPhotoHandedToTheScrubberShowsUp]' passed (25.282 seconds).
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/MultiPhotoTests.swift:75: error: -[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp] : Failed to get matching snapshots: Timed out while evaluating UI query.
-Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' failed (258.328 seconds).
-Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (92.915 seconds).
-	 Executed 3 tests, with 1 failure (0 unexpected) in 376.525 (376.528) seconds
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:496: error: -[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses] : XCTAssertTrue failed - Contacts finder didn't show (is contacts access granted?)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:497: error: -[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses] : Failed to tap "find-hasPhone" Button: No matches found for Elements matching predicate '"find-hasPhone" IN identifiers' from input {(
-Test Case '-[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses]' failed (33.054 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (91.987 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (20.123 seconds).
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:822: error: -[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact] : XCTAssertTrue failed - the test card never reached the photo library
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:829: error: -[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact] : XCTAssertTrue failed - the card wasn't read: no message
+Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (204.416 seconds).
+Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (38.205 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 242.621 (242.648) seconds
+Test Case '-[HandyToolsUITests.MultiPhotoTests testAPhotoHandedToTheScrubberShowsUp]' passed (28.406 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' passed (123.083 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (92.412 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 243.901 (243.908) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses]' passed (48.080 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (111.724 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (21.961 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact]' passed (42.135 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' passed (78.168 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (37.829 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (57.859 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testDrivesAutorunLogsTheWorkDrive]' passed (15.250 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFinishedPhotoOpensFullSizeAndCloses]' passed (17.867 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFirstMinuteDemoFinishesWithAResult]' passed (16.399 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' passed (15.007 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFunPhotoFinishOffersOtherLooks]' passed (17.464 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' passed (225.853 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' passed (93.056 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeCameraSuggestsWhatToDoWithThePicture]' passed (26.036 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testIDCopyToolsFinishOnTheIDCopyScreen]' passed (45.471 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid]' passed (24.216 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testMadeCodesAreTestedOnTheFinish]' passed (59.375 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testMyDaySavesFirstThenOffersAShortMessage]' passed (35.349 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages]' passed (73.552 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testPortalPDFShowsItsSizeCheck]' passed (25.976 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testProtectPDFDoesEverythingAtOnce]' passed (22.642 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' passed (116.690 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet]' passed (33.124 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:674: error: -[HandyToolsUITests.PromiseTests testReceiptTestRunKeepsTheAppAnswering] : XCTAssertTrue failed - the review page shows no receipt — on screen: smartruns — Smart autoruns / Tenzy does the end-of-day jobs for you, on your phone. You look it over, then it's done. / Test run worked: no receipts in your photos or PDFs from the last 24 hours. / Money & paperwork / Today's receipts into my expense sheet / Finds the receipts you photographed or saved as PDFs today and adds each one to your expense sheet — shop, date, total, tax — after you look them over. / Time / 8:00 PM / Today's paper into searchable PDFs / Turns the letters, bills and forms you photographed today into clean, flat PDFs you can search — pages taken together become one file, named from what it says. / Today's drives into my mileage log / Lists the drives your phone noticed today — when, from where to where, how far. Tap which were for work and they go into your mileage log with the IRS rate. / Uses Find my car's drive detection — switching this on turns it on. / Nudge me about overdue invoices
+Test Case '-[HandyToolsUITests.PromiseTests testReceiptTestRunKeepsTheAppAnswering]' failed (44.467 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testRunFromMyToolsStaysOpenAndComesBack]' passed (25.233 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testScamCheckLandsOnTheShieldVerdict]' passed (15.156 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSignaturePadWontSaveBlank]' passed (31.729 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral]' passed (22.797 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:603: error: -[HandyToolsUITests.PromiseTests testTappingNearAPhotosEdgePicksThatPhoto] : XCTAssertEqual failed: ("["81,229"]") is not equal to ("[]") - tapping photo 1 at 8% down picked another photo too
+Test Case '-[HandyToolsUITests.PromiseTests testTappingNearAPhotosEdgePicksThatPhoto]' failed (97.375 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testTextToolsFinishOnTheTextScreen]' passed (15.029 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (54.386 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoToolsCheckTheirPromiseOnTheFile]' passed (63.281 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVoiceToolsLetYouSwitchVoiceOnTheResult]' passed (14.637 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWarrantyPhotosOpenOnReceiptsWithAllPhotosAtHand]' passed (17.465 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' passed (24.986 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatermarkToolsLetYouTypeYourOwnWords]' passed (33.704 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' passed (13.391 seconds).
+	 Executed 38 tests, with 2 failures (0 unexpected) in 1734.715 (1734.745) seconds
+	 Executed 43 tests, with 2 failures (0 unexpected) in 2221.237 (2221.323) seconds
+	 Executed 43 tests, with 2 failures (0 unexpected) in 2221.237 (2221.324) seconds
+** TEST FAILED **
