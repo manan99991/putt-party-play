@@ -1,14 +1,13 @@
-2026-11-27 01:04:05.403780+0000 HandyTools[53252:137934] [Metadata] Failed to refresh AppShortcut parameters with error: Error Domain=LNMetadataProviderErrorDomain Code=9004 "No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit" UserInfo={NSLocalizedDescription=No app shortcuts provider mangled type name in bundle: com.tenzy.toolkit}
 Test Case '-[HandyToolsTests.FaceFunTests testAFaceFromItsBoxAlone]' started.
-Test Case '-[HandyToolsTests.FaceFunTests testAFaceFromItsBoxAlone]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testAFaceFromItsBoxAlone]' passed (0.007 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testAFaceIsReadFromItsPoints]' started.
 Test Case '-[HandyToolsTests.FaceFunTests testAFaceIsReadFromItsPoints]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testAShakyFinderIsSteadied]' started.
 Test Case '-[HandyToolsTests.FaceFunTests testAShakyFinderIsSteadied]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testATiltedHeadKeepsItsOwnUp]' started.
-Test Case '-[HandyToolsTests.FaceFunTests testATiltedHeadKeepsItsOwnUp]' passed (0.000 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testATiltedHeadKeepsItsOwnUp]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectChangesTheFaceAndStickersLandWhereTheyBelong]' started.
-VIDEOFX|facefun-drawn|bald|head=16.3|corner=0.0
+VIDEOFX|facefun-drawn|bald|head=15.3|corner=0.0
 VIDEOFX|facefun-drawn|cone|head=11.5|corner=0.0
 VIDEOFX|facefun-drawn|egg|head=12.4|corner=0.0
 VIDEOFX|facefun-drawn|alien|head=28.5|corner=0.0
@@ -38,117 +37,91 @@ VIDEOFX|facefun-drawn|flowers|head=7.4|corner=0.0
 VIDEOFX|facefun-drawn|zombie|head=7.7|corner=0.0
 VIDEOFX|facefun-drawn|robot|head=13.7|corner=0.0
 VIDEOFX|facefun-drawn|cartoon|head=48.7|corner=53.0
-VIDEOFX|facefun-drawn|glow|head=3.8|corner=0.7
-VIDEOFX|facefun-drawn|beautiful|head=4.9|corner=3.1
+VIDEOFX|facefun-drawn|glow|head=2.8|corner=0.0
+VIDEOFX|facefun-drawn|beautiful|head=3.8|corner=2.2
 VIDEOFX|facefun-drawn|sunny|head=33.2|corner=4.7
 VIDEOFX|facefun-drawn|tacky|head=38.3|corner=29.6
-VIDEOFX|facefun-drawn|wholesome|head=12.9|corner=3.9
+VIDEOFX|facefun-drawn|wholesome|head=11.8|corner=3.0
 VIDEOFX|facefun-drawn|longlegs|head=52.4|corner=2.1
 VIDEOFX|facefun-drawn|tinybody|head=35.6|corner=9.4
-Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectChangesTheFaceAndStickersLandWhereTheyBelong]' passed (20.932 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectChangesTheFaceAndStickersLandWhereTheyBelong]' passed (21.033 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces]' started.
 VIDEOFX|facefun-real|photo1|frame 900×900|faces 1|width 358|height 284|eyes 155|roll 0.00
-VIDEOFX|facefun-repeat|photo1|width 222|box 234,294 389×389
-VIDEOFX|facefun-repeat|photo1|width 256|box 234,294 389×389
+VIDEOFX|facefun-repeat|photo1|width 358|box 234,294 389×389
+VIDEOFX|facefun-repeat|photo1|width 358|box 234,294 389×389
 VIDEOFX|facefun-repeat|photo1|width 365|box 234,294 389×389
 VIDEOFX|facefun-repeat|photo1|width 359|box 234,294 389×389
-VIDEOFX|facefun-repeat|photo1|width 433|box 234,294 389×389
 VIDEOFX|facefun-repeat|photo1|width 358|box 234,294 389×389
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/FaceFunTests.swift:274: error: -[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces] : XCTAssertLessThanOrEqual failed: ("211") is greater than ("17") - photo 1: the finder's face changes size when asked again: [222, 256, 365, 359, 433, 358]
-VIDEOFX|facefun-real|photo1|bald|faces=1|head=4.1|corner=0.0|996ms
-VIDEOFX|facefun-real|photo1|cone|faces=1|head=8.6|corner=0.0|179ms
-VIDEOFX|facefun-real|photo1|egg|faces=1|head=8.6|corner=0.0|131ms
-VIDEOFX|facefun-real|photo1|alien|faces=1|head=22.9|corner=0.0|123ms
-VIDEOFX|facefun-real|photo1|balloon|faces=1|head=24.7|corner=0.0|103ms
-VIDEOFX|facefun-real|photo1|bighead|faces=1|head=26.2|corner=0.0|154ms
-VIDEOFX|facefun-real|photo1|tinyhead|faces=1|head=27.3|corner=0.0|208ms
-VIDEOFX|facefun-real|photo1|bigmouth|faces=1|head=2.8|corner=0.0|122ms
-VIDEOFX|facefun-real|photo1|bigeyes|faces=1|head=0.7|corner=0.0|137ms
-VIDEOFX|facefun-real|photo1|tinyface|faces=1|head=11.4|corner=0.0|111ms
+VIDEOFX|facefun-repeat|photo1|width 358|box 234,294 389×389
+VIDEOFX|facefun-real|photo1|bald|faces=1|head=4.9|corner=0.0|696ms
+VIDEOFX|facefun-real|photo1|cone|faces=1|head=8.6|corner=0.0|111ms
+VIDEOFX|facefun-real|photo1|egg|faces=1|head=8.6|corner=0.0|77ms
+VIDEOFX|facefun-real|photo1|alien|faces=1|head=22.9|corner=0.0|146ms
+VIDEOFX|facefun-real|photo1|balloon|faces=1|head=24.7|corner=0.0|117ms
+VIDEOFX|facefun-real|photo1|bighead|faces=1|head=26.2|corner=0.0|91ms
+VIDEOFX|facefun-real|photo1|tinyhead|faces=1|head=27.3|corner=0.0|93ms
+VIDEOFX|facefun-real|photo1|bigmouth|faces=1|head=2.8|corner=0.0|84ms
+VIDEOFX|facefun-real|photo1|bigeyes|faces=1|head=0.7|corner=0.0|132ms
+VIDEOFX|facefun-real|photo1|tinyface|faces=1|head=11.4|corner=0.0|88ms
 VIDEOFX|facefun-real|photo1|squish|faces=1|head=21.8|corner=0.0|143ms
-VIDEOFX|facefun-real|photo1|pinch|faces=1|head=14.4|corner=0.0|132ms
-VIDEOFX|facefun-real|photo1|longchin|faces=1|head=2.9|corner=0.0|111ms
-VIDEOFX|facefun-real|photo1|chipmunk|faces=1|head=3.0|corner=0.0|96ms
-VIDEOFX|facefun-real|photo1|stretchy|faces=1|head=16.1|corner=0.0|732ms
-VIDEOFX|facefun-real|photo1|wobbly|faces=1|head=12.1|corner=0.0|174ms
-VIDEOFX|facefun-real|photo1|sunglasses|faces=1|head=3.5|corner=0.0|145ms
-VIDEOFX|facefun-real|photo1|heartglasses|faces=1|head=4.0|corner=0.0|154ms
-VIDEOFX|facefun-real|photo1|crown|faces=1|head=8.4|corner=0.0|156ms
-VIDEOFX|facefun-real|photo1|moustache|faces=1|head=0.9|corner=0.0|127ms
-VIDEOFX|facefun-real|photo1|dog|faces=1|head=14.7|corner=0.0|224ms
-VIDEOFX|facefun-real|photo1|bunny|faces=1|head=4.5|corner=0.0|197ms
-VIDEOFX|facefun-real|photo1|clown|faces=1|head=0.8|corner=0.0|207ms
-VIDEOFX|facefun-real|photo1|halo|faces=1|head=1.0|corner=0.0|205ms
-VIDEOFX|facefun-real|photo1|devil|faces=1|head=6.2|corner=0.0|122ms
-VIDEOFX|facefun-real|photo1|partyhat|faces=1|head=6.1|corner=0.0|145ms
-VIDEOFX|facefun-real|photo1|flowers|faces=1|head=5.5|corner=0.0|108ms
-VIDEOFX|facefun-real|photo1|zombie|faces=1|head=7.6|corner=0.0|226ms
-VIDEOFX|facefun-real|photo1|robot|faces=1|head=13.1|corner=0.0|238ms
-VIDEOFX|facefun-real|photo1|cartoon|faces=1|head=43.3|corner=126.4|269ms
-VIDEOFX|facefun-real|photo1|glow|faces=1|head=1.9|corner=1.3|342ms
-VIDEOFX|facefun-real|photo1|beautiful|faces=1|head=3.0|corner=3.6|290ms
-VIDEOFX|facefun-real|photo1|sunny|faces=1|head=18.7|corner=10.5|234ms
-VIDEOFX|facefun-real|photo1|tacky|faces=1|head=19.7|corner=9.2|296ms
-VIDEOFX|facefun-real|photo1|wholesome|faces=1|head=9.5|corner=4.7|275ms
-VIDEOFX|facefun-real|photo1|longlegs|faces=1|head=0.0|corner=0.0|522ms
-VIDEOFX|facefun-real|photo1|tinybody|faces=1|head=30.3|corner=34.3|331ms
+VIDEOFX|facefun-real|photo1|pinch|faces=1|head=14.4|corner=0.0|92ms
+VIDEOFX|facefun-real|photo1|longchin|faces=1|head=2.9|corner=0.0|106ms
+VIDEOFX|facefun-real|photo1|chipmunk|faces=1|head=3.0|corner=0.0|75ms
+VIDEOFX|facefun-real|photo1|stretchy|faces=1|head=16.1|corner=0.0|78ms
+VIDEOFX|facefun-real|photo1|wobbly|faces=1|head=12.1|corner=0.0|110ms
+VIDEOFX|facefun-real|photo1|sunglasses|faces=1|head=3.5|corner=0.0|100ms
+VIDEOFX|facefun-real|photo1|heartglasses|faces=1|head=4.0|corner=0.0|80ms
+VIDEOFX|facefun-real|photo1|crown|faces=1|head=8.4|corner=0.0|77ms
+VIDEOFX|facefun-real|photo1|moustache|faces=1|head=0.9|corner=0.0|86ms
+VIDEOFX|facefun-real|photo1|dog|faces=1|head=14.7|corner=0.0|111ms
+VIDEOFX|facefun-real|photo1|bunny|faces=1|head=4.5|corner=0.0|119ms
+VIDEOFX|facefun-real|photo1|clown|faces=1|head=0.8|corner=0.0|119ms
+VIDEOFX|facefun-real|photo1|halo|faces=1|head=1.0|corner=0.0|107ms
+VIDEOFX|facefun-real|photo1|devil|faces=1|head=6.2|corner=0.0|86ms
+VIDEOFX|facefun-real|photo1|partyhat|faces=1|head=6.1|corner=0.0|81ms
+VIDEOFX|facefun-real|photo1|flowers|faces=1|head=5.5|corner=0.0|91ms
+VIDEOFX|facefun-real|photo1|zombie|faces=1|head=7.6|corner=0.0|138ms
+VIDEOFX|facefun-real|photo1|robot|faces=1|head=13.1|corner=0.0|141ms
+VIDEOFX|facefun-real|photo1|cartoon|faces=1|head=43.3|corner=126.4|193ms
+VIDEOFX|facefun-real|photo1|glow|faces=1|head=1.9|corner=0.0|163ms
+VIDEOFX|facefun-real|photo1|beautiful|faces=1|head=2.5|corner=2.0|251ms
+VIDEOFX|facefun-real|photo1|sunny|faces=1|head=18.7|corner=10.5|140ms
+VIDEOFX|facefun-real|photo1|tacky|faces=1|head=19.7|corner=9.2|169ms
+VIDEOFX|facefun-real|photo1|wholesome|faces=1|head=9.0|corner=2.9|256ms
+VIDEOFX|facefun-real|photo1|longlegs|faces=1|head=0.0|corner=0.0|462ms
+VIDEOFX|facefun-real|photo1|tinybody|faces=1|head=30.3|corner=34.3|94ms
 VIDEOFX|studio-backdrop|photo1|behind=22500/22500|person=0/0
-Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces]' failed (33.798 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testEveryEffectOnRealFaces]' passed (19.546 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testStickersTurnWithTheHead]' started.
-Test Case '-[HandyToolsTests.FaceFunTests testStickersTurnWithTheHead]' passed (1.147 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testStickersTurnWithTheHead]' passed (0.651 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testTheListHasEveryGroupAndNoDoubles]' started.
-Test Case '-[HandyToolsTests.FaceFunTests testTheListHasEveryGroupAndNoDoubles]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.FaceFunTests testTheListHasEveryGroupAndNoDoubles]' passed (0.004 seconds).
 Test Case '-[HandyToolsTests.FaceFunTests testTheWarpKernelsAreInTheApp]' started.
 Test Case '-[HandyToolsTests.FaceFunTests testTheWarpKernelsAreInTheApp]' passed (0.002 seconds).
-	 Executed 9 tests, with 1 failure (0 unexpected) in 55.890 (55.990) seconds
+	 Executed 9 tests, with 0 failures (0 unexpected) in 41.245 (41.266) seconds
 Test Case '-[HandyToolsTests.VideoFunTests testABigHeadChangesTheFaceAndNothingFarFromIt]' started.
-Test Case '-[HandyToolsTests.VideoFunTests testABigHeadChangesTheFaceAndNothingFarFromIt]' passed (1.892 seconds).
+Test Case '-[HandyToolsTests.VideoFunTests testABigHeadChangesTheFaceAndNothingFarFromIt]' passed (1.108 seconds).
 Test Case '-[HandyToolsTests.VideoFunTests testRealPeopleGetTheirBackgroundAndFunnyFace]' started.
-Test Case '-[HandyToolsTests.VideoFunTests testRealPeopleGetTheirBackgroundAndFunnyFace]' passed (4.125 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 6.017 (6.019) seconds
+Test Case '-[HandyToolsTests.VideoFunTests testRealPeopleGetTheirBackgroundAndFunnyFace]' passed (2.256 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 3.364 (3.365) seconds
 Test Case '-[HandyToolsTests.VideoSoundTests testAShortSongIsRepeatedToTheEndOfTheVideo]' started.
-Test Case '-[HandyToolsTests.VideoSoundTests testAShortSongIsRepeatedToTheEndOfTheVideo]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.VideoSoundTests testAShortSongIsRepeatedToTheEndOfTheVideo]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.VideoSoundTests testEveryMusicChoiceHasAShortName]' started.
 Test Case '-[HandyToolsTests.VideoSoundTests testEveryMusicChoiceHasAShortName]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.VideoSoundTests testMusicIsUnderTheWholeVideoAndNoSoundHasNone]' started.
 VIDEOFX|studio-music|0.148 0.149 0.145 0.191 0.276 0.269 0.275 0.253 0.163
-Test Case '-[HandyToolsTests.VideoSoundTests testMusicIsUnderTheWholeVideoAndNoSoundHasNone]' passed (13.937 seconds).
+Test Case '-[HandyToolsTests.VideoSoundTests testMusicIsUnderTheWholeVideoAndNoSoundHasNone]' passed (10.674 seconds).
 Test Case '-[HandyToolsTests.VideoSoundTests testOwnPhotoIsReadForTheBackdrop]' started.
-Test Case '-[HandyToolsTests.VideoSoundTests testOwnPhotoIsReadForTheBackdrop]' passed (0.021 seconds).
+Test Case '-[HandyToolsTests.VideoSoundTests testOwnPhotoIsReadForTheBackdrop]' passed (0.027 seconds).
 Test Case '-[HandyToolsTests.VideoSoundTests testTheMixSliderIsBothFullInTheMiddle]' started.
 Test Case '-[HandyToolsTests.VideoSoundTests testTheMixSliderIsBothFullInTheMiddle]' passed (0.001 seconds).
-	 Executed 5 tests, with 0 failures (0 unexpected) in 13.964 (13.969) seconds
-	 Executed 16 tests, with 1 failure (0 unexpected) in 75.872 (75.984) seconds
-	 Executed 16 tests, with 1 failure (0 unexpected) in 75.872 (75.985) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 10.706 (10.708) seconds
+	 Executed 16 tests, with 0 failures (0 unexpected) in 55.315 (55.342) seconds
+	 Executed 16 tests, with 0 failures (0 unexpected) in 55.315 (55.343) seconds
 Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' started.
-Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' passed (103.851 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 103.851 (103.856) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 103.851 (103.860) seconds
-	 Executed 1 test, with 0 failures (0 unexpected) in 103.851 (103.862) seconds
+Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' passed (99.312 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 99.312 (99.352) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 99.312 (99.355) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 99.312 (99.357) seconds
 == main thread when stuck
-HANG| 01:07:16 main thread busy in 162/236 samples
-HANG|     236 start  (in dyld)
-HANG|     236 start_sim  (in dyld_sim)
-HANG|     236 __debug_main_executable_dylib_entry_point  (in HandyTools.debug.dylib) + 12  App.swift:0
-HANG|     236 static TenzyApp.$main()  (in HandyTools.debug.dylib) + 40  /<compiler-generated>:0
-HANG|     236 static App.main()  (in SwiftUI)
-HANG|     236 runApp<A>(_:)  (in SwiftUI)
-HANG|     236 closure #1 in KitRendererCommon(_:)  (in SwiftUI)
-HANG|     236 UIApplicationMain  (in UIKitCore)
-HANG|     236 GSEventRunModal  (in GraphicsServices)
-HANG|     236 _CFRunLoopRunSpecificWithOptions  (in CoreFoundation)
-HANG|     219 __CFRunLoopRun  (in CoreFoundation)
-HANG|     219 __CFRunLoopDoBlocks  (in CoreFoundation)
-HANG|     219 __CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__  (in CoreFoundation)
-HANG|     219 __XCTPerformOnMainRunLoop_block_invoke  (in XCTAutomationSupport)
-HANG|     219 __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke  (in XCTAutomationSupport)
-HANG|     219 +[XCTRuntimeIssueContext captureIssuesWithContext:inScope:]  (in XCTAutomationSupport)
-HANG|     219 __90-[XCTElementQuery matchingSnapshotsInSnapshotTree:relatedElements:noMatchesMessage:error:]_block_invoke_2  (in XCTAutomationSupport)
-HANG|     219 -[XCTElementQuery _firstMatchingSnapshotForInput:transformersSubarrays:relatedElements:noMatchesMessage:error:]  (in XCTAutomationSupport)
-HANG|     192 -[XCTElementQuery _firstMatchingSnapshotForInput:transformers:relatedElements:noMatchesMessage:error:]  (in XCTAutomationSupport)
-HANG|     163 -[XCTFilteringTransformerIterator nextMatch]  (in XCTAutomationSupport)
-HANG|     163 -[NSComparisonPredicate evaluateWithObject:substitutionVariables:]  (in Foundation)
-HANG|     163 -[NSKeyPathExpression expressionValueWithObject:context:]  (in Foundation)
-HANG|     162 -[NSFunctionExpression expressionValueWithObject:context:]  (in Foundation)
-HANG|     162 -[NSObject(NSKeyValueCoding) valueForKey:]  (in Foundation)
 == crash reports
