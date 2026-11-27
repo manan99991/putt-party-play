@@ -1,4 +1,8 @@
 == ipad (results)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/BuilderView.swift:2842:25: error: the compiler is unable to type-check this expression in reasonable time; try breaking up the expression into distinct sub-expressions
-     |                         `- error: the compiler is unable to type-check this expression in reasonable time; try breaking up the expression into distinct sub-expressions
-** TEST FAILED **
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1646.677 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (40.058 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (33.471 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1720.206 (1720.219) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1720.206 (1720.220) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1720.206 (1720.226) seconds
+** TEST SUCCEEDED **
