@@ -257,7 +257,8 @@ object VideoEffects {
         val share = if (people) 0.3 else 0.0
         var found: People? = null
         if (people) {
-            found = given ?: People.find(ctx, uri, length, masks = r.background != "none" || FaceFun.needsMask(r.funny), faces = r.funny != "none") { p -> progress(p * share) }
+            found = given ?: People.find(ctx, uri, length, masks = r.background != "none" || FaceFun.needsMask(r.funny), faces = r.funny != "none",
+                parts = FaceFun.usesParts(r.funny), fill = r.funny == "bald") { p -> progress(p * share) }
             val photo = if (r.background == "photo") r.backdrop?.let { withContext(Dispatchers.IO) { loadPhoto(ctx, Uri.parse(it), 1600) } } else null
             if (found != null && r.background != "none") video += PeopleEffect(found, r.background, "none", r.amount, photo)
             if (found != null && r.funny != "none") video += FaceFunEffect(found, r.funny, r.amount)

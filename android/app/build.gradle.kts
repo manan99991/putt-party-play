@@ -42,6 +42,10 @@ android {
             keyPassword = System.getenv("KEY_PASSWORD") ?: "02f1e8a007cb5a908b28844a4f0457eb"
         }
     }
+    // The Video Studio's face models (repo models/face, Apache 2.0) ship as assets under face/, uncompressed so LiteRT can map them.
+    sourceSets { getByName("main") { assets.srcDirs("src/main/assets", "../../models") } }
+    androidResources { noCompress += "tflite" }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -60,6 +64,9 @@ android {
 }
 
 dependencies {
+    // LiteRT (TensorFlow Lite) to run the Video Studio's open face-mesh and parts models on the phone — the standalone
+    // runtime, not MediaPipe Tasks or Play-services TFLite, so nothing is reported anywhere.
+    implementation("com.google.ai.edge.litert:litert:1.0.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

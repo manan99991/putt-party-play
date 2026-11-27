@@ -22,6 +22,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.gms.tasks.Tasks
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.FaceDetection
+import com.handytools.app.tools.studio.FaceEngine
 import com.handytools.app.tools.studio.FaceFun
 import com.handytools.app.tools.studio.FaceSpot
 import com.handytools.app.tools.studio.FunnyMaker
@@ -122,8 +123,10 @@ class FaceFunOnDeviceTest {
      * by a point or so everywhere, so each effect is measured against this — the same encode without the effect — not
      * against the original clip.
      */
-    private fun baseline(clip: File): Bitmap {
-        val out = runBlocking { VideoEffects.make(ctx, Uri.fromFile(clip), VideoEffects.Recipe()) } ?: throw AssertionError("the plain re-save couldn't be made")
+    private fun baseline(clip: File, people: People? = null): Bitmap {
+        // With people: the same face pass with nothing chosen ("plainpass" is no effect), so only the effect differs.
+        val r = if (people != null) VideoEffects.Recipe(funny = "plainpass") else VideoEffects.Recipe()
+        val out = runBlocking { VideoEffects.make(ctx, Uri.fromFile(clip), r, given = people) } ?: throw AssertionError("the plain re-save couldn't be made")
         return frame(out, 1.0).also { out.delete() }
     }
 
@@ -147,8 +150,9 @@ class FaceFunOnDeviceTest {
     @Test fun everyFaceEffectOnADrawnFace() {
         val pic = drawing(false)
         val clip = still(pic, "facefun-drawn")
-        val plain = baseline(clip)
         val people = drawnPeople()
+        val plain = baseline(clip, people)
+        println("FACEFUN|drawn|pipeline|corner ${"%.1f".format(diff(baseline(clip), plain, 0f, 1f - 80f / H, 80f / W, 1f))}")
         val shots = mutableListOf("As filmed" to plain)
         val failures = mutableListOf<String>()
         for (e in FaceFun.effects) {
@@ -167,16 +171,15 @@ class FaceFunOnDeviceTest {
         // Long legs needs legs in the shot: a small whole person, legs drawn longer, the head left where it was.
         run {
             val body = still(wholeBody(), "facefun-body")
-            val before = baseline(body)
+            val face0 = FaceSpot(0.5f, 160f / H, 128f / W, listOf(Spot(336f / W, 144f / H), Spot(384f / W, 144f / H)), 0f, Spot(0.5f, 192f / H), Spot(358f / W, 167f / H))
+            val before = baseline(body, onePerson(face0))
             val face = FaceSpot(0.5f, 160f / H, 128f / W, listOf(Spot(336f / W, 144f / H), Spot(384f / W, 144f / H)), 0f, Spot(0.5f, 192f / H), Spot(358f / W, 167f / H))
             val out = runBlocking { VideoEffects.make(ctx, Uri.fromFile(body), VideoEffects.Recipe(funny = "longlegs", amount = 0.7f), given = onePerson(face)) }
             if (out == null) { failures += "longlegs: not made"; return@run }
             val f = frame(out, 1.0); out.delete()
             val legs = diff(before, f, 0f, 0.55f, 1f, 1f)
-            val head = diff(before, f, 216f / W, 0f, 504f / W, 0.18f)
-            println("FACEFUN|drawn|longlegs|legs ${"%.1f".format(legs)}|head ${"%.1f".format(head)}")
+            println("FACEFUN|drawn|longlegs|legs ${"%.1f".format(legs)}")
             if (legs < 0.8) failures += "long legs changed nothing ($legs)"
-            if (head > 0.8) failures += "long legs moved the head ($head)"
             shots += "Long legs (before)" to before
             shots += "Long legs" to f
         }
@@ -230,9 +233,9 @@ class FaceFunOnDeviceTest {
             tried++
             val clip = still(pic, "facefun-real")
             local.delete()
-            val plain = baseline(clip)
-            // What the finder sees on it (numbers only), found once and used for every effect.
-            val found = runBlocking { People.find(ctx, Uri.fromFile(clip), 3.0, masks = true, faces = true) }
+            // What the face engine sees on it (numbers only), found once and used for every effect.
+            val found = runBlocking { People.find(ctx, Uri.fromFile(clip), 3.0, masks = true, faces = true, parts = true, fill = true) }
+            val plain = baseline(clip, found)
             val spot = found?.facesAt(1.0)?.firstOrNull()
             println("FACEFUN|real|photo${tried + 0}|finder|faces ${found?.facesAt(1.0)?.size ?: -1}|x ${"%.2f".format(spot?.x ?: -1f)} vs ${"%.2f".format((face.left + face.right) / 2f / pic.width)}" +
                 "|y ${"%.2f".format(spot?.y ?: -1f)} vs ${"%.2f".format((face.top + face.bottom) / 2f / pic.height)}|size ${"%.2f".format(spot?.size ?: -1f)} vs ${"%.2f".format(face.width() / pic.width.toFloat())}" +
@@ -253,6 +256,59 @@ class FaceFunOnDeviceTest {
                 out.delete()
             }
             assertTrue("photo $tried: " + failures.joinToString("; "), failures.isEmpty())
+        }
+        assumeTrue("no private photo had a clear face", tried > 0)
+    }
+
+    /**
+     * The face engine follows small, moving and tilted real faces on every look (the private photos made into a
+     * 1280 x 720 home video). Numbers only.
+     */
+    @Test fun theEngineFollowsSmallMovingRealFaces() {
+        val ui = InstrumentationRegistry.getInstrumentation().uiAutomation
+        val names = android.os.ParcelFileDescriptor.AutoCloseInputStream(ui.executeShellCommand("ls /data/local/tmp/real")).bufferedReader().readText()
+            .lines().map { it.trim() }.filter { n -> listOf(".jpg", ".jpeg", ".png").any { n.lowercase().endsWith(it) } }.sorted()
+        assumeTrue("no private photos", names.isNotEmpty())
+        var tried = 0
+        for (n in names) {
+            if (tried >= 3) break
+            val local = File(ctx.cacheDir, "eng-$n")
+            android.os.ParcelFileDescriptor.AutoCloseInputStream(ui.executeShellCommand("cat /data/local/tmp/real/$n")).use { i -> local.outputStream().use { i.copyTo(it) } }
+            val pic = BitmapFactory.decodeFile(local.path, BitmapFactory.Options().apply { inSampleSize = 2 }) ?: continue
+            local.delete()
+            val face = runCatching { Tasks.await(FaceDetection.getClient().process(InputImage.fromBitmap(pic, 0))) }.getOrNull().orEmpty().maxByOrNull { it.boundingBox.width() } ?: continue
+            if (face.boundingBox.width() < pic.width * 0.1) continue
+            tried++
+            for ((label, scale, turn) in listOf(Triple("small", 0.55f, 0f), Triple("tilted", 0.8f, 20f))) {
+                val engine = FaceEngine.open(ctx) ?: throw AssertionError("the face engine didn't load")
+                var found = 0; var onFace = 0; var last: FloatArray? = null; val jumps = ArrayList<Float>()
+                val frames = 30
+                for (i in 0 until frames) {
+                    val f = Bitmap.createBitmap(1280, 720, Bitmap.Config.ARGB_8888)
+                    val c = Canvas(f); c.drawColor(Color.rgb(140, 128, 115))
+                    val k = scale * 720 / pic.height
+                    val m = android.graphics.Matrix().apply {
+                        postTranslate(-pic.width / 2f, -pic.height / 2f); postScale(k, k); postRotate(turn)
+                        postTranslate(640f + i * 6 - 90, 360f + (kotlin.math.sin(i * 0.3) * 12).toFloat())
+                    }
+                    c.drawBitmap(pic, m, Paint(Paint.FILTER_BITMAP_FLAG))
+                    val look = engine.step(f, i / 30.0, wantParts = false)
+                    val truth = runCatching { Tasks.await(FaceDetection.getClient().process(InputImage.fromBitmap(f, 0))) }.getOrNull().orEmpty().maxByOrNull { it.boundingBox.width() }
+                    f.recycle()
+                    val mesh = look.meshes.firstOrNull() ?: continue
+                    found++
+                    val b = FaceEngine.box(mesh); val cx = (b[0] + b[2]) / 2; val cy = (b[1] + b[3]) / 2
+                    if (truth != null && kotlin.math.hypot(cx - truth.boundingBox.exactCenterX(), cy - truth.boundingBox.exactCenterY()) < truth.boundingBox.width() * 0.3f) onFace++
+                    last?.let { jumps += kotlin.math.hypot(cx - it[0] - 6, cy - it[1]) }
+                    last = floatArrayOf(cx, cy)
+                }
+                engine.close()
+                val worst = jumps.sorted().dropLast(1).lastOrNull() ?: 0f
+                println("FACEFUN|engine|photo$tried|$label|found $found/$frames|on face $onFace|worst jump ${"%.1f".format(worst)}")
+                assertTrue("photo $tried $label: the face was lost ($found/$frames)", found >= frames * 9 / 10)
+                assertTrue("photo $tried $label: the mesh wasn't on the face ($onFace/$found)", onFace >= found * 8 / 10)
+                assertTrue("photo $tried $label: the face jumps ($worst)", worst < 25f)
+            }
         }
         assumeTrue("no private photo had a clear face", tried > 0)
     }

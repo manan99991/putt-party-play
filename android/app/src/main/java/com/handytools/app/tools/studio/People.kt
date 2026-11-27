@@ -35,9 +35,14 @@ data class FaceSpot(val x: Float, val y: Float, val size: Float, val eyes: List<
  * the faces with their eyes (ML Kit face detection). Nothing leaves the phone. Between two looks the masks are mixed
  * and the faces glide, so the effect follows the person smoothly.
  */
-class People(val step: Double, val maskW: Int, val maskH: Int, val masks: List<ByteArray>, val faces: List<List<FaceSpot>>) {
+class People(val step: Double, val maskW: Int, val maskH: Int, val masks: List<ByteArray>, val faces: List<List<FaceSpot>>,
+             /** Per look, from the face engine (27 Nov rebuild): hair and face-skin shares, the picture with the hair beyond
+              *  each skull filled in (for Bald), and each head's skull. All 256 x 256, row 0 at the top. Empty without the engine. */
+             val parts: List<Parts> = emptyList()) {
+    class Parts(val hair: ByteArray, val skin: ByteArray, val fill: IntArray?, val skulls: List<FaceEngine.Skull>, val w: Int, val h: Int)
+
     /** The two looks around [t] and how far between them it is (0…1). */
-    fun around(t: Double): Triple<Int, Int, Float> = Companion.around(t, step, max(masks.size, faces.size))
+    fun around(t: Double): Triple<Int, Int, Float> = Companion.around(t, step, max(max(masks.size, faces.size), parts.size))
 
     fun facesAt(t: Double): List<FaceSpot> {
         if (faces.isEmpty()) return emptyList()
@@ -83,8 +88,11 @@ class People(val step: Double, val maskW: Int, val maskH: Int, val masks: List<B
          * Looks through the first [seconds] of [uri] for people: masks when [masks], faces when [faces]. [progress]
          * runs 0…1. nil if the video can't be read.
          */
-        suspend fun find(ctx: Context, uri: Uri, seconds: Double, masks: Boolean, faces: Boolean, progress: (Double) -> Unit = {}): People? =
+        suspend fun find(ctx: Context, uri: Uri, seconds: Double, masks: Boolean, faces: Boolean,
+                         /** Also the hair and skin shares (Bald and the skin effects), and the filled picture for Bald. */
+                         parts: Boolean = false, fill: Boolean = false, progress: (Double) -> Unit = {}): People? =
             withContext(Dispatchers.Default) {
+                FaceEngine.open(ctx)?.use { engine -> return@withContext findWith(engine, ctx, uri, seconds, masks, faces, parts, fill, progress) }
                 val step = stepFor(seconds)
                 val count = max(1, (seconds / step).toInt() + 1)
                 val r = MediaMetadataRetriever()
@@ -144,6 +152,43 @@ class People(val step: Double, val maskW: Int, val maskH: Int, val masks: List<B
                 if (masksOut.isEmpty() && outFaces.isEmpty()) return@withContext null
                 People(step, mw, mh, masksOut, fillGaps(outFaces, step))
             }
+
+        /** Looks with the face engine: 15 a second (fewer for long videos), each face followed from look to look. */
+        private suspend fun findWith(engine: FaceEngine, ctx: Context, uri: Uri, seconds: Double, masks: Boolean, faces: Boolean,
+                                     parts: Boolean, fill: Boolean, progress: (Double) -> Unit): People? = withContext(Dispatchers.Default) {
+            val step = max(1.0 / 15, seconds / 300)
+            val count = max(1, (seconds / step).toInt() + 1)
+            val r = MediaMetadataRetriever()
+            try { r.setDataSource(ctx, uri) } catch (e: Exception) { r.release(); return@withContext null }
+            val frameCount = r.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_FRAME_COUNT)?.toIntOrNull() ?: 0
+            val total = (r.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull() ?: 0L) / 1000.0
+            val fps = if (frameCount > 0 && total > 0) frameCount / total else 0.0
+            val n = FaceEngine.SIDE
+            val outMasks = ArrayList<ByteArray>(); val outFaces = ArrayList<List<FaceSpot>>(); val outParts = ArrayList<Parts>()
+            try {
+                for (i in 0 until count) {
+                    ensureActive()
+                    val t = i * step
+                    val frame = frameAt(r, t, fps, frameCount) ?: break
+                    val k = min(1.0, 960.0 / max(frame.width, frame.height))
+                    val small = if (k < 1) Bitmap.createScaledBitmap(frame, max(1, (frame.width * k).roundToInt()), max(1, (frame.height * k).roundToInt()), true) else frame
+                    if (small !== frame) frame.recycle()
+                    val look = engine.step(small, t, wantParts = masks || parts)
+                    if (faces) outFaces.add(look.meshes.map { FaceEngine.spot(it, small.width, small.height) }.sortedByDescending { it.size }.take(2))
+                    val p = look.parts
+                    if (p != null) {
+                        if (masks) outMasks.add(ByteArray(n * n) { j -> ((1 - p[j * 6]).coerceIn(0f, 1f) * 255f).roundToInt().toByte() })
+                        if (parts) outParts.add(Parts(ByteArray(n * n) { j -> (p[j * 6 + 1].coerceIn(0f, 1f) * 255f).roundToInt().toByte() },
+                            ByteArray(n * n) { j -> (p[j * 6 + 3].coerceIn(0f, 1f) * 255f).roundToInt().toByte() },
+                            if (fill && look.rgb != null) BaldFill.filled(look, small.width, small.height) else null, look.heads, small.width, small.height))
+                    }
+                    small.recycle()
+                    progress((i + 1).toDouble() / count)
+                }
+            } finally { r.release() }
+            if (outMasks.isEmpty() && outFaces.isEmpty() && outParts.isEmpty()) return@withContext null
+            People(step, n, n, outMasks, fillGaps(outFaces, step), outParts)
+        }
 
         private fun frameAt(r: MediaMetadataRetriever, t: Double, fps: Double, frameCount: Int): Bitmap? {
             if (Build.VERSION.SDK_INT >= 28 && fps > 0) {

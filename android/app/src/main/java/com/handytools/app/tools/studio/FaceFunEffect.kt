@@ -28,10 +28,11 @@ class FaceFunEffect(private val people: People, private val id: String, private 
          * The uniforms for one moment: bends in GL pixels (y up) and the skin of up to two faces. Pure, so its numbers
          * are tested on the build machine. Returns (bendsA, bendsB, faceC, faceT, eyes, mouth) as flat arrays.
          */
-        fun frameUniforms(id: String, faces: List<FaceSpot>, w: Int, h: Int, t: Float, a: Float): Uniforms {
+        fun frameUniforms(id: String, faces: List<FaceSpot>, w: Int, h: Int, t: Float, a: Float, parts: Boolean = false): Uniforms {
             val fs = faces.take(2).map { FaceFun.face(it, w, h) }
             val bends = ArrayList<FaceFun.Bend>()
-            fs.forEach { bends += FaceFun.bends(id, it, t, a, w, h) }
+            // With the face engine's parts, Bald is drawn from the hair and skull (baldNew in the shader), not bent.
+            if (!(parts && id == "bald")) fs.forEach { bends += FaceFun.bends(id, it, t, a, w, h) }
             if (id == "longlegs") fs.firstOrNull()?.let { FaceFun.legs(it, h, a) }?.let { bends += it }
             val bA = FloatArray(MAX_BENDS * 4); val bB = FloatArray(MAX_BENDS * 4)
             bends.take(MAX_BENDS).forEachIndexed { i, b ->
@@ -61,6 +62,21 @@ class FaceFunEffect(private val people: People, private val id: String, private 
             return Uniforms(bA, bB, faceC, faceT, eyes, mouth, FaceFun.mood(id).toFloat(), bends.size.coerceAtMost(MAX_BENDS))
         }
 
+        /** Up to two skulls as the shader takes them (GL pixels, y up): centre + half-axes, brow + up, tone + on. */
+        fun skullUniforms(skulls: List<FaceEngine.Skull>, lookW: Int, lookH: Int, w: Int, h: Int): FloatArray {
+            val out = FloatArray(24)
+            val kx = w / lookW.toFloat(); val ky = h / lookH.toFloat()
+            skulls.take(2).forEachIndexed { i, s ->
+                val o = i * 12
+                // Directions scale with the frame too (the look may be smaller), then are made unit again.
+                var ux = s.ux * kx; var uy = s.uy * ky; val l = kotlin.math.hypot(ux, uy).coerceAtLeast(1e-6f); ux /= l; uy /= l
+                out[o] = s.cx * kx; out[o + 1] = h - s.cy * ky; out[o + 2] = s.ax * kx; out[o + 3] = s.ay * ky
+                out[o + 4] = s.bx * kx; out[o + 5] = h - s.by * ky; out[o + 6] = ux; out[o + 7] = -uy
+                out[o + 8] = s.tone[0]; out[o + 9] = s.tone[1]; out[o + 10] = s.tone[2]; out[o + 11] = 1f
+            }
+            return out
+        }
+
         class Uniforms(val bendA: FloatArray, val bendB: FloatArray, val faceC: FloatArray, val faceT: FloatArray, val eyes: FloatArray,
                        val mouth: FloatArray, val mood: Float, val count: Int)
 
@@ -88,6 +104,13 @@ uniform vec4 uFaceC0; uniform vec4 uFaceC1;
 uniform vec4 uFaceT0; uniform vec4 uFaceT1;
 uniform vec4 uEyes0; uniform vec4 uEyes1;
 uniform vec4 uMouth0; uniform vec4 uMouth1;
+uniform float uHasParts;
+uniform float uBald;
+uniform sampler2D uHair;
+uniform sampler2D uSkinTex;
+uniform sampler2D uFill;
+uniform vec4 uSkA0; uniform vec4 uSkB0; uniform vec4 uSkT0;
+uniform vec4 uSkA1; uniform vec4 uSkB1; uniform vec4 uSkT1;
 """)
             for (i in 0 until MAX_BENDS) append("uniform vec4 uA$i; uniform vec4 uB$i;\n")
             append("""
@@ -95,6 +118,7 @@ varying vec2 vTexSamplingCoord;
 float baldShade = 1.0;
 
 vec4 pick(vec2 px) { return texture2D(uTexSampler, clamp(px / uSize, 0.0, 1.0)); }
+vec2 down(vec2 px) { return vec2(px.x / uSize.x, 1.0 - px.y / uSize.y); }
 float personAt(vec2 px) { return uHasMask > 0.5 ? texture2D(uMask, vec2(px.x / uSize.x, 1.0 - px.y / uSize.y)).r : 1.0; }
 
 vec2 into(vec2 p, float c, float s) { return vec2(c * p.x + s * p.y, -s * p.x + c * p.y); }
@@ -162,7 +186,7 @@ float faceMask(vec2 q, vec4 C, vec4 T, vec4 E, vec4 M) {
   if (T.y < 0.5) return 0.0;
   float c = cos(-T.x); float s = sin(-T.x);
   vec2 n = into(q - C.xy, c, s) / max(C.zw, vec2(1.0));
-  float m = 1.0 - smoothstep(0.8, 1.0, length(n));
+  float m = uHasParts > 0.5 ? (1.0 - smoothstep(1.25, 1.5, length(n))) * texture2D(uSkinTex, down(q)).r : 1.0 - smoothstep(0.8, 1.0, length(n));
   float hole = max(max(1.0 - smoothstep(0.6, 1.0, length(q - E.xy) / max(T.w * 0.26, 1.0)), 1.0 - smoothstep(0.6, 1.0, length(q - E.zw) / max(T.w * 0.26, 1.0))),
                    1.0 - smoothstep(0.6, 1.0, length((q - M.xy) / vec2(max(M.z * 0.62, 1.0), max(M.z * 0.32, 1.0)))));
   return m * (1.0 - hole);
@@ -249,6 +273,28 @@ vec3 mood(vec3 col, vec2 q) {
   return col * vec3(1.0 + 0.03 * a, 1.0 + 0.01 * a, 1.0 - 0.05 * a);
 }
 
+// Bald on the face engine (27 Nov rebuild): the hair beyond the skull replaced by the filled picture, then the scalp
+// drawn over the skull in the head's own skin colour, lit as a round head. Only above the brow line.
+vec3 baldNew(vec3 col, vec2 p, vec4 A, vec4 B, vec4 T) {
+  if (T.w < 0.5) return col;
+  vec2 c = A.xy; vec2 ax = max(A.zw, vec2(1.0)); vec2 up = B.zw; vec2 side = vec2(up.y, -up.x);
+  float scale = max(ax.x, ax.y);
+  float u = dot(p - c, side) / ax.x; float v = dot(p - c, up) / ax.y;
+  float e = length(vec2(u, v));
+  float gate = clamp((dot(p - B.xy, up) + 0.02 * scale) / (0.12 * scale), 0.0, 1.0);
+  float hair = texture2D(uHair, down(p)).r; float face = texture2D(uSkinTex, down(p)).r;
+  float beyond = clamp(hair * (1.0 - smoothstep(1.8, 1.95, e)) * gate - (1.0 - smoothstep(0.94, 1.0, e)), 0.0, 1.0);
+  col = mix(col, texture2D(uFill, down(p)).rgb, smoothstep(0.06, 0.18, beyond));
+  float z = sqrt(clamp(1.0 - u * u - v * v, 0.0, 1.0));
+  vec3 n = vec3(u, v, z);
+  vec3 L = normalize(vec3(-0.35, 0.55, 0.76));
+  float lam = clamp(dot(n, L), 0.0, 1.0);
+  float spec = pow(clamp(dot(n, normalize(L + vec3(0.0, 0.0, 1.0))), 0.0, 1.0), 30.0);
+  vec3 scalp = clamp(T.rgb * (0.78 + 0.26 * lam - 0.1 * (1.0 - z)) + 0.07 * spec * T.rgb, 0.0, 1.0);
+  float a = (1.0 - smoothstep(0.96, 1.0, e)) * gate * clamp(1.0 - face * 1.2, 0.0, 1.0) * clamp(max(hair * 1.5, gate), 0.0, 1.0);
+  return mix(col, scalp, clamp(a * (0.6 + 0.6 * uAmount), 0.0, 1.0));
+}
+
 void main() {
   vec2 p = vTexSamplingCoord * uSize;
   vec2 q = p;
@@ -260,6 +306,7 @@ void main() {
   col = skin(col, q, uFaceC0, uFaceT0, uEyes0, uMouth0);
   col = skin(col, q, uFaceC1, uFaceT1, uEyes1, uMouth1);
   col = mood(col, q);
+  if (uBald > 0.5 && uHasParts > 0.5) { col = baldNew(col, p, uSkA0, uSkB0, uSkT0); col = baldNew(col, p, uSkA1, uSkB1, uSkT1); }
   gl_FragColor = vec4(clamp(col, 0.0, 1.0), px.a);
 }
 """)
@@ -272,6 +319,8 @@ void main() {
         } catch (e: GlUtil.GlException) { throw VideoFrameProcessingException(e) }
         private var width = 1; private var height = 1
         private var mask = 0; private var loaded = -1
+        /** The face engine's hair, face-skin and filled-picture textures, and which look they hold. */
+        private var hairTex = 0; private var skinTex = 0; private var fillTex = 0; private var partsLoaded = -1
 
         override fun configure(inputWidth: Int, inputHeight: Int): Size { width = inputWidth; height = inputHeight; return Size(inputWidth, inputHeight) }
 
@@ -287,8 +336,35 @@ void main() {
                     val i = (if (f < 0.5f) a else b).coerceAtMost(people.masks.size - 1)
                     if (loaded != i) { upload(people.masks[i], people.maskW, people.maskH); loaded = i }
                 }
-                val u = frameUniforms(id, people.facesAt(t), width, height, t.toFloat(), amount)
+                if (hairTex == 0) {
+                    val ids = IntArray(3); GLES20.glGenTextures(3, ids, 0); hairTex = ids[0]; skinTex = ids[1]; fillTex = ids[2]
+                    upload(byteArrayOf(0), 1, 1, hairTex); upload(byteArrayOf(0), 1, 1, skinTex); uploadRgb(intArrayOf(0), 1, 1)
+                }
+                var skulls = FloatArray(24)
+                val hasParts = people.parts.isNotEmpty()
+                if (hasParts) {
+                    val (a, b, f) = people.around(t)
+                    val i = (if (f < 0.5f) a else b).coerceAtMost(people.parts.size - 1)
+                    val pt = people.parts[i]
+                    if (partsLoaded != i) {
+                        upload(pt.hair, FaceEngine.SIDE, FaceEngine.SIDE, hairTex); upload(pt.skin, FaceEngine.SIDE, FaceEngine.SIDE, skinTex)
+                        pt.fill?.let { uploadRgb(it, FaceEngine.SIDE, FaceEngine.SIDE) }
+                        partsLoaded = i
+                    }
+                    skulls = skullUniforms(pt.skulls, pt.w, pt.h, width, height)
+                }
+                val u = frameUniforms(id, people.facesAt(t), width, height, t.toFloat(), amount, hasParts)
                 program.use()
+                program.setSamplerTexIdUniform("uHair", hairTex, 2)
+                program.setSamplerTexIdUniform("uSkinTex", skinTex, 3)
+                program.setSamplerTexIdUniform("uFill", fillTex, 4)
+                program.setFloatUniform("uHasParts", if (hasParts) 1f else 0f)
+                program.setFloatUniform("uBald", if (id == "bald") 1f else 0f)
+                for (j in 0 until 2) {
+                    program.setFloatsUniform("uSkA$j", skulls.copyOfRange(j * 12, j * 12 + 4))
+                    program.setFloatsUniform("uSkB$j", skulls.copyOfRange(j * 12 + 4, j * 12 + 8))
+                    program.setFloatsUniform("uSkT$j", skulls.copyOfRange(j * 12 + 8, j * 12 + 12))
+                }
                 program.setSamplerTexIdUniform("uTexSampler", inputTexId, 0)
                 program.setSamplerTexIdUniform("uMask", mask, 1)
                 program.setFloatUniform("uHasMask", if (people.masks.isEmpty()) 0f else 1f)
@@ -314,8 +390,23 @@ void main() {
             }
         }
 
-        private fun upload(bytes: ByteArray, w: Int, h: Int) {
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mask)
+        private fun uploadRgb(argb: IntArray, w: Int, h: Int) {
+            val bytes = ByteArray(w * h * 4)
+            for (i in argb.indices) {
+                val c = argb[i]
+                bytes[i * 4] = ((c shr 16) and 255).toByte(); bytes[i * 4 + 1] = ((c shr 8) and 255).toByte(); bytes[i * 4 + 2] = (c and 255).toByte(); bytes[i * 4 + 3] = -1
+            }
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, fillTex)
+            GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1)
+            GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, w, h, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, ByteBuffer.wrap(bytes))
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR)
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR)
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE)
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE)
+        }
+
+        private fun upload(bytes: ByteArray, w: Int, h: Int, tex: Int = mask) {
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, tex)
             GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1)
             GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_LUMINANCE, w, h, 0, GLES20.GL_LUMINANCE, GLES20.GL_UNSIGNED_BYTE, ByteBuffer.wrap(bytes))
             GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR)
@@ -326,7 +417,7 @@ void main() {
 
         override fun release() {
             super.release()
-            try { program.delete(); if (mask != 0) GLES20.glDeleteTextures(1, intArrayOf(mask), 0) } catch (e: GlUtil.GlException) { throw VideoFrameProcessingException(e) }
+            try { program.delete(); if (mask != 0) GLES20.glDeleteTextures(1, intArrayOf(mask), 0); if (hairTex != 0) GLES20.glDeleteTextures(3, intArrayOf(hairTex, skinTex, fillTex), 0) } catch (e: GlUtil.GlException) { throw VideoFrameProcessingException(e) }
         }
     }
 }

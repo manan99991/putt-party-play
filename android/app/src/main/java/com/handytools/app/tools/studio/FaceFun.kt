@@ -161,6 +161,8 @@ object FaceFun {
     /** The effects that change the whole picture (or well beyond the face). */
     val wholePicture = setOf("cartoon", "glow", "beautiful", "sunny", "tacky", "wholesome", "longlegs", "tinybody")
     fun needsMask(id: String) = id == "bald"
+    /** The effects that use the face engine's parts (hair, face skin): Bald and the skin effects (the iPhone's usesParts). */
+    fun usesParts(id: String) = id in setOf("bald", "alien", "zombie", "robot", "glow", "beautiful", "wholesome")
 
     // ---- stickers ----
 

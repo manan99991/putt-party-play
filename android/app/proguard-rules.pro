@@ -7,3 +7,7 @@
 -dontwarn org.bouncycastle.**
 -dontwarn org.apache.fontbox.**
 -keep class com.tom_roush.pdfbox.** { *; }
+
+# LiteRT (Video Studio face engine): the interpreter's Java side is reached from native code.
+-keep class org.tensorflow.lite.** { *; }
+-dontwarn org.tensorflow.lite.**
