@@ -1,4 +1,7 @@
-# 27 Nov, round 15. Round 14: the face box is the same every call, but the points inside it drift outward each time
-# (contour 222 → 544 wide in a 389 box). Same failure twice, so the theory was wrong: this round only measures, asking
-# six times in each way (CIImage, CGImage, each model revision, with the box given, CPU only) to find the steady one.
-HandyToolsTests/FaceFinderTests
+# 27 Nov, round 16. Round 15 measured it: the face finder's landmark points drift on every call in every way of
+# asking (each revision, CPU only, the box given) on the build machine, while the face box is steady. Faces now come
+# from the box and its tilt with ordinary proportions whenever the points don't sit sensibly inside the box.
+HandyToolsTests/FaceFunTests
+HandyToolsTests/VideoSoundTests
+HandyToolsTests/VideoFunTests
+HandyToolsUITests/CameraButtonTests/testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost

@@ -109,6 +109,12 @@ enum FaceFun {
     }
 
     /// The faces, and (for the tests) each one's box as the finder gave it, in the frame's points.
+    ///
+    /// 27 Nov: on the build machine the finder's landmark points (eyes, mouth, jaw) came back different every time it
+    /// was asked about the same picture — drifting outward until they were thousands of faces wide — in every way of
+    /// asking (each model revision, CPU only, with the box given), while the face box stayed the same. So the box is
+    /// what's trusted: the landmarks are used only when they sit sensibly inside it, and otherwise the face is laid out
+    /// from the box and its tilt with ordinary face proportions.
     static func faces(in img: CIImage, boxes: ((CGRect) -> Void)?) -> [Face] {
         let req = VNDetectFaceLandmarksRequest()
         try? VNImageRequestHandler(ciImage: img, options: [:]).perform([req])
@@ -116,21 +122,59 @@ enum FaceFun {
         let frame = img.extent
         return (req.results ?? []).filter { $0.confidence > 0.5 }
             .compactMap { o -> Face? in
-                guard let lm = o.landmarks else { return nil }
-                // Each landmark is placed from its share of the face's box (both from the finder, both 0…1), and the box
-                // from its share of the frame — never trusting a point that lands far outside the picture.
                 let box = CGRect(x: origin.x + o.boundingBox.minX * W, y: origin.y + o.boundingBox.minY * H,
                                  width: o.boundingBox.width * W, height: o.boundingBox.height * H)
                 boxes?(box)
                 guard box.width > 2, box.height > 2, frame.insetBy(dx: -frame.width * 0.5, dy: -frame.height * 0.5).contains(box) else { return nil }
+                let roll = CGFloat(o.roll?.doubleValue ?? 0)
+                guard let lm = o.landmarks, sensible(lm) else { return face(box: box, roll: roll) }
                 func pts(_ r: VNFaceLandmarkRegion2D?) -> [CGPoint] {
                     (r?.normalizedPoints ?? []).map { CGPoint(x: box.minX + $0.x * box.width, y: box.minY + $0.y * box.height) }
                 }
                 return face(contour: pts(lm.faceContour), eyeA: pts(lm.leftEye), eyeB: pts(lm.rightEye),
                             brows: pts(lm.leftEyebrow) + pts(lm.rightEyebrow), nose: pts(lm.nose) + pts(lm.noseCrest), lips: pts(lm.outerLips))
+                    ?? face(box: box, roll: roll)
             }
             .sorted { $0.width > $1.width }
             .prefix(3).map { $0 }
+    }
+
+    /// Whether the landmark points sit sensibly inside their face box (shares of it): the jaw spans most of the box,
+    /// nothing is far outside it, and the eyes sit above the mouth.
+    static func sensible(_ lm: VNFaceLandmarks2D) -> Bool {
+        guard let c = lm.faceContour?.normalizedPoints, c.count >= 5,
+              let ea = lm.leftEye?.normalizedPoints, let eb = lm.rightEye?.normalizedPoints, !ea.isEmpty, !eb.isEmpty else { return false }
+        return sensible(contour: c, eyes: ea + eb, lips: lm.outerLips?.normalizedPoints ?? [])
+    }
+
+    /// Pure, so it's tested with made-up points.
+    static func sensible(contour c: [CGPoint], eyes: [CGPoint], lips: [CGPoint]) -> Bool {
+        let all = c + eyes + lips
+        guard all.allSatisfy({ $0.x > -0.25 && $0.x < 1.25 && $0.y > -0.25 && $0.y < 1.25 }) else { return false }
+        let xs = c.map(\.x), across = (xs.max() ?? 0) - (xs.min() ?? 0)
+        guard across > 0.55, across < 1.3 else { return false }
+        let eyeSpan = (eyes.map(\.x).max() ?? 0) - (eyes.map(\.x).min() ?? 0)
+        return eyeSpan > 0.2 && eyeSpan < 0.9
+    }
+
+    /// A face laid out from its box and tilt with ordinary proportions (the box runs from the brows to the chin).
+    static func face(box: CGRect, roll: CGFloat) -> Face? {
+        let s = min(box.width, box.height), c = CGPoint(x: box.midX, y: box.midY)
+        // Vision's roll turns the face clockwise for positive values in a top-left picture; in Core Image's y-up frame
+        // that is the other way round.
+        let a = -roll
+        func at(_ u: CGFloat, _ v: CGFloat) -> CGPoint {
+            CGPoint(x: c.x + (u * cos(a) - v * sin(a)) * s, y: c.y + (u * sin(a) + v * cos(a)) * s)
+        }
+        func oval(_ u: CGFloat, _ v: CGFloat, _ ru: CGFloat, _ rv: CGFloat, _ n: Int = 8) -> [CGPoint] {
+            (0..<n).map { k in let t = CGFloat(k) * 2 * .pi / CGFloat(n); return at(u + cos(t) * ru, v + sin(t) * rv) }
+        }
+        let contour = (0...10).map { k -> CGPoint in
+            let t = CGFloat.pi * (1 + CGFloat(k) / 10)
+            return at(cos(t) * 0.46, 0.1 + sin(t) * 0.58)
+        }
+        return face(contour: contour, eyeA: oval(-0.2, 0.12, 0.075, 0.035), eyeB: oval(0.2, 0.12, 0.075, 0.035),
+                    brows: [at(-0.2, 0.25), at(0.2, 0.25)], nose: [at(0, 0.08), at(0, -0.08)], lips: oval(0, -0.27, 0.18, 0.06, 10))
     }
 
     /// A face from its landmark points. Pure, so it's tested with made-up points.

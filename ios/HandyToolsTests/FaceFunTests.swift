@@ -127,6 +127,27 @@ final class FaceFunTests: XCTestCase {
         XCTAssertEqual(u.up.dy, -1, accuracy: 0.02)
     }
 
+    /// When the finder's points can't be trusted the face is laid out from its box: upright, it reads the right way up
+    /// with the eyes above the mouth inside the box; tilted, "up" follows the tilt.
+    func testAFaceFromItsBoxAlone() throws {
+        let box = CGRect(x: 200, y: 300, width: 300, height: 300)
+        let f = try XCTUnwrap(FaceFun.face(box: box, roll: 0))
+        XCTAssertEqual(f.up.dy, 1, accuracy: 0.01)
+        XCTAssertGreaterThan(f.eyeA.y, f.mouth.y); XCTAssertLessThan(f.eyeA.x, f.eyeB.x)
+        XCTAssertTrue(box.insetBy(dx: -20, dy: -20).contains(f.chin) && box.contains(f.mouth) && box.contains(f.eyeA))
+        XCTAssertEqual(f.eyeDistance, 120, accuracy: 2)
+        XCTAssertEqual(f.width, 276, accuracy: 10)
+        let t = try XCTUnwrap(FaceFun.face(box: box, roll: .pi / 4))
+        XCTAssertEqual(abs(t.roll), .pi / 4, accuracy: 0.02)
+        XCTAssertEqual(t.eyeDistance, 120, accuracy: 2)
+        // Sensible landmarks pass; drifting ones don't.
+        let c = (0...8).map { CGPoint(x: 0.5 + cos(.pi + CGFloat($0) * .pi / 8) * 0.45, y: 0.6 + sin(.pi + CGFloat($0) * .pi / 8) * 0.55) }
+        let eyes = [CGPoint(x: 0.3, y: 0.62), CGPoint(x: 0.7, y: 0.62)]
+        XCTAssertTrue(FaceFun.sensible(contour: c, eyes: eyes, lips: [CGPoint(x: 0.5, y: 0.25)]))
+        XCTAssertFalse(FaceFun.sensible(contour: c.map { CGPoint(x: $0.x * 7.5 - 2, y: $0.y * 8 - 3) }, eyes: eyes, lips: []), "points thousands of faces wide")
+        XCTAssertFalse(FaceFun.sensible(contour: c.map { CGPoint(x: 0.5 + ($0.x - 0.5) * 0.5, y: $0.y) }, eyes: eyes, lips: []), "a jaw half the box wide")
+    }
+
     func testAShakyFinderIsSteadied() {
         let f = drawnFace()
         var moved = f
