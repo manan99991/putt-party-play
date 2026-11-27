@@ -1,8 +1,4 @@
-# 26 Nov, round 14. Round 13 found it: the phone's face finder itself handed back a bigger face every time it was
-# asked about the same picture (eyes 80 apart, then 147, 184 … ), read through pointsInImage. Faces are now placed from
-# the finder's own 0–1 box and points (the way the proven Funny tab always did), and a box far outside the picture is
-# dropped. The test asks six times and needs the same face each time.
-HandyToolsTests/FaceFunTests
-HandyToolsTests/VideoSoundTests
-HandyToolsTests/VideoFunTests
-HandyToolsUITests/CameraButtonTests/testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost
+# 27 Nov, round 15. Round 14: the face box is the same every call, but the points inside it drift outward each time
+# (contour 222 → 544 wide in a 389 box). Same failure twice, so the theory was wrong: this round only measures, asking
+# six times in each way (CIImage, CGImage, each model revision, with the box given, CPU only) to find the steady one.
+HandyToolsTests/FaceFinderTests
