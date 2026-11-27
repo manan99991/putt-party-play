@@ -52878,5 +52878,255 @@
   "ja": "網点プリント",
   "pt": "Impressão em meio-tom",
   "zh": "网点印刷"
+ },
+ "Dots": {
+  "de": "Punkte",
+  "es": "Puntos",
+  "fr": "Points",
+  "hi": "बिंदु",
+  "it": "Punti",
+  "ja": "ドット",
+  "pt": "Pontos",
+  "zh": "圆点"
+ },
+ "Rounded": {
+  "de": "Abgerundet",
+  "es": "Redondeado",
+  "fr": "Arrondi",
+  "hi": "गोल",
+  "it": "Arrotondato",
+  "ja": "丸型",
+  "pt": "Arredondado",
+  "zh": "圆角"
+ },
+ "Scan me card": {
+  "de": "„Scan mich“-Karte",
+  "es": "Tarjeta «Escanéame»",
+  "fr": "Carte « Scanne-moi »",
+  "hi": "\"मुझे स्कैन करें\" कार्ड",
+  "it": "Scheda \"Scansionami\"",
+  "ja": "「スキャンしてね」カード",
+  "pt": "Cartão \"Escaneie-me\"",
+  "zh": "“扫我”卡片"
+ },
+ "Scan me": {
+  "de": "Scan mich",
+  "es": "Escanéame",
+  "fr": "Scanne-moi",
+  "hi": "मुझे स्कैन करें",
+  "it": "Scansionami",
+  "ja": "スキャンしてね",
+  "pt": "Escaneie-me",
+  "zh": "扫我"
+ },
+ "Black bars": {
+  "de": "Schwarze Balken",
+  "es": "Barras negras",
+  "fr": "Barres noires",
+  "hi": "काली पट्टियाँ",
+  "it": "Barre nere",
+  "ja": "黒い帯",
+  "pt": "Barras pretas",
+  "zh": "黑条"
+ },
+ "Studio fade": {
+  "de": "Studio-Verlauf",
+  "es": "Degradado de estudio",
+  "fr": "Dégradé studio",
+  "hi": "स्टूडियो फ़ेड",
+  "it": "Sfumatura da studio",
+  "ja": "スタジオ風グラデーション",
+  "pt": "Degradê de estúdio",
+  "zh": "影棚渐变"
+ },
+ "White with shadow": {
+  "de": "Weiß mit Schatten",
+  "es": "Blanco con sombra",
+  "fr": "Blanc avec ombre",
+  "hi": "सफ़ेद, परछाई के साथ",
+  "it": "Bianco con ombra",
+  "ja": "白・影付き",
+  "pt": "Branco com sombra",
+  "zh": "白底带阴影"
+ },
+ "Fill the screen": {
+  "de": "Bildschirm füllen",
+  "es": "Llenar la pantalla",
+  "fr": "Remplir l'écran",
+  "hi": "स्क्रीन भरें",
+  "it": "Riempi lo schermo",
+  "ja": "画面いっぱい",
+  "pt": "Preencher a tela",
+  "zh": "铺满屏幕"
+ },
+ "Whole video, blurred edges": {
+  "de": "Ganzes Video, unscharfe Ränder",
+  "es": "Vídeo entero, bordes difuminados",
+  "fr": "Vidéo entière, bords flous",
+  "hi": "पूरा वीडियो, धुंधले किनारे",
+  "it": "Video intero, bordi sfocati",
+  "ja": "全体表示・ぼかし背景",
+  "pt": "Vídeo inteiro, bordas desfocadas",
+  "zh": "完整视频，模糊边缘"
+ },
+ "Swipe": {
+  "de": "Wischen",
+  "es": "Deslizar",
+  "fr": "Balayage",
+  "hi": "स्वाइप",
+  "it": "Scorrimento",
+  "ja": "スワイプ",
+  "pt": "Deslizar",
+  "zh": "滑动"
+ },
+ "Side by side": {
+  "de": "Nebeneinander",
+  "es": "Lado a lado",
+  "fr": "Côte à côte",
+  "hi": "साथ-साथ",
+  "it": "Affiancate",
+  "ja": "横に並べる",
+  "pt": "Lado a lado",
+  "zh": "并排"
+ },
+ "1 sentence": {
+  "de": "1 Satz",
+  "es": "1 frase",
+  "fr": "1 phrase",
+  "hi": "1 वाक्य",
+  "it": "1 frase",
+  "ja": "1文",
+  "pt": "1 frase",
+  "zh": "1句"
+ },
+ "3 sentences": {
+  "de": "3 Sätze",
+  "es": "3 frases",
+  "fr": "3 phrases",
+  "hi": "3 वाक्य",
+  "it": "3 frasi",
+  "ja": "3文",
+  "pt": "3 frases",
+  "zh": "3句"
+ },
+ "5 sentences": {
+  "de": "5 Sätze",
+  "es": "5 frases",
+  "fr": "5 phrases",
+  "hi": "5 वाक्य",
+  "it": "5 frasi",
+  "ja": "5文",
+  "pt": "5 frases",
+  "zh": "5句"
+ },
+ "Bullet points": {
+  "de": "Stichpunkte",
+  "es": "Viñetas",
+  "fr": "Puces",
+  "hi": "बुलेट पॉइंट",
+  "it": "Elenco puntato",
+  "ja": "箇条書き",
+  "pt": "Tópicos",
+  "zh": "要点列表"
+ },
+ "Slow motion": {
+  "de": "Zeitlupe",
+  "es": "Cámara lenta",
+  "fr": "Ralenti",
+  "hi": "स्लो मोशन",
+  "it": "Rallentatore",
+  "ja": "スローモーション",
+  "pt": "Câmera lenta",
+  "zh": "慢动作"
+ },
+ "Small for chat": {
+  "de": "Klein für Chats",
+  "es": "Pequeño para chat",
+  "fr": "Petit pour le chat",
+  "hi": "चैट के लिए छोटा",
+  "it": "Piccolo per chat",
+  "ja": "チャット用に小さく",
+  "pt": "Pequeno para chat",
+  "zh": "小尺寸，适合聊天"
+ },
+ "Sharp for posting": {
+  "de": "Scharf zum Posten",
+  "es": "Nítido para publicar",
+  "fr": "Net pour publier",
+  "hi": "पोस्ट के लिए साफ़",
+  "it": "Nitido per pubblicare",
+  "ja": "投稿用に高画質",
+  "pt": "Nítido para postar",
+  "zh": "高清，适合发布"
+ },
+ "Cover them with": {
+  "de": "Abdecken mit",
+  "es": "Cubrirlos con",
+  "fr": "Les masquer avec",
+  "hi": "इनसे ढकें",
+  "it": "Coprili con",
+  "ja": "隠し方",
+  "pt": "Cobrir com",
+  "zh": "遮盖方式"
+ },
+ "Try another fit": {
+  "de": "Andere Einpassung probieren",
+  "es": "Probar otro encaje",
+  "fr": "Essayer un autre cadrage",
+  "hi": "दूसरा फ़िट आज़माएँ",
+  "it": "Prova un altro adattamento",
+  "ja": "別の収め方を試す",
+  "pt": "Experimentar outro enquadramento",
+  "zh": "换种适配方式"
+ },
+ "Try another tone": {
+  "de": "Anderen Ton probieren",
+  "es": "Probar otro tono",
+  "fr": "Essayer un autre ton",
+  "hi": "दूसरा लहजा आज़माएँ",
+  "it": "Prova un altro tono",
+  "ja": "別の口調を試す",
+  "pt": "Experimentar outro tom",
+  "zh": "换个语气"
+ },
+ "Try another backdrop": {
+  "de": "Anderen Hintergrund probieren",
+  "es": "Probar otro fondo",
+  "fr": "Essayer un autre fond",
+  "hi": "दूसरी पृष्ठभूमि आज़माएँ",
+  "it": "Prova un altro sfondo",
+  "ja": "別の背景を試す",
+  "pt": "Experimentar outro fundo",
+  "zh": "换个背景"
+ },
+ "Making it…": {
+  "de": "Wird erstellt …",
+  "es": "Creándolo…",
+  "fr": "Création…",
+  "hi": "बन रहा है…",
+  "it": "Creazione…",
+  "ja": "作成中…",
+  "pt": "Criando…",
+  "zh": "正在制作…"
+ },
+ "That one couldn't be made from this. The result above is unchanged.": {
+  "de": "Das ließ sich daraus nicht machen. Das Ergebnis oben bleibt unverändert.",
+  "es": "No se pudo hacer con esto. El resultado de arriba no ha cambiado.",
+  "fr": "Impossible de le créer à partir de ceci. Le résultat ci-dessus reste inchangé.",
+  "hi": "इससे वह नहीं बन सका। ऊपर का परिणाम वैसा ही है।",
+  "it": "Non è stato possibile crearlo da questo. Il risultato sopra non è cambiato.",
+  "ja": "これからは作れませんでした。上の結果はそのままです。",
+  "pt": "Não foi possível fazer isso a partir daqui. O resultado acima não mudou.",
+  "zh": "无法用这个做出来。上面的结果没有变化。"
+ },
+ "Try another reveal": {
+  "de": "Andere Enthüllung probieren",
+  "es": "Probar otra revelación",
+  "fr": "Essayer une autre révélation",
+  "hi": "दूसरा रिवील आज़माएँ",
+  "it": "Prova un'altra rivelazione",
+  "ja": "別の見せ方を試す",
+  "pt": "Experimentar outra revelação",
+  "zh": "换个展示方式"
  }
 }

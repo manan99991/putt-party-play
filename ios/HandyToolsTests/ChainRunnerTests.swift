@@ -1453,6 +1453,79 @@ final class FunStepTests: XCTestCase {
         XCTAssertEqual(fade.count, 18); XCTAssertEqual(fade.last?.to, 0)   // the last photo fades back into the first
         XCTAssertTrue(fade.allSatisfy { $0.mix >= 0 && $0.mix < 1 })
     }
+    func testEveryQRStyleStillScans() {
+        let message = "https://tenzy.app/hello?x=1"
+        let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
+        var seen = Set<Data>()
+        for st in ChainText.qrStyles {
+            guard let img = ChainText.qr(message, style: st.id), let cg = img.cgImage else { XCTFail(st.id); continue }
+            let found = detector?.features(in: CIImage(cgImage: cg)).compactMap { ($0 as? CIQRCodeFeature)?.messageString } ?? []
+            XCTAssertEqual(found.first, message, "\(st.id) doesn't scan")
+            if let d = img.pngData() { seen.insert(d) }
+        }
+        XCTAssertEqual(seen.count, ChainText.qrStyles.count, "two QR styles look the same")
+        XCTAssertEqual(ChainText.qrModules("hi", correction: "M")?.count, 21)   // the smallest code is 21 squares across
+    }
+    func testACutOutProductSitsWholeOnItsBackdrop() {
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = false
+        // A red item in the lower right of a mostly see-through picture.
+        let cut = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 300), format: fmt).image { ctx in
+            UIColor.red.setFill(); ctx.fill(CGRect(x: 250, y: 150, width: 100, height: 120))
+        }
+        let box = ChainImage.opaqueBox(cut)
+        XCTAssertNotNil(box)
+        if let box { XCTAssertEqual(box.minX, 250, accuracy: 4); XCTAssertEqual(box.minY, 150, accuracy: 4); XCTAssertEqual(box.height, 120, accuracy: 4) }
+        XCTAssertNil(ChainImage.opaqueBox(picture()))   // an ordinary photo isn't a cut-out
+        func px(_ img: UIImage, _ x: Int, _ y: Int) -> (Int, Int, Int) {
+            let cg = img.cgImage!; var p = [UInt8](repeating: 0, count: 4)
+            let c = CGContext(data: &p, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4, space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+            c.draw(cg, in: CGRect(x: -x, y: -(cg.height - 1 - y), width: cg.width, height: cg.height))
+            return (Int(p[0]), Int(p[1]), Int(p[2]))
+        }
+        var corners = Set<String>()
+        for b in ChainText.backdrops {
+            guard let shot = ChainImage.productShot(cut, to: CGSize(width: 600, height: 600), backdrop: b.id) else { XCTFail(b.id); continue }
+            XCTAssertEqual(shot.size, CGSize(width: 600, height: 600))
+            let mid = px(shot, 300, b.id == "shadow" ? 282 : 300)
+            XCTAssertTrue(mid.0 > 200 && mid.1 < 60, "\(b.id): the item is in the middle, got \(mid)")
+            let corner = px(shot, 5, 5); corners.insert("\(corner)")
+            XCTAssertTrue(corner.0 > 180 && corner.1 > 180 && corner.2 > 180, "\(b.id): a light backdrop, got \(corner)")
+        }
+        XCTAssertGreaterThanOrEqual(corners.count, 3, "backdrops look the same")
+        // The exact-size step: a cut-out is placed whole; a photo still fills the size.
+        let fillStep = ChainStep(block: .resizePhoto, settings: ["size": "500x500", "backdrop": "grey"])
+        let exp = expectation(description: "resize")
+        Task {
+            if case .success(.image(let out)) = await ChainRunner.apply(fillStep, to: .image(cut)) {
+                XCTAssertEqual(out.size, CGSize(width: 500, height: 500))
+                let c = px(out, 3, 3); XCTAssertTrue(c.0 > 200 && c.0 < 250, "grey backdrop, got \(c)")
+            } else { XCTFail("no picture") }
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 20)
+    }
+    func testResultLooksAreOfferedWhereTheyBelong() {
+        func groups(_ blocks: [Block], _ text: String? = nil) -> [ResultLooks.Group] {
+            ResultLooks.groups(Chain(id: "t", name: "t", steps: blocks.map { ChainStep(block: $0) }), text: text)
+        }
+        XCTAssertEqual(groups([.makeQr]).map(\.key), ["style"]); XCTAssertEqual(groups([.wifiQr]).map(\.key), ["style"])
+        XCTAssertEqual(groups([.videoGif]).map(\.key), ["look"]); XCTAssertEqual(groups([.hideSensitive]).map(\.key), ["style"])
+        XCTAssertEqual(groups([.videoVertical]).map(\.key), ["fit"]); XCTAssertEqual(groups([.videoCelebrate]).first?.options.count, Celebrate.themes.count)
+        XCTAssertEqual(groups([.summarize]).map(\.key), ["sentences", "format"]); XCTAssertEqual(groups([.rewrite]).map(\.key), ["style"])
+        XCTAssertEqual(groups([.readAloud], "Hello there, this is a test.").first?.key, "speed")
+        let sell = groups([.cutout, .enhance, .resizePhoto, .stripLocation])
+        XCTAssertEqual(sell.map(\.key), ["backdrop"]); XCTAssertEqual(sell.first?.step, 2)
+        XCTAssertTrue(groups([.resizePhoto]).isEmpty)                  // an ordinary exact-size photo has no backdrop
+        XCTAssertTrue(groups([.meme]).isEmpty); XCTAssertTrue(groups([.videoLoop]).isEmpty)   // those cards have their own looks
+        for g in groups([.makeQr]) + groups([.videoGif]) + groups([.summarize]) + groups([.videoVertical]) + sell + groups([.hideSensitive]) {
+            XCTAssertEqual(Set(g.options.map(\.id)).count, g.options.count, g.id)
+            XCTAssertTrue(g.options.contains { $0.id == g.fallback }, "\(g.id): the default is one of the choices")
+        }
+        // Each video GIF look is really different.
+        let looks = ChainText.videoGifLooks.map { ChainText.videoGifLook($0.id) }
+        XCTAssertEqual(Set(looks.map { "\($0.secs)|\($0.fps)|\($0.speed)|\($0.dim)" }).count, looks.count)
+        XCTAssertEqual(ChainMedia.tallCanvas(CGSize(width: 1920, height: 1080)), CGSize(width: 1080, height: 1920))
+    }
     func testEveryCollageLayoutMakesADifferentPicture() {
         let pics = [picture(), picture(CGSize(width: 300, height: 500), .systemRed), picture(CGSize(width: 400, height: 300), .systemYellow)]
         var sizes = Set<String>(), datas = Set<Data>()

@@ -71,13 +71,66 @@ enum ChainMotion {
 
     /// A short video that wipes from the "before" photo to the "after" with a sweeping divider, then back —
     /// the format people actually post transformations in. nil if the phone can't encode it.
-    static func revealVideo(before: UIImage, after: UIImage, longEdge: CGFloat = 1080) async -> Data? {
-        let size = fitSize(before.size, long: longEdge)
-        let frames = revealFrames(before.normalizedUp(), after.normalizedUp(), size: size, steps: 24)
+    static func revealVideo(before: UIImage, after: UIImage, longEdge: CGFloat = 1080, style: String = "swipe") async -> Data? {
+        let size = style == "side" ? fitSize(CGSize(width: before.size.width * 2, height: before.size.height), long: longEdge) : fitSize(before.size, long: longEdge)
+        let b = before.normalizedUp(), a = after.normalizedUp()
+        let frames = style == "fade" ? fadeFrames(b, a, size: size, steps: 24) : style == "side" ? sideFrames(b, a, size: size) : revealFrames(b, a, size: size, steps: 24)
         guard let url = await framesToMP4(frames, fps: 30, size: size) else { return nil }
         let d = try? Data(contentsOf: url)
         try? FileManager.default.removeItem(at: url)
         return d
+    }
+
+    /// Before dissolves into after and back, holding on each.
+    private static func fadeFrames(_ before: UIImage, _ after: UIImage, size: CGSize, steps: Int) -> [CGImage] {
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
+        let renderer = UIGraphicsImageRenderer(size: size, format: fmt)
+        func frame(_ p: CGFloat) -> CGImage? {
+            renderer.image { _ in
+                drawAspectFill(before, in: size)
+                if p > 0 { drawAspectFill(after, in: size, alpha: p) }
+                label(p < 0.5 ? "BEFORE" : "AFTER", at: CGPoint(x: size.width / 2, y: size.height * 0.92), size: size)
+            }.cgImage
+        }
+        var out: [CGImage] = []
+        for _ in 0..<12 { if let f = frame(0) { out.append(f) } }
+        for i in 0...steps { if let f = frame(eased(CGFloat(i) / CGFloat(steps))) { out.append(f) } }
+        for _ in 0..<12 { if let f = frame(1) { out.append(f) } }
+        for i in stride(from: steps, through: 0, by: -1) { if let f = frame(eased(CGFloat(i) / CGFloat(steps))) { out.append(f) } }
+        return out
+    }
+
+    /// The two side by side, labelled, with a slow push in so it plays as a video.
+    private static func sideFrames(_ before: UIImage, _ after: UIImage, size: CGSize) -> [CGImage] {
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
+        let renderer = UIGraphicsImageRenderer(size: size, format: fmt)
+        let half = CGSize(width: size.width / 2, height: size.height)
+        return (0..<90).compactMap { i in
+            let z = 1 + 0.05 * eased(CGFloat(i) / 89)
+            return renderer.image { ctx in
+                for (n, img) in [before, after].enumerated() {
+                    let cell = CGRect(x: CGFloat(n) * half.width, y: 0, width: half.width, height: half.height)
+                    ctx.cgContext.saveGState(); ctx.cgContext.clip(to: cell)
+                    ctx.cgContext.translateBy(x: cell.midX, y: cell.midY); ctx.cgContext.scaleBy(x: z, y: z)
+                    ctx.cgContext.translateBy(x: -half.width / 2, y: -half.height / 2)
+                    drawAspectFill(img, in: half)
+                    ctx.cgContext.restoreGState()
+                    label(n == 0 ? "BEFORE" : "AFTER", at: CGPoint(x: cell.midX, y: size.height * 0.92), size: size)
+                }
+                UIColor.white.setFill(); ctx.cgContext.fill(CGRect(x: half.width - 2, y: 0, width: 4, height: size.height))
+            }.cgImage
+        }
+    }
+
+    /// A small rounded tag ("BEFORE" / "AFTER") centred on `at`.
+    private static func label(_ text: String, at: CGPoint, size: CGSize) {
+        let font = UIFont.systemFont(ofSize: max(14, min(size.width, size.height) * 0.04), weight: .heavy)
+        let s = NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: UIColor.white, .kern: 1.5])
+        let t = s.size(), pad = font.pointSize * 0.5
+        let box = CGRect(x: at.x - t.width / 2 - pad, y: at.y - t.height / 2 - pad * 0.5, width: t.width + 2 * pad, height: t.height + pad)
+        UIColor.black.withAlphaComponent(0.55).setFill()
+        UIBezierPath(roundedRect: box, cornerRadius: box.height / 2).fill()
+        s.draw(at: CGPoint(x: box.minX + pad, y: box.minY + pad * 0.5))
     }
 
     private static func revealFrames(_ before: UIImage, _ after: UIImage, size: CGSize, steps: Int) -> [CGImage] {
@@ -112,11 +165,11 @@ enum ChainMotion {
     private static func eased(_ t: CGFloat) -> CGFloat { t * t * (3 - 2 * t) }
 
     /// Draw an image to fill `rect` (centre-cropped), using the current UIKit graphics context.
-    private static func drawAspectFill(_ img: UIImage, in size: CGSize) {
+    private static func drawAspectFill(_ img: UIImage, in size: CGSize, alpha: CGFloat = 1) {
         guard img.size.width > 0, img.size.height > 0 else { return }
         let s = max(size.width / img.size.width, size.height / img.size.height)
         let w = img.size.width * s, h = img.size.height * s
-        img.draw(in: CGRect(x: (size.width - w) / 2, y: (size.height - h) / 2, width: w, height: h))
+        img.draw(in: CGRect(x: (size.width - w) / 2, y: (size.height - h) / 2, width: w, height: h), blendMode: .normal, alpha: alpha)
     }
 
     /// Scale a size so its long edge is `long`, with even width/height for the encoder.

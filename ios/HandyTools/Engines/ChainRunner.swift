@@ -767,7 +767,7 @@ enum ChainRunner {
         case (.makeQr, .text(let t)):
             let msg = t.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !msg.isEmpty else { return .failure(.nothingFound(b)) }
-            guard let img = ChainText.qr(msg, correction: ChainText.qrCorrection(step.settings["sturdiness"])) else { return .failure(.failed(b)) }   // too long for one code
+            guard let img = ChainText.qr(msg, correction: ChainText.qrCorrection(step.settings["sturdiness"]), style: step.settings["style"]) else { return .failure(.failed(b)) }   // too long for one code
             return .success(.image(img))
 
         case (.describe, .image(let img)):
@@ -812,14 +812,14 @@ enum ChainRunner {
         case (.wifiQr, .text(let t)):
             // The network name and password from a router label or a cafe sign, as a code a guest's camera joins from.
             guard let code = ChainText.wifiCode(t) else { return .failure(.nothingFound(b)) }
-            guard let img = ChainText.qr(code) else { return .failure(.failed(b)) }
+            guard let img = ChainText.qr(code, style: step.settings["style"]) else { return .failure(.failed(b)) }
             return .success(.image(img))
 
         case (.contactQr, .text(let t)):
             // Only what is in the text goes into the code, so you choose what the other person gets.
             let c = DataGrab.card(t)
             guard !c.phones.isEmpty || !c.emails.isEmpty else { return .failure(.nothingFound(.businessCard)) }
-            guard let img = ChainText.qr(DataGrab.vcard(c)) else { return .failure(.failed(b)) }
+            guard let img = ChainText.qr(DataGrab.vcard(c), style: step.settings["style"]) else { return .failure(.failed(b)) }
             return .success(.image(img))
 
         case (.expenseRow, .text(let t)):
@@ -917,13 +917,16 @@ enum ChainRunner {
 
         case (.resizePhoto, .image(let img)):
             guard let px = ChainImage.pixels(step.settings["size"] ?? "") else { return .failure(.invalid("Exact pixel size needs a size like 600x600.")) }
+            // A cut-out (see-through around the item) sits whole on a backdrop; any other photo fills the size.
+            if let shot = ChainImage.productShot(img, to: px, backdrop: step.settings["backdrop"] ?? "white") { return .success(.image(shot)) }
             return .success(.image(ChainImage.fill(img, to: px)))
 
         case (.hideSensitive, .image(let img)):
             let hits = Scrubber.detect(img)
             let rects = hits.faces + hits.text.filter(\.personal).map(\.rect)
             // Nothing to hide is still a good result: hand back a clean copy rather than an error.
-            guard let d = Scrubber.render(img, rects: rects, style: .block) else { return .failure(.failed(b)) }
+            let style: Scrubber.RedactStyle = step.settings["style"] == "pixelate" ? .pixelate : step.settings["style"] == "emoji" ? .emoji : .block
+            guard let d = Scrubber.render(img, rects: rects, style: style) else { return .failure(.failed(b)) }
             return .success(.file(d, ext: "jpg"))
 
         case (.passportPhoto, .image(let img)):
@@ -1486,6 +1489,34 @@ enum ChainText {
     static let collageLooks: [(id: String, name: String)] = [("grid", "Grid"), ("hero", "Big first photo"), ("mosaic", "Magazine"),
                                                             ("strip", "Photo strip"), ("black", "Grid on black")]
 
+    /// How "Hide faces and numbers" can cover them, switched on its result. Every one removes the pixels underneath.
+    static let hideStyles: [(id: String, name: String)] = [("block", "Black bars"), ("pixelate", "Pixelate"), ("emoji", "Emoji")]
+    /// Backdrops a cut-out product can sit on, switched on its result. The first is the default.
+    static let backdrops: [(id: String, name: String)] = [("white", "White"), ("grey", "Soft grey"), ("studio", "Studio fade"), ("shadow", "White with shadow")]
+    /// How "Crop to tall (9:16)" fits a wide video, switched on its result.
+    static let tallFits: [(id: String, name: String)] = [("crop", "Fill the screen"), ("blur", "Whole video, blurred edges")]
+    /// How a before-and-after shows the change, switched on its result.
+    static let revealStyles: [(id: String, name: String)] = [("swipe", "Swipe"), ("fade", "Fade"), ("side", "Side by side")]
+    /// Lengths and layouts "Summarize" can be switched between on its result.
+    static let summaryLengths: [(id: String, name: String)] = [("1", "1 sentence"), ("3", "3 sentences"), ("5", "5 sentences")]
+    static let summaryFormats: [(id: String, name: String)] = [("text", "Paragraph"), ("bullets", "Bullet points")]
+    /// Speeds "Read it aloud" can be switched between on its result.
+    static let readSpeeds: [(id: String, name: String)] = [("slow", "Slow"), ("normal", "Normal"), ("fast", "Fast")]
+
+    /// The looks a GIF made from a video can be switched between on its result. The first is the default.
+    static let videoGifLooks: [(id: String, name: String)] = [("normal", "Normal"), ("slow", "Slow motion"), ("fast", "Fast"),
+                                                              ("small", "Small for chat"), ("sharp", "Sharp for posting")]
+    /// How a video GIF look is made: how much of the video (seconds), frames a second, playback speed and longest side.
+    static func videoGifLook(_ id: String?) -> (secs: Double, fps: Double, speed: Double, dim: CGFloat) {
+        switch id {
+        case "slow": return (3, 12, 0.5, 480)
+        case "fast": return (12, 10, 2, 480)
+        case "small": return (6, 8, 1, 320)
+        case "sharp": return (6, 15, 1, 720)
+        default: return (6, 10, 1, 480)
+        }
+    }
+
     /// The looks a GIF of your photos can be switched between on its result. The first is the default.
     static let gifLooks: [(id: String, name: String)] = [("normal", "Normal"), ("slow", "Slow"), ("fast", "Fast"),
                                                          ("bounce", "Back and forth"), ("fade", "Fade between")]
@@ -1689,6 +1720,81 @@ enum ChainText {
     /// overlay at the cost of a denser code; Normal (M) is the everyday default.
     static func qrCorrection(_ s: String?) -> String { s == "high" ? "H" : "M" }
 
+    /// The looks a QR code can be switched between on its result. Every one still scans: the three corner squares
+    /// stay solid, there is a white margin all round, and dots use the sturdier error correction.
+    static let qrStyles: [(id: String, name: String)] = [("classic", "Classic"), ("dots", "Dots"), ("rounded", "Rounded"),
+                                                        ("color", "Colour"), ("card", "Scan me card")]
+
+    /// The code's squares, true = dark, row by row, without the generator's margin.
+    static func qrModules(_ message: String, correction: String) -> [[Bool]]? {
+        guard let f = CIFilter(name: "CIQRCodeGenerator") else { return nil }
+        f.setValue(Data(message.utf8), forKey: "inputMessage")
+        f.setValue(correction, forKey: "inputCorrectionLevel")
+        guard let ci = f.outputImage, let cg = CIContext().createCGImage(ci, from: ci.extent) else { return nil }
+        let w = cg.width, h = cg.height
+        var px = [UInt8](repeating: 255, count: w * h)
+        guard let ctx = CGContext(data: &px, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w, space: CGColorSpaceCreateDeviceGray(),
+                                  bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return nil }
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+        let dark = (0..<h).map { y in (0..<w).map { x in px[y * w + x] < 128 } }
+        // Trim the margin: the finder squares put dark modules in the first and last rows and columns of the code.
+        guard let top = dark.firstIndex(where: { $0.contains(true) }), let bottom = dark.lastIndex(where: { $0.contains(true) }),
+              let left = (0..<w).first(where: { x in dark.contains { $0[x] } }), let right = (0..<w).last(where: { x in dark.contains { $0[x] } })
+        else { return nil }
+        return dark[top...bottom].map { Array($0[left...right]) }
+    }
+
+    /// A QR code in one of `qrStyles`. Classic is the plain black-and-white code.
+    static func qr(_ message: String, correction: String = "M", style: String?) -> UIImage? {
+        let st = qrStyles.contains { $0.id == style } ? (style ?? "classic") : "classic"
+        if st == "classic" { return qr(message, correction: correction) }
+        guard let m = qrModules(message, correction: st == "dots" ? (correction == "H" ? "H" : "Q") : correction), !m.isEmpty else { return nil }
+        let n = m.count, cell: CGFloat = 24, quiet: CGFloat = 4 * cell
+        let codeSide = CGFloat(n) * cell + 2 * quiet
+        let card = st == "card"
+        let band: CGFloat = card ? cell * 7 : 0, pad: CGFloat = card ? cell * 2 : 0
+        let size = CGSize(width: codeSide + 2 * pad, height: codeSide + 2 * pad + band)
+        let ink = st == "color" ? UIColor(red: 0.17, green: 0.18, blue: 0.49, alpha: 1) : UIColor(white: 0.08, alpha: 1)
+        let eye = st == "color" ? UIColor(red: 0.91, green: 0.33, blue: 0.27, alpha: 1) : ink
+        func inFinder(_ r: Int, _ c: Int) -> Bool { (r < 7 && c < 7) || (r < 7 && c >= n - 7) || (r >= n - 7 && c < 7) }
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
+            let cg = ctx.cgContext
+            if card {
+                UIColor(red: 0.96, green: 0.95, blue: 0.99, alpha: 1).setFill(); cg.fill(CGRect(origin: .zero, size: size))
+                UIColor.white.setFill()
+                UIBezierPath(roundedRect: CGRect(x: pad / 2, y: pad / 2, width: size.width - pad, height: size.height - pad), cornerRadius: cell * 1.5).fill()
+            } else { UIColor.white.setFill(); cg.fill(CGRect(origin: .zero, size: size)) }
+            let o = CGPoint(x: pad + quiet, y: pad + quiet)
+            for r in 0..<n { for c in 0..<n where m[r][c] && !inFinder(r, c) {
+                let box = CGRect(x: o.x + CGFloat(c) * cell, y: o.y + CGFloat(r) * cell, width: cell, height: cell)
+                ink.setFill()
+                switch st {
+                case "dots": UIBezierPath(ovalIn: box.insetBy(dx: cell * 0.06, dy: cell * 0.06)).fill()
+                case "rounded": UIBezierPath(roundedRect: box.insetBy(dx: -0.5, dy: -0.5), cornerRadius: cell * 0.32).fill()
+                default: cg.fill(box.insetBy(dx: -0.25, dy: -0.25))
+                }
+            } }
+            // The three corner squares, solid so every camera finds the code: a ring, a gap, a centre.
+            for (fr, fc) in [(0, 0), (0, n - 7), (n - 7, 0)] {
+                let outer = CGRect(x: o.x + CGFloat(fc) * cell, y: o.y + CGFloat(fr) * cell, width: 7 * cell, height: 7 * cell)
+                let radius: CGFloat = st == "classic" || st == "color" || st == "card" ? 0 : cell * 1.6
+                eye.setFill()
+                let ring = UIBezierPath(roundedRect: outer, cornerRadius: radius)
+                ring.append(UIBezierPath(roundedRect: outer.insetBy(dx: cell, dy: cell), cornerRadius: max(0, radius - cell)).reversing())
+                ring.fill()
+                UIBezierPath(roundedRect: outer.insetBy(dx: 2 * cell, dy: 2 * cell), cornerRadius: radius > 0 ? cell * 0.9 : 0).fill()
+            }
+            if card {
+                let para = NSMutableParagraphStyle(); para.alignment = .center
+                let words = NSAttributedString(string: L("Scan me"), attributes: [.font: UIFont.systemFont(ofSize: cell * 2.6, weight: .heavy),
+                                                                                  .foregroundColor: ink, .paragraphStyle: para])
+                let th = words.size().height
+                words.draw(in: CGRect(x: 0, y: pad + codeSide + (band - th) / 2 - cell, width: size.width, height: th))
+            }
+        }
+    }
+
     static func qr(_ message: String, correction: String = "M") -> UIImage? {
         guard let f = CIFilter(name: "CIQRCodeGenerator") else { return nil }
         f.setValue(Data(message.utf8), forKey: "inputMessage")
@@ -1782,6 +1888,61 @@ enum ChainImage {
     }
 
     /// Fills the exact pixel size: scales the photo to cover it and trims the overflow evenly, so nothing is stretched.
+    /// Where the item is in a cut-out: the box around every pixel that isn't see-through, in the image's pixels.
+    /// nil when the picture has no see-through part (an ordinary photo).
+    static func opaqueBox(_ img: UIImage) -> CGRect? {
+        guard let cg = img.normalizedUp().cgImage else { return nil }
+        switch cg.alphaInfo { case .none, .noneSkipFirst, .noneSkipLast: return nil; default: break }
+        let k = min(1, 256 / CGFloat(max(cg.width, cg.height)))
+        let w = max(1, Int(CGFloat(cg.width) * k)), h = max(1, Int(CGFloat(cg.height) * k))
+        var a = [UInt8](repeating: 0, count: w * h)
+        guard let ctx = CGContext(data: &a, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w, space: nil,
+                                  bitmapInfo: CGImageAlphaInfo.alphaOnly.rawValue) else { return nil }
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+        var minX = w, minY = h, maxX = -1, maxY = -1, clear = 0
+        for y in 0..<h { for x in 0..<w {
+            if a[y * w + x] > 24 { minX = min(minX, x); maxX = max(maxX, x); minY = min(minY, y); maxY = max(maxY, y) } else { clear += 1 }
+        } }
+        guard maxX >= minX, clear > w * h / 50 else { return nil }   // nothing there, or barely see-through: a photo
+        // A bitmap context's memory starts at the picture's top row, so rows are already top-down.
+        return CGRect(x: CGFloat(minX) / k, y: CGFloat(minY) / k, width: CGFloat(maxX - minX + 1) / k, height: CGFloat(maxY - minY + 1) / k)
+            .intersection(CGRect(x: 0, y: 0, width: cg.width, height: cg.height))
+    }
+
+    /// A cut-out item as a listing photo: trimmed to the item, centred at 80% of the frame on `backdrop` (white, grey,
+    /// studio fade or white with a soft shadow under it). nil for an ordinary photo.
+    static func productShot(_ img: UIImage, to px: CGSize, backdrop: String) -> UIImage? {
+        let up = img.normalizedUp()
+        guard let box = opaqueBox(up), let cg = up.cgImage?.cropping(to: box.integral) else { return nil }
+        let item = UIImage(cgImage: cg)
+        let k = min(px.width * 0.8 / item.size.width, px.height * 0.8 / item.size.height)
+        let w = item.size.width * k, h = item.size.height * k
+        let spot = CGRect(x: (px.width - w) / 2, y: (px.height - h) / 2 - (backdrop == "shadow" ? px.height * 0.03 : 0), width: w, height: h)
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1; fmt.opaque = true
+        return UIGraphicsImageRenderer(size: px, format: fmt).image { ctx in
+            let c = ctx.cgContext
+            switch backdrop {
+            case "grey": UIColor(red: 0.93, green: 0.93, blue: 0.94, alpha: 1).setFill(); c.fill(CGRect(origin: .zero, size: px))
+            case "studio":
+                let colors = [UIColor.white.cgColor, UIColor(red: 0.84, green: 0.86, blue: 0.9, alpha: 1).cgColor] as CFArray
+                if let g = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors, locations: [0, 1]) {
+                    let mid = CGPoint(x: px.width / 2, y: px.height * 0.45)
+                    c.drawRadialGradient(g, startCenter: mid, startRadius: 0, endCenter: mid, endRadius: max(px.width, px.height) * 0.75, options: [.drawsAfterEndLocation])
+                }
+            default: UIColor.white.setFill(); c.fill(CGRect(origin: .zero, size: px))
+            }
+            if backdrop == "shadow" {
+                let floor = CGRect(x: spot.midX - w * 0.42, y: spot.maxY - h * 0.03, width: w * 0.84, height: max(8, h * 0.07))
+                c.saveGState()
+                c.setShadow(offset: .zero, blur: max(12, w * 0.06), color: UIColor.black.withAlphaComponent(0.35).cgColor)
+                UIColor.black.withAlphaComponent(0.18).setFill()
+                UIBezierPath(ovalIn: floor).fill()
+                c.restoreGState()
+            }
+            item.draw(in: spot)
+        }
+    }
+
     static func fill(_ img: UIImage, to px: CGSize) -> UIImage {
         let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1; fmt.opaque = true
         return UIGraphicsImageRenderer(size: px, format: fmt).image { _ in

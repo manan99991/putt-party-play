@@ -53,7 +53,7 @@ enum ChainMedia {
         case (.readAloud, .text(let t)):
             let words = String(t.trimmingCharacters(in: .whitespacesAndNewlines).prefix(20_000))
             guard !words.isEmpty else { return .failure(.nothingFound(b)) }
-            guard let url = await speak(words, rate: ttsRate(step.settings["speed"])), let d = try? Data(contentsOf: url), !d.isEmpty else {
+            guard let url = await speak(words, rate: ttsRate(step.settings["speed"]), voice: step.settings["voice"]), let d = try? Data(contentsOf: url), !d.isEmpty else {
                 return .failure(.invalid("Read it aloud couldn't make the audio on this phone. Check that a voice is installed in Settings, under Accessibility, Spoken Content."))
             }
             return .success(.file(d, ext: url.pathExtension.isEmpty ? "m4a" : url.pathExtension.lowercased()))
@@ -87,7 +87,8 @@ enum ChainMedia {
         case (.videoGif, .video(let url)):
             // The first six seconds. Put "Keep the start or the end" before this step to pick another part.
             let length = await VideoEngine.duration(url)
-            guard let gif = await tenzyGIFFromVideo(url: url, start: 0, duration: min(max(length, 0.2), 6), fps: 10, speed: 1, maxDim: 480),
+            let look = ChainText.videoGifLook(step.settings["look"])
+            guard let gif = await tenzyGIFFromVideo(url: url, start: 0, duration: min(max(length, 0.2), look.secs), fps: look.fps, speed: look.speed, maxDim: look.dim),
                   let d = try? Data(contentsOf: gif) else { return .failure(.failed(b)) }
             return .success(.file(d, ext: "gif"))
 
@@ -141,6 +142,24 @@ enum ChainMedia {
             guard let turned else { return .failure(.failed(b)) }
             return .success(.video(turned))
 
+        case (.videoVertical, .video(let url)) where step.settings["fit"] == "blur":
+            // The whole picture kept, full width, on a blurred, dimmed copy of itself filling the tall screen.
+            let tall = await reframe(url, size: { tallCanvas($0) }, change: { frame, _ in
+                let e = frame.extent, canvas = tallCanvas(e.size)
+                let moved = frame.transformed(by: CGAffineTransform(translationX: -e.minX, y: -e.minY))
+                let cover = max(canvas.width / e.width, canvas.height / e.height), fit = min(canvas.width / e.width, canvas.height / e.height)
+                let back = moved.transformed(by: CGAffineTransform(scaleX: cover, y: cover))
+                    .transformed(by: CGAffineTransform(translationX: (canvas.width - e.width * cover) / 2, y: (canvas.height - e.height * cover) / 2))
+                    .clampedToExtent().applyingGaussianBlur(sigma: 28)
+                    .applyingFilter("CIColorControls", parameters: [kCIInputBrightnessKey: -0.12, kCIInputSaturationKey: 1.1])
+                    .cropped(to: CGRect(origin: .zero, size: canvas))
+                let front = moved.transformed(by: CGAffineTransform(scaleX: fit, y: fit))
+                    .transformed(by: CGAffineTransform(translationX: (canvas.width - e.width * fit) / 2, y: (canvas.height - e.height * fit) / 2))
+                return front.composited(over: back).cropped(to: CGRect(origin: .zero, size: canvas))
+            })
+            guard let tall else { return .failure(.failed(b)) }
+            return .success(.video(tall))
+
         case (.videoVertical, .video(let url)):
             let tall = await reframe(url, size: { tallCrop($0).size }, change: { frame, _ in
                 let crop = tallCrop(frame.extent.size).offsetBy(dx: frame.extent.minX, dy: frame.extent.minY)
@@ -179,9 +198,22 @@ enum ChainMedia {
         }
     }
 
-    @MainActor private static func speak(_ text: String, rate: Float = AVSpeechUtteranceDefaultSpeechRate) async -> URL? {
+    /// Up to four of this phone's voices for `text`'s language, best quality first: (voice id, its name).
+    static func voiceChoices(for text: String) -> [(id: String, name: String)] {
+        let lang = NLLanguageGuess.documentLanguage(text)
+        let base = String(lang.prefix(2))
+        let all = AVSpeechSynthesisVoice.speechVoices().filter { $0.language.hasPrefix(base) }
+        let local = all.filter { $0.language == lang }
+        var seen = Set<String>()
+        return (local + all).sorted { $0.quality.rawValue > $1.quality.rawValue }
+            .filter { seen.insert($0.name).inserted }
+            .prefix(4).map { ($0.identifier, $0.name) }
+    }
+
+    @MainActor private static func speak(_ text: String, rate: Float = AVSpeechUtteranceDefaultSpeechRate, voice: String? = nil) async -> URL? {
         let reader = Reader()
         reader.rate = rate
+        if let voice, AVSpeechSynthesisVoice(identifier: voice) != nil { reader.voiceID = voice }
         reader.load(text)
         return await reader.exportAudio()
     }
@@ -350,6 +382,13 @@ enum ChainMedia {
     }
 
     /// The middle of the frame at 9:16 (a phone held upright), with even pixel sizes as video encoders need.
+    /// The tall 9:16 screen a video is fitted onto whole: as wide as the video's short side, even numbers for the encoder.
+    static func tallCanvas(_ s: CGSize) -> CGSize {
+        func even(_ v: CGFloat) -> CGFloat { max(2, (v / 2).rounded(.down) * 2) }
+        let w = even(min(s.width, s.height, 1080))
+        return CGSize(width: w, height: even(w * 16 / 9))
+    }
+
     static func tallCrop(_ s: CGSize) -> CGRect {
         func even(_ v: CGFloat) -> CGFloat { max(2, (v / 2).rounded(.down) * 2) }
         var w = s.width, h = s.height

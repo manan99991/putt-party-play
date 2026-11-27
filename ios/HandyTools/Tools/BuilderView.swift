@@ -2522,6 +2522,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var animPhotos: [UIImage] = []
     /// A collage's or a photos GIF's photos, so its result can switch looks without picking them again.
     @State private var collagePhotos: [UIImage] = []
+    /// The last single run's input and tool, so "Try another look" can run it again with one choice changed.
+    @State private var runInput: ChainPayload?
+    @State private var runTool: Chain?
+    @State private var runSerial = 0
     @State private var scamChecked: String?
     /// A video waiting for you to pick its part (tools that keep a stretch: stories, reels, first minute).
     @State private var choosing: URL?
@@ -2842,6 +2846,16 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     // A new result is a new card: finish cards keep their own state (the look picked, the picture shown),
                     // so without this a second photo showed the first one's result (27 Nov, emoji art).
                     output(result).id(result.identity)
+                    if !busy, batch.isEmpty, let ri = runInput, let rt = runTool {
+                        // Other looks for this result, one tap each (QR style, GIF speed, summary length, backdrop…).
+                        ResultLooksRow(chain: rt, input: ri, text: { if case .text(let t)? = lastStepInput { return t }; return nil }()) { p, next in
+                            result = p; runTool = next
+                        }.id(runSerial)
+                    }
+                    if !busy, chain.versus == true, collagePhotos.count >= 2, case .video = result {
+                        RevealLooksRow(before: collagePhotos[0], after: collagePhotos[collagePhotos.count - 1], name: chain.name) { result = .video($0) }
+                            .id(runSerial)
+                    }
                 }
                 if !batch.isEmpty { batchView }
                 sendOn
@@ -3166,6 +3180,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     private func runMany(count: Int, noun name: String, before: @escaping (Int) -> Int? = { _ in nil }, load: @escaping (Int) async -> ChainPayload?) {
         if needsSignatureFirst({ runMany(count: count, noun: name, before: before, load: load) }) { return }
         busy = true; result = nil; message = nil; batch = []; outbox = nil; noun = name; progressValue = 0
+        runInput = nil; runTool = nil; collagePhotos = []   // a joined result offers its own looks, not a single re-run
         mergedPDF = nil; mergePDFs = nil
         let combine = chain.combine == true
         let collage = chain.collage == true
@@ -3213,6 +3228,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 }
                 if imgs.count >= 2, let before = imgs.first, let after = imgs.last,
                    let data = await ChainMotion.revealVideo(before: before, after: after) {
+                    let kept2 = [before, after]
+                    await MainActor.run { collagePhotos = kept2; runSerial += 1 }
                     let url = FileManager.default.temporaryDirectory.appendingPathComponent(ChainName.file(pattern: chain.fileName, tool: chain.name, ext: "mp4"))
                     if (try? data.write(to: url)) != nil {
                         await MainActor.run {
@@ -3732,6 +3749,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             progress = "Transcribing on your phone… about as long as the recording. It never leaves your phone."
         } else { progress = "" }
         let tool = runChain
+        runInput = input; runTool = tool; runSerial += 1
         let multiStep = tool.steps.count > 1
         let name = chain.name
         runTask = Task {
