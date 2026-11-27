@@ -1,26 +1,26 @@
 == smoke (results)
-Test Case '-[HandyToolsUITests.CameraButtonTests testAVideoHelperRunsOnAClipItRecorded]' passed (53.894 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' passed (62.884 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testCelebrateRecordsAClip]' passed (30.594 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testFitUnderALimitTakesAPhoto]' passed (16.855 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testFunnyMomentsRecordsAClipAndMakesTheJoke]' passed (36.383 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testMovieTrailerRecordsAClipAndMakesATrailer]' passed (190.202 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPhotoStudioTakesAPhoto]' passed (30.137 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPostItRecordsAClip]' passed (22.765 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPriceCheckReadsAShelfPhoto]' passed (24.462 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPrivacyScrubberTakesAPhoto]' passed (21.645 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testReadyToSendTakesAPhoto]' passed (20.953 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testThePhotoPickerTakesAPhoto]' passed (33.366 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testTranslateReadsAPhotoItTook]' passed (42.801 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testVideoRecordsAClip]' passed (24.627 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' passed (167.836 seconds).
-	 Executed 15 tests, with 0 failures (0 unexpected) in 779.404 (779.431) seconds
-Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (1196.674 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 1196.674 (1196.680) seconds
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1055.561 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (18.140 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (33.870 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1107.571 (1107.577) seconds
-	 Executed 19 tests, with 0 failures (0 unexpected) in 3083.650 (3083.715) seconds
-	 Executed 19 tests, with 0 failures (0 unexpected) in 3083.650 (3083.718) seconds
+Test Case '-[HandyToolsUITests.CameraButtonTests testAVideoHelperRunsOnAClipItRecorded]' passed (90.263 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' passed (77.913 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testCelebrateRecordsAClip]' passed (36.767 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testFitUnderALimitTakesAPhoto]' passed (17.388 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testFunnyMomentsRecordsAClipAndMakesTheJoke]' passed (42.873 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testMovieTrailerRecordsAClipAndMakesATrailer]' passed (196.823 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPhotoStudioTakesAPhoto]' passed (25.836 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPostItRecordsAClip]' passed (30.661 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPriceCheckReadsAShelfPhoto]' passed (21.028 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPrivacyScrubberTakesAPhoto]' passed (38.310 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testReadyToSendTakesAPhoto]' passed (19.811 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testThePhotoPickerTakesAPhoto]' passed (36.551 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testTranslateReadsAPhotoItTook]' passed (25.784 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testVideoRecordsAClip]' passed (20.844 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' passed (156.926 seconds).
+	 Executed 15 tests, with 0 failures (0 unexpected) in 837.778 (837.836) seconds
+Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (961.390 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 961.390 (961.391) seconds
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1236.708 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (12.908 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (18.553 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1268.168 (1268.172) seconds
+	 Executed 19 tests, with 0 failures (0 unexpected) in 3067.336 (3067.410) seconds
+	 Executed 19 tests, with 0 failures (0 unexpected) in 3067.336 (3067.413) seconds
 ** TEST SUCCEEDED **
