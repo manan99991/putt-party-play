@@ -302,6 +302,7 @@ class FaceFunOnDeviceTest {
                     last?.let { jumps += kotlin.math.hypot(cx - it[0] - 6, cy - it[1]) }
                     last = floatArrayOf(cx, cy)
                 }
+                println("FACEFUN|engine|photo$tried|$label|last error ${engine.lastError ?: "none"}")
                 engine.close()
                 val worst = jumps.sorted().dropLast(1).lastOrNull() ?: 0f
                 println("FACEFUN|engine|photo$tried|$label|found $found/$frames|on face $onFace|worst jump ${"%.1f".format(worst)}")

@@ -2,7 +2,8 @@
 # video (small, turned, moving faces). New: Google's open face-mesh and parts models run on the phone (TensorFlow
 # Lite, nothing sent), faces followed every frame, hair/skin/person from one look; Bald on every head; portrait blur
 # without a halo; VHS no longer turns the video red. Round 20b: the TFLite runtime repackaged as a static library (Xcode
-# refused to embed the pod's static framework without an Info.plist); 20c: its headers keep their TensorFlowLiteC/ folder.
+# refused to embed the pod's static framework); 20c headers folder; 20d: it builds and FaceEngineTests pass — the backdrop check
+# now sets the photo in a known room (the simulator's person finder returns nothing to compare with).
 HandyToolsTests/FaceEngineTests
 HandyToolsTests/FaceFunTests
 HandyToolsTests/VideoSoundTests

@@ -189,13 +189,14 @@ class FaceEngine private constructor(private val detector: Interpreter, private 
     private fun detect(frame: Bitmap, x: Float, y: Float, w: Float, h: Float): List<Detection> {
         val s = max(w, h)
         val (input, _) = crop(frame, x + s / 2, y + s / 2, s, 0f, 128, true)
-        val reg = Array(1) { Array(896) { FloatArray(16) } }; val cls = Array(1) { Array(896) { FloatArray(1) } }
-        detector.runForMultipleInputsOutputs(arrayOf(input), mapOf(0 to reg, 1 to cls))
+        val outs = runOutputs(detector, input) ?: return emptyList()
+        val regs = outs.firstOrNull { it.size == 896 * 16 } ?: return emptyList()
+        val cls = outs.firstOrNull { it.size == 896 } ?: return emptyList()
         val out = ArrayList<Detection>()
         for (i in 0 until 896) {
-            val score = 1f / (1f + exp(-cls[0][i][0].coerceIn(-80f, 80f)))
+            val score = 1f / (1f + exp(-cls[i].coerceIn(-80f, 80f)))
             if (score < 0.55f) continue
-            val ax = anchors[i * 2]; val ay = anchors[i * 2 + 1]; val r = reg[0][i]
+            val ax = anchors[i * 2]; val ay = anchors[i * 2 + 1]; val r = regs.copyOfRange(i * 16, i * 16 + 16)
             val cx = ax + r[0] / 128; val cy = ay + r[1] / 128; val bw = r[2] / 128; val bh = r[3] / 128
             if (cx * s > w + 4 || cy * s > h + 4) continue
             out += Detection(score, floatArrayOf(x + (cx - bw / 2) * s, y + (cy - bh / 2) * s, x + (cx + bw / 2) * s, y + (cy + bh / 2) * s),
@@ -218,19 +219,30 @@ class FaceEngine private constructor(private val detector: Interpreter, private 
     private fun runMesh(frame: Bitmap, cx: Float, cy: Float, size: Float, angle: Float): Pair<FloatArray, Float>? {
         if (size < 8) return null
         val (input, m) = crop(frame, cx, cy, size, angle, 256, false)
-        val pts = Array(1) { Array(1) { Array(1) { FloatArray(1434) } } }
-        val flag = Array(1) { Array(1) { Array(1) { FloatArray(1) } } }
-        val other = Array(1) { FloatArray(1) }
-        runCatching { mesh.runForMultipleInputsOutputs(arrayOf(input), mapOf(0 to pts, 1 to flag, 2 to other)) }.getOrElse { return null }
+        val outs = runOutputs(mesh, input) ?: return null
+        // Outputs by size, not by position: the 478 x 3 points, and the face flag (the first single number).
+        val pts = outs.firstOrNull { it.size >= 1434 } ?: return null
+        val flag = outs.firstOrNull { it.size == 1 } ?: return null
         val inv = Matrix(); m.invert(inv)
         val k = size / 256f
         val xy = FloatArray(478 * 2)
-        for (i in 0 until 478) { xy[i * 2] = pts[0][0][0][i * 3]; xy[i * 2 + 1] = pts[0][0][0][i * 3 + 1] }
+        for (i in 0 until 478) { xy[i * 2] = pts[i * 3]; xy[i * 2 + 1] = pts[i * 3 + 1] }
         inv.mapPoints(xy)
         val out = FloatArray(478 * 3)
-        for (i in 0 until 478) { out[i * 3] = xy[i * 2]; out[i * 3 + 1] = xy[i * 2 + 1]; out[i * 3 + 2] = pts[0][0][0][i * 3 + 2] * k }
-        return out to (1f / (1f + exp(-flag[0][0][0][0])))
+        for (i in 0 until 478) { out[i * 3] = xy[i * 2]; out[i * 3 + 1] = xy[i * 2 + 1]; out[i * 3 + 2] = pts[i * 3 + 2] * k }
+        return out to (1f / (1f + exp(-flag[0])))
     }
+
+    /** Every output of [it] for [input], as flat floats (each sized from the model itself), or null if it failed. */
+    private fun runOutputs(it: Interpreter, input: ByteBuffer): List<FloatArray>? = runCatching {
+        val n = it.outputTensorCount
+        val bufs = (0 until n).map { i -> ByteBuffer.allocateDirect(it.getOutputTensor(i).numBytes()).order(ByteOrder.nativeOrder()) }
+        it.runForMultipleInputsOutputs(arrayOf(input), (0 until n).associateWith { i -> bufs[i] as Any })
+        bufs.map { b -> b.rewind(); val f = b.asFloatBuffer(); FloatArray(f.remaining()).also { f.get(it) } }
+    }.onFailure { e -> lastError = e.toString(); android.util.Log.e("FaceEngine", "model run failed", e) }.getOrNull()
+
+    /** The last model failure, for the tests' report. */
+    var lastError: String? = null
 
     /** Class shares for the whole frame (stretched to 256 x 256) and its RGB at that size. */
     private fun runParts(frame: Bitmap): Pair<FloatArray, IntArray>? {
@@ -242,7 +254,7 @@ class FaceEngine private constructor(private val detector: Interpreter, private 
         for (v in px) { buf.putFloat(((v shr 16) and 255) / 255f); buf.putFloat(((v shr 8) and 255) / 255f); buf.putFloat((v and 255) / 255f) }
         buf.rewind()
         val out = ByteBuffer.allocateDirect(n * n * 6 * 4).order(ByteOrder.nativeOrder())
-        runCatching { parts.run(buf, out) }.getOrElse { return null }
+        runCatching { parts.run(buf, out) }.getOrElse { e -> lastError = e.toString(); android.util.Log.e("FaceEngine", "parts failed", e); return null }
         out.rewind()
         val fb = out.asFloatBuffer()
         val sm = FloatArray(n * n * 6)
