@@ -146,6 +146,7 @@ final class FaceFunTests: XCTestCase {
         XCTAssertTrue(FaceFun.sensible(contour: c, eyes: eyes, lips: [CGPoint(x: 0.5, y: 0.25)]))
         XCTAssertFalse(FaceFun.sensible(contour: c.map { CGPoint(x: $0.x * 7.5 - 2, y: $0.y * 8 - 3) }, eyes: eyes, lips: []), "points thousands of faces wide")
         XCTAssertFalse(FaceFun.sensible(contour: c.map { CGPoint(x: 0.5 + ($0.x - 0.5) * 0.5, y: $0.y) }, eyes: eyes, lips: []), "a jaw half the box wide")
+        XCTAssertFalse(FaceFun.sensible(contour: c.map { CGPoint(x: 0.5 + ($0.x - 0.5) * 1.2, y: $0.y) }, eyes: eyes, lips: []), "a jaw wider than the box")
     }
 
     func testAShakyFinderIsSteadied() {

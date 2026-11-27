@@ -150,11 +150,13 @@ enum FaceFun {
     /// Pure, so it's tested with made-up points.
     static func sensible(contour c: [CGPoint], eyes: [CGPoint], lips: [CGPoint]) -> Bool {
         let all = c + eyes + lips
-        guard all.allSatisfy({ $0.x > -0.25 && $0.x < 1.25 && $0.y > -0.25 && $0.y < 1.25 }) else { return false }
+        // A real jaw spans about nine tenths of the box and both eyes about half of it (round 16: drifting points that
+        // still passed a looser check read the same face 222 to 433 wide).
+        guard all.allSatisfy({ $0.x > -0.12 && $0.x < 1.12 && $0.y > -0.12 && $0.y < 1.12 }) else { return false }
         let xs = c.map(\.x), across = (xs.max() ?? 0) - (xs.min() ?? 0)
-        guard across > 0.55, across < 1.3 else { return false }
+        guard across > 0.78, across < 1.08 else { return false }
         let eyeSpan = (eyes.map(\.x).max() ?? 0) - (eyes.map(\.x).min() ?? 0)
-        return eyeSpan > 0.2 && eyeSpan < 0.9
+        return eyeSpan > 0.3 && eyeSpan < 0.68
     }
 
     /// A face laid out from its box and tilt with ordinary proportions (the box runs from the brows to the chin).

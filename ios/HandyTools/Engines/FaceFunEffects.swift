@@ -170,13 +170,12 @@ extension FaceFun {
         }
         // 3. The whole picture's mood, under the stickers.
         switch id {
-        case "glow": out = out.applyingFilter("CIBloom", parameters: [kCIInputRadiusKey: min(rect.width, rect.height) * 0.012, kCIInputIntensityKey: s(0.12, 0.3)]).cropped(to: rect)
-        case "beautiful":
-            out = out.applyingFilter("CIBloom", parameters: [kCIInputRadiusKey: min(rect.width, rect.height) * 0.01, kCIInputIntensityKey: s(0.06, 0.15)]).cropped(to: rect)
-                .applyingFilter("CIColorMatrix", parameters: warm(s(0.3, 0.6)))
-        case "wholesome":
-            out = out.applyingFilter("CIBloom", parameters: [kCIInputRadiusKey: min(rect.width, rect.height) * 0.01, kCIInputIntensityKey: s(0.08, 0.2)]).cropped(to: rect)
-                .applyingFilter("CIColorMatrix", parameters: warm(s(0.4, 0.8)))
+        // The soft looks glow on the faces only, never as a haze over the whole picture (round 16's pictures).
+        case "glow", "beautiful", "wholesome":
+            let k: CGFloat = id == "glow" ? s(0.35, 0.7) : id == "beautiful" ? s(0.15, 0.3) : s(0.2, 0.4)
+            let bloom = out.applyingFilter("CIBloom", parameters: [kCIInputRadiusKey: min(rect.width, rect.height) * 0.012, kCIInputIntensityKey: k]).cropped(to: rect)
+            for f in scene.faces { out = blend(bloom, over: out, mask: faceMask(f, rect: around(f, rect), forehead: 0.6, feather: 0.08)) }
+            if id != "glow" { out = out.applyingFilter("CIColorMatrix", parameters: warm(id == "beautiful" ? s(0.2, 0.4) : s(0.3, 0.6))) }
         case "sunny":
             out = out.applyingFilter("CIColorMatrix", parameters: warm(s(0.9, 1.6)))
                 .applyingFilter("CIColorControls", parameters: [kCIInputSaturationKey: s(1.12, 1.3), kCIInputBrightnessKey: 0.02, kCIInputContrastKey: 1.05])
@@ -359,7 +358,7 @@ extension FaceFun {
     static func bald(_ img: CIImage, _ f: Face, person: CIImage?, index: Int, memory: Memory?) -> CIImage {
         let rect = img.extent, local = around(f, rect)
         // The head's own shape (brow line at y = 0): an oval from the temples up over the crown.
-        let rx = f.width * 0.54, cy = f.height * 0.1, ry = f.height * 0.72
+        let rx = f.width * 0.6, cy = f.height * 0.1, ry = f.height * 0.74
         var out = img
         if let person {
             // What's behind the person, spread in over the hair that stands out beyond the head.
@@ -385,7 +384,7 @@ extension FaceFun {
             dome = rim.applyingFilter("CIMultiplyCompositing", parameters: [kCIInputBackgroundImageKey: dome]).cropped(to: rect)
         }
         dome = glow(dome, at: f.point(f.brow, up: cy + ry * 0.5, across: -rx * 0.25), radius: rx * 0.7, colour: CIColor(red: 1, green: 0.98, blue: 0.95), strength: 0.16)
-        let cap = faceShape(f, rect: local, feather: f.width * 0.025) { ctx in
+        let cap = faceShape(f, rect: local, feather: f.width * 0.014) { ctx in
             ctx.clip(to: CGRect(x: -f.width * 2, y: from + strip * 0.5, width: f.width * 4, height: f.height * 3))
             ctx.fillEllipse(in: CGRect(x: -rx, y: cy - ry, width: 2 * rx, height: 2 * ry))
         }

@@ -1,6 +1,7 @@
-# 27 Nov, round 16. Round 15 measured it: the face finder's landmark points drift on every call in every way of
-# asking (each revision, CPU only, the box given) on the build machine, while the face box is steady. Faces now come
-# from the box and its tilt with ordinary proportions whenever the points don't sit sensibly inside the box.
+# 27 Nov, round 17. Round 16: every effect now changes the real face and leaves the far corner alone; music and the
+# Studio start to finish passed. Left: the finder's drifting points still got through a loose check on some calls
+# (same face read 222 to 433 wide) — the check is now what a real jaw and eyes measure; Bald's cap covers the hair at
+# the temples; Glow, Beautiful and Wholesome glow on the faces only instead of hazing the whole picture.
 HandyToolsTests/FaceFunTests
 HandyToolsTests/VideoSoundTests
 HandyToolsTests/VideoFunTests
