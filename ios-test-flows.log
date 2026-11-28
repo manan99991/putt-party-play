@@ -1,1 +1,11 @@
 == flows (results)
+Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (154.853 seconds).
+Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (19.385 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 174.238 (174.259) seconds
+Test Case '-[HandyToolsUITests.MultiPhotoTests testAPhotoHandedToTheScrubberShowsUp]' passed (27.329 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' passed (113.237 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (78.492 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 219.058 (219.062) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 393.295 (393.337) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 393.295 (393.338) seconds
+** TEST SUCCEEDED **
