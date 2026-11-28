@@ -12,9 +12,12 @@ permissions:
 # Serialize iOS runs so they never race on the shared cert cache (a race makes several runs each
 # create a new distribution cert, which eventually forces a revoke → "certificate revoked" email).
 # Queue rather than cancel, so in-flight TestFlight uploads still finish.
+#
+# 28 Nov: only the jobs that sign (testflight, store, stage) share that lock now — tests no longer queue behind each
+# other. A newer ordinary push replaces the run it outdates; a run carrying a Ship-… line is never cancelled.
 concurrency:
-  group: ios-release
-  cancel-in-progress: false
+  group: "${{ (contains(github.event.head_commit.message, 'Ship-Build=YES') || contains(github.event.head_commit.message, 'Ship-Store=YES') || contains(github.event.head_commit.message, 'Ship-Stage=YES')) && format('ios-ship-{0}', github.sha) || format('ios-check-{0}', github.ref) }}"
+  cancel-in-progress: ${{ !(contains(github.event.head_commit.message, 'Ship-Build=YES') || contains(github.event.head_commit.message, 'Ship-Store=YES') || contains(github.event.head_commit.message, 'Ship-Stage=YES')) }}
 
 jobs:
   build:
@@ -223,16 +226,33 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # 28 Nov: split across machines so the slowest part is ~20 min, not ~60 (smoke was 42 min, flows 60).
+        # `split: "Class k n"` runs every n-th test of that class, starting with the k-th.
         include:
           - part: unit
             device: iPhone
             only: "-only-testing:HandyToolsTests"
           - part: smoke
             device: iPhone
-            only: "-only-testing:HandyToolsUITests/ToolSmokeTests -only-testing:HandyToolsUITests/ToolControlsReachableTests -only-testing:HandyToolsUITests/CameraButtonTests"
+            only: "-only-testing:HandyToolsUITests/ToolSmokeTests"
+          - part: controls
+            device: iPhone
+            only: "-only-testing:HandyToolsUITests/ToolControlsReachableTests"
+          - part: camera
+            device: iPhone
+            only: "-only-testing:HandyToolsUITests/CameraButtonTests"
           - part: flows
             device: iPhone
-            only: "-only-testing:HandyToolsUITests/LiveToolTests -only-testing:HandyToolsUITests/PromiseTests -only-testing:HandyToolsUITests/MultiPhotoTests"
+            only: "-only-testing:HandyToolsUITests/LiveToolTests -only-testing:HandyToolsUITests/MultiPhotoTests"
+          - part: promise1
+            device: iPhone
+            split: "PromiseTests 1 3"
+          - part: promise2
+            device: iPhone
+            split: "PromiseTests 2 3"
+          - part: promise3
+            device: iPhone
+            split: "PromiseTests 3 3"
           - part: ipad
             device: iPad
             only: "-only-testing:HandyToolsUITests/ToolSmokeTests"
@@ -248,9 +268,16 @@ jobs:
           { brew install xcodegen && xcodegen generate && xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools; } 2>&1 | tail -3
       - name: Test — ${{ matrix.part }} (gates the deploy)
         timeout-minutes: 80
-        env: { DEVICE: "${{ matrix.device }}", ONLY: "${{ matrix.only }}" }
+        env: { DEVICE: "${{ matrix.device }}", ONLY: "${{ matrix.only }}", SPLIT: "${{ matrix.split }}" }
         run: |
           set -o pipefail
+          if [ -n "$SPLIT" ]; then
+            set -- $SPLIT
+            ONLY=$(grep -oE "func test[A-Za-z0-9_]+\(" "HandyToolsUITests/$1.swift" | sed -E 's/func (test[A-Za-z0-9_]+)\(/\1/' \
+              | awk -v k="$2" -v n="$3" -v c="$1" '(NR-1)%n==k-1 { printf "-only-testing:HandyToolsUITests/%s/%s ", c, $0 }')
+            echo "this part: $(echo "$ONLY" | wc -w) tests of $1"
+            [ -n "$ONLY" ] || { echo "::error::no tests found for $SPLIT"; exit 1; }
+          fi
           UDID=$(xcrun simctl list devices available -j | python3 -c '
           import json,sys,os
           d=json.load(sys.stdin)["devices"]; want=os.environ["DEVICE"]
@@ -296,9 +323,21 @@ jobs:
   # VoiceOver reads it (the 20 Nov crash). About an hour, so it runs beside the build on the daily TestFlight commit
   # and the upload waits for it: a crash, a job that never ends or a blank finish stops the upload.
   realinput:
-    if: "${{ contains(github.event.head_commit.message, 'Ship-Build=YES') }}"
+    # 28 Nov: on every push, not only the TestFlight one — so a tool that breaks on a real file is found the day it
+    # breaks, not at upload time. Three machines at once (~50 min instead of ~1 h 50).
+    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') && !contains(github.event.head_commit.message, 'Ship-Stage=YES') }}"
     runs-on: xcode-27
-    timeout-minutes: 165
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - part: flows1
+            only: "-only-testing:HandyToolsUITests/RealInputTests/testFirstHalfOfFlowsRunOnRealFiles"
+          - part: flows2
+            only: "-only-testing:HandyToolsUITests/RealInputTests/testSecondHalfOfFlowsRunOnRealFiles"
+          - part: tools
+            only: "-only-testing:HandyToolsUITests/ToolRealInputTests"
     defaults:
       run: { working-directory: ios }
     steps:
@@ -311,7 +350,8 @@ jobs:
       # with the ~20 min build and the ~55 min flow tests that is ~115 min. 150 leaves room; a tool that truly hangs
       # still fails (each tool's time is in its TOOLINPUT line).
       - name: Real files through every tool (gates the upload)
-        timeout-minutes: 150
+        timeout-minutes: 100
+        env: { ONLY: "${{ matrix.only }}" }
         run: |
           set -o pipefail
           UDID=$(xcrun simctl list devices available -j | python3 -c '
@@ -333,7 +373,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation 2>&1 | tail -3
           xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
-            -only-testing:HandyToolsUITests/RealInputTests -only-testing:HandyToolsUITests/ToolRealInputTests \
+            $ONLY \
             2>&1 | tee realinput.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (EXECUTE )?(SUCCEEDED|FAILED)|REALINPUT|TOOLINPUT" || true
           grep -qE "TEST (EXECUTE )?SUCCEEDED" realinput.log
       - name: Publish log
@@ -341,10 +381,10 @@ jobs:
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
-          grep -E "error:|Test Case|Executed|TEST (EXECUTE )?(SUCCEEDED|FAILED)|REALINPUT|TOOLINPUT|failed -" ios/realinput.log 2>/dev/null | head -400 > ios-realinput.log || true
+          grep -E "error:|Test Case|Executed|TEST (EXECUTE )?(SUCCEEDED|FAILED)|REALINPUT|TOOLINPUT|failed -" ios/realinput.log 2>/dev/null | head -400 > ios-realinput-${{ matrix.part }}.log || true
           # Any crash during the real-file run: the symbol summary only (no screen content), so a "closed" is diagnosable.
-          { ls -t ~/Library/Logs/DiagnosticReports/HandyTools-* 2>/dev/null | head -3 | xargs -r python3 tools/ips_summary.py; } >> ios-realinput.log 2>&1 || true
-          bash .github/publish-log.sh ios-realinput ios-realinput.log || true
+          { ls -t ~/Library/Logs/DiagnosticReports/HandyTools-* 2>/dev/null | head -3 | xargs -r python3 tools/ips_summary.py; } >> ios-realinput-${{ matrix.part }}.log 2>&1 || true
+          bash .github/publish-log.sh ios-realinput-${{ matrix.part }} ios-realinput-${{ matrix.part }}.log || true
 
   testflight:
     needs: [build, tests, realinput]
@@ -355,6 +395,7 @@ jobs:
     # Default pushes build-and-test, never deploy.
     if: "${{ contains(github.event.head_commit.message, 'Ship-Build=YES') }}"
     runs-on: xcode-27
+    concurrency: { group: ios-release, cancel-in-progress: false }   # signing: one at a time (shared cert cache)
     defaults:
       run: { working-directory: ios }
     env:
@@ -449,6 +490,7 @@ jobs:
   store:
     if: "${{ contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
     runs-on: ubuntu-latest
+    concurrency: { group: ios-release, cancel-in-progress: false }   # signing: one at a time (shared cert cache)
     defaults:
       run: { working-directory: ios }
     env:
@@ -490,6 +532,7 @@ jobs:
   stage:
     if: "${{ contains(github.event.head_commit.message, 'Ship-Stage=YES') }}"
     runs-on: ubuntu-latest
+    concurrency: { group: ios-release, cancel-in-progress: false }   # signing: one at a time (shared cert cache)
     defaults:
       run: { working-directory: ios }
     env:

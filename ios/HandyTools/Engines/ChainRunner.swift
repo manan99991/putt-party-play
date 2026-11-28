@@ -1225,7 +1225,18 @@ enum ChainText {
     /// The words of the document in a photo or screenshot — cut to the page first when one sits inside it.
     static func readDocument(_ img: UIImage) -> [DocEngine.OCRLine] {
         let page = PageFlatten.cropToPage(img)
-        return DocEngine.recognize(page ?? img).filter { page != nil || !isStatusBar($0) }
+        // Only a phone screenshot has a status bar. On a photo of a page the top line is often a table's header —
+        // "Role", "Team" — and dropping short words up there lost it (27 Nov).
+        let screenShaped = page == nil && looksLikeScreenshot(img)
+        return DocEngine.recognize(page ?? img).filter { !screenShaped || !isStatusBar($0) }
+    }
+
+    /// A full-screen phone or iPad capture: the shape of a screen, held either way.
+    static func looksLikeScreenshot(_ img: UIImage) -> Bool {
+        let w = img.size.width * img.scale, h = img.size.height * img.scale
+        guard w > 0, h > 0 else { return false }
+        let r = max(w, h) / min(w, h)
+        return h >= w && ((2.0...2.4).contains(r) || (1.30...1.50).contains(r) && w >= 1488)
     }
 
     /// The document's words as lines a parser can use: every reader of receipts, cards and forms goes through this

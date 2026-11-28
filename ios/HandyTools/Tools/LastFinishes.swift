@@ -15,6 +15,8 @@ struct TableFinishCard: View {
     @State private var showAll = false
     private static let firstRows = 8
     private static let maxColumns = 5
+    /// UI tests only (-sharelink): the old SwiftUI ShareLink, so the test can show the bug and the fix side by side.
+    private static let useShareLink = Launch.uitest && Launch.args.contains("-sharelink")
 
     init(csv: Data, name: String = "Table") {
         self.csv = csv
@@ -59,9 +61,15 @@ struct TableFinishCard: View {
                 .accessibilityIdentifier("table-show-all")
             }
             if let x = xlsxURL {
-                ShareLink(item: x) {
-                    Label(L("Open in Numbers or Excel"), systemImage: "tablecells.badge.ellipsis").frame(maxWidth: .infinity)
-                }.primaryButton().accessibilityIdentifier("table-xlsx")
+                if Self.useShareLink {
+                    ShareLink(item: x) {
+                        Label(L("Open in Numbers or Excel"), systemImage: "tablecells.badge.ellipsis").frame(maxWidth: .infinity)
+                    }.primaryButton().accessibilityIdentifier("table-xlsx")
+                } else {
+                    ShareFilesButton(x) {
+                        Label(L("Open in Numbers or Excel"), systemImage: "tablecells.badge.ellipsis").frame(maxWidth: .infinity)
+                    }.primaryButton().accessibilityIdentifier("table-xlsx")
+                }
             } else {
                 Button {} label: { Label(L("Open in Numbers or Excel"), systemImage: "tablecells.badge.ellipsis").frame(maxWidth: .infinity) }
                     .primaryButton().disabled(true)
@@ -69,8 +77,13 @@ struct TableFinishCard: View {
             HStack(spacing: HandySpacing.s8) {
                 CopyButton(text: r.map { $0.joined(separator: "\t") }.joined(separator: "\n"), title: "Copy (pastes as a table)")
                 if let c = csvURL {
-                    ShareLink(item: c) { Label("CSV", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
-                        .secondaryButton().accessibilityIdentifier("table-csv")
+                    if Self.useShareLink {
+                        ShareLink(item: c) { Label("CSV", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
+                            .secondaryButton().accessibilityIdentifier("table-csv")
+                    } else {
+                        ShareFilesButton(c) { Label("CSV", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
+                            .secondaryButton().accessibilityIdentifier("table-csv")
+                    }
                 }
             }
         }

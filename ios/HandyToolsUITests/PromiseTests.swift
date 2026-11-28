@@ -607,66 +607,86 @@ final class PromiseTests: XCTestCase {
         }
     }
 
-    /// 27 Nov (Manan's recording): on "Turn a photo of a table into a spreadsheet", tapping CSV or Open in Numbers
-    /// blanked the whole page — before the Share sheet came up and again after it closed, until the app was left.
-    /// The result must stay on screen through every Share sheet, open and closed, more than once.
-    func testTableResultStaysOnScreenThroughTheShareSheet() {
+    /// Opens a Share sheet with the button `id`, closes it, and checks the page, the button and Done are all still there.
+    /// Prints what it saw (DIAG|) and keeps screenshots, so a failure shows what the screen really held.
+    @discardableResult
+    private func shareAndClose(_ app: XCUIApplication, _ id: String, round: Int, mustSurvive: [XCUIElement]) -> Bool {
+        let b = app.buttons[id].firstMatch
+        XCTAssertTrue(b.waitForExistence(timeout: 15), "\(id) is missing")
+        var tries = 0
+        while !b.isHittable && tries < 6 { app.swipeUp(); tries += 1 }
+        b.tap()
+        let sheet = app.otherElements["ActivityListView"].firstMatch
+        let close = app.buttons["Close"].firstMatch
+        let opened = sheet.waitForExistence(timeout: 12) || close.exists
+        let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "\(id) round \(round) — share open"; shot.lifetime = .keepAlways; add(shot)
+        XCTAssertTrue(opened, "\(id) didn't open the Share sheet (round \(round))")
+        if close.exists && close.isHittable { close.tap() }
+        else { app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.06)).tap() }
+        XCTAssertTrue(sheet.waitForNonExistence(timeout: 10), "the Share sheet didn't close (round \(round))")
+        sleep(2)
+        let after = XCTAttachment(screenshot: app.screenshot()); after.name = "\(id) round \(round) — after closing"; after.lifetime = .keepAlways; add(after)
+        let done = app.buttons["Done"].firstMatch
+        print("DIAG| after \(id) round \(round): Done exists=\(done.exists) hittable=\(done.exists && done.isHittable); button hittable=\(b.exists && b.isHittable)")
+        let ok = done.exists && done.isHittable && b.exists && b.isHittable && mustSurvive.allSatisfy(\.exists)
+        XCTAssertTrue(mustSurvive.allSatisfy(\.exists), "the result vanished after the Share sheet closed (\(id), round \(round))")
+        XCTAssertTrue(b.exists && b.isHittable, "the page went blank after the Share sheet closed — \(id) can't be reached (round \(round))")
+        XCTAssertTrue(done.exists && done.isHittable, "Done is gone after the Share sheet closed (\(id), round \(round))")
+        return ok
+    }
+
+    private func openTableResult(_ extra: [String] = []) -> (XCUIApplication, XCUIElement, XCUIElement) {
         let app = XCUIApplication()
-        app.launchArguments = ["-route", "run-table-to-sheet", "-uitest", "-sample"]
+        app.launchArguments = ["-route", "run-table-to-sheet", "-uitest", "-sample"] + extra
         app.launch()
         let card = app.descendants(matching: .any)["table-finish"].firstMatch
         XCTAssertTrue(card.waitForExistence(timeout: 60), "the table result never showed")
         let grid = app.descendants(matching: .any)["table-grid"].firstMatch
         XCTAssertTrue(grid.exists, "the result has no table on it")
         let first = XCTAttachment(screenshot: app.screenshot()); first.name = "table result"; first.lifetime = .keepAlways; add(first)
+        XCTAssertTrue(app.buttons["Done"].firstMatch.isHittable, "Done can't be reached even before sharing")
+        return (app, card, grid)
+    }
+
+    /// 27 Nov (Manan's recording): on "Turn a photo of a table into a spreadsheet", tapping CSV or Open in Numbers
+    /// blanked the page and took Done with it. The result and Done must stay through every Share sheet, more than once.
+    func testTableResultStaysOnScreenThroughTheShareSheet() {
+        let (app, card, grid) = openTableResult()
         // Every column fits the screen — nothing to scroll sideways.
         XCTAssertLessThanOrEqual(grid.frame.maxX, app.windows.firstMatch.frame.maxX + 1, "the table runs off the right edge")
-        // What the table holds, in the log, so a misread table can be seen without the screenshots.
-        let cells = grid.staticTexts.allElementsBoundByIndex.prefix(24).map(\.label)
-        print("DIAG| table cells: \(cells)")
-        XCTAssertTrue(app.staticTexts["Role"].exists && app.staticTexts["Openings"].exists, "the header row wasn't read")
-        func doneState(_ when: String) {
-            let all = app.buttons.matching(identifier: "Done").allElementsBoundByIndex
-            print("DIAG| Done \(when): " + all.map { "exists=\($0.exists) hittable=\($0.isHittable) frame=\(Int($0.frame.minX)),\(Int($0.frame.minY)) \(Int($0.frame.width))x\(Int($0.frame.height))" }.joined(separator: " | "))
-        }
-        doneState("before sharing")
-        let doneBefore = app.buttons["Done"].firstMatch.isHittable
-        XCTAssertTrue(doneBefore, "Done can't be reached even before sharing")
-
-        func shareAndClose(_ id: String, round: Int) {
-            let b = app.buttons[id].firstMatch
-            XCTAssertTrue(b.waitForExistence(timeout: 15), "\(id) is missing")
-            var tries = 0
-            while !b.isHittable && tries < 6 { app.swipeUp(); tries += 1 }
-            b.tap()
-            let sheet = app.otherElements["ActivityListView"].firstMatch
-            let close = app.buttons["Close"].firstMatch
-            let opened = sheet.waitForExistence(timeout: 12) || close.exists
-            let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "\(id) round \(round) — share open"; shot.lifetime = .keepAlways; add(shot)
-            XCTAssertTrue(opened, "\(id) didn't open the Share sheet (round \(round))")
-            if close.exists && close.isHittable { close.tap() }
-            else { app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.06)).tap() }
-            XCTAssertTrue(sheet.waitForNonExistence(timeout: 10), "the Share sheet didn't close (round \(round))")
-            sleep(2)
-            let after = XCTAttachment(screenshot: app.screenshot()); after.name = "\(id) round \(round) — after closing"; after.lifetime = .keepAlways; add(after)
-            XCTAssertTrue(card.exists && grid.exists, "the result vanished after the Share sheet closed (\(id), round \(round))")
-            XCTAssertTrue(b.isHittable, "the page went blank after the Share sheet closed — \(id) can't be reached (round \(round))")
-            doneState("after \(id) round \(round)")
-            if !app.buttons["Done"].firstMatch.isHittable {
-                print("DIAG| screen after \(id) round \(round):\n" + app.debugDescription.split(separator: "\n").prefix(80).map { "DIAG| " + $0 }.joined(separator: "\n"))
-            }
-            if doneBefore { XCTAssertTrue(app.buttons["Done"].firstMatch.isHittable, "Done is gone after the Share sheet closed (\(id), round \(round))") }
-        }
+        let cells = app.staticTexts.matching(identifier: "table-grid").allElementsBoundByIndex.prefix(8).map(\.label)
+        print("DIAG| table first cells: \(cells)")
+        XCTAssertEqual(Array(cells.prefix(4)), ["Role", "Team", "Rate", "Openings"], "the header row wasn't read as Role, Team, Rate, Openings")
         for round in 1...2 {
-            shareAndClose("table-csv", round: round)
-            shareAndClose("table-xlsx", round: round)
+            shareAndClose(app, "table-csv", round: round, mustSurvive: [card, grid])
+            shareAndClose(app, "table-xlsx", round: round, mustSurvive: [card, grid])
         }
-        // The long table opens in full when asked, and the page still works.
         let all = app.buttons["table-show-all"].firstMatch
         if all.waitForExistence(timeout: 5) {
             all.tap()
             XCTAssertTrue(app.staticTexts["$64"].waitForExistence(timeout: 5), "Show all didn't show the last row")
         }
+    }
+
+    /// The same page with SwiftUI's ShareLink (how it was): kept to show whether ShareLink itself loses Done, so the
+    /// fix is proven against the old way on the same machine. Expected to fail; it doesn't fail the run.
+    func testTableShareLinkTheOldWay() {
+        let (app, card, grid) = openTableResult(["-sharelink"])
+        XCTExpectFailure("SwiftUI ShareLink in a tool's sheet loses Done when the Share sheet closes (27 Nov)", strict: false)
+        let ok = shareAndClose(app, "table-csv", round: 1, mustSurvive: [card, grid])
+        print("DIAG| ShareLink the old way kept Done: \(ok)")
+    }
+
+    /// Other tools share through KeepShare's ShareLink: does Done survive there? Logged for the app-wide decision.
+    func testKeepShareKeepsDone() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "run-text-to-qr", "-uitest", "-sample"]
+        app.launch()
+        let share = app.buttons["keep-share"].firstMatch
+        XCTAssertTrue(share.waitForExistence(timeout: 40), "the QR result has no Share button")
+        XCTExpectFailure("KeepShare uses SwiftUI ShareLink too (27 Nov check)", strict: false)
+        let ok = shareAndClose(app, "keep-share", round: 1, mustSurvive: [app.descendants(matching: .any)["code-finish"].firstMatch])
+        print("DIAG| KeepShare kept Done: \(ok)")
     }
 
     /// 26 Nov: Settings › Help › Watch how lists the three films, opens one full screen, and Done comes back.
