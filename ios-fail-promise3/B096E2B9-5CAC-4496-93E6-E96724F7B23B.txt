@@ -1,0 +1,5 @@
+Query chain:
+ →Find: Target Application 'com.tenzy.toolkit'
+  ↪︎Find: Descendants matching type Any
+    ↪︎Find: Elements matching predicate '"table-finish" IN identifiers'
+      ↪︎Find: First Match
