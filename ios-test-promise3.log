@@ -1,30 +1,44 @@
 == promise3 (results)
-Test Case '-[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses]' passed (87.893 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (96.934 seconds).
-DIAG| bar before sharing: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=-
+Test Case '-[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses]' passed (77.857 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (86.288 seconds).
+DIAG| bar before sharing: appears=1 hidden=false barAlpha=1.0 axHidden=false left=0 right=0 lg=1 tg=0 topIsItem=true back=shown stack=2 presented=- views=
 DIAG| after table-csv round 1: Done exists=false hittable=false; button hittable=true
-DIAG| bar after table-csv round 1: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=- · SwiftUI appears=1
+DIAG| bar after table-csv round 1: appears=1 hidden=false barAlpha=1.0 axHidden=false left=0 right=0 lg=1 tg=0 topIsItem=true back=shown stack=2 presented=- views= · SwiftUI appears=1
 DIAG| navigation bars: _TtGC7SwiftUI32NavigationStackHosting buttons=0 frame=24+58
-DIAG| barfix norole kept Done: false
-Test Case '-[HandyToolsUITests.PromiseTests testBarFixNoRole]' passed (44.477 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact]' passed (35.738 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' passed (60.606 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (30.983 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testDrivesAutorunLogsTheWorkDrive]' passed (12.502 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testEveryHomeTileOpensItsTool]' passed (131.017 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testIDCopyToolsFinishOnTheIDCopyScreen]' passed (34.444 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testReceiptTestRunKeepsTheAppAnswering]' passed (40.703 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testRunFromMyToolsStaysOpenAndComesBack]' passed (19.592 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testScamCheckLandsOnTheShieldVerdict]' passed (11.377 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testSignaturePadWontSaveBlank]' passed (27.585 seconds).
-DIAG| bar before sharing: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=-
+DIAG| barfix reassert kept Done: false
+Test Case '-[HandyToolsUITests.PromiseTests testBarFixReassert]' passed (45.933 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' passed (64.751 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (52.515 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeCameraSuggestsWhatToDoWithThePicture]' passed (27.874 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeFitsOneScreenWithTwelveTools]' passed (60.550 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testIDCopyToolsFinishOnTheIDCopyScreen]' passed (44.754 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' passed (94.201 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testRunFromMyToolsStaysOpenAndComesBack]' passed (23.926 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testScamCheckLandsOnTheShieldVerdict]' passed (11.960 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSignaturePadWontSaveBlank]' passed (25.719 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral]' passed (17.477 seconds).
+DIAG| bar before sharing: appears=1 hidden=false barAlpha=1.0 axHidden=false left=0 right=0 lg=1 tg=0 topIsItem=true back=shown stack=2 presented=- views=
+DIAG| table first cells: ["Role", "Team", "Rate", "Openings", "Project Manager", "Salesforce", "$45", "1"]
 DIAG| after table-csv round 1: Done exists=false hittable=false; button hittable=true
-DIAG| bar after table-csv round 1: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=- · SwiftUI appears=1
+DIAG| bar after table-csv round 1: appears=1 hidden=false barAlpha=1.0 axHidden=false left=0 right=0 lg=1 tg=0 topIsItem=true back=shown stack=2 presented=- views= · SwiftUI appears=1
 DIAG| navigation bars: _TtGC7SwiftUI32NavigationStackHosting buttons=0 frame=24+58
-DIAG| ShareLink the old way kept Done: false
-Test Case '-[HandyToolsUITests.PromiseTests testTableShareLinkTheOldWay]' passed (30.604 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWarrantyPhotosOpenOnReceiptsWithAllPhotosAtHand]' passed (14.157 seconds).
-	 Executed 15 tests, with 0 failures (0 unexpected) in 678.610 (678.630) seconds
-	 Executed 15 tests, with 0 failures (0 unexpected) in 678.610 (678.631) seconds
-	 Executed 15 tests, with 0 failures (0 unexpected) in 678.610 (678.632) seconds
-** TEST SUCCEEDED **
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:640: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-csv, round 1)
+DIAG| after table-xlsx round 1: Done exists=false hittable=false; button hittable=true
+DIAG| bar after table-xlsx round 1: appears=1 hidden=false barAlpha=1.0 axHidden=false left=0 right=0 lg=1 tg=0 topIsItem=true back=shown stack=2 presented=- views= · SwiftUI appears=1
+DIAG| navigation bars: _TtGC7SwiftUI32NavigationStackHosting buttons=0 frame=24+58
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:640: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-xlsx, round 1)
+DIAG| after table-csv round 2: Done exists=false hittable=false; button hittable=true
+DIAG| bar after table-csv round 2: appears=1 hidden=false barAlpha=1.0 axHidden=false left=0 right=0 lg=1 tg=0 topIsItem=true back=shown stack=2 presented=- views= · SwiftUI appears=1
+DIAG| navigation bars: _TtGC7SwiftUI32NavigationStackHosting buttons=0 frame=24+58
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:640: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-csv, round 2)
+DIAG| after table-xlsx round 2: Done exists=false hittable=false; button hittable=true
+DIAG| bar after table-xlsx round 2: appears=1 hidden=false barAlpha=1.0 axHidden=false left=0 right=0 lg=1 tg=0 topIsItem=true back=shown stack=2 presented=- views= · SwiftUI appears=1
+DIAG| navigation bars: _TtGC7SwiftUI32NavigationStackHosting buttons=0 frame=24+58
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:640: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-xlsx, round 2)
+Test Case '-[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet]' failed (61.519 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWarrantyPhotosOpenOnReceiptsWithAllPhotosAtHand]' passed (14.929 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' passed (25.622 seconds).
+	 Executed 16 tests, with 4 failures (0 unexpected) in 735.875 (735.965) seconds
+	 Executed 16 tests, with 4 failures (0 unexpected) in 735.875 (735.970) seconds
+	 Executed 16 tests, with 4 failures (0 unexpected) in 735.875 (735.970) seconds
+** TEST FAILED **
