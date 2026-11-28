@@ -12,7 +12,7 @@ final class PricingTests: XCTestCase {
     func testHomesFrontRowIsMostlyFreeAndSaysWhichArePro() {
         // 28 Nov (Manan): Home's twelve may hold Pro tools (Contacts, Social video, Collage, Open a file); those show a
         // small lock for free users. The rest of the row stays free, and Find my car stays free.
-        let pro = BuilderView.popular.filter { TOOLS.first { t in t.id == $0 }?.pro ?? false }
+        let pro = BuilderView.popular.filter { id in TOOLS.first { $0.id == id }?.pro ?? false }
         XCTAssertEqual(Set(pro), ["contacts", "post", "collage", "fileviewer"], "the Pro tiles on Home changed: \(pro)")
         XCTAssertFalse(TOOLS.first { $0.id == "gpsdash" }?.pro ?? true, "Find my car (and automatic parking) is free")
     }
