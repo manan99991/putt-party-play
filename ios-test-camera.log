@@ -1,21 +1,20 @@
 == camera (results)
-Test Case '-[HandyToolsUITests.CameraButtonTests testAVideoHelperRunsOnAClipItRecorded]' passed (55.534 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' passed (75.846 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testCelebrateRecordsAClip]' passed (27.496 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testFitUnderALimitTakesAPhoto]' passed (18.169 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testFunnyMomentsRecordsAClipAndMakesTheJoke]' passed (35.151 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testMovieTrailerRecordsAClipAndMakesATrailer]' passed (217.018 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPhotoStudioTakesAPhoto]' passed (20.395 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPostItRecordsAClip]' passed (21.720 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPriceCheckReadsAShelfPhoto]' passed (19.139 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPrivacyScrubberTakesAPhoto]' passed (19.169 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testReadyToSendTakesAPhoto]' passed (18.442 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testThePhotoPickerTakesAPhoto]' passed (25.289 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testTranslateReadsAPhotoItTook]' passed (35.508 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testVideoRecordsAClip]' passed (31.852 seconds).
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/CameraButtonTests.swift:134: error: -[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost] : XCTAssertTrue failed - no way to use your own song
-Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' failed (145.606 seconds).
-	 Executed 15 tests, with 1 failure (0 unexpected) in 766.335 (766.354) seconds
-	 Executed 15 tests, with 1 failure (0 unexpected) in 766.335 (766.361) seconds
-	 Executed 15 tests, with 1 failure (0 unexpected) in 766.335 (766.364) seconds
-** TEST FAILED **
+Test Case '-[HandyToolsUITests.CameraButtonTests testAVideoHelperRunsOnAClipItRecorded]' passed (72.296 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' passed (88.610 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testCelebrateRecordsAClip]' passed (21.122 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testFitUnderALimitTakesAPhoto]' passed (17.647 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testFunnyMomentsRecordsAClipAndMakesTheJoke]' passed (34.698 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testMovieTrailerRecordsAClipAndMakesATrailer]' passed (225.837 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPhotoStudioTakesAPhoto]' passed (24.852 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPostItRecordsAClip]' passed (23.363 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPriceCheckReadsAShelfPhoto]' passed (22.820 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPrivacyScrubberTakesAPhoto]' passed (18.216 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testReadyToSendTakesAPhoto]' passed (17.512 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testThePhotoPickerTakesAPhoto]' passed (25.799 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testTranslateReadsAPhotoItTook]' passed (23.032 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testVideoRecordsAClip]' passed (22.879 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' passed (150.858 seconds).
+	 Executed 15 tests, with 0 failures (0 unexpected) in 789.540 (789.562) seconds
+	 Executed 15 tests, with 0 failures (0 unexpected) in 789.540 (789.563) seconds
+	 Executed 15 tests, with 0 failures (0 unexpected) in 789.540 (789.567) seconds
+** TEST SUCCEEDED **
