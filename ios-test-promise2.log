@@ -1,0 +1,28 @@
+== promise2 (results)
+Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (44.571 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (39.990 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' passed (92.230 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeCameraSuggestsWhatToDoWithThePicture]' passed (23.090 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testMadeCodesAreTestedOnTheFinish]' passed (26.891 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testMyDaySavesFirstThenOffersAShortMessage]' passed (36.608 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' passed (103.009 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral]' passed (18.111 seconds).
+DIAG| table first cells: ["Role", "Team", "Rate", "Openings", "Project Manager", "Salesforce", "$45", "1"]
+DIAG| after table-csv round 1: Done exists=false hittable=false; button hittable=true
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:634: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-csv, round 1)
+DIAG| after table-xlsx round 1: Done exists=false hittable=false; button hittable=true
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:634: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-xlsx, round 1)
+DIAG| after table-csv round 2: Done exists=false hittable=false; button hittable=true
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:634: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-csv, round 2)
+DIAG| after table-xlsx round 2: Done exists=false hittable=false; button hittable=true
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:634: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-xlsx, round 2)
+Test Case '-[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet]' failed (89.598 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testTextToolsFinishOnTheTextScreen]' passed (15.503 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoToolsCheckTheirPromiseOnTheFile]' passed (82.625 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' passed (27.802 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatermarkToolsLetYouTypeYourOwnWords]' passed (42.808 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' passed (26.711 seconds).
+	 Executed 14 tests, with 4 failures (0 unexpected) in 669.547 (669.564) seconds
+	 Executed 14 tests, with 4 failures (0 unexpected) in 669.547 (669.568) seconds
+	 Executed 14 tests, with 4 failures (0 unexpected) in 669.547 (669.569) seconds
+** TEST FAILED **
