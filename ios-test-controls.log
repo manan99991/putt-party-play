@@ -1,1 +1,6 @@
 == controls (results)
+Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (967.169 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 967.169 (967.183) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 967.169 (967.185) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 967.169 (967.186) seconds
+** TEST SUCCEEDED **
