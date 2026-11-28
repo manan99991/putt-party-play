@@ -146,6 +146,16 @@ for target in ("HandyTools", "HandyToolsTests", "HandyToolsUITests", "ShareExten
         if len(set(fs)) > 1:
             bad.append(f"{target}: {name} is declared in {', '.join(sorted(set(fs)))} — rename one")
 
+# 3z. No file built inside a Share button (27 Nov: the table result went blank). A ShareLink's item is rebuilt on every
+# redraw, and opening or closing the Share sheet redraws — so an encoder in it re-zips / re-encodes / re-writes the
+# whole file each time. Hand it rows (XLSXFile(rows:)), ImageBytes, or a file made once in .task.
+heavy = re.compile(r'ShareLink\(item:[^\n]*(XLSXWriter\.workbook\(|\.jpegData\(|\.pngData\(|\.write\(to:)')
+for f, s in code.items():
+    if "/HandyTools/" not in f: continue
+    for n, line in enumerate(s.splitlines(), 1):
+        if heavy.search(line):
+            bad.append(f"{os.path.relpath(f, ios)}:{n}: a file is built inside a ShareLink — it's rebuilt on every redraw; make it once (see XLSXFile(rows:), ImageBytes)")
+
 # 4. translations
 tr = json.load(open(os.path.join(ios, "HandyTools", "translations.json")))
 miss = set()

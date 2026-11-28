@@ -36,8 +36,11 @@ struct ExpenseSheetCard: View {
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
 
-            if let x = xlsx {
-                ShareLink(item: x) { Label(L("Open in Numbers or Excel"), systemImage: "tablecells.badge.ellipsis").frame(maxWidth: .infinity) }.primaryButton()
+            if !rows.isEmpty {
+                // The workbook is built when the Share sheet asks for it, not on every redraw.
+                ShareLink(item: XLSXFile(rows: rows, sheetName: "Expenses"), preview: SharePreview((file as NSString).deletingPathExtension + ".xlsx")) {
+                    Label(L("Open in Numbers or Excel"), systemImage: "tablecells.badge.ellipsis").frame(maxWidth: .infinity)
+                }.primaryButton()
             }
             ShareLink(item: RunningList.url(file)) { Label(L("Share as CSV"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             if !removed, added > 0 {
@@ -66,12 +69,6 @@ struct ExpenseSheetCard: View {
         .accessibilityElement(children: .combine)
     }
 
-    /// The sheet as a real spreadsheet (numbers stay numbers), written fresh each time it's opened.
-    private var xlsx: URL? {
-        guard !rows.isEmpty, let d = XLSXWriter.workbook(rows: rows, sheetName: "Expenses") else { return nil }
-        let u = FileManager.default.temporaryDirectory.appendingPathComponent((file as NSString).deletingPathExtension + ".xlsx")
-        return (try? d.write(to: u)) != nil ? u : nil
-    }
 }
 
 private extension Array where Element == String {

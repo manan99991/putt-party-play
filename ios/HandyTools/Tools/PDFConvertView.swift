@@ -193,7 +193,7 @@ struct PDFConvertView: View {
                 .accessibilityIdentifier("convert-tables")
             if let tableNote { Text(L(tableNote)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             if tableRows.count >= 2 {
-                ShareLink(item: XLSXFile(data: XLSXWriter.workbook(rows: tableRows, sheetName: "Tables") ?? Data()), preview: SharePreview("\(fileName).xlsx")) {
+                ShareLink(item: XLSXFile(rows: tableRows, sheetName: "Tables"), preview: SharePreview("\(fileName).xlsx")) {
                     Label(L("Open in Numbers or Excel"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
                 }.primaryButton()
             }

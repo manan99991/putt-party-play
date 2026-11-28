@@ -83,11 +83,11 @@ private struct TableReader: View {
             Text("\(max(0, rows.count - 1)) \(L("rows")) · \(rows.map(\.count).max() ?? 0) \(L("columns"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             if let note { Text(L(note)).font(HandyFont.micro).foregroundStyle(HandyColor.amber) }
             DataGrid(rows: rows).frame(height: 460)
-            if let d = XLSXWriter.workbook(rows: rows, sheetName: "Sheet1") {
-                let u = FileManager.default.temporaryDirectory.appendingPathComponent("\(name).xlsx")
-                if (try? d.write(to: u)) != nil {
-                    ShareLink(item: u) { Label(L("Open in Numbers or Excel"), systemImage: "tablecells").frame(maxWidth: .infinity) }.primaryButton()
-                }
+            if !rows.isEmpty {
+                // Built when the Share sheet asks for it — not re-zipped and re-written on every redraw.
+                ShareLink(item: XLSXFile(rows: rows, sheetName: "Sheet1"), preview: SharePreview("\(name).xlsx")) {
+                    Label(L("Open in Numbers or Excel"), systemImage: "tablecells").frame(maxWidth: .infinity)
+                }.primaryButton()
             }
         }
     }

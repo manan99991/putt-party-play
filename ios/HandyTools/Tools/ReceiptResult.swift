@@ -62,7 +62,7 @@ struct ReceiptResult: View {
                 }
             }
             HStack(spacing: HandySpacing.s8) {
-                ShareLink(item: XLSXFile(data: XLSXWriter.workbook(rows: DataGrab.receiptRows(r), sheetName: r.merchant.isEmpty ? "Receipt" : String(r.merchant.prefix(30))) ?? Data()),
+                ShareLink(item: XLSXFile(rows: DataGrab.receiptRows(r), sheetName: r.merchant.isEmpty ? "Receipt" : String(r.merchant.prefix(30))),
                           preview: SharePreview("\(r.merchant.isEmpty ? "Receipt" : r.merchant).xlsx")) {
                     Label(L("Open in Numbers or Excel"), systemImage: "tablecells").frame(maxWidth: .infinity)
                 }.compactButton()

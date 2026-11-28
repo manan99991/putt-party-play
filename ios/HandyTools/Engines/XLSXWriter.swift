@@ -114,8 +114,19 @@ enum XLSXWriter {
 }
 
 /// Share an .xlsx with the right type, so Files, Mail and Excel recognise it.
+/// Give it the rows, not the finished file: the workbook is built only when the Share sheet asks for it. Building it
+/// inside a view (`XLSXFile(data: XLSXWriter.workbook(…))`) re-zipped it on every redraw — and opening or closing the
+/// Share sheet redraws — which blanked the table result (27 Nov). tools/precheck.py refuses that pattern.
 struct XLSXFile: Transferable {
-    let data: Data
+    private let made: Data?
+    private let rows: [[String]]
+    private let sheetName: String
+    private let header: Bool
+    init(data: Data) { made = data; rows = []; sheetName = "Sheet1"; header = true }
+    init(rows: [[String]], sheetName: String = "Sheet1", header: Bool = true) {
+        made = nil; self.rows = rows; self.sheetName = sheetName; self.header = header
+    }
+    var data: Data { made ?? XLSXWriter.workbook(rows: rows, sheetName: sheetName, header: header) ?? Data() }
     static var transferRepresentation: some TransferRepresentation {
         DataRepresentation(exportedContentType: UTType("org.openxmlformats.spreadsheetml.sheet") ?? .data) { $0.data }
     }

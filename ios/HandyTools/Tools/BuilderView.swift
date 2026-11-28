@@ -3588,7 +3588,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 Text(L("Press and hold the code to see what's inside it, without opening it."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
-            if let d = i.jpegData(compressionQuality: 0.92) { KeepShare([.data(d, name: chain.name, ext: "jpg")], lead: chain.keepLead, tool: chain.name, record: false) }
+            if let d = ImageBytes.jpeg(i) { KeepShare([.data(d, name: chain.name, ext: "jpg")], lead: chain.keepLead, tool: chain.name, record: false) }
         case .file(let d, let ext):
             let lext = ext.lowercased()
             if lext == "csv", let f = sheetFile {
@@ -3689,9 +3689,16 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         }
     }
 
+    /// The result as a file to hand on. Called from the result's body, so it writes only when the result changed —
+    /// it used to rewrite the whole file (a video could be hundreds of MB) on every redraw, including the redraws
+    /// that opening and closing the Share sheet cause.
     private func tempURL(_ d: Data, _ ext: String) -> URL? {
         let u = FileManager.default.temporaryDirectory.appendingPathComponent(ChainName.file(pattern: chain.fileName, tool: chain.name, ext: ext))
-        return (try? d.write(to: u)) != nil ? u : nil
+        let mark = ResultFileMark(d)
+        if TempResultFiles.marks[u.path] == mark, FileManager.default.fileExists(atPath: u.path) { return u }
+        guard (try? d.write(to: u)) != nil else { return nil }
+        TempResultFiles.marks[u.path] = mark
+        return u
     }
 
     /// UI tests only: a sample of the kind this flow starts with, handed over the way a real pick is.
@@ -3931,3 +3938,19 @@ struct HomeScreenHowTo: View {
         .cardStyle(padding: HandySpacing.s12)
     }
 }
+
+/// Which result each temporary file holds, so it isn't written again for the same result.
+private struct ResultFileMark: Equatable {
+    let count: Int
+    let sample: Int
+    init(_ d: Data) {
+        count = d.count
+        var h = Hasher()
+        // The start, the middle and the end: enough to tell one result from the next without reading it all.
+        for start in [0, max(0, d.count / 2 - 256), max(0, d.count - 512)] {
+            h.combine(d.subdata(in: d.startIndex + start ..< d.startIndex + min(d.count, start + 512)))
+        }
+        sample = h.finalize()
+    }
+}
+private enum TempResultFiles { static var marks: [String: ResultFileMark] = [:] }

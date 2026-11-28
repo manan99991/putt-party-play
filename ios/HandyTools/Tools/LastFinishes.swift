@@ -196,7 +196,7 @@ struct StillFinishCard: View {
                 Slider(value: $at, in: 0...max(0.1, length - 0.05)) { editing in if !editing { grab() } }
                     .tint(HandyColor.accent).accessibilityIdentifier("still-moment")
             }
-            if let d = image.jpegData(compressionQuality: 0.95) {
+            if let d = ImageBytes.jpeg(image, quality: 0.95) {
                 KeepShare([.data(d, name: "Still", ext: "jpg")], tool: "Still", record: false)
                 PhotoLandingRow(data: d, image: image)
             }

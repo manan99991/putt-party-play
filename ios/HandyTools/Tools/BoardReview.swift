@@ -202,7 +202,7 @@ struct BoardReview: View {
                 Button { send(reminders: false) } label: { Label(L("Add events to Calendar"), systemImage: "calendar.badge.plus").frame(maxWidth: .infinity) }
                     .secondaryButton().disabled(busy)
             }
-            ShareLink(item: XLSXFile(data: XLSXWriter.workbook(rows: sheetRows, sheetName: "Board") ?? Data()),
+            ShareLink(item: XLSXFile(rows: sheetRows, sheetName: "Board"),
                       preview: SharePreview("Board.xlsx")) {
                 Label(L("Open as a spreadsheet"), systemImage: "tablecells").frame(maxWidth: .infinity)
             }.secondaryButton()

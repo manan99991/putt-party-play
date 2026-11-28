@@ -9,6 +9,8 @@ struct CodeFinishCard: View {
     @State private var decoded: String?
     @State private var tested = false
     @State private var saved: String?
+    /// The printable Wi‑Fi card, drawn once after the code is read back — not on every redraw.
+    @State private var wifiCard: Data?
 
     private var wifi: (ssid: String, pass: String, sec: String)? {
         guard let d = decoded, case .wifi(let ssid, let pass, let sec) = QRPayload.parse(d), !ssid.isEmpty else { return nil }
@@ -35,10 +37,10 @@ struct CodeFinishCard: View {
                     QRResultCard(raw: decoded)
                 }
             }
-            if let png = image.pngData() {
+            if let png = ImageBytes.png(image) {
                 KeepShare([.data(png, name: "QR code", ext: "png")], lead: .share, tool: "QR code", record: false)
             }
-            if let w = wifi, let card = QRGen.wifiCard(ssid: w.ssid, password: w.pass, security: w.sec == "Open" ? "nopass" : w.sec), let cpng = card.pngData() {
+            if let cpng = wifiCard {
                 ShareLink(item: PNGFile(data: cpng), preview: SharePreview("Wi‑Fi card")) {
                     Label(L("Printable card for guests"), systemImage: "printer").frame(maxWidth: .infinity)
                 }.secondaryButton()
@@ -52,6 +54,7 @@ struct CodeFinishCard: View {
             let img = image
             let found = await Task.detached(priority: .userInitiated) { ChainExtras.readCode(img) }.value
             decoded = found; tested = true
+            if let w = wifi { wifiCard = QRGen.wifiCard(ssid: w.ssid, password: w.pass, security: w.sec == "Open" ? "nopass" : w.sec)?.pngData() }
         }
     }
 }

@@ -171,7 +171,7 @@ struct DataGrabView: View {
                 }
                 .frame(maxHeight: 260)
                 Toggle(L("First row is the header"), isOn: $tableHeader).font(HandyFont.caption).tint(HandyColor.accent)
-                ShareLink(item: XLSXFile(data: XLSXWriter.workbook(rows: rows, sheetName: "Table", header: tableHeader) ?? Data()),
+                ShareLink(item: XLSXFile(rows: rows, sheetName: "Table", header: tableHeader),
                           preview: SharePreview("Table.xlsx")) {
                     Label(L("Save as Excel (.xlsx)"), systemImage: "tablecells.badge.ellipsis").frame(maxWidth: .infinity)
                 }.primaryButton()
