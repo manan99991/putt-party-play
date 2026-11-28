@@ -618,9 +618,20 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(card.waitForExistence(timeout: 60), "the table result never showed")
         let grid = app.descendants(matching: .any)["table-grid"].firstMatch
         XCTAssertTrue(grid.exists, "the result has no table on it")
+        let first = XCTAttachment(screenshot: app.screenshot()); first.name = "table result"; first.lifetime = .keepAlways; add(first)
         // Every column fits the screen — nothing to scroll sideways.
         XCTAssertLessThanOrEqual(grid.frame.maxX, app.windows.firstMatch.frame.maxX + 1, "the table runs off the right edge")
+        // What the table holds, in the log, so a misread table can be seen without the screenshots.
+        let cells = grid.staticTexts.allElementsBoundByIndex.prefix(24).map(\.label)
+        print("DIAG| table cells: \(cells)")
         XCTAssertTrue(app.staticTexts["Role"].exists && app.staticTexts["Openings"].exists, "the header row wasn't read")
+        func doneState(_ when: String) {
+            let all = app.buttons.matching(identifier: "Done").allElementsBoundByIndex
+            print("DIAG| Done \(when): " + all.map { "exists=\($0.exists) hittable=\($0.isHittable) frame=\(Int($0.frame.minX)),\(Int($0.frame.minY)) \(Int($0.frame.width))x\(Int($0.frame.height))" }.joined(separator: " | "))
+        }
+        doneState("before sharing")
+        let doneBefore = app.buttons["Done"].firstMatch.isHittable
+        XCTAssertTrue(doneBefore, "Done can't be reached even before sharing")
 
         func shareAndClose(_ id: String, round: Int) {
             let b = app.buttons[id].firstMatch
@@ -640,7 +651,11 @@ final class PromiseTests: XCTestCase {
             let after = XCTAttachment(screenshot: app.screenshot()); after.name = "\(id) round \(round) — after closing"; after.lifetime = .keepAlways; add(after)
             XCTAssertTrue(card.exists && grid.exists, "the result vanished after the Share sheet closed (\(id), round \(round))")
             XCTAssertTrue(b.isHittable, "the page went blank after the Share sheet closed — \(id) can't be reached (round \(round))")
-            XCTAssertTrue(app.buttons["Done"].firstMatch.isHittable, "Done is gone after the Share sheet closed (\(id), round \(round))")
+            doneState("after \(id) round \(round)")
+            if !app.buttons["Done"].firstMatch.isHittable {
+                print("DIAG| screen after \(id) round \(round):\n" + app.debugDescription.split(separator: "\n").prefix(80).map { "DIAG| " + $0 }.joined(separator: "\n"))
+            }
+            if doneBefore { XCTAssertTrue(app.buttons["Done"].firstMatch.isHittable, "Done is gone after the Share sheet closed (\(id), round \(round))") }
         }
         for round in 1...2 {
             shareAndClose("table-csv", round: round)

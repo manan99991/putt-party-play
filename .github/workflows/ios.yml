@@ -271,15 +271,25 @@ jobs:
           for p in camera microphone photos location contacts; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
           xcodebuild test -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" $ONLY \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
-            2>&1 | tee test.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD|WAIT\|" || true
+            -resultBundlePath TestResults.xcresult \
+            2>&1 | tee test.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD|WAIT\||DIAG\|" || true
           grep -E "error:|Test Case .*failed|failed - " test.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | head -20 | sed 's/^/::error::/' || true
           grep -q "TEST SUCCEEDED" test.log || { echo "== last lines"; tail -60 test.log; exit 1; }
+      # A failed UI test keeps its screenshots, so what the screen really showed can be looked at, not guessed.
+      - name: Keep failure screenshots
+        if: failure()
+        run: |
+          mkdir -p shots && xcrun xcresulttool export attachments --path TestResults.xcresult --output-path shots >/dev/null 2>&1 || true
+          ls shots | head -40
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with: { name: "shots-${{ matrix.part }}", path: ios/shots, retention-days: 5, if-no-files-found: ignore }
       - name: Publish test log
         if: always()
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
-          { echo "== ${{ matrix.part }} (results)"; grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)" ios/test.log 2>/dev/null | head -300; } > ios-test-${{ matrix.part }}.log
+          { echo "== ${{ matrix.part }} (results)"; grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|DIAG\|" ios/test.log 2>/dev/null | head -300; } > ios-test-${{ matrix.part }}.log
           bash .github/publish-log.sh ios-test-${{ matrix.part }} ios-test-${{ matrix.part }}.log || true
 
   # Every ready-made tool run on a real file, and every tool opened with its sample, each screen read the way
