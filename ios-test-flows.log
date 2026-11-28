@@ -1,11 +1,11 @@
 == flows (results)
-Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (166.179 seconds).
-Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (36.480 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 202.659 (202.701) seconds
-Test Case '-[HandyToolsUITests.MultiPhotoTests testAPhotoHandedToTheScrubberShowsUp]' passed (26.180 seconds).
-Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' passed (122.543 seconds).
-Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (90.790 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 239.513 (239.518) seconds
-	 Executed 5 tests, with 0 failures (0 unexpected) in 442.171 (442.228) seconds
-	 Executed 5 tests, with 0 failures (0 unexpected) in 442.171 (442.229) seconds
+Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (190.995 seconds).
+Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (26.117 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 217.112 (217.135) seconds
+Test Case '-[HandyToolsUITests.MultiPhotoTests testAPhotoHandedToTheScrubberShowsUp]' passed (27.758 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' passed (148.409 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (95.087 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 271.254 (271.258) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 488.366 (488.395) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 488.366 (488.397) seconds
 ** TEST SUCCEEDED **
