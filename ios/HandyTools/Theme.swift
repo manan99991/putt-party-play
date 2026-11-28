@@ -723,12 +723,6 @@ struct HomePickTile: View {
         .frame(maxWidth: .infinity, minHeight: height, maxHeight: height)
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Color(hex: pick.hex).opacity(0.45), lineWidth: 1))
-        .overlay(alignment: .topTrailing) {
-            if locked {
-                Image(systemName: "lock.fill").font(.system(size: 9, weight: .bold)).foregroundStyle(HandyColor.textSecondary)
-                    .padding(5).accessibilityHidden(true)
-            }
-        }
         .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(L(pick.title) + (locked ? ", " + L("Pro") : ""))

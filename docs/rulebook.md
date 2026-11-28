@@ -55,7 +55,9 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   QR & Wi-Fi, See & Read, Measure, Cleaner, Translate, Vault, and since 25 Nov Home's "Most loved" row — Scan, What is
   this?, Read a menu, Sign a PDF, Make a sticker — plus Find my car), plus 2 saved tools of your own with the free
   builder steps; Invoices & Quotes (Business tab) makes 3 a month free (`Tool.meteredIDs`); the rest are Tenzy Pro.
-  Do not imply the whole app is free. The paywall screen must show both prices, the 7-day trial terms,
+  Since 28 Nov Home's twelve also show four Pro tools (Contacts, Post a Video, Collage, File Opener), and every Pro tool
+  carries a lock on its icon everywhere it appears (`ToolIconBadge`) for anyone not on Pro, so free vs Pro is visible
+  before a tap. Do not imply the whole app is free. The paywall screen must show both prices, the 7-day trial terms,
   auto-renew disclosure, and working Terms (EULA) + Privacy links (Guideline 3.1.2).
 
 ## 4. Asset specs

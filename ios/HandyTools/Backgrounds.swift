@@ -103,7 +103,24 @@ struct ToolIconBadge: View {
     var symbol: String = "square.grid.2x2"
     var size: CGFloat = 36
     @EnvironmentObject var theme: ThemeManager
+    @ObservedObject private var store = StoreManager.shared
+    /// 28 Nov (Manan): every Pro tool shows a lock wherever its icon appears, for anyone not on Pro — so free and Pro
+    /// are clear at a glance on Home, in every list and in search.
+    private var locked: Bool { !store.isPremium && !Launch.screenshots && (TOOLS.first { $0.id == id }?.pro ?? false) }
     var body: some View {
+        icon
+            .overlay(alignment: .bottomTrailing) {
+                if locked {
+                    Image(systemName: "lock.fill").font(.system(size: max(7, size * 0.24), weight: .bold)).foregroundStyle(.white)
+                        .frame(width: max(13, size * 0.42), height: max(13, size * 0.42))
+                        .background(Color.black.opacity(0.72), in: Circle())
+                        .overlay(Circle().stroke(.white.opacity(0.5), lineWidth: 0.75))
+                        .offset(x: size * 0.12, y: size * 0.12)
+                        .accessibilityHidden(true)
+                }
+            }
+    }
+    @ViewBuilder private var icon: some View {
         if let n = TenzyArt.iconName(id: id, theme: theme.current) {
             Image(n).resizable().scaledToFit().frame(width: size, height: size).accessibilityHidden(true)
         } else {

@@ -981,10 +981,8 @@ struct ToolCard: View {
                 .padding(.leading, HandySpacing.s8).padding(.top, HandySpacing.s8)
         }
         .overlay(alignment: .topTrailing) {
-            if tool.pro && !store.isPremium {
-                Image(systemName: "lock.fill").font(.system(size: 12)).foregroundStyle(.white.opacity(0.9))
-                    .shadow(color: .black.opacity(0.5), radius: 3).padding(8)
-            } else if tool.ai {
+            // Pro tools carry their lock on the icon itself (ToolIconBadge), the same everywhere.
+            if tool.ai && !(tool.pro && !store.isPremium) {
                 Image(systemName: "sparkle").font(.system(size: 11)).foregroundStyle(.white)
                     .shadow(color: .black.opacity(0.5), radius: 3).padding(8)
             }
