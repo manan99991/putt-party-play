@@ -1,0 +1,11 @@
+HANG| 08:28:13 main thread busy in 169/169 samples
+HANG|     169 start  (in dyld)
+HANG|     169 start_sim  (in dyld_sim)
+HANG|     169 __debug_main_executable_dylib_entry_point  (in HandyTools.debug.dylib) + 12  App.swift:0
+HANG|     169 static TenzyApp.$main()  (in HandyTools.debug.dylib) + 40  /<compiler-generated>:0
+HANG|     169 static App.main()  (in SwiftUI)
+HANG|     169 runApp<A>(_:)  (in SwiftUI)
+HANG|     169 closure #1 in KitRendererCommon(_:)  (in SwiftUI)
+HANG|     169 UIApplicationMain  (in UIKitCore)
+HANG|     169 GSEventRunModal  (in GraphicsServices)
+HANG|     169 _CFRunLoopRunSpecificWithOptions  (in CoreFoundation)
