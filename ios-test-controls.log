@@ -1,7 +1,6 @@
 == controls (results)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolControlsReachableTests.swift:39: error: -[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge] : Failed to terminate com.tenzy.toolkit:35606: Failed to terminate com.tenzy.toolkit:0
-Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' failed (633.942 seconds).
-	 Executed 1 test, with 1 failure (0 unexpected) in 633.942 (633.982) seconds
-	 Executed 1 test, with 1 failure (0 unexpected) in 633.942 (633.997) seconds
-	 Executed 1 test, with 1 failure (0 unexpected) in 633.942 (633.998) seconds
-** TEST FAILED **
+Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (1013.176 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 1013.176 (1013.205) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 1013.176 (1013.206) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 1013.176 (1013.209) seconds
+** TEST SUCCEEDED **
