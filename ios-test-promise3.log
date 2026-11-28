@@ -1,24 +1,30 @@
 == promise3 (results)
-Test Case '-[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses]' passed (78.891 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (113.749 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact]' passed (49.852 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' passed (65.715 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (50.451 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testDrivesAutorunLogsTheWorkDrive]' passed (19.847 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testEveryHomeTileOpensItsTool]' passed (151.207 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testIDCopyToolsFinishOnTheIDCopyScreen]' passed (39.144 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testReceiptTestRunKeepsTheAppAnswering]' passed (42.566 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testRunFromMyToolsStaysOpenAndComesBack]' passed (28.017 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testScamCheckLandsOnTheShieldVerdict]' passed (11.949 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testSignaturePadWontSaveBlank]' passed (26.928 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses]' passed (87.893 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (96.934 seconds).
+DIAG| bar before sharing: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=-
+DIAG| after table-csv round 1: Done exists=false hittable=false; button hittable=true
+DIAG| bar after table-csv round 1: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=- · SwiftUI appears=1
+DIAG| navigation bars: _TtGC7SwiftUI32NavigationStackHosting buttons=0 frame=24+58
+DIAG| barfix norole kept Done: false
+Test Case '-[HandyToolsUITests.PromiseTests testBarFixNoRole]' passed (44.477 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact]' passed (35.738 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' passed (60.606 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (30.983 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testDrivesAutorunLogsTheWorkDrive]' passed (12.502 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testEveryHomeTileOpensItsTool]' passed (131.017 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testIDCopyToolsFinishOnTheIDCopyScreen]' passed (34.444 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReceiptTestRunKeepsTheAppAnswering]' passed (40.703 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testRunFromMyToolsStaysOpenAndComesBack]' passed (19.592 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testScamCheckLandsOnTheShieldVerdict]' passed (11.377 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSignaturePadWontSaveBlank]' passed (27.585 seconds).
 DIAG| bar before sharing: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=-
 DIAG| after table-csv round 1: Done exists=false hittable=false; button hittable=true
 DIAG| bar after table-csv round 1: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=- · SwiftUI appears=1
 DIAG| navigation bars: _TtGC7SwiftUI32NavigationStackHosting buttons=0 frame=24+58
 DIAG| ShareLink the old way kept Done: false
-Test Case '-[HandyToolsUITests.PromiseTests testTableShareLinkTheOldWay]' passed (42.355 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWarrantyPhotosOpenOnReceiptsWithAllPhotosAtHand]' passed (14.734 seconds).
-	 Executed 14 tests, with 0 failures (0 unexpected) in 735.405 (735.424) seconds
-	 Executed 14 tests, with 0 failures (0 unexpected) in 735.405 (735.426) seconds
-	 Executed 14 tests, with 0 failures (0 unexpected) in 735.405 (735.427) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testTableShareLinkTheOldWay]' passed (30.604 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWarrantyPhotosOpenOnReceiptsWithAllPhotosAtHand]' passed (14.157 seconds).
+	 Executed 15 tests, with 0 failures (0 unexpected) in 678.610 (678.630) seconds
+	 Executed 15 tests, with 0 failures (0 unexpected) in 678.610 (678.631) seconds
+	 Executed 15 tests, with 0 failures (0 unexpected) in 678.610 (678.632) seconds
 ** TEST SUCCEEDED **
