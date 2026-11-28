@@ -325,6 +325,9 @@ jobs:
   realinput:
     # 28 Nov: on every push, not only the TestFlight one — so a tool that breaks on a real file is found the day it
     # breaks, not at upload time. Three machines at once (~50 min instead of ~1 h 50).
+    # It waits for the quick tests, so those get the Macs first (the account runs ~5 Macs at once) and answer in
+    # ~30-40 min; a run whose quick tests fail doesn't spend an hour of Macs on this.
+    needs: [tests]
     if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') && !contains(github.event.head_commit.message, 'Ship-Stage=YES') }}"
     runs-on: xcode-27
     timeout-minutes: 120
