@@ -1,50 +1,56 @@
 == flows (results)
-Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (196.984 seconds).
-Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (28.030 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 225.014 (225.055) seconds
-Test Case '-[HandyToolsUITests.MultiPhotoTests testAPhotoHandedToTheScrubberShowsUp]' passed (30.989 seconds).
-Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' passed (128.908 seconds).
-Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (96.760 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 256.656 (256.660) seconds
-Test Case '-[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses]' passed (58.144 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (111.631 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (25.523 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact]' passed (49.851 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' passed (78.880 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (42.564 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (80.985 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testDrivesAutorunLogsTheWorkDrive]' passed (22.155 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testFinishedPhotoOpensFullSizeAndCloses]' passed (27.027 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testFirstMinuteDemoFinishesWithAResult]' passed (25.944 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' passed (19.107 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testFunPhotoFinishOffersOtherLooks]' passed (22.747 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' passed (507.242 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' passed (124.330 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testHomeCameraSuggestsWhatToDoWithThePicture]' passed (36.942 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testIDCopyToolsFinishOnTheIDCopyScreen]' passed (59.107 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid]' passed (31.702 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testMadeCodesAreTestedOnTheFinish]' passed (71.226 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testMyDaySavesFirstThenOffersAShortMessage]' passed (43.112 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages]' passed (102.148 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testPortalPDFShowsItsSizeCheck]' passed (42.806 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testProtectPDFDoesEverythingAtOnce]' passed (30.392 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' passed (153.528 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet]' passed (51.564 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testReceiptTestRunKeepsTheAppAnswering]' passed (36.140 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testRunFromMyToolsStaysOpenAndComesBack]' passed (29.399 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testScamCheckLandsOnTheShieldVerdict]' passed (19.403 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testSignaturePadWontSaveBlank]' passed (41.982 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral]' passed (28.703 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testTappingNearAPhotosEdgePicksThatPhoto]' passed (158.305 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testTextToolsFinishOnTheTextScreen]' passed (19.747 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (50.720 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testVideoToolsCheckTheirPromiseOnTheFile]' passed (91.166 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testVoiceToolsLetYouSwitchVoiceOnTheResult]' passed (18.162 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWarrantyPhotosOpenOnReceiptsWithAllPhotosAtHand]' passed (24.041 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' passed (33.661 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWatermarkToolsLetYouTypeYourOwnWords]' passed (41.730 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' passed (21.289 seconds).
-	 Executed 38 tests, with 0 failures (0 unexpected) in 2433.104 (2433.142) seconds
-	 Executed 43 tests, with 0 failures (0 unexpected) in 2914.774 (2914.871) seconds
-	 Executed 43 tests, with 0 failures (0 unexpected) in 2914.774 (2914.876) seconds
-** TEST SUCCEEDED **
+Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (156.376 seconds).
+Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (20.423 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 176.799 (176.813) seconds
+Test Case '-[HandyToolsUITests.MultiPhotoTests testAPhotoHandedToTheScrubberShowsUp]' passed (22.862 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' passed (98.155 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (66.814 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 187.830 (187.833) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses]' passed (34.316 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (73.167 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (17.114 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact]' passed (33.845 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' passed (47.536 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (35.251 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (44.061 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testDrivesAutorunLogsTheWorkDrive]' passed (14.254 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFinishedPhotoOpensFullSizeAndCloses]' passed (17.029 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFirstMinuteDemoFinishesWithAResult]' passed (15.016 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' passed (13.693 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFunPhotoFinishOffersOtherLooks]' passed (12.474 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' passed (245.494 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' passed (86.273 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeCameraSuggestsWhatToDoWithThePicture]' passed (18.564 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testIDCopyToolsFinishOnTheIDCopyScreen]' passed (32.902 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid]' passed (20.641 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testMadeCodesAreTestedOnTheFinish]' passed (35.968 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testMyDaySavesFirstThenOffersAShortMessage]' passed (44.327 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages]' passed (77.179 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testPortalPDFShowsItsSizeCheck]' passed (29.968 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testProtectPDFDoesEverythingAtOnce]' passed (26.983 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' passed (113.849 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet]' passed (45.776 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReceiptTestRunKeepsTheAppAnswering]' passed (32.376 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testRunFromMyToolsStaysOpenAndComesBack]' passed (26.069 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testScamCheckLandsOnTheShieldVerdict]' passed (16.958 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSignaturePadWontSaveBlank]' passed (37.074 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral]' passed (24.034 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:623: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - the header row wasn't read
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:643: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-csv, round 1)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:643: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-xlsx, round 1)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:643: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-csv, round 2)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:643: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-xlsx, round 2)
+Test Case '-[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet]' failed (98.279 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testTappingNearAPhotosEdgePicksThatPhoto]' passed (135.264 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testTextToolsFinishOnTheTextScreen]' passed (14.134 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (31.208 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoToolsCheckTheirPromiseOnTheFile]' passed (51.485 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVoiceToolsLetYouSwitchVoiceOnTheResult]' passed (14.692 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWarrantyPhotosOpenOnReceiptsWithAllPhotosAtHand]' passed (16.131 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' passed (26.998 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatermarkToolsLetYouTypeYourOwnWords]' passed (37.747 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' passed (14.693 seconds).
+	 Executed 39 tests, with 5 failures (0 unexpected) in 1712.820 (1712.846) seconds
+	 Executed 44 tests, with 5 failures (0 unexpected) in 2077.449 (2077.500) seconds
+	 Executed 44 tests, with 5 failures (0 unexpected) in 2077.449 (2077.503) seconds
+** TEST FAILED **
