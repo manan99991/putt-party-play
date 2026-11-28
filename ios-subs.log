@@ -1,26 +1,26 @@
-[12:59:06]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[12:59:06]: fastlane 2.242.0 (Ruby 3.4.13, gem)
-[12:59:07]: Sending anonymous analytics information
-[12:59:07]: Learn more at https://docs.fastlane.tools/#metrics
-[12:59:07]: No personal or sensitive data is sent.
-[12:59:07]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[12:59:07]: [32m------------------------------[0m
-[12:59:07]: [32m--- Step: default_platform ---[0m
-[12:59:07]: [32m------------------------------[0m
-[12:59:07]: [32mDriving the lane 'ios subscriptions' 🚀[0m
-[12:59:07]: App 6824023361
-[12:59:09]: Territories: 175
-[12:59:09]: tenzy_pro_yearly exists (6824154364)
-[12:59:11]:   price already $29.99
-[12:59:11]: [32m  intro offer 7-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
-[12:59:12]:   removed stale review screenshot; re-uploading current paywall
-[12:59:16]: [32m  uploaded subscription review screenshot (200)[0m
-[12:59:16]: tenzy_pro_month exists (6839056027)
-[12:59:18]:   price already $2.99
-[12:59:19]: [32m  intro offer 7-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
-[12:59:20]:   removed stale review screenshot; re-uploading current paywall
-[12:59:24]: [32m  uploaded subscription review screenshot (200)[0m
-[12:59:24]: [32mSubscriptions reconciled.[0m
+[02:02:43]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[02:02:43]: fastlane 2.242.0 (Ruby 3.4.13, gem)
+[02:02:44]: Sending anonymous analytics information
+[02:02:44]: Learn more at https://docs.fastlane.tools/#metrics
+[02:02:44]: No personal or sensitive data is sent.
+[02:02:44]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[02:02:44]: [32m------------------------------[0m
+[02:02:44]: [32m--- Step: default_platform ---[0m
+[02:02:44]: [32m------------------------------[0m
+[02:02:44]: [32mDriving the lane 'ios subscriptions' 🚀[0m
+[02:02:45]: App 6824023361
+[02:02:45]: Territories: 175
+[02:02:45]: tenzy_pro_yearly exists (6824154364)
+[02:02:47]:   price already $29.99
+[02:02:47]: [32m  intro offer 7-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
+[02:02:48]:   removed stale review screenshot; re-uploading current paywall
+[02:02:51]: [32m  uploaded subscription review screenshot (200)[0m
+[02:02:51]: tenzy_pro_month exists (6839056027)
+[02:02:53]:   price already $2.99
+[02:02:53]: [32m  intro offer 7-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
+[02:02:54]:   removed stale review screenshot; re-uploading current paywall
+[02:02:57]: [32m  uploaded subscription review screenshot (200)[0m
+[02:02:57]: [32mSubscriptions reconciled.[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -30,4 +30,4 @@
 | 1    | default_platform | 0           |
 +------+------------------+-------------+
 
-[12:59:24]: [32mfastlane.tools finished successfully 🎉[0m
+[02:02:57]: [32mfastlane.tools finished successfully 🎉[0m
