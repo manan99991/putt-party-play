@@ -685,6 +685,18 @@ final class PromiseTests: XCTestCase {
         print("DIAG| ShareLink the old way kept Done: \(ok)")
     }
 
+    /// Three ways to get the bar's buttons back after a Share sheet, each tried on the same machine (28 Nov). Logged,
+    /// expected to fail until one works; the one that keeps Done becomes the fix.
+    private func tryBarFix(_ mode: String) {
+        let (app, card, grid) = openTableResult(["-barfix", mode])
+        XCTExpectFailure("trying -barfix \(mode)", strict: false)
+        let ok = shareAndClose(app, "table-csv", round: 1, mustSurvive: [card, grid])
+        print("DIAG| barfix \(mode) kept Done: \(ok)")
+    }
+    func testBarFixRefresh() { tryBarFix("refresh") }
+    func testBarFixReassert() { tryBarFix("reassert") }
+    func testBarFixNoRole() { tryBarFix("norole") }
+
     /// Other tools share through KeepShare's ShareLink: does Done survive there? Logged for the app-wide decision.
     func testKeepShareKeepsDone() {
         let app = XCUIApplication()

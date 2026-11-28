@@ -687,7 +687,9 @@ struct HomeView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 // Every tool page keeps its bar (Back, Done) after a Share sheet or any other screen closes over it —
                 // the root's hidden bar must never leak onto it (28 Nov).
-                default: ToolDestination(id: id).toolbarRole(.editor).toolbar(.visible, for: .navigationBar).disablesSwipeBack()
+                default:
+                    if BarRefresh.mode == "norole" { ToolDestination(id: id).toolbar(.visible, for: .navigationBar).disablesSwipeBack() }
+                    else { ToolDestination(id: id).toolbarRole(.editor).toolbar(.visible, for: .navigationBar).disablesSwipeBack() }
                 }
             }
             .toolbar(.hidden, for: .navigationBar)

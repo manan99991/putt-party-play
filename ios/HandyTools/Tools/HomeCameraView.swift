@@ -19,10 +19,15 @@ struct HomeCameraView: View {
                 topBar
                 ZStack {
                     ProcessedFrameView(image: cam.latest, holder: holder, fit: false)
+                        // No camera on the simulator: the sample receipt stands in as what the lens sees. An overlay, so
+                        // the picture's own size never pushes the top bar off the screen (28 Nov test: Close at y -103).
+                        .overlay {
+                            if Self.fake {
+                                Image(uiImage: SampleAssets.receipt()).resizable().scaledToFill()
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity).clipped().contentShape(Rectangle()).allowsHitTesting(false)
+                            }
+                        }
                         .clipped()
-                    if Self.fake {   // no camera on the simulator: the sample receipt stands in as what the lens sees
-                        Image(uiImage: SampleAssets.receipt()).resizable().scaledToFill().clipped().contentShape(Rectangle()).allowsHitTesting(false)
-                    }
                     thirds
                     if !cam.authorized && !Self.fake {
                         PermissionOffCard(icon: "camera.fill", line: L("Camera access is off"),

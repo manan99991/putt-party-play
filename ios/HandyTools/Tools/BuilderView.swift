@@ -2623,6 +2623,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @ObservedObject private var store = StoreManager.shared
     @State private var showPro = false
     @State private var appearCount = 0   // UI tests: how often SwiftUI says this screen appeared
+    @ObservedObject private var barFix = BarRefresh.shared
     @Environment(\.dismiss) private var dismiss
 
     private var start: ChainKind { chain.steps.first?.block.takes ?? .image }
@@ -2890,10 +2891,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             .animation(.easeOut(duration: HandyMotion.base), value: busy)
         }
         .background(Ground())
-        .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } } }
+        .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() }.id(barFix.epoch) } }
         // 28 Nov: Home's own page hides the bar, and once any Share sheet closed SwiftUI applied that to this screen too —
         // Done (and Back) vanished (Manan's recording; the UI test shows it every time). Say it here: this screen has a bar.
-        .toolbar(.visible, for: .navigationBar)
+        .toolbar(barFix.hide ? .hidden : .visible, for: .navigationBar)
         .navProbe()   // UI tests: what the bar really holds, before and after a Share sheet
         .onAppear { if Launch.uitest { appearCount += 1 } }
         .overlay(alignment: .bottomTrailing) {

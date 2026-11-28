@@ -17,8 +17,16 @@ final class PromoFilmTests: XCTestCase {
         }
     }
 
+    private var shot = 0
     private func mark(_ name: String) {
         XCTContext.runActivity(named: "\(name)@\(String(format: "%.2f", Date().timeIntervalSince1970))") { _ in }
+        // A still at every shot, straight from the screen at full resolution, written where the workflow collects it
+        // (the simulator shares the Mac's disk). Cutting stills from the film by time was off by seconds (28 Nov).
+        if name == "FILM-SHOT", let dir = ProcessInfo.processInfo.environment["PROMO_DIR"], !dir.isEmpty {
+            shot += 1
+            let n = (name: String(describing: self.name).components(separatedBy: " ").last?.replacingOccurrences(of: "]", with: "") ?? "scene", k: shot)
+            try? XCUIScreen.main.screenshot().pngRepresentation.write(to: URL(fileURLWithPath: dir).appendingPathComponent("\(n.name)-shot\(n.k).png"))
+        }
     }
     /// Looks now and then, never continuously (a continuous wait starves the app's main thread in this Xcode).
     private func appears(_ e: XCUIElement, within seconds: Int) -> Bool {

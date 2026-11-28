@@ -15,6 +15,7 @@ import UIKit
               var top = window.rootViewController else { return }
         while let next = top.presentedViewController, !next.isBeingDismissed { top = next }
         let vc = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        vc.completionWithItemsHandler = { _, _, _, _ in Task { @MainActor in BarRefresh.shared.kick() } }
         if let pop = vc.popoverPresentationController {   // iPad: point at the button that was tapped
             pop.sourceView = window
             pop.sourceRect = anchor ?? CGRect(x: window.bounds.midX, y: window.bounds.midY, width: 1, height: 1)
@@ -38,5 +39,25 @@ struct ShareFilesButton<Label: View>: View {
             .disabled(urls.isEmpty)
             .background(GeometryReader { g in Color.clear.onAppear { frame = g.frame(in: .global) }
                 .onChange(of: g.frame(in: .global)) { _, f in frame = f } })
+    }
+}
+
+/// 28 Nov: once a Share sheet closes, SwiftUI drops the navigation bar's buttons (Done, Back) on the page under it —
+/// the probe shows UIKit's bar unchanged, so it's SwiftUI's own toolbar. UI tests try ways to bring them back
+/// (`-barfix refresh|reassert|norole`); the one that works becomes the fix.
+@MainActor final class BarRefresh: ObservableObject {
+    static let shared = BarRefresh()
+    @Published var epoch = 0
+    @Published var hide = false
+    static var mode: String {
+        guard let i = Launch.args.firstIndex(of: "-barfix"), i + 1 < Launch.args.count else { return "" }
+        return Launch.args[i + 1]
+    }
+    func kick() {
+        switch Self.mode {
+        case "refresh": hide = true; DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { self.hide = false }
+        case "reassert": epoch += 1
+        default: break
+        }
     }
 }

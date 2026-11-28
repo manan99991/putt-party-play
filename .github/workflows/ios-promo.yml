@@ -65,7 +65,7 @@ jobs:
             # moment, now: that change is the recording's first frame, and its time is the film's clock.
             xcrun simctl status_bar "$UDID" override --time 9:42 && python3 -c 'import time; print(time.time())' > promo/$2.t0
             sleep 1; xcrun simctl status_bar "$UDID" override --time 9:41 || true
-            script -q /dev/null env TEST_RUNNER_PROMO_FILM=1 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools \
+            script -q /dev/null env TEST_RUNNER_PROMO_FILM=1 TEST_RUNNER_PROMO_DIR="$PWD/promo" xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools \
               -destination "id=$UDID" -derivedDataPath build -only-testing:HandyToolsUITests/PromoFilmTests/$1 CODE_SIGNING_ALLOWED=NO 2>&1 \
               | while IFS= read -r line; do
                   case "$line" in *FILM-*@*) echo "$line" | grep -oE 'FILM-[A-Z]+@[0-9.]+' | head -1 >> promo/$2.marks ;; esac
@@ -100,8 +100,8 @@ jobs:
             T0=$(cat $f.t0)
             read SS KEEP DROP < <(python3 ../../tools/film_cut.py "$T0" $f.marks) || { echo "::warning::no marks for $f"; continue; }
             # Full quality for editing (1080 wide), and App Store preview size (886x1920, 30 fps, no sound).
-            ffmpeg -y -v error -ss $SS -t $KEEP -i $f.raw.mov -vf "fps=30,scale=1080:-2" -an -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -movflags +faststart $f.mp4
-            ffmpeg -y -v error -ss $SS -t $KEEP -i $f.raw.mov -vf "fps=30,scale=886:1920:force_original_aspect_ratio=decrease,pad=886:1920:(ow-iw)/2:(oh-ih)/2:color=black" -an -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -movflags +faststart $f-appstore.mp4
+            ffmpeg -y -v error -ss $SS -t $KEEP -i $f.raw.mov -vf "fps=30,scale=1080:-2" -an -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -movflags +faststart $f.mp4
+            ffmpeg -y -v error -ss $SS -t $KEEP -i $f.raw.mov -vf "fps=30,scale=886:1920:force_original_aspect_ratio=decrease,pad=886:1920:(ow-iw)/2:(oh-ih)/2:color=black" -an -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -movflags +faststart $f-appstore.mp4
             # A still at every FILM-SHOT, at the App Store 6.9-inch size (1290x2796) and the Play phone size (1080x1920).
             k=0
             for T in $(grep -oE 'FILM-SHOT@[0-9.]+' $f.marks | cut -d@ -f2 | sort -u); do
