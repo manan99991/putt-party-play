@@ -2974,6 +2974,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 started = true
                 Task { if let u = await SampleAssets.movie(withSound: true) { await MainActor.run { go(.video(u)) } } }
             }
+            if Launch.uitest, Launch.sample, initial == nil, !started, chain.id == "table-to-sheet" {
+                started = true
+                go(.image(SampleAssets.table()))
+            }
             if Launch.uitest, Launch.sample, initial == nil, !started, chain.id == "photo-sketch" {
                 started = true
                 go(.image(SampleAssets.photo()))

@@ -6,26 +6,111 @@ import AVFoundation
 struct TableFinishCard: View {
     let csv: Data
     var name = "Table"
-    private var rows: [[String]] {
+    // Worked out once, not on every redraw: the rows, the copy text and the two files. Building the workbook
+    // inside `body` re-zipped it on every redraw, and the grid sat in a scroll box inside the page's own
+    // scroll — opening and closing the Share sheet redrew both and left the whole screen blank (27 Nov report).
+    @State private var rows: [[String]]
+    @State private var xlsxURL: URL?
+    @State private var csvURL: URL?
+    @State private var showAll = false
+    private static let firstRows = 8
+    private static let maxColumns = 5
+
+    init(csv: Data, name: String = "Table") {
+        self.csv = csv
+        self.name = name
+        _rows = State(initialValue: TableFinishCard.parse(csv))
+    }
+
+    static func parse(_ csv: Data) -> [[String]] {
         (String(data: csv, encoding: .utf8) ?? "").split(whereSeparator: \.isNewline).map { RunningList.fields(String($0)) }
     }
+
+    private var fileBase: String {
+        let n = name.components(separatedBy: CharacterSet(charactersIn: "/\\:?%*|\"<>")).joined().trimmingCharacters(in: .whitespaces)
+        return n.isEmpty ? "Table" : String(n.prefix(60))
+    }
+
     var body: some View {
         let r = rows
+        let cols = r.map(\.count).max() ?? 0
+        let shownCols = min(cols, Self.maxColumns)
+        let items = Array(r.dropFirst())
+        let shown = showAll ? items : Array(items.prefix(Self.firstRows))
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Label("\(max(0, r.count - 1)) \(L("rows")) · \(r.map(\.count).max() ?? 0) \(L("columns"))", systemImage: "tablecells").font(HandyFont.bodyStrong)
-            DataGrid(rows: r).frame(height: min(360, CGFloat(r.count) * 34 + 20)).clipShape(RoundedRectangle(cornerRadius: 10))
-            if let x = XLSXWriter.workbook(rows: r, sheetName: String(name.prefix(30))) {
-                ShareLink(item: XLSXFile(data: x), preview: SharePreview("\(name).xlsx")) {
+            Label("\(items.count) \(L("rows")) · \(cols) \(L("columns"))", systemImage: "tablecells").font(HandyFont.bodyStrong)
+            // The table fits the screen: every column side by side, nothing to scroll sideways.
+            VStack(spacing: 0) {
+                if let head = r.first { tableRow(head, cols: shownCols, header: true) }
+                ForEach(Array(shown.enumerated()), id: \.offset) { _, row in tableRow(row, cols: shownCols, header: false) }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(HandyColor.border, lineWidth: 1))
+            .accessibilityIdentifier("table-grid")
+            if cols > shownCols {
+                Text(String(format: L("+%d more columns in the spreadsheet"), cols - shownCols)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            }
+            if items.count > Self.firstRows {
+                Button { withAnimation(.easeOut(duration: HandyMotion.fast)) { showAll.toggle() } } label: {
+                    Label(showAll ? L("Show fewer rows") : String(format: L("Show all %d rows"), items.count),
+                          systemImage: showAll ? "chevron.up" : "chevron.down").frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.plain).font(HandyFont.caption.weight(.semibold)).foregroundStyle(HandyColor.accent)
+                .accessibilityIdentifier("table-show-all")
+            }
+            if let x = xlsxURL {
+                ShareLink(item: x) {
                     Label(L("Open in Numbers or Excel"), systemImage: "tablecells.badge.ellipsis").frame(maxWidth: .infinity)
-                }.primaryButton()
+                }.primaryButton().accessibilityIdentifier("table-xlsx")
+            } else {
+                Button {} label: { Label(L("Open in Numbers or Excel"), systemImage: "tablecells.badge.ellipsis").frame(maxWidth: .infinity) }
+                    .primaryButton().disabled(true)
             }
             HStack(spacing: HandySpacing.s8) {
                 CopyButton(text: r.map { $0.joined(separator: "\t") }.joined(separator: "\n"), title: "Copy (pastes as a table)")
-                ShareLink(item: csv, preview: SharePreview("\(name).csv")) { Label("CSV", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                if let c = csvURL {
+                    ShareLink(item: c) { Label("CSV", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
+                        .secondaryButton().accessibilityIdentifier("table-csv")
+                }
             }
         }
         .cardStyle(padding: HandySpacing.s12)
         .accessibilityElement(children: .contain).accessibilityIdentifier("table-finish")
+        .task(id: csv) { await makeFiles() }
+    }
+
+    private func tableRow(_ row: [String], cols: Int, header: Bool) -> some View {
+        HStack(spacing: 0) {
+            ForEach(0..<max(cols, 1), id: \.self) { i in
+                Text(i < row.count ? row[i] : "")
+                    .font(header ? HandyFont.caption.weight(.semibold) : HandyFont.caption)
+                    .lineLimit(header ? 2 : 3)
+                    .frame(maxWidth: .infinity, minHeight: 30, alignment: .leading)
+                    .padding(.horizontal, 6).padding(.vertical, 5)
+                    .overlay(alignment: .trailing) { if i < cols - 1 { Rectangle().fill(HandyColor.border).frame(width: 0.5) } }
+            }
+        }
+        .background(header ? HandyColor.surface : Color.clear)
+        .overlay(alignment: .bottom) { Rectangle().fill(HandyColor.border).frame(height: 0.5) }
+    }
+
+    /// The two files, written once off the main thread, with the tool's own name — so the Share sheet just hands them on.
+    private func makeFiles() async {
+        let r = rows, base = fileBase, sheet = String(name.prefix(30)), data = csv
+        let urls: (URL?, URL?) = await Task.detached(priority: .userInitiated) {
+            let dir = FileManager.default.temporaryDirectory.appendingPathComponent("table-\(UUID().uuidString)", isDirectory: true)
+            try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+            var x: URL?, c: URL?
+            if let w = XLSXWriter.workbook(rows: r, sheetName: sheet) {
+                let u = dir.appendingPathComponent("\(base).xlsx")
+                if (try? w.write(to: u)) != nil { x = u }
+            }
+            let cu = dir.appendingPathComponent("\(base).csv")
+            if (try? data.write(to: cu)) != nil { c = cu }
+            return (x, c)
+        }.value
+        xlsxURL = urls.0
+        csvURL = urls.1
     }
 }
 

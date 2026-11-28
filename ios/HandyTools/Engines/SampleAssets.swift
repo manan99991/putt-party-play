@@ -29,6 +29,29 @@ enum SampleAssets {
         }
     }
 
+    /// A printed table with a header and 20 rows (role, team, rate, openings) — what "Turn a photo of a table into a
+    /// spreadsheet" reads in UI tests, long enough that the result page scrolls like a real one.
+    static func table() -> UIImage {
+        let w: CGFloat = 1400, rowH: CGFloat = 64, cols: [CGFloat] = [40, 480, 860, 1120]
+        let roles = ["Project Manager", "AEP Architect", "QA Engineer", "Data Engineer", "Release Manager"]
+        let teams = ["Salesforce", "Marketing", "Platform", "Analytics", "Support"]
+        var rows = [["Role", "Team", "Rate", "Openings"]]
+        for i in 0..<20 { rows.append([roles[i % 5], teams[(i * 2) % 5], "$\(45 + i)", "\(1 + i % 3)"]) }
+        let h = rowH * CGFloat(rows.count) + 80
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+        return UIGraphicsImageRenderer(size: CGSize(width: w, height: h), format: fmt).image { c in
+            UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: w, height: h))
+            for (r, row) in rows.enumerated() {
+                let y = 40 + CGFloat(r) * rowH
+                UIColor(white: 0.8, alpha: 1).setFill(); c.fill(CGRect(x: 30, y: y + rowH - 2, width: w - 60, height: 2))
+                for (i, cell) in row.enumerated() {
+                    (cell as NSString).draw(at: CGPoint(x: cols[i], y: y + 14), withAttributes: [
+                        .font: r == 0 ? UIFont.boldSystemFont(ofSize: 34) : UIFont.systemFont(ofSize: 34), .foregroundColor: UIColor.black])
+                }
+            }
+        }
+    }
+
     /// Two "screenshots" of a long chat with the same header/footer and a 40% overlap.
     static func screenshots() -> [UIImage] {
         let w: CGFloat = 1170, h: CGFloat = 2532, header: CGFloat = 220, footer: CGFloat = 180

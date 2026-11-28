@@ -607,6 +607,53 @@ final class PromiseTests: XCTestCase {
         }
     }
 
+    /// 27 Nov (Manan's recording): on "Turn a photo of a table into a spreadsheet", tapping CSV or Open in Numbers
+    /// blanked the whole page — before the Share sheet came up and again after it closed, until the app was left.
+    /// The result must stay on screen through every Share sheet, open and closed, more than once.
+    func testTableResultStaysOnScreenThroughTheShareSheet() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "run-table-to-sheet", "-uitest", "-sample"]
+        app.launch()
+        let card = app.descendants(matching: .any)["table-finish"].firstMatch
+        XCTAssertTrue(card.waitForExistence(timeout: 60), "the table result never showed")
+        let grid = app.descendants(matching: .any)["table-grid"].firstMatch
+        XCTAssertTrue(grid.exists, "the result has no table on it")
+        // Every column fits the screen — nothing to scroll sideways.
+        XCTAssertLessThanOrEqual(grid.frame.maxX, app.windows.firstMatch.frame.maxX + 1, "the table runs off the right edge")
+        XCTAssertTrue(app.staticTexts["Role"].exists && app.staticTexts["Openings"].exists, "the header row wasn't read")
+
+        func shareAndClose(_ id: String, round: Int) {
+            let b = app.buttons[id].firstMatch
+            XCTAssertTrue(b.waitForExistence(timeout: 15), "\(id) is missing")
+            var tries = 0
+            while !b.isHittable && tries < 6 { app.swipeUp(); tries += 1 }
+            b.tap()
+            let sheet = app.otherElements["ActivityListView"].firstMatch
+            let close = app.buttons["Close"].firstMatch
+            let opened = sheet.waitForExistence(timeout: 12) || close.exists
+            let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "\(id) round \(round) — share open"; shot.lifetime = .keepAlways; add(shot)
+            XCTAssertTrue(opened, "\(id) didn't open the Share sheet (round \(round))")
+            if close.exists && close.isHittable { close.tap() }
+            else { app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.06)).tap() }
+            XCTAssertTrue(sheet.waitForNonExistence(timeout: 10), "the Share sheet didn't close (round \(round))")
+            sleep(2)
+            let after = XCTAttachment(screenshot: app.screenshot()); after.name = "\(id) round \(round) — after closing"; after.lifetime = .keepAlways; add(after)
+            XCTAssertTrue(card.exists && grid.exists, "the result vanished after the Share sheet closed (\(id), round \(round))")
+            XCTAssertTrue(b.isHittable, "the page went blank after the Share sheet closed — \(id) can't be reached (round \(round))")
+            XCTAssertTrue(app.buttons["Done"].firstMatch.isHittable, "Done is gone after the Share sheet closed (\(id), round \(round))")
+        }
+        for round in 1...2 {
+            shareAndClose("table-csv", round: round)
+            shareAndClose("table-xlsx", round: round)
+        }
+        // The long table opens in full when asked, and the page still works.
+        let all = app.buttons["table-show-all"].firstMatch
+        if all.waitForExistence(timeout: 5) {
+            all.tap()
+            XCTAssertTrue(app.staticTexts["$64"].waitForExistence(timeout: 5), "Show all didn't show the last row")
+        }
+    }
+
     /// 26 Nov: Settings › Help › Watch how lists the three films, opens one full screen, and Done comes back.
     func testWatchHowOpensTheFilms() {
         let app = XCUIApplication()

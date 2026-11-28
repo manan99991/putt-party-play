@@ -53128,5 +53128,35 @@
   "ja": "別の見せ方を試す",
   "pt": "Experimentar outra revelação",
   "zh": "换个展示方式"
+ },
+ "+%d more columns in the spreadsheet": {
+  "de": "+%d weitere Spalten in der Tabelle",
+  "es": "+%d columnas más en la hoja",
+  "fr": "+%d colonnes de plus dans le tableur",
+  "hi": "स्प्रेडशीट में +%d और कॉलम",
+  "it": "+%d colonne in più nel foglio",
+  "ja": "スプレッドシートにあと%d列",
+  "pt": "+%d colunas a mais na planilha",
+  "zh": "表格中还有 %d 列"
+ },
+ "Show all %d rows": {
+  "de": "Alle %d Zeilen zeigen",
+  "es": "Ver las %d filas",
+  "fr": "Voir les %d lignes",
+  "hi": "सभी %d पंक्तियाँ दिखाएँ",
+  "it": "Mostra tutte le %d righe",
+  "ja": "%d行すべて表示",
+  "pt": "Ver as %d linhas",
+  "zh": "显示全部 %d 行"
+ },
+ "Show fewer rows": {
+  "de": "Weniger Zeilen zeigen",
+  "es": "Ver menos filas",
+  "fr": "Voir moins de lignes",
+  "hi": "कम पंक्तियाँ दिखाएँ",
+  "it": "Mostra meno righe",
+  "ja": "表示する行を減らす",
+  "pt": "Ver menos linhas",
+  "zh": "显示更少行"
  }
 }
