@@ -1,20 +1,20 @@
 == camera (results)
-Test Case '-[HandyToolsUITests.CameraButtonTests testAVideoHelperRunsOnAClipItRecorded]' passed (39.657 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' passed (50.405 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testCelebrateRecordsAClip]' passed (20.315 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testFitUnderALimitTakesAPhoto]' passed (16.676 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testFunnyMomentsRecordsAClipAndMakesTheJoke]' passed (32.290 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testMovieTrailerRecordsAClipAndMakesATrailer]' passed (131.237 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPhotoStudioTakesAPhoto]' passed (19.697 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPostItRecordsAClip]' passed (21.486 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPriceCheckReadsAShelfPhoto]' passed (20.909 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testPrivacyScrubberTakesAPhoto]' passed (15.517 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testReadyToSendTakesAPhoto]' passed (14.630 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testThePhotoPickerTakesAPhoto]' passed (22.974 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testTranslateReadsAPhotoItTook]' passed (21.010 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testVideoRecordsAClip]' passed (17.542 seconds).
-Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' passed (105.636 seconds).
-	 Executed 15 tests, with 0 failures (0 unexpected) in 549.981 (550.005) seconds
-	 Executed 15 tests, with 0 failures (0 unexpected) in 549.981 (550.011) seconds
-	 Executed 15 tests, with 0 failures (0 unexpected) in 549.981 (550.014) seconds
+Test Case '-[HandyToolsUITests.CameraButtonTests testAVideoHelperRunsOnAClipItRecorded]' passed (93.104 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testBeatReelRecordsAClipAndCutsAReel]' passed (106.613 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testCelebrateRecordsAClip]' passed (29.093 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testFitUnderALimitTakesAPhoto]' passed (20.648 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testFunnyMomentsRecordsAClipAndMakesTheJoke]' passed (41.321 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testMovieTrailerRecordsAClipAndMakesATrailer]' passed (175.499 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPhotoStudioTakesAPhoto]' passed (19.198 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPostItRecordsAClip]' passed (25.879 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPriceCheckReadsAShelfPhoto]' passed (24.195 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testPrivacyScrubberTakesAPhoto]' passed (18.946 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testReadyToSendTakesAPhoto]' passed (16.749 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testThePhotoPickerTakesAPhoto]' passed (26.673 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testTranslateReadsAPhotoItTook]' passed (26.302 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testVideoRecordsAClip]' passed (23.194 seconds).
+Test Case '-[HandyToolsUITests.CameraButtonTests testVideoStudioAddsAFaceEffectAndMusicThenGetsItReadyToPost]' passed (148.705 seconds).
+	 Executed 15 tests, with 0 failures (0 unexpected) in 796.121 (796.156) seconds
+	 Executed 15 tests, with 0 failures (0 unexpected) in 796.121 (796.164) seconds
+	 Executed 15 tests, with 0 failures (0 unexpected) in 796.121 (796.165) seconds
 ** TEST SUCCEEDED **
