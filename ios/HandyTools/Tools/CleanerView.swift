@@ -100,7 +100,14 @@ struct CleanerView: View {
                 if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
             }
         }
-        .onAppear { if authorized { CleanerIndex.shared.prewarm(); refreshForCat(); loadPlan() } }
+        .onAppear {
+            // UI tests and the promo film (-seeddupes): three photos saved twice each, so Duplicates has copies to show.
+            if Launch.uitest, Launch.args.contains("-seeddupes") {
+                Task { await Self.seedDupes(); CleanerIndex.shared.rescan(); refreshForCat(); loadPlan() }
+                return
+            }
+            if authorized { CleanerIndex.shared.prewarm(); refreshForCat(); loadPlan() }
+        }
         .onChange(of: index.duplicates) { _, _ in if cat == .duplicates { preselectDuplicateExtras() } }
     }
 
@@ -353,6 +360,28 @@ struct CleanerView: View {
                 .id(item.id)
             }
         }
+    }
+
+    /// Three holiday-style pictures, each saved twice (true copies), once per install (UI tests and the promo film only).
+    static func seedDupes() async {
+        let key = "uitest.seededDupes"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+        _ = await PHPhotoLibrary.requestAuthorization(for: .readWrite)
+        let f = UIGraphicsImageRendererFormat(); f.scale = 1
+        let pics = [(0.08, "Beach day"), (0.58, "City lights"), (0.33, "Garden")].map { hue, word in
+            UIGraphicsImageRenderer(size: CGSize(width: 1600, height: 1200), format: f).image { ctx in
+                UIColor(hue: hue, saturation: 0.55, brightness: 0.9, alpha: 1).setFill(); ctx.fill(CGRect(x: 0, y: 0, width: 1600, height: 1200))
+                UIColor(hue: hue, saturation: 0.7, brightness: 0.55, alpha: 1).setFill()
+                ctx.cgContext.fillEllipse(in: CGRect(x: 500, y: 300, width: 600, height: 600))
+                (word as NSString).draw(at: CGPoint(x: 80, y: 1020), withAttributes: [.font: UIFont.boldSystemFont(ofSize: 110), .foregroundColor: UIColor.white])
+            }
+        }
+        do {
+            try await PHPhotoLibrary.shared().performChanges {
+                for img in pics { PHAssetChangeRequest.creationRequestForAsset(from: img); PHAssetChangeRequest.creationRequestForAsset(from: img) }
+            }
+            UserDefaults.standard.set(true, forKey: key)
+        } catch {}
     }
 
     // MARK: scan flow

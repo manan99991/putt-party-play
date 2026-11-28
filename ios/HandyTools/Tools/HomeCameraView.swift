@@ -20,6 +20,9 @@ struct HomeCameraView: View {
                 ZStack {
                     ProcessedFrameView(image: cam.latest, holder: holder, fit: false)
                         .clipped()
+                    if Self.fake {   // no camera on the simulator: the sample receipt stands in as what the lens sees
+                        Image(uiImage: SampleAssets.receipt()).resizable().scaledToFill().clipped().contentShape(Rectangle()).allowsHitTesting(false)
+                    }
                     thirds
                     if !cam.authorized && !Self.fake {
                         PermissionOffCard(icon: "camera.fill", line: L("Camera access is off"),

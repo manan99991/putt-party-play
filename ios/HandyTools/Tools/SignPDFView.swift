@@ -42,7 +42,16 @@ struct SignPDFView: View {
             if case .success(let url) = res { load(url) }
         }
         .sheet(isPresented: $showPad) { SignaturePadSheet { img in signature = img } }
-        .onAppear { if Launch.sample, pages.isEmpty { loadSample() } }
+        .onAppear {
+            if Launch.sample, pages.isEmpty { loadSample() }
+            // UI tests and the promo film can't draw on the pad: a made-up signature stands in.
+            if Launch.uitest, Launch.sample, signature == nil {
+                signature = UIGraphicsImageRenderer(size: CGSize(width: 420, height: 140)).image { _ in
+                    ("Alex Sample" as NSString).draw(at: CGPoint(x: 10, y: 30), withAttributes: [
+                        .font: UIFont(name: "SnellRoundhand-Bold", size: 64) ?? .italicSystemFont(ofSize: 60), .foregroundColor: UIColor.black])
+                }
+            }
+        }
         .handoff("pdfsign") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 

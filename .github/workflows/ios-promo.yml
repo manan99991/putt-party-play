@@ -1,0 +1,118 @@
+name: iOS promo film
+
+# Films the three short how-to videos in Settings › Help from the real app: builds for a 6.9-inch simulator, records
+# the screen while each HowToFilmTests test walks one job (say what you need, set an autorun, got something?), cuts
+# each to the app's own screens and shrinks it to play inside Tenzy (H.264, about 1280 tall, no sound). Publishes the
+# films and a few frames from each to ci-logs (ios-promo/) for review. Run by hand; it never deploys anything.
+on:
+  push:
+    branches: [handytools]
+    paths: ["ios/.promo"]   # touch this file to film the promo scenes again
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ios-promo
+  cancel-in-progress: true
+
+jobs:
+  film:
+    runs-on: xcode-27
+    timeout-minutes: 90
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select newest Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)" && xcodebuild -version
+      - name: Build for testing (6.9-inch)
+        run: |
+          set -o pipefail
+          brew install xcodegen ffmpeg && xcodegen generate
+          xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          allv=[x for k,v in d.items() if "iOS" in k for x in v]
+          c=[x for x in allv if "Pro Max" in x["name"]]
+          c.sort(key=lambda x:(not x["name"].startswith("iPhone 17"), x["name"]))
+          print(c[0]["udid"])')
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+          xcodebuild build-for-testing -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee build.log | grep -E "error:|TEST BUILD|BUILD" || true
+          grep -qE "TEST BUILD SUCCEEDED|BUILD SUCCEEDED" build.log
+      - name: Film
+        timeout-minutes: 60
+        run: |
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b || true
+          xcrun simctl ui "$UDID" appearance dark
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
+          for p in photos contacts location; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
+          mkdir -p promo
+          run() {   # $1 test name, $2 film name. Records the whole test; the cut uses the times stamped in the test's marks.
+            if [ -n "$ONLY" ] && ! echo " $ONLY " | grep -q " $2 "; then echo "skipping $2"; return 0; fi
+            rm -f promo/$2.*
+            xcrun simctl io "$UDID" recordVideo --codec h264 --force promo/$2.raw.mov > promo/$2.reclog 2>&1 & echo $! > promo/$2.rec
+            # Wait until the recorder is running.
+            for i in $(seq 1 150); do grep -q "Recording started" promo/$2.reclog 2>/dev/null && break; sleep 0.1; done
+            grep -q "Recording started" promo/$2.reclog || echo "::warning::$2: the recorder never said it started"
+            # The recording's clock begins at its first frame, and a frame is only written when the screen changes — the
+            # still Home screen before the test launches gave take 7 a 3 s offset. Change the status bar's clock for a
+            # moment, now: that change is the recording's first frame, and its time is the film's clock.
+            xcrun simctl status_bar "$UDID" override --time 9:42 && python3 -c 'import time; print(time.time())' > promo/$2.t0
+            sleep 1; xcrun simctl status_bar "$UDID" override --time 9:41 || true
+            script -q /dev/null env TEST_RUNNER_PROMO_FILM=1 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools \
+              -destination "id=$UDID" -derivedDataPath build -only-testing:HandyToolsUITests/PromoFilmTests/$1 CODE_SIGNING_ALLOWED=NO 2>&1 \
+              | while IFS= read -r line; do
+                  case "$line" in *FILM-*@*) echo "$line" | grep -oE 'FILM-[A-Z]+@[0-9.]+' | head -1 >> promo/$2.marks ;; esac
+                  case "$line" in *error:*|*"Test Case"*|*TEST\ *) echo "$line";; esac
+                done
+            sleep 2
+            kill -INT $(cat promo/$2.rec) 2>/dev/null || true
+            sleep 3
+          }
+          # "only: got-something set-an-autorun" in ios/.howto films just those.
+          ONLY=$( (grep -m1 '^only:' .promo || true) | cut -d: -f2)
+          # If the app stops answering mid-film (the autorun film froze on 26 Nov), where its main thread is stuck.
+          ( while sleep 20; do
+              for P in $(pgrep -x HandyTools); do
+                sudo sample "$P" 1 -mayDie -file "$RUNNER_TEMP/sample.txt" >/dev/null 2>&1 || continue
+                xcrun swift-demangle --simplified < "$RUNNER_TEMP/sample.txt" | python3 ../tools/main_stack.py >> promo/hang.txt || true
+              done
+            done ) & SAMPLER=$!
+          run testPromoSayIt 1-say-it
+          run testPromoCamera 2-snap-it
+          run testPromoFreeSpace 3-free-space
+          run testPromoSocial 4-post-it
+          run testPromoSign 5-sign-it
+          kill $SAMPLER 2>/dev/null || true
+          head -100 promo/hang.txt 2>/dev/null || echo "main thread never stuck"
+          ls -la howto
+      - name: Cut, stills and store sizes
+        run: |
+          cd promo
+          for f in 1-say-it 2-snap-it 3-free-space 4-post-it 5-sign-it; do
+            [ -f $f.raw.mov ] || { echo "::warning::no film for $f"; continue; }
+            T0=$(cat $f.t0)
+            read SS KEEP DROP < <(python3 ../../tools/film_cut.py "$T0" $f.marks) || { echo "::warning::no marks for $f"; continue; }
+            # Full quality for editing (1080 wide), and App Store preview size (886x1920, 30 fps, no sound).
+            ffmpeg -y -v error -ss $SS -t $KEEP -i $f.raw.mov -vf "fps=30,scale=1080:-2" -an -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -movflags +faststart $f.mp4
+            ffmpeg -y -v error -ss $SS -t $KEEP -i $f.raw.mov -vf "fps=30,scale=886:1920:force_original_aspect_ratio=decrease,pad=886:1920:(ow-iw)/2:(oh-ih)/2:color=black" -an -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -movflags +faststart $f-appstore.mp4
+            # A still at every FILM-SHOT, at the App Store 6.9-inch size (1290x2796) and the Play phone size (1080x1920).
+            k=0
+            for T in $(grep -oE 'FILM-SHOT@[0-9.]+' $f.marks | cut -d@ -f2 | sort -u); do
+              k=$((k+1)); AT=$(python3 -c "print(max(0, $T - $T0 + 0.4))")
+              ffmpeg -y -v error -ss $AT -i $f.raw.mov -frames:v 1 -vf "scale=1290:2796:force_original_aspect_ratio=decrease,pad=1290:2796:(ow-iw)/2:(oh-ih)/2:color=black" $f-shot$k-iphone.png
+              ffmpeg -y -v error -ss $AT -i $f.raw.mov -frames:v 1 -vf "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black" $f-shot$k-1080x1920.png
+            done
+            D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 $f.mp4); echo "$f.mp4: ${D}s, $(du -k $f.mp4 | cut -f1) KB, $k stills"
+            rm -f $f.raw.mov $f.rec $f.t0 $f.reclog
+          done
+          ls -la
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: promo-film, path: ios/promo, retention-days: 14, if-no-files-found: warn }
