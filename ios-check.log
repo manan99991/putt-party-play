@@ -15,4 +15,5 @@ Created project at /Users/runner/work/putt-party-play/putt-party-play/ios/HandyT
 Command line invocation:
     /Applications/Xcode_27.2.app/Contents/Developer/usr/bin/xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
 
+Resolve Package Graph
 == build.log (errors)
