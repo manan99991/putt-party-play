@@ -1,13 +1,19 @@
 == promise2 (results)
-Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (63.886 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (87.170 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' passed (114.332 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testHomeCameraSuggestsWhatToDoWithThePicture]' passed (28.962 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testHomeFitsOneScreenWithTwelveTools]' passed (41.321 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testMadeCodesAreTestedOnTheFinish]' passed (68.826 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testMyDaySavesFirstThenOffersAShortMessage]' passed (30.423 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' passed (97.324 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral]' passed (22.110 seconds).
+DIAG| bar before sharing: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=-
+DIAG| after table-csv round 1: Done exists=false hittable=false; button hittable=true
+DIAG| bar after table-csv round 1: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=- · SwiftUI appears=1
+DIAG| navigation bars: _TtGC7SwiftUI32NavigationStackHosting buttons=0 frame=24+58
+DIAG| barfix reassert kept Done: false
+Test Case '-[HandyToolsUITests.PromiseTests testBarFixReassert]' passed (76.996 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (21.821 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (49.845 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' passed (111.346 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeCameraSuggestsWhatToDoWithThePicture]' passed (41.373 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeFitsOneScreenWithTwelveTools]' passed (47.222 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testMadeCodesAreTestedOnTheFinish]' passed (47.085 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testMyDaySavesFirstThenOffersAShortMessage]' passed (31.582 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' passed (104.482 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral]' passed (34.987 seconds).
 DIAG| bar before sharing: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=-
 DIAG| table first cells: ["Role", "Team", "Rate", "Openings", "Project Manager", "Salesforce", "$45", "1"]
 DIAG| after table-csv round 1: Done exists=false hittable=false; button hittable=true
@@ -26,13 +32,13 @@ DIAG| after table-xlsx round 2: Done exists=false hittable=false; button hittabl
 DIAG| bar after table-xlsx round 2: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=- · SwiftUI appears=1
 DIAG| navigation bars: _TtGC7SwiftUI32NavigationStackHosting buttons=0 frame=24+58
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:640: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-xlsx, round 2)
-Test Case '-[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet]' failed (78.105 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testTextToolsFinishOnTheTextScreen]' passed (15.412 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testVideoToolsCheckTheirPromiseOnTheFile]' passed (52.527 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' passed (31.804 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWatermarkToolsLetYouTypeYourOwnWords]' passed (44.557 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' passed (20.322 seconds).
-	 Executed 15 tests, with 4 failures (0 unexpected) in 797.082 (797.112) seconds
-	 Executed 15 tests, with 4 failures (0 unexpected) in 797.082 (797.116) seconds
-	 Executed 15 tests, with 4 failures (0 unexpected) in 797.082 (797.118) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet]' failed (70.672 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testTextToolsFinishOnTheTextScreen]' passed (23.986 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoToolsCheckTheirPromiseOnTheFile]' passed (55.144 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' passed (25.527 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatermarkToolsLetYouTypeYourOwnWords]' passed (36.478 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' passed (15.593 seconds).
+	 Executed 16 tests, with 4 failures (0 unexpected) in 794.139 (794.174) seconds
+	 Executed 16 tests, with 4 failures (0 unexpected) in 794.139 (794.181) seconds
+	 Executed 16 tests, with 4 failures (0 unexpected) in 794.139 (794.187) seconds
 ** TEST FAILED **
