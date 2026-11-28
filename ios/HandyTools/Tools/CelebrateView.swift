@@ -340,9 +340,10 @@ struct CelebrateView: View {
                         .buttonStyle(.plain).accessibilityIdentifier("fx-music-\(c.id.replacingOccurrences(of: ":", with: "-"))")
                         .accessibilityAddTraits(recipe.music == c.id ? .isSelected : [])
                 }
-                Button { pickingSong = true } label: { chip("🎵", songName ?? L("Your song"), on: recipe.music == "file", translate: false) }
-                    .buttonStyle(.plain).accessibilityIdentifier("fx-music-file")
             }
+            // Outside the grid: a lazy grid drops cells scrolled past, and "Your song" went missing (28 Nov test).
+            Button { pickingSong = true } label: { chip("🎵", songName ?? L("Your song"), on: recipe.music == "file", translate: false) }
+                .buttonStyle(.plain).accessibilityIdentifier("fx-music-file")
             if recipe.music.hasPrefix("synth:") || recipe.music == "file" {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(L("Music and the video's own sound")).font(HandyFont.bodyStrong)

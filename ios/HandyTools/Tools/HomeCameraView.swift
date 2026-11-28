@@ -37,7 +37,7 @@ struct HomeCameraView: View {
                     if flash { Color.white.opacity(0.7).allowsHitTesting(false) }
                     VStack {
                         Spacer()
-                        if cam.recording {
+                        if recordingNow {
                             Label(VideoFacts.clock(cam.recordSeconds), systemImage: "record.circle")
                                 .font(.system(size: 15, weight: .bold).monospacedDigit()).foregroundStyle(.white)
                                 .padding(.horizontal, 12).padding(.vertical, 6)
@@ -50,7 +50,7 @@ struct HomeCameraView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 modeRow.padding(.vertical, 10)
                 shutterRow.padding(.bottom, 14)
-                Text(L(cam.videoMode ? "Tap to start, tap again to stop" : "Tap for a photo · swipe to Video to film"))
+                Text(L(videoMode ? "Tap to start, tap again to stop" : "Tap for a photo · swipe to Video to film"))
                     .font(.system(size: 12, weight: .medium)).foregroundStyle(.white.opacity(0.75)).padding(.bottom, 8)
             }
         }
@@ -75,7 +75,7 @@ struct HomeCameraView: View {
                 .padding(.horizontal, 10).padding(.vertical, 5).background(Color.yellow, in: Capsule())
                 .accessibilityLabel(L("Pro camera"))
             Spacer()
-            Text(cam.videoMode ? "HD · \(cam.videoScene.fps)" : "HEIF").font(.system(size: 12, weight: .bold)).foregroundStyle(.white)
+            Text(videoMode ? "HD · \(cam.videoScene.fps)" : "HEIF").font(.system(size: 12, weight: .bold)).foregroundStyle(.white)
                 .frame(width: 64, height: 30).background(.white.opacity(0.15), in: Capsule())
         }
         .padding(.horizontal, HandySpacing.s16).padding(.vertical, 6)
@@ -109,19 +109,19 @@ struct HomeCameraView: View {
     private var modeRow: some View {
         HStack(spacing: 28) {
             ForEach([false, true], id: \.self) { video in
-                Button { if !cam.recording { cam.setVideoMode(video) } } label: {
+                Button { if !recordingNow { setMode(video) } } label: {
                     Text(L(video ? "VIDEO" : "PHOTO")).font(.system(size: 14, weight: .bold)).tracking(1)
-                        .foregroundStyle(cam.videoMode == video ? Color.yellow : .white.opacity(0.75))
+                        .foregroundStyle(videoMode == video ? Color.yellow : .white.opacity(0.75))
                         .frame(minWidth: 70, minHeight: 36)
                 }
-                .disabled(cam.recording || busy)
+                .disabled(recordingNow || busy)
                 .accessibilityIdentifier(video ? "homecam-video" : "homecam-photo")
-                .accessibilityAddTraits(cam.videoMode == video ? .isSelected : [])
+                .accessibilityAddTraits(videoMode == video ? .isSelected : [])
             }
         }
         .gesture(DragGesture(minimumDistance: 30).onEnded { v in
-            guard !cam.recording, !busy else { return }
-            if v.translation.width < -30 { cam.setVideoMode(true) } else if v.translation.width > 30 { cam.setVideoMode(false) }
+            guard !recordingNow, !busy else { return }
+            if v.translation.width < -30 { setMode(true) } else if v.translation.width > 30 { setMode(false) }
         })
     }
 
@@ -129,18 +129,18 @@ struct HomeCameraView: View {
         Button { shutter() } label: {
             ZStack {
                 Circle().stroke(.white, lineWidth: 4).frame(width: 78, height: 78)
-                if cam.videoMode {
-                    RoundedRectangle(cornerRadius: cam.recording ? 6 : 31, style: .continuous).fill(Color.red)
-                        .frame(width: cam.recording ? 30 : 62, height: cam.recording ? 30 : 62)
+                if videoMode {
+                    RoundedRectangle(cornerRadius: recordingNow ? 6 : 31, style: .continuous).fill(Color.red)
+                        .frame(width: recordingNow ? 30 : 62, height: recordingNow ? 30 : 62)
                 } else {
                     Circle().fill(.white).frame(width: 64, height: 64)
                 }
                 if busy { ProgressView().tint(.black) }
             }
-            .animation(.easeOut(duration: HandyMotion.fast), value: cam.recording)
+            .animation(.easeOut(duration: HandyMotion.fast), value: recordingNow)
         }
         .disabled(busy || (!cam.authorized && !Self.fake))
-        .accessibilityLabel(L(cam.videoMode ? (cam.recording ? "Stop recording" : "Start recording") : "Take a photo"))
+        .accessibilityLabel(L(videoMode ? (recordingNow ? "Stop recording" : "Start recording") : "Take a photo"))
         .accessibilityIdentifier("homecam-shutter")
     }
 
@@ -148,10 +148,16 @@ struct HomeCameraView: View {
     /// the screen, the photo/video switch and what Home does next are what's checked.
     private static var fake: Bool { Launch.uitest && Launch.args.contains("-homecam") }
     @State private var fakeRecording = false
+    @State private var fakeVideo = false
+    /// Photo or video. In UI tests the switch is kept here: the real one asks for the microphone, and that question
+    /// sat over the shutter on the simulator (28 Nov: "no video options after filming").
+    private var videoMode: Bool { Self.fake ? fakeVideo : cam.videoMode }
+    private var recordingNow: Bool { Self.fake ? fakeRecording : cam.recording }
+    private func setMode(_ video: Bool) { if Self.fake { if !fakeRecording { fakeVideo = video } } else { cam.setVideoMode(video) } }
 
     private func shutter() {
         if Self.fake {
-            if cam.videoMode {
+            if fakeVideo {
                 if fakeRecording { Task { if let u = await SampleAssets.movie(withSound: true) { finish(.video(u)) } } }
                 fakeRecording.toggle()
             } else { finish(.photo(SampleAssets.receipt())) }

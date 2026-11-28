@@ -18,7 +18,27 @@ struct NavProbe: UIViewControllerRepresentable {
             super.viewDidAppear(animated)
             appears += 1
             refresh()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in self?.refresh() }
+            // Read again every second, so the report is what the bar holds now, not when the page first showed.
+            timer?.invalidate()
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in MainActor.assumeIsolated { self?.refresh() } }
+        }
+        private var timer: Timer?
+        override func viewDidDisappear(_ animated: Bool) { super.viewDidDisappear(animated); timer?.invalidate() }
+        /// What really draws in the bar: every visible control or label, with its accessibility state.
+        private func barViews(_ bar: UINavigationBar) -> String {
+            var out: [String] = []
+            func walk(_ v: UIView, _ depth: Int) {
+                guard depth < 14, out.count < 12 else { return }
+                let shown = !v.isHidden && v.alpha > 0.01 && v.window != nil
+                if (v is UIControl || v is UILabel || v is UIImageView), v.bounds.width > 4 {
+                    let name = String(describing: type(of: v)).replacingOccurrences(of: "_", with: "")
+                    let text = (v as? UILabel)?.text ?? v.accessibilityLabel ?? ""
+                    out.append("\(name.prefix(22))[\(text.prefix(12))]\(shown ? "" : "·HIDDEN")\(v.accessibilityElementsHidden ? "·AXHIDDEN" : "")@\(Int(v.convert(v.bounds, to: bar).minX))")
+                }
+                for c in v.subviews { walk(c, depth + 1) }
+            }
+            walk(bar, 0)
+            return out.joined(separator: ",")
         }
         func refresh() {
             var host: UIViewController? = parent
@@ -28,7 +48,9 @@ struct NavProbe: UIViewControllerRepresentable {
             let item = top?.navigationItem
             let left = (item?.leftBarButtonItems ?? []).count, right = (item?.rightBarButtonItems ?? []).count
             let presented = nav.presentedViewController.map { String(describing: type(of: $0)) } ?? "-"
-            report.wrappedValue = "appears=\(appears) hidden=\(nav.isNavigationBarHidden) barAlpha=\(nav.navigationBar.alpha) left=\(left) right=\(right) back=\(item?.hidesBackButton == true ? "hidden" : "shown") stack=\(nav.viewControllers.count) presented=\(presented)"
+            let groups = "lg=\(item?.leadingItemGroups.count ?? -1) tg=\(item?.trailingItemGroups.count ?? -1) topIsItem=\(nav.navigationBar.topItem === item)"
+            let bar = nav.navigationBar
+            report.wrappedValue = "appears=\(appears) hidden=\(nav.isNavigationBarHidden) barAlpha=\(bar.alpha) axHidden=\(bar.accessibilityElementsHidden) left=\(left) right=\(right) \(groups) back=\(item?.hidesBackButton == true ? "hidden" : "shown") stack=\(nav.viewControllers.count) presented=\(presented) views=\(barViews(bar))"
         }
     }
 }

@@ -641,6 +641,38 @@ final class PromiseTests: XCTestCase {
         return ok
     }
 
+    /// 28 Nov diagnostic (§8, fourth try): after a Share sheet the test can't find Done. Is it gone from the screen, or
+    /// only from what the test (and VoiceOver) can read? Tap where Done was and see whether the page closes.
+    func testTapWhereDoneWasAfterSharing() {
+        let (app, card, _) = openTableResult()
+        let done = app.buttons["Done"].firstMatch
+        let spot = CGPoint(x: done.frame.midX, y: done.frame.midY)
+        print("DIAG| Done before sharing at \(Int(spot.x)),\(Int(spot.y)) label=\(done.label)")
+        shareAndCloseQuietly(app, "table-csv")
+        let probe = app.descendants(matching: .any)["nav-probe"].firstMatch
+        sleep(2)
+        print("DIAG| tapdone probe after: \(probe.exists ? probe.label : "no probe")")
+        app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: spot.x, dy: spot.y)).tap()
+        let closed = card.waitForNonExistence(timeout: 8)
+        let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "after tapping where Done was"; shot.lifetime = .keepAlways; add(shot)
+        print("DIAG| tapping where Done was closed the page: \(closed)")
+    }
+
+    /// The Share sheet opened and closed, with no checks (the diagnostic above reads the screen itself).
+    private func shareAndCloseQuietly(_ app: XCUIApplication, _ id: String) {
+        let b = app.buttons[id].firstMatch
+        _ = b.waitForExistence(timeout: 15)
+        var tries = 0
+        while !b.isHittable && tries < 6 { app.swipeUp(); tries += 1 }
+        b.tap()
+        let sheet = app.otherElements["ActivityListView"].firstMatch
+        _ = sheet.waitForExistence(timeout: 12)
+        let close = app.buttons["Close"].firstMatch
+        if close.exists && close.isHittable { close.tap() } else { app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.06)).tap() }
+        _ = sheet.waitForNonExistence(timeout: 10)
+        let after = XCTAttachment(screenshot: app.screenshot()); after.name = "tapdone — after closing"; after.lifetime = .keepAlways; add(after)
+    }
+
     private func openTableResult(_ extra: [String] = []) -> (XCUIApplication, XCUIElement, XCUIElement) {
         let app = XCUIApplication()
         app.launchArguments = ["-route", "run-table-to-sheet", "-uitest", "-sample"] + extra
@@ -797,7 +829,7 @@ final class PromiseTests: XCTestCase {
         any["homecam-shutter"].firstMatch.tap()   // start
         sleep(1)
         any["homecam-shutter"].firstMatch.tap()   // stop
-        XCTAssertTrue(suggested.waitForExistence(timeout: 30), "no video options after filming")
+        XCTAssertTrue(suggested.waitForExistence(timeout: 30), "no video options after filming — \(Self.onScreen(app))")
         let s2 = XCTAttachment(screenshot: app.screenshot()); s2.name = "after a video"; s2.lifetime = .keepAlways; add(s2)
         let words = app.staticTexts.allElementsBoundByIndex.map(\.label).joined(separator: " ").lowercased()
         XCTAssertTrue(words.contains("video"), "the options don't speak about the video: \(words.prefix(300))")

@@ -308,6 +308,11 @@ jobs:
         run: |
           mkdir -p shots && xcrun xcresulttool export attachments --path TestResults.xcresult --output-path shots >/dev/null 2>&1 || true
           ls shots | head -40
+      # Artifacts can't be downloaded where Claude reads them, so the screenshots go to ci-logs too.
+      - name: Publish failure screenshots
+        if: failure()
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash ../.github/publish-log.sh "ios-fail-${{ matrix.part }}" shots || true
       - uses: actions/upload-artifact@v4
         if: failure()
         with: { name: "shots-${{ matrix.part }}", path: ios/shots, retention-days: 5, if-no-files-found: ignore }
