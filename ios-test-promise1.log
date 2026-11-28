@@ -1,1 +1,25 @@
 == promise1 (results)
+Test Case '-[HandyToolsUITests.PromiseTests testFinishedPhotoOpensFullSizeAndCloses]' passed (42.244 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFirstMinuteDemoFinishesWithAResult]' passed (20.464 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' passed (18.123 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFunPhotoFinishOffersOtherLooks]' passed (44.217 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' passed (344.614 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:760: error: -[HandyToolsUITests.PromiseTests testHomeCameraTakesAPhotoOrAVideo] : XCTAssertTrue failed - the camera didn't open
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:761: error: -[HandyToolsUITests.PromiseTests testHomeCameraTakesAPhotoOrAVideo] : XCTAssertTrue failed - no Photo / Video switch
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:762: error: -[HandyToolsUITests.PromiseTests testHomeCameraTakesAPhotoOrAVideo] : Failed to tap "homecam-close" Any: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"homecam-close" IN identifiers'`, given input App element pid: 39349
+Test Case '-[HandyToolsUITests.PromiseTests testHomeCameraTakesAPhotoOrAVideo]' failed (29.186 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid]' passed (26.483 seconds).
+DIAG| after keep-share round 1: Done exists=false hittable=false; button hittable=true
+DIAG| KeepShare kept Done: false
+Test Case '-[HandyToolsUITests.PromiseTests testKeepShareKeepsDone]' passed (45.778 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages]' passed (69.310 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testPortalPDFShowsItsSizeCheck]' passed (27.666 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testProtectPDFDoesEverythingAtOnce]' passed (23.834 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet]' passed (42.949 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testTappingNearAPhotosEdgePicksThatPhoto]' passed (189.450 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (67.657 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVoiceToolsLetYouSwitchVoiceOnTheResult]' passed (25.854 seconds).
+	 Executed 15 tests, with 3 failures (0 unexpected) in 1017.828 (1017.858) seconds
+	 Executed 15 tests, with 3 failures (0 unexpected) in 1017.828 (1017.859) seconds
+	 Executed 15 tests, with 3 failures (0 unexpected) in 1017.828 (1017.860) seconds
+** TEST FAILED **
