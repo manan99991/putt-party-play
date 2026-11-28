@@ -1,8 +1,8 @@
 == smoke (results)
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (915.279 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (18.941 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (26.890 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 961.109 (961.161) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 961.109 (961.162) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 961.109 (961.163) seconds
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (994.966 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (17.963 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (25.800 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1038.730 (1038.740) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1038.730 (1038.748) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1038.730 (1038.749) seconds
 ** TEST SUCCEEDED **
