@@ -1,25 +1,29 @@
 == promise1 (results)
-Test Case '-[HandyToolsUITests.PromiseTests testFinishedPhotoOpensFullSizeAndCloses]' passed (42.244 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testFirstMinuteDemoFinishesWithAResult]' passed (20.464 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' passed (18.123 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testFunPhotoFinishOffersOtherLooks]' passed (44.217 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' passed (344.614 seconds).
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:760: error: -[HandyToolsUITests.PromiseTests testHomeCameraTakesAPhotoOrAVideo] : XCTAssertTrue failed - the camera didn't open
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:761: error: -[HandyToolsUITests.PromiseTests testHomeCameraTakesAPhotoOrAVideo] : XCTAssertTrue failed - no Photo / Video switch
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:762: error: -[HandyToolsUITests.PromiseTests testHomeCameraTakesAPhotoOrAVideo] : Failed to tap "homecam-close" Any: No matches found for first query match sequence: `Descendants matching type Any` -> `Elements matching predicate '"homecam-close" IN identifiers'`, given input App element pid: 39349
-Test Case '-[HandyToolsUITests.PromiseTests testHomeCameraTakesAPhotoOrAVideo]' failed (29.186 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid]' passed (26.483 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFinishedPhotoOpensFullSizeAndCloses]' passed (36.389 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFirstMinuteDemoFinishesWithAResult]' passed (23.699 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testForYouCardShowsTheCarAndNotNowPutsItAway]' passed (16.787 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFunPhotoFinishOffersOtherLooks]' passed (15.844 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHeavyVideoAutorunMakesASmallerCopyThatLooksTheSame]' passed (211.187 seconds).
+    t =    13.77s         Failed: Failed to scroll to visible (by AX action) Button, {{16.0, -103.7}, {44.0, 44.0}}, identifier: 'homecam-close', label: 'Close', error: Error kAXErrorFailure performing AXAction kAXScrollToVisibleAction on element AX element pid: 65280, elementOrHash.elementID: 4477421280.142
+    t =    15.07s             Failed: Failed to scroll to visible (by AX action) Button, {{16.0, -103.7}, {44.0, 44.0}}, identifier: 'homecam-close', label: 'Close', error: Error kAXErrorFailure performing AXAction kAXScrollToVisibleAction on element AX element pid: 65280, elementOrHash.elementID: 4477421280.142
+    t =    16.35s             Failed: Failed to scroll to visible (by AX action) Button, {{16.0, -103.7}, {44.0, 44.0}}, identifier: 'homecam-close', label: 'Close', error: Error kAXErrorFailure performing AXAction kAXScrollToVisibleAction on element AX element pid: 65280, elementOrHash.elementID: 4477421280.142
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:770: error: -[HandyToolsUITests.PromiseTests testHomeCameraTakesAPhotoOrAVideo] : Failed to failed to scroll to visible (by AX action) Button, {{16.0, -103.7}, {44.0, 44.0}}, identifier: 'homecam-close', label: 'Close', error: Error kAXErrorFailure performing AXAction kAXScrollToVisibleAction on element AX element pid: 65280, elementOrHash.elementID: 4477421280.142. (Underlying Error: Error kAXErrorFailure performing AXAction kAXScrollToVisibleAction on element AX element pid: 65280, elementOrHash.elementID: 4477421280.142)
+Test Case '-[HandyToolsUITests.PromiseTests testHomeCameraTakesAPhotoOrAVideo]' failed (17.144 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testInvoiceOpensFromBusinessMakesAPDFAndWaitsUntilPaid]' passed (20.182 seconds).
 DIAG| after keep-share round 1: Done exists=false hittable=false; button hittable=true
+DIAG| bar after keep-share round 1: appears=1 hidden=false barAlpha=1.0 left=0 right=0 back=shown stack=2 presented=- · SwiftUI appears=1
+DIAG| navigation bars: _TtGC7SwiftUI32NavigationStackHosting buttons=0 frame=24+58
 DIAG| KeepShare kept Done: false
-Test Case '-[HandyToolsUITests.PromiseTests testKeepShareKeepsDone]' passed (45.778 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages]' passed (69.310 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testPortalPDFShowsItsSizeCheck]' passed (27.666 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testProtectPDFDoesEverythingAtOnce]' passed (23.834 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet]' passed (42.949 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testTappingNearAPhotosEdgePicksThatPhoto]' passed (189.450 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (67.657 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testVoiceToolsLetYouSwitchVoiceOnTheResult]' passed (25.854 seconds).
-	 Executed 15 tests, with 3 failures (0 unexpected) in 1017.828 (1017.858) seconds
-	 Executed 15 tests, with 3 failures (0 unexpected) in 1017.828 (1017.859) seconds
-	 Executed 15 tests, with 3 failures (0 unexpected) in 1017.828 (1017.860) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testKeepShareKeepsDone]' passed (28.053 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testPaperAutorunMakesOneSearchablePDFFromTwoPages]' passed (49.337 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testPortalPDFShowsItsSizeCheck]' passed (21.203 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testProtectPDFDoesEverythingAtOnce]' passed (19.035 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReceiptsAutorunReadsTodaysReceiptIntoTheSheet]' passed (24.456 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:603: error: -[HandyToolsUITests.PromiseTests testTappingNearAPhotosEdgePicksThatPhoto] : XCTAssertEqual failed: ("["81,229"]") is not equal to ("[]") - tapping photo 1 at 8% down picked another photo too
+Test Case '-[HandyToolsUITests.PromiseTests testTappingNearAPhotosEdgePicksThatPhoto]' failed (90.970 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoEffectsPreviewIsNeverABlackBox]' passed (27.118 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVoiceToolsLetYouSwitchVoiceOnTheResult]' passed (13.892 seconds).
+	 Executed 15 tests, with 2 failures (0 unexpected) in 615.296 (615.319) seconds
+	 Executed 15 tests, with 2 failures (0 unexpected) in 615.296 (615.320) seconds
+	 Executed 15 tests, with 2 failures (0 unexpected) in 615.296 (615.322) seconds
 ** TEST FAILED **
