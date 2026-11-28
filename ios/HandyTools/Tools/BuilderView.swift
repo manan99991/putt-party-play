@@ -970,7 +970,7 @@ struct BuilderView: View {
     /// inside it, then start with what you have, what today needs, the tools people reach for most, and the way to every
     /// tool. The category grid moved to its own Tools tab, which ends the doubles (Photo and Photos, PDF and Files).
     private var homeFace: some View {
-        VStack(alignment: .leading, spacing: shortScreen ? 10 : HandySpacing.s16) {
+        VStack(alignment: .leading, spacing: shortScreen ? 10 : HandySpacing.s12) {
             brandHero
             readyNow
             if let b = builtIn { builtInCard(b) }
@@ -997,13 +997,15 @@ struct BuilderView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(L("Let's make today easier")).font(.system(size: shortScreen ? 22 : 25, weight: .heavy)).foregroundStyle(.white)
                         .lineLimit(1).minimumScaleFactor(0.7).accessibilityAddTraits(.isHeader)
-                    Text(L("Say it, or start with what you have.")).font(.system(size: 13, weight: .medium)).foregroundStyle(.white.opacity(0.88))
-                        .lineLimit(1).minimumScaleFactor(0.8)
+                    // The first-visit "See it work" takes the subtitle's place, so Home still fits one screen (28 Nov).
+                    if offerFirstTry { firstTry } else {
+                        Text(L("Say it, or start with what you have.")).font(.system(size: 13, weight: .medium)).foregroundStyle(.white.opacity(0.88))
+                            .lineLimit(1).minimumScaleFactor(0.8)
+                    }
                 }
                 Spacer(minLength: 0)
             }
             sayField(onBrand: true)
-            if offerFirstTry { firstTry }
         }
         .padding(HandySpacing.s16)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -1020,14 +1022,14 @@ struct BuilderView: View {
                     guard !files.isEmpty else { return }
                     gettingReady = true; note = nil
                     Task { await takePhotos(files, asked: files.count) }
-                }) { HaveChip(title: "Photo", icon: "photo.on.rectangle.angled", hex: 0xEC4899, height: shortScreen ? 48 : 54) }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
-                PhotosPicker(selection: $anyPick, matching: .videos) { HaveChip(title: "Video", icon: "film", hex: 0x8B5CF6, height: shortScreen ? 48 : 54) }
+                }) { HaveChip(title: "Photo", icon: "photo.on.rectangle.angled", hex: 0xEC4899, height: shortScreen ? 46 : 50) }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
+                PhotosPicker(selection: $anyPick, matching: .videos) { HaveChip(title: "Video", icon: "film", hex: 0x8B5CF6, height: shortScreen ? 46 : 50) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-video")
-                Button { pickTypes = audioImportTypes; pickingAny = true } label: { HaveChip(title: "Audio", icon: "waveform", hex: 0xF59E0B, height: shortScreen ? 48 : 54) }
+                Button { pickTypes = audioImportTypes; pickingAny = true } label: { HaveChip(title: "Audio", icon: "waveform", hex: 0xF59E0B, height: shortScreen ? 46 : 50) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-audio")
-                Button { pickTypes = [.pdf]; pickingAny = true } label: { HaveChip(title: "PDF", icon: "doc.richtext", hex: 0xEF4444, height: shortScreen ? 48 : 54) }
+                Button { pickTypes = [.pdf]; pickingAny = true } label: { HaveChip(title: "PDF", icon: "doc.richtext", hex: 0xEF4444, height: shortScreen ? 46 : 50) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-pdf")
-                Button { pickTypes = [.item]; pickingAny = true } label: { HaveChip(title: "File", icon: "folder", hex: 0x3B82F6, height: shortScreen ? 48 : 54) }
+                Button { pickTypes = [.item]; pickingAny = true } label: { HaveChip(title: "File", icon: "folder", hex: 0x3B82F6, height: shortScreen ? 46 : 50) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-file")
                 pasteTile
             }
@@ -1075,7 +1077,7 @@ struct BuilderView: View {
         }
     }
     /// Twelve tiles and the helpers all fit one screen without scrolling; short phones get shorter tiles.
-    private var pickHeight: CGFloat { shortScreen ? 58 : 64 }
+    private var pickHeight: CGFloat { shortScreen ? 56 : 60 }
 
     /// Every tool, by what it works on: each category as a named button — its icon in its colour over a one-word name —
     /// that opens straight into that category, four across (Manan, 24 Nov: a row of bare coloured icons meant nothing
@@ -1115,7 +1117,7 @@ struct BuilderView: View {
                                 .lineLimit(1).minimumScaleFactor(0.7)
                         }
                         .padding(.horizontal, 4)
-                        .frame(maxWidth: .infinity, minHeight: shortScreen ? 40 : 44)
+                        .frame(maxWidth: .infinity, minHeight: shortScreen ? 38 : 40)
                         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Color(hex: sh.hex).opacity(0.35), lineWidth: 1))
                         // How many helpers are inside, so nothing feels hidden (25 Nov redesign).
@@ -1484,7 +1486,7 @@ struct BuilderView: View {
                 }
                 .foregroundStyle(.white)
                 .padding(.horizontal, 12)
-                .frame(minHeight: 34)
+                .frame(minHeight: 28)
                 .background(.white.opacity(0.18), in: Capsule())
                 .overlay(Capsule().stroke(.white.opacity(0.3), lineWidth: 1))
                 .contentShape(Capsule())
@@ -1492,7 +1494,7 @@ struct BuilderView: View {
             .buttonStyle(.plain).accessibilityIdentifier("first-try")
             .accessibilityHint(L("Hide private details, remove location, shrink — on a sample"))
             Button { withAnimation { triedFirst = true } } label: {
-                Image(systemName: "xmark").font(.system(size: 10, weight: .bold)).foregroundStyle(.white.opacity(0.8)).frame(width: 32, height: 34)
+                Image(systemName: "xmark").font(.system(size: 10, weight: .bold)).foregroundStyle(.white.opacity(0.8)).frame(width: 32, height: 28)
             }
             .buttonStyle(.plain).accessibilityLabel(L("Not now"))
         }
@@ -2620,6 +2622,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var report: ChainRunner.RunReport?   // the per-step "what went through" story, for multi-step flows
     @ObservedObject private var store = StoreManager.shared
     @State private var showPro = false
+    @State private var appearCount = 0   // UI tests: how often SwiftUI says this screen appeared
     @Environment(\.dismiss) private var dismiss
 
     private var start: ChainKind { chain.steps.first?.block.takes ?? .image }
@@ -2891,6 +2894,11 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         // 28 Nov: Home's own page hides the bar, and once any Share sheet closed SwiftUI applied that to this screen too —
         // Done (and Back) vanished (Manan's recording; the UI test shows it every time). Say it here: this screen has a bar.
         .toolbar(.visible, for: .navigationBar)
+        .navProbe()   // UI tests: what the bar really holds, before and after a Share sheet
+        .onAppear { if Launch.uitest { appearCount += 1 } }
+        .overlay(alignment: .bottomTrailing) {
+            if Launch.uitest { Text("\(appearCount)").font(.system(size: 1)).opacity(0.01).accessibilityIdentifier("run-appears").allowsHitTesting(false) }
+        }
         .sheet(isPresented: $sending) {
             if let f = chain.finish, let box = outbox { SendSheet(finish: f, subject: chain.name, box: box).ignoresSafeArea() }
         }

@@ -628,6 +628,12 @@ final class PromiseTests: XCTestCase {
         let after = XCTAttachment(screenshot: app.screenshot()); after.name = "\(id) round \(round) — after closing"; after.lifetime = .keepAlways; add(after)
         let done = app.buttons["Done"].firstMatch
         print("DIAG| after \(id) round \(round): Done exists=\(done.exists) hittable=\(done.exists && done.isHittable); button hittable=\(b.exists && b.isHittable)")
+        let probe = app.descendants(matching: .any)["nav-probe"].firstMatch
+        let appears = app.descendants(matching: .any)["run-appears"].firstMatch
+        print("DIAG| bar after \(id) round \(round): \(probe.exists ? probe.label : "no probe") · SwiftUI appears=\(appears.exists ? appears.label : "?")")
+        if !(done.exists) {
+            print("DIAG| navigation bars: " + app.navigationBars.allElementsBoundByIndex.map { "\($0.identifier) buttons=\($0.buttons.count) frame=\(Int($0.frame.minY))+\(Int($0.frame.height))" }.joined(separator: " | "))
+        }
         let ok = done.exists && done.isHittable && b.exists && b.isHittable && mustSurvive.allSatisfy(\.exists)
         XCTAssertTrue(mustSurvive.allSatisfy(\.exists), "the result vanished after the Share sheet closed (\(id), round \(round))")
         XCTAssertTrue(b.exists && b.isHittable, "the page went blank after the Share sheet closed — \(id) can't be reached (round \(round))")
@@ -645,6 +651,8 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(grid.exists, "the result has no table on it")
         let first = XCTAttachment(screenshot: app.screenshot()); first.name = "table result"; first.lifetime = .keepAlways; add(first)
         XCTAssertTrue(app.buttons["Done"].firstMatch.isHittable, "Done can't be reached even before sharing")
+        let probe = app.descendants(matching: .any)["nav-probe"].firstMatch
+        print("DIAG| bar before sharing: \(probe.exists ? probe.label : "no probe")")
         return (app, card, grid)
     }
 
