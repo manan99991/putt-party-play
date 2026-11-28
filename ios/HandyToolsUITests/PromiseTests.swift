@@ -689,6 +689,100 @@ final class PromiseTests: XCTestCase {
         print("DIAG| KeepShare kept Done: \(ok)")
     }
 
+    /// 28 Nov (Manan's Home redesign): the say-it box, the camera, the six "Got something?" chips, all twelve Most loved
+    /// tiles and all eight helper groups are on one screen with no scrolling; the box has the mic inside, and there is
+    /// no grey button that can't be tapped — the "Make it" arrow appears only once words are typed.
+    func testHomeFitsOneScreenWithTwelveTools() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "home", "-uitest"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        XCTAssertTrue(any["describe-field"].firstMatch.waitForExistence(timeout: 25))
+        sleep(1)
+        let screen = app.windows.firstMatch.frame
+        let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "Home"; shot.lifetime = .keepAlways; add(shot)
+        func onScreen(_ id: String) -> Bool {
+            let e = any[id].firstMatch
+            return e.exists && e.isHittable && screen.contains(CGPoint(x: e.frame.midX, y: e.frame.maxY - 1))
+        }
+        for id in ["describe-field", "home-camera", "have-photo", "have-video", "have-audio", "have-pdf", "have-file"] {
+            XCTAssertTrue(onScreen(id), "\(id) isn't on the first screen")
+        }
+        XCTAssertFalse(any["describe-build"].exists, "a Make it button shows before anything is typed")
+        let tiles = ["scan", "cleaner", "contacts", "myreminders", "post", "translate", "gpsdash", "sticker", "collage", "pdfsign", "fileviewer", "vault"]
+        let missing = tiles.filter { !onScreen("popular-\($0)") }
+        XCTAssertEqual(missing, [], "Most loved tiles below the fold or missing")
+        let cats = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'home-cat-'")).allElementsBoundByIndex
+        XCTAssertEqual(cats.count, 8, "all eight helper groups")
+        let off = cats.filter { !(screen.contains(CGPoint(x: $0.frame.midX, y: $0.frame.maxY - 1)) && $0.isHittable) }.map(\.identifier)
+        XCTAssertEqual(off, [], "helper groups need a scroll")
+        // Typing: the mic becomes "Make it", the camera steps aside, and Make it works.
+        let field = app.textFields["describe-field"].exists ? app.textFields["describe-field"] : app.textViews["describe-field"]
+        field.tap()
+        if app.buttons["Continue"].waitForExistence(timeout: 2) { app.buttons["Continue"].tap() }
+        field.typeText("remind me every Monday to put the bins out")
+        XCTAssertTrue(any["describe-build"].firstMatch.waitForExistence(timeout: 5), "no Make it arrow once words are typed")
+        XCTAssertTrue(any["describe-build"].firstMatch.isEnabled)
+        XCTAssertFalse(any["home-camera"].exists && any["home-camera"].isHittable, "the camera should step aside while typing")
+    }
+
+    /// Each Most loved tile opens its tool (or the reminders), and Back comes home.
+    func testEveryHomeTileOpensItsTool() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "home", "-uitest"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        XCTAssertTrue(any["describe-field"].firstMatch.waitForExistence(timeout: 25))
+        for id in ["scan", "cleaner", "contacts", "myreminders", "post", "translate", "gpsdash", "sticker", "collage", "pdfsign", "fileviewer", "vault"] {
+            let tile = any["popular-\(id)"].firstMatch
+            XCTAssertTrue(tile.waitForExistence(timeout: 10), "\(id) tile missing")
+            tile.tap()
+            sleep(2)
+            XCTAssertFalse(any["describe-field"].firstMatch.isHittable, "\(id) didn't open anything")
+            let back = app.navigationBars.buttons.element(boundBy: 0)
+            if back.exists { back.tap() } else { app.swipeRight() }
+            XCTAssertTrue(any["describe-field"].firstMatch.waitForExistence(timeout: 10), "couldn't get back Home from \(id)")
+            sleep(1)
+        }
+        XCTAssertEqual(app.state, .runningForeground)
+    }
+
+    /// The Home camera (28 Nov): one button for a photo or a video. A photo shows what Tenzy can do with a photo; a video,
+    /// what it can do with a video. Close never strands you.
+    func testHomeCameraTakesAPhotoOrAVideo() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "home", "-uitest", "-homecam"]
+        app.launch()
+        let any = app.descendants(matching: .any)
+        let cam = any["home-camera"].firstMatch
+        XCTAssertTrue(cam.waitForExistence(timeout: 25))
+        cam.tap()
+        XCTAssertTrue(any["homecam-shutter"].firstMatch.waitForExistence(timeout: 10), "the camera didn't open")
+        XCTAssertTrue(any["homecam-photo"].exists && any["homecam-video"].exists, "no Photo / Video switch")
+        any["homecam-close"].firstMatch.tap()
+        XCTAssertTrue(cam.waitForExistence(timeout: 10), "Close didn't come back to Home")
+        // A photo.
+        cam.tap()
+        XCTAssertTrue(any["homecam-shutter"].firstMatch.waitForExistence(timeout: 10))
+        any["homecam-shutter"].firstMatch.tap()
+        let suggested = any["guide-suggested"].firstMatch
+        XCTAssertTrue(suggested.waitForExistence(timeout: 25), "no photo options after taking a photo")
+        let s1 = XCTAttachment(screenshot: app.screenshot()); s1.name = "after a photo"; s1.lifetime = .keepAlways; add(s1)
+        app.swipeDown(velocity: .fast)
+        XCTAssertTrue(cam.waitForExistence(timeout: 10))
+        // A video.
+        cam.tap()
+        XCTAssertTrue(any["homecam-video"].firstMatch.waitForExistence(timeout: 10))
+        any["homecam-video"].firstMatch.tap()
+        any["homecam-shutter"].firstMatch.tap()   // start
+        sleep(1)
+        any["homecam-shutter"].firstMatch.tap()   // stop
+        XCTAssertTrue(suggested.waitForExistence(timeout: 30), "no video options after filming")
+        let s2 = XCTAttachment(screenshot: app.screenshot()); s2.name = "after a video"; s2.lifetime = .keepAlways; add(s2)
+        let words = app.staticTexts.allElementsBoundByIndex.map(\.label).joined(separator: " ").lowercased()
+        XCTAssertTrue(words.contains("video"), "the options don't speak about the video: \(words.prefix(300))")
+    }
+
     /// 26 Nov: Settings › Help › Watch how lists the three films, opens one full screen, and Done comes back.
     func testWatchHowOpensTheFilms() {
         let app = XCUIApplication()

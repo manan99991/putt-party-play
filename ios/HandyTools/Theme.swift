@@ -708,6 +708,33 @@ struct HomeToolTile: View {
     }
 }
 
+/// One of Home's twelve: the job's icon over a one-line name, four across. A Pro tool shows a small lock for free users.
+struct HomePickTile: View {
+    let pick: HomePicks.Pick
+    var locked = false
+    var height: CGFloat = 72
+    var body: some View {
+        VStack(spacing: 5) {
+            ToolIconBadge(id: pick.id == "myreminders" ? "" : pick.id, symbol: pick.icon, size: height < 62 ? 26 : 30)
+            Text(L(pick.title)).font(.system(size: 12, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
+                .lineLimit(1).minimumScaleFactor(0.75)
+        }
+        .padding(.horizontal, 4)
+        .frame(maxWidth: .infinity, minHeight: height, maxHeight: height)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Color(hex: pick.hex).opacity(0.45), lineWidth: 1))
+        .overlay(alignment: .topTrailing) {
+            if locked {
+                Image(systemName: "lock.fill").font(.system(size: 9, weight: .bold)).foregroundStyle(HandyColor.textSecondary)
+                    .padding(5).accessibilityHidden(true)
+            }
+        }
+        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(L(pick.title) + (locked ? ", " + L("Pro") : ""))
+    }
+}
+
 /// A Business job tile: the same shape as a tool tile, for jobs that run a ready-made chain.
 struct HomeJobTile: View {
     let title: String

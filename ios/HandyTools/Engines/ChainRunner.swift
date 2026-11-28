@@ -1231,12 +1231,17 @@ enum ChainText {
         return DocEngine.recognize(page ?? img).filter { !screenShaped || !isStatusBar($0) }
     }
 
-    /// A full-screen phone or iPad capture: the shape of a screen, held either way.
+    /// A full-screen phone or iPad capture. iPhones are tall (about 2.17:1, which a camera never makes); iPads are 4:3
+    /// like a camera photo, so those count only at an iPad screen's exact size.
     static func looksLikeScreenshot(_ img: UIImage) -> Bool {
-        let w = img.size.width * img.scale, h = img.size.height * img.scale
+        let w = Int((img.size.width * img.scale).rounded()), h = Int((img.size.height * img.scale).rounded())
         guard w > 0, h > 0 else { return false }
-        let r = max(w, h) / min(w, h)
-        return h >= w && ((2.0...2.4).contains(r) || (1.30...1.50).contains(r) && w >= 1488)
+        let short = min(w, h), long = max(w, h)
+        let r = Double(long) / Double(short)
+        if h >= w, (2.0...2.4).contains(r) { return true }
+        let iPads: Set<[Int]> = [[1536, 2048], [1620, 2160], [1640, 2360], [1668, 2224], [1668, 2388], [1488, 2266],
+                                 [2048, 2732], [2064, 2752], [1680, 2420]]
+        return h >= w && iPads.contains([short, long])
     }
 
     /// The document's words as lines a parser can use: every reader of receipts, cards and forms goes through this

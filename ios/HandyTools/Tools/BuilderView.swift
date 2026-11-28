@@ -502,6 +502,7 @@ struct BuilderView: View {
     /// "Start with what you have": the thing picked, waiting for a tool to be chosen for it.
     @State private var given: Given?
     @State private var shooting = false   // the Home camera is open
+    @ObservedObject private var storeState = StoreManager.shared
     @State private var unzipping: UnzipTarget?
     @State private var anyPick: PhotosPickerItem?
     @State private var anyPhotos: [PhotosPickerItem] = []
@@ -580,12 +581,27 @@ struct BuilderView: View {
                 .onAppear { Completion.holdPrompt(true) }
         }
         .fullScreenCover(isPresented: $shooting) {
-            CameraShot { img in
-                shooting = false
-                guard let img else { return }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { given = Given(payload: .image(img), label: "A photo you just took") }
+            // The Pro camera: a photo or a video, then what Tenzy can do with what was taken.
+            if HomeCameraView.available {
+                HomeCameraView { take in
+                    shooting = false
+                    guard let take else { return }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                        switch take {
+                        case .photo(let img): given = Given(payload: .image(img), label: "A photo you just took")
+                        case .video(let u): given = Given(payload: .video(u), label: "A video you just took")
+                        }
+                    }
+                }
+            } else {
+                // No camera (the simulator): the photo library stands in, so the flow still works.
+                CameraShot { img in
+                    shooting = false
+                    guard let img else { return }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { given = Given(payload: .image(img), label: "A photo you just took") }
+                }
+                .ignoresSafeArea()
             }
-            .ignoresSafeArea()
         }
         .sheet(item: $given) { g in
             if GuideView.skip.contains("all") { Text(verbatim: "What do you want to do?") }   // UI tests only: is it the guide or the sheet?
@@ -1004,14 +1020,14 @@ struct BuilderView: View {
                     guard !files.isEmpty else { return }
                     gettingReady = true; note = nil
                     Task { await takePhotos(files, asked: files.count) }
-                }) { HaveChip(title: "Photo", icon: "photo.on.rectangle.angled", hex: 0xEC4899, height: shortScreen ? 52 : 62) }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
-                PhotosPicker(selection: $anyPick, matching: .videos) { HaveChip(title: "Video", icon: "film", hex: 0x8B5CF6, height: shortScreen ? 52 : 62) }
+                }) { HaveChip(title: "Photo", icon: "photo.on.rectangle.angled", hex: 0xEC4899, height: shortScreen ? 48 : 54) }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
+                PhotosPicker(selection: $anyPick, matching: .videos) { HaveChip(title: "Video", icon: "film", hex: 0x8B5CF6, height: shortScreen ? 48 : 54) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-video")
-                Button { pickTypes = audioImportTypes; pickingAny = true } label: { HaveChip(title: "Audio", icon: "waveform", hex: 0xF59E0B, height: shortScreen ? 52 : 62) }
+                Button { pickTypes = audioImportTypes; pickingAny = true } label: { HaveChip(title: "Audio", icon: "waveform", hex: 0xF59E0B, height: shortScreen ? 48 : 54) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-audio")
-                Button { pickTypes = [.pdf]; pickingAny = true } label: { HaveChip(title: "PDF", icon: "doc.richtext", hex: 0xEF4444, height: shortScreen ? 52 : 62) }
+                Button { pickTypes = [.pdf]; pickingAny = true } label: { HaveChip(title: "PDF", icon: "doc.richtext", hex: 0xEF4444, height: shortScreen ? 48 : 54) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-pdf")
-                Button { pickTypes = [.item]; pickingAny = true } label: { HaveChip(title: "File", icon: "folder", hex: 0x3B82F6, height: shortScreen ? 52 : 62) }
+                Button { pickTypes = [.item]; pickingAny = true } label: { HaveChip(title: "File", icon: "folder", hex: 0x3B82F6, height: shortScreen ? 48 : 54) }
                     .buttonStyle(.plain).accessibilityIdentifier("have-file")
                 pasteTile
             }
@@ -1030,21 +1046,36 @@ struct BuilderView: View {
         }
     }
 
-    /// The tools people reach for most, one tap from Home.
-    static let popular = ["scan", "identify", "translate", "menu", "pdfsign", "sticker"]
+    /// The twelve jobs on Home (HomePicks): the ones most people reach for first, then the ones this person really uses.
+    static var popular: [String] { HomePicks.starters.map(\.id) }
     private var popularRow: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            SectionLabel(text: "Most loved", icon: "heart.fill")
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: HandySpacing.s8), count: 3), spacing: HandySpacing.s8) {
-                ForEach(Self.popular.compactMap { id in TOOLS.first { $0.id == id } }) { t in
-                    Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
-                        HomeToolTile(tool: t, hex: HomeShelves.shelf(of: t.id)?.hex ?? 0x7B5CFF, compact: shortScreen)
+        let picks = HomePicks.current { id in
+            TOOLS.first { $0.id == id }.map { t in (L(t.name), t.icon, HomeShelves.shelf(of: t.id)?.hex ?? 0x7B5CFF) }
+        }
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack(alignment: .firstTextBaseline) {
+                SectionLabel(text: "Most loved", icon: "heart.fill")
+                Spacer()
+                Text(L("Learns what you use")).font(.system(size: 11, weight: .medium)).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
+            }
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 8) {
+                ForEach(picks) { p in
+                    if p.id == "myreminders" {
+                        NavigationLink(value: "myreminders") { HomePickTile(pick: p, locked: false, height: pickHeight) }
+                            .buttonStyle(.plain).accessibilityIdentifier("popular-\(p.id)")
+                            .simultaneousGesture(TapGesture().onEnded { HomePicks.noteUse(p.id) })
+                    } else {
+                        Button { NotificationCenter.default.post(name: .openTool, object: p.id, userInfo: ["from": "builder"]) } label: {
+                            HomePickTile(pick: p, locked: !storeState.isPremium && (TOOLS.first { $0.id == p.id }?.pro ?? false), height: pickHeight)
+                        }
+                        .buttonStyle(.plain).accessibilityIdentifier("popular-\(p.id)")
                     }
-                    .buttonStyle(.plain).accessibilityIdentifier("popular-\(t.id)")
                 }
             }
         }
     }
+    /// Twelve tiles and the helpers all fit one screen without scrolling; short phones get shorter tiles.
+    private var pickHeight: CGFloat { shortScreen ? 58 : 64 }
 
     /// Every tool, by what it works on: each category as a named button — its icon in its colour over a one-word name —
     /// that opens straight into that category, four across (Manan, 24 Nov: a row of bare coloured icons meant nothing
@@ -1076,22 +1107,22 @@ struct BuilderView: View {
 
     private func categoryButton(_ sh: HomeShelves.Shelf) -> some View {
                     NavigationLink(value: "category-\(sh.id)") {
-                        VStack(spacing: 4) {
-                            Image(systemName: sh.icon).font(.system(size: 15, weight: .bold)).foregroundStyle(.white)
-                                .frame(width: 32, height: 32)
-                                .background(Color(hex: sh.hex).gradient, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        // One line: the category's icon in its colour beside its name — compact, so Home's twelve fit above.
+                        HStack(spacing: 5) {
+                            Image(systemName: sh.icon).font(.system(size: 12, weight: .bold)).foregroundStyle(Color(hex: sh.hex))
                                 .accessibilityHidden(true)
                             Text(L(sh.title)).font(.system(size: 11.5, weight: .semibold)).foregroundStyle(HandyColor.textPrimary)
                                 .lineLimit(1).minimumScaleFactor(0.7)
                         }
-                        .frame(maxWidth: .infinity, minHeight: shortScreen ? 58 : 64)
+                        .padding(.horizontal, 4)
+                        .frame(maxWidth: .infinity, minHeight: shortScreen ? 40 : 44)
                         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Color(hex: sh.hex).opacity(0.35), lineWidth: 1))
                         // How many helpers are inside, so nothing feels hidden (25 Nov redesign).
                         .overlay(alignment: .topTrailing) {
-                            Text("\(sh.tools.count)").font(.system(size: 10, weight: .bold)).monospacedDigit().foregroundStyle(Color(hex: sh.hex))
-                                .padding(.horizontal, 5).padding(.vertical, 1)
-                                .background(Color(hex: sh.hex).opacity(0.14), in: Capsule()).padding(4)
+                            Text("\(sh.tools.count)").font(.system(size: 9, weight: .bold)).monospacedDigit().foregroundStyle(Color(hex: sh.hex))
+                                .padding(.horizontal, 4).padding(.vertical, 1)
+                                .background(Color(hex: sh.hex).opacity(0.14), in: Capsule()).padding(2)
                                 .accessibilityLabel("\(sh.tools.count) \(L("helpers"))")
                         }
                         .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -1578,55 +1609,57 @@ struct BuilderView: View {
     /// The say-it line. On the Home hero's gradient the build button is white, so it stands out from the colours behind it.
     private func sayField(onBrand: Bool) -> some View {
         let empty = ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        // 28 Nov (Manan): the box takes the row; the mic lives inside it and becomes the blue "Make it" arrow once
+        // there are words — so there's never a grey button that can't be tapped. One camera button beside it, for a
+        // picture or a video, shown while the box is empty.
         return HStack(alignment: .bottom, spacing: HandySpacing.s8) {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Image(systemName: "sparkles").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.accent).accessibilityHidden(true)
-                    TextField(L("Say it — e.g. every evening, help me email today's screenshots to myself"), text: $ask, axis: .vertical)
-                        .lineLimit(1...5).font(HandyFont.body).accessibilityIdentifier("describe-field")
+                HStack(alignment: .bottom, spacing: 8) {
+                    Image(systemName: "sparkles").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.accent)
+                        .frame(height: 40).accessibilityHidden(true)
+                    TextField(L("Say what you need…"), text: $ask, axis: .vertical)
+                        .lineLimit(1...5).font(HandyFont.body).padding(.vertical, 9).accessibilityIdentifier("describe-field")
+                    if !empty && !askVoice.running {
+                        Button { buildFromAsk() } label: {
+                            Group {
+                                if planning { ProgressView().tint(.white) }
+                                else { Image(systemName: "arrow.up").font(.system(size: 17, weight: .bold)) }
+                            }
+                            .foregroundStyle(.white)
+                            .frame(width: 40, height: 40)
+                            .background(HandyColor.accent, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(planning)
+                        .accessibilityLabel(L("Make it")).accessibilityIdentifier("describe-build")
+                    } else if canDictate {
+                        // Say it instead of typing it: words appear in the box as they're heard, on the phone only.
+                        Button { dictateAsk() } label: {
+                            Image(systemName: askVoice.running ? "stop.fill" : "mic.fill").font(.system(size: 17, weight: .semibold))
+                                .foregroundStyle(askVoice.running ? Color.white : HandyColor.accent)
+                                .frame(width: 40, height: 40)
+                                .background(askVoice.running ? HandyColor.danger : HandyColor.accentSoft,
+                                            in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(L(askVoice.running ? "Stop listening" : "Speak"))   // "Say it" reads as "read aloud" in translation
+                        .accessibilityIdentifier("describe-mic")
+                    }
                 }
-                .padding(.horizontal, 14).padding(.vertical, 13)
-                .frame(minHeight: 50)
+                .padding(.leading, 14).padding(.trailing, 6).padding(.vertical, 5)
+                .frame(minHeight: 52)
                 .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(empty ? (onBrand ? Color.clear : HandyColor.border) : HandyColor.accent, lineWidth: 1))
-                if onBrand && empty {
-                    // Take a picture of anything — a receipt, a card, a menu, a page, a plant — and Tenzy says what it
-                    // is and what it can do with it (25 Nov).
+                if onBrand && empty && !askVoice.running {
+                    // Take a picture or a video of anything; Tenzy says what it is and what it can do with it.
                     Button { shoot() } label: {
-                        Image(systemName: "camera.fill").font(.system(size: 19, weight: .semibold)).foregroundStyle(HandyColor.accent)
-                            .frame(width: 50, height: 50)
+                        Image(systemName: "camera.fill").font(.system(size: 20, weight: .semibold)).foregroundStyle(HandyColor.accent)
+                            .frame(width: 52, height: 52)
                             .background(Color.white, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(L("Take a picture")).accessibilityHint(L("Tenzy tells you what it is and what it can do with it"))
+                    .accessibilityLabel(L("Camera")).accessibilityHint(L("Take a photo or a video; Tenzy shows what it can do with it"))
                     .accessibilityIdentifier("home-camera")
                 }
-                if (empty || askVoice.running) && canDictate {
-                    // Say it instead of typing it: words appear in the box as they're heard, on the phone only.
-                    Button { dictateAsk() } label: {
-                        Image(systemName: askVoice.running ? "stop.fill" : "mic.fill").font(.system(size: 19, weight: .semibold))
-                            .foregroundStyle(askVoice.running ? Color.white : HandyColor.accent)
-                            .frame(width: 50, height: 50)
-                            .background(askVoice.running ? HandyColor.danger : (onBrand ? Color.white : HandyColor.surface),
-                                        in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(onBrand || askVoice.running ? Color.clear : HandyColor.border, lineWidth: 1))
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(L(askVoice.running ? "Stop listening" : "Speak"))   // "Say it" reads as "read aloud" in translation
-                    .accessibilityIdentifier("describe-mic")
-                }
-                Button { buildFromAsk() } label: {
-                    Group {
-                        if planning { ProgressView().tint(onBrand ? HandyColor.accent : HandyColor.onAccent) }
-                        else { Image(systemName: "wand.and.stars").font(.system(size: 19, weight: .semibold)) }
-                    }
-                    .foregroundStyle(onBrand ? HandyColor.accent : HandyColor.onAccent)
-                    .frame(width: 50, height: 50)
-                    .background(onBrand ? Color.white.opacity(empty ? 0.7 : 1) : HandyColor.accent.opacity(empty ? 0.45 : 1),
-                                in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                }
-                .buttonStyle(.plain)
-                .disabled(planning || empty)
-                .accessibilityLabel(L("Build it for me")).accessibilityIdentifier("describe-build")
         }
         .onChange(of: askVoice.live) { _, _ in
             if askVoice.running { ask = (askVoice.committed + [askVoice.live]).filter { !$0.isEmpty }.joined(separator: " ") }
@@ -2855,6 +2888,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         }
         .background(Ground())
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } } }
+        // 28 Nov: Home's own page hides the bar, and once any Share sheet closed SwiftUI applied that to this screen too —
+        // Done (and Back) vanished (Manan's recording; the UI test shows it every time). Say it here: this screen has a bar.
+        .toolbar(.visible, for: .navigationBar)
         .sheet(isPresented: $sending) {
             if let f = chain.finish, let box = outbox { SendSheet(finish: f, subject: chain.name, box: box).ignoresSafeArea() }
         }

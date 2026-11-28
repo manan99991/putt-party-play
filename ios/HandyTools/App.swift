@@ -685,7 +685,9 @@ struct HomeView: View {
                     BuilderView(face: .category(String(c.dropFirst("category-".count))))
                         .background(TenzyBackdrop())
                         .toolbar(.hidden, for: .navigationBar)
-                default: ToolDestination(id: id).toolbarRole(.editor).disablesSwipeBack()
+                // Every tool page keeps its bar (Back, Done) after a Share sheet or any other screen closes over it —
+                // the root's hidden bar must never leak onto it (28 Nov).
+                default: ToolDestination(id: id).toolbarRole(.editor).toolbar(.visible, for: .navigationBar).disablesSwipeBack()
                 }
             }
             .toolbar(.hidden, for: .navigationBar)
@@ -711,6 +713,7 @@ struct HomeView: View {
                 // Opened from inside the app (a helper, a list): go one step deeper so Back returns there.
                 // Opened from outside (a notification, a widget, a cold start): start fresh at that tool.
                 guard let id = n.object as? String else { return }
+                HomePicks.noteUse(id)   // Home's twelve learn what this person really opens
                 // Settings is a tab now: going there (after a language change, say) lands on the tab, not a copy of it.
                 if id == "settings" { path = []; tab = .settings; return }
                 if path.last == id { return }

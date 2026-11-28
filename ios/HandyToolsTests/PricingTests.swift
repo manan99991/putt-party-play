@@ -9,9 +9,11 @@ final class PricingTests: XCTestCase {
         XCTAssertEqual(Set(StoreManager.productIDs), ["tenzy_pro_yearly", "tenzy_pro_month"])
     }
 
-    func testNothingOnHomesFrontRowIsLocked() {
-        // A new person taps the "Most loved" row first; none of those may meet a lock.
-        for id in BuilderView.popular { XCTAssertFalse(TOOLS.first { $0.id == id }?.pro ?? true, "\(id) is on Home's front row but is Pro") }
+    func testHomesFrontRowIsMostlyFreeAndSaysWhichArePro() {
+        // 28 Nov (Manan): Home's twelve may hold Pro tools (Contacts, Social video, Collage, Open a file); those show a
+        // small lock for free users. The rest of the row stays free, and Find my car stays free.
+        let pro = BuilderView.popular.filter { TOOLS.first { t in t.id == $0 }?.pro ?? false }
+        XCTAssertEqual(Set(pro), ["contacts", "post", "collage", "fileviewer"], "the Pro tiles on Home changed: \(pro)")
         XCTAssertFalse(TOOLS.first { $0.id == "gpsdash" }?.pro ?? true, "Find my car (and automatic parking) is free")
     }
 

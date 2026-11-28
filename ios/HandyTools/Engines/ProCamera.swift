@@ -110,6 +110,13 @@ import UniformTypeIdentifiers
         if let c = photo.connection(with: .video), c.isVideoRotationAngleSupported(angle) { c.videoRotationAngle = angle }
     }
 
+    /// Zoom on the main lens (1×, 2×…), clamped to what the camera allows.
+    func zoom(_ factor: CGFloat) {
+        guard let d = device, (try? d.lockForConfiguration()) != nil else { return }
+        d.videoZoomFactor = max(1, min(factor, min(d.activeFormat.videoMaxZoomFactor, 10)))
+        d.unlockForConfiguration()
+    }
+
     func stop() {
         nonisolated(unsafe) let s = session
         if session.isRunning { DispatchQueue.global().async { s.stopRunning() } }

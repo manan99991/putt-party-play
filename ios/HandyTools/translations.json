@@ -53158,5 +53158,205 @@
   "ja": "表示する行を減らす",
   "pt": "Ver menos linhas",
   "zh": "显示更少行"
+ },
+ "Camera access is off": {
+  "de": "Kamerazugriff ist aus",
+  "es": "El acceso a la cámara está desactivado",
+  "fr": "L’accès à l’appareil photo est désactivé",
+  "hi": "कैमरा एक्सेस बंद है",
+  "it": "L’accesso alla fotocamera è disattivato",
+  "ja": "カメラへのアクセスがオフです",
+  "pt": "O acesso à câmera está desligado",
+  "zh": "相机访问已关闭"
+ },
+ "Learns what you use": {
+  "de": "Lernt, was du nutzt",
+  "es": "Aprende lo que usas",
+  "fr": "Apprend ce que vous utilisez",
+  "hi": "आपके इस्तेमाल से सीखता है",
+  "it": "Impara cosa usi",
+  "ja": "よく使うものを覚えます",
+  "pt": "Aprende o que você usa",
+  "zh": "会记住你常用的"
+ },
+ "Normal zoom": {
+  "de": "Normaler Zoom",
+  "es": "Zoom normal",
+  "fr": "Zoom normal",
+  "hi": "सामान्य ज़ूम",
+  "it": "Zoom normale",
+  "ja": "通常ズーム",
+  "pt": "Zoom normal",
+  "zh": "正常缩放"
+ },
+ "Pro camera": {
+  "de": "Profi-Kamera",
+  "es": "Cámara pro",
+  "fr": "Appareil photo pro",
+  "hi": "प्रो कैमरा",
+  "it": "Fotocamera pro",
+  "ja": "プロカメラ",
+  "pt": "Câmera pro",
+  "zh": "专业相机"
+ },
+ "Say what you need…": {
+  "de": "Sag, was du brauchst…",
+  "es": "Di lo que necesitas…",
+  "fr": "Dites ce dont vous avez besoin…",
+  "hi": "बताइए आपको क्या चाहिए…",
+  "it": "Di’ cosa ti serve…",
+  "ja": "必要なことを話してください…",
+  "pt": "Diga o que você precisa…",
+  "zh": "说出你需要什么…"
+ },
+ "Take a photo or a video; Tenzy shows what it can do with it": {
+  "de": "Mach ein Foto oder Video; Tenzy zeigt, was es damit tun kann",
+  "es": "Haz una foto o un vídeo; Tenzy te muestra qué puede hacer con él",
+  "fr": "Prenez une photo ou une vidéo ; Tenzy montre ce qu’il peut en faire",
+  "hi": "फ़ोटो या वीडियो लें; Tenzy दिखाएगा कि वह इससे क्या कर सकता है",
+  "it": "Scatta una foto o un video; Tenzy ti mostra cosa può farne",
+  "ja": "写真か動画を撮ると、Tenzy ができることを表示します",
+  "pt": "Tire uma foto ou grave um vídeo; o Tenzy mostra o que pode fazer com ele",
+  "zh": "拍照或录像，Tenzy 会告诉你能用它做什么"
+ },
+ "Tenzy needs the camera for this. Turn it on in Settings, then come back.": {
+  "de": "Tenzy braucht dafür die Kamera. Schalte sie in den Einstellungen ein und komm zurück.",
+  "es": "Tenzy necesita la cámara para esto. Actívala en Ajustes y vuelve.",
+  "fr": "Tenzy a besoin de l’appareil photo. Activez-le dans Réglages, puis revenez.",
+  "hi": "इसके लिए Tenzy को कैमरा चाहिए। सेटिंग्स में चालू करें, फिर वापस आएँ।",
+  "it": "Tenzy ha bisogno della fotocamera. Attivala in Impostazioni, poi torna qui.",
+  "ja": "これにはカメラが必要です。設定でオンにしてから戻ってください。",
+  "pt": "O Tenzy precisa da câmera para isso. Ative em Ajustes e volte.",
+  "zh": "这需要相机。请在设置中打开后再回来。"
+ },
+ "Zoom in two times": {
+  "de": "Zweifach zoomen",
+  "es": "Zoom de dos aumentos",
+  "fr": "Zoom ×2",
+  "hi": "दो गुना ज़ूम",
+  "it": "Zoom 2×",
+  "ja": "2倍ズーム",
+  "pt": "Zoom de duas vezes",
+  "zh": "放大两倍"
+ },
+ "Hide photos": {
+  "de": "Fotos verstecken",
+  "es": "Ocultar fotos",
+  "fr": "Masquer photos",
+  "hi": "फ़ोटो छिपाएँ",
+  "it": "Nascondi foto",
+  "ja": "写真を隠す",
+  "pt": "Ocultar fotos",
+  "zh": "隐藏照片"
+ },
+ "Open a file": {
+  "de": "Datei öffnen",
+  "es": "Abrir archivo",
+  "fr": "Ouvrir un fichier",
+  "hi": "फ़ाइल खोलें",
+  "it": "Apri un file",
+  "ja": "ファイルを開く",
+  "pt": "Abrir arquivo",
+  "zh": "打开文件"
+ },
+ "Parked car": {
+  "de": "Geparktes Auto",
+  "es": "Coche aparcado",
+  "fr": "Voiture garée",
+  "hi": "पार्क की गई कार",
+  "it": "Auto parcheggiata",
+  "ja": "駐車した車",
+  "pt": "Carro estacionado",
+  "zh": "停车位置"
+ },
+ "Reminder": {
+  "de": "Erinnerung",
+  "es": "Recordatorio",
+  "fr": "Rappel",
+  "hi": "रिमाइंडर",
+  "it": "Promemoria",
+  "ja": "リマインダー",
+  "pt": "Lembrete",
+  "zh": "提醒"
+ },
+ "Sign PDF": {
+  "de": "PDF signieren",
+  "es": "Firmar PDF",
+  "fr": "Signer un PDF",
+  "hi": "PDF साइन करें",
+  "it": "Firma PDF",
+  "ja": "PDFに署名",
+  "pt": "Assinar PDF",
+  "zh": "签署 PDF"
+ },
+ "Social video": {
+  "de": "Social-Video",
+  "es": "Vídeo social",
+  "fr": "Vidéo réseaux",
+  "hi": "सोशल वीडियो",
+  "it": "Video social",
+  "ja": "SNS動画",
+  "pt": "Vídeo social",
+  "zh": "社交视频"
+ },
+ "Tap to start, tap again to stop": {
+  "de": "Tippen zum Starten, erneut tippen zum Stoppen",
+  "es": "Toca para empezar y otra vez para parar",
+  "fr": "Touchez pour démarrer, encore pour arrêter",
+  "hi": "शुरू करने के लिए टैप करें, रोकने के लिए फिर टैप करें",
+  "it": "Tocca per iniziare, di nuovo per fermare",
+  "ja": "タップで開始、もう一度タップで停止",
+  "pt": "Toque para começar e de novo para parar",
+  "zh": "轻点开始，再点一下停止"
+ },
+ "Tap for a photo · swipe to Video to film": {
+  "de": "Tippen für ein Foto · zu Video wischen zum Filmen",
+  "es": "Toca para una foto · desliza a Vídeo para grabar",
+  "fr": "Touchez pour une photo · glissez vers Vidéo pour filmer",
+  "hi": "फ़ोटो के लिए टैप करें · वीडियो के लिए स्वाइप करें",
+  "it": "Tocca per una foto · scorri su Video per filmare",
+  "ja": "タップで写真 · ビデオへスワイプで撮影",
+  "pt": "Toque para foto · deslize para Vídeo para filmar",
+  "zh": "轻点拍照 · 滑到视频即可录制"
+ },
+ "VIDEO": {
+  "de": "VIDEO",
+  "es": "VÍDEO",
+  "fr": "VIDÉO",
+  "hi": "वीडियो",
+  "it": "VIDEO",
+  "ja": "ビデオ",
+  "pt": "VÍDEO",
+  "zh": "视频"
+ },
+ "PHOTO": {
+  "de": "FOTO",
+  "es": "FOTO",
+  "fr": "PHOTO",
+  "hi": "फ़ोटो",
+  "it": "FOTO",
+  "ja": "写真",
+  "pt": "FOTO",
+  "zh": "照片"
+ },
+ "A video you just took": {
+  "de": "Ein gerade aufgenommenes Video",
+  "es": "Un vídeo que acabas de grabar",
+  "fr": "Une vidéo que vous venez de filmer",
+  "hi": "अभी लिया गया वीडियो",
+  "it": "Un video appena girato",
+  "ja": "撮ったばかりの動画",
+  "pt": "Um vídeo que você acabou de gravar",
+  "zh": "刚拍的视频"
+ },
+ "Shrink a file": {
+  "de": "Datei verkleinern",
+  "es": "Reducir archivo",
+  "fr": "Réduire un fichier",
+  "hi": "फ़ाइल छोटी करें",
+  "it": "Riduci un file",
+  "ja": "ファイルを縮小",
+  "pt": "Reduzir arquivo",
+  "zh": "压缩文件"
  }
 }
