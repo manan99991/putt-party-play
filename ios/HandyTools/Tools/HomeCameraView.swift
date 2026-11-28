@@ -55,7 +55,7 @@ struct HomeCameraView: View {
             if cam.recording { Task { _ = await cam.stopRecording() } }
             cam.stop()
         }
-        .accessibilityIdentifier("homecam")
+        .accessibilityElement(children: .contain).accessibilityIdentifier("homecam")   // contain: an id on the stack alone renamed every button in it
     }
 
     private var topBar: some View {

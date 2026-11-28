@@ -116,3 +116,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: promo-film, path: ios/promo, retention-days: 14, if-no-files-found: warn }
+      # The runner's artifact store can't be reached from Claude's session, so the films and stills go to ci-logs too.
+      - name: Publish
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh ios-promo ios/promo
