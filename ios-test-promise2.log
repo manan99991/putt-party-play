@@ -1,1 +1,30 @@
 == promise2 (results)
+Test Case '-[HandyToolsUITests.PromiseTests testBuildTabMakesToolsAndReminders]' passed (39.894 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (37.066 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeAndToolsTabsReachEveryTool]' passed (96.790 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testHomeCameraSuggestsWhatToDoWithThePicture]' passed (35.353 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:718: error: -[HandyToolsUITests.PromiseTests testHomeFitsOneScreenWithTwelveTools] : XCTAssertEqual failed: ("["home-cat-audio", "home-cat-words", "home-cat-day", "home-cat-phone"]") is not equal to ("[]") - helper groups need a scroll
+Test Case '-[HandyToolsUITests.PromiseTests testHomeFitsOneScreenWithTwelveTools]' failed (55.614 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testMadeCodesAreTestedOnTheFinish]' passed (60.882 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testMyDaySavesFirstThenOffersAShortMessage]' passed (41.464 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReadyToPostMakesATallClipAndSavesIt]' passed (126.697 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSwipeAcrossPhotosPicksSeveral]' passed (27.380 seconds).
+DIAG| table first cells: ["Role", "Team", "Rate", "Openings", "Project Manager", "Salesforce", "$45", "1"]
+DIAG| after table-csv round 1: Done exists=false hittable=false; button hittable=true
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:634: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-csv, round 1)
+DIAG| after table-xlsx round 1: Done exists=false hittable=false; button hittable=true
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:634: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-xlsx, round 1)
+DIAG| after table-csv round 2: Done exists=false hittable=false; button hittable=true
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:634: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-csv, round 2)
+DIAG| after table-xlsx round 2: Done exists=false hittable=false; button hittable=true
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/PromiseTests.swift:634: error: -[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet] : XCTAssertTrue failed - Done is gone after the Share sheet closed (table-xlsx, round 2)
+Test Case '-[HandyToolsUITests.PromiseTests testTableResultStaysOnScreenThroughTheShareSheet]' failed (101.131 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testTextToolsFinishOnTheTextScreen]' passed (17.796 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoToolsCheckTheirPromiseOnTheFile]' passed (72.482 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatchHowOpensTheFilms]' passed (28.861 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatermarkToolsLetYouTypeYourOwnWords]' passed (34.003 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWelcomeIsOneScreenAndOpensTheChosenTab]' passed (15.499 seconds).
+	 Executed 15 tests, with 5 failures (0 unexpected) in 790.910 (790.924) seconds
+	 Executed 15 tests, with 5 failures (0 unexpected) in 790.910 (790.926) seconds
+	 Executed 15 tests, with 5 failures (0 unexpected) in 790.910 (790.927) seconds
+** TEST FAILED **
