@@ -1,1 +1,21 @@
 == promise3 (results)
+Test Case '-[HandyToolsUITests.PromiseTests testAppleContactCardAlwaysCloses]' passed (71.821 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (128.510 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessCardsAutorunSavesTheContact]' passed (123.391 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessMilesAndPriceListWork]' passed (222.742 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testBusinessTabShowsOnlyWhenOnAndItsJobsOpen]' passed (39.662 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testDrivesAutorunLogsTheWorkDrive]' passed (14.819 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testEveryHomeTileOpensItsTool]' passed (148.440 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testIDCopyToolsFinishOnTheIDCopyScreen]' passed (36.252 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testReceiptTestRunKeepsTheAppAnswering]' passed (32.152 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testRunFromMyToolsStaysOpenAndComesBack]' passed (18.836 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testScamCheckLandsOnTheShieldVerdict]' passed (11.223 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSignaturePadWontSaveBlank]' passed (33.392 seconds).
+DIAG| after table-csv round 1: Done exists=false hittable=false; button hittable=true
+DIAG| ShareLink the old way kept Done: false
+Test Case '-[HandyToolsUITests.PromiseTests testTableShareLinkTheOldWay]' passed (32.438 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWarrantyPhotosOpenOnReceiptsWithAllPhotosAtHand]' passed (15.344 seconds).
+	 Executed 14 tests, with 0 failures (0 unexpected) in 929.024 (929.092) seconds
+	 Executed 14 tests, with 0 failures (0 unexpected) in 929.024 (929.092) seconds
+	 Executed 14 tests, with 0 failures (0 unexpected) in 929.024 (929.094) seconds
+** TEST SUCCEEDED **
